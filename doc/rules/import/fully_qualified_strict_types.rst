@@ -2,8 +2,10 @@
 Rule ``fully_qualified_strict_types``
 =====================================
 
-Transforms imported FQCN parameters and return types in function arguments to
-short version.
+Removes the leading part of fully qualified symbol references if a given symbol
+is imported or belongs to the current namespace. Fixes function arguments,
+exceptions in ``catch`` block, ``extend`` and ``implements`` of classes and
+interfaces.
 
 Configuration
 -------------
@@ -34,17 +36,45 @@ Example #1
 
     use Foo\Bar;
     use Foo\Bar\Baz;
+    use Foo\OtherClass;
+    use Foo\SomeContract;
+    use Foo\SomeException;
 
-    class SomeClass
+    /**
+   - * @see \Foo\Bar\Baz
+   + * @see Baz
+     */
+   -class SomeClass extends \Foo\OtherClass implements \Foo\SomeContract
+   +class SomeClass extends OtherClass implements SomeContract
     {
-   -    public function doX(\Foo\Bar $foo): \Foo\Bar\Baz
-   +    public function doX(Bar $foo): Baz
-        {
+        /**
+   -     * @var \Foo\Bar\Baz
+   +     * @var Baz
+         */
+        public $baz;
+
+        /**
+   -     * @param \Foo\Bar\Baz $baz
+   +     * @param Baz $baz
+         */
+        public function __construct($baz) {
+            $this->baz = $baz;
         }
 
-   -    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
-   +    public function doY(Foo\NotImported $u, Foo\NotImported $v)
+        /**
+   -     * @return \Foo\Bar\Baz
+   +     * @return Baz
+         */
+        public function getBaz() {
+            return $this->baz;
+        }
+
+   -    public function doX(\Foo\Bar $foo, \Exception $e): \Foo\Bar\Baz
+   +    public function doX(Bar $foo, Exception $e): Baz
         {
+            try {}
+   -        catch (\Foo\SomeException $e) {}
+   +        catch (SomeException $e) {}
         }
     }
 
@@ -63,6 +93,31 @@ With configuration: ``['leading_backslash_in_global_namespace' => true]``.
     {
    -    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
    +    public function doY(\Foo\NotImported $u, \Foo\NotImported $v)
+        {
+        }
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['leading_backslash_in_global_namespace' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    namespace {
+        use Foo\A;
+        try {
+            foo();
+   -    } catch (\Exception|\Foo\A $e) {
+   +    } catch (Exception|A $e) {
+        }
+    }
+    namespace Foo\Bar {
+   -    class SomeClass implements \Foo\Bar\Baz
+   +    class SomeClass implements Baz
         {
         }
     }

@@ -32,7 +32,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
-    private Filesystem $fs;
+    private ?Filesystem $fs;
 
     /** @var array<string, mixed> */
     private array $currentCodeAsComposerDependency = [
@@ -64,13 +64,6 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         'vendor/bin/php-cs-fixer fix --help',
     ];
 
-    public function __construct()
-    {
-        $this->fs = new Filesystem();
-
-        parent::__construct();
-    }
-
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -96,6 +89,16 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         } catch (\RuntimeException $e) {
             self::fail('Composer check failed. Details:'."\n".$e->getMessage());
         }
+    }
+
+    protected function setUp(): void
+    {
+        $this->fs = new Filesystem();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->fs = null;
     }
 
     public function testInstallationViaPathIsPossible(): void

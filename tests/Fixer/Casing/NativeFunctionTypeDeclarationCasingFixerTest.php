@@ -34,4 +34,20 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
             $fixer->getSuccessorsNames(),
         );
     }
+
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, null|string}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        yield from NativeTypeDeclarationCasingFixerTest::provideFixCases();
+    }
 }

@@ -98,7 +98,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS])])
                 ->setDefault([self::ELEMENTS_ARRAYS])
-                ->setNormalizer(static function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, array $value) {
                     if (\PHP_VERSION_ID < 8_00_00) { // @TODO: drop condition when PHP 8.0+ is required
                         foreach ([self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS] as $option) {
                             if (\in_array($option, $value, true)) {

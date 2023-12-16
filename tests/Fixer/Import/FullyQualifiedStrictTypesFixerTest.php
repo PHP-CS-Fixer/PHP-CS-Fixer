@@ -28,15 +28,18 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, bool> $config
      *
-     * @dataProvider provideNewLogicCases
+     * @dataProvider provideFixCases
      */
-    public function testNewLogic(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public static function provideNewLogicCases(): iterable
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
+    public static function provideFixCases(): iterable
     {
         yield 'namespace === type name' => [
             '<?php
@@ -153,6 +156,205 @@ class A {
     }
 }',
         ];
+
+        yield 'interface multiple extends' => [
+            '<?php
+namespace Foo\Bar;
+use D\E;
+use IIII\G;
+use Foo\Bar\C;
+interface NakanoInterface extends IzumiInterface, A, E, \C, EZ
+{
+}',
+            '<?php
+namespace Foo\Bar;
+use D\E;
+use IIII\G;
+use Foo\Bar\C;
+interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C, EZ
+{
+}',
+        ];
+
+        yield 'interface in global namespace with global extend' => [
+            '<?php interface Foo1 extends ArrayAccess2{}',
+            '<?php interface Foo1 extends \ArrayAccess2{}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'interface in global namespace with multiple extend' => [
+            '<?php use B\Exception; interface Foo extends ArrayAccess, \Exception, Exception {}',
+            '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, \B\Exception {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'class implements' => [
+            '<?php
+namespace Foo\Bar;
+class SomeClass implements Izumi
+{
+}',
+            '<?php
+namespace Foo\Bar;
+class SomeClass implements \Foo\Bar\Izumi
+{
+}',
+        ];
+
+        yield 'anonymous class implements, shorten to namespace' => [
+            '<?php
+namespace Foo\Bar;
+$a = new class implements Izumi {};',
+            '<?php
+namespace Foo\Bar;
+$a = new class implements \Foo\Bar\Izumi {};',
+        ];
+
+        yield 'anonymous class implements, shorten to imported name' => [
+            '<?php
+use Foo\Bar\Izumi;
+$a = new class implements Izumi {};',
+            '<?php
+use Foo\Bar\Izumi;
+$a = new class implements \Foo\Bar\Izumi {};',
+        ];
+
+        yield 'class extends and implements' => [
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends A implements Izumi
+{
+}',
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi
+{
+}',
+        ];
+
+        yield 'class extends and implements multiple' => [
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends A implements Izumi, A, \A\B, C
+{
+}',
+            '<?php
+namespace Foo\Bar;
+class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\C
+{
+}',
+        ];
+
+        yield 'single caught exception' => [
+            '<?php use A\B; echo 1; try{ foo(999); } catch (B $z) {}',
+            '<?php use A\B; echo 1; try{ foo(999); } catch (\A\B $z) {}',
+        ];
+
+        yield 'single caught exception namespaced' => [
+            '<?php namespace B; try{ foo(999); } catch (A $z) {}',
+            '<?php namespace B; try{ foo(999); } catch (\B\A $z) {}',
+        ];
+
+        yield 'multiple caught exceptions' => [
+            '<?php namespace D; use A\B; try{ foo(); } catch (B |  \A\C  | /* 1 */  \A\D $z) {}',
+            '<?php namespace D; use A\B; try{ foo(); } catch (\A\B |  \A\C  | /* 1 */  \A\D $z) {}',
+        ];
+
+        yield 'catch in multiple namespaces' => [
+            '<?php
+namespace {
+    try{ foo(); } catch (Exception $z) {}
+    try{ foo(); } catch (A\X $z) {}
+    try{ foo(); } catch (B\Z $z) {}
+}
+namespace A {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+namespace B {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (Z $z) {}
+}
+',
+            '<?php
+namespace {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+namespace A {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+namespace B {
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+}
+',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'starts with but not full name extends' => [
+            '<?php namespace a\abcd;
+class Foo extends \a\abcdTest { }',
+            null,
+        ];
+
+        yield 'starts with but not full name function arg' => [
+            '<?php
+namespace Z\B\C\D
+{
+    function A(\Z\B\C\DE\Foo $fix) {}
+}
+',
+            null,
+        ];
+
+        yield 'static class reference' => [
+            '<?php
+            use ZXY\A;
+            echo A::class;
+            echo A::B();
+            echo A::class;
+            foo(A::B,A::C);
+            echo $a[A::class];
+            echo A::class?>
+            ',
+            '<?php
+            use ZXY\A;
+            echo \ZXY\A::class;
+            echo \ZXY\A::B();
+            echo \ZXY\A::class;
+            foo(\ZXY\A::B,\ZXY\A::C);
+            echo $a[\ZXY\A::class];
+            echo \ZXY\A::class?>
+            ',
+        ];
+
+        yield [
+            '<?php
+            namespace Foo\Test;
+            $this->assertSame($names, \Foo\TestMyThing::zxy(1,2));
+            ',
+            null,
+        ];
+
+        yield [
+            '<?php
+            use ZXY\A;
+            use D;
+            echo $D::CONST_VALUE;
+            echo parent::CONST_VALUE;
+            echo self::$abc;
+            echo Z::F;
+            echo X\Z::F;
+            ',
+            null,
+        ];
     }
 
     /**
@@ -164,6 +366,9 @@ class A {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCases(): iterable
     {
         yield 'Import common strict types' => [
@@ -369,13 +574,19 @@ class SomeClass
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $config
+     *
      * @dataProvider provideCodeWithoutReturnTypesCases
      */
-    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null): void
+    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithoutReturnTypesCases(): iterable
     {
         yield 'import from namespace and global' => [
@@ -635,6 +846,9 @@ namespace {
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
         yield 'Test namespace fixes with nullable types' => [
@@ -688,15 +902,374 @@ class Two
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideCodeWithPhpDocCases
+     */
+    public function testCodeWithPhpDoc(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
+     */
+    public static function provideCodeWithPhpDocCases(): iterable
+    {
+        yield 'Test class PHPDoc fixes' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see Baz
+ * @see Bam
+ */
+class SomeClass
+{
+    /**
+     * @var Baz
+     */
+    public $baz;
+
+    /** @var Bam */
+    public $bam;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+class SomeClass
+{
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /** @var \Foo\Bar\Bam */
+    public $bam;
+}',
+        ];
+
+        yield 'Test PHPDoc nullable fixes' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see Baz|null
+ * @see Bam|null
+ */
+class SomeClass {}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
+ * @see \Foo\Bar\Baz|null
+ * @see \Foo\Bar\Bam|null
+ */
+class SomeClass {}',
+        ];
+
+        yield 'Test PHPDoc in interface' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+   /**
+    * @param SomeClass $foo
+    * @param Buz $buz
+    * @param Zoof\Buz $barbuz
+    *
+    * @return Baz
+    */
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+interface SomeClass
+{
+   /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\Zoof\Buz $barbuz
+    *
+    * @return \Foo\Bar\Baz
+    */
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+}',
+        ];
+
+        yield 'Test PHPDoc in interface with no imports' => [
+            '<?php
+
+namespace Foo\Bar;
+
+interface SomeClass
+{
+   /**
+    * @param SomeClass $foo
+    * @param Buz $buz
+    * @param Zoof\Buz $barbuz
+    *
+    * @return Baz
+    */
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+interface SomeClass
+{
+   /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    * @param \Foo\Bar\Zoof\Buz $barbuz
+    *
+    * @return \Foo\Bar\Baz
+    */
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+}',
+        ];
+
+        yield 'Test not imported PHPDoc fixes' => [
+            '<?php
+
+namespace Foo\Bar;
+
+/**
+ * @see Baz
+ * @see Bam
+ */
+final class SomeClass {}',
+            '<?php
+
+namespace Foo\Bar;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+final class SomeClass {}',
+        ];
+
+        yield 'Test multiple PHPDoc blocks' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Buz;
+use Foo\Bar\Baz;
+use Foo\Bar\SomeClass;
+
+/**
+ * @see Baz
+ * @see Bam
+ */
+interface SomeClass
+{
+    /**
+    * @param SomeClass $foo
+    * @param Buz $buz
+    *
+    * @return Baz
+    */
+    public function doSomething(SomeClass $foo, Buz $buz): Baz;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Buz;
+use Foo\Bar\Baz;
+use Foo\Bar\SomeClass;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+interface SomeClass
+{
+    /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @param \Foo\Bar\Buz $buz
+    *
+    * @return \Foo\Bar\Baz
+    */
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz): \Foo\Bar\Baz;
+}',
+        ];
+
+        yield 'Skip @covers in tests (they require FQCN)' => [
+            '<?php
+
+namespace Tests\Foo\Bar;
+
+use Foo\Bar\SomeClass;
+
+/**
+ * @covers \Foo\Bar\SomeClass
+ */
+class SomeClassTest {}',
+        ];
+
+        yield 'Imports with aliases' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz as Buzz;
+use Foo\Bar\Bam as Boom;
+
+/**
+ * @see Buzz
+ * @see Boom
+ */
+class SomeClass
+{
+    /**
+     * @var Buzz
+     */
+    public $baz;
+
+    /** @var Boom */
+    public $bam;
+
+    /**
+     * @param Buzz $baz
+     * @param Boom $bam
+     */
+    public function __construct($baz, $bam) {
+        $this->baz = $baz;
+        $this->bam = $bam;
+    }
+
+    /**
+     * @return Buzz
+     */
+    public function getBaz() {
+        return $this->baz;
+    }
+
+    /**
+     * @return Boom
+     */
+    public function getBam() {
+        return $this->bam;
+    }
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz as Buzz;
+use Foo\Bar\Bam as Boom;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
+class SomeClass
+{
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /** @var \Foo\Bar\Bam */
+    public $bam;
+
+    /**
+     * @param \Foo\Bar\Baz $baz
+     * @param \Foo\Bar\Bam $bam
+     */
+    public function __construct($baz, $bam) {
+        $this->baz = $baz;
+        $this->bam = $bam;
+    }
+
+    /**
+     * @return \Foo\Bar\Baz
+     */
+    public function getBaz() {
+        return $this->baz;
+    }
+
+    /**
+     * @return \Foo\Bar\Bam
+     */
+    public function getBam() {
+        return $this->bam;
+    }
+}',
+        ];
+
+        yield 'Leading backslash in global namespace' => [
+            '<?php
+
+/**
+ * @param \DateTimeInterface $dateTime
+ * @return \DateTimeInterface
+ * @see \DateTimeImmutable
+ * @throws \Exception
+ */
+function foo($dateTime) {}',
+            '<?php
+
+/**
+ * @param DateTimeInterface $dateTime
+ * @return DateTimeInterface
+ * @see DateTimeImmutable
+ * @throws Exception
+ */
+function foo($dateTime) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+    }
+
+    /**
+     * @param array<string, array<string, mixed>|bool> $config
+     *
      * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases
      */
-    public function testFix80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -726,6 +1299,11 @@ class Two
             '<?php function f(): Foo|Bar|A\B\C {}',
             '<?php function f(): Foo|\Bar|\A\B\C {}',
         ];
+
+        yield 'caught exception without var' => [
+            '<?php use A\B; try{ foo(0); } catch (B) {}',
+            '<?php use A\B; try{ foo(0); } catch (\A\B) {}',
+        ];
     }
 
     /**
@@ -741,6 +1319,9 @@ class Two
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -795,6 +1376,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'simple param in global namespace without use' => [

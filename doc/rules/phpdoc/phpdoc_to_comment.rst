@@ -7,6 +7,15 @@ Docblocks should only be used on structural elements.
 Configuration
 -------------
 
+``allow_before_return_statement``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to allow PHPDoc before return statement.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``ignored_tags``
 ~~~~~~~~~~~~~~~~
 
@@ -58,6 +67,29 @@ With configuration: ``['ignored_tags' => ['todo']]``.
     /** @todo This should be a PHPDoc as the tag is on "ignored_tags" list */
     foreach($connections as $key => $sqlite) {
         $sqlite->open($path);
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['allow_before_return_statement' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $first = true;// needed because by default first docblock is never fixed.
+
+   -/** This should be a comment */
+   +/* This should be a comment */
+    foreach($connections as $key => $sqlite) {
+        $sqlite->open($path);
+    }
+
+    function returnClassName() {
+        /** @var class-string */
+        return \StdClass::class;
     }
 
 Rule sets

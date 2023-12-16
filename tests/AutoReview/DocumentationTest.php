@@ -22,6 +22,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -32,15 +33,22 @@ use Symfony\Component\Finder\Finder;
  * @covers \PhpCsFixer\Documentation\RstUtils
  * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
  *
+ * @group legacy
  * @group auto-review
  */
 final class DocumentationTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @dataProvider provideFixerDocumentationFileIsUpToDateCases
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
+        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+
         $locator = new DocumentationLocator();
         $generator = new FixerDocumentGenerator($locator);
 
@@ -128,7 +136,8 @@ final class DocumentationTest extends TestCase
         $paths = [];
 
         foreach (RuleSets::getSetDefinitions() as $name => $definition) {
-            $paths[$name] = $path = $locator->getRuleSetsDocumentationFilePath($name);
+            $path = $locator->getRuleSetsDocumentationFilePath($name);
+            $paths[$path] = $definition;
 
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),

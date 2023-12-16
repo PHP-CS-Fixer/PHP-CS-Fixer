@@ -5,7 +5,7 @@ Integration of fixers: phpdoc_to_return_type,fully_qualified_strict_types.
 --EXPECT--
 <?php
 use \Foo\Bar\Baz;
-/** @return \Foo\Bar\Baz */
+/** @return Baz */
 function my_foo(): Baz
 {}
 

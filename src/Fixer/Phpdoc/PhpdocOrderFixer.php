@@ -88,7 +88,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([static function ($order) {
+                ->setAllowedValues([static function (array $order): bool {
                     if (\count($order) < 2) {
                         throw new InvalidOptionsException('The option "order" value is invalid. Minimum two tags are required.');
                     }

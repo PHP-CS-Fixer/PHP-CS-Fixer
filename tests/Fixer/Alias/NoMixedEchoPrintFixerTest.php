@@ -28,32 +28,43 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixEchoToPrintCases
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideFixCases
      */
-    public function testFixEchoToPrint(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure(['use' => 'print']);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixEchoToPrintCases(): iterable
+    /**
+     * @return iterable<array{string, null|string, array{use: string}}>
+     */
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
                 print "test";
                 ',
+            null,
+            ['use' => 'print'],
         ];
 
         yield [
             '<?php
                 print ("test");
                 ',
+            null,
+            ['use' => 'print'],
         ];
 
         yield [
             '<?php
                 print("test");
                 ',
+            null,
+            ['use' => 'print'],
         ];
 
         // `echo` can take multiple parameters (although such usage is rare) while `print` can take only one argument,
@@ -62,6 +73,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo "This ", "string ", "was ", "made ", "with multiple parameters.";
                 ',
+            null,
+            ['use' => 'print'],
         ];
 
         yield [
@@ -71,6 +84,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo "test";
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
@@ -80,6 +94,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo ("test");
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
@@ -89,6 +104,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo("test");
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
@@ -98,6 +114,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo foo(1, 2);
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
@@ -107,6 +124,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo ["foo", "bar", "baz"][$x];
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
@@ -116,11 +134,13 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 echo $foo ? "foo" : "bar";
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
             "<?php print 'foo' ?>...<?php echo 'bar', 'baz' ?>",
             "<?php echo 'foo' ?>...<?php echo 'bar', 'baz' ?>",
+            ['use' => 'print'],
         ];
 
         yield [
@@ -136,47 +156,45 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 }
                 echo "bar";
                 ',
+            ['use' => 'print'],
         ];
 
         yield [
             '<?=$foo?>',
+            null,
+            ['use' => 'print'],
         ];
 
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
                 sprintf($codeSnippet, 'print'),
                 sprintf($codeSnippet, 'echo'),
+                ['use' => 'print'],
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFixPrintToEchoCases
-     */
-    public function testFixPrintToEcho(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['use' => 'echo']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixPrintToEchoCases(): iterable
-    {
         yield [
             '<?php
                 echo "test";
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         yield [
             '<?php
                 echo ("test");
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         yield [
             '<?php
                 echo("test");
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
@@ -184,6 +202,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 ($some_var) ? print "true" : print "false";
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         // echo has no return value while print has a return value of 1 so it can be used in expressions.
@@ -192,12 +212,16 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 $ret = print "test";
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         yield [
             '<?php
                 @print foo();
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -214,6 +238,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 switch(print(\'a\')) {}
                 if (1 === print($a)) {}
                 ',
+            null,
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -225,6 +251,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 some_function_call();
                 print "test";
                 ',
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -234,6 +261,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 print "test";
                 ',
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -243,6 +271,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 print ("test");
                 ',
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -252,6 +281,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 print("test");
                 ',
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -261,6 +291,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 print foo(1, 2);
                 ',
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -270,6 +301,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             '<?php
                 print $foo ? "foo" : "bar";
                 ',
+            ['use' => 'echo'],
         ];
 
         yield [
@@ -285,17 +317,19 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 }
                 print "bar";
                 ',
+            ['use' => 'echo'],
         ];
 
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
                 sprintf($codeSnippet, 'echo'),
                 sprintf($codeSnippet, 'print'),
+                ['use' => 'echo'],
             ];
         }
     }
 
-    public function testDefaultConfig(): void
+    public function testConfigure(): void
     {
         $this->fixer->configure([]);
 
@@ -305,9 +339,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     /**
      * @param array<mixed> $wrongConfig
      *
-     * @dataProvider provideWrongConfigCases
+     * @dataProvider provideInvalidConfigurationCases
      */
-    public function testWrongConfig(array $wrongConfig, string $expectedMessage): void
+    public function testInvalidConfiguration(array $wrongConfig, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedMessage);
@@ -315,7 +349,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($wrongConfig);
     }
 
-    public static function provideWrongConfigCases(): iterable
+    public static function provideInvalidConfigurationCases(): iterable
     {
         yield [
             ['a' => 'b'],

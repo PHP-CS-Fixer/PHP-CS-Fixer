@@ -27,10 +27,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, string[]> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -98,21 +101,7 @@ abstract class A
     }
 }',
         ];
-    }
 
-    /**
-     * @param array<string, string[]> $configuration
-     *
-     * @dataProvider provideFixWithConfigurationCases
-     */
-    public function testFixWithConfiguration(string $expected, ?string $input, array $configuration): void
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixWithConfigurationCases(): iterable
-    {
         yield '@internal' => [
             '<?php
                 $a = rtrim($b);

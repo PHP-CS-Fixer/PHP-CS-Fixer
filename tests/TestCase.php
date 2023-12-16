@@ -25,4 +25,14 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 abstract class TestCase extends BaseTestCase
 {
     use ExpectDeprecationTrait;
+
+    final public function testNotDefiningConstructor(): void
+    {
+        $reflection = new \ReflectionObject($this);
+
+        self::assertNotSame(
+            $reflection->getConstructor()->getDeclaringClass()->getName(),
+            $reflection->getName(),
+        );
+    }
 }

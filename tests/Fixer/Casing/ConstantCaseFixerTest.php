@@ -26,13 +26,19 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ConstantCaseFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, 1?: null|string, 2?: array{syntax?: string}}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -112,69 +118,81 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
                                 ::test();'];
 
         yield ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'];
-    }
 
-    /**
-     * @dataProvider provideFixToLowerCases
-     */
-    public function testFixToLower(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['case' => 'lower']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixToLowerCases(): iterable
-    {
         foreach (['true', 'false', 'null'] as $case) {
             yield [
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', strtoupper($case)),
+                ['case' => 'lower'],
             ];
 
             yield [
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', ucfirst($case)),
+                ['case' => 'lower'],
             ];
 
-            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+            yield [
+                sprintf('<?php $x = new %s;', ucfirst($case)),
+                null,
+                ['case' => 'lower'],
+            ];
 
-            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+            yield [
+                sprintf('<?php $x = new %s;', strtoupper($case)),
+                null,
+                ['case' => 'lower'],
+            ];
 
-            yield [sprintf('<?php $x = "%s story";', $case)];
+            yield [
+                sprintf('<?php $x = "%s story";', $case),
+                null,
+                ['case' => 'lower'],
+            ];
 
-            yield [sprintf('<?php $x = "%s";', $case)];
+            yield [
+                sprintf('<?php $x = "%s";', $case),
+                null,
+                ['case' => 'lower'],
+            ];
         }
-    }
 
-    /**
-     * @dataProvider provideFixToUpperCases
-     */
-    public function testFixToUpper(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['case' => 'upper']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixToUpperCases(): iterable
-    {
         foreach (['true', 'false', 'null'] as $case) {
             yield [
                 sprintf('<?php $x = %s;', strtoupper($case)),
                 sprintf('<?php $x = %s;', $case),
+                ['case' => 'upper'],
             ];
 
             yield [
                 sprintf('<?php $x = %s;', strtoupper($case)),
                 sprintf('<?php $x = %s;', ucfirst($case)),
+                ['case' => 'upper'],
             ];
 
-            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+            yield [
+                sprintf('<?php $x = new %s;', ucfirst($case)),
+                null,
+                ['case' => 'upper'],
+            ];
 
-            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+            yield [
+                sprintf('<?php $x = new %s;', strtoupper($case)),
+                null,
+                ['case' => 'upper'],
+            ];
 
-            yield [sprintf('<?php $x = "%s story";', $case)];
+            yield [
+                sprintf('<?php $x = "%s story";', $case),
+                null,
+                ['case' => 'upper'],
+            ];
 
-            yield [sprintf('<?php $x = "%s";', $case)];
+            yield [
+                sprintf('<?php $x = "%s";', $case),
+                null,
+                ['case' => 'upper'],
+            ];
         }
     }
 

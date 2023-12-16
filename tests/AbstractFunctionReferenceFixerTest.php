@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Tests\Fixtures\FunctionReferenceTestFixer;
+use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\AccessibleObject\AccessibleObject;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -36,7 +38,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
         int $start = 0,
         ?int $end = null
     ): void {
-        $fixer = new FunctionReferenceTestFixer();
+        $fixer = $this->createAbstractFunctionReferenceFixerDouble();
 
         self::assertTrue($fixer->isRisky());
 
@@ -44,7 +46,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
         self::assertSame(
             $expected,
-            $fixer->findTest(
+            AccessibleObject::create($fixer)->find(
                 $functionNameToSearch,
                 $tokens,
                 $start,
@@ -120,5 +122,25 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
             '<?php \A\foo();',
             'foo',
         ];
+    }
+
+    private function createAbstractFunctionReferenceFixerDouble(): AbstractFunctionReferenceFixer
+    {
+        return new class() extends AbstractFunctionReferenceFixer {
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+        };
     }
 }

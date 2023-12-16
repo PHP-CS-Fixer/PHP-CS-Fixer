@@ -465,4 +465,70 @@ enum Foo: int {
             ',
         ];
     }
+
+    /**
+     * @dataProvider provideReturnStatementCases
+     */
+    public function testReturnStatement(string $code, bool $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        self::assertSame($expected, $analyzer->isBeforeReturn($tokens, $index));
+    }
+
+    /**
+     * @return iterable<string, array{string, bool}>
+     */
+    public static function provideReturnStatementCases(): iterable
+    {
+        yield 'docblock before var' => [
+            '<?php
+            function returnClassName()
+            {
+                /** @todo something */
+                $var = 123;
+
+                return;
+            }
+            ',
+            false,
+        ];
+
+        yield 'comment before var' => [
+            '<?php
+            function returnClassName()
+            {
+                // @todo something
+                $var = 123;
+
+                return;
+            }
+            ',
+            false,
+        ];
+
+        yield 'docblock return' => [
+            '<?php
+            function returnClassName()
+            {
+                /** @todo something */
+                return;
+            }
+            ',
+            true,
+        ];
+
+        yield 'comment return' => [
+            '<?php
+            function returnClassName()
+            {
+                // @todo something
+                return;
+            }
+            ',
+            true,
+        ];
+    }
 }

@@ -87,7 +87,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
 
                 $classNameIndex = $tokens->getPrevMeaningfulToken($index);
 
-                if (!$tokens[$classNameIndex]->equalsAny([[T_STRING, 'DateTime'], [T_STRING, 'DateTimeImmutable']], false)) {
+                if (!$tokens[$classNameIndex]->equalsAny([[T_STRING, \DateTime::class], [T_STRING, \DateTimeImmutable::class]], false)) {
                     continue;
                 }
 

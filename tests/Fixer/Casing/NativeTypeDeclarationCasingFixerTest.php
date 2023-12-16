@@ -63,18 +63,7 @@ final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
                 function D(ARRAY $a): ARRAY { return [$a];}
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixFunctionTypesCases
-     */
-    public function testFixFunctionTypes(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixFunctionTypesCases(): iterable
-    {
         yield [
             '<?php
 class Foo
@@ -192,19 +181,84 @@ function Foo(INTEGER $a) {}
             '<?php return fn (callable $c): int => 1;',
             '<?php return fn (CALLABLE $c): INT => 1;',
         ];
+
+        yield [
+            '<?php
+                class Foo
+                {
+                    const A = 1;
+                    const B = [];
+                    const INT = "A"; // class constant; INT is the name of the const, not the type
+                    const FLOAT=1.2;
+                }
+
+                const INT = "A"; // outside class; INT is the name of the const, not the type
+            ',
+        ];
+
+        yield 'class properties single type' => [
+            '<?php
+                class D{}
+
+                $a = new class extends D {
+                    private array $ax;
+                    private bool $bx = false;
+                    private float $cx = 3.14;
+                    private int $dx = 667;
+                    private iterable $ex = [];
+                    private mixed $f;
+                    private object $g;
+                    private parent $h;
+                    private self $i;
+                    private static $j;
+                    private ?string $k;
+
+                    private $INT = 1;
+                    private FOO $bar;
+                    private A\INT\B $z;
+                };
+            ',
+            '<?php
+                class D{}
+
+                $a = new class extends D {
+                    private ARRAY $ax;
+                    private BOOL $bx = false;
+                    private FLOAT $cx = 3.14;
+                    private INT $dx = 667;
+                    private ITERABLE $ex = [];
+                    private MIXED $f;
+                    private OBJECT $g;
+                    private PARENT $h;
+                    private Self $i;
+                    private STatic $j;
+                    private ?STRIng $k;
+
+                    private $INT = 1;
+                    private FOO $bar;
+                    private A\INT\B $z;
+                };
+            ',
+        ];
+
+        yield 'var keyword' => [
+            '<?php class Foo {
+                var $bar;
+            }',
+        ];
     }
 
     /**
-     * @dataProvider provideFixFunctionTypes80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixFunctionTypes80(string $expected, string $input): void
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixFunctionTypes80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php class T { public function Foo(object $A): static {}}',
@@ -255,37 +309,55 @@ function Foo(INTEGER $a) {}
             '<?php return fn (string|null $c): int|null => 1;',
             '<?php return fn (string|NULL $c): INT|NULL => 1;',
         ];
+
+        yield 'union Types' => [
+            '<?php $a = new class {
+                    private null|int|bool $a4 = false;
+                };',
+            '<?php $a = new class {
+                    private NULL|INT|BOOL $a4 = false;
+                };',
+        ];
     }
 
     /**
-     * @dataProvider provideFixFunctionTypes81Cases
+     * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFixFunctionTypes81(string $expected, string $input): void
+    public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixFunctionTypes81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'return type `never`' => [
             '<?php class T { public function Foo(object $A): never {die;}}',
             '<?php class T { public function Foo(object $A): NEVER {die;}}',
         ];
+
+        yield 'class readonly property' => [
+            '<?php class Z {
+                    private readonly array $ax;
+                };',
+            '<?php class Z {
+                    private readonly ARRAY $ax;
+                };',
+        ];
     }
 
     /**
-     * @dataProvider provideFixFunctionTypes82Cases
+     * @dataProvider provideFix82Cases
      *
      * @requires PHP 8.2
      */
-    public function testFixFunctionTypes82(string $expected, string $input): void
+    public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixFunctionTypes82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'disjunctive normal form types in arrow function' => [
             '<?php return fn ((A&B)|C|null $c): (X&Y)|Z|null => 1;',
@@ -318,19 +390,30 @@ function Foo(INTEGER $a) {}
                 sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
             ];
         }
+
+        yield 'intersection Types' => [
+            '<?php $a = new class {
+                    private (A&B)|int|D $d5;
+                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
+                };',
+            '<?php $a = new class {
+                    private (A&B)|INT|D $d5;
+                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
+                };',
+        ];
     }
 
     /**
-     * @dataProvider provideFixConstantsCases
+     * @dataProvider provideFix83Cases
      *
      * @requires PHP 8.3
      */
-    public function testFixConstants(string $expected, string $input = null): void
+    public function testFix83(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixConstantsCases(): iterable
+    public static function provideFix83Cases(): iterable
     {
         yield 'simple case' => [
             '<?php
@@ -488,119 +571,5 @@ function Foo(INTEGER $a) {}
 
             CONST A = 1;',
         ];
-    }
-
-    public function testDoNotFixConstCases(): void
-    {
-        $this->doTest(
-            '<?php
-                class Foo
-                {
-                    const A = 1;
-                    const B = [];
-                    const INT = "A"; // class constant; INT is the name of the const, not the type
-                    const FLOAT=1.2;
-                }
-
-                const INT = "A"; // outside class; INT is the name of the const, not the type
-            ',
-        );
-    }
-
-    /**
-     * @dataProvider provideFixClassPropertiesCases
-     */
-    public function testFixClassProperties(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixClassPropertiesCases(): iterable
-    {
-        yield 'class properties single type' => [
-            '<?php
-                class D{}
-
-                $a = new class extends D {
-                    private array $ax;
-                    private bool $bx = false;
-                    private float $cx = 3.14;
-                    private int $dx = 667;
-                    private iterable $ex = [];
-                    private mixed $f;
-                    private object $g;
-                    private parent $h;
-                    private self $i;
-                    private static $j;
-                    private ?string $k;
-
-                    private $INT = 1;
-                    private FOO $bar;
-                    private A\INT\B $z;
-                };
-            ',
-            '<?php
-                class D{}
-
-                $a = new class extends D {
-                    private ARRAY $ax;
-                    private BOOL $bx = false;
-                    private FLOAT $cx = 3.14;
-                    private INT $dx = 667;
-                    private ITERABLE $ex = [];
-                    private MIXED $f;
-                    private OBJECT $g;
-                    private PARENT $h;
-                    private Self $i;
-                    private STatic $j;
-                    private ?STRIng $k;
-
-                    private $INT = 1;
-                    private FOO $bar;
-                    private A\INT\B $z;
-                };
-            ',
-        ];
-
-        yield 'var keyword' => [
-            '<?php class Foo {
-                var $bar;
-            }',
-        ];
-
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            yield 'union Types' => [
-                '<?php $a = new class {
-                    private null|int|bool $a4 = false;
-                };',
-                '<?php $a = new class {
-                    private NULL|INT|BOOL $a4 = false;
-                };',
-            ];
-        }
-
-        if (\PHP_VERSION_ID >= 8_01_00) {
-            yield 'class readonly property' => [
-                '<?php class Z {
-                    private readonly array $ax;
-                };',
-                '<?php class Z {
-                    private readonly ARRAY $ax;
-                };',
-            ];
-        }
-
-        if (\PHP_VERSION_ID >= 8_02_00) {
-            yield 'intersection Types' => [
-                '<?php $a = new class {
-                    private (A&B)|int|D $d5;
-                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
-                };',
-                '<?php $a = new class {
-                    private (A&B)|INT|D $d5;
-                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
-                };',
-            ];
-        }
     }
 }

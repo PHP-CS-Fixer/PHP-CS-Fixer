@@ -16,7 +16,6 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -279,33 +278,6 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
                 define(\'PHPUNIT_COMPOSER_INSTALL\', dirname(__DIR__).\'/vendor/autoload.php\');
                 require PHPUNIT_COMPOSER_INSTALL;',
         ];
-    }
-
-    /**
-     * @dataProvider provideClassIsFixedCases
-     */
-    public function testClassIsFixed(string $class): void
-    {
-        $this->fixer->configure(['target' => PhpUnitTargetVersion::VERSION_NEWEST]);
-
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode(sprintf('<?php new %s();', $class));
-
-        $this->fixer->fix(new \SplFileInfo(__FILE__), $tokens);
-
-        self::assertTrue($tokens->isChanged());
-        self::assertStringNotContainsString('_', $tokens->generateCode());
-    }
-
-    public static function provideClassIsFixedCases(): iterable
-    {
-        $classmap = require __DIR__.'/../../../vendor/composer/autoload_classmap.php';
-
-        foreach ($classmap as $class => $file) {
-            if (str_starts_with($class, 'PHPUnit_')) {
-                yield $file => [$class];
-            }
-        }
     }
 
     /**

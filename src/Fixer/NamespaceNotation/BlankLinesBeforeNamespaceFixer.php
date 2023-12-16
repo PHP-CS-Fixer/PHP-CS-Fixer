@@ -69,7 +69,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             (new FixerOptionBuilder('min_line_breaks', 'Minimum line breaks that should exist before namespace declaration.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(2)
-                ->setNormalizer(static function (Options $options, $value): int {
+                ->setNormalizer(static function (Options $options, int $value): int {
                     if ($value < 0) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
@@ -83,7 +83,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             (new FixerOptionBuilder('max_line_breaks', 'Maximum line breaks that should exist before namespace declaration.'))
                 ->setAllowedTypes(['int'])
                 ->setDefault(2)
-                ->setNormalizer(static function (Options $options, $value): int {
+                ->setNormalizer(static function (Options $options, int $value): int {
                     if ($value < 0) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),

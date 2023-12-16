@@ -28,6 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversNothing
  *
  * @group covers-nothing
+ * @group legacy
  *
  * @large
  */
@@ -68,6 +69,10 @@ final class PharTest extends AbstractSmokeTestCase
 
     public function testDescribe(): void
     {
+        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+
         $command = new DescribeCommand();
 
         $application = new Application();
