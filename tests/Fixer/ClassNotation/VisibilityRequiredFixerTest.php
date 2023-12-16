@@ -92,7 +92,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
-        yield [
+        yield 'methods' => [
             <<<'EOF'
                 <?php
                 class MyTestWithAnonymousClass extends TestCase
@@ -790,7 +790,7 @@ var_dump(Foo::CAT->test());',
     }
 
     /**
-     * @param array<mixed> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideInvalidConfigurationCases
      */
@@ -803,7 +803,7 @@ var_dump(Foo::CAT->test());',
     }
 
     /**
-     * @return iterable<array{array<mixed>, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

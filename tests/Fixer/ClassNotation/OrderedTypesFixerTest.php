@@ -40,7 +40,7 @@ final class OrderedTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -162,7 +162,7 @@ try {
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix80Cases(): iterable
     {

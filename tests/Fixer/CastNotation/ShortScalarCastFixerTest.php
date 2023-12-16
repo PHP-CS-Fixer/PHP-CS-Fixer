@@ -34,9 +34,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
-            foreach (self::createCasesFor($from, $to) as $case) {
-                yield $case;
-            }
+            yield from self::createCasesFor($from, $to);
         }
 
         $types = ['string', 'array', 'object'];

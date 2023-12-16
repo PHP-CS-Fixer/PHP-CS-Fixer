@@ -62,7 +62,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                 ',
         ];
 
-        yield [
+        yield 'simple class 1' => [
             <<<'EOF'
                 <?php
 

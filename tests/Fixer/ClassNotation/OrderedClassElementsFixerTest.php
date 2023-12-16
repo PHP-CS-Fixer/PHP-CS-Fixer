@@ -30,7 +30,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param array<mixed> $configuration
+     * @param array<string, mixed> $configuration
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
