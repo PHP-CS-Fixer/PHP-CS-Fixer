@@ -39,7 +39,7 @@ final class TagComparatorTest extends TestCase
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
-        $this->expectDeprecation('%AMethod PhpCsFixer\DocBlock\TagComparator::shouldBeTogether is deprecated and will be removed in version 4.0.');
+        $this->expectDeprecation('Method PhpCsFixer\DocBlock\TagComparator::shouldBeTogether is deprecated and will be removed in version 4.0.');
 
         self::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
@@ -77,7 +77,7 @@ final class TagComparatorTest extends TestCase
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
-        $this->expectDeprecation('%AMethod PhpCsFixer\DocBlock\TagComparator::shouldBeTogether is deprecated and will be removed in version 4.0.');
+        $this->expectDeprecation('Method PhpCsFixer\DocBlock\TagComparator::shouldBeTogether is deprecated and will be removed in version 4.0.');
 
         self::assertSame(
             $expected,
