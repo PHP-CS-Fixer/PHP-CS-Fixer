@@ -28,9 +28,9 @@ final class GotoLabelAnalyzerTest extends TestCase
     /**
      * @param int[] $expectedTrue
      *
-     * @dataProvider provideGotoLabelAnalyzerTestCases
+     * @dataProvider provideGotoLabelCases
      */
-    public function testGotoLabelAnalyzerTest(string $source, array $expectedTrue): void
+    public function testGotoLabel(string $source, array $expectedTrue): void
     {
         $tokens = Tokens::fromCode($source);
         $analyzer = new GotoLabelAnalyzer();
@@ -43,7 +43,10 @@ final class GotoLabelAnalyzerTest extends TestCase
         }
     }
 
-    public static function provideGotoLabelAnalyzerTestCases(): iterable
+    /**
+     * @return iterable<array{string, array<int>}>
+     */
+    public static function provideGotoLabelCases(): iterable
     {
         yield 'no candidates' => [
             '<?php
@@ -98,11 +101,36 @@ Bar3:
 ',
             [21, 24, 27],
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            yield [
-                '<?php array_fill(start_index: 0, num: 100, value: 50);', [],
-            ];
+    /**
+     * @param int[] $expectedTrue
+     *
+     * @dataProvider provideGotoLabel80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testGotoLabel80(string $source, array $expectedTrue): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $analyzer = new GotoLabelAnalyzer();
+
+        foreach ($tokens as $index => $isClassy) {
+            self::assertSame(
+                \in_array($index, $expectedTrue, true),
+                $analyzer->belongsToGoToLabel($tokens, $index)
+            );
         }
+    }
+
+    /**
+     * @return iterable<array{string, array<int>}>
+     */
+    public static function provideGotoLabel80Cases(): iterable
+    {
+        yield [
+            '<?php array_fill(start_index: 0, num: 100, value: 50);',
+            [],
+        ];
     }
 }
