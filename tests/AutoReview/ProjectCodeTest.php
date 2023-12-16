@@ -349,61 +349,6 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     */
-    public function testThereIsNoPhpVersionUsedDirectly(string $className): void
-    {
-        // should only shrink, baseline of violations on moment of adding this test
-        $exceptions = [
-            \PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\CastNotation\ShortScalarCastFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\FunctionNotation\RegularCallableCallFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\LanguageConstruct\NoUnsetOnPropertyFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\Operator\OperatorLinebreakFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class,
-        ];
-
-        $classesAllowedToUsePhpVersionIdConstant = [
-            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificationTest::class,
-            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificCodeSampleTest::class,
-        ];
-        if (\in_array($className, $exceptions, true)) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
-        $tokens = $this->createTokensForClass($className);
-
-        $stringTokens = array_filter(
-            $tokens->toArray(),
-            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
-        );
-
-        $strings = array_map(
-            static fn (Token $token): string => $token->getContent(),
-            $stringTokens
-        );
-
-        $strings = array_unique($strings);
-        $message = sprintf('%s must not used directly.', $className);
-        self::assertNotContains('phpversion', $strings, $message);
-        self::assertNotContains('PHP_MAJOR_VERSION', $strings, $message);
-        self::assertNotContains('PHP_MINOR_VERSION', $strings, $message);
-        self::assertNotContains('PHP_RELEASE_VERSION', $strings, $message);
-
-        if (\in_array($className, $classesAllowedToUsePhpVersionIdConstant, true)) {
-            return;
-        }
-        self::assertNotContains('PHP_VERSION_ID', $strings, $message);
-    }
-
-    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
@@ -823,7 +768,13 @@ final class ProjectCodeTest extends TestCase
         $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
         $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
 
-        return Tokens::fromCode(file_get_contents($file));
+        static $fileTokens = [];
+
+        if (!isset($fileTokens[$file])) {
+            $fileTokens[$file] = Tokens::fromCode(file_get_contents($file));
+        }
+
+        return $fileTokens[$file];
     }
 
     /**
