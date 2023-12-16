@@ -401,6 +401,10 @@ abstract class AbstractFixerTestCase extends TestCase
             'Whitespace', // @TODO: remove it before others
         ];
 
+        $exceptions = [
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
+        ];
+
         $fixerGroup = explode('\\', static::class)[3];
 
         if (\in_array($fixerGroup, $exceptionGroup, true)) {
@@ -427,6 +431,8 @@ abstract class AbstractFixerTestCase extends TestCase
                     && !\in_array($method->getName(), $methodNames, true)
             )
         );
+
+        $extraMethods = array_diff($extraMethods, $exceptions[$class->getName()] ?? []);
 
         self::assertSame(
             [],

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -2219,5 +2220,105 @@ enum Cards: string
         yield 'wrong key name' => [['methods' => 'one']];
 
         yield 'wrong key value' => [['method' => 'two']];
+    }
+
+    /**
+     * @dataProvider provideCommentBlockStartDetectionCases
+     */
+    public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($code);
+        $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->fixer, $tokens, $index, 0);
+        self::assertSame(
+            $expected,
+            $result,
+            sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())
+        );
+    }
+
+    public static function provideCommentBlockStartDetectionCases(): iterable
+    {
+        yield [
+            4,
+            '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+            6,
+        ];
+
+        yield [
+            4,
+            '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+            5,
+        ];
+
+        yield [
+            4,
+            '<?php
+                    /**/
+
+                    //j1
+                    //k2
+                ',
+            6,
+        ];
+
+        yield [
+            4,
+            '<?php
+                    $a;//j
+                    //k
+                ',
+            6,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    //a
+                ',
+            2,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    //b
+                    //c
+                ',
+            2,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    //d
+                    //e
+                ',
+            4,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    /**/
+                    //f
+                    //g
+                    //h
+                ',
+            8,
+        ];
     }
 }
