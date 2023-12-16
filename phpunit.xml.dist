@@ -16,6 +16,7 @@
     timeoutForSmallTests="10"
     timeoutForMediumTests="20"
     timeoutForLargeTests="30"
+    executionOrder="defects"
 >
     <testsuites>
         <testsuite name="unit">
