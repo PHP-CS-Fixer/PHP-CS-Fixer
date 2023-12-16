@@ -351,7 +351,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      */
-    public function testThereIsNoPhPVersionUsedDirectly(string $className): void
+    public function testThereIsNoPhpVersionUsedDirectly(string $className): void
     {
         // should only shrink, baseline of violations on moment of adding this test
         $exceptions = [
@@ -818,15 +818,18 @@ final class ProjectCodeTest extends TestCase
 
     private function createTokensForClass(string $className): Tokens
     {
-        $filename = (new \ReflectionClass($className))->getFileName();
+        $file = $className;
+        $file = preg_replace('#^PhpCsFixer\\\Tests\\\#', 'tests\\', $file);
+        $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
+        $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
 
         static $fileTokens = [];
 
-        if (!isset($fileTokens[$filename])) {
-            $fileTokens[$filename] = Tokens::fromCode(file_get_contents($filename));
+        if (!isset($fileTokens[$file])) {
+            $fileTokens[$file] = Tokens::fromCode(file_get_contents($file));
         }
 
-        return $fileTokens[$filename];
+        return $fileTokens[$file];
     }
 
     /**
