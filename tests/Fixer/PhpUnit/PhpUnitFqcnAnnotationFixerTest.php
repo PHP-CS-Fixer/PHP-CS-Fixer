@@ -25,64 +25,69 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {
-    public function testFix(): void
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
     {
-        $expected = <<<'EOF'
-            <?php
-            /**
-             * @covers \Foo
-             * @covers ::fooMethod
-             * @coversDefaultClass \Bar
-             */
-            class FooTest extends TestCase {
-                /**
-                 * @ExpectedException Value
-                 * @expectedException \X
-                 * @expectedException
-                 * @expectedException \Exception
-                     * @expectedException \Some\Exception\ClassName
-             * @expectedExceptionCode 123
-                 * @expectedExceptionMessage Foo bar
-                 *
-                 * @uses \Baz
-                 * @uses \selfieGenerator
-                 * @uses self::someFunction
-                 * @uses static::someOtherFunction
-                 */
-            }
-            EOF;
-        $input = <<<'EOF'
-            <?php
-            /**
-             * @covers Foo
-             * @covers ::fooMethod
-             * @coversDefaultClass Bar
-             */
-            class FooTest extends TestCase {
-                /**
-                 * @ExpectedException Value
-                 * @expectedException X
-                 * @expectedException
-                 * @expectedException \Exception
-                     * @expectedException Some\Exception\ClassName
-             * @expectedExceptionCode 123
-                 * @expectedExceptionMessage Foo bar
-                 *
-                 * @uses Baz
-                 * @uses selfieGenerator
-                 * @uses self::someFunction
-                 * @uses static::someOtherFunction
-                 */
-            }
-            EOF;
-
         $this->doTest($expected, $input);
     }
 
-    public function testIgnoringNonPhpUnitClass(): void
+    public static function provideFixCases(): iterable
     {
-        $this->doTest('
-<?php
+        yield [
+            <<<'EOF'
+                <?php
+                /**
+                 * @covers \Foo
+                 * @covers ::fooMethod
+                 * @coversDefaultClass \Bar
+                 */
+                class FooTest extends TestCase {
+                    /**
+                     * @ExpectedException Value
+                     * @expectedException \X
+                     * @expectedException
+                     * @expectedException \Exception
+                         * @expectedException \Some\Exception\ClassName
+                 * @expectedExceptionCode 123
+                     * @expectedExceptionMessage Foo bar
+                     *
+                     * @uses \Baz
+                     * @uses \selfieGenerator
+                     * @uses self::someFunction
+                     * @uses static::someOtherFunction
+                     */
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                /**
+                 * @covers Foo
+                 * @covers ::fooMethod
+                 * @coversDefaultClass Bar
+                 */
+                class FooTest extends TestCase {
+                    /**
+                     * @ExpectedException Value
+                     * @expectedException X
+                     * @expectedException
+                     * @expectedException \Exception
+                         * @expectedException Some\Exception\ClassName
+                 * @expectedExceptionCode 123
+                     * @expectedExceptionMessage Foo bar
+                     *
+                     * @uses Baz
+                     * @uses selfieGenerator
+                     * @uses self::someFunction
+                     * @uses static::someOtherFunction
+                     */
+                }
+                EOF
+        ];
+
+        yield [
+            '<?php
 class Foo {
     /**
      * @expectedException Some\Exception\ClassName
@@ -91,6 +96,7 @@ class Foo {
      * @uses self::someFunction
      */
 }
-');
+',
+        ];
     }
 }

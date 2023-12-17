@@ -191,16 +191,13 @@ isset
         yield [
             '<?php $a = !isset($container[$a]) && isset($container[$b]) && !isset($container[$c]) && isset($container[$d]);',
         ];
-    }
 
-    public function testAnonymousClass(): void
-    {
-        $this->doTest(
+        yield 'anonymous class' => [
             '<?php
                 class A {function isset(){}} // isset($b) && isset($c)
                 $a = new A(); /** isset($b) && isset($c) */
                 if (isset($b) && $a->isset()) {}
-            '
-        );
+            ',
+        ];
     }
 }
