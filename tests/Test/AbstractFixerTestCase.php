@@ -422,16 +422,32 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAccessFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocParamOrderFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSeparationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSummaryFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTrimFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocVarWithoutNameFixerTest::class,
         ];
 
         self::assertSame(array_unique($exceptionClasses), $exceptionClasses);
         $sorted = $exceptionClasses;
         sort($sorted);
+        // @phpstan-ignore-next-line
         self::assertSame($sorted, $exceptionClasses);
 
-/** @phpstan-ignore-line */
         $exceptionGroup = [
-            'Phpdoc',
             'ReturnNotation',
             'Semicolon',
             'Strict',

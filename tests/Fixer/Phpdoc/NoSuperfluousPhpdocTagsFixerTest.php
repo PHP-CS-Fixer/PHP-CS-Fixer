@@ -2461,17 +2461,17 @@ class Foo {
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideFixPhp80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null, array $config = []): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'static return' => [
             '<?php

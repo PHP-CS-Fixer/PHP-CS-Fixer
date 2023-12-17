@@ -326,7 +326,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testWrongConfig(): void
+    public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');

@@ -403,7 +403,7 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testConfigureWithInvalidTagType(): void
+    public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_tag_type\] Invalid configuration: Unknown tag type "foo"\.#');
