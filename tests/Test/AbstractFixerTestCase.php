@@ -404,10 +404,12 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest::class,
         ];
 
         $exceptionGroup = [
-            'LanguageConstruct', // @TODO: remove it before others
             'ListNotation',
             'NamespaceNotation',
             'Naming',
