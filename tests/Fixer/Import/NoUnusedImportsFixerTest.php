@@ -1430,7 +1430,7 @@ use Z;
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(): void
+    public function testFixPre80(): void
     {
         $this->doTest(
             '<?php
@@ -1605,20 +1605,7 @@ function test2($param = (new Foo6)) {}
 const D = new Foo7(1,2);
 ',
         ];
-    }
 
-    /**
-     * @requires PHP 8.1
-     *
-     * @dataProvider provideFixPhp81Cases
-     */
-    public function testFixPhp81(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideFixPhp81Cases(): iterable
-    {
         yield [
             '<?php
                 enum Foo: string

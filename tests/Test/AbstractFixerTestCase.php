@@ -391,12 +391,22 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededBracesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\FopenFlagsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\FullyQualifiedStrictTypesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest::class,
         ];
 
         $exceptionGroup = [
-            'DoctrineAnnotation',
-            'FunctionNotation', // @TODO: remove it before others
-            'Import',
             'LanguageConstruct', // @TODO: remove it before others
             'ListNotation',
             'NamespaceNotation',
