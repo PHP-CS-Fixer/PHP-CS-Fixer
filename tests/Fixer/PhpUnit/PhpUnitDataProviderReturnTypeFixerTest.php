@@ -190,7 +190,23 @@ class FooTest extends TestCase {
                 ', $modifier, 'abstract' === $modifier ? ';' : '{}'),
             ];
         }
+    }
 
+    /**
+     * @requires PHP <8.0>
+     *
+     * @dataProvider provideFixPre80Cases
+     */
+    public function testFixPre80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
         yield 'data provider with return type namespaced class starting with iterable' => self::mapToTemplate(
             ': iterable \ Foo',
         );

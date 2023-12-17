@@ -439,6 +439,12 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTrimFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocVarWithoutNameFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest::class,
         ];
 
         self::assertSame(array_unique($exceptionClasses), $exceptionClasses);
@@ -448,10 +454,6 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertSame($sorted, $exceptionClasses);
 
         $exceptionGroup = [
-            'ReturnNotation',
-            'Semicolon',
-            'Strict',
-            'StringNotation',
             'Whitespace', // @TODO: remove it before others
         ];
         $fixerGroup = explode('\\', static::class)[3];
