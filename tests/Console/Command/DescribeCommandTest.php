@@ -503,7 +503,7 @@ Fixing examples:
     private function createConfigurableDeprecatedFixerDouble(): FixerInterface
     {
         return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
-            /** @var array<mixed> */
+            /** @var array<string, mixed> */
             private array $configuration;
 
             public function configure(array $configuration): void
