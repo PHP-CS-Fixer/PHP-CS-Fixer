@@ -382,14 +382,14 @@ abstract class AbstractFixerTestCase extends TestCase
         $exceptionClasses = [
             \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Comment\HeaderCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Comment\SingleLineCommentStyleFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededBracesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::class,
             \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::class,
             \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixerTest::class,
@@ -416,10 +416,21 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest::class,
         ];
 
+        self::assertSame(array_unique($exceptionClasses), $exceptionClasses);
+        $sorted = $exceptionClasses;
+        sort($sorted);
+        self::assertSame($sorted, $exceptionClasses);
+
+/** @phpstan-ignore-line */
         $exceptionGroup = [
-            'PhpUnit',
             'Phpdoc',
             'ReturnNotation',
             'Semicolon',

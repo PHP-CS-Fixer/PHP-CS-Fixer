@@ -190,23 +190,7 @@ class FooTest extends TestCase {
                 ', $modifier, 'abstract' === $modifier ? ';' : '{}'),
             ];
         }
-    }
 
-    /**
-     * @requires PHP ^7.4
-     *
-     * @dataProvider provideFix7Cases
-     */
-    public function testFix7(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideFix7Cases(): iterable
-    {
         yield 'data provider with return type namespaced class starting with iterable' => self::mapToTemplate(
             ': iterable \ Foo',
         );
