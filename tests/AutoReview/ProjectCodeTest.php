@@ -478,8 +478,6 @@ final class ProjectCodeTest extends TestCase
     {
         // should only shrink, baseline of violations on moment of adding this test
         $exceptionMethods = [
-            \PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest::class => ['provideFixCases'],
-            \PhpCsFixer\Tests\Fixer\CastNotation\ShortScalarCastFixerTest::class => ['provideNoFixCases'],
             \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['provideClassyInheritanceInfoCases'],
             \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class => ['provideFixWithConfiguredIncludeCases'],
             \PhpCsFixer\Tests\Fixer\FunctionNotation\RegularCallableCallFixerTest::class => ['provideFixCases'],
@@ -490,13 +488,6 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class => ['provideFixSpaceOutsideOffsetCases', 'provideFixWithConfigurationCases'],
             \PhpCsFixer\Tests\FixerDefinition\VersionSpecificationTest::class => ['provideIsSatisfiedByReturnsTrueCases', 'provideIsSatisfiedByReturnsFalseCases'],
             \PhpCsFixer\Tests\FixerDefinition\VersionSpecificCodeSampleTest::class => ['provideIsSuitableForUsesVersionSpecificationCases'],
-            \PhpCsFixer\Tests\Linter\AbstractLinterTestCase::class => ['provideLintFileCases', 'provideLintSourceCases'],
-            \PhpCsFixer\Tests\PregTest::class => ['providePatternValidationCases'],
-            \PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis\TypeAnalysisTest::class => ['provideIsNullableCases'],
-            \PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest::class => ['provideFunctionArgumentInfoCases', 'provideIsGlobalFunctionCallCases', 'provideFunctionReturnTypeInfoCases', 'provideIsTheSameClassCallCases'],
-            \PhpCsFixer\Tests\Tokenizer\Analyzer\GotoLabelAnalyzerTest::class => ['provideGotoLabelAnalyzerTestCases'],
-            \PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::class => ['provideIsAnonymousClassCases'],
-            \PhpCsFixer\Tests\Tokenizer\Transformer\TypeIntersectionTransformerTest::class => ['provideProcessCases'],
         ];
 
         $tokens = $this->createTokensForClass($testClassName);
