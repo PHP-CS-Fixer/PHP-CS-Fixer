@@ -695,9 +695,9 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $expected = str_replace(['    ', "\n"], ["\t", "\r\n"], $expected);
         if (null !== $input) {
@@ -709,7 +709,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             '<?php

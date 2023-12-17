@@ -112,9 +112,9 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     /**
      * @param array<mixed> $config
      *
-     * @dataProvider provideInvalidConfigCases
+     * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfig(array $config, string $expectedMessage): void
+    public function testInvalidConfiguration(array $config, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage));
@@ -122,7 +122,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($config);
     }
 
-    public static function provideInvalidConfigCases(): iterable
+    public static function provideInvalidConfigurationCases(): iterable
     {
         yield [
             [1, 2],

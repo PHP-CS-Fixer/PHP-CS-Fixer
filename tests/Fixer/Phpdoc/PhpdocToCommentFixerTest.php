@@ -28,8 +28,6 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideDocblocksCases
-     * @dataProvider provideTraitsCases
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
@@ -39,7 +37,7 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideDocblocksCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -715,10 +713,7 @@ function doSomething()
             null,
             ['allow_before_return_statement' => true],
         ];
-    }
 
-    public static function provideTraitsCases(): iterable
-    {
         yield [
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
@@ -731,10 +726,7 @@ trait DocBlocks
     public function test() {}
 }',
         ];
-    }
 
-    public static function provideFixCases(): iterable
-    {
         yield [
             '<?php
 /** header */

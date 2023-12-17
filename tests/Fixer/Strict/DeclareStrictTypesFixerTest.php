@@ -129,34 +129,23 @@ $a = 456;
             '<?php declare(strict_types=1);',
             '<?php declare(strict_types=0);',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFixCases
-     */
-    public function testDoNotFix(string $input): void
-    {
-        $this->doTest($input);
-    }
-
-    public static function provideDoNotFixCases(): iterable
-    {
         yield ['  <?php echo 123;']; // first statement must be an open tag
 
         yield ['<?= 123;']; // first token open with echo is not fixed
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php declare(strict_types=1);\r\nphpinfo();",

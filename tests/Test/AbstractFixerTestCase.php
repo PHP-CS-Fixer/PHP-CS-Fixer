@@ -378,42 +378,87 @@ abstract class AbstractFixerTestCase extends TestCase
             self::markTestSkipped('Not worth refactoring tests for deprecated fixers.');
         }
 
-        $exceptionGroup = [
-            'ClassUsage',
-            'Comment',
-            'ConstantNotation',
-            'ControlStructure',
-            'DoctrineAnnotation',
-            'FunctionNotation', // @TODO: remove it before others
-            'Import',
-            'LanguageConstruct', // @TODO: remove it before others
-            'ListNotation',
-            'NamespaceNotation',
-            'Naming',
-            'Operator', // @TODO: remove it before others
-            'PhpTag',
-            'PhpUnit',
-            'Phpdoc',
-            'ReturnNotation',
-            'Semicolon',
-            'Strict',
-            'StringNotation',
-            'Whitespace', // @TODO: remove it before others
+        // should only shrink, baseline of classes violating method naming
+        $exceptionClasses = [
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\HeaderCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\SingleLineCommentStyleFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededBracesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\FopenFlagsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\FullyQualifiedStrictTypesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAccessFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocParamOrderFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSeparationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSummaryFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTrimFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocVarWithoutNameFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest::class,
         ];
 
-        $exceptions = [
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['testClassyDefinitionInfo', 'provideClassyDefinitionInfoCases', 'testClassyInheritanceInfo', 'provideClassyInheritanceInfoCases'],
-        ];
-
-        $fixerGroup = explode('\\', static::class)[3];
-
-        if (\in_array($fixerGroup, $exceptionGroup, true)) {
+        if (\in_array(static::class, $exceptionClasses, true)) {
             self::markTestSkipped('Not covered yet.');
         }
 
-        self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
-        self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
+        self::assertTrue(method_exists($this, 'testFix'), sprintf('Method testFix does not exist in %s.', static::class));
+        self::assertTrue(method_exists($this, 'provideFixCases'), sprintf('Method provideFixCases does not exist in %s.', static::class));
 
         $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
@@ -422,23 +467,21 @@ abstract class AbstractFixerTestCase extends TestCase
             $methodNames[] = 'provide'.$name.'Cases';
         }
 
-        $class = new \ReflectionObject($this);
+        $reflectionClass = new \ReflectionObject($this);
 
         $extraMethods = array_map(
             static fn (\ReflectionMethod $method): string => $method->getName(),
             array_filter(
-                $class->getMethods(\ReflectionMethod::IS_PUBLIC),
-                static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $class->getName()
+                $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+                static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $reflectionClass->getName()
                     && !\in_array($method->getName(), $methodNames, true)
             )
         );
 
-        $extraMethods = array_diff($extraMethods, $exceptions[$class->getName()] ?? []);
-
         self::assertSame(
             [],
             $extraMethods,
-            sprintf('Methods "%s" should not be present.', implode('". "', $extraMethods)),
+            sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
         );
     }
 
