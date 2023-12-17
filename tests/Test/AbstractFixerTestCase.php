@@ -407,14 +407,18 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixerTest::class,
             \PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest::class,
             \PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest::class,
         ];
 
         $exceptionGroup = [
-            'ListNotation',
-            'NamespaceNotation',
-            'Naming',
-            'Operator', // @TODO: remove it before others
-            'PhpTag',
             'PhpUnit',
             'Phpdoc',
             'ReturnNotation',
