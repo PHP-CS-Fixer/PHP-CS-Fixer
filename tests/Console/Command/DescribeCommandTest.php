@@ -450,18 +450,18 @@ Fixing examples:
     }
 
     /**
-     * @param CodeSampleInterface[] $samples
+     * @param list<CodeSampleInterface> $samples
      */
     private static function createFixerWithSamplesDouble(array $samples): FixerInterface
     {
         return new class($samples) extends AbstractFixer {
             /**
-             * @var CodeSampleInterface[]
+             * @var list<CodeSampleInterface>
              */
             private $samples;
 
             /**
-             * @param CodeSampleInterface[] $samples
+             * @param list<CodeSampleInterface> $samples
              */
             public function __construct(
                 array $samples
