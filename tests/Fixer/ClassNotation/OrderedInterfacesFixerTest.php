@@ -27,14 +27,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixAlphaCases
+     * @dataProvider provideFixCases
+     *
+     * @param array<string, mixed> $configuration
      */
-    public function testFixAlpha(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixAlphaCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'single' => [
             '<?php class T implements A {}',
@@ -135,60 +138,44 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                 {}
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixAlphaDescendCases
-     */
-    public function testFixAlphaDescend(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixAlphaDescendCases(): iterable
-    {
-        yield 'single' => [
+        yield 'descend single' => [
             '<?php class T implements A {}',
+            null,
+            [OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND],
         ];
 
-        yield 'multiple' => [
+        yield 'descend multiple' => [
             '<?php class T implements C, B, A {}',
             '<?php class T implements C, A, B {}',
+            [OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND],
         ];
 
-        yield 'mixed' => [
+        yield 'descend mixed' => [
             '<?php class T implements /* Who mixes these? */ UnNamespaced, Partially\Q\C\N, \F\Q\C\N {}',
             '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
+            [OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND],
         ];
-    }
 
-    /**
-     * @dataProvider provideFixLengthCases
-     */
-    public function testFixLength(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixLengthCases(): iterable
-    {
-        yield 'single' => [
+        yield 'length single' => [
             '<?php class A implements A {}',
+            null,
+            [OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH],
         ];
 
-        yield 'multiple' => [
+        yield 'length multiple' => [
             '<?php class A implements Short, Longer, MuchLonger {}',
             '<?php class A implements MuchLonger, Short, Longer {}',
+            [OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH],
         ];
 
-        yield 'mixed' => [
+        yield 'length mixed' => [
             '<?php class T implements \F\Q\C\N, /* Who mixes these? */ UnNamespaced, Partially\Q\C\N {}',
             '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
+            [OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH],
         ];
 
-        yield 'normalized' => [
+        yield 'length normalized' => [
             '<?php
                     class A implements
                          ABCDE,
@@ -201,38 +188,37 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                          ABCDE
                     { /* */ }
                 ',
+            [OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH],
         ];
-    }
 
-    /**
-     * @dataProvider provideFixLengthDescendCases
-     */
-    public function testFixLengthDescend(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
-            OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
-        ]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixLengthDescendCases(): iterable
-    {
-        yield 'single' => [
+        yield 'length, descend single' => [
             '<?php class A implements A {}',
+            null,
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+                OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
+            ],
         ];
 
-        yield 'multiple' => [
+        yield 'length, descend multiple' => [
             '<?php class A implements MuchLonger, Longer, Short {}',
             '<?php class A implements MuchLonger, Short, Longer {}',
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+                OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
+            ],
         ];
 
-        yield 'mixed' => [
+        yield 'length, descend mixed' => [
             '<?php class T implements Partially\Q\C\N, /* Who mixes these? */ UnNamespaced, \F\Q\C\N {}',
             '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+                OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
+            ],
         ];
 
-        yield 'normalized' => [
+        yield 'length, descend normalized' => [
             '<?php
                     class A implements
                          A\B\C\D,
@@ -245,37 +231,41 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                          A\B\C\D
                     { /* */ }
                 ',
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+                OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
+            ],
         ];
-    }
 
-    /**
-     * @dataProvider provideFixCaseSensitiveAlphaCases
-     */
-    public function testFixCaseSensitiveAlpha(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
-            'case_sensitive' => true,
-        ]);
-        $this->doTest($expected, $input);
-    }
+        yield 'case sensitive single' => [
+            '<?php class A implements A {}',
+            null,
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
+                'case_sensitive' => true,
+            ],
+        ];
 
-    public static function provideFixCaseSensitiveAlphaCases(): iterable
-    {
-        return [
-            'single' => [
-                '<?php class A implements A {}',
+        yield 'alpha multiple' => [
+            '<?php class A implements AA, Aaa, FF, Fff {}',
+            '<?php class A implements Fff, Aaa, FF, AA {}',
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
+                'case_sensitive' => true,
             ],
-            'multiple' => [
-                '<?php class A implements AA, Aaa, FF, Fff {}',
-                '<?php class A implements Fff, Aaa, FF, AA {}',
+        ];
+
+        yield 'alpha mixed' => [
+            '<?php class T implements \F\Q\C\N, Partially\Q\C\N, /* Who mixes these? */ UnNamespaced {}',
+            '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
+                'case_sensitive' => true,
             ],
-            'mixed' => [
-                '<?php class T implements \F\Q\C\N, Partially\Q\C\N, /* Who mixes these? */ UnNamespaced {}',
-                '<?php class T implements /* Who mixes these? */ UnNamespaced, \F\Q\C\N, Partially\Q\C\N {}',
-            ],
-            'normalized' => [
-                '<?php
+        ];
+
+        yield 'alpha normalized' => [
+            '<?php
                     class A implements
                          A\B\C\D,
                          AAa\B\C\D,
@@ -283,7 +273,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                          Aaa\B\C\D
                     { /* */ }
                 ',
-                '<?php
+            '<?php
                     class A implements
                          Aaa\B\C\D,
                          AAa\B\C\D,
@@ -291,6 +281,9 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                          A\B\C\D
                     { /* */ }
                 ',
+            [
+                OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
+                'case_sensitive' => true,
             ],
         ];
     }

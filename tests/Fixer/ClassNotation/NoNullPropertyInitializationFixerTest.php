@@ -349,16 +349,16 @@ null;#13
     }
 
     /**
-     * @dataProvider provideFixPrePHP80Cases
+     * @dataProvider provideFixPre80Cases
      *
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPrePHP80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php class Foo { public $bar; }',
@@ -384,7 +384,7 @@ null;#13
     /**
      * @requires PHP 8.0
      */
-    public function testFixPhp80(): void
+    public function testFix80(): void
     {
         $this->doTest('<?php
 class Point {

@@ -419,16 +419,16 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPhp80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'static' => [
             '<?php
@@ -497,16 +497,16 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPhpPre81Cases
+     * @dataProvider provideFixPre81Cases
      *
      * @requires PHP <8.1
      */
-    public function testFixPhpPre81(string $expected, ?string $input = null): void
+    public function testFixPre81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhpPre81Cases(): iterable
+    public static function provideFixPre81Cases(): iterable
     {
         yield 'skip never type' => [
             '<?php /** @return never */ function bar() {}',
@@ -514,16 +514,16 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPhp81Cases
+     * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFixPhp81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'never type' => [
             '<?php /** @return never */ function bar(): never {}',

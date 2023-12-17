@@ -379,20 +379,18 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $exceptionGroup = [
-            'CastNotation',
-            'ClassNotation',
             'ClassUsage',
             'Comment',
             'ConstantNotation',
             'ControlStructure',
             'DoctrineAnnotation',
-            'FunctionNotation',
+            'FunctionNotation', // @TODO: remove it before others
             'Import',
-            'LanguageConstruct',
+            'LanguageConstruct', // @TODO: remove it before others
             'ListNotation',
             'NamespaceNotation',
             'Naming',
-            'Operator',
+            'Operator', // @TODO: remove it before others
             'PhpTag',
             'PhpUnit',
             'Phpdoc',
@@ -400,7 +398,12 @@ abstract class AbstractFixerTestCase extends TestCase
             'Semicolon',
             'Strict',
             'StringNotation',
-            'Whitespace',
+            'Whitespace', // @TODO: remove it before others
+        ];
+
+        $exceptions = [
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['testClassyDefinitionInfo', 'provideClassyDefinitionInfoCases', 'testClassyInheritanceInfo', 'provideClassyInheritanceInfoCases'],
         ];
 
         $fixerGroup = explode('\\', static::class)[3];
@@ -412,7 +415,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
         self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
 
-        $names = ['Fix', 'FixPre80', 'Fix80', 'Fix81', 'Fix82', 'Fix83', 'InvalidConfiguration'];
+        $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
@@ -429,6 +432,8 @@ abstract class AbstractFixerTestCase extends TestCase
                     && !\in_array($method->getName(), $methodNames, true)
             )
         );
+
+        $extraMethods = array_diff($extraMethods, $exceptions[$class->getName()] ?? []);
 
         self::assertSame(
             [],
