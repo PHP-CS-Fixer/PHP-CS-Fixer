@@ -32,6 +32,36 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
+
+        foreach ($types as $from) {
+            yield from self::createCasesFor($from);
+        }
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield from self::createCasesFor('unset');
+    }
+
+    /**
      * @dataProvider provideFix74DeprecatedCases
      *
      * @group legacy
@@ -45,21 +75,9 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): iterable
-    {
-        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
-
-        if (\PHP_VERSION_ID < 8_00_00) {
-            $types[] = 'unset';
-        }
-
-        foreach ($types as $from) {
-            foreach (self::createCasesFor($from) as $case) {
-                yield $case;
-            }
-        }
-    }
-
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFix74DeprecatedCases(): iterable
     {
         return self::createCasesFor('real');

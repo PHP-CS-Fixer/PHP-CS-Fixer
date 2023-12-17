@@ -27,10 +27,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, bool> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -246,138 +249,7 @@ private $d = 123;
                     }
                 ',
         ];
-    }
 
-    /**
-     * @param array<mixed> $elements
-     *
-     * @dataProvider provideInvalidElementsCases
-     */
-    public function testInvalidElements(array $elements): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->fixer->configure(['elements' => $elements]);
-    }
-
-    public static function provideInvalidElementsCases(): iterable
-    {
-        yield 'numeric keys' => [['method', 'property']];
-
-        yield 'wrong key name' => [['methods' => 'one']];
-
-        yield 'wrong key value' => [['method' => 'two']];
-    }
-
-    /**
-     * @dataProvider provideCommentBlockStartDetectionCases
-     */
-    public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($code);
-        $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
-        $method->setAccessible(true);
-
-        $result = $method->invoke($this->fixer, $tokens, $index, 0);
-        self::assertSame(
-            $expected,
-            $result,
-            sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())
-        );
-    }
-
-    public static function provideCommentBlockStartDetectionCases(): iterable
-    {
-        yield [
-            4,
-            '<?php
-                    //ui
-
-                    //j1
-                    //k2
-                ',
-            6,
-        ];
-
-        yield [
-            4,
-            '<?php
-                    //ui
-
-                    //j1
-                    //k2
-                ',
-            5,
-        ];
-
-        yield [
-            4,
-            '<?php
-                    /**/
-
-                    //j1
-                    //k2
-                ',
-            6,
-        ];
-
-        yield [
-            4,
-            '<?php
-                    $a;//j
-                    //k
-                ',
-            6,
-        ];
-
-        yield [
-            2,
-            '<?php
-                    //a
-                ',
-            2,
-        ];
-
-        yield [
-            2,
-            '<?php
-                    //b
-                    //c
-                ',
-            2,
-        ];
-
-        yield [
-            2,
-            '<?php
-                    //d
-                    //e
-                ',
-            4,
-        ];
-
-        yield [
-            2,
-            '<?php
-                    /**/
-                    //f
-                    //g
-                    //h
-                ',
-            8,
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixClassesCases
-     */
-    public function testFixClasses(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixClassesCases(): iterable
-    {
         yield ['<?php
 class SomeClass1
 {
@@ -962,18 +834,7 @@ public function B1(); // allowed comment
                 }
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixTraitsCases
-     */
-    public function testFixTraits(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixTraitsCases(): iterable
-    {
         // do not touch well formatted traits
         yield [
             '<?php
@@ -1052,18 +913,7 @@ trait SomeReturnInfo {
     abstract public function getWorld();
 }',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixInterfaceCases
-     */
-    public function testFixInterface(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixInterfaceCases(): iterable
-    {
         yield [
             '<?php
 interface TestInterface
@@ -1132,44 +982,7 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 }',
         ];
-    }
 
-    /**
-     * @dataProvider provideMessyWhitespacesCases
-     */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideMessyWhitespacesCases(): iterable
-    {
-        yield [
-            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-        ];
-
-        yield [
-            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
-        ];
-    }
-
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideWithConfigCases
-     */
-    public function testWithConfig(string $expected, ?string $input, array $config): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideWithConfigCases(): iterable
-    {
         yield 'multi line property' => [
             '<?php class Foo
 {
@@ -1802,21 +1615,7 @@ abstract class Example
                 ',
             ['elements' => ['property' => 'none', 'trait_import' => 'none']],
         ];
-    }
 
-    /**
-     * @dataProvider provideFix71Cases
-     */
-    public function testFix71(string $expected, string $input): void
-    {
-        $this->fixer->configure([
-            'elements' => ['method' => 'one', 'const' => 'one'],
-        ]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix71Cases(): iterable
-    {
         yield [
             '<?php
                 class Foo {
@@ -1844,22 +1643,7 @@ abstract class Example
 
                 }',
         ];
-    }
 
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideFix74Cases
-     */
-    public function testFix74(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix74Cases(): iterable
-    {
         yield [
             '<?php
             class Foo {
@@ -1931,23 +1715,44 @@ abstract class Example
             }',
             ['elements' => ['property' => 'only_if_meta']],
         ];
+
+        yield [
+            '<?php
+class Foo
+{
+    use SomeTrait1;
+    use SomeTrait2;
+
+    public function Bar(){}
+}
+',
+            '<?php
+class Foo
+{
+    use SomeTrait1;
+
+    use SomeTrait2;
+    public function Bar(){}
+}
+',
+        ];
     }
 
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideFixPhp80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input, array $config = []): void
+    public function testFix80(string $expected, ?string $input, array $config = []): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'attributes' => [
             '<?php
@@ -2163,38 +1968,6 @@ class Foo
     }
 
     /**
-     * @dataProvider provideFixClassesWithTraitsCases
-     */
-    public function testFixClassesWithTraits(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixClassesWithTraitsCases(): iterable
-    {
-        yield [
-            '<?php
-class Foo
-{
-    use SomeTrait1;
-    use SomeTrait2;
-
-    public function Bar(){}
-}
-',
-            '<?php
-class Foo
-{
-    use SomeTrait1;
-
-    use SomeTrait2;
-    public function Bar(){}
-}
-',
-        ];
-    }
-
-    /**
      * @param array<string, mixed> $config
      *
      * @dataProvider provideFix81Cases
@@ -2403,6 +2176,149 @@ enum Cards: string
             {
                 private A|(B&C) $propertyName;
             }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideWithWhitespacesConfigCases
+     */
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideWithWhitespacesConfigCases(): iterable
+    {
+        yield [
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\n\n\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+        ];
+
+        yield [
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+            "<?php\r\nclass SomeClass\r\n{\r\n    // comment\r\n\r\n\r\n    public function echoA()\r\n    {\r\n        echo 'a';\r\n    }\r\n}\r\n",
+        ];
+    }
+
+    /**
+     * @param array<mixed> $elements
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $elements): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->fixer->configure(['elements' => $elements]);
+    }
+
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'numeric keys' => [['method', 'property']];
+
+        yield 'wrong key name' => [['methods' => 'one']];
+
+        yield 'wrong key value' => [['method' => 'two']];
+    }
+
+    /**
+     * @dataProvider provideCommentBlockStartDetectionCases
+     */
+    public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($code);
+        $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->fixer, $tokens, $index, 0);
+        self::assertSame(
+            $expected,
+            $result,
+            sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())
+        );
+    }
+
+    public static function provideCommentBlockStartDetectionCases(): iterable
+    {
+        yield [
+            4,
+            '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+            6,
+        ];
+
+        yield [
+            4,
+            '<?php
+                    //ui
+
+                    //j1
+                    //k2
+                ',
+            5,
+        ];
+
+        yield [
+            4,
+            '<?php
+                    /**/
+
+                    //j1
+                    //k2
+                ',
+            6,
+        ];
+
+        yield [
+            4,
+            '<?php
+                    $a;//j
+                    //k
+                ',
+            6,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    //a
+                ',
+            2,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    //b
+                    //c
+                ',
+            2,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    //d
+                    //e
+                ',
+            4,
+        ];
+
+        yield [
+            2,
+            '<?php
+                    /**/
+                    //f
+                    //g
+                    //h
+                ',
+            8,
         ];
     }
 }

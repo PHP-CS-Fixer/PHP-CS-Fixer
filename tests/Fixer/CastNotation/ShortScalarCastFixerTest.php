@@ -31,49 +31,13 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @dataProvider provideFix74DeprecatedCases
-     *
-     * @group legacy
-     *
-     * @requires PHP <8.0
-     */
-    public function testFix74Deprecated(string $expected, ?string $input = null): void
-    {
-        $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
-
-        $this->doTest($expected, $input);
-    }
-
     public static function provideFixCases(): iterable
     {
         foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
-            foreach (self::createCasesFor($from, $to) as $case) {
-                yield $case;
-            }
+            yield from self::createCasesFor($from, $to);
         }
-    }
 
-    public static function provideFix74DeprecatedCases(): iterable
-    {
-        return self::createCasesFor('real', 'float');
-    }
-
-    /**
-     * @dataProvider provideNoFixCases
-     */
-    public function testNoFix(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideNoFixCases(): iterable
-    {
         $types = ['string', 'array', 'object'];
-
-        if (\PHP_VERSION_ID < 8_00_00) {
-            $types[] = 'unset';
-        }
 
         foreach ($types as $cast) {
             yield [sprintf('<?php $b=(%s) $d;', $cast)];
@@ -84,6 +48,52 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 
             yield [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
         }
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield ['<?php $b=(unset) $d;'];
+
+        yield ['<?php $b=( unset ) $d;'];
+
+        yield ['<?php $b=(Unset ) $d;'];
+
+        yield ['<?php $b=(UNSET ) $d;'];
+    }
+
+    /**
+     * @dataProvider provideFix74DeprecatedCases
+     *
+     * @group legacy
+     *
+     * @requires PHP <8.0
+     */
+    public function testFix74Deprecated(string $expected, ?string $input = null): void
+    {
+        $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    public static function provideFix74DeprecatedCases(): iterable
+    {
+        yield from self::createCasesFor('real', 'float');
     }
 
     /**

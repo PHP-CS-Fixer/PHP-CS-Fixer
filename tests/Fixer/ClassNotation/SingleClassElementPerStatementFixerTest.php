@@ -28,10 +28,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, string> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -711,104 +714,78 @@ echo Foo::A, Foo::B;
                 var array $foo, $bar;
             }',
         ];
-    }
 
-    /**
-     * @param array<string, mixed> $configuration
-     *
-     * @dataProvider provideFixWithConfigurationCases
-     */
-    public function testFixWithConfiguration(array $configuration, string $expected): void
-    {
-        static $input = <<<'EOT'
-            <?php
-
-            class Foo
-            {
-                const SOME_CONST = 'a', OTHER_CONST = 'b';
-                protected static $foo = 1, $bar = 2;
-            }
-            EOT;
-
-        $this->fixer->configure(['elements' => $configuration]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixWithConfigurationCases(): iterable
-    {
         yield [
-            ['const', 'property'],
             <<<'EOT'
-                <?php
+                    <?php
 
-                class Foo
-                {
-                    const SOME_CONST = 'a';
-                    const OTHER_CONST = 'b';
-                    protected static $foo = 1;
-                    protected static $bar = 2;
-                }
-                EOT
-        ];
-
-        yield [
-            ['const'],
+                    class Foo
+                    {
+                        const SOME_CONST = 'a';
+                        const OTHER_CONST = 'b';
+                        protected static $foo = 1;
+                        protected static $bar = 2;
+                    }
+                EOT,
             <<<'EOT'
-                <?php
+                    <?php
 
-                class Foo
-                {
-                    const SOME_CONST = 'a';
-                    const OTHER_CONST = 'b';
-                    protected static $foo = 1, $bar = 2;
-                }
-                EOT
+                    class Foo
+                    {
+                        const SOME_CONST = 'a', OTHER_CONST = 'b';
+                        protected static $foo = 1, $bar = 2;
+                    }
+                EOT,
+            ['elements' => ['const', 'property']],
         ];
 
         yield [
-            ['property'],
             <<<'EOT'
-                <?php
+                    <?php
 
-                class Foo
-                {
-                    const SOME_CONST = 'a', OTHER_CONST = 'b';
-                    protected static $foo = 1;
-                    protected static $bar = 2;
-                }
-                EOT
+                    class Foo
+                    {
+                        const SOME_CONST = 'a';
+                        const OTHER_CONST = 'b';
+                        protected static $foo = 1, $bar = 2;
+                    }
+                EOT,
+            <<<'EOT'
+                    <?php
+
+                    class Foo
+                    {
+                        const SOME_CONST = 'a', OTHER_CONST = 'b';
+                        protected static $foo = 1, $bar = 2;
+                    }
+                EOT,
+            ['elements' => ['const']],
         ];
-    }
 
-    public function testWrongConfig(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
-
-        $this->fixer->configure(['elements' => ['foo']]);
-    }
-
-    /**
-     * @dataProvider provideMessyWhitespacesCases
-     */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideMessyWhitespacesCases(): iterable
-    {
         yield [
-            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
-            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
-        ];
-    }
+            <<<'EOT'
+                    <?php
 
-    public function testAnonymousClassFixing(): void
-    {
-        $this->doTest(
+                    class Foo
+                    {
+                        const SOME_CONST = 'a', OTHER_CONST = 'b';
+                        protected static $foo = 1;
+                        protected static $bar = 2;
+                    }
+                EOT,
+            <<<'EOT'
+                    <?php
+
+                    class Foo
+                    {
+                        const SOME_CONST = 'a', OTHER_CONST = 'b';
+                        protected static $foo = 1, $bar = 2;
+                    }
+                EOT,
+            ['elements' => ['property']],
+        ];
+
+        yield 'anonymous class' => [
             '<?php
                 $a = new class() {
                     const PUBLIC_CONST_TWO = 0;
@@ -848,7 +825,17 @@ echo Foo::A, Foo::B;
                         };
                     }
                 }
-            '
+            ',
+        ];
+    }
+
+    public function testWithWhitespacesConfig(): void
+    {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+
+        $this->doTest(
+            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
+            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
         );
     }
 
@@ -988,5 +975,13 @@ var_dump(Foo::A.Foo::B);",
             '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',
             '<?php trait Foo { public const Bar = 1, Baz = 1; }',
         ];
+    }
+
+    public function testInvalidConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
+
+        $this->fixer->configure(['elements' => ['foo']]);
     }
 }

@@ -27,7 +27,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureDefaultToFalse(): void
+    public function testConfigure(): void
     {
         $defaultConfig = [
             'inline_constructor_arguments' => true,
@@ -46,79 +46,46 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string              $expected PHP source code
-     * @param string              $input    PHP source code
-     * @param array<string, bool> $config
+     * @param array<mixed> $config
      *
-     * @dataProvider provideFixingAnonymousClassesCases
+     * @dataProvider provideInvalidConfigurationCases
      */
-    public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixingClassesCases
-     */
-    public function testFixingClasses(string $expected, string $input): void
-    {
-        $this->fixer->configure([]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideFixingClassesWithConfigCases
-     */
-    public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixingInterfacesCases
-     */
-    public function testFixingInterfaces(string $expected, string $input): void
-    {
-        $this->fixer->configure([]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixingTraitsCases
-     */
-    public function testFixingTraits(string $expected, string $input): void
-    {
-        $this->fixer->configure([]);
-        $this->doTest($expected, $input);
-    }
-
-    public function testInvalidConfigurationKey(): void
+    public function testInvalidConfiguration(array $config, string $exceptionExpression): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(
-            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "inline_constructor_arguments", "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
-        );
+        $this->expectExceptionMessageMatches($exceptionExpression);
 
-        $fixer = new ClassDefinitionFixer();
-        $fixer->configure(['a' => false]);
+        $this->fixer->configure($config);
     }
 
-    public function testInvalidConfigurationValueType(): void
+    /**
+     * @return iterable<array{array<mixed>, string}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
     {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(
-            '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
-        );
+        yield 'invalid configuration key' => [
+            ['a' => false],
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "inline_constructor_arguments", "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/',
+        ];
 
-        $fixer = new ClassDefinitionFixer();
-        $fixer->configure(['single_line' => 'z']);
+        yield 'invalid configuration value' => [
+            ['single_line' => 'z'],
+            '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/',
+        ];
     }
 
-    public static function provideFixingAnonymousClassesCases(): iterable
+    /**
+     * @param array<string, bool> $configuration
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, string $input, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php $a = new class(0) extends SomeClass implements SomeInterface, D {};',
@@ -337,19 +304,13 @@ A#
             '<?php $z = new class   ( static::foo($this->bar())  ,baz() )  {};',
             ['space_before_parenthesis' => true, 'inline_constructor_arguments' => false],
         ];
-    }
 
-    public static function provideFixingClassesCases(): iterable
-    {
-        return array_merge(
-            self::provideClassyCases('class'),
-            self::provideClassyExtendingCases('class'),
-            self::provideClassyImplementsCases()
-        );
-    }
+        yield from self::provideClassyCases('class');
 
-    public static function provideFixingClassesWithConfigCases(): iterable
-    {
+        yield from self::provideClassyExtendingCases('class');
+
+        yield from self::provideClassyImplementsCases();
+
         yield [
             "<?php class configA implements B, C\n{}",
             "<?php class configA implements\nB, C{}",
@@ -401,14 +362,10 @@ A#
                 'multi_line_extends_each_single_line' => true,
             ],
         ];
-    }
 
-    public static function provideFixingInterfacesCases(): iterable
-    {
-        yield from array_merge(
-            self::provideClassyCases('interface'),
-            self::provideClassyExtendingCases('interface')
-        );
+        yield from self::provideClassyCases('interface');
+
+        yield from self::provideClassyExtendingCases('interface');
 
         yield [
             '<?php
@@ -436,11 +393,54 @@ TestInterface3, /**/     TestInterface4   ,
         /**/TestInterface65    {}
             ',
         ];
-    }
 
-    public static function provideFixingTraitsCases(): iterable
-    {
-        return self::provideClassyCases('trait');
+        yield from self::provideClassyCases('trait');
+
+        yield [
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc,
+    \GFddZz
+{
+};',
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc, \GFddZz
+{
+};',
+        ];
+
+        yield [
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc,
+    \GFddZz
+{
+}?>',
+            '<?php
+$a = new class implements
+    \RFb,
+    \Fcc, \GFddZz
+{
+}?>',
+        ];
+
+        yield [
+            '<?php new class(1, 2, 3, ) {};',
+            '<?php new class(1, 2, 3,) {};',
+        ];
+
+        yield [
+            '<?php new class(1, 2, 3, ) {};',
+            '<?php new class(
+                    1,
+                    2,
+                    3,
+                ) {};',
+        ];
     }
 
     /**
@@ -669,74 +669,15 @@ namespace {
     }
 
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testFix(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixCases(): iterable
-    {
-        yield [
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc,
-    \GFddZz
-{
-};',
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc, \GFddZz
-{
-};',
-        ];
-
-        yield [
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc,
-    \GFddZz
-{
-}?>',
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc, \GFddZz
-{
-}?>',
-        ];
-
-        yield [
-            '<?php new class(1, 2, 3, ) {};',
-            '<?php new class(1, 2, 3,) {};',
-        ];
-
-        yield [
-            '<?php new class(1, 2, 3, ) {};',
-            '<?php new class(
-                    1,
-                    2,
-                    3,
-                ) {};',
-        ];
-    }
-
-    /**
-     * @dataProvider provideMessyWhitespacesCases
-     */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure([]);
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php\r\nclass Aaa implements\r\n\tBbb,\r\n\tCcc,\r\n\tDdd\r\n\t{\r\n\t}",
@@ -865,17 +806,6 @@ $a = new class implements
     /**
      * @param array<string, mixed> $expected
      */
-    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
-    {
-        $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
-        $reflectionProperty->setAccessible(true);
-
-        self::assertSame($expected, $reflectionProperty->getValue($fixer));
-    }
-
-    /**
-     * @param array<string, mixed> $expected
-     */
     private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         Tokens::clearCache();
@@ -887,6 +817,17 @@ $a = new class implements
         $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
 
         self::assertSame($expected, $result);
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     */
+    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        self::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
     private static function provideClassyCases(string $classy): iterable

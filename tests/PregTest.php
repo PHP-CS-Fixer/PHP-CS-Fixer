@@ -50,25 +50,23 @@ final class PregTest extends TestCase
     {
         yield 'invalid_blank' => ['', null, PregException::class];
 
-        yield 'invalid_open' => ["\1", null, PregException::class, "'\1' found"];
+        yield 'invalid_open' => ["\1", null, PregException::class, "/'\x01' found/"];
 
         yield 'valid_control_character_delimiter' => ["\1\1", true];
 
-        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, ' Unknown modifier '];
+        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, '/ Unknown modifier /'];
 
         yield 'valid_slate' => ['//', true];
 
         yield 'valid_paired' => ['()', true];
 
-        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, 'UTF-8'];
+        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, '/UTF-8/'];
 
         yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
 
-        yield 'php_version_dependent' => ['([\\R])', false, PregException::class, 'Compilation failed: escape sequence is invalid '];
+        yield 'php_version_dependent' => ['([\\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
 
-        $nullByteMessage = \PHP_VERSION_ID >= 8_02_00 ? 'NUL is not a valid modifier' : 'Null byte in regex';
-
-        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, " {$nullByteMessage} "];
+        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, ' (NUL is not a valid modifier|Null byte in regex) '];
     }
 
     /**
@@ -86,7 +84,7 @@ final class PregTest extends TestCase
 
             if (null !== $expectedMessage) {
                 ++$i;
-                $this->expectExceptionMessage($expectedMessage);
+                $this->expectExceptionMessageMatches($expectedMessage);
             }
 
             return (bool) $i;
@@ -126,7 +124,7 @@ final class PregTest extends TestCase
 
             if (null !== $expectedMessage) {
                 ++$i;
-                $this->expectExceptionMessage($expectedMessage);
+                $this->expectExceptionMessageMatches($expectedMessage);
             }
 
             return (bool) $i;
