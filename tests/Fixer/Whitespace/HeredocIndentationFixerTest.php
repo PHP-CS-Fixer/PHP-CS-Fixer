@@ -300,7 +300,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testFixWithTabIndentation(): void
+    public function testWithWhitespacesConfig(): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
 

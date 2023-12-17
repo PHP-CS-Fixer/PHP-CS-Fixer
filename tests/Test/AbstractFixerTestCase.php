@@ -445,21 +445,13 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest::class,
             \PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest::class,
         ];
-
-        self::assertSame(array_unique($exceptionClasses), $exceptionClasses);
-        $sorted = $exceptionClasses;
-        sort($sorted);
-        // @phpstan-ignore-next-line
-        self::assertSame($sorted, $exceptionClasses);
-
-        $exceptionGroup = [
-            'Whitespace', // @TODO: remove it before others
-        ];
-        $fixerGroup = explode('\\', static::class)[3];
-        if (\in_array($fixerGroup, $exceptionGroup, true)) {
-            self::markTestSkipped('Not covered yet.');
-        }
 
         if (\in_array(static::class, $exceptionClasses, true)) {
             self::markTestSkipped('Not covered yet.');
