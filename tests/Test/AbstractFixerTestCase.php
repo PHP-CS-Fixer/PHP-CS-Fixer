@@ -453,13 +453,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest::class,
         ];
 
-        if (\in_array(static::class, $exceptionClasses, true)) {
-            self::markTestSkipped('Not covered yet.');
-        }
-
-        self::assertTrue(method_exists($this, 'testFix'), sprintf('Method testFix does not exist in %s.', static::class));
-        self::assertTrue(method_exists($this, 'provideFixCases'), sprintf('Method provideFixCases does not exist in %s.', static::class));
-
         $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
@@ -478,6 +471,17 @@ abstract class AbstractFixerTestCase extends TestCase
             )
         );
 
+        if (\in_array(static::class, $exceptionClasses, true)) {
+            self::assertNotSame(
+                [],
+                $extraMethods,
+                sprintf('Class "%s" have correct method names, remove it from exceptions list.', static::class),
+            );
+            self::markTestSkipped('Not covered yet.');
+        }
+
+        self::assertTrue(method_exists($this, 'testFix'), sprintf('Method testFix does not exist in %s.', static::class));
+        self::assertTrue(method_exists($this, 'provideFixCases'), sprintf('Method provideFixCases does not exist in %s.', static::class));
         self::assertSame(
             [],
             $extraMethods,
