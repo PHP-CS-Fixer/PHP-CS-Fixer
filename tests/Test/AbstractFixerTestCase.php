@@ -378,11 +378,22 @@ abstract class AbstractFixerTestCase extends TestCase
             self::markTestSkipped('Not worth refactoring tests for deprecated fixers.');
         }
 
+        // should only shrink, baseline of classes violating method naming
+        $exceptionClasses = [
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\HeaderCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\Comment\SingleLineCommentStyleFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededBracesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::class,
+        ];
+
         $exceptionGroup = [
-            'ClassUsage',
-            'Comment',
-            'ConstantNotation',
-            'ControlStructure',
             'DoctrineAnnotation',
             'FunctionNotation', // @TODO: remove it before others
             'Import',
@@ -405,19 +416,12 @@ abstract class AbstractFixerTestCase extends TestCase
             self::markTestSkipped('Not covered yet.');
         }
 
-        // should only shrink, baseline of classes violating method naming
-        $exceptionClasses = [
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class,
-        ];
-
-        if (in_array(static::class, $exceptionClasses)) {
+        if (\in_array(static::class, $exceptionClasses, true)) {
             self::markTestSkipped('Not covered yet.');
         }
 
-
-        self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
-        self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
+        self::assertTrue(method_exists($this, 'testFix'), sprintf('Method testFix does not exist in %s.', static::class));
+        self::assertTrue(method_exists($this, 'provideFixCases'), sprintf('Method provideFixCases does not exist in %s.', static::class));
 
         $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
@@ -437,12 +441,10 @@ abstract class AbstractFixerTestCase extends TestCase
             )
         );
 
-        $extraMethods = array_diff($extraMethods, $exceptions[$reflectionClass->getName()] ?? []);
-
         self::assertSame(
             [],
             $extraMethods,
-            sprintf('Methods "%s" should not be present.', implode('". "', $extraMethods)),
+            sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
         );
     }
 
