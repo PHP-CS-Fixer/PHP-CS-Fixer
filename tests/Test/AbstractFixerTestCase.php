@@ -400,17 +400,21 @@ abstract class AbstractFixerTestCase extends TestCase
             'StringNotation',
             'Whitespace', // @TODO: remove it before others
         ];
-
-        $exceptions = [
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['testClassyDefinitionInfo', 'provideClassyDefinitionInfoCases', 'testClassyInheritanceInfo', 'provideClassyInheritanceInfoCases'],
-        ];
-
         $fixerGroup = explode('\\', static::class)[3];
-
         if (\in_array($fixerGroup, $exceptionGroup, true)) {
             self::markTestSkipped('Not covered yet.');
         }
+
+        // should only shrink, baseline of classes violating method naming
+        $exceptionClasses = [
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest::class,
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class,
+        ];
+
+        if (in_array(static::class, $exceptionClasses)) {
+            self::markTestSkipped('Not covered yet.');
+        }
+
 
         self::assertTrue(method_exists($this, 'testFix'), 'Method testFix does not exist.');
         self::assertTrue(method_exists($this, 'provideFixCases'), 'Method provideFixCases does not exist.');
@@ -422,18 +426,18 @@ abstract class AbstractFixerTestCase extends TestCase
             $methodNames[] = 'provide'.$name.'Cases';
         }
 
-        $class = new \ReflectionObject($this);
+        $reflectionClass = new \ReflectionObject($this);
 
         $extraMethods = array_map(
             static fn (\ReflectionMethod $method): string => $method->getName(),
             array_filter(
-                $class->getMethods(\ReflectionMethod::IS_PUBLIC),
-                static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $class->getName()
+                $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+                static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $reflectionClass->getName()
                     && !\in_array($method->getName(), $methodNames, true)
             )
         );
 
-        $extraMethods = array_diff($extraMethods, $exceptions[$class->getName()] ?? []);
+        $extraMethods = array_diff($extraMethods, $exceptions[$reflectionClass->getName()] ?? []);
 
         self::assertSame(
             [],
