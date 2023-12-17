@@ -188,31 +188,6 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
             '<?php $a = $a ?? $b ? $c : $d ?>',
         ];
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield 'mixed array' => [
-                '<?php
-                $a[1] ??= 1;
-                $a{2} ??= 1;
-                $a{2}[$f] ??= 1;
-            ',
-                '<?php
-                $a[1] = $a[1] ?? 1;
-                $a{2} = $a{2} ?? 1;
-                $a{2}[$f] = $a{2}[$f] ?? 1;
-            ',
-            ];
-
-            yield 'same II' => [
-                '<?php $a[1] ??= 1;',
-                '<?php $a[1] = $a{1} ?? 1;',
-            ];
-
-            yield 'same III' => [
-                '<?php $a[1] ??= 1;',
-                '<?php $a[1] = (($a{1})) ?? 1;',
-            ];
-        }
-
         yield ['<?php $a[1][0] = $a ?? $a[1][0];'];
 
         yield 'switch case & default' => [
@@ -270,6 +245,45 @@ class Foo
         return $this->test = $this->test ?? $i;
     }
 }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield 'mixed array' => [
+            '<?php
+                $a[1] ??= 1;
+                $a{2} ??= 1;
+                $a{2}[$f] ??= 1;
+            ',
+            '<?php
+                $a[1] = $a[1] ?? 1;
+                $a{2} = $a{2} ?? 1;
+                $a{2}[$f] = $a{2}[$f] ?? 1;
+            ',
+        ];
+
+        yield 'same II' => [
+            '<?php $a[1] ??= 1;',
+            '<?php $a[1] = $a{1} ?? 1;',
+        ];
+
+        yield 'same III' => [
+            '<?php $a[1] ??= 1;',
+            '<?php $a[1] = (($a{1})) ?? 1;',
         ];
     }
 }

@@ -121,17 +121,6 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php call_user_func($foo, $foo = "bar");',
         ];
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield 'call by variable (PHP < 8.0)' => [
-                '<?php
-                    $a{"b"}{"c"}(1, 2);
-                ',
-                '<?php
-                    call_user_func($a{"b"}{"c"}, 1, 2);
-                ',
-            ];
-        }
-
         yield 'call by property' => [
             '<?php
                 ($f->c)(1, 2);
@@ -238,6 +227,31 @@ class Foo {
     return call_user_func_array(static::$factory, $args);
   }
 }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, 1?: string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield 'call by variable' => [
+            '<?php
+                $a{"b"}{"c"}(1, 2);
+            ',
+            '<?php
+                call_user_func($a{"b"}{"c"}, 1, 2);
+            ',
         ];
     }
 
