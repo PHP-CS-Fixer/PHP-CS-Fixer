@@ -924,8 +924,8 @@ $array = [
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
-                        $lines[$index] = $line;
+                        $line = str_replace($placeholder, str_repeat(' ', $delta) . $placeholder, $line);
+                        $lines[$index] = $this->getReAlignedLineWithMultipleShiftsInSingleLine($line, $alignStrategy, $placeholder, $tokenContent, $delta);
                     }
                 }
             }
@@ -934,5 +934,58 @@ $array = [
         }
 
         return $tmpCode;
+    }
+
+    private function getReAlignedLineWithMultipleShiftsInSingleLine(
+        string $line,
+        string $alignStrategy,
+        string $placeholder,
+        string $tokenContent,
+        int $delta
+    ) {
+        if (
+            self::ALIGN === $alignStrategy
+            || self::ALIGN_BY_SCOPE === $alignStrategy
+        ) {
+            return $line;
+        }
+
+        $strAlreadyAligned = str_replace(
+            $placeholder . $tokenContent,
+            '',
+            mb_strstr($line, $placeholder . $tokenContent)
+        );
+
+        $quotedOperators = [];
+        foreach (array_keys($this->alignOperatorTokens) as $alignOperatorToken) {
+            $quotedOperators[] = preg_quote($alignOperatorToken, '/');
+        }
+
+        $count = 0;
+        $replacedStr = Preg::replaceCallback(
+            '/\s*?(' . implode('|', $quotedOperators) . ')/',
+            function ($matches) use (&$count, $delta) {
+                $tokenWithEmptyStr = $matches[0];
+                $token = $matches[1];
+                $emptyStrCount = mb_substr_count($tokenWithEmptyStr, ' ');
+                $reAlignedStr = $tokenWithEmptyStr;
+                if ($count === 0) {
+                    if ($emptyStrCount - $delta > 0) {
+                        $reAlignedStr = str_repeat(' ', $emptyStrCount - $delta) . $token;
+                    }
+                } else {
+                    $reAlignedStr = str_repeat(' ', $delta) . $tokenWithEmptyStr;
+                }
+                ++$count;
+
+                return $reAlignedStr;
+            },
+            $strAlreadyAligned,
+        );
+        return mb_strstr(
+                $line,
+                $placeholder . $tokenContent,
+                true
+            ) . $placeholder . $tokenContent . $replacedStr;
     }
 }
