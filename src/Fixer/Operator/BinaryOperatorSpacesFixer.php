@@ -942,7 +942,7 @@ $array = [
         string $placeholder,
         string $tokenContent,
         int $delta
-    ) {
+    ): string {
         if (
             self::ALIGN === $alignStrategy
             || self::ALIGN_BY_SCOPE === $alignStrategy
