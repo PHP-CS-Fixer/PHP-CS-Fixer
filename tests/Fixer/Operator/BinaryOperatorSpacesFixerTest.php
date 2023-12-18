@@ -556,6 +556,30 @@ $a = $ae?? $b;
             null,
             ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
         ];
+
+        yield 'multiple shifts in single line (success)' => [
+            '<?php
+             $testA = $testB["abc"]    / $testC * 100;
+             $testD = $testE["abcdef"] / $testF * 100;
+            ',
+            '<?php
+             $testA = $testB["abc"]/$testC * 100;
+             $testD = $testE["abcdef"]/$testF * 100;
+            ',
+            ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+        ];
+
+        yield 'multiple shifts in single line (failed)' => [
+            '<?php
+             $testA = $testB["abc"]    / $testC * 10000000    * 100;
+             $testD = $testE["abcdef"] / $testF * 10000000000 * 100;
+            ',
+            '<?php
+             $testA = $testB["abc"]/$testC * 10000000 * 100;
+             $testD = $testE["abcdef"]/$testF * 10000000000 * 100;
+            ',
+            ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
+        ];
     }
 
     /**
