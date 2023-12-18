@@ -724,7 +724,7 @@ PHPDoc
   All items of the given PHPDoc tags must be either left-aligned or (by default) aligned vertically.
 - `phpdoc_annotation_without_dot <./phpdoc/phpdoc_annotation_without_dot.rst>`_
 
-  PHPDoc that only contain a single line should be in compact notation
+  PHPDoc that only contains a single line should be in compact notation
 - `phpdoc_compact_single_line <./phpdoc/phpdoc_compact_single_line.rst>`_
 
   PHPDoc annotation descriptions should not be a sentence.
