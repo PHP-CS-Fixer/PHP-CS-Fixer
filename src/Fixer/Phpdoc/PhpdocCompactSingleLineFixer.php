@@ -52,8 +52,8 @@ final class PhpdocCompactSingleLineFixer extends AbstractFixer
                 continue;
             }
 
-            if (Preg::match('#^/\*\*\n*\s*\*.*\n\*/$#', $token->getContent())) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace('#^/\*\*\n*\s*\*(.*)\n\*/$#', '/** $1 */', $token->getContent())]);
+            if (Preg::match('#^/\*\*\n*\s*\*.*\n\s*\*/$#', $token->getContent())) {
+                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace('#^/\*\*\n*\s*\*\s*(.*)\n\s*\*/$#', '/** $1 */', $token->getContent())]);
             }
         }
     }

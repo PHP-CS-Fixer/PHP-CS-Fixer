@@ -39,23 +39,23 @@ final class PhpdocCompactSingleLineFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
+/** @var Foo $foo */
+            ',
+            '<?php
 /**
  * @var Foo $foo
  */
-            ',
-            '<?php
-/** @var Foo @foo */
             ',
         ];
 
         yield [
             '<?php
+/** bar */
+            ',
+            '<?php
 /**
  * bar
  */
-            ',
-            '<?php
-/** bar */
             ',
         ];
 
