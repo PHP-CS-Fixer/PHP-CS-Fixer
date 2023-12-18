@@ -65,7 +65,7 @@ final class PhpdocCompactSingleLineFixerTest extends AbstractFixerTestCase
  * @var Foo $foo
  * @var Bar $bar
  */
-            '
+            ',
         ];
     }
 }
