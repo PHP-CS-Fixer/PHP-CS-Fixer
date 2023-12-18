@@ -594,7 +594,7 @@ final class TypeExpression
     }
 
     /**
-     * @return array<string,string>
+     * @return array<string, string>
      */
     private function getAliases(): array
     {
