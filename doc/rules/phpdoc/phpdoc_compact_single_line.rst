@@ -21,7 +21,7 @@ Example #1
    -     * foo
    -     */
    +    /** foo */
-        const INDENT = 1;
+        const COMPACT = 1;
     }
 
 Source class
