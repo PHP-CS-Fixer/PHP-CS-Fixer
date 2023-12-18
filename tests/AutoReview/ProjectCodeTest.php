@@ -359,11 +359,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThereIsNoPhpVersionUsedDirectly(string $className): void
     {
-        $classesAllowedToUsePhpVersionIdConstant = [
-            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificationTest::class,
-            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificCodeSampleTest::class,
-        ];
-
         $tokens = $this->createTokensForClass($className);
 
         $stringTokens = array_filter(
@@ -382,10 +377,6 @@ final class ProjectCodeTest extends TestCase
         self::assertNotContains('PHP_MAJOR_VERSION', $strings, $message);
         self::assertNotContains('PHP_MINOR_VERSION', $strings, $message);
         self::assertNotContains('PHP_RELEASE_VERSION', $strings, $message);
-
-        if (\in_array($className, $classesAllowedToUsePhpVersionIdConstant, true)) {
-            return;
-        }
         self::assertNotContains('PHP_VERSION_ID', $strings, $message);
     }
 
