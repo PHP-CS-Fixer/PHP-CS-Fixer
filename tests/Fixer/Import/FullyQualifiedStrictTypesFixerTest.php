@@ -355,6 +355,117 @@ namespace Z\B\C\D
             ',
             null,
         ];
+
+        yield 'import new symbols from all supported places' => [
+            '<?php
+
+namespace Foo\Test;
+use Other\BaseClass;
+use Other\CaughtThrowable;
+use Other\FunctionArgument;
+use Other\FunctionReturnType;
+use Other\Interface1;
+use Other\Interface2;
+use Other\PropertyPhpDoc;
+use Other\StaticFunctionCall;
+
+class Foo extends BaseClass implements Interface1, Interface2
+{
+    /** @var PropertyPhpDoc */
+    private $array;
+    public function __construct(FunctionArgument $arg) {}
+    public function foo(): FunctionReturnType
+    {
+        try {
+            StaticFunctionCall::bar();
+        } catch (CaughtThrowable $e) {}
+    }
+}
+            ',
+            '<?php
+
+namespace Foo\Test;
+
+class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
+{
+    /** @var \Other\PropertyPhpDoc */
+    private $array;
+    public function __construct(\Other\FunctionArgument $arg) {}
+    public function foo(): \Other\FunctionReturnType
+    {
+        try {
+            \Other\StaticFunctionCall::bar();
+        } catch (\Other\CaughtThrowable $e) {}
+    }
+}
+            ',
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols under already existing imports' => [
+            '<?php
+
+namespace Foo\Test;
+
+use Other\A;
+use Other\B;
+use Other\C;
+use Other\D;
+use Other\E;
+
+function foo(A $a, B $b) {}
+function bar(C $c, D $d): E {}
+',
+            '<?php
+
+namespace Foo\Test;
+
+use Other\A;
+use Other\B;
+
+function foo(A $a, B $b) {}
+function bar(\Other\C $c, \Other\D $d): \Other\E {}
+',
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols within multiple namespaces' => [
+            '<?php
+
+namespace Foo\Bar {
+    use Other\A;
+use Other\B;
+
+    function foo(A $a, B $b) {}
+}
+namespace Foo\Baz {
+    use Other\A;
+use Other\C;
+
+    function foo(A $a, C $c) {}
+}
+',
+            '<?php
+
+namespace Foo\Bar {
+    use Other\A;
+
+    function foo(A $a, \Other\B $b) {}
+}
+namespace Foo\Baz {
+    use Other\A;
+
+    function foo(A $a, \Other\C $c) {}
+}
+',
+            ['import_symbols' => true],
+        ];
+
+        yield 'ignore importing if there is name conflict' => [
+            '<?php namespace Foo\Test; use Other\A; function foo(A $a, \YetAnother\A $b) {}',
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
