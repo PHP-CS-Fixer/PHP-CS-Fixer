@@ -1,0 +1,38 @@
+--TEST--
+Integration of fixers: Anonymous class /w PHPDoc and attributes on separate line.
+--RULESET--
+{"@PhpCsFixer": true}
+--EXPECT--
+<?php
+
+$a = new
+/** @property string $x */
+class() {};
+
+$a = new
+#[X]
+class() {};
+
+$a = new
+/** @property string $x */
+#[X] #[\Y\Z]
+class() {};
+
+--INPUT--
+<?php
+
+$a = new
+ /** @property string $x */
+
+class() {};
+
+
+$a = new
+#[X]
+class() {};
+
+
+$a = new
+/** @property string $x */
+#[X] #[\Y\Z]
+class() {};
