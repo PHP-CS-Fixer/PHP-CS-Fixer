@@ -41,7 +41,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 You can take a ready built docker image to run ``php-cs-fixer``.
 
 ```console
-docker run -v $(pwd):/var/www ghcr.io/php-cs-fixer/php-cs-fixer:latest fix src
+docker run -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:latest fix src
 ```
 
 or integrate as check into Gitlab CI like this:

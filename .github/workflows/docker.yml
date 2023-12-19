@@ -5,7 +5,7 @@ on:
     tags:
       - "v*.*.*"
     branches:
-      - "main"
+      - "master"
 
 env:
   REGISTRY: ghcr.io
@@ -61,7 +61,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
           tags: |
-            type=edge,branch=main,suffix=${{ matrix.php-suffix }}
+            type=edge,branch=master,suffix=${{ matrix.php-suffix }}
             type=semver,pattern={{version}},suffix=${{ matrix.php-suffix }}
             type=semver,pattern={{major}}.{{minor}},suffix=${{ matrix.php-suffix }}
             type=semver,pattern={{major}},suffix=${{ matrix.php-suffix }}

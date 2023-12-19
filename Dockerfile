@@ -16,20 +16,21 @@ FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
 COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 
 FROM base as vendor
-WORKDIR /var/www
-COPY composer.json /var/www/composer.json
+COPY composer.json /fixer/composer.json
+WORKDIR /fixer
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
 FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as dist
-WORKDIR /var/www
-RUN rmdir /var/www/html
-COPY src /usr/local/bin/src
-COPY php-cs-fixer /usr/local/bin/php-cs-fixer
+RUN mkdir /code
+WORKDIR /code
+COPY src /fixer/src
+COPY php-cs-fixer /fixer/php-cs-fixer
 # Only take the dependencies (not composer itself) into the container
-COPY --from=vendor /var/www/vendor /usr/local/bin/vendor
+COPY --from=vendor /fixer/vendor /fixer/vendor
+RUN ln -s /fixer/php-cs-fixer /usr/local/bin/php-cs-fixer
 ENTRYPOINT ["/usr/local/bin/php-cs-fixer"]
 
-FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as dev
+FROM base as dev
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
 ARG PHP_XDEBUG_VERSION
