@@ -308,6 +308,7 @@ final class TokenTest extends TestCase
 
     /**
      * @param mixed $prototype
+     * @param ?class-string<\Throwable> $expectedExceptionClass
      *
      * @dataProvider provideCreatingTokenCases
      */
