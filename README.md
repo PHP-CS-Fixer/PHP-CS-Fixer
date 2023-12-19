@@ -44,7 +44,7 @@ You can take a ready built docker image to run ``php-cs-fixer``.
 docker run -v $(pwd):/var/www ghcr.io/php-cs-fixer/php-cs-fixer:latest fix src
 ```
 
-or integrate as check into gitlab-ci like this
+or integrate as check into Gitlab CI like this:
 
 ```yaml
 php-cs-fixer:
