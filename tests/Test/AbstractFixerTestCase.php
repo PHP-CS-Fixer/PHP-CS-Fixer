@@ -66,7 +66,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * do not modify this structure without prior discussion.
      *
-     * @var array<string,bool>
+     * @var array<string, bool>
      */
     private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,

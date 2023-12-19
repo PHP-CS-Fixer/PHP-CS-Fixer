@@ -494,7 +494,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array<int|string,mixed> $values
+     * @param array<int|string, mixed> $values
      */
     private function allInteger(array $values): bool
     {

@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitStrictFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string,string>
+     * @var array<string, string>
      */
     private static array $assertionMap = [
         'assertAttributeEquals' => 'assertAttributeSame',
