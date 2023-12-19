@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDedicateAssertInternalTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixInternalTypeCases
+     * @dataProvider provideFixCases
      */
-    public function testFixInternalType(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixInternalTypeCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'skip cases' => [
             '<?php

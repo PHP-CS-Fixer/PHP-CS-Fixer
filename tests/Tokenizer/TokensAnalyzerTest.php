@@ -730,6 +730,9 @@ enum Foo: string
         }
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsAnonymousClassCases(): iterable
     {
         yield [
@@ -761,42 +764,102 @@ enum Foo: string
             [1 => false],
             '<?php interface foo {}',
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            yield [
-                [11 => true],
-                '<?php $object = new #[ExampleAttribute] class(){};',
-            ];
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsAnonymousClass80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testIsAnonymousClass80(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-            yield [
-                [27 => true],
-                '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
-            ];
+        foreach ($expected as $index => $expectedValue) {
+            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
         }
+    }
 
-        if (\PHP_VERSION_ID >= 8_01_00) {
-            yield [
-                [1 => false],
-                '<?php enum foo {}',
-            ];
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsAnonymousClass80Cases(): iterable
+    {
+        yield [
+            [11 => true],
+            '<?php $object = new #[ExampleAttribute] class(){};',
+        ];
+
+        yield [
+            [27 => true],
+            '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
+        ];
+    }
+
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsAnonymousClass81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testIsAnonymousClass81(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
         }
+    }
 
-        if (\PHP_VERSION_ID >= 8_03_00) {
-            yield 'simple readonly anonymous class' => [
-                [9 => true],
-                '<?php $instance = new readonly class {};',
-            ];
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsAnonymousClass81Cases(): iterable
+    {
+        yield [
+            [1 => false],
+            '<?php enum foo {}',
+        ];
+    }
 
-            yield 'readonly anonymous class with attribute' => [
-                [13 => true],
-                '<?php $instance = new #[Foo] readonly class {};',
-            ];
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsAnonymousClass83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testIsAnonymousClass83(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-            yield 'readonly anonymous class with multiple attributes' => [
-                [17 => true],
-                '<?php $instance = new #[Foo] #[BAR] readonly class {};',
-            ];
+        foreach ($expected as $index => $expectedValue) {
+            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
         }
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsAnonymousClass83Cases(): iterable
+    {
+        yield 'simple readonly anonymous class' => [
+            [9 => true],
+            '<?php $instance = new readonly class {};',
+        ];
+
+        yield 'readonly anonymous class with attribute' => [
+            [13 => true],
+            '<?php $instance = new #[Foo] readonly class {};',
+        ];
+
+        yield 'readonly anonymous class with multiple attributes' => [
+            [17 => true],
+            '<?php $instance = new #[Foo] #[BAR] readonly class {};',
+        ];
     }
 
     /**

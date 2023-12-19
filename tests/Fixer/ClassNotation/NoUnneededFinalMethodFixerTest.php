@@ -27,9 +27,12 @@ final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
+     *
+     * @param array<string, mixed> $configuration
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -366,21 +369,7 @@ abstract class Foo {
     private final function bar3(){ echo 2; }
 }',
         ];
-    }
 
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideFixConfigCases
-     */
-    public function testFixConfig(string $expected, string $input, array $config): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixConfigCases(): iterable
-    {
         yield [
             '<?php
 final class Foo

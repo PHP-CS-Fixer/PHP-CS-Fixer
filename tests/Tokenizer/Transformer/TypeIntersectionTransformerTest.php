@@ -63,7 +63,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             ',
         ];
 
-        if (\PHP_VERSION_ID >= 8_01_00) {
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
             yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
                 '<?php $a = $b&$c;',
                 [

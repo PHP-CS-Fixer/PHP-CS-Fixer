@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Mark Nielsen
@@ -260,6 +259,31 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
         yield [
             '<?php fn($a) => var_dump($a);',
         ];
+
+        $excluded = ['__clone', '__construct', '__debugInfo', '__destruct', '__isset', '__serialize', '__set_state', '__sleep', '__toString'];
+
+        foreach (self::provideMagicMethodsDefinitions() as $magicMethodsDefinition) {
+            $name = $magicMethodsDefinition[0];
+            $arguments = $magicMethodsDefinition[1] ?? 0;
+            $isStatic = $magicMethodsDefinition[2] ?? false;
+            $code = sprintf(
+                '<?php class Test { public%s function %s(%s)%%s {} }',
+                $isStatic ? ' static' : '',
+                $name,
+                implode(',', array_map(
+                    static fn (int $n): string => sprintf('$x%d', $n),
+                    array_keys(array_fill(0, $arguments ?? 0, true)),
+                ))
+            );
+
+            $input = sprintf($code, '');
+            $expected = sprintf($code, \in_array($name, $excluded, true) ? '' : ': void');
+
+            yield sprintf('Test if magic method %s is handled without causing syntax error', $name) => [
+                $expected,
+                $expected === $input ? null : $input,
+            ];
+        }
     }
 
     /**
@@ -312,28 +336,9 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * Test if magic method is handled without causing syntax error.
-     *
-     * @dataProvider provideMethodWillNotCauseSyntaxErrorCases
+     * @return iterable<array{string, 1?: int, 2?: bool}>
      */
-    public function testMethodWillNotCauseSyntaxError(string $method, int $arguments = 0, bool $static = false): void
-    {
-        $tokens = Tokens::fromCode(sprintf(
-            '<?php class Test { public%s function %s(%s) {} }',
-            $static ? ' static' : '',
-            $method,
-            implode(',', array_map(
-                static fn (int $n): string => sprintf('$x%d', $n),
-                array_keys(array_fill(0, $arguments, true)),
-            ))
-        ));
-
-        $this->fixer->fix(new \SplFileInfo(__FILE__), $tokens);
-
-        self::assertNull($this->lintSource($tokens->generateCode()));
-    }
-
-    public static function provideMethodWillNotCauseSyntaxErrorCases(): iterable
+    private static function provideMagicMethodsDefinitions(): iterable
     {
         // List: https://www.php.net/manual/en/language.oop5.magic.php
         yield ['__construct'];

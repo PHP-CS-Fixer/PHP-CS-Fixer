@@ -226,14 +226,8 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
             '<?php $foo = ((string) ($x + $y)){0};',
             '<?php $foo = strval($x + $y){0};',
         ];
-    }
 
-    /**
-     * @requires PHP <8.0
-     */
-    public function testFixPrePHP80(): void
-    {
-        $this->doTest(
+        yield [
             '<?php $a = #
 #
 #
@@ -252,8 +246,8 @@ intval#
 #
  $b#
  )#
- ;#'
-        );
+ ;#',
+        ];
     }
 
     /**

@@ -52,6 +52,11 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
+     * @var array<string, Tokens>
+     */
+    private static array $fileTokensCache = [];
+
+    /**
      * This structure contains older classes that are not yet covered by tests.
      *
      * It may only shrink, never add anything to it.
@@ -73,6 +78,7 @@ final class ProjectCodeTest extends TestCase
     {
         self::$srcClassCases = null;
         self::$testClassCases = null;
+        self::$fileTokensCache = [];
     }
 
     public function testThatClassesWithoutTestsVarIsProper(): void
@@ -768,7 +774,11 @@ final class ProjectCodeTest extends TestCase
         $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
         $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
 
-        return Tokens::fromCode(file_get_contents($file));
+        if (!isset(self::$fileTokensCache[$file])) {
+            self::$fileTokensCache[$file] = Tokens::fromCode(file_get_contents($file));
+        }
+
+        return self::$fileTokensCache[$file];
     }
 
     /**

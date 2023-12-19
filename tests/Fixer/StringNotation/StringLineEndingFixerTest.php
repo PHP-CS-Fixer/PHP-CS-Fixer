@@ -113,7 +113,7 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testWithDifferentLineEndingConfiguration(): void
+    public function testWithWhitespacesConfig(): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 

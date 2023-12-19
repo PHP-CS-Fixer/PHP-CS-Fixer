@@ -26,11 +26,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideDefaultFixCases
+     * @dataProvider provideFixCases
      *
      * @requires PHP 8.0
      */
-    public function testDefaultFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -38,7 +38,7 @@ final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<string, array{string, 1?: ?string}>
      */
-    public static function provideDefaultFixCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'scalar with null' => [
             "<?php\nfunction foo(?int \$bar): void {}\n",
@@ -101,11 +101,11 @@ class Dto
     }
 
     /**
-     * @dataProvider provideFixWithUnionSyntaxCases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixWithUnionSyntax(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'union']);
 
@@ -115,7 +115,7 @@ class Dto
     /**
      * @return iterable<string, array{string, 1?: ?string}>
      */
-    public static function provideFixWithUnionSyntaxCases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'scalar with null' => [
             "<?php\nfunction foo(null|int \$bar): void {}\n",
@@ -195,11 +195,11 @@ class Foo
     /**
      * @param null|array<string, string> $config
      *
-     * @dataProvider provideFixPhp81Cases
+     * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFixPhp81(string $expected, ?string $input = null, ?array $config = null): void
+    public function testFix81(string $expected, ?string $input = null, ?array $config = null): void
     {
         if (null !== $config) {
             $this->fixer->configure($config);
@@ -211,7 +211,7 @@ class Foo
     /**
      * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
-    public static function provideFixPhp81Cases(): iterable
+    public static function provideFix81Cases(): iterable
     {
         yield 'readonly property' => [
             '<?php
@@ -248,11 +248,11 @@ class Qux
     /**
      * @param null|array<string, string> $config
      *
-     * @dataProvider provideFixPhp82Cases
+     * @dataProvider provideFix82Cases
      *
      * @requires PHP 8.2
      */
-    public function testFixPhp82(string $expected, ?string $input = null, ?array $config = null): void
+    public function testFix82(string $expected, ?string $input = null, ?array $config = null): void
     {
         if (null !== $config) {
             $this->fixer->configure($config);
@@ -264,7 +264,7 @@ class Qux
     /**
      * @return iterable<string, array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
-    public static function provideFixPhp82Cases(): iterable
+    public static function provideFix82Cases(): iterable
     {
         yield 'skips DNF types' => [
             '<?php
