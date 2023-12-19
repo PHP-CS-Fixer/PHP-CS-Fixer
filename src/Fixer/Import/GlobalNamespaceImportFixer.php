@@ -100,7 +100,7 @@ if (count($x)) {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnusedImportsFixer, OrderedImportsFixer.
+     * Must run before NoUnusedImportsFixer, OrderedImportsFixer, StatementIndentationFixer.
      * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer.
      */
     public function getPriority(): int

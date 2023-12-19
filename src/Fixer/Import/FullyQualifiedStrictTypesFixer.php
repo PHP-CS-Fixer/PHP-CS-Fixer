@@ -160,7 +160,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer.
+     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, StatementIndentationFixer.
      * Must run after PhpdocToReturnTypeFixer.
      */
     public function getPriority(): int

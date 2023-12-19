@@ -448,6 +448,8 @@ final class FixerFactoryTest extends TestCase
             ],
             'fully_qualified_strict_types' => [
                 'no_superfluous_phpdoc_tags',
+                'ordered_imports',
+                'statement_indentation',
             ],
             'function_declaration' => [
                 'method_argument_space',
@@ -476,6 +478,7 @@ final class FixerFactoryTest extends TestCase
             'global_namespace_import' => [
                 'no_unused_imports',
                 'ordered_imports',
+                'statement_indentation',
             ],
             'header_comment' => [
                 'blank_lines_before_namespace',
