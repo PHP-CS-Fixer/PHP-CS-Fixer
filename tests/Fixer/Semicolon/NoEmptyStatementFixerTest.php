@@ -557,8 +557,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             self::markTestSkipped('No short tag tests possible.');
         }
 
-        self::fail('Am I ever here?');
-        // $this->doTest($expected, $input);
+        $this->doTest($expected, $input);
     }
 
     public static function provideCasesWithShortOpenTagCases(): iterable
