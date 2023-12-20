@@ -774,7 +774,7 @@ class Tokens extends \SplFixedArray
         // remove the first token from the sequence, so we can freely iterate through the sequence after a match to
         // the first one is found
         $key = key($sequence);
-        $firstCs = Token::isKeyCaseSensitive($caseSensitive, $key);
+        $firstCs = self::isKeyCaseSensitive($caseSensitive, $key);
         $firstToken = $sequence[$key];
         unset($sequence[$key]);
 
@@ -803,7 +803,7 @@ class Tokens extends \SplFixedArray
                     return null;
                 }
 
-                if (!$this[$currIdx]->equals($token, Token::isKeyCaseSensitive($caseSensitive, $key))) {
+                if (!$this[$currIdx]->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
                     // not a match, restart the outer loop
                     continue 2;
                 }
@@ -1430,5 +1430,22 @@ class Tokens extends \SplFixedArray
 
             return $index;
         }
+    }
+
+    /**
+     * A helper method used to find out whether a certain input token has to be case-sensitively matched.
+     *
+     * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                             the ones used in $sequence. If any is missing, the default case-sensitive
+     *                                             comparison is used
+     * @param int                   $key           the key of the token that has to be looked up
+     */
+    private static function isKeyCaseSensitive($caseSensitive, int $key): bool
+    {
+        if (\is_array($caseSensitive)) {
+            return $caseSensitive[$key] ?? true;
+        }
+
+        return $caseSensitive;
     }
 }
