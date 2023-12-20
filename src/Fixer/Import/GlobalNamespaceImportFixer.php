@@ -129,19 +129,19 @@ if (count($x)) {
         $newImports = [];
 
         if (true === $this->configuration['import_constants']) {
-            $newImports['const'] = array_values($this->importConstants($tokens, $useDeclarations));
+            $newImports['const'] = $this->importConstants($tokens, $useDeclarations);
         } elseif (false === $this->configuration['import_constants']) {
             $this->fullyQualifyConstants($tokens, $useDeclarations);
         }
 
         if (true === $this->configuration['import_functions']) {
-            $newImports['function'] = array_values($this->importFunctions($tokens, $useDeclarations));
+            $newImports['function'] = $this->importFunctions($tokens, $useDeclarations);
         } elseif (false === $this->configuration['import_functions']) {
             $this->fullyQualifyFunctions($tokens, $useDeclarations);
         }
 
         if (true === $this->configuration['import_classes']) {
-            $newImports['class'] = array_values($this->importClasses($tokens, $useDeclarations));
+            $newImports['class'] = $this->importClasses($tokens, $useDeclarations);
         } elseif (false === $this->configuration['import_classes']) {
             $this->fullyQualifyClasses($tokens, $useDeclarations);
         }
