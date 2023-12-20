@@ -211,10 +211,10 @@ final class Token
     /**
      * A helper method used to find out whether a certain input token has to be case-sensitively matched.
      *
-     * @param bool|list<bool> $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
-     *                                       the ones used in $sequence. If any is missing, the default case-sensitive
-     *                                       comparison is used
-     * @param int             $key           the key of the token that has to be looked up
+     * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
+     *                                             the ones used in $sequence. If any is missing, the default case-sensitive
+     *                                             comparison is used
+     * @param int                   $key           the key of the token that has to be looked up
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
@@ -249,6 +249,8 @@ final class Token
      * Get token's content.
      *
      * It shall be used only for getting the content of token, not for checking it against excepted value.
+     *
+     * @return non-empty-string
      */
     public function getContent(): string
     {

@@ -531,7 +531,7 @@ namespace Foo\Bar {
     }
 
     /**
-     * @return Token[]
+     * @return list<Token>
      */
     private function namespacedStringToTokens(string $input, bool $withLeadingBackslash = false): array
     {

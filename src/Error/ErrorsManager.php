@@ -24,14 +24,14 @@ namespace PhpCsFixer\Error;
 final class ErrorsManager
 {
     /**
-     * @var Error[]
+     * @var list<Error>
      */
     private array $errors = [];
 
     /**
      * Returns errors reported during linting before fixing.
      *
-     * @return Error[]
+     * @return list<Error>
      */
     public function getInvalidErrors(): array
     {
@@ -41,7 +41,7 @@ final class ErrorsManager
     /**
      * Returns errors reported during fixing.
      *
-     * @return Error[]
+     * @return list<Error>
      */
     public function getExceptionErrors(): array
     {
@@ -51,7 +51,7 @@ final class ErrorsManager
     /**
      * Returns errors reported during linting after fixing.
      *
-     * @return Error[]
+     * @return list<Error>
      */
     public function getLintErrors(): array
     {
