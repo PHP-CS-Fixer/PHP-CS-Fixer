@@ -60,7 +60,7 @@ final class WarningsDetector
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getWarnings(): array
     {

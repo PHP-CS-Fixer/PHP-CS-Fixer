@@ -225,7 +225,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     }
 
     /**
-     * @return Line[]
+     * @return list<Line>
      */
     private function updateDocBlock(Tokens $tokens, int $docBlockIndex): array
     {
@@ -236,9 +236,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     }
 
     /**
-     * @param Line[] $lines
+     * @param list<Line> $lines
      *
-     * @return Line[]
+     * @return list<Line>
      */
     private function updateLines(array $lines, Tokens $tokens, int $docBlockIndex): array
     {

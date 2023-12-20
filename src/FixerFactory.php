@@ -83,6 +83,7 @@ final class FixerFactory
         static $builtInFixers = null;
 
         if (null === $builtInFixers) {
+            /** @var list<class-string<FixerInterface>> */
             $builtInFixers = [];
 
             /** @var SplFileInfo $file */
@@ -94,7 +95,9 @@ final class FixerFactory
         }
 
         foreach ($builtInFixers as $class) {
-            $this->registerFixer(new $class(), false);
+            /** @var FixerInterface */
+            $fixer = new $class();
+            $this->registerFixer($fixer, false);
         }
 
         return $this;
@@ -195,7 +198,7 @@ final class FixerFactory
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function getFixersConflicts(FixerInterface $fixer): array
     {

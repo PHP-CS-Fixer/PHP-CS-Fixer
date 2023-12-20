@@ -29,10 +29,10 @@ final class RuleSet implements RuleSetInterface
     /**
      * Group of rules generated from input set.
      *
-     * The key is name of rule, value is bool if the rule/set should be used.
+     * The key is name of rule, value is configuration array or true.
      * The key must not point to any set.
      *
-     * @var array<string, array<string, mixed>|bool>
+     * @var array<string, array<string, mixed>|true>
      */
     private array $rules;
 
