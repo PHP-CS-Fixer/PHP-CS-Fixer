@@ -34,6 +34,12 @@
         <testsuite name="auto-review">
             <directory>./tests/AutoReview/</directory>
         </testsuite>
+        <testsuite name="short-open-tag">
+            <file>./tests/Fixer/PhpTag/NoClosingTagFixerTest.php</file>
+            <file>./tests/Fixer/Semicolon/NoEmptyStatementFixerTest.php</file>
+            <file>./tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php</file>
+            <file>./tests/Tokenizer/TokensTest.php</file>
+        </testsuite>
     </testsuites>
 
     <coverage>

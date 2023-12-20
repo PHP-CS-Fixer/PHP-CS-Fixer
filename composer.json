@@ -131,6 +131,10 @@
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite integration"
         ],
+        "test:short-open-tag": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -d short_open_tag=1 ./vendor/bin/phpunit --testsuite short-open-tag"
+        ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite smoke"
