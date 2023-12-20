@@ -28,6 +28,8 @@ final class CodeHasher
 
     /**
      * Calculate hash for code.
+     *
+     * @return non-empty-string
      */
     public static function calculateCodeHash(string $code): string
     {

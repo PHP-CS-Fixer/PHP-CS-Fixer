@@ -56,7 +56,7 @@ final class DescribeCommand extends Command
     protected static $defaultName = 'describe';
 
     /**
-     * @var string[]
+     * @var ?list<string>
      */
     private $setNames;
 
@@ -400,7 +400,7 @@ final class DescribeCommand extends Command
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function getSetNames(): array
     {

@@ -51,7 +51,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     public const CALL_TYPE_STATIC = 'static';
 
     /**
-     * @var array<string,true>
+     * @var array<string, true>
      */
     private array $staticMethods = [
         // Assert methods
@@ -295,7 +295,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     /**
-     * @var array<string,bool>
+     * @var array<string, bool>
      */
     private array $allowedValues = [
         self::CALL_TYPE_THIS => true,

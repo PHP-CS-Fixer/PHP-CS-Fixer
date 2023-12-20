@@ -66,7 +66,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * do not modify this structure without prior discussion.
      *
-     * @var array<string,bool>
+     * @var array<string, bool>
      */
     private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
@@ -267,7 +267,13 @@ abstract class AbstractFixerTestCase extends TestCase
     public function testFixerUseInsertSlicesWhenOnlyInsertionsArePerformed(): void
     {
         $reflection = new \ReflectionClass($this->fixer);
-        $tokens = Tokens::fromCode(file_get_contents($reflection->getFileName()));
+
+        $filePath = $reflection->getFileName();
+        if (false === $filePath) {
+            throw new \RuntimeException('Cannot determine sourcefile for class.');
+        }
+
+        $tokens = Tokens::fromCode(file_get_contents($filePath));
 
         $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
 
@@ -387,7 +393,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Comment\SingleLineCommentStyleFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededBracesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::class,
@@ -395,7 +400,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixerTest::class,
             \PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\FunctionNotation\FopenFlagsFixerTest::class,
             \PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest::class,
             \PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest::class,
             \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class,
@@ -404,7 +408,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixerTest::class,
             \PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest::class,
             \PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest::class,
             \PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest::class,
@@ -418,7 +421,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::class,
             \PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest::class,
@@ -444,7 +446,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest::class,
-            \PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class,
@@ -452,13 +453,6 @@ abstract class AbstractFixerTestCase extends TestCase
             \PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::class,
             \PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest::class,
         ];
-
-        if (\in_array(static::class, $exceptionClasses, true)) {
-            self::markTestSkipped('Not covered yet.');
-        }
-
-        self::assertTrue(method_exists($this, 'testFix'), sprintf('Method testFix does not exist in %s.', static::class));
-        self::assertTrue(method_exists($this, 'provideFixCases'), sprintf('Method provideFixCases does not exist in %s.', static::class));
 
         $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
@@ -478,6 +472,17 @@ abstract class AbstractFixerTestCase extends TestCase
             )
         );
 
+        if (\in_array(static::class, $exceptionClasses, true)) {
+            self::assertNotSame(
+                [],
+                $extraMethods,
+                sprintf('Class "%s" have correct method names, remove it from exceptions list.', static::class),
+            );
+            self::markTestSkipped('Not covered yet.');
+        }
+
+        self::assertTrue(method_exists($this, 'testFix'), sprintf('Method testFix does not exist in %s.', static::class));
+        self::assertTrue(method_exists($this, 'provideFixCases'), sprintf('Method provideFixCases does not exist in %s.', static::class));
         self::assertSame(
             [],
             $extraMethods,
@@ -616,7 +621,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @param list<array{0: int, 1?: string}> $sequence
      *
-     * @return list<array<int, Token>>
+     * @return list<non-empty-array<int, Token>>
      */
     private function findAllTokenSequences(Tokens $tokens, array $sequence): array
     {
