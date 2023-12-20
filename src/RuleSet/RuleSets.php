@@ -50,7 +50,7 @@ final class RuleSets
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public static function getSetDefinitionNames(): array
     {

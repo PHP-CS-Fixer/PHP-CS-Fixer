@@ -210,7 +210,7 @@ final class TypeExpression
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getTypes(): array
     {

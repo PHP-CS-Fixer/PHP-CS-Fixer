@@ -31,7 +31,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     /**
      * The annotation tags search inside.
      *
-     * @var string[]
+     * @var list<string>
      */
     protected array $tags;
 
@@ -93,9 +93,9 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     }
 
     /**
-     * @param string[] $types
+     * @param list<string> $types
      *
-     * @return string[]
+     * @return list<string>
      */
     private function normalizeTypes(array $types): array
     {
