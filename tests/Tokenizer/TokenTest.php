@@ -468,9 +468,12 @@ final class TokenTest extends TestCase
      * @param bool|list<bool> $caseSensitive
      *
      * @dataProvider provideIsKeyCaseSensitiveCases
+     *
+     * @group legacy
      */
     public function testIsKeyCaseSensitive(bool $isKeyCaseSensitive, $caseSensitive, int $key): void
     {
+        $this->expectDeprecation('Method "PhpCsFixer\Tokenizer\Token::isKeyCaseSensitive" is deprecated and will be removed in the next major version.');
         self::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
