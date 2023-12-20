@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Import;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -30,9 +31,22 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $config = []): void
-    {
+    public function testFix(
+        string $expected,
+        ?string $input = null,
+        array $config = [],
+        ?WhitespacesFixerConfig $whitespaceConfig = null
+    ): void {
         $this->fixer->configure($config);
+
+        if (null !== $whitespaceConfig) {
+            $this->fixer->setWhitespacesConfig($whitespaceConfig);
+            $expected = str_replace("\n", $whitespaceConfig->getLineEnding(), $expected);
+            if (null !== $input) {
+                $input = str_replace("\n", $whitespaceConfig->getLineEnding(), $input);
+            }
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -459,6 +473,28 @@ namespace Foo\Baz {
 }
 ',
             ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols with custom whitespace config' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Other\A;
+use Other\B;
+
+function foo(A $a, B $b) {}
+',
+            '<?php
+
+namespace Foo\Bar;
+
+use Other\A;
+
+function foo(A $a, \Other\B $b) {}
+',
+            ['import_symbols' => true],
+            new WhitespacesFixerConfig("\t", "\r\n"),
         ];
 
         yield 'ignore importing if there is name conflict' => [
