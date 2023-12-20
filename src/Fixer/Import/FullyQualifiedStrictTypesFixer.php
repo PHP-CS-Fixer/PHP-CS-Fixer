@@ -634,14 +634,12 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $normalisedName = $this->normaliseSymbolName($symbol);
 
-        // If symbol is a FQCN and we already have it in existing uses, do nothing
-        if (isset($uses[$normalisedName])) {
+        // If symbol is a FQCN and we already have it in existing uses, or if the symbol is not a FQCN, do nothing
+        if (isset($uses[$normalisedName]) || !str_starts_with($symbol, '\\')) {
             return;
         }
 
-        $shortSymbol = str_contains($symbol, '\\')
-            ? substr($symbol, strrpos($symbol, '\\') + 1)
-            : $symbol;
+        $shortSymbol = substr($symbol, strrpos($symbol, '\\') + 1);
         $importedShortNames = array_map(
             static fn (string $name): string => strtolower($name),
             array_values($uses)
