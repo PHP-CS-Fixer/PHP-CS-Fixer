@@ -183,7 +183,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCN should be automatically imported.'
+                'Whether FQCNs found during analysis should be automatically imported.'
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
