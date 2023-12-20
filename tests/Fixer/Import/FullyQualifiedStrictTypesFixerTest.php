@@ -508,6 +508,12 @@ function foo(A $a, \Other\B $b) {}
             null,
             ['import_symbols' => true],
         ];
+
+        yield 'ignore global FQNs (there is GlobalNamespaceImportFixer for that)' => [
+            '<?php namespace Foo\Test; function foo(\Symbol $a, \OtherSymbol $b) {}',
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
