@@ -502,6 +502,12 @@ function foo(A $a, \Other\B $b) {}
             null,
             ['import_symbols' => true],
         ];
+
+        yield 'ignore importing if symbol is not a FQN' => [
+            '<?php namespace Foo\Test; use Foo\Test\Sub\Symbol1; function foo(Symbol1 $a, Sub\Symbol2 $b) {}',
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
