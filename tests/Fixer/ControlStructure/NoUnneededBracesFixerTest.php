@@ -24,10 +24,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoUnneededBracesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -129,6 +132,56 @@ final class NoUnneededBracesFixerTest extends AbstractFixerTestCase
                     }
                 ',
         ];
+
+        yield [
+            '<?php
+namespace Foo;
+    function Bar(){}
+
+',
+            '<?php
+namespace Foo {
+    function Bar(){}
+}
+',
+            ['namespaces' => true],
+        ];
+
+        yield [
+            '<?php
+            namespace A5 {
+                function AA(){}
+            }
+            namespace B6 {
+                function BB(){}
+            }',
+            null,
+            ['namespaces' => true],
+        ];
+
+        yield [
+            '<?php
+            namespace Foo7;
+                function Bar(){}
+            ',
+            '<?php
+            namespace Foo7 {
+                function Bar(){}
+            }',
+            ['namespaces' => true],
+        ];
+
+        yield [
+            '<?php
+            namespace Foo8\\A;
+                function Bar(){}
+             ?>',
+            "<?php
+            namespace Foo8\\A\t \t {
+                function Bar(){}
+            } ?>",
+            ['namespaces' => true],
+        ];
     }
 
     /**
@@ -148,63 +201,6 @@ final class NoUnneededBracesFixerTest extends AbstractFixerTestCase
                     echo ${$a};
                     echo $a{1};
                 ',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixNamespaceCases
-     */
-    public function testFixNamespace(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['namespaces' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixNamespaceCases(): iterable
-    {
-        yield [
-            '<?php
-namespace Foo;
-    function Bar(){}
-
-',
-            '<?php
-namespace Foo {
-    function Bar(){}
-}
-',
-        ];
-
-        yield [
-            '<?php
-            namespace A5 {
-                function AA(){}
-            }
-            namespace B6 {
-                function BB(){}
-            }',
-        ];
-
-        yield [
-            '<?php
-            namespace Foo7;
-                function Bar(){}
-            ',
-            '<?php
-            namespace Foo7 {
-                function Bar(){}
-            }',
-        ];
-
-        yield [
-            '<?php
-            namespace Foo8\\A;
-                function Bar(){}
-             ?>',
-            "<?php
-            namespace Foo8\\A\t \t {
-                function Bar(){}
-            } ?>",
         ];
     }
 }

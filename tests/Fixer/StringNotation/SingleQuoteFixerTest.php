@@ -26,10 +26,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleQuoteFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -146,25 +149,11 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
             <?php $a = "\\\n";
             EOF
         ];
-    }
 
-    /**
-     * @dataProvider provideSingleQuoteFixCases
-     */
-    public function testSingleQuoteFix(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'strings_containing_single_quote_chars' => true,
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideSingleQuoteFixCases(): iterable
-    {
         yield [
             '<?php $a = \'foo \\\'bar\\\'\';',
             '<?php $a = "foo \'bar\'";',
+            ['strings_containing_single_quote_chars' => true],
         ];
 
         yield [
@@ -188,6 +177,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $c = "start \\\\' end";
                 EOT
             ,
+            ['strings_containing_single_quote_chars' => true],
         ];
 
         yield [
@@ -199,6 +189,8 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $b = "start \\\' end";
                 EOT
             ,
+            null,
+            ['strings_containing_single_quote_chars' => true],
         ];
     }
 }
