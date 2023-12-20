@@ -61,14 +61,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
+          flavor: |
+            latest=false
+            suffix=${{ matrix.php-suffix }}
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
           # "edge" will only build from master, "semver" only from tags
           tags: |
-            type=edge,branch=master,suffix=${{ matrix.php-suffix }}
-            type=semver,pattern={{version}},suffix=${{ matrix.php-suffix }}
-            type=semver,pattern={{major}}.{{minor}},suffix=${{ matrix.php-suffix }}
-            type=semver,pattern={{major}},suffix=${{ matrix.php-suffix }}
-            type=semver,pattern=latest,suffix=${{ matrix.php-suffix }}
+            type=edge,branch=master
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=semver,pattern=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56
