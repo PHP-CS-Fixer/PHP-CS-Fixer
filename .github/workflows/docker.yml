@@ -13,6 +13,7 @@ env:
 
 jobs:
   build-and-push-image:
+    name: PHP ${{ matrix.php-version }}, Fixer ${{ github.ref == 'refs/heads/master' && 'nightly' || ${{ github.ref_name }} }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
