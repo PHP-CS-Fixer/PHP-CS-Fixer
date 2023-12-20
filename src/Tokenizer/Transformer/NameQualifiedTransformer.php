@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -51,38 +52,15 @@ final class NameQualifiedTransformer extends AbstractTransformer
 
     private function transformQualified(Tokens $tokens, Token $token, int $index): void
     {
-        $parts = explode('\\', $token->getContent());
-        $newTokens = [];
-
-        if ('' === $parts[0]) {
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
-            array_shift($parts);
-        }
-
-        foreach ($parts as $part) {
-            $newTokens[] = new Token([T_STRING, $part]);
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
-        }
-
-        array_pop($newTokens);
+        $newTokens = ImportProcessor::tokenizeName($token->getContent());
 
         $tokens->overrideRange($index, $index, $newTokens);
     }
 
     private function transformRelative(Tokens $tokens, Token $token, int $index): void
     {
-        $parts = explode('\\', $token->getContent());
-        $newTokens = [
-            new Token([T_NAMESPACE, array_shift($parts)]),
-            new Token([T_NS_SEPARATOR, '\\']),
-        ];
-
-        foreach ($parts as $part) {
-            $newTokens[] = new Token([T_STRING, $part]);
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
-        }
-
-        array_pop($newTokens);
+        $newTokens = ImportProcessor::tokenizeName($token->getContent());
+        $newTokens[0] = new Token([T_NAMESPACE, 'namespace']);
 
         $tokens->overrideRange($index, $index, $newTokens);
     }
