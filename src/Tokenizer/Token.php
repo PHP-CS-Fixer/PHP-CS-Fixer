@@ -215,6 +215,8 @@ final class Token
      *                                             the ones used in $sequence. If any is missing, the default case-sensitive
      *                                             comparison is used
      * @param int                   $key           the key of the token that has to be looked up
+     *
+     * @deprecated
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
