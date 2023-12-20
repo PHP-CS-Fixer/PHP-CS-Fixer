@@ -40,8 +40,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    private ImportProcessor $importProcessor;
-
     /**
      * @var array{
      *     const?: array<string, class-string>,
@@ -50,13 +48,6 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
      * }
      */
     private array $symbolsForImport = [];
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->importProcessor = new ImportProcessor($this->whitespacesConfig);
-    }
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -235,7 +226,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $atIndex = (null !== $lastUse) ? $lastUse->getEndIndex() + 1 : $namespace->getEndIndex() + 1;
 
                 // Insert all registered FQCNs
-                $this->importProcessor->insertImports($tokens, $this->symbolsForImport, $atIndex);
+                $this->createImportProcessor()->insertImports($tokens, $this->symbolsForImport, $atIndex);
 
                 $this->symbolsForImport = [];
             }
@@ -623,6 +614,15 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         return $tokens;
+    }
+
+    /**
+     * We need to create import processor dynamically (not in costructor), because actual whitespace configuration
+     * is set later, not when fixer's instance is created.
+     */
+    private function createImportProcessor(): ImportProcessor
+    {
+        return new ImportProcessor($this->whitespacesConfig);
     }
 
     /**
