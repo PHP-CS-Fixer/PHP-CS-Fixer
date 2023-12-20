@@ -198,7 +198,7 @@ final class FixerFactory
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function getFixersConflicts(FixerInterface $fixer): array
     {
