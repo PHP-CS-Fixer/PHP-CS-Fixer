@@ -588,33 +588,44 @@ namespace {
                 'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield 'include @compiler_optimized with strict enabled' => [
-                '<?php
+    /**
+     * @param array<string, mixed> $configuration
+     *
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, 1?: string, 2?: array<mixed>}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield 'include @compiler_optimized with strict enabled' => [
+            '<?php
                         $a = not_compiler_optimized_function();
                         $b =  not_compiler_optimized_function();
                         $c = \intval($d);
                     ',
-                '<?php
+            '<?php
                         $a = \not_compiler_optimized_function();
                         $b = \ not_compiler_optimized_function();
                         $c = intval($d);
                     ',
-                [
-                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
-                    'strict' => true,
-                ],
-            ];
-        }
-    }
+            [
+                'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
+                'strict' => true,
+            ],
+        ];
 
-    /**
-     * @requires PHP <8.0
-     */
-    public function testFixPrePHP80(): void
-    {
-        $this->doTest(
+        yield [
             '<?php
 echo \/**/strlen($a);
 echo \ strlen($a);
@@ -630,8 +641,8 @@ echo \#
 #
 strlen($a);
 echo strlen($a);
-'
-        );
+',
+        ];
     }
 
     /**
