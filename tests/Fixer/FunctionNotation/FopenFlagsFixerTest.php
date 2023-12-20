@@ -111,7 +111,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string>
+     * @return iterable<string, string>
      */
     private static function provideDoNotFixCodeSamples(): iterable
     {
@@ -157,7 +157,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
                 $a = \fopen($foo, \'w+ロ\');
                 ';
 
-        yield '<?php
+        yield 'second argument not string' => '<?php
                     echo "abc"; // to pass the candidate check
                     $a = fopen($foo, 1);
                     $a = fopen($foo, $a);
