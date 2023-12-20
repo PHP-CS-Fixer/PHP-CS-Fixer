@@ -133,7 +133,7 @@
         ],
         "test:short-open-tag": [
             "Composer\\Config::disableProcessTimeout",
-            "@php -d short_open_tag=1 ./vendor/bin/phpunit --testsuite short-open-tag"
+            "@php -d short_open_tag=1 ./vendor/bin/phpunit --do-not-cache-result --testsuite short-open-tag"
         ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
