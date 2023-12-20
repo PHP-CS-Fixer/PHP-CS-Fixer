@@ -634,8 +634,15 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $normalisedName = $this->normaliseSymbolName($symbol);
 
-        // If symbol is a FQCN and we already have it in existing uses, or if the symbol is not a FQCN, do nothing
-        if (isset($uses[$normalisedName]) || !str_starts_with($symbol, '\\')) {
+        // Do NOT register symbol for importing if:
+        if (
+            // we already have the symbol in existing imports
+            isset($uses[$normalisedName])
+            // or if the symbol is not a FQCN
+            || !str_starts_with($symbol, '\\')
+            // or if it's a global symbol
+            || strpos($symbol, '\\') === strrpos($symbol, '\\')
+        ) {
             return;
         }
 
