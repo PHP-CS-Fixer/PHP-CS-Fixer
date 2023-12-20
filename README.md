@@ -57,9 +57,9 @@ There are different tags for each stability and php version with syntax `<php-cs
 
 * `3.41.1-php8.1`
 * `3.41-php8.2`
-* `3` (uses the latest php version)
-* `latest` (latest stable cs-fixer and latest stable php version)
-* `edge-php7.4` (current build from main with old php version)
+* `3` (uses the highest supported PHP version)
+* `latest` (latest stable Fixer on highest supported PHP version)
+* `edge-php7.4` (current build from main branch with specific PHP version)
 
 ### Installation
 
