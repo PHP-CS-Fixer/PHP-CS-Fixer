@@ -95,7 +95,7 @@ final class Example
     }
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     private function getCandidates(Tokens $tokens, int $index): array
     {

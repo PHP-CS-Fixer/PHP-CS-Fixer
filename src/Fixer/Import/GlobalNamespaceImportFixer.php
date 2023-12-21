@@ -31,6 +31,7 @@ use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -40,6 +41,15 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class GlobalNamespaceImportFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
+    private ImportProcessor $importProcessor;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->importProcessor = new ImportProcessor($this->whitespacesConfig);
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -90,7 +100,7 @@ if (count($x)) {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnusedImportsFixer, OrderedImportsFixer.
+     * Must run before NoUnusedImportsFixer, OrderedImportsFixer, StatementIndentationFixer.
      * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer.
      */
     public function getPriority(): int
@@ -139,7 +149,15 @@ if (count($x)) {
         $newImports = array_filter($newImports);
 
         if (\count($newImports) > 0) {
-            $this->insertImports($tokens, $newImports, $useDeclarations);
+            if (\count($useDeclarations) > 0) {
+                $useDeclaration = end($useDeclarations);
+                $atIndex = $useDeclaration->getEndIndex() + 1;
+            } else {
+                $namespace = $tokens->getNamespaceDeclarations()[0];
+                $atIndex = $namespace->getEndIndex() + 1;
+            }
+
+            $this->importProcessor->insertImports($tokens, $newImports, $atIndex);
         }
     }
 
@@ -391,16 +409,17 @@ if (count($x)) {
             }
         }
 
-        return $imports + $this->prepareImports($tokens, $indices, $global, $other, false);
+        return array_merge($imports, $this->prepareImports($tokens, $indices, $global, $other, false));
     }
 
     /**
      * Removes the leading slash at the given indices (when the name is not already used).
      *
-     * @param int[]               $indices
-     * @param array<string, true> $other
+     * @param int[]                      $indices
+     * @param array<string, string|true> $global
+     * @param array<string, true>        $other
      *
-     * @return array<string, string> array keys contain the names that must be imported
+     * @return array<string, class-string> array keys contain the names that must be imported
      */
     private function prepareImports(Tokens $tokens, array $indices, array $global, array $other, bool $caseSensitive): array
     {
@@ -429,49 +448,6 @@ if (count($x)) {
     /**
      * @param NamespaceUseAnalysis[] $useDeclarations
      */
-    private function insertImports(Tokens $tokens, array $imports, array $useDeclarations): void
-    {
-        if (\count($useDeclarations) > 0) {
-            $useDeclaration = end($useDeclarations);
-            $index = $useDeclaration->getEndIndex() + 1;
-        } else {
-            $namespace = $tokens->getNamespaceDeclarations()[0];
-            $index = $namespace->getEndIndex() + 1;
-        }
-
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        if (!$tokens[$index]->isWhitespace() || !str_contains($tokens[$index]->getContent(), "\n")) {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding]));
-        }
-
-        foreach ($imports as $type => $typeImports) {
-            foreach ($typeImports as $name) {
-                $items = [
-                    new Token([T_WHITESPACE, $lineEnding]),
-                    new Token([T_USE, 'use']),
-                    new Token([T_WHITESPACE, ' ']),
-                ];
-
-                if ('const' === $type) {
-                    $items[] = new Token([CT::T_CONST_IMPORT, 'const']);
-                    $items[] = new Token([T_WHITESPACE, ' ']);
-                } elseif ('function' === $type) {
-                    $items[] = new Token([CT::T_FUNCTION_IMPORT, 'function']);
-                    $items[] = new Token([T_WHITESPACE, ' ']);
-                }
-
-                $items[] = new Token([T_STRING, $name]);
-                $items[] = new Token(';');
-
-                $tokens->insertAt($index, $items);
-            }
-        }
-    }
-
-    /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
-     */
     private function fullyQualifyConstants(Tokens $tokens, array $useDeclarations): void
     {
         if (!$tokens->isTokenKindFound(CT::T_CONST_IMPORT)) {
@@ -480,7 +456,7 @@ if (count($x)) {
 
         [$global] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isConstant() && !$declaration->isAliased(), true);
 
-        if (!$global) {
+        if ([] === $global) {
             return;
         }
 
@@ -520,7 +496,7 @@ if (count($x)) {
 
         [$global] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isFunction() && !$declaration->isAliased(), false);
 
-        if (!$global) {
+        if ([] === $global) {
             return;
         }
 
@@ -560,7 +536,7 @@ if (count($x)) {
 
         [$global] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isClass() && !$declaration->isAliased(), false);
 
-        if (!$global) {
+        if ([] === $global) {
             return;
         }
 
@@ -609,6 +585,8 @@ if (count($x)) {
 
     /**
      * @param NamespaceUseAnalysis[] $declarations
+     *
+     * @return array{0: array<string, string|true>, 1: array<string, true>}
      */
     private function filterUseDeclarations(array $declarations, callable $callback, bool $caseSensitive): array
     {
