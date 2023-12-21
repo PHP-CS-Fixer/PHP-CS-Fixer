@@ -28,8 +28,6 @@ use PhpCsFixer\Console\Application;
  *
  * @coversNothing
  *
- * @group covers-nothing
- *
  * @large
  */
 final class CiIntegrationTest extends AbstractSmokeTestCase

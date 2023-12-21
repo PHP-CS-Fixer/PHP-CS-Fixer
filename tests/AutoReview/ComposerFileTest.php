@@ -20,9 +20,6 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @coversNothing
- *
- * @group covers-nothing
- * @group auto-review
  */
 final class ComposerFileTest extends TestCase
 {

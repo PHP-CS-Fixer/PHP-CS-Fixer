@@ -24,7 +24,5 @@ use PhpCsFixer\Tests\TestCase;
  * @requires OS Linux|Darwin
  *
  * @coversNothing
- *
- * @group covers-nothing
  */
 abstract class AbstractSmokeTestCase extends TestCase {}

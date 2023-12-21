@@ -343,8 +343,6 @@ $a = new class{};',
     }
 
     /**
-     * @group legacy
-     *
      * @param array<mixed> $config
      *
      * @dataProvider provideInvalidConfigurationCases

@@ -378,9 +378,6 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    /**
-     * @group legacy
-     */
     public function testTriggerDeprecationWhenFutureModeIsOff(): void
     {
         putenv('PHP_CS_FIXER_FUTURE_MODE=0');

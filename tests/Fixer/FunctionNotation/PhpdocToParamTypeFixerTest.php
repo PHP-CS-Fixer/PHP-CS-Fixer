@@ -21,8 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @group phpdoc
- *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer
  */
 final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase

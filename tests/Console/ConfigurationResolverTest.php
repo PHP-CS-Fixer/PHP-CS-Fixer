@@ -1174,8 +1174,6 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      * @param array<string, mixed>|bool $ruleConfig
      *
      * @dataProvider provideDeprecatedFixerConfiguredCases
-     *
-     * @group legacy
      */
     public function testDeprecatedFixerConfigured($ruleConfig): void
     {
@@ -1200,8 +1198,6 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     /**
      * @dataProvider provideDeprecatedRuleSetConfiguredCases
-     *
-     * @group legacy
      *
      * @param array<string> $successors
      */

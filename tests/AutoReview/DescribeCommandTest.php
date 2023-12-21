@@ -24,10 +24,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
- *
- * @group legacy
- * @group auto-review
- * @group covers-nothing
  */
 final class DescribeCommandTest extends TestCase
 {

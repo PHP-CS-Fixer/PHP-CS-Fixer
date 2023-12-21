@@ -26,8 +26,6 @@ use PhpCsFixer\Preg;
  *
  * @coversNothing
  *
- * @group covers-nothing
- *
  * @large
  */
 final class StdinTest extends AbstractSmokeTestCase

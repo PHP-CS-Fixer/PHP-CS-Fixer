@@ -22,9 +22,6 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @coversNothing
- *
- * @group auto-review
- * @group covers-nothing
  */
 final class ReadmeTest extends TestCase
 {
