@@ -406,9 +406,7 @@ final class ConfigurationResolver
                 $progressType = $this->options['show-progress'];
 
                 if (null === $progressType) {
-                    $progressType = $this->getConfig()->getHideProgress()
-                        ? ProgressOutputType::NONE
-                        : ProgressOutputType::DOTS;
+                    $progressType = $this->resolveProgressOutput();
                 } elseif (!\in_array($progressType, ProgressOutputType::AVAILABLE, true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
@@ -419,7 +417,7 @@ final class ConfigurationResolver
 
                 $this->progress = $progressType;
             } else {
-                $this->progress = ProgressOutputType::NONE;
+                $this->progress = $this->resolveProgressOutput();
             }
         }
 
@@ -949,5 +947,12 @@ final class ConfigurationResolver
         }
 
         return $config;
+    }
+
+    private function resolveProgressOutput(): string
+    {
+        return $this->getConfig()->getHideProgress()
+            ? ProgressOutputType::NONE
+            : ProgressOutputType::BAR;
     }
 }

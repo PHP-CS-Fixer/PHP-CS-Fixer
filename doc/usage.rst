@@ -111,7 +111,7 @@ The ``--show-progress`` option allows you to choose the way process progress is 
 * ``dots``: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
 * ``bar``: single line progress output with number of files and calculated percentage. Similar to ``dots`` output, it has to evaluate files list twice;
 
-If the option is not provided, it defaults to ``dots`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
+If the option is not provided, it defaults to ``bar`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
 
 .. code-block:: console
 

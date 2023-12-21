@@ -89,7 +89,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ], $config);
 
-        self::assertSame('dots', $resolver->getProgressType());
+        self::assertSame('bar', $resolver->getProgressType());
     }
 
     public function testResolveProgressWithNegativeConfigAndNegativeOption(): void
@@ -102,7 +102,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_NORMAL,
         ], $config);
 
-        self::assertSame('none', $resolver->getProgressType());
+        self::assertSame('bar', $resolver->getProgressType());
     }
 
     /**
@@ -155,7 +155,7 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none" and "dots".');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "dots" and "bar".');
 
         $resolver->getProgressType();
     }
