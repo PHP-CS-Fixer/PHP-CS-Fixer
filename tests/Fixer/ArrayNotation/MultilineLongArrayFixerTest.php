@@ -37,6 +37,9 @@ final class MultilineLongArrayFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1: null|string, 2?: array{characters_threshold: int}}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'Old style array' => [
