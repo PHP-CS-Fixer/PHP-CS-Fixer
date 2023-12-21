@@ -52,7 +52,7 @@ class Tokens extends \SplFixedArray
     /**
      * Static class cache.
      *
-     * @var array<string, self>
+     * @var array<non-empty-string, self>
      */
     private static array $cache = [];
 
@@ -72,6 +72,8 @@ class Tokens extends \SplFixedArray
 
     /**
      * A MD5 hash of the code string.
+     *
+     * @var ?non-empty-string
      */
     private ?string $codeHash = null;
 
@@ -89,7 +91,7 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is always true.
      *
-     * @var array<int|string, int>
+     * @var array<int|non-empty-string, int>
      */
     private array $foundTokenKinds = [];
 
@@ -111,7 +113,7 @@ class Tokens extends \SplFixedArray
     /**
      * Clear cache - one position or all of them.
      *
-     * @param null|string $key position to clear, when null clear all
+     * @param null|non-empty-string $key position to clear, when null clear all
      */
     public static function clearCache(?string $key = null): void
     {
@@ -126,8 +128,6 @@ class Tokens extends \SplFixedArray
 
     /**
      * Detect type of block.
-     *
-     * @param Token $token token
      *
      * @return null|array{type: self::BLOCK_TYPE_*, isStart: bool}
      */
@@ -149,8 +149,8 @@ class Tokens extends \SplFixedArray
     /**
      * Create token collection from array.
      *
-     * @param Token[] $array       the array to import
-     * @param ?bool   $saveIndices save the numeric indices used in the original array, default is yes
+     * @param array<int, Token> $array       the array to import
+     * @param ?bool             $saveIndices save the numeric indices used in the original array, default is yes
      */
     public static function fromArray($array, $saveIndices = null): self
     {
@@ -457,11 +457,11 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param int|list<int> $possibleKind kind or array of kinds
-     * @param int           $start        optional offset
-     * @param null|int      $end          optional limit
+     * @param int|non-empty-list<int> $possibleKind kind or array of kinds
+     * @param int                     $start        optional offset
+     * @param null|int                $end          optional limit
      *
-     * @return array<int, array<int, Token>>|array<int, Token>
+     * @return ($possibleKind is int ? array<int, Token> : array<int, array<int, Token>>)
      */
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
@@ -718,14 +718,14 @@ class Tokens extends \SplFixedArray
     /**
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
-     * @param list<array{0: int, 1?: string}|string|Token> $sequence      an array of token (kinds)
-     * @param int                                          $start         start index, defaulting to the start of the file
-     * @param null|int                                     $end           end index, defaulting to the end of the file
-     * @param array<bool>|bool                             $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
-     *                                                                    the ones used in $sequence. If any is missing, the default case-sensitive
-     *                                                                    comparison is used
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence      an array of token (kinds)
+     * @param int                                                    $start         start index, defaulting to the start of the file
+     * @param null|int                                               $end           end index, defaulting to the end of the file
+     * @param array<int, bool>|bool                                  $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
+     *                                                                              the ones used in $sequence. If any is missing, the default case-sensitive
+     *                                                                              comparison is used
      *
-     * @return null|array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
+     * @return null|non-empty-array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
     public function findSequence(array $sequence, int $start = 0, ?int $end = null, $caseSensitive = true): ?array
     {
@@ -1307,6 +1307,8 @@ class Tokens extends \SplFixedArray
 
     /**
      * Calculate hash for code.
+     *
+     * @return non-empty-string
      */
     private static function calculateCodeHash(string $code): string
     {
@@ -1316,7 +1318,7 @@ class Tokens extends \SplFixedArray
     /**
      * Get cache value for given key.
      *
-     * @param string $key item key
+     * @param non-empty-string $key item key
      */
     private static function getCache(string $key): self
     {
@@ -1330,7 +1332,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if given key exists in cache.
      *
-     * @param string $key item key
+     * @param non-empty-string $key item key
      */
     private static function hasCache(string $key): bool
     {
@@ -1338,8 +1340,8 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param string $key   item key
-     * @param Tokens $value item value
+     * @param non-empty-string $key   item key
+     * @param Tokens           $value item value
      */
     private static function setCache(string $key, self $value): void
     {
@@ -1351,7 +1353,7 @@ class Tokens extends \SplFixedArray
      *
      * Remove old cache and set new one.
      *
-     * @param string $codeHash new code hash
+     * @param non-empty-string $codeHash new code hash
      */
     private function changeCodeHash(string $codeHash): void
     {
@@ -1371,6 +1373,7 @@ class Tokens extends \SplFixedArray
     private function registerFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
+        /** @var non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1387,6 +1390,7 @@ class Tokens extends \SplFixedArray
     private function unregisterFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
+        /** @var non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1401,7 +1405,7 @@ class Tokens extends \SplFixedArray
     /**
      * @param array{int}|string|Token $token token prototype
      *
-     * @return int|string
+     * @return int|non-empty-string
      */
     private function extractTokenKind($token)
     {

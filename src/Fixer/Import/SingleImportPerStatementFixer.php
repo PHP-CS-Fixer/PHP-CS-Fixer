@@ -143,7 +143,7 @@ use Space\Models\ {
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function getGroupStatements(Tokens $tokens, string $groupPrefix, int $groupOpenIndex, int $groupCloseIndex, string $comment): array
     {

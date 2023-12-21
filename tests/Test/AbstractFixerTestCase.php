@@ -207,8 +207,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if ($fixerIsConfigurable) {
             if (isset($configSamplesProvided['default'])) {
-                reset($configSamplesProvided);
-                self::assertSame('default', key($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
+                self::assertSame('default', array_key_first($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
                 self::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
@@ -267,7 +266,13 @@ abstract class AbstractFixerTestCase extends TestCase
     public function testFixerUseInsertSlicesWhenOnlyInsertionsArePerformed(): void
     {
         $reflection = new \ReflectionClass($this->fixer);
-        $tokens = Tokens::fromCode(file_get_contents($reflection->getFileName()));
+
+        $filePath = $reflection->getFileName();
+        if (false === $filePath) {
+            throw new \RuntimeException('Cannot determine sourcefile for class.');
+        }
+
+        $tokens = Tokens::fromCode(file_get_contents($filePath));
 
         $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
 
@@ -615,7 +620,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @param list<array{0: int, 1?: string}> $sequence
      *
-     * @return list<array<int, Token>>
+     * @return list<non-empty-array<int, Token>>
      */
     private function findAllTokenSequences(Tokens $tokens, array $sequence): array
     {

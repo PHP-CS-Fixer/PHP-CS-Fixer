@@ -96,8 +96,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
         // Track indices for final override
         ksort($backtickTokens);
         $openingBacktickIndex = key($backtickTokens);
-        end($backtickTokens);
-        $closingBacktickIndex = key($backtickTokens);
+        $closingBacktickIndex = array_key_last($backtickTokens);
 
         // Strip enclosing backticks
         array_shift($backtickTokens);

@@ -226,7 +226,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * Builds the list of tokens that replace a long echo sequence.
      *
-     * @return Token[]
+     * @return list<Token>
      */
     private function buildLongToShortTokens(Tokens $tokens, int $openTagIndex, int $echoTagIndex): array
     {

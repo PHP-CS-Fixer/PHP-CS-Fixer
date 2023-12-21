@@ -531,7 +531,7 @@ final class ConfigurationResolver
     /**
      * Compute file candidates for config file.
      *
-     * @return string[]
+     * @return list<string>
      */
     private function computeConfigFiles(): array
     {
