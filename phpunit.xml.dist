@@ -42,10 +42,6 @@
         </include>
     </coverage>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    </listeners>
-
     <php>
         <ini name="zend.enable_gc" value="0"/>
         <ini name="memory_limit" value="10G"/>
