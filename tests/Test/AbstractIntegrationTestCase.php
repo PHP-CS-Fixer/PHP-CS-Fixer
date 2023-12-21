@@ -146,6 +146,20 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         $this->doTest($case);
+
+        // run the test again with the `expected` part, this should always stay the same
+        $this->doTest(
+            new IntegrationCase(
+                $case->getFileName(),
+                $case->getTitle().' "--EXPECT-- part run"',
+                $case->getSettings(),
+                $case->getRequirements(),
+                $case->getConfig(),
+                $case->getRuleset(),
+                $case->getExpectedCode(),
+                null
+            )
+        );
     }
 
     /**
@@ -317,20 +331,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
             self::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
-
-        // run the test again with the `expected` part, this should always stay the same
-        $this->testIntegration(
-            new IntegrationCase(
-                $case->getFileName(),
-                $case->getTitle().' "--EXPECT-- part run"',
-                $case->getSettings(),
-                $case->getRequirements(),
-                $case->getConfig(),
-                $case->getRuleset(),
-                $case->getExpectedCode(),
-                null
-            )
-        );
     }
 
     protected static function assertRevertedOrderFixing(IntegrationCase $case, string $fixedInputCode, string $fixedInputCodeWithReversedFixers): void
