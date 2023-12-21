@@ -356,6 +356,32 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideTestClassCases
+     */
+    public function testThereIsNoPhpVersionUsedDirectly(string $className): void
+    {
+        $tokens = $this->createTokensForClass($className);
+
+        $stringTokens = array_filter(
+            $tokens->toArray(),
+            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
+        );
+
+        $strings = array_map(
+            static fn (Token $token): string => $token->getContent(),
+            $stringTokens
+        );
+
+        $strings = array_unique($strings);
+        $message = sprintf('%s must not used directly.', $className);
+        self::assertNotContains('phpversion', $strings, $message);
+        self::assertNotContains('PHP_MAJOR_VERSION', $strings, $message);
+        self::assertNotContains('PHP_MINOR_VERSION', $strings, $message);
+        self::assertNotContains('PHP_RELEASE_VERSION', $strings, $message);
+        self::assertNotContains('PHP_VERSION_ID', $strings, $message);
+    }
+
+    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
