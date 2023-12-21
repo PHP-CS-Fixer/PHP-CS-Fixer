@@ -103,7 +103,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     }
 
     /**
-     * @return Annotation[]
+     * @return list<Annotation>
      */
     protected function getAnnotationsFromDocComment(string $name, Tokens $tokens, int $docCommentIndex): array
     {
@@ -123,7 +123,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     }
 
     /**
-     * @return Token[]
+     * @return list<Token>
      */
     protected function createTypeDeclarationTokens(string $type, bool $isNullable): array
     {

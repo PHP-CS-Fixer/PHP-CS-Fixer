@@ -598,31 +598,8 @@ class X10 implements    Z   , T,R    //
             ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
         ];
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            $multiLine = true;
-            $code = '<?php
-namespace A {
-    interface X {}
-}
-
-namespace {
-    class B{}
-
-    class A extends //
-        B     implements /*  */ \A
-        \C, Z{
-        public function test()
-        {
-            echo 1;
-        }
-    }
-
-    $a = new A();
-    $a->test();
-}';
-        } else {
-            $multiLine = false;
-            $code = '<?php
+        yield [
+            '<?php
 namespace A {
     interface X {}
 }
@@ -640,13 +617,9 @@ namespace {
 
     $a = new A();
     $a->test();
-}';
-        }
-
-        yield [
-            $code,
+}',
             'numberOfImplements',
-            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
+            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => false],
         ];
 
         yield [
@@ -665,6 +638,46 @@ namespace {
             "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
             'numberOfExtends',
             ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $expected
+     *
+     * @dataProvider provideClassyInheritanceInfoPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testClassyInheritanceInfoPre80(string $source, string $label, array $expected): void
+    {
+        $this->doTestClassyInheritanceInfo($source, $label, $expected);
+    }
+
+    public static function provideClassyInheritanceInfoPre80Cases(): iterable
+    {
+        yield [
+            '<?php
+namespace A {
+    interface X {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A
+        \C, Z{
+        public function test()
+        {
+            echo 1;
+        }
+    }
+
+    $a = new A();
+    $a->test();
+}',
+            'numberOfImplements',
+            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
         ];
     }
 

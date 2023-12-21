@@ -217,6 +217,33 @@ endwhile;
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'handle ?-> operator' => [
+            '<?php
+                    $foo
+                        ?-> $bar;
+                ',
+            '<?php
+                    $foo ?->
+                        $bar;
+                ',
+        ];
+    }
+
+    /**
      * @return iterable<array{0: string, 1: null|string, 2?: array<string, mixed>}>
      */
     private static function pairs(): iterable
@@ -492,10 +519,6 @@ switch ($foo) {
 
         $operators[] = '??';
         $operators[] = '<=>';
-
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            $operators[] = '?->';
-        }
 
         foreach ($operators as $operator) {
             yield sprintf('handle %s operator', $operator) => [

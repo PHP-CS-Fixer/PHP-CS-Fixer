@@ -164,7 +164,7 @@ function m($a, array $b, Foo $c) {}
      * @param Token[]      $funcParamNames
      * @param Annotation[] $paramAnnotations
      *
-     * @return string[]
+     * @return list<string>
      */
     private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations): array
     {
@@ -199,7 +199,7 @@ function m($a, array $b, Foo $c) {}
      *
      * @param Annotation[] $paramAnnotations
      *
-     * @return string[]
+     * @return list<string>
      */
     private function getOtherAnnotationsBetweenParams(DocBlock $doc, array $paramAnnotations): array
     {

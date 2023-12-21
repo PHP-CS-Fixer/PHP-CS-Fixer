@@ -29,7 +29,7 @@ final class Annotation
     /**
      * All the annotation tag names with types.
      *
-     * @var string[]
+     * @var list<string>
      */
     private static array $tags = [
         'method',
@@ -81,7 +81,7 @@ final class Annotation
     /**
      * The cached types.
      *
-     * @var null|string[]
+     * @var null|list<string>
      */
     private $types;
 
@@ -125,7 +125,7 @@ final class Annotation
     /**
      * Get all the annotation tag names with types.
      *
-     * @return string[]
+     * @return list<string>
      */
     public static function getTagsWithTypes(): array
     {
@@ -192,7 +192,7 @@ final class Annotation
     /**
      * Get the types associated with this annotation.
      *
-     * @return string[]
+     * @return list<string>
      */
     public function getTypes(): array
     {
@@ -209,7 +209,7 @@ final class Annotation
     /**
      * Set the types associated with this annotation.
      *
-     * @param string[] $types
+     * @param list<string> $types
      */
     public function setTypes(array $types): void
     {
@@ -223,7 +223,7 @@ final class Annotation
     /**
      * Get the normalized types associated with this annotation, so they can easily be compared.
      *
-     * @return string[]
+     * @return list<string>
      */
     public function getNormalizedTypes(): array
     {

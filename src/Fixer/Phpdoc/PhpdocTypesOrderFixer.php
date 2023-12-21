@@ -165,7 +165,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     private function sortTypes(TypeExpression $typeExpression): array
     {

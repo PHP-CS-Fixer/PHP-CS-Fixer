@@ -47,7 +47,7 @@ final class RuleSetTest extends TestCase
     ];
 
     /**
-     * @param array<string, mixed>|bool $ruleConfig
+     * @param array<string, mixed>|true $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
@@ -79,7 +79,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array<string, mixed>|bool $ruleConfig
+     * @param array<string, mixed>|true $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
@@ -369,6 +369,9 @@ final class RuleSetTest extends TestCase
 
         foreach ($set->getRules() as $ruleName => $ruleConfig) {
             if (str_starts_with($ruleName, '@')) {
+                if (true !== $ruleConfig && false !== $ruleConfig) {
+                    throw new \LogicException('Disallowed configuration for RuleSet.');
+                }
                 $setRules = array_merge($setRules, $this->resolveSet($ruleName, $ruleConfig));
             } else {
                 $rules[$ruleName] = $ruleConfig;

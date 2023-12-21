@@ -818,12 +818,6 @@ class Foo
         yield [
             "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
         ];
-
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield [
-                "<?php\n\n\$a = \$b{0};\n\n",
-            ];
-        }
     }
 
     /**
@@ -927,6 +921,26 @@ class Foo
             ['tokens' => ['square_brace_block']],
             "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
             "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, 1?: string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield [
+            "<?php\n\n\$a = \$b{0};\n\n",
         ];
     }
 
