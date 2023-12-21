@@ -54,7 +54,7 @@ jobs:
         with:
           flavor: |
             latest=false
-            suffix=${{ matrix.php-suffix }}
+            suffix=-${{ matrix.php-version }}
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
           # "edge" will only build from master, "semver" only from tags
           tags: |
