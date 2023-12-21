@@ -1207,13 +1207,15 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {
-        $this->expectDeprecation(sprintf(
+        $this->expectDeprecation($message = sprintf(
             'Rule set "%s" is deprecated. %s.',
             $ruleSet,
             [] === $successors
                 ? 'No replacement available'
                 : sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
         ));
+        $this->expectDeprecation($message);
+
         $config = new Config();
         $config->setRules([$ruleSet => true]);
         $config->setRiskyAllowed(true);

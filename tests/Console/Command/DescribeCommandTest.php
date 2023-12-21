@@ -55,6 +55,7 @@ final class DescribeCommandTest extends TestCase
     {
         // @TODO 4.0 Remove this expectation
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
         $actual = $this->execute(null !== $fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
 
