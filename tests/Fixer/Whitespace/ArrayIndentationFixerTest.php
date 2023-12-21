@@ -897,15 +897,15 @@ $foo = [
     }
 
     /**
-     * @dataProvider provideFixWithTabsCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testFixWithTabs(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithTabsCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield from self::withLongArraySyntaxCases([
             [
@@ -990,16 +990,16 @@ $foo = [
     }
 
     /**
-     * @dataProvider provideFixPhp80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield 'attribute' => [
             '<?php

@@ -461,15 +461,15 @@ abc(),
     }
 
     /**
-     * @dataProvider provideWindowsWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testWindowsWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->doTest($expected, $input);
     }
 
-    public static function provideWindowsWhitespacesCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\t->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t->setEmailConfirmationCode('123456')\r\n\t->setHashsalt('1234')\r\n\t->setTncAccepted(true);",

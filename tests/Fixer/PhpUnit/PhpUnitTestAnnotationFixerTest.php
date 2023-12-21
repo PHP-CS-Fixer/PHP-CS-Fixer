@@ -1032,16 +1032,16 @@ class Test extends \PhpUnit\FrameWork\TestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null, array $config = []): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             '<?php

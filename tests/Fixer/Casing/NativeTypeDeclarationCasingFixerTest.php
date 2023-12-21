@@ -246,6 +246,11 @@ function Foo(INTEGER $a) {}
                 var $bar;
             }',
         ];
+
+        yield 'static property without type' => [
+            '<?php class Foo { static $bar; }',
+            '<?php class Foo { STATIC $bar; }',
+        ];
     }
 
     /**

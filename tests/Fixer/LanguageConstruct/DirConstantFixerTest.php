@@ -185,7 +185,7 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(): void
+    public function testFixPre80(): void
     {
         $this->doTest(
             '<?php $x =# A

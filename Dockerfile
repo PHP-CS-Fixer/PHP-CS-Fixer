@@ -26,6 +26,7 @@ RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /d
     && if [ ! -z "$DOCKER_USER_ID" ] && [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent passwd "${DOCKER_USER_ID}" > /dev/null ]; \
         then adduser -S -u "${DOCKER_USER_ID}" -G "$(getent group "${DOCKER_GROUP_ID}" | awk -F: '{printf $1}')" dev; \
     fi \
+    && apk add git \
     # php extensions
     && curl --location --output /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
     && chmod +x /usr/local/bin/install-php-extensions \

@@ -69,9 +69,9 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
     public static function provideIsSuitableForUsesVersionSpecificationCases(): iterable
     {
-        yield 'is-satisfied' => [\PHP_VERSION_ID, true];
+        yield 'is-satisfied' => [100, true];
 
-        yield 'is-not-satisfied' => [\PHP_VERSION_ID, false];
+        yield 'is-not-satisfied' => [100, false];
     }
 
     private function createVersionSpecificationDouble(bool $isSatisfied = true): VersionSpecificationInterface

@@ -26,77 +26,73 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
 {
-    public function testFixProperties(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-            class Foo {
-                public $var;
-                protected $var_foo;
-                private $FooBar;
-                public static $var1;
-                protected static $var_foo2;
-                private static $FooBar1;
-                public static $var2;
-                protected static $var_foo3;
-                private static $FooBar2;
-                private static $FooBar3;
-                public $old = 'foo';
-            }
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
-            class Foo {
-                public $var;
-                protected $var_foo;
-                private $FooBar;
-                static public $var1;
-                static protected $var_foo2;
-                static private $FooBar1;
-                public static $var2;
-                protected static $var_foo3;
-                private static $FooBar2;
-                private static
-                $FooBar3;
-                var $old = 'foo';
-            }
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixPropertiesAfterMethod(): void
-    {
-        $input = <<<'EOF'
-            <?php
-            class Foo {
-                public function aaa() {}
-                var $bbb;
-            }
-            EOF;
-        $expected = <<<'EOF'
-            <?php
-            class Foo {
-                public function aaa() {}
-                public $bbb;
-            }
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
     /**
-     * @dataProvider provideFixMethodsCases
+     * @param array<string, string> $configuration
+     *
+     * @dataProvider provideFixCases
      */
-    public function testFixMethods(string $expected, string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixMethodsCases(): iterable
+    public static function provideFixCases(): iterable
     {
-        yield [
+        yield 'properties' => [
+            <<<'EOF'
+                <?php
+                class Foo {
+                    public $var;
+                    protected $var_foo;
+                    private $FooBar;
+                    public static $var1;
+                    protected static $var_foo2;
+                    private static $FooBar1;
+                    public static $var2;
+                    protected static $var_foo3;
+                    private static $FooBar2;
+                    private static $FooBar3;
+                    public $old = 'foo';
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class Foo {
+                    public $var;
+                    protected $var_foo;
+                    private $FooBar;
+                    static public $var1;
+                    static protected $var_foo2;
+                    static private $FooBar1;
+                    public static $var2;
+                    protected static $var_foo3;
+                    private static $FooBar2;
+                    private static
+                    $FooBar3;
+                    var $old = 'foo';
+                }
+                EOF,
+        ];
+
+        yield 'properties after method' => [
+            <<<'EOF'
+                <?php
+                class Foo {
+                    public function aaa() {}
+                    public $bbb;
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class Foo {
+                    public function aaa() {}
+                    var $bbb;
+                }
+                EOF,
+        ];
+
+        yield 'methods' => [
             <<<'EOF'
                 <?php
                 class MyTestWithAnonymousClass extends TestCase
@@ -202,37 +198,24 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 EOF
             ,
         ];
-    }
 
-    public function testLeaveFunctionsAlone(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone' => [<<<'EOF'
             <?php
             function foo() {
                 static $foo;
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLeaveFunctionsAloneWithVariablesMatchingOopWords(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone with variables matching OOP words' => [<<<'EOF'
             <?php
             function foo() {
                 static $class;
                 $interface = 'foo';
                 $trait = 'bar';
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLeaveFunctionsAloneInsideConditionals(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone inside conditionals' => [<<<'EOF'
             <?php
             if (!function_exists('foo')) {
                 function foo($arg)
@@ -240,13 +223,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF;
-        $this->doTest($expected);
-    }
+            EOF];
 
-    public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone inside conditionals with OOP word in comment' => [<<<'EOF'
             <?php
             /* class <= this is just a stop-word */
             if (!function_exists('foo')) {
@@ -255,27 +234,18 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLeaveFunctionsAloneWithOopWordInComment(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone with OOP word in comment' => [<<<'EOF'
             <?php
             /* class */
             function foo($arg)
             {
                 return $arg;
             }
-            EOF;
-        $this->doTest($expected);
-    }
+            EOF];
 
-    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone outside classes with OOP word in inline HTML' => [<<<'EOF'
             <?php
             if (!function_exists('foo')) {
                 function foo($arg)
@@ -286,13 +256,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF;
-        $this->doTest($expected);
-    }
+            EOF];
 
-    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone outside classes with OOP word in string value' => [<<<'EOF'
             <?php
             if (!function_exists('foo')) {
                 function foo($arg)
@@ -300,13 +266,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return 'she has class right?';
                 }
             }
-            EOF;
-        $this->doTest($expected);
-    }
+            EOF];
 
-    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone outside classes with OOP word in function name' => [<<<'EOF'
             <?php
 
             comment_class();
@@ -317,13 +279,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF;
-        $this->doTest($expected);
-    }
+            EOF];
 
-    public function testLeaveFunctionsAloneAfterClass(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave functions alone after class' => [<<<'EOF'
             <?php
 
             class Foo
@@ -337,14 +295,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return 'bar';
                 }
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testCurlyOpenSyntax(): void
-    {
-        $expected = <<<'EOF'
+        yield 'curly open syntax' => [<<<'EOF'
             <?php
 
             class Foo
@@ -357,14 +310,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     $bar = "bar"; // test if variable after T_CURLY_OPEN is intact
                 }
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testDollarOpenCurlyBracesSyntax(): void
-    {
-        $expected = <<<'EOF'
+        yield 'dollar open curly braces syntax' => [<<<'EOF'
             <?php
 
             class Foo {
@@ -374,14 +322,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     $bar = "bar"; // test if variable after T_DOLLAR_OPEN_CURLY_BRACES is intact
                 }
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLeaveJavascriptOutsidePhpAlone(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave JavaScript outside PHP alone' => [<<<'EOF'
             <?php
             function foo()
             {
@@ -393,14 +336,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 alert(bar);
             }
             </script>
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLeaveJavascriptInStringAlone(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave JavaScript in string alone' => [<<<'EOF'
             <?php
             function registerJS()
             {
@@ -410,14 +348,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
             }
             </script>';
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLeaveJavascriptInVariableAlone(): void
-    {
-        $expected = <<<'EOF'
+        yield 'leave JavaScript in variable alone' => [<<<'EOF'
             <?php
             class Foo
             {
@@ -434,14 +367,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $script;
                 }
             }
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testFixCommaSeparatedProperty(): void
-    {
-        $expected = <<<'EOF'
+        yield 'comma separated properties' => [<<<'EOF'
             <?php
             class Foo
             {
@@ -451,26 +379,20 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 public $baz1 = null, $baz2, $baz3 = false;
                 public $foo, $bar;
             }
-            EOF;
+            EOF,
+            <<<'EOF'
+                <?php
+                class Foo
+                {
+                    var $foo1;
+                    private $foo2;
+                    protected $bar1, $bar2;
+                    public $baz1 = null, $baz2, $baz3 = false;
+                    var $foo, $bar;
+                }
+                EOF];
 
-        $input = <<<'EOF'
-            <?php
-            class Foo
-            {
-                var $foo1;
-                private $foo2;
-                protected $bar1, $bar2;
-                public $baz1 = null, $baz2, $baz3 = false;
-                var $foo, $bar;
-            }
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixesVarDeclarationsWithArrayValue(): void
-    {
-        $expected = <<<'EOF'
+        yield 'var declarations with array value' => [<<<'EOF'
             <?php
             class Foo
             {
@@ -482,55 +404,25 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
                 public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
             }
-            EOF;
+            EOF,
+            <<<'EOF'
+                <?php
+                class Foo
+                {
+                    var $foo1 = 1;
+                    var $foo2a = array('foo');
+                    var $foo2b = ['foo'];
+                    var $foo3a = array('foo', 'bar');
+                    var $foo3b = ['foo', 'bar'];
+                    public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
+                    public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
+                }
+                EOF];
 
-        $input = <<<'EOF'
-            <?php
-            class Foo
-            {
-                var $foo1 = 1;
-                var $foo2a = array('foo');
-                var $foo2b = ['foo'];
-                var $foo3a = array('foo', 'bar');
-                var $foo3b = ['foo', 'bar'];
-                public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
-                public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
-            }
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testInvalidConfigurationType(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
-
-        $this->fixer->configure(['elements' => [null]]);
-    }
-
-    public function testInvalidConfigurationValue(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
-
-        $this->fixer->configure(['elements' => ['_unknown_']]);
-    }
-
-    /**
-     * @dataProvider provideFixClassConstCases
-     */
-    public function testFixClassConst(string $expected, string $input): void
-    {
-        $this->fixer->configure(['elements' => ['const']]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixClassConstCases(): iterable
-    {
         yield [
             '<?php class A { public const B=1; }',
             '<?php class A { const B=1; }',
+            ['elements' => ['const']],
         ];
 
         yield [
@@ -540,11 +432,13 @@ public const F=1; }',
             '<?php class A { const B=1;const C=1;/**/const#a
                 D=1;const E=1;//
 const F=1; }',
+            ['elements' => ['const']],
         ];
 
         yield [
             '<?php class A { private const B=1; protected const C=2; public const D=4; public $a; function A(){} }',
             '<?php class A { private const B=1; protected const C=2; const D=4; public $a; function A(){} }',
+            ['elements' => ['const']],
         ];
 
         yield [
@@ -566,12 +460,11 @@ const F=1; }',
                         const SENTENCE = "The value of THREE is ".self::THREE;
                     }
                 ',
+            ['elements' => ['const']],
         ];
-    }
 
-    public function testComment(): void
-    {
-        $expected = '<?php
+        yield 'comment' => [
+            '<?php
 class A
 {# We will have a function below
 # It will be static
@@ -583,9 +476,8 @@ AB# <- this is the name
 {#
 }#
 }
-        ';
-
-        $input = '<?php
+            ',
+            '<?php
 class A
 {# We will have a function below
 static# It will be static
@@ -597,14 +489,10 @@ AB# <- this is the name
 {#
 }#
 }
-        ';
+            ',
+        ];
 
-        $this->doTest($expected, $input);
-    }
-
-    public function testAnonymousClassFixing(): void
-    {
-        $this->doTest(
+        yield 'anonymous class' => [
             '<?php
                 $a = new class() {
                     public function a() {
@@ -632,13 +520,10 @@ AB# <- this is the name
                         $a = new class() {function a() {}};
                     }
                 }
-            '
-        );
-    }
+            ',
+        ];
 
-    public function testRemovingNewlinesBetweenKeywords(): void
-    {
-        $this->doTest(
+        yield 'removing newlines between keywords' => [
             '<?php
                 class Foo
                 {
@@ -662,14 +547,10 @@ AB# <- this is the name
                     static
                     final
                     function baz() {}
-                }'
-        );
-    }
+                }',
+        ];
 
-    public function testKeepingComment(): void
-    {
-        $this->fixer->configure(['elements' => ['property', 'method', 'const']]);
-        $this->doTest(
+        yield 'keeping comment' => [
             '<?php
                 class Foo
                 {
@@ -683,13 +564,11 @@ AB# <- this is the name
                     private /* constant */ const BAR = 3;
                     private /* variable */ $bar;
                     private /* function */ function bar() {}
-                }'
-        );
-    }
+                }',
+            ['elements' => ['property', 'method', 'const']],
+        ];
 
-    public function testFixingWithAllKeywords(): void
-    {
-        $this->doTest(
+        yield 'fixing with all keywords' => [
             '<?php
                 abstract class Foo
                 {
@@ -715,20 +594,9 @@ AB# <- this is the name
                     abstract static function fooG();
                     static abstract function fooH();
                 }
-            '
-        );
-    }
+            ',
+        ];
 
-    /**
-     * @dataProvider provideFixCases
-     */
-    public function testFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixCases(): iterable
-    {
         yield [
             '<?php class Foo { private int $foo; }',
         ];
@@ -918,6 +786,35 @@ var_dump(Foo::CAT->test());',
                 protected A|(B&C)|D $y;
                 private A|B|(C&D) $z;
             }',
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $config, string $expectedMessage): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches($expectedMessage);
+
+        $this->fixer->configure($config);
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'invalid type' => [
+            ['elements' => [null]],
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/',
+        ];
+
+        yield 'invalid value' => [
+            ['elements' => ['_unknown_']],
+            '/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/',
         ];
     }
 }

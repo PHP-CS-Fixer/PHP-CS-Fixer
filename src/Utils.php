@@ -74,9 +74,9 @@ final class Utils
      *
      * Stability is ensured by using Schwartzian transform.
      *
-     * @param mixed[]  $elements
-     * @param callable $getComparedValue a callable that takes a single element and returns the value to compare
-     * @param callable $compareValues    a callable that compares two values
+     * @param list<mixed> $elements
+     * @param callable    $getComparedValue a callable that takes a single element and returns the value to compare
+     * @param callable    $compareValues    a callable that compares two values
      *
      * @return mixed[]
      */
@@ -102,9 +102,9 @@ final class Utils
     /**
      * Sort fixers by their priorities.
      *
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      *
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     public static function sortFixers(array $fixers): array
     {

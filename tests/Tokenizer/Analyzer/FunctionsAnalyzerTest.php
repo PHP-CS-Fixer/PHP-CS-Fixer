@@ -39,6 +39,9 @@ final class FunctionsAnalyzerTest extends TestCase
         self::assertIsGlobalFunctionCall($indices, $code);
     }
 
+    /**
+     * @return iterable<array{string, array<int>}>
+     */
     public static function provideIsGlobalFunctionCallCases(): iterable
     {
         yield [
@@ -266,16 +269,32 @@ A();
             '<?php foo("bar"); class A { function Foo(){ foo(); } }',
             [1, 20],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield [
-                '<?php
+    /**
+     * @param int[] $indices
+     *
+     * @dataProvider provideIsGlobalFunctionCallPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testIsGlobalFunctionCallPre80(string $code, array $indices): void
+    {
+        self::assertIsGlobalFunctionCall($indices, $code);
+    }
+
+    /**
+     * @return iterable<array{string, array<int>}>
+     */
+    public static function provideIsGlobalFunctionCallPre80Cases(): iterable
+    {
+        yield [
+            '<?php
                     use function \  str_repeat;
                     str_repeat($a, $b);
                 ',
-                [11],
-            ];
-        }
+            [11],
+        ];
     }
 
     /**
@@ -381,17 +400,8 @@ class(){};
     }
 
     /**
-     * @dataProvider provideFunctionReturnTypeInfoCases
+     * @return iterable<array{string, int, array<ArgumentAnalysis>}>
      */
-    public function testFunctionReturnTypeInfo(string $code, int $methodIndex, ?TypeAnalysis $expected): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
-
-        self::assertSame(serialize($expected), serialize($actual));
-    }
-
     public static function provideFunctionArgumentInfoCases(): iterable
     {
         yield ['<?php function(){};', 1, []];
@@ -565,36 +575,70 @@ class(){};
                 )
             ),
         ]];
-
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
-                '$a' => new ArgumentAnalysis(
-                    '$a',
-                    9,
-                    null,
-                    new TypeAnalysis(
-                        '\Foo\Bar',
-                        3,
-                        7
-                    )
-                ),
-            ]];
-
-            yield ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
-                '$a' => new ArgumentAnalysis(
-                    '$a',
-                    9,
-                    null,
-                    new TypeAnalysis(
-                        '\Foo\Bar',
-                        3,
-                        7
-                    )
-                ),
-            ]];
-        }
     }
 
+    /**
+     * @param array<string, ArgumentAnalysis> $expected
+     *
+     * @dataProvider provideFunctionArgumentInfoPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFunctionArgumentInfoPre80(string $code, int $methodIndex, array $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        self::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+    }
+
+    /**
+     * @return iterable<array{string, int, array<ArgumentAnalysis>}>
+     */
+    public static function provideFunctionArgumentInfoPre80Cases(): iterable
+    {
+        yield ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
+            '$a' => new ArgumentAnalysis(
+                '$a',
+                9,
+                null,
+                new TypeAnalysis(
+                    '\Foo\Bar',
+                    3,
+                    7
+                )
+            ),
+        ]];
+
+        yield ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
+            '$a' => new ArgumentAnalysis(
+                '$a',
+                9,
+                null,
+                new TypeAnalysis(
+                    '\Foo\Bar',
+                    3,
+                    7
+                )
+            ),
+        ]];
+    }
+
+    /**
+     * @dataProvider provideFunctionReturnTypeInfoCases
+     */
+    public function testFunctionReturnTypeInfo(string $code, int $methodIndex, ?TypeAnalysis $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+
+        self::assertSame(serialize($expected), serialize($actual));
+    }
+
+    /**
+     * @return iterable<array{string, int, null|TypeAnalysis}>
+     */
     public static function provideFunctionReturnTypeInfoCases(): iterable
     {
         yield ['<?php function(){};', 1, null];
@@ -605,10 +649,6 @@ class(){};
 
         yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
-        }
-
         yield ['<?php fn() => null;', 1, null];
 
         yield ['<?php fn(array $a) => null;', 1, null];
@@ -618,10 +658,30 @@ class(){};
         yield ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
 
         yield ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)];
+    }
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
-        }
+    /**
+     * @dataProvider provideFunctionReturnTypeInfoPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFunctionReturnTypeInfoPre80(string $code, int $methodIndex, ?TypeAnalysis $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+
+        self::assertSame(serialize($expected), serialize($actual));
+    }
+
+    /**
+     * @return iterable<array{string, int, null|TypeAnalysis}>
+     */
+    public static function provideFunctionReturnTypeInfoPre80Cases(): iterable
+    {
+        yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
+
+        yield ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
     }
 
     /**
@@ -635,6 +695,9 @@ class(){};
         self::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
     }
 
+    /**
+     * @return iterable<array{bool, string, int}>
+     */
     public static function provideIsTheSameClassCallCases(): iterable
     {
         $template = '<?php
@@ -691,17 +754,40 @@ class(){};
             24,
         ];
 
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            yield [
-                true,
-                sprintf($template, '$this?->'),
-                24,
-            ];
-        }
-
         yield [
             true,
             sprintf($template, '$this::'),
+            24,
+        ];
+    }
+
+    /**
+     * @dataProvider provideIsTheSameClassCall80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testIsTheSameClassCall80(bool $isTheSameClassCall, string $code, int $index): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        self::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
+    }
+
+    /**
+     * @return iterable<array{bool, string, int}>
+     */
+    public static function provideIsTheSameClassCall80Cases(): iterable
+    {
+        yield [
+            true,
+            '<?php
+                class Foo {
+                    public function methodOne() {
+                        $x = $this?->otherMethod(1, 2, 3);
+                    }
+                }
+            ',
             24,
         ];
     }

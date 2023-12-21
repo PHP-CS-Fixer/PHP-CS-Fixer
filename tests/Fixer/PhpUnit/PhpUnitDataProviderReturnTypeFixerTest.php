@@ -193,11 +193,11 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP ^7.4
+     * @requires PHP <8.0
      *
-     * @dataProvider provideFix7Cases
+     * @dataProvider provideFixPre80Cases
      */
-    public function testFix7(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -205,7 +205,7 @@ class FooTest extends TestCase {
     /**
      * @return iterable<array{string, string}>
      */
-    public static function provideFix7Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield 'data provider with return type namespaced class starting with iterable' => self::mapToTemplate(
             ': iterable \ Foo',

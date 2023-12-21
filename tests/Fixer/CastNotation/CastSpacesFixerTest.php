@@ -24,40 +24,50 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigMissingKey(): void
+    /**
+     * @param array<string, int|string> $config
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $config, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[cast_spaces\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
+        $this->expectExceptionMessageMatches($expectedMessage);
 
-        $this->fixer->configure(['a' => 1]);
-    }
-
-    public function testInvalidConfigValue(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[cast_spaces\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#');
-
-        $this->fixer->configure(['space' => 'double']);
+        $this->fixer->configure($config);
     }
 
     /**
-     * @dataProvider provideFixCastsCases
+     * @return iterable<array{array<string, int|string>, string}>
      */
-    public function testFixCastsWithDefaultConfiguration(string $expected, ?string $input = null): void
+    public static function provideInvalidConfigurationCases(): iterable
     {
+        yield 'missing key' => [
+            ['a' => 1],
+            '#^\[cast_spaces\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#',
+        ];
+
+        yield 'invalid value' => [
+            ['space' => 'double'],
+            '#^\[cast_spaces\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#',
+        ];
+    }
+
+    /**
+     * @param array<string, string> $configuration
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @dataProvider provideFixCastsCases
+     * @return iterable<array{string, 1?: null|string, 2?: array{space: string}}>
      */
-    public function testFixCastsSingleSpace(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['space' => 'single']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixCastsCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php echo "( int ) $foo";',
@@ -120,79 +130,83 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
         yield [
             "<?php \$bar = (int)\r\n \$foo;",
         ];
-    }
 
-    /**
-     * @dataProvider provideFixCastsNoneSpaceCases
-     */
-    public function testFixCastsNoneSpace(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['space' => 'none']);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixCastsNoneSpaceCases(): iterable
-    {
         yield [
             '<?php echo "( int ) $foo";',
+            null,
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (int)$foo;',
             '<?php $bar = ( int)$foo;',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (int)$foo;',
             '<?php $bar = (	int)$foo;',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (int)$foo;',
             '<?php $bar = (int)	$foo;',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (string)(int)$foo;',
             '<?php $bar = ( string )( int )$foo;',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (string)(int)$foo;',
+            null,
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (string)(int)$foo;',
             '<?php $bar = ( string   )    (   int )$foo;',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (string)$foo;',
             '<?php $bar = ( string )   $foo;',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (float)Foo::bar();',
             '<?php $bar = (float )Foo::bar();',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = Foo::baz((float)Foo::bar());',
             '<?php $bar = Foo::baz((float )Foo::bar());',
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = $query["params"] = (array)$query["params"];',
+            null,
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (int)$foo;',
             "<?php \$bar = (int)\n \$foo;",
+            ['space' => 'none'],
         ];
 
         yield [
             '<?php $bar = (int)$foo;',
             "<?php \$bar = (int)\r\n \$foo;",
+            ['space' => 'none'],
         ];
     }
 }

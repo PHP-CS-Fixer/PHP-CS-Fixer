@@ -166,7 +166,7 @@ final class RunnerTest extends TestCase
     private function createDifferDouble(): DifferInterface
     {
         return new class() implements DifferInterface {
-            public ?\SplFileInfo $passedFile;
+            public ?\SplFileInfo $passedFile = null;
 
             public function diff(string $old, string $new, \SplFileInfo $file = null): string
             {

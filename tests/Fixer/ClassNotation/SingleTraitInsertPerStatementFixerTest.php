@@ -254,13 +254,10 @@ class Test2
     }
 }',
         ];
-    }
 
-    public function testAnonymousClassFixing(): void
-    {
-        $this->doTest(
+        yield 'anonymous class' => [
             '<?php new class { use A;use B;}?>',
-            '<?php new class { use A, B;}?>'
-        );
+            '<?php new class { use A, B;}?>',
+        ];
     }
 }

@@ -210,7 +210,7 @@ final class TypeExpression
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getTypes(): array
     {
@@ -594,7 +594,7 @@ final class TypeExpression
     }
 
     /**
-     * @return array<string,string>
+     * @return array<string, string>
      */
     private function getAliases(): array
     {

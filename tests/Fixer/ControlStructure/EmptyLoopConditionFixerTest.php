@@ -26,16 +26,16 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
     /**
      * @param array<string, mixed> $config
      *
-     * @dataProvider provideFixConfigCases
+     * @dataProvider provideFixCases
      */
-    public function testFixConfig(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixConfigCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'from `for` to `while`' => [
             '<?php
