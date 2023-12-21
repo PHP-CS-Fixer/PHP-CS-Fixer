@@ -26,10 +26,10 @@ abstract class TestCase extends BaseTestCase
     /** @var null|callable */
     private $previouslyDefinedErrorHandler;
 
-    /** @var array<string> */
+    /** @var list<string> */
     private array $expectedDeprecations = [];
 
-    /** @var array<string> */
+    /** @var list<string> */
     private array $actualDeprecations = [];
 
     protected function tearDown(): void
