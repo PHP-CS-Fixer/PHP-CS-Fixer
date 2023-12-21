@@ -194,22 +194,36 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
             '<?php if ($foo) ++$a;',
             '<?php if ($foo) $a++;',
         ];
+    }
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield [
-                '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
-                '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
-            ];
+    /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
 
-            yield [
-                '<?php ++$a{0};',
-                '<?php $a{0}++;',
-            ];
+    /**
+     * @return iterable<array{string, 1?: string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield [
+            '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+            '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
+        ];
 
-            yield [
-                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
-                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
-            ];
-        }
+        yield [
+            '<?php ++$a{0};',
+            '<?php $a{0}++;',
+        ];
+
+        yield [
+            '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
+            '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
+        ];
     }
 }
