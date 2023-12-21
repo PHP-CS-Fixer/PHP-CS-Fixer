@@ -21,9 +21,11 @@ final class ProgressOutputType
 {
     public const NONE = 'none';
     public const DOTS = 'dots';
+    public const BAR = 'bar';
 
     public const AVAILABLE = [
         self::NONE,
         self::DOTS,
+        self::BAR,
     ];
 }
