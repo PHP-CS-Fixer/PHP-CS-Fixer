@@ -55,4 +55,4 @@ With configuration: ``['characters_threshold' => 10]``.
 Source class
 ------------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\MultilineLongArrayFixer <./../src/Fixer/ArrayNotation/MultilineLongArrayFixer.php>`_
+`PhpCsFixer\\Fixer\\ArrayNotation\\MultilineLongArrayFixer <./../../../src/Fixer/ArrayNotation/MultilineLongArrayFixer.php>`_
