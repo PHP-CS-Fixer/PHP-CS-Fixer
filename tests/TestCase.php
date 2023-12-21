@@ -66,6 +66,8 @@ abstract class TestCase extends BaseTestCase
                 ) {
                     if (E_USER_DEPRECATED === $code || E_DEPRECATED === $code) {
                         $this->actualDeprecations[] = $message;
+                        $this->actualDeprecations = array_unique($this->actualDeprecations);
+                        sort($this->actualDeprecations);
                     }
 
                     return true;

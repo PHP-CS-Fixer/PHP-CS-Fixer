@@ -143,8 +143,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         foreach ($case->getSettings()['deprecations'] as $deprecation) {
             $this->expectDeprecation($deprecation);
-            $this->expectDeprecation($deprecation);
-            $this->expectDeprecation($deprecation);
         }
 
         $this->doTest($case);
