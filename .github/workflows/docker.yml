@@ -19,23 +19,14 @@ jobs:
       matrix:
         include:
           - php-version: '7.4'
-            php-suffix: '-php7.4'
             alpine-version: '3.16'
           - php-version: '8.0'
-            php-suffix: '-php8.0'
             alpine-version: '3.16'
           - php-version: '8.1'
-            php-suffix: '-php8.1'
             alpine-version: '3.18'
           - php-version: '8.2'
-            php-suffix: '-php8.2'
             alpine-version: '3.18'
           - php-version: '8.3'
-            php-suffix: '-php8.3'
-            alpine-version: '3.18'
-          # This is the latest supported PHP Version and will be provided without -phpX.X suffix
-          - php-version: '8.3'
-            php-suffix: ''
             alpine-version: '3.18'
 
     permissions:
