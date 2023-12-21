@@ -207,8 +207,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if ($fixerIsConfigurable) {
             if (isset($configSamplesProvided['default'])) {
-                reset($configSamplesProvided);
-                self::assertSame('default', key($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
+                self::assertSame('default', array_key_first($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
                 self::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
