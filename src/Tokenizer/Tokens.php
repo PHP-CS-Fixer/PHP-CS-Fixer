@@ -773,7 +773,7 @@ class Tokens extends \SplFixedArray
 
         // remove the first token from the sequence, so we can freely iterate through the sequence after a match to
         // the first one is found
-        $key = key($sequence);
+        $key = array_key_first($sequence);
         $firstCs = self::isKeyCaseSensitive($caseSensitive, $key);
         $firstToken = $sequence[$key];
         unset($sequence[$key]);
@@ -872,7 +872,7 @@ class Tokens extends \SplFixedArray
         $this->setSize($oldSize + $itemsCount);
 
         krsort($slices);
-        $farthestSliceIndex = key($slices);
+        $farthestSliceIndex = array_key_first($slices);
 
         // We check only the farthest index, if it's within the size of collection, other indices will be valid too.
         if (!\is_int($farthestSliceIndex) || $farthestSliceIndex > $oldSize) {
