@@ -19,8 +19,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @group phpdoc
- *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToPropertyTypeFixer
  */
 final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase

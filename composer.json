@@ -124,7 +124,7 @@
         ],
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
+            "paraunit coverage --testsuite unit"
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",

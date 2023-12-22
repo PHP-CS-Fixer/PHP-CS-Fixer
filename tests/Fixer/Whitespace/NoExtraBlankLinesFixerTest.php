@@ -669,8 +669,6 @@ $a = new Qux();',
 
     /**
      * @dataProvider provideRemoveBetweenUseTraitsCases
-     *
-     * @group legacy
      */
     public function testRemoveBetweenUseTraits(string $expected, string $input): void
     {

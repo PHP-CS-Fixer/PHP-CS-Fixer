@@ -27,9 +27,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @coversNothing
  *
- * @group covers-nothing
- * @group legacy
- *
  * @large
  */
 final class PharTest extends AbstractSmokeTestCase

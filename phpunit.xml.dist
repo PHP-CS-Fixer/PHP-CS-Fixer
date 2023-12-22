@@ -22,11 +22,13 @@
         <testsuite name="unit">
             <directory>./tests/</directory>
             <exclude>./tests/IntegrationTest.php</exclude>
+            <exclude>./tests/TextDiffTest.php</exclude>
             <exclude>./tests/AutoReview/</exclude>
             <exclude>./tests/Smoke/</exclude>
         </testsuite>
         <testsuite name="integration">
             <file>./tests/IntegrationTest.php</file>
+            <file>./tests/TextDiffTest.php</file>
         </testsuite>
         <testsuite name="smoke">
             <directory>./tests/Smoke/</directory>

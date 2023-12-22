@@ -28,8 +28,6 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @internal
  *
- * @group legacy
- *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
  */
 final class FixerConfigurationResolverTest extends TestCase

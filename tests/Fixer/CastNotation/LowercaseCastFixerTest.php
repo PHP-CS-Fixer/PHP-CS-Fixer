@@ -64,8 +64,6 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix74DeprecatedCases
      *
-     * @group legacy
-     *
      * @requires PHP <8.0
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void

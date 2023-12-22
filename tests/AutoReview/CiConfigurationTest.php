@@ -26,9 +26,6 @@ use Symfony\Component\Yaml\Yaml;
  * @internal
  *
  * @coversNothing
- *
- * @group auto-review
- * @group covers-nothing
  */
 final class CiConfigurationTest extends TestCase
 {

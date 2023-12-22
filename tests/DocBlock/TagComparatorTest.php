@@ -31,8 +31,6 @@ final class TagComparatorTest extends TestCase
 {
     /**
      * @dataProvider provideComparatorTogetherCases
-     *
-     * @group legacy
      */
     public function testComparatorTogether(string $first, string $second, bool $expected): void
     {
@@ -69,8 +67,6 @@ final class TagComparatorTest extends TestCase
      * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
      *
      * @param string[][] $groups
-     *
-     * @group legacy
      */
     public function testComparatorTogetherWithDefinedGroups(array $groups, string $first, string $second, bool $expected): void
     {

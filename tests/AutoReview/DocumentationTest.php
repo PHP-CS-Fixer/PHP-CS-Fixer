@@ -28,9 +28,6 @@ use Symfony\Component\Finder\Finder;
  * @internal
  *
  * @coversNothing
- *
- * @group legacy
- * @group auto-review
  */
 final class DocumentationTest extends TestCase
 {

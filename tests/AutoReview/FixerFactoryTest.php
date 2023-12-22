@@ -26,9 +26,6 @@ use Symfony\Component\Finder\SplFileInfo;
  * @internal
  *
  * @coversNothing
- *
- * @group auto-review
- * @group covers-nothing
  */
 final class FixerFactoryTest extends TestCase
 {
