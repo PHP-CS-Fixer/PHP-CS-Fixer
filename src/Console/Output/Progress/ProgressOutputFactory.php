@@ -22,7 +22,7 @@ use PhpCsFixer\Console\Output\OutputContext;
 final class ProgressOutputFactory
 {
     /**
-     * @var array<string, class-string>
+     * @var array<string, class-string<ProgressOutputInterface>>
      */
     private static array $outputTypeMap = [
         ProgressOutputType::NONE => NullOutput::class,
