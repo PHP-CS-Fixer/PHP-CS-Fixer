@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * @internal
  *
- * @coversNothing
+ * @covers \PhpCsFixer\Console\Output\Progress\PercentageBarOutput
  */
 final class PercentageBarOutputTest extends TestCase
 {
