@@ -36,7 +36,7 @@ final class PercentageBarOutput implements ProgressOutputInterface
 
         $this->progressBar = new ProgressBar($context->getOutput(), $this->context->getFilesCount());
         $this->progressBar->start();
-        $this->progressBar->setBarCharacter('#');
+        $this->progressBar->setBarCharacter('█');
         $this->progressBar->setFormat('normal');
     }
 
