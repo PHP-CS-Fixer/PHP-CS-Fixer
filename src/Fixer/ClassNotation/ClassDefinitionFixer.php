@@ -306,11 +306,11 @@ $foo = new class(){};
 
         if (!$tokens[$classyIndex]->isGivenKind(T_TRAIT)) {
             $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
-            $def['extends'] = [] !== $extends ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
+            $def['extends'] = [] !== $extends ? $this->getClassyInheritanceInfo($tokens, array_key_first($extends), 'numberOfExtends') : false;
 
             if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
                 $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
-                $def['implements'] = [] !== $implements ? $this->getClassyInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
+                $def['implements'] = [] !== $implements ? $this->getClassyInheritanceInfo($tokens, array_key_first($implements), 'numberOfImplements') : false;
                 $def['anonymousClass'] = $tokensAnalyzer->isAnonymousClass($classyIndex);
             }
         }
