@@ -475,58 +475,46 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
-    public function testDataProvidersAreNonPhpVersionConditional(string $testClassName): void
+    public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, \ReflectionMethod $dataProvider): void
     {
+        $dataProviderName = $dataProvider->getName();
+        $methodId = $testClassName.'::'.$dataProviderName;
+
         $tokens = $this->createTokensForClass($testClassName);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $dataProviderElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($tokens) {
-            if ('method' !== $v['type']) {
-                // not a method
-                return false;
-            }
-
+        $dataProviderElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($tokens, $dataProviderName) {
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($k)];
 
-            if (!$nextToken->isGivenKind(T_STRING) || !str_starts_with($nextToken->getContent(), 'provide')) {
-                // not a data provider method
-                return false;
-            }
-
-            return true;
+            // element is data provider method
+            return 'method' === $v['type'] && $nextToken->equals([T_STRING, $dataProviderName]);
         }, ARRAY_FILTER_USE_BOTH);
 
-        if (0 === \count($dataProviderElements)) {
-            $this->addToAssertionCount(1); // no data providers
-
-            return;
+        if (1 !== \count($dataProviderElements)) {
+            throw new \UnexpectedValueException(sprintf('DataProvider `%s` should be found exactly once, got %d times.', $methodId, \count($dataProviderElements)));
         }
 
-        foreach ($dataProviderElements as $index => $element) {
-            $methodName = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
-            $methodId = $testClassName.'::'.$methodName;
+        $methodIndex = array_key_first($dataProviderElements);
+        $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
 
-            $startIndex = $tokens->getNextTokenOfKind($index, ['{']);
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+        $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static function (Token $v): bool {
+            return $v->equalsAny([
+                [T_STRING, 'PHP_VERSION_ID'],
+                [T_STRING, 'PHP_MAJOR_VERSION'],
+                [T_STRING, 'PHP_MINOR_VERSION'],
+                [T_STRING, 'PHP_RELEASE_VERSION'],
+                [T_STRING, 'phpversion'],
+            ], false);
+        });
 
-            $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static function (Token $v): bool {
-                return $v->equalsAny([
-                    [T_STRING, 'PHP_VERSION_ID'],
-                    [T_STRING, 'PHP_MAJOR_VERSION'],
-                    [T_STRING, 'PHP_MINOR_VERSION'],
-                    [T_STRING, 'PHP_RELEASE_VERSION'],
-                    [T_STRING, 'phpversion'],
-                ], false);
-            });
-
-            self::assertCount(
-                0,
-                $versionTokens,
-                sprintf(
-                    "DataProvider '%s' should not check PHP version and provide different cases depends on it. It leads to situation when DataProvider provides 'sometimes 10, sometimes 11' test cases, depends on PHP version. That makes John Doe to see 'you run 10/10' and thinking all tests are executed, instead of actually seeing 'you run 10/11 and 1 skipped'.",
-                    $methodId,
-                ),
-            );
-        }
+        self::assertCount(
+            0,
+            $versionTokens,
+            sprintf(
+                "DataProvider '%s' should not check PHP version and provide different cases depends on it. It leads to situation when DataProvider provides 'sometimes 10, sometimes 11' test cases, depends on PHP version. That makes John Doe to see 'you run 10/10' and thinking all tests are executed, instead of actually seeing 'you run 10/11 and 1 skipped'.",
+                $methodId,
+            ),
+        );
     }
 
     /**
