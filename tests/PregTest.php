@@ -87,7 +87,7 @@ final class PregTest extends TestCase
                 $this->expectExceptionMessageMatches($expectedMessage);
             }
 
-            return (bool) $i;
+            return 0 !== $i;
         };
 
         try {
