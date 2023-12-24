@@ -477,23 +477,9 @@ final class ProjectCodeTest extends TestCase
      */
     public function testDataProvidersAreNonPhpVersionConditional(string $testClassName): void
     {
-        // should only shrink, baseline of violations on moment of adding this test
-        $exceptionMethods = [
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest::class => ['provideClassyInheritanceInfoCases'],
-            \PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest::class => ['provideFixWithConfiguredIncludeCases'],
-            \PhpCsFixer\Tests\Fixer\FunctionNotation\RegularCallableCallFixerTest::class => ['provideFixCases'],
-            \PhpCsFixer\Tests\Fixer\LanguageConstruct\NoUnsetOnPropertyFixerTest::class => ['provideFixCases'],
-            \PhpCsFixer\Tests\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixerTest::class => ['provideFixCases'],
-            \PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest::class => ['provideFixPreIncrementCases'],
-            \PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest::class => ['provideOneOrInLineCases'],
-            \PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest::class => ['provideFixSpaceOutsideOffsetCases', 'provideFixWithConfigurationCases'],
-            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificationTest::class => ['provideIsSatisfiedByReturnsTrueCases', 'provideIsSatisfiedByReturnsFalseCases'],
-            \PhpCsFixer\Tests\FixerDefinition\VersionSpecificCodeSampleTest::class => ['provideIsSuitableForUsesVersionSpecificationCases'],
-        ];
-
         $tokens = $this->createTokensForClass($testClassName);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $dataProviderElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($exceptionMethods, $testClassName, $tokens) {
+        $dataProviderElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($tokens) {
             if ('method' !== $v['type']) {
                 // not a method
                 return false;
@@ -503,10 +489,6 @@ final class ProjectCodeTest extends TestCase
 
             if (!$nextToken->isGivenKind(T_STRING) || !str_starts_with($nextToken->getContent(), 'provide')) {
                 // not a data provider method
-                return false;
-            }
-            if (isset($exceptionMethods[$testClassName]) && \in_array($nextToken->getContent(), $exceptionMethods[$testClassName], true)) {
-                // method is part of exceptions
                 return false;
             }
 
