@@ -1390,6 +1390,18 @@ class SomeClass
 }',
         ];
 
+        yield 'Leading backslash in global namespace disabled' => [
+            '<?php
+
+/**
+ * @param \DateTimeInterface $dateTime
+ * @return \DateTimeInterface
+ * @see \DateTimeImmutable
+ * @throws \Exception
+ */
+function foo($dateTime) {}',
+        ];
+
         yield 'Leading backslash in global namespace' => [
             '<?php
 
