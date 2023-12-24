@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixIndentCases
+     * @dataProvider provideFixCases
      */
-    public function testFixIndent(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixIndentCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield ['<?php /** @var Foo $foo */ ?>'];
 

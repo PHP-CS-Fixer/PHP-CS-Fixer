@@ -22,7 +22,6 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -35,8 +34,6 @@ use Symfony\Component\Finder\Finder;
  */
 final class DocumentationTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @dataProvider provideFixerDocumentationFileIsUpToDateCases
      */

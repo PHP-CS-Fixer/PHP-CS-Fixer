@@ -184,31 +184,6 @@ $baz [0]
      [1]
      [2] = 3;',
         ];
-
-        if (\PHP_VERSION_ID < 8_00_00) {
-            yield [
-                '<?php
-$foo{0}{1}{2} = 3;',
-                '<?php
-$foo {0} {1}   {2} = 3;',
-            ];
-
-            yield [
-                '<?php
-$foobar = $foo{0}[1]{2};',
-                '<?php
-$foobar = $foo {0} [1]   {2};',
-            ];
-
-            yield [
-                '<?php
-$var = $arr[0]{0
-         };',
-                '<?php
-$var = $arr[0]{     0
-         };',
-            ];
-        }
     }
 
     public static function provideFixSpaceInsideOffsetCases(): iterable
@@ -307,73 +282,22 @@ $var = $arr[0][     0
     }
 
     /**
-     * @param list<string> $configuration
+     * @param array{positions: list<string>} $configuration
      *
      * @dataProvider provideFixWithConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
+    public function testFixWithConfiguration(string $expected, string $input, array $configuration): void
     {
-        $this->fixer->configure(['positions' => $configuration]);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string, array<mixed>}>
+     */
     public static function provideFixWithConfigurationCases(): iterable
     {
-        $tests = [
-            [
-                ['inside', 'outside'],
-                <<<'EOT'
-                    <?php
-                    $arr1[]["some_offset"][]{"foo"} = 3;
-                    EOT
-                ,
-                <<<'EOT'
-                    <?php
-                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                    EOT
-                ,
-            ],
-            [
-                ['inside'],
-                <<<'EOT'
-                    <?php
-                    $arr1[]  ["some_offset"] [] {"foo"} = 3;
-                    EOT
-                ,
-                <<<'EOT'
-                    <?php
-                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                    EOT
-                ,
-            ],
-            [
-                ['outside'],
-                <<<'EOT'
-                    <?php
-                    $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
-                    EOT
-                ,
-                <<<'EOT'
-                    <?php
-                    $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                    EOT
-                ,
-            ],
-        ];
-
-        foreach ($tests as $index => $test) {
-            if (\PHP_VERSION_ID >= 8_00_00) {
-                $test[1] = str_replace('{', '[', $test[1]);
-                $test[1] = str_replace('}', ']', $test[1]);
-                $test[2] = str_replace('{', '[', $test[2]);
-                $test[2] = str_replace('}', ']', $test[2]);
-            }
-
-            yield $index => $test;
-        }
-
         yield 'Config "default".' => [
-            ['inside', 'outside'],
             '<?php [ $a ] = $a;
 if ($controllerName = $request->attributes->get(1)) {
     return false;
@@ -388,7 +312,77 @@ if ($controllerName = $request->attributes->get(1)) {
 [  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
 $a = $b   [0];
 ',
+            ['positions' => ['inside', 'outside']],
         ];
+    }
+
+    /**
+     * @param array{positions?: list<string>} $configuration
+     *
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield [
+            '<?php
+$foo{0}{1}{2} = 3;',
+            '<?php
+$foo {0} {1}   {2} = 3;',
+        ];
+
+        yield [
+            '<?php
+$foobar = $foo{0}[1]{2};',
+            '<?php
+$foobar = $foo {0} [1]   {2};',
+        ];
+
+        yield [
+            '<?php
+$var = $arr[0]{0
+         };',
+            '<?php
+$var = $arr[0]{     0
+         };',
+        ];
+
+        yield from self::provideMultiDimensionalArrayCases();
+    }
+
+    /**
+     * @param array{positions: array<string>} $configuration
+     *
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input, array $configuration): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, string, array<mixed>}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        foreach (self::provideMultiDimensionalArrayCases() as $index => $test) {
+            $test[0] = str_replace('{', '[', $test[0]);
+            $test[0] = str_replace('}', ']', $test[0]);
+            $test[1] = str_replace('{', '[', $test[1]);
+            $test[1] = str_replace('}', ']', $test[1]);
+
+            yield $index => $test;
+        }
     }
 
     public function testWrongConfig(): void
@@ -397,5 +391,39 @@ $a = $b   [0];
         $this->expectExceptionMessageMatches('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
 
         $this->fixer->configure(['positions' => ['foo']]);
+    }
+
+    /**
+     * @return iterable<array{string, string, array{positions: array<string>}}>
+     */
+    private static function provideMultiDimensionalArrayCases(): iterable
+    {
+        yield [
+            <<<'EOT'
+                <?php
+                $arr1[]  ["some_offset"] [] {"foo"} = 3;
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+                $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                EOT
+            ,
+            ['positions' => ['inside']],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
+                EOT
+            ,
+            <<<'EOT'
+                <?php
+                $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
+                EOT
+            ,
+            ['positions' => ['outside']],
+        ];
     }
 }

@@ -47,7 +47,6 @@
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.4",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.4",
         "phpunit/phpunit": "^9.6",
-        "symfony/phpunit-bridge": "^6.3.8 || ^7.0",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
     },
     "suggest": {

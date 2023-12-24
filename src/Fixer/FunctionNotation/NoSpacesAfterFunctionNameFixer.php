@@ -133,7 +133,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * Gets the token kinds which can work as function calls.
      *
-     * @return int[] Token names
+     * @return list<int> Token names
      */
     private function getFunctionyTokenKinds(): array
     {

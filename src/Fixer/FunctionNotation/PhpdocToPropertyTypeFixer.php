@@ -212,7 +212,7 @@ class Foo {
                     continue;
                 }
 
-                $propertyName = key($propertyIndices);
+                $propertyName = array_key_first($propertyIndices);
             }
 
             if (!isset($propertyIndices[$propertyName])) {

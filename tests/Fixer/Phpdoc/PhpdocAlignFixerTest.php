@@ -1185,20 +1185,20 @@ class Foo {}
             [],
             '<?php
             /**
-             * @var string                            $input
-             * @var \Closure                          $fn
-             * @var \Closure(bool):int                $fn2
-             * @var Closure                           $fn3
-             * @var Closure(string):string            $fn4
-             * @var array<string,array<string,mixed>> $data
+             * @var string                              $input
+             * @var \Closure                            $fn
+             * @var \Closure(bool):int                  $fn2
+             * @var Closure                             $fn3
+             * @var Closure(string):string              $fn4
+             * @var array<string, array<string, mixed>> $data
              */
             /**
-             * @param string                            $input
-             * @param \Closure                          $fn
-             * @param \Closure(bool):int                $fn2
-             * @param Closure                           $fn3
-             * @param Closure(string):string            $fn4
-             * @param array<string,array<string,mixed>> $data
+             * @param string                              $input
+             * @param \Closure                            $fn
+             * @param \Closure(bool):int                  $fn2
+             * @param Closure                             $fn3
+             * @param Closure(string):string              $fn4
+             * @param array<string, array<string, mixed>> $data
              */
             /**
              * @var string                   $value
@@ -1211,12 +1211,12 @@ class Foo {}
              * @param Closure(int): bool       $callback2
              */
             /**
-             * @var Closure(array<int,bool>): bool $callback1
-             * @var \Closure(string): string       $callback2
+             * @var Closure(array<int, bool>): bool $callback1
+             * @var \Closure(string): string        $callback2
              */
             /**
-             * @param Closure(array<int,bool>): bool $callback1
-             * @param \Closure(string): string       $callback2
+             * @param Closure(array<int, bool>): bool $callback1
+             * @param \Closure(string): string        $callback2
              */
         ', ];
 

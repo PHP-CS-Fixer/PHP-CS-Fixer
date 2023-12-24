@@ -452,14 +452,14 @@ class Foo
     /**
      * @requires PHP <8.0
      *
-     * @dataProvider provideFixPrePHP80Cases
+     * @dataProvider provideFixPre80Cases
      */
-    public function testFixPrePHP80(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPrePHP80Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php

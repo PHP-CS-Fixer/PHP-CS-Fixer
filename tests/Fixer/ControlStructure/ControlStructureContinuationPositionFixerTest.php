@@ -271,9 +271,9 @@ final class ControlStructureContinuationPositionFixerTest extends AbstractFixerT
     /**
      * @param null|array<string, mixed> $configuration
      *
-     * @dataProvider provideFixWithWindowsLineEndingsCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testFixWithWindowsLineEndings(string $expected, ?string $input = null, array $configuration = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null, array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -286,7 +286,7 @@ final class ControlStructureContinuationPositionFixerTest extends AbstractFixerT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixWithWindowsLineEndingsCases(): iterable
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         foreach (self::provideFixCases() as $label => $case) {
             yield $label => [

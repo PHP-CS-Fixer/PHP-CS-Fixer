@@ -493,16 +493,16 @@ EOT
     }
 
     /**
-     * @dataProvider provideDoNotFix80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testDoNotFix80(string $input): void
+    public function testFix80(string $input): void
     {
         $this->doTest($input);
     }
 
-    public static function provideDoNotFix80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         yield ['<?php
 

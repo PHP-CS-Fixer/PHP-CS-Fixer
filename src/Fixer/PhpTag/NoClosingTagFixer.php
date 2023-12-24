@@ -48,7 +48,7 @@ final class NoClosingTagFixer extends AbstractFixer
         }
 
         $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
-        $index = key($closeTags);
+        $index = array_key_first($closeTags);
 
         if (isset($tokens[$index - 1]) && $tokens[$index - 1]->isWhitespace()) {
             $tokens->clearAt($index - 1);

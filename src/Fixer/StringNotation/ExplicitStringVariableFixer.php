@@ -123,7 +123,7 @@ final class ExplicitStringVariableFixer extends AbstractFixer
 
             foreach ($variableTokens as $distinctVariableSet) {
                 if (1 === \count($distinctVariableSet['tokens'])) {
-                    $singleVariableIndex = key($distinctVariableSet['tokens']);
+                    $singleVariableIndex = array_key_first($distinctVariableSet['tokens']);
                     $singleVariableToken = current($distinctVariableSet['tokens']);
                     $tokens->overrideRange($singleVariableIndex, $singleVariableIndex, [
                         new Token([T_CURLY_OPEN, '{']),

@@ -22,7 +22,7 @@ interface DeprecatedRuleSetDescriptionInterface extends RuleSetDescriptionInterf
     /**
      * Returns names of rule sets to use instead, if any.
      *
-     * @return string[]
+     * @return list<string>
      */
     public function getSuccessorsNames(): array;
 }

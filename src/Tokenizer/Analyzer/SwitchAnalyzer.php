@@ -41,7 +41,7 @@ final class SwitchAnalyzer
     }
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     private static function getColonIndicesForSwitch(Tokens $tokens): array
     {

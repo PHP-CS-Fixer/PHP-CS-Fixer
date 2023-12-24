@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Import;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -30,9 +31,22 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $config = []): void
-    {
+    public function testFix(
+        string $expected,
+        ?string $input = null,
+        array $config = [],
+        ?WhitespacesFixerConfig $whitespaceConfig = null
+    ): void {
         $this->fixer->configure($config);
+
+        if (null !== $whitespaceConfig) {
+            $this->fixer->setWhitespacesConfig($whitespaceConfig);
+            $expected = str_replace("\n", $whitespaceConfig->getLineEnding(), $expected);
+            if (null !== $input) {
+                $input = str_replace("\n", $whitespaceConfig->getLineEnding(), $input);
+            }
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -354,6 +368,151 @@ namespace Z\B\C\D
             echo X\Z::F;
             ',
             null,
+        ];
+
+        yield 'import new symbols from all supported places' => [
+            '<?php
+
+namespace Foo\Test;
+use Other\BaseClass;
+use Other\CaughtThrowable;
+use Other\FunctionArgument;
+use Other\FunctionReturnType;
+use Other\Interface1;
+use Other\Interface2;
+use Other\PropertyPhpDoc;
+use Other\StaticFunctionCall;
+
+class Foo extends BaseClass implements Interface1, Interface2
+{
+    /** @var PropertyPhpDoc */
+    private $array;
+    public function __construct(FunctionArgument $arg) {}
+    public function foo(): FunctionReturnType
+    {
+        try {
+            StaticFunctionCall::bar();
+        } catch (CaughtThrowable $e) {}
+    }
+}
+            ',
+            '<?php
+
+namespace Foo\Test;
+
+class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
+{
+    /** @var \Other\PropertyPhpDoc */
+    private $array;
+    public function __construct(\Other\FunctionArgument $arg) {}
+    public function foo(): \Other\FunctionReturnType
+    {
+        try {
+            \Other\StaticFunctionCall::bar();
+        } catch (\Other\CaughtThrowable $e) {}
+    }
+}
+            ',
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols under already existing imports' => [
+            '<?php
+
+namespace Foo\Test;
+
+use Other\A;
+use Other\B;
+use Other\C;
+use Other\D;
+use Other\E;
+
+function foo(A $a, B $b) {}
+function bar(C $c, D $d): E {}
+',
+            '<?php
+
+namespace Foo\Test;
+
+use Other\A;
+use Other\B;
+
+function foo(A $a, B $b) {}
+function bar(\Other\C $c, \Other\D $d): \Other\E {}
+',
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols within multiple namespaces' => [
+            '<?php
+
+namespace Foo\Bar {
+    use Other\A;
+use Other\B;
+
+    function foo(A $a, B $b) {}
+}
+namespace Foo\Baz {
+    use Other\A;
+use Other\C;
+
+    function foo(A $a, C $c) {}
+}
+',
+            '<?php
+
+namespace Foo\Bar {
+    use Other\A;
+
+    function foo(A $a, \Other\B $b) {}
+}
+namespace Foo\Baz {
+    use Other\A;
+
+    function foo(A $a, \Other\C $c) {}
+}
+',
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols with custom whitespace config' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Other\A;
+use Other\B;
+
+function foo(A $a, B $b) {}
+',
+            '<?php
+
+namespace Foo\Bar;
+
+use Other\A;
+
+function foo(A $a, \Other\B $b) {}
+',
+            ['import_symbols' => true],
+            new WhitespacesFixerConfig("\t", "\r\n"),
+        ];
+
+        yield 'ignore importing if there is name conflict' => [
+            '<?php namespace Foo\Test; use Other\A; function foo(A $a, \YetAnother\A $b) {}',
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'ignore importing if symbol is not a FQN' => [
+            '<?php namespace Foo\Test; use Foo\Test\Sub\Symbol1; function foo(Symbol1 $a, Sub\Symbol2 $b) {}',
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'ignore global FQNs (there is GlobalNamespaceImportFixer for that)' => [
+            '<?php namespace Foo\Test; function foo(\Symbol $a, \OtherSymbol $b) {}',
+            null,
+            ['import_symbols' => true],
         ];
     }
 

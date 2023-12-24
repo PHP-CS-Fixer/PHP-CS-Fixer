@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,7 +23,25 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  */
 abstract class TestCase extends BaseTestCase
 {
-    use ExpectDeprecationTrait;
+    /** @var null|callable */
+    private $previouslyDefinedErrorHandler;
+
+    /** @var list<string> */
+    private array $expectedDeprecations = [];
+
+    /** @var list<string> */
+    private array $actualDeprecations = [];
+
+    protected function tearDown(): void
+    {
+        if (null !== $this->previouslyDefinedErrorHandler) {
+            foreach ($this->expectedDeprecations as $expectedDeprecation) {
+                self::assertContains($expectedDeprecation, $this->actualDeprecations);
+            }
+
+            restore_error_handler();
+        }
+    }
 
     final public function testNotDefiningConstructor(): void
     {
@@ -34,5 +51,28 @@ abstract class TestCase extends BaseTestCase
             $reflection->getConstructor()->getDeclaringClass()->getName(),
             $reflection->getName(),
         );
+    }
+
+    /**
+     * @TODO change access to protected and pass the parameter when PHPUnit 9 support is dropped
+     */
+    public function expectDeprecation(/* string $message */): void
+    {
+        $this->expectedDeprecations[] = func_get_arg(0);
+
+        if (null === $this->previouslyDefinedErrorHandler) {
+            $this->previouslyDefinedErrorHandler = set_error_handler(
+                function (
+                    int $code,
+                    string $message
+                ) {
+                    if (E_USER_DEPRECATED === $code || E_DEPRECATED === $code) {
+                        $this->actualDeprecations[] = $message;
+                    }
+
+                    return true;
+                }
+            );
+        }
     }
 }

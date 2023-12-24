@@ -78,7 +78,7 @@ final class CTTest extends TestCase
     }
 
     /**
-     * @return array<string,int>
+     * @return array<string, int>
      */
     private static function getConstants(): array
     {

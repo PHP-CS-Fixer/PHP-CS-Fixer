@@ -99,6 +99,8 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
     protected function tearDown(): void
     {
         $this->fs = null;
+
+        parent::tearDown();
     }
 
     public function testInstallationViaPathIsPossible(): void

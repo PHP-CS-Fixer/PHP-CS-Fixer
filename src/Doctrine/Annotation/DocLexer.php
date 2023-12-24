@@ -75,7 +75,7 @@ final class DocLexer
 
     private int $peek = 0;
 
-    private ?string $regex;
+    private ?string $regex = null;
 
     public function setInput(string $input): void
     {

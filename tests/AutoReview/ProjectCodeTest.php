@@ -184,6 +184,7 @@ final class ProjectCodeTest extends TestCase
         $exceptionPropsPerClass = [
             \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
             \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
+            \PhpCsFixer\Console\Command\FixCommand::class => ['defaultDescription', 'defaultName'],
             AbstractProxyFixer::class => ['proxyFixers'],
         ];
 

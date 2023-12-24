@@ -106,7 +106,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                     continue;
                 }
 
-                $firstSequenceIndex = key($sequenceFound);
+                $firstSequenceIndex = array_key_first($sequenceFound);
 
                 if ($firstSequenceIndex !== $firstCandidateIndex) {
                     continue;

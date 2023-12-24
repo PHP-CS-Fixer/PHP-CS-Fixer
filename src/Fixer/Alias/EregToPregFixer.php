@@ -188,6 +188,6 @@ final class EregToPregFixer extends AbstractFixer
             return $a[0] <=> $b[0];
         });
 
-        return key($delimiters);
+        return array_key_first($delimiters);
     }
 }
