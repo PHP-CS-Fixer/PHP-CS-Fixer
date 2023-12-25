@@ -3,6 +3,57 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.42.0
+---------------------
+
+* chore: aim to not rely on internal array pointer but use array_key_first (#7613)
+* chore: deprecate Token::isKeyCaseSensitive (#7599)
+* chore: deprecate Token::isKeyCaseSensitive, 2nd part (#7601)
+* chore: do not check PHP_VERSION_ID (#7602)
+* chore: FileFilterIteratorTest - more accurate type in docs (#7542)
+* chore: minor code cleanup (#7607)
+* chore: more types (#7598)
+* chore: PHPDoc key-value spacing (#7592)
+* chore: PHPUnit - run defects first (#7570)
+* chore: ProjectCodeTest - DRY on Tokens creation (#7574)
+* chore: ProjectCodeTest - prepare for symfony/console v7 (#7605)
+* chore: ProjectCodeTest::provide*ClassCases to return iterable with key for better tests execution log (#7572)
+* chore: ProjectCodeTest::testDataProvidersDeclaredReturnType - use better DataProvider to simplify test logic (#7573)
+* chore: TokensAnalyzer - string-enum for better typehinting (#7571)
+* chore: unify tests not agnostic of PHP version (#7581)
+* chore: use ::class more (#7545)
+* CI: Introduce `composer-unused` (#7536)
+* DX: add types to anonymous functions (#7561)
+* DX: Allow running smoke tests within Docker runtime (#7608)
+* DX: check fixer's options for wording (#7543)
+* DX: cleanup deprecation message (#7576)
+* DX: do not allow overriding constructor of `PHPUnit\Framework\TestCase` (#7563)
+* DX: do not import ExpectDeprecationTrait in UtilsTest (#7562)
+* DX: Enforce consistent naming in tests (#7556)
+* DX: fix checking test class extends `PhpCsFixer\Tests\TestCase` (#7567)
+* DX: make sure that exceptions in `AbstractFixerTestCase::testProperMethodNaming` are not already fixed (#7588)
+* DX: remove recursion from AbstractIntegrationTestCase::testIntegration (#7577)
+* DX: remove `PhpUnitNamespacedFixerTest::testClassIsFixed` (#7564)
+* DX: remove `symfony/phpunit-bridge` (#7578)
+* DX: replace fixture classes with anonymous ones (#7533)
+* DX: Unify Docker mount points and paths (#7549)
+* DX: unify fixer's test method names - quick wins (#7584)
+* DX: unify tests for casing fixers (#7558)
+* DX: use anonymous function over concrete classes (#7553)
+* feat(EXPERIMENTAL): ClassKeywordFixer (#2918)
+* feat(EXPERIMENTAL): ClassKeywordFixer, part 2 (#7550)
+* feat(PhpdocToCommentFixer): Add option to handle return as valid docblock usage (#7401) (#7402)
+* feat: Ability to import FQCNs found during analysis (#7597)
+* feat: add phpDoc support for `fully_qualified_strict_types` fixer (#5620)
+* feat: Handle deprecated rule sets similarly to deprecated fixers (#7288)
+* feat: PhpUnitTestCaseStaticMethodCallsFixer - cover PHPUnit v10 methods (#7604)
+* feat: Support more FQCNs cases in `fully_qualified_strict_types` (#7459)
+* fix: AbstractFixerTestCase - fix checking for correct casing (#7540)
+* fix: Better OS detection in integration tests (#7547)
+* fix: NativeTypeDeclarationCasingFixe - handle static property without type (#7589)
+* test: AutoReview - unify data provider returns (#7544)
+* test: check to have DataProviders code agnostic of PHP version (#7575)
+
 Changelog for v3.41.1
 ---------------------
 
