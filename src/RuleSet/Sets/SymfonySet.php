@@ -54,8 +54,8 @@ final class SymfonySet extends AbstractRuleSetDescription
             'echo_tag_syntax' => true,
             'empty_loop_body' => ['style' => 'braces'],
             'empty_loop_condition' => true,
-            'function_declaration' => true, // overrides @PER-CS2.0
             'fully_qualified_strict_types' => true,
+            'function_declaration' => true, // overrides @PER-CS2.0
             'general_phpdoc_tag_rename' => [
                 'replacements' => [
                     'inheritDocs' => 'inheritDoc',

@@ -38,8 +38,8 @@ Rules
   ``['style' => 'braces']``
 
 - `empty_loop_condition <./../rules/control_structure/empty_loop_condition.rst>`_
-- `function_declaration <./../rules/function_notation/function_declaration.rst>`_
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
+- `function_declaration <./../rules/function_notation/function_declaration.rst>`_
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_ with config:
 
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
