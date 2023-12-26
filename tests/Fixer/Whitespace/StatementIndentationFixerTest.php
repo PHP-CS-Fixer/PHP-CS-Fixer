@@ -25,14 +25,19 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class StatementIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $confiugration = []): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure($confiugration);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'no brace block' => [
@@ -1070,15 +1075,20 @@ if ($foo) {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixWithTabsCases
      */
-    public function testFixWithTabs(string $expected, ?string $input = null, array $confiugration = []): void
+    public function testFixWithTabs(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure($confiugration);
+        $this->fixer->configure($configuration);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixWithTabsCases(): iterable
     {
         yield 'simple' => [
@@ -1096,16 +1106,21 @@ if ($foo) {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixPhp80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null, array $confiugration = []): void
+    public function testFixPhp80(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure($confiugration);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixPhp80Cases(): iterable
     {
         yield 'match expression' => [
@@ -1164,16 +1179,21 @@ class Foo {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixPhp81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFixPhp81(string $expected, ?string $input = null, array $confiugration = []): void
+    public function testFixPhp81(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure($confiugration);
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixPhp81Cases(): iterable
     {
         yield 'simple enum' => [
