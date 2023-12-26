@@ -206,6 +206,9 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'standardize_increment' => true,
             'standardize_not_equals' => true,
+            'statement_indentation' => [
+                'stick_comment_to_next_continuous_control_statement' => true,
+            ],
             'switch_continue_to_break' => true,
             'trailing_comma_in_multiline' => true,
             'trim_array_spaces' => true,
