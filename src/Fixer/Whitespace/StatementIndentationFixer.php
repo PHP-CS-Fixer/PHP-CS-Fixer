@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\Indentation;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -25,10 +29,6 @@ use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 
 final class StatementIndentationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -93,17 +93,6 @@ if ($foo) {
         );
     }
 
-    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('stick_comment_to_next_continuous_control_statement', 'Last comment of code block counts as comment for next block.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->getOption(),
-        ]);
-        // $this->configuration['stick_comment_to_next_continuous_control_statement']
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -118,6 +107,17 @@ if ($foo) {
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('stick_comment_to_next_continuous_control_statement', 'Last comment of code block counts as comment for next block.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+        // $this->configuration['stick_comment_to_next_continuous_control_statement']
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -427,7 +427,7 @@ if ($foo) {
                                     $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
                                     if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
-                                        $indent = $this->configuration['stick_comment_to_next_continuous_control_statement'] !== true;
+                                        $indent = true !== $this->configuration['stick_comment_to_next_continuous_control_statement'];
                                     } else {
                                         $indent = true;
                                     }

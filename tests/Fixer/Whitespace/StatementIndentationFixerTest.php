@@ -948,7 +948,7 @@ if ($foo) {
 } else {
     $aaa = 1;
 }',
-['stick_comment_to_next_continuous_control_statement' => false],
+            ['stick_comment_to_next_continuous_control_statement' => false],
         ];
 
         yield 'comment before else blocks WITH stick_comment_to_next_continuous_control_statement' => [
@@ -968,7 +968,7 @@ if ($foo) {
 } else {
     $aaa = 1;
 }',
-['stick_comment_to_next_continuous_control_statement' => true],
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - describing next block' => [
@@ -990,7 +990,7 @@ if (1) {
 } else {
     $c = "b";
 }',
-['stick_comment_to_next_continuous_control_statement' => true],
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - the only content in block' => [
@@ -1039,7 +1039,7 @@ if ($foo) {
     $aaa = 1;
     // end comment in final block
 }',
-['stick_comment_to_next_continuous_control_statement' => true],
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'comments at the end of if/elseif/else blocks' => [
@@ -1065,7 +1065,7 @@ if ($foo) {
     echo "baz";
     // baz
 }',
-['stick_comment_to_next_continuous_control_statement' => true],
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
     }
 
