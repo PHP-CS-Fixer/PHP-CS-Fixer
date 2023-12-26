@@ -27,8 +27,9 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $confiugration = []): void
     {
+        $this->fixer->configure($confiugration);
         $this->doTest($expected, $input);
     }
 
@@ -940,13 +941,14 @@ if ($foo) {
     $aaa = 1;
 }',
             '<?php
-    // foo
+        // foo
 if ($foo) {
     echo "foo";
-    // bar
+        // bar
 } else {
     $aaa = 1;
 }',
+['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - describing next block' => [
@@ -968,6 +970,7 @@ if (1) {
 } else {
     $c = "b";
 }',
+['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - the only content in block' => [
@@ -1016,6 +1019,7 @@ if ($foo) {
     $aaa = 1;
     // end comment in final block
 }',
+['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'comments at the end of if/elseif/else blocks' => [
@@ -1041,14 +1045,16 @@ if ($foo) {
     echo "baz";
     // baz
 }',
+['stick_comment_to_next_continuous_control_statement' => true],
         ];
     }
 
     /**
      * @dataProvider provideFixWithTabsCases
      */
-    public function testFixWithTabs(string $expected, ?string $input = null): void
+    public function testFixWithTabs(string $expected, ?string $input = null, array $confiugration = []): void
     {
+        $this->fixer->configure($confiugration);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
         $this->doTest($expected, $input);
     }
@@ -1074,8 +1080,9 @@ if ($foo) {
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null): void
+    public function testFixPhp80(string $expected, ?string $input = null, array $confiugration = []): void
     {
+        $this->fixer->configure($confiugration);
         $this->doTest($expected, $input);
     }
 
@@ -1141,8 +1148,9 @@ class Foo {
      *
      * @requires PHP 8.1
      */
-    public function testFixPhp81(string $expected, ?string $input = null): void
+    public function testFixPhp81(string $expected, ?string $input = null, array $confiugration = []): void
     {
+        $this->fixer->configure($confiugration);
         $this->doTest($expected, $input);
     }
 
