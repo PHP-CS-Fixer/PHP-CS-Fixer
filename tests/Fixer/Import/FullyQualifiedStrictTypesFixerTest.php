@@ -711,7 +711,7 @@ class Two
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, mixed>}>
      */
     public static function provideCodeWithPhpDocCases(): iterable
     {
@@ -728,25 +728,58 @@ use Foo\Bar\SomeClass;
 class SomeClassTest {}',
         ];
 
-        yield 'Leading backslash in global namespace' => [
+        yield 'ignore @see with URL and keep whitespace' => [
+            '<?php
+/**
+ * @see     http://example.com
+ */
+define(\'FOO_BAR\', true);',
+        ];
+
+        yield 'Respect whitespace between phpDoc annotation and value' => [
+            '<?php
+
+namespace Foo\Test;
+
+use Foo\Bar;
+
+/**
+ * @param Bar $a
+ * @see   Bar
+ */
+function foo($a) {}',
+        ];
+
+        yield 'Leading backslash in global namespace - keep backslash' => [
             '<?php
 
 /**
  * @param \DateTimeInterface $dateTime
+ * @param callable(): (\Closure(): void) $fx
  * @return \DateTimeInterface
+ * @psalm-return \DateTime
  * @see \DateTimeImmutable
  * @throws \Exception
  */
-function foo($dateTime) {}',
+function foo($dateTime, $fx) {}
+
+try { fx(); } catch (\Exception $e) {}',
+            null,
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'Leading backslash in global namespace - global types' => [
             '<?php
 
 /**
- * @param DateTimeInterface $dateTime
- * @return DateTimeInterface
- * @see DateTimeImmutable
- * @throws Exception
+ * @param int $v
+ * @phpstan-param positive-int $v
+ * @param \'GET\'|\'POST\' $method
+ * @param \Closure(): (callable(): void) $fx
+ * @return list<int>
  */
-function foo($dateTime) {}',
+function foo($v, $method, $fx) {}',
+            null,
             ['leading_backslash_in_global_namespace' => true],
         ];
     }
