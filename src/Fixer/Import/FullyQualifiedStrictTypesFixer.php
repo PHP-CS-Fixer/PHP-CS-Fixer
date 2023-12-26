@@ -16,7 +16,6 @@ namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -28,7 +27,6 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -38,17 +36,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Greg Korba <greg@codito.dev>
  * @author SpacePossum <possumfromspace@gmail.com>
  */
-final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var array{
-     *     const?: array<string, class-string>,
-     *     class?: array<string, class-string>,
-     *     function?: array<string, class-string>
-     * }
-     */
-    private array $symbolsForImport = [];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -124,26 +113,6 @@ namespace Foo\Bar {
 ',
                     ['leading_backslash_in_global_namespace' => true]
                 ),
-                new CodeSample(
-                    '<?php
-
-namespace Foo\Test;
-
-class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
-{
-    /** @var \Other\PropertyPhpDoc */
-    private $array;
-    public function __construct(\Other\FunctionArgument $arg) {}
-    public function foo(): \Other\FunctionReturnType
-    {
-        try {
-            \Other\StaticFunctionCall::bar();
-        } catch (\Other\CaughtThrowable $e) {}
-    }
-}
-',
-                    ['import_symbols' => true]
-                ),
             ]
         );
     }
@@ -151,7 +120,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, StatementIndentationFixer.
+     * Must run before NoSuperfluousPhpdocTagsFixer.
      * Must run after PhpdocToReturnTypeFixer.
      */
     public function getPriority(): int
@@ -181,13 +150,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder(
-                'import_symbols',
-                'Whether FQCNs found during analysis should be automatically imported.'
-            ))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->getOption(),
         ]);
     }
 
@@ -199,11 +161,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             $namespaceName = strtolower($namespace->getFullName());
             $uses = [];
-            $lastUse = null;
 
             foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace) as $use) {
-                $uses[$this->normaliseSymbolName($use->getFullName())] = $use->getShortName();
-                $lastUse = $use;
+                $uses[strtolower(ltrim($use->getFullName(), '\\'))] = $use->getShortName();
             }
 
             for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
@@ -220,15 +180,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                     $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
                 }
-            }
-
-            if (true === $this->configuration['import_symbols'] && [] !== $this->symbolsForImport) {
-                $atIndex = (null !== $lastUse) ? $lastUse->getEndIndex() + 1 : $namespace->getEndIndex() + 1;
-
-                // Insert all registered FQCNs
-                $this->createImportProcessor()->insertImports($tokens, $this->symbolsForImport, $atIndex);
-
-                $this->symbolsForImport = [];
             }
         }
     }
@@ -270,10 +221,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     continue;
                 }
 
-                if (true === $this->configuration['import_symbols'] && isset($matches[2][0])) {
-                    $this->registerSymbolForImport('class', $matches[2][0], $uses, $namespaceName);
-                }
-
                 $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
 
                 if (null !== $shortTokens) {
@@ -298,8 +245,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        // We handle `extends` and `implements` with similar logic, but we need to exit the loop under different conditions.
-        $isExtends = $tokens[$index]->equals([T_EXTENDS]);
         $index = $tokens->getNextMeaningfulToken($index);
         $extend = ['content' => '', 'tokens' => []];
 
@@ -307,7 +252,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
                 $this->shortenClassIfPossible($tokens, $extend, $uses, $namespaceName);
 
-                if ($tokens[$index]->equalsAny($isExtends ? [[T_IMPLEMENTS], '{'] : ['{'])) {
+                if ($tokens[$index]->equals('{')) {
                     break;
                 }
 
@@ -383,10 +328,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $longTypeContent = $class['content'];
 
-        if (true === $this->configuration['import_symbols']) {
-            $this->registerSymbolForImport('class', $longTypeContent, $uses, $namespaceName);
-        }
-
         if (str_starts_with($longTypeContent, '\\')) {
             $typeName = substr($longTypeContent, 1);
             $typeNameLower = strtolower($typeName);
@@ -439,10 +380,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
             if ((new TypeAnalysis($typeName))->isReservedType()) {
                 return;
-            }
-
-            if (true === $this->configuration['import_symbols']) {
-                $this->registerSymbolForImport('class', $typeName, $uses, $namespaceName);
             }
 
             $shortType = $this->determineShortType($typeName, $uses, $namespaceName);
@@ -614,61 +551,5 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         return $tokens;
-    }
-
-    /**
-     * We need to create import processor dynamically (not in costructor), because actual whitespace configuration
-     * is set later, not when fixer's instance is created.
-     */
-    private function createImportProcessor(): ImportProcessor
-    {
-        return new ImportProcessor($this->whitespacesConfig);
-    }
-
-    /**
-     * @param "class"|"const"|"function" $kind
-     * @param class-string               $symbol
-     * @param array<string, string>      $uses
-     */
-    private function registerSymbolForImport(string $kind, string $symbol, array &$uses, string $namespaceName): void
-    {
-        $normalisedName = $this->normaliseSymbolName($symbol);
-
-        // Do NOT register symbol for importing if:
-        if (
-            // we already have the symbol in existing imports
-            isset($uses[$normalisedName])
-            // or if the symbol is not a FQCN
-            || !str_starts_with($symbol, '\\')
-            // or if it's a global symbol
-            || strpos($symbol, '\\') === strrpos($symbol, '\\')
-        ) {
-            return;
-        }
-
-        $shortSymbol = substr($symbol, strrpos($symbol, '\\') + 1);
-        $importedShortNames = array_map(
-            static fn (string $name): string => strtolower($name),
-            array_values($uses)
-        );
-
-        // If symbol
-        if (\in_array(strtolower($shortSymbol), $importedShortNames, true)) {
-            return;
-        }
-
-        $this->symbolsForImport[$kind][$normalisedName] = ltrim($symbol, '\\');
-        ksort($this->symbolsForImport[$kind], SORT_NATURAL);
-
-        // We must fake that the symbol is imported, so that it can be shortened.
-        $uses[$normalisedName] = $shortSymbol;
-    }
-
-    /**
-     * @param class-string $name
-     */
-    private function normaliseSymbolName(string $name): string
-    {
-        return strtolower(ltrim($name, '\\'));
     }
 }

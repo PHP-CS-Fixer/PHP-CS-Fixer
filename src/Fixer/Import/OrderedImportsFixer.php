@@ -175,7 +175,7 @@ use Bar;
      * {@inheritdoc}
      *
      * Must run before BlankLineBetweenImportGroupsFixer.
-     * Must run after FullyQualifiedStrictTypesFixer, GlobalNamespaceImportFixer, NoLeadingImportSlashFixer.
+     * Must run after GlobalNamespaceImportFixer, NoLeadingImportSlashFixer.
      */
     public function getPriority(): int
     {
