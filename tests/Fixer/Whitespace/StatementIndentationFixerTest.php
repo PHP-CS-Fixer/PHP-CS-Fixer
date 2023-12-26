@@ -931,7 +931,27 @@ if (true) {
 }',
         ];
 
-        yield 'comment before else blocks' => [
+        yield 'comment before else blocks WITHOUT stick_comment_to_next_continuous_control_statement' => [
+            '<?php
+// foo
+if ($foo) {
+    echo "foo";
+    // bar
+} else {
+    $aaa = 1;
+}',
+            '<?php
+        // foo
+if ($foo) {
+    echo "foo";
+        // bar
+} else {
+    $aaa = 1;
+}',
+['stick_comment_to_next_continuous_control_statement' => false],
+        ];
+
+        yield 'comment before else blocks WITH stick_comment_to_next_continuous_control_statement' => [
             '<?php
 // foo
 if ($foo) {
