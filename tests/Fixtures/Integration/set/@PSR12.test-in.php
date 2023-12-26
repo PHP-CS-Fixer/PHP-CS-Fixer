@@ -39,4 +39,6 @@ $a = new Foo;
 $b = (boolean) 1;
 $c = true  ? (INT) '1'  :  2;
 
+function callback($a, ...   $b) { return (--   $a) * ($b   ++);}
+
 ?>
