@@ -36,6 +36,9 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideNewLogicCases(): iterable
     {
         yield 'namespace === type name' => [
@@ -164,6 +167,9 @@ class A {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCases(): iterable
     {
         yield 'Import common strict types' => [
@@ -376,6 +382,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithoutReturnTypesCases(): iterable
     {
         yield 'import from namespace and global' => [
@@ -635,6 +644,9 @@ namespace {
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
         yield 'Test namespace fixes with nullable types' => [
@@ -688,6 +700,58 @@ class Two
     }
 
     /**
+     * @param array<string, mixed> $config
+     *
+     * @dataProvider provideCodeWithPhpDocCases
+     */
+    public function testCodeWithPhpDoc(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
+     */
+    public static function provideCodeWithPhpDocCases(): iterable
+    {
+        yield 'Skip @covers in tests (they require FQCN)' => [
+            '<?php
+
+namespace Tests\Foo\Bar;
+
+use Foo\Bar\SomeClass;
+
+/**
+ * @covers \Foo\Bar\SomeClass
+ */
+class SomeClassTest {}',
+        ];
+
+        yield 'Leading backslash in global namespace' => [
+            '<?php
+
+/**
+ * @param \DateTimeInterface $dateTime
+ * @return \DateTimeInterface
+ * @see \DateTimeImmutable
+ * @throws \Exception
+ */
+function foo($dateTime) {}',
+            '<?php
+
+/**
+ * @param DateTimeInterface $dateTime
+ * @return DateTimeInterface
+ * @see DateTimeImmutable
+ * @throws Exception
+ */
+function foo($dateTime) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+    }
+
+    /**
      * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases
@@ -697,6 +761,9 @@ class Two
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -741,6 +808,9 @@ class Two
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -795,6 +865,9 @@ class SomeClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'simple param in global namespace without use' => [
