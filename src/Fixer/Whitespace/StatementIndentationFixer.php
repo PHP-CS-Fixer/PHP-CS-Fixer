@@ -117,7 +117,6 @@ if ($foo) {
                 ->setDefault(false)
                 ->getOption(),
         ]);
-        // $this->configuration['stick_comment_to_next_continuous_control_statement']
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
