@@ -55,6 +55,9 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'escape_implicit_backslashes' => true,
             'explicit_indirect_variable' => true,
             'explicit_string_variable' => true,
+            'fully_qualified_strict_types' => [
+                'import_symbols' => true,
+            ],
             'heredoc_to_nowdoc' => true,
             'method_argument_space' => [
                 'on_multiline' => 'ensure_fully_multiline',

@@ -20,6 +20,10 @@ Rules
 - `escape_implicit_backslashes <./../rules/string_notation/escape_implicit_backslashes.rst>`_
 - `explicit_indirect_variable <./../rules/language_construct/explicit_indirect_variable.rst>`_
 - `explicit_string_variable <./../rules/string_notation/explicit_string_variable.rst>`_
+- `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_ with config:
+
+  ``['import_symbols' => true]``
+
 - `heredoc_to_nowdoc <./../rules/string_notation/heredoc_to_nowdoc.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 

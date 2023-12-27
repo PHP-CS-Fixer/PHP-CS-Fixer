@@ -186,7 +186,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['import_symbols' => true]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 Source class
