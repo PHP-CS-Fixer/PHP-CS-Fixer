@@ -25,13 +25,19 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class StatementIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'no brace block' => [
@@ -930,7 +936,27 @@ if (true) {
 }',
         ];
 
-        yield 'comment before else blocks' => [
+        yield 'comment before else blocks WITHOUT stick_comment_to_next_continuous_control_statement' => [
+            '<?php
+// foo
+if ($foo) {
+    echo "foo";
+    // bar
+} else {
+    $aaa = 1;
+}',
+            '<?php
+        // foo
+if ($foo) {
+    echo "foo";
+        // bar
+} else {
+    $aaa = 1;
+}',
+            ['stick_comment_to_next_continuous_control_statement' => false],
+        ];
+
+        yield 'comment before else blocks WITH stick_comment_to_next_continuous_control_statement' => [
             '<?php
 // foo
 if ($foo) {
@@ -940,13 +966,14 @@ if ($foo) {
     $aaa = 1;
 }',
             '<?php
-    // foo
+        // foo
 if ($foo) {
     echo "foo";
-    // bar
+        // bar
 } else {
     $aaa = 1;
 }',
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - describing next block' => [
@@ -968,6 +995,7 @@ if (1) {
 } else {
     $c = "b";
 }',
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - the only content in block' => [
@@ -1016,6 +1044,7 @@ if ($foo) {
     $aaa = 1;
     // end comment in final block
 }',
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'comments at the end of if/elseif/else blocks' => [
@@ -1041,18 +1070,25 @@ if ($foo) {
     echo "baz";
     // baz
 }',
+            ['stick_comment_to_next_continuous_control_statement' => true],
         ];
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixWithTabsCases
      */
-    public function testFixWithTabs(string $expected, ?string $input = null): void
+    public function testFixWithTabs(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixWithTabsCases(): iterable
     {
         yield 'simple' => [
@@ -1070,15 +1106,21 @@ if ($foo) {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixPhp80Cases
      *
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null): void
+    public function testFixPhp80(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixPhp80Cases(): iterable
     {
         yield 'match expression' => [
@@ -1137,15 +1179,21 @@ class Foo {
     }
 
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixPhp81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFixPhp81(string $expected, ?string $input = null): void
+    public function testFixPhp81(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     */
     public static function provideFixPhp81Cases(): iterable
     {
         yield 'simple enum' => [
