@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\Indentation;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -26,7 +30,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class StatementIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class StatementIndentationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     use Indentation;
 
@@ -56,6 +60,35 @@ else {
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+        // foo
+if ($foo) {
+    echo "foo";
+        // this is treated as comment of `if` block, as `stick_comment_to_next_continuous_control_statement` is disabled
+} else {
+    $aaa = 1;
+}
+',
+                    ['stick_comment_to_next_continuous_control_statement' => false]
+                ),
+                new CodeSample(
+                    '<?php
+        // foo
+if ($foo) {
+    echo "foo";
+        // this is treated as comment of `elseif(1)` block, as `stick_comment_to_next_continuous_control_statement` is enabled
+} elseif(1) {
+    echo "bar";
+} elseif(2) {
+        // this is treated as comment of `elseif(2)` block, as the only content of that block
+} elseif(3) {
+    $aaa = 1;
+        // this is treated as comment of `elseif(3)` block, as it is a comment in the final block
+}
+',
+                    ['stick_comment_to_next_continuous_control_statement' => true]
+                ),
             ]
         );
     }
@@ -74,6 +107,16 @@ else {
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('stick_comment_to_next_continuous_control_statement', 'Last comment of code block counts as comment for next block.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -383,7 +426,7 @@ else {
                                     $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
                                     if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([T_ELSE, T_ELSEIF])) {
-                                        $indent = false;
+                                        $indent = true !== $this->configuration['stick_comment_to_next_continuous_control_statement'];
                                     } else {
                                         $indent = true;
                                     }
