@@ -188,6 +188,34 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder(
+                'phpdoc_tags',
+                'Collection of PHPDoc annotation tags where FQCNs should be processed. As of now only simple tags with `@tag \F\Q\C\N` format are supported (no complex types).'
+            ))
+                ->setAllowedTypes(['array'])
+                ->setDefault([
+                    'param',
+                    'phpstan-param',
+                    'phpstan-property',
+                    'phpstan-property-read',
+                    'phpstan-property-write',
+                    'phpstan-return',
+                    'phpstan-var',
+                    'property',
+                    'property-read',
+                    'property-write',
+                    'psalm-param',
+                    'psalm-property',
+                    'psalm-property-read',
+                    'psalm-property-write',
+                    'psalm-return',
+                    'psalm-var',
+                    'return',
+                    'see',
+                    'throws',
+                    'var',
+                ])
+                ->getOption(),
         ]);
     }
 
@@ -266,7 +294,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         if ([] !== $matches) {
             foreach ($matches[2] as $i => $typeName) {
-                if (!\in_array($matches[1][$i], ['param', 'return', 'see', 'throws', 'var'], true)) {
+                if (!\in_array($matches[1][$i], $this->configuration['phpdoc_tags'], true)) {
                     continue;
                 }
 

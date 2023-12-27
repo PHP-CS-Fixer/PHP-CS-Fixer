@@ -1072,7 +1072,7 @@ class Two
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, mixed>}>
      */
     public static function provideCodeWithPhpDocCases(): iterable
     {
@@ -1251,14 +1251,24 @@ use Foo\Bar\SomeClass;
 /**
  * @see Baz
  * @see Bam
+ *
+ * @property SomeClass $foo
+ * @property-read Buz $buz
+ * @property-write Baz $baz
+ * @phpstan-property SomeClass $foo
+ * @phpstan-property-read Buz $buz
+ * @phpstan-property-write Baz $baz
+ * @psalm-property SomeClass $foo
+ * @psalm-property-read Buz $buz
+ * @psalm-property-write Baz $baz
  */
 interface SomeClass
 {
     /**
     * @param SomeClass $foo
-    * @param Buz $buz
+    * @phpstan-param Buz $buz
     *
-    * @return Baz
+    * @psalm-return Baz
     */
     public function doSomething(SomeClass $foo, Buz $buz): Baz;
 }',
@@ -1273,14 +1283,24 @@ use Foo\Bar\SomeClass;
 /**
  * @see \Foo\Bar\Baz
  * @see \Foo\Bar\Bam
+ *
+ * @property \Foo\Bar\SomeClass $foo
+ * @property-read \Foo\Bar\Buz $buz
+ * @property-write \Foo\Bar\Baz $baz
+ * @phpstan-property \Foo\Bar\SomeClass $foo
+ * @phpstan-property-read \Foo\Bar\Buz $buz
+ * @phpstan-property-write \Foo\Bar\Baz $baz
+ * @psalm-property \Foo\Bar\SomeClass $foo
+ * @psalm-property-read \Foo\Bar\Buz $buz
+ * @psalm-property-write \Foo\Bar\Baz $baz
  */
 interface SomeClass
 {
     /**
     * @param \Foo\Bar\SomeClass $foo
-    * @param \Foo\Bar\Buz $buz
+    * @phpstan-param \Foo\Bar\Buz $buz
     *
-    * @return \Foo\Bar\Baz
+    * @psalm-return \Foo\Bar\Baz
     */
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz): \Foo\Bar\Baz;
 }',
@@ -1410,6 +1430,85 @@ function foo($dateTime) {}',
  */
 function foo($dateTime) {}',
             ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'Do not touch PHPDoc if configured with empty collection' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Buz;
+use Foo\Bar\Baz;
+use Foo\Bar\SomeClass;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ *
+ * @property \Foo\Bar\SomeClass $foo
+ * @property-read \Foo\Bar\Buz $buz
+ * @property-write \Foo\Bar\Baz $baz
+ */
+interface SomeClass
+{
+    /**
+    * @param \Foo\Bar\SomeClass $foo
+    * @phpstan-param \Foo\Bar\Buz $buz
+    *
+    * @psalm-return \Foo\Bar\Baz
+    */
+    public function doSomething($foo, $buz);
+}',
+            null,
+            ['phpdoc_tags' => []],
+        ];
+
+        yield 'Process only specified PHPDoc annotation' => [
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Baz\Buzz;
+
+/**
+ * @see \Foo\Baz\Buzz
+ *
+ * @property \Foo\Baz\Buzz $buzz1
+ * @property-read Buzz $buzz2
+ */
+interface SomeClass
+{
+    /**
+    * @param \Foo\Baz\Buzz $a
+    * @phpstan-param Buzz $b
+    *
+    * @psalm-return \Foo\Baz\Buzz
+    */
+    public function doSomething($a, $b): void;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Baz\Buzz;
+
+/**
+ * @see \Foo\Baz\Buzz
+ *
+ * @property \Foo\Baz\Buzz $buzz1
+ * @property-read \Foo\Baz\Buzz $buzz2
+ */
+interface SomeClass
+{
+    /**
+    * @param \Foo\Baz\Buzz $a
+    * @phpstan-param \Foo\Baz\Buzz $b
+    *
+    * @psalm-return \Foo\Baz\Buzz
+    */
+    public function doSomething($a, $b): void;
+}',
+            ['phpdoc_tags' => ['property-read', 'phpstan-param']],
         ];
     }
 
