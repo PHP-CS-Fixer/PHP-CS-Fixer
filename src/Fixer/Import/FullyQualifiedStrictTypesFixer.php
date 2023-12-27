@@ -288,13 +288,19 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixPhpDoc(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
+        $allowedTags = $this->configuration['phpdoc_tags'];
+
+        if ([] === $allowedTags) {
+            return;
+        }
+
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
         Preg::matchAll('#@([^\s]+)\s+([^\s]+)#', $phpDocContent, $matches);
 
         if ([] !== $matches) {
             foreach ($matches[2] as $i => $typeName) {
-                if (!\in_array($matches[1][$i], $this->configuration['phpdoc_tags'], true)) {
+                if (!\in_array($matches[1][$i], $allowedTags, true)) {
                     continue;
                 }
 
