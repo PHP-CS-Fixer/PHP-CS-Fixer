@@ -155,7 +155,7 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none", "dots" and "bar".');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "bar", "dots" and "none".');
 
         $resolver->getProgressType();
     }
