@@ -7,7 +7,7 @@ Rules that follow the official `Symfony Coding Standards <https://symfony.com/do
 Rules
 -----
 
-- `@PSR12 <./PSR12.rst>`_
+- `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `array_syntax <./../rules/array_notation/array_syntax.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
@@ -20,7 +20,6 @@ Rules
 
   ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
 
-- `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
 - `class_attributes_separation <./../rules/class_notation/class_attributes_separation.rst>`_ with config:
 
   ``['elements' => ['method' => 'one']]``
@@ -40,6 +39,7 @@ Rules
 
 - `empty_loop_condition <./../rules/control_structure/empty_loop_condition.rst>`_
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
+- `function_declaration <./../rules/function_notation/function_declaration.rst>`_
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_ with config:
 
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
@@ -176,3 +176,8 @@ Rules
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_
+
+Disabled rules
+--------------
+
+- `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
