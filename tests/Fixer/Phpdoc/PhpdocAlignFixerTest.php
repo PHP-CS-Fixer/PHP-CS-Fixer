@@ -1325,14 +1325,14 @@ class Foo {}
         ];
 
         yield 'untyped param with multiline desc' => [
-                [],
-                '<?php
+            [],
+            '<?php
 /**
  * @param $typeless Foo.
  *                  Bar.
  */
 function foo($typeless): void {}',
-'<?php
+            '<?php
 /**
  * @param $typeless    Foo.
  *                     Bar.
