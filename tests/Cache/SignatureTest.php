@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -37,7 +38,7 @@ final class SignatureTest extends TestCase
     {
         $reflection = new \ReflectionClass(Signature::class);
 
-        self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
+        self::assertTrue($reflection->implementsInterface(SignatureInterface::class));
     }
 
     public function testConstructorSetsValues(): void

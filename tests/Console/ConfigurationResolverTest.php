@@ -17,10 +17,13 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
+use PhpCsFixer\Differ\NullDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
@@ -168,7 +171,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver([]);
 
         self::assertNull($resolver->getConfigFile());
-        self::assertInstanceOf(\PhpCsFixer\ConfigInterface::class, $resolver->getConfig());
+        self::assertInstanceOf(ConfigInterface::class, $resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile(): void
@@ -1089,7 +1092,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertSame(['php_unit_construct' => true], $resolver->getRules());
         self::assertFalse($resolver->getUsingCache());
         self::assertNull($resolver->getCacheFile());
-        self::assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
+        self::assertInstanceOf(UnifiedDiffer::class, $resolver->getDiffer());
         self::assertSame('json', $resolver->getReporter()->getFormat());
         self::assertSame('none', $resolver->getProgressType());
     }
@@ -1111,17 +1114,17 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     public static function provideResolveDifferCases(): iterable
     {
         yield [
-            \PhpCsFixer\Differ\NullDiffer::class,
+            NullDiffer::class,
             false,
         ];
 
         yield [
-            \PhpCsFixer\Differ\NullDiffer::class,
+            NullDiffer::class,
             null,
         ];
 
         yield [
-            \PhpCsFixer\Differ\UnifiedDiffer::class,
+            UnifiedDiffer::class,
             true,
         ];
     }

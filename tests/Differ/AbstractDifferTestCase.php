@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Differ;
 
+use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -37,7 +38,7 @@ abstract class AbstractDifferTestCase extends TestCase
 
         $differ = new $className();
 
-        self::assertInstanceOf(\PhpCsFixer\Differ\DifferInterface::class, $differ);
+        self::assertInstanceOf(DifferInterface::class, $differ);
     }
 
     final protected function oldCode(): string

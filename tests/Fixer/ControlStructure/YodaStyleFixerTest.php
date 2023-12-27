@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -956,7 +957,7 @@ switch ($a) {
 
     public function testDefinition(): void
     {
-        self::assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
+        self::assertInstanceOf(FixerDefinitionInterface::class, $this->fixer->getDefinition());
     }
 
     /**
