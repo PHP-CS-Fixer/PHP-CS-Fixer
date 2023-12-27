@@ -8,6 +8,7 @@ Rules
 -----
 
 - `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_ with config:
 
   ``['spacing' => 'one']``
