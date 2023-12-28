@@ -514,6 +514,29 @@ function foo(A $a, \Other\B $b) {}
             null,
             ['import_symbols' => true],
         ];
+
+        yield '@link shall not crash fixer' => [
+            '<?php
+
+use Symfony\Component\Validator\Constraints\Valid;
+/**
+ * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ *
+ * @return void
+ */
+function validate(): void {}
+',
+            '<?php
+
+/**
+ * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ *
+ * @return void
+ */
+function validate(): void {}
+',
+            ['import_symbols' => true],
+        ];
     }
 
     /**

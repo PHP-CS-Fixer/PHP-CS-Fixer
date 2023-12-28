@@ -1136,7 +1136,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-    // comment
+        // comment
     } else {
         $c = "c";
     }
@@ -1898,7 +1898,7 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-    // comment
+        // comment
     } else {
         $c = "c";
     }
@@ -1908,29 +1908,6 @@ if (1) {
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
-        yield 'multiline comment in block' => [
-            '<?php
-if (1) {
-    $b = "a";
-// multiline comment line 1
-// multiline comment line 2
-} elseif (2) {
-    // empty
-} else {
-    $c = "b";
-}',
-            '<?php
-if (1) {
-    $b = "a";
-        // multiline comment line 1
-        // multiline comment line 2
-} elseif (2) {
-// empty
-} else {
-    $c = "b";
-}',
-        ];
-
         yield [
             '<?php
 if (1) {
@@ -1938,10 +1915,10 @@ if (1) {
         $a = "a";
     } elseif (3) {
         $b = "b";
-    // comment line 1
-    // comment line 2
-    // comment line 3
-    // comment line 4
+        // comment line 1
+        // comment line 2
+        // comment line 3
+        // comment line 4
     } else {
         $c = "c";
     }
@@ -3245,10 +3222,10 @@ function foo()
     // 2.5+ API
     if (isNewApi()) {
         echo "new API";
-    // 2.4- API
+        // 2.4- API
     } elseif (isOldApi()) {
         echo "old API";
-    // other API
+        // 2.4- API
     } else {
         echo "unknown API";
         // sth
