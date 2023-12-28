@@ -64,7 +64,9 @@ final class PSR12Set extends AbstractRuleSetDescription
             'single_import_per_statement' => ['group_to_single_imports' => false],
             'single_trait_insert_per_statement' => true,
             'ternary_operator_spaces' => true,
-            'unary_operator_spaces' => true,
+            'unary_operator_spaces' => [
+                'only_dec_inc' => true,
+            ],
             'visibility_required' => true,
         ];
     }

@@ -174,6 +174,7 @@ Rules
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_
+- `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_
 
