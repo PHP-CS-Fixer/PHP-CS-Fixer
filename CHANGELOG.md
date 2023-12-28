@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.43.0
+---------------------
+
+* chore: change base of `@Symfony` set to `@PER-CS2.0` (#7627)
+* chore: PHPUnit - allow for v10 (#7606)
+* chore: Preg - rework catching the error (#7616)
+* chore: Revert unneeded peer-dep-pin and re-gen lock file (#7618)
+* docs: drop extra note about 8.0.0 bug in README.md (#7614)
+* feat: add cast_spaces into `@PER-CS2.0` (#7625)
+* feat: Configurable phpDoc tags for FQCN processing (#7628)
+* feat: StatementIndentationFixer - introduce stick_comment_to_next_continuous_control_statement config (#7624)
+* feat: UnaryOperatorSpacesFixer - introduce only_dec_inc config (#7626)
+* fix: FullyQualifiedStrictTypesFixer - better support annotations in inline {} (#7633)
+* fix: Improve how FQCN is handled in phpDoc (#7622)
+* fix: phpdoc_align - fix multiline tag alignment issue (#7630)
+
 Changelog for v3.42.0
 ---------------------
 
