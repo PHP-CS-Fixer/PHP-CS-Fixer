@@ -262,7 +262,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        Preg::matchAll('#@([^\s]+)\s+([^\s]+)#', $phpDocContent, $matches);
+        Preg::matchAll('#@([^\s]+)\s+([^\s}]+)#', $phpDocContent, $matches);
 
         if ([] !== $matches) {
             foreach ($matches[2] as $i => $typeName) {
