@@ -1091,6 +1091,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertNull($resolver->getCacheFile());
         self::assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
         self::assertSame('json', $resolver->getReporter()->getFormat());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     /**
@@ -1136,6 +1137,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertFalse($resolver->getUsingCache());
         self::assertNull($resolver->getCacheFile());
         self::assertSame('xml', $resolver->getReporter()->getFormat());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     public function testDeprecationOfPassingOtherThanNoOrYes(): void
