@@ -139,9 +139,12 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($progressType, $resolver->getProgressType());
     }
 
+    /**
+     * @return iterable<string, array{0: ProgressOutputType::*}>
+     */
     public static function provideProgressTypeCases(): iterable
     {
-        foreach (ProgressOutputType::AVAILABLE as $outputType) {
+        foreach (ProgressOutputType::all() as $outputType) {
             yield $outputType => [$outputType];
         }
     }

@@ -50,6 +50,6 @@ final class ProgressOutputFactory
 
     private function isBuiltInType(string $outputType): bool
     {
-        return \in_array($outputType, ProgressOutputType::AVAILABLE, true);
+        return \in_array($outputType, ProgressOutputType::all(), true);
     }
 }

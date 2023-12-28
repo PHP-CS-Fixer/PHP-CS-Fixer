@@ -407,11 +407,11 @@ final class ConfigurationResolver
 
                 if (null === $progressType) {
                     $progressType = $this->resolveProgressOutput();
-                } elseif (!\in_array($progressType, ProgressOutputType::AVAILABLE, true)) {
+                } elseif (!\in_array($progressType, ProgressOutputType::all(), true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin(ProgressOutputType::AVAILABLE)
+                        Utils::naturalLanguageJoin(ProgressOutputType::all())
                     ));
                 }
 
