@@ -262,16 +262,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        Preg::matchAll('#@([^\s]+)\s+([^\s}]+)#', $phpDocContent, $matches);
+        Preg::matchAll('#@([^\s]+)(\s+)([a-zA-Z0-9_\\\\]+)#', $phpDocContent, $matches);
 
-        if ([] !== $matches) {
-            foreach ($matches[2] as $i => $typeName) {
+        if ([] !== $matches[0]) {
+            foreach ($matches[3] as $i => $typeName) {
                 if (!\in_array($matches[1][$i], ['param', 'return', 'see', 'throws', 'var'], true)) {
                     continue;
                 }
 
-                if (true === $this->configuration['import_symbols'] && isset($matches[2][0])) {
-                    $this->registerSymbolForImport('class', $matches[2][0], $uses, $namespaceName);
+                if (true === $this->configuration['import_symbols'] && isset($matches[3][0])) {
+                    $this->registerSymbolForImport('class', $matches[3][0], $uses, $namespaceName);
                 }
 
                 $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
@@ -280,16 +280,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     // Replace tag+type in order to avoid replacing type multiple times (when same type is used in multiple places)
                     $phpDocContent = str_replace(
                         $matches[0][$i],
-                        '@'.$matches[1][$i].' '.implode('', array_map(
+                        '@'.$matches[1][$i].$matches[2][$i].implode('', array_map(
                             static fn (Token $token) => $token->getContent(),
                             $shortTokens
                         )),
                         $phpDocContent
                     );
+
+                    $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContent]);
                 }
             }
-
-            $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContent]);
         }
     }
 

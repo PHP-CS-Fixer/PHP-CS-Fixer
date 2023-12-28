@@ -1434,6 +1434,39 @@ function foo($dateTime) {}',
 function foo($dateTime) {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
+
+        yield 'ignore @see with URL' => [
+            '<?php
+/**
+ * @see     http://example.com
+ */
+define(\'FOO_BAR\', true);',
+        ];
+
+        yield 'Respect whitespace between phpDoc annotation and value' => [
+            '<?php
+
+namespace Foo\Test;
+
+use Foo\Bar;
+
+/**
+ * @param Bar $a
+ * @see   Bar
+ */
+function foo($a) {}',
+            '<?php
+
+namespace Foo\Test;
+
+use Foo\Bar;
+
+/**
+ * @param \Foo\Bar $a
+ * @see   \Foo\Bar
+ */
+function foo($a) {}',
+        ];
     }
 
     /**
