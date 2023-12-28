@@ -46,7 +46,7 @@
         "php-cs-fixer/accessible-object": "^1.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.4",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.4",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^9.6 || ^10.5.5",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
     },
     "suggest": {
@@ -124,7 +124,7 @@
         ],
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
+            "@composer show facile-it/paraunit ^2 && (paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing) || (paraunit coverage --testsuite unit --exclude-group covers-nothing)"
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",

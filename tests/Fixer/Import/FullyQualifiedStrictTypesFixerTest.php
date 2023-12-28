@@ -514,6 +514,29 @@ function foo(A $a, \Other\B $b) {}
             null,
             ['import_symbols' => true],
         ];
+
+        yield '@link shall not crash fixer' => [
+            '<?php
+
+use Symfony\Component\Validator\Constraints\Valid;
+/**
+ * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ *
+ * @return void
+ */
+function validate(): void {}
+',
+            '<?php
+
+/**
+ * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ *
+ * @return void
+ */
+function validate(): void {}
+',
+            ['import_symbols' => true],
+        ];
     }
 
     /**
@@ -1509,6 +1532,39 @@ interface SomeClass
     public function doSomething($a, $b): void;
 }',
             ['phpdoc_tags' => ['property-read', 'phpstan-param']],
+        ];
+
+        yield 'ignore @see with URL' => [
+            '<?php
+/**
+ * @see     http://example.com
+ */
+define(\'FOO_BAR\', true);',
+        ];
+
+        yield 'Respect whitespace between phpDoc annotation and value' => [
+            '<?php
+
+namespace Foo\Test;
+
+use Foo\Bar;
+
+/**
+ * @param Bar $a
+ * @see   Bar
+ */
+function foo($a) {}',
+            '<?php
+
+namespace Foo\Test;
+
+use Foo\Bar;
+
+/**
+ * @param \Foo\Bar $a
+ * @see   \Foo\Bar
+ */
+function foo($a) {}',
         ];
     }
 

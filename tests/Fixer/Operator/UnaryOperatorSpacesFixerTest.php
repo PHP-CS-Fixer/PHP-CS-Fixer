@@ -26,10 +26,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -136,6 +139,18 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php foo($a, ...$b);',
             '<?php foo($a, ... $b);',
+        ];
+
+        yield [
+            '<?php function foo($a, ...$b) { return (--$a) * ($b++);}',
+            '<?php function foo($a, ...   $b) { return (--   $a) * ($b   ++);}',
+            ['only_dec_inc' => false],
+        ];
+
+        yield [
+            '<?php function foo($a, ...   $b) { return (--$a) * ($b++);}',
+            '<?php function foo($a, ...   $b) { return (--   $a) * ($b   ++);}',
+            ['only_dec_inc' => true],
         ];
     }
 }

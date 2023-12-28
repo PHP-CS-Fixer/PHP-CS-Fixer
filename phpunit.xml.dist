@@ -42,6 +42,10 @@
         </include>
     </coverage>
 
+    <extensions>
+        <bootstrap class="Paraunit\Configuration\ParaunitExtension"/>
+    </extensions>
+
     <php>
         <ini name="zend.enable_gc" value="0"/>
         <ini name="memory_limit" value="10G"/>

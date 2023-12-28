@@ -51,23 +51,7 @@ runs:
       shell: bash
       run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
 
-    - name: Configure Symfony ^7
-      if: inputs.composer-flex-with-symfony-version == '^7'
-      shell: bash
-      run: |
-        composer remove facile-it/paraunit --dev --no-update
-
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
       with:
         flags: ${{ inputs.composer-flags }}
-
-    - name: Mock ParaUnit under Symfony ^7
-      if: inputs.composer-flex-with-symfony-version == '^7'
-      shell: bash
-      run: |
-        echo '#!/usr/bin/env bash' > vendor/bin/paraunit
-        echo 'set -eu' >> vendor/bin/paraunit
-        echo 'shift' >> vendor/bin/paraunit
-        echo './vendor/bin/phpunit "${@}"' >> vendor/bin/paraunit
-        chmod +x vendor/bin/paraunit

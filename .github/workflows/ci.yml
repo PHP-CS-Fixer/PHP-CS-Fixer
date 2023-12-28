@@ -173,6 +173,10 @@ jobs:
         if: matrix.collect-code-coverage == 'yes'
         run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
 
+      - name: Disable time limit for tests under Windows # due to https://github.com/sebastianbergmann/phpunit/issues/5589
+        if: matrix.operating-system == 'windows-latest'
+        run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
+
       - name: Run tests
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:
@@ -184,7 +188,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
-        run: vendor/bin/paraunit coverage --testsuite unit --exclude-group covers-nothing --clover build/logs/clover.xml
+        run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
       - name: Upload coverage results to Coveralls
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'

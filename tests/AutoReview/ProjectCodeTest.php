@@ -72,6 +72,8 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Documentation\FixerDocumentGenerator::class,
         \PhpCsFixer\Documentation\RstUtils::class,
         \PhpCsFixer\Documentation\RuleSetDocumentationGenerator::class,
+        \PhpCsFixer\ExecutorWithoutErrorHandler::class,
+        \PhpCsFixer\ExecutorWithoutErrorHandlerException::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
     ];
 
