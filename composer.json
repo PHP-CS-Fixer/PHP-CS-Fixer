@@ -124,7 +124,7 @@
         ],
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit coverage --testsuite unit --exclude-group covers-nothing"
+            "@composer show facile-it/paraunit ^2 && (paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing) || (paraunit coverage --testsuite unit --exclude-group covers-nothing)"
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",
