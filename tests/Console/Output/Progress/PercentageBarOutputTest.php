@@ -47,7 +47,7 @@ final class PercentageBarOutputTest extends TestCase
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
         });
 
-        self::assertSame($expectedOutput, $output->fetch());
+        self::assertSame($expectedOutput, rtrim($output->fetch()));
     }
 
     /**
