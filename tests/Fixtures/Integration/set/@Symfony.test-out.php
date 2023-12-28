@@ -114,4 +114,12 @@ final class FinalClass
     }
 }
 
+function callback($a, ...$b)
+{
+    return (--$a) * ($b++);
+}
+
+$a = &$b;
+$c = &$d;
+
 echo 1;
