@@ -537,6 +537,21 @@ function validate(): void {}
 ',
             ['import_symbols' => true],
         ];
+
+        yield 'import short name only once (ignore consequent same-name, different-namespace symbols)' => [
+            '<?php
+
+namespace Test;
+use Foo\A;
+
+function foo(A $a, \Bar\A $b) {}',
+            '<?php
+
+namespace Test;
+
+function foo(\Foo\A $a, \Bar\A $b) {}',
+            ['import_symbols' => true],
+        ];
     }
 
     /**
