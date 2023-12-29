@@ -130,6 +130,10 @@
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite integration"
         ],
+        "test:short-open-tag": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -d short_open_tag=1 ./vendor/bin/phpunit --do-not-cache-result --testsuite short-open-tag"
+        ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite smoke"
@@ -162,6 +166,7 @@
         "test:all": "Run Unit and Integration tests (but *NOT* Smoke tests)",
         "test:coverage": "Run tests that provide code coverage",
         "test:integration": "Run Integration tests",
+        "test:short-open-tag": "Run tests with \"short_open_tag\" enabled",
         "test:smoke": "Run Smoke tests",
         "test:unit": "Run Unit tests",
         "unused-deps": "Verifies if app has dependencies that are not used"

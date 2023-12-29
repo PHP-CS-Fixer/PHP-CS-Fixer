@@ -184,6 +184,13 @@ jobs:
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
         run: vendor/bin/paraunit run --testsuite unit,integration
 
+      - name: Run tests with "short_open_tag" enabled
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: composer test:short-open-tag
+
       - name: Run tests and collect code coverage
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
