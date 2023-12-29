@@ -66,9 +66,9 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
-     * @var array<string, Tokens>
+     * @var array<class-string, Tokens>
      */
-    private static array $fileTokensCache = [];
+    private static array $tokensCache = [];
 
     /**
      * This structure contains older classes that are not yet covered by tests.
@@ -94,7 +94,7 @@ final class ProjectCodeTest extends TestCase
     {
         self::$srcClassCases = null;
         self::$testClassCases = null;
-        self::$fileTokensCache = [];
+        self::$tokensCache = [];
     }
 
     public function testThatClassesWithoutTestsVarIsProper(): void
@@ -840,18 +840,29 @@ final class ProjectCodeTest extends TestCase
         return array_unique($strings);
     }
 
-    private function createTokensForClass(string $className): Tokens
+    /**
+     * @param class-string $className
+     */
+    private function getFileContentForClass(string $className): string
     {
         $file = $className;
         $file = preg_replace('#^PhpCsFixer\\\Tests\\\#', 'tests\\', $file);
         $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
         $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
 
-        if (!isset(self::$fileTokensCache[$file])) {
-            self::$fileTokensCache[$file] = Tokens::fromCode(file_get_contents($file));
+        return file_get_contents($file);
+    }
+
+    /**
+     * @param class-string $className
+     */
+    private function createTokensForClass(string $className): Tokens
+    {
+        if (!isset(self::$tokensCache[$className])) {
+            self::$tokensCache[$className] = Tokens::fromCode(self::getFileContentForClass($className));
         }
 
-        return self::$fileTokensCache[$file];
+        return self::$tokensCache[$className];
     }
 
     /**
