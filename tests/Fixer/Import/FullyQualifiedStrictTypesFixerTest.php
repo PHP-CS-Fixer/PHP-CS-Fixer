@@ -542,14 +542,36 @@ function validate(): void {}
             '<?php
 
 namespace Test;
-use Foo\A;
+use A\A;
 
-function foo(A $a, \Bar\A $b) {}',
+class Foo extends A implements \B\A, \C\A
+{
+    /** @var \D\A */
+    private $array;
+    public function __construct(\E\A $arg) {}
+    public function foo(): \F\A
+    {
+        try {
+            \G\A::bar();
+        } catch (\H\A $e) {}
+    }
+}',
             '<?php
 
 namespace Test;
 
-function foo(\Foo\A $a, \Bar\A $b) {}',
+class Foo extends \A\A implements \B\A, \C\A
+{
+    /** @var \D\A */
+    private $array;
+    public function __construct(\E\A $arg) {}
+    public function foo(): \F\A
+    {
+        try {
+            \G\A::bar();
+        } catch (\H\A $e) {}
+    }
+}',
             ['import_symbols' => true],
         ];
     }
