@@ -68,7 +68,7 @@ final class PercentageBarOutput implements ProgressOutputInterface
         $this->progressBar->advance(1);
 
         if ($this->progressBar->getProgress() === $this->progressBar->getMaxSteps()) {
-            $this->context->getOutput()->write(str_repeat("\n", 2));
+            $this->context->getOutput()->write("\n\n");
         }
     }
 
