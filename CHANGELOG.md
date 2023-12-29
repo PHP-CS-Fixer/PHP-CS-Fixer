@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.43.1
+---------------------
+
+* fix: Import only unique symbols' short names (#7635)
+
 Changelog for v3.43.0
 ---------------------
 
