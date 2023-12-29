@@ -42,7 +42,6 @@ use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\Utils;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
@@ -402,18 +401,18 @@ final class ConfigurationResolver
     public function getProgressType(): string
     {
         if (null === $this->progress) {
-            if (OutputInterface::VERBOSITY_VERBOSE <= $this->options['verbosity'] && 'txt' === $this->getFormat()) {
+            if ('txt' === $this->getFormat()) {
                 $progressType = $this->options['show-progress'];
 
                 if (null === $progressType) {
                     $progressType = $this->getConfig()->getHideProgress()
                         ? ProgressOutputType::NONE
-                        : ProgressOutputType::DOTS;
-                } elseif (!\in_array($progressType, ProgressOutputType::AVAILABLE, true)) {
+                        : ProgressOutputType::BAR;
+                } elseif (!\in_array($progressType, ProgressOutputType::all(), true)) {
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin(ProgressOutputType::AVAILABLE)
+                        Utils::naturalLanguageJoin(ProgressOutputType::all())
                     ));
                 }
 

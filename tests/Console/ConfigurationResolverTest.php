@@ -89,7 +89,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ], $config);
 
-        self::assertSame('dots', $resolver->getProgressType());
+        self::assertSame('bar', $resolver->getProgressType());
     }
 
     public function testResolveProgressWithNegativeConfigAndNegativeOption(): void
@@ -102,7 +102,7 @@ final class ConfigurationResolverTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_NORMAL,
         ], $config);
 
-        self::assertSame('none', $resolver->getProgressType());
+        self::assertSame('bar', $resolver->getProgressType());
     }
 
     /**
@@ -139,9 +139,12 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($progressType, $resolver->getProgressType());
     }
 
+    /**
+     * @return iterable<string, array{0: ProgressOutputType::*}>
+     */
     public static function provideProgressTypeCases(): iterable
     {
-        foreach (ProgressOutputType::AVAILABLE as $outputType) {
+        foreach (ProgressOutputType::all() as $outputType) {
             yield $outputType => [$outputType];
         }
     }
@@ -155,7 +158,7 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "none" and "dots".');
+        $this->expectExceptionMessage('The progress type "foo" is not defined, supported are "bar", "dots" and "none".');
 
         $resolver->getProgressType();
     }
@@ -1088,6 +1091,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertNull($resolver->getCacheFile());
         self::assertInstanceOf(\PhpCsFixer\Differ\UnifiedDiffer::class, $resolver->getDiffer());
         self::assertSame('json', $resolver->getReporter()->getFormat());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     /**
@@ -1133,6 +1137,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertFalse($resolver->getUsingCache());
         self::assertNull($resolver->getCacheFile());
         self::assertSame('xml', $resolver->getReporter()->getFormat());
+        self::assertSame('none', $resolver->getProgressType());
     }
 
     public function testDeprecationOfPassingOtherThanNoOrYes(): void

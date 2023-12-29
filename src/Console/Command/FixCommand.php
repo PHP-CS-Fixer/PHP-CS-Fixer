@@ -157,8 +157,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             * <comment>none</comment>: disables progress output;
             * <comment>dots</comment>: multiline progress output with number of files and percentage on each line.
+            * <comment>bar</comment>: single line progress output with number of files and calculated percentage.
 
-            If the option is not provided, it defaults to <comment>dots</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
+            If the option is not provided, it defaults to <comment>bar</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
                 <info>$ php %command.full_name% --verbose --show-progress=dots</info>
 

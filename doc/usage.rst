@@ -54,7 +54,7 @@ NOTE: the output for the following formats are generated in accordance with sche
 
 The ``--quiet`` Do not output any message.
 
-The ``--verbose`` option will show the applied rules. When using the ``txt`` format it will also display progress notifications.
+The ``--verbose`` option will show the applied rules. When using the ``txt`` format it will also display progress output (progress bar by default, but can be changed using ``--show-progress`` option).
 
 NOTE: if there is an error like "errors reported during linting after fixing", you can use this to be even more verbose for debugging purpose
 
@@ -109,8 +109,9 @@ The ``--show-progress`` option allows you to choose the way process progress is 
 
 * ``none``: disables progress output;
 * ``dots``: multiline progress output with number of files and percentage on each line. Note that with this option, the files list is evaluated before processing to get the total number of files and then kept in memory to avoid using the file iterator twice. This has an impact on memory usage so using this option is not recommended on very large projects;
+* ``bar``: single line progress output with number of files and calculated percentage. Similar to ``dots`` output, it has to evaluate files list twice;
 
-If the option is not provided, it defaults to ``dots`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
+If the option is not provided, it defaults to ``bar`` unless a config file that disables output, or non-txt reporter is used, then it defaults to ``none``.
 
 .. code-block:: console
 
