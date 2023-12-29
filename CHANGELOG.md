@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.44.0
+---------------------
+
+* feat: Introduce percentage bar as new default progress output (#7603)
+
 Changelog for v3.43.1
 ---------------------
 
