@@ -460,7 +460,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array $uses, string $namespaceName): void
+    private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array &$uses, string $namespaceName): void
     {
         $typeStartIndex = $type->getStartIndex();
 
