@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\Tests\TestCase;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @internal
@@ -27,6 +28,6 @@ final class InvalidOptionsForEnvExceptionTest extends TestCase
     public function testInvalidOptionsForEnvException(): void
     {
         $exception = new InvalidOptionsForEnvException();
-        self::assertInstanceOf(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class, $exception);
+        self::assertInstanceOf(InvalidOptionsException::class, $exception);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -244,7 +245,7 @@ abstract class A
 
     private static function provideAllCases(): iterable
     {
-        $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
+        $reflectionConstant = new \ReflectionClassConstant(NoAliasFunctionsFixer::class, 'SETS');
 
         /** @var array<string, string[]> $allAliases */
         $allAliases = $reflectionConstant->getValue();

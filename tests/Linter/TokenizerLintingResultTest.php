@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\TokenizerLintingResult;
 use PhpCsFixer\Tests\TestCase;
 
@@ -41,7 +42,7 @@ final class TokenizerLintingResultTest extends TestCase
         $result = new TokenizerLintingResult($error);
 
         $this->expectException(
-            \PhpCsFixer\Linter\LintingException::class
+            LintingException::class
         );
 
         $this->expectExceptionMessage(
@@ -63,7 +64,7 @@ final class TokenizerLintingResultTest extends TestCase
         $result = new TokenizerLintingResult($error);
 
         $this->expectException(
-            \PhpCsFixer\Linter\LintingException::class
+            LintingException::class
         );
 
         $this->expectExceptionMessage(

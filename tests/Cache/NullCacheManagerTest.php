@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Cache;
 
+use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Tests\TestCase;
 
@@ -37,7 +38,7 @@ final class NullCacheManagerTest extends TestCase
     {
         $reflection = new \ReflectionClass(NullCacheManager::class);
 
-        self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
+        self::assertTrue($reflection->implementsInterface(CacheManagerInterface::class));
     }
 
     public function testNeedFixingReturnsTrue(): void

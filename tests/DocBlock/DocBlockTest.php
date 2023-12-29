@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\DocBlock;
 
+use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -70,7 +72,7 @@ final class DocBlockTest extends TestCase
         self::assertCount(15, $lines);
 
         foreach ($lines as $index => $line) {
-            self::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
+            self::assertInstanceOf(Line::class, $line);
             self::assertSame($doc->getLine($index), $line);
         }
 
@@ -85,7 +87,7 @@ final class DocBlockTest extends TestCase
         self::assertCount(5, $annotations);
 
         foreach ($annotations as $index => $annotation) {
-            self::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
+            self::assertInstanceOf(Annotation::class, $annotation);
             self::assertSame($doc->getAnnotation($index), $annotation);
         }
 
