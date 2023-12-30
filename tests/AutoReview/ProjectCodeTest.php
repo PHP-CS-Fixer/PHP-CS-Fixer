@@ -739,11 +739,14 @@ final class ProjectCodeTest extends TestCase
 
     public function testAllTestsForShortOpenTagAreHandled(): void
     {
-        $testClassesWithShortOpenTag = array_filter(self::getTestClasses(), function (string $className) {
-            return str_contains($this->getFileContentForClass($className), 'short_open_tag')
-            && self::class !== $className;
-        });
-        $testFilesWithShortOpenTag = array_map(fn ($className) => './'.$this->getFilePathForClass($className), $testClassesWithShortOpenTag);
+        $testClassesWithShortOpenTag = array_filter(
+            self::getTestClasses(),
+            fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className
+        );
+        $testFilesWithShortOpenTag = array_map(
+            fn (string $className): string => './'.$this->getFilePathForClass($className),
+            $testClassesWithShortOpenTag
+        );
 
         $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
         $phpunitFiles = (array) simplexml_load_string($phpunitXmlContent)->xpath('testsuites/testsuite[@name="short-open-tag"]')[0]->file;
