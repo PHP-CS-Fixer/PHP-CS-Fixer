@@ -167,7 +167,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 $score = self::ORDER_LENGTH === $this->configuration[self::OPTION_ORDER]
                     ? \strlen($first['normalized']) - \strlen($second['normalized'])
                     : (
-                        $this->configuration['case_sensitive']
+                        true === $this->configuration['case_sensitive']
                         ? $first['normalized'] <=> $second['normalized']
                         : strcasecmp($first['normalized'], $second['normalized'])
                     );

@@ -131,7 +131,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
             if ($tokens[$nextIndex]->isGivenKind(T_CLASS)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
-                if ($this->configuration['anonymous_class']) {
+                if (true === $this->configuration['anonymous_class']) {
                     $this->ensureParenthesesAt($tokens, $nextIndex);
                 } else {
                     $this->ensureNoParenthesesAt($tokens, $nextIndex);
@@ -147,7 +147,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }
 
-            if ($this->configuration['named_class']) {
+            if (true === $this->configuration['named_class']) {
                 $this->ensureParenthesesAt($tokens, $nextIndex);
             } else {
                 $this->ensureNoParenthesesAt($tokens, $nextIndex);

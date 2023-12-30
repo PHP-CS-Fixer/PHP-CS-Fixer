@@ -189,7 +189,7 @@ $foo = new class(){};
             $end = $tokens->getPrevNonWhitespace($classDefInfo['open']);
         }
 
-        if ($classDefInfo['anonymousClass'] && !$this->configuration['inline_constructor_arguments']) {
+        if ($classDefInfo['anonymousClass'] && false === $this->configuration['inline_constructor_arguments']) {
             if (!$tokens[$end]->equals(')')) { // anonymous class with `extends` and/or `implements`
                 $start = $tokens->getPrevMeaningfulToken($end);
                 $this->makeClassyDefinitionSingleLine($tokens, $start, $end);

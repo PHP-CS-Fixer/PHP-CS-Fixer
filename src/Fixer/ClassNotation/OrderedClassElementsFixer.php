@@ -584,7 +584,7 @@ Custom values:
     private function sortGroupElements(array $a, array $b): int
     {
         if (self::SORT_ALPHA === $this->configuration['sort_algorithm']) {
-            return $this->configuration['case_sensitive']
+            return true === $this->configuration['case_sensitive']
                 ? $a['name'] <=> $b['name']
                 : strcasecmp($a['name'], $b['name']);
         }

@@ -84,7 +84,7 @@ use Space\Models\ {
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
             if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
-                if ($this->configuration['group_to_single_imports']) {
+                if (true === $this->configuration['group_to_single_imports']) {
                     $this->fixGroupUse($tokens, $index, $endIndex);
                 }
             } else {

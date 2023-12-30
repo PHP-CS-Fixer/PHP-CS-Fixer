@@ -165,7 +165,7 @@ $bar = function () { $result = true;
                 $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
 
                 if ($tokensAnalyzer->isAnonymousClass($index)) {
-                    $allowSingleLineIfEmpty = $this->configuration['allow_single_line_empty_anonymous_classes'];
+                    $allowSingleLineIfEmpty = true === $this->configuration['allow_single_line_empty_anonymous_classes'];
                     $positionOption = 'anonymous_classes_opening_brace';
                 } else {
                     $positionOption = 'classes_opening_brace';
@@ -178,7 +178,7 @@ $bar = function () { $result = true;
                 }
 
                 if ($tokensAnalyzer->isLambda($index)) {
-                    $allowSingleLine = $this->configuration['allow_single_line_anonymous_functions'];
+                    $allowSingleLine = true === $this->configuration['allow_single_line_anonymous_functions'];
                     $positionOption = 'anonymous_functions_opening_brace';
                 } else {
                     $positionOption = 'functions_opening_brace';

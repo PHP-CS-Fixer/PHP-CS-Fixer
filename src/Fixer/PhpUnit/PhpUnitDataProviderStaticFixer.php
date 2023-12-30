@@ -113,7 +113,7 @@ class FooTest extends TestCase {
             if (null !== $methodStartIndex) {
                 $methodEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStartIndex);
 
-                if (!$this->configuration['force'] && null !== $tokens->findSequence([[T_VARIABLE, '$this']], $methodStartIndex, $methodEndIndex)) {
+                if (false === $this->configuration['force'] && null !== $tokens->findSequence([[T_VARIABLE, '$this']], $methodStartIndex, $methodEndIndex)) {
                     continue;
                 }
             }
