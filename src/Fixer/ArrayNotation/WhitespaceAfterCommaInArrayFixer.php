@@ -83,7 +83,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
                 if (!$tokens[$i + 1]->isWhitespace()) {
                     $tokensToInsert[$i + 1] = new Token([T_WHITESPACE, ' ']);
                 } elseif (
-                    $this->configuration['ensure_single_space']
+                    true === $this->configuration['ensure_single_space']
                     && ' ' !== $tokens[$i + 1]->getContent()
                     && Preg::match('/^\h+$/', $tokens[$i + 1]->getContent())
                     && (!$tokens[$i + 2]->isComment() || Preg::match('/^\h+$/', $tokens[$i + 3]->getContent()))

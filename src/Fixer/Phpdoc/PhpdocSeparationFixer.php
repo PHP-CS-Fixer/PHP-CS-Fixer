@@ -221,7 +221,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
 
             if (true === $shouldBeTogether) {
                 $this->ensureAreTogether($doc, $annotation, $next);
-            } elseif (false === $shouldBeTogether || !$this->configuration['skip_unlisted_annotations']) {
+            } elseif (false === $shouldBeTogether || false === $this->configuration['skip_unlisted_annotations']) {
                 $this->ensureAreSeparate($doc, $annotation, $next);
             }
         }

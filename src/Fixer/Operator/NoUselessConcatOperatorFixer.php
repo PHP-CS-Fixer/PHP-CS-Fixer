@@ -151,7 +151,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
                 return;
             }
 
-            if (!$this->configuration['juggle_simple_strings']) {
+            if (false === $this->configuration['juggle_simple_strings']) {
                 continue;
             }
 
