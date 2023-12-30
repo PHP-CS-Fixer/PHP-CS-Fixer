@@ -259,6 +259,9 @@ function foo() {
         return false;
     }
 
+    /**
+     * @return list<string|array{int}>
+     */
     private static function getNonBooleanOperators(): array
     {
         return array_merge(
