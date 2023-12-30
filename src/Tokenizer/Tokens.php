@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tokenizer;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.
@@ -457,20 +458,19 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param int|non-empty-list<int> $possibleKind kind or array of kinds
-     * @param int                     $start        optional offset
-     * @param null|int                $end          optional limit
+     * @param list<int> $possibleKinds
+     * @param int       $start optional offset
+     * @param null|int  $end   optional limit
      *
-     * @return ($possibleKind is int ? array<int, Token> : array<int, array<int, Token>>)
+     * @return array<int, array<int, Token>>
      */
-    public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
+    public function findGivenKinds(array $possibleKinds, int $start = 0, ?int $end = null): array
     {
         if (null === $end) {
             $end = $this->count();
         }
 
         $elements = [];
-        $possibleKinds = (array) $possibleKind;
 
         foreach ($possibleKinds as $kind) {
             $elements[$kind] = [];
@@ -487,7 +487,31 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        return \is_array($possibleKind) ? $elements : $elements[$possibleKind];
+        return $elements;
+    }
+
+    /**
+     * @param int|non-empty-list<int> $possibleKind kind or array of kinds
+     * @param int                     $start        optional offset
+     * @param null|int                $end          optional limit
+     *
+     * @return ($possibleKind is int ? array<int, Token> : array<int, array<int, Token>>)
+     */
+    public function findGivenKind(/** v4 int */ $possibleKind, int $start = 0, ?int $end = null): array
+    {
+        $elements = $this->findGivenKinds((array) $possibleKind, $start, $end);
+
+        if (\is_array($possibleKind)) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+                'Method "%s" is deprecated when searching for multiple kinds and will be removed in the next major version. Use "%ss" instead.',
+                __METHOD__,
+                __METHOD__
+            )));
+
+            return $elements;
+        }
+
+        return $elements[$possibleKind];
     }
 
     public function generateCode(): string
