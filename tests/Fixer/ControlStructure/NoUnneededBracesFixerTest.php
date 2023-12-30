@@ -182,6 +182,27 @@ namespace Foo {
             } ?>",
             ['namespaces' => true],
         ];
+
+        yield [
+            '<?php
+            namespace A;
+                class X {}
+            ',
+            '<?php
+            namespace A {
+                class X {}
+            }',
+            ['namespaces' => true],
+        ];
+
+        yield [
+            '<?php
+            namespace {
+                class X {}
+            }',
+            null,
+            ['namespaces' => true],
+        ];
     }
 
     /**

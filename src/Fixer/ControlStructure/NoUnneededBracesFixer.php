@@ -134,9 +134,17 @@ namespace Foo {
 
         $index = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
 
-        do {
+        $namespaceIsNamed = false;
+
+        $index = $tokens->getNextMeaningfulToken($index);
+        while ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
             $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR]));
+            $namespaceIsNamed = true;
+        }
+
+        if (!$namespaceIsNamed) {
+            return;
+        }
 
         if (!$tokens[$index]->equals('{')) {
             return; // `;`
