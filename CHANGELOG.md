@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.45.0
+---------------------
+
+* feat: Enable symbol importing in `@PhpCsFixer` ruleset (#7629)
+* fix: NoUnneededBracesFixer - improve handling of global namespace (#7639)
+* test: run tests with "short_open_tag" enabled (#7637)
+
 Changelog for v3.44.0
 ---------------------
 
