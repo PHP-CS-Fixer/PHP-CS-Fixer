@@ -103,6 +103,9 @@ use Space\Models\ {
         ]);
     }
 
+    /**
+     * @return array{string, ?int, int, string}
+     */
     private function getGroupDeclaration(Tokens $tokens, int $index): array
     {
         $groupPrefix = '';
