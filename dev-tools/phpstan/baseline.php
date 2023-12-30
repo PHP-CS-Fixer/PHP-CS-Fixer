@@ -84,11 +84,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, mixed given on the left side\\.$#',
-	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/BracesPositionFixer.php',
 ];
 $ignoreErrors[] = [
