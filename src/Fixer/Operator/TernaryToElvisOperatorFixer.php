@@ -95,8 +95,6 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $blockEdgeDefinitions = Tokens::getBlockEdgeDefinitions();
-
         for ($index = \count($tokens) - 5; $index > 1; --$index) {
             if (!$tokens[$index]->equals('?')) {
                 continue;
@@ -110,7 +108,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
 
             // get and check what is before the `?` operator
 
-            $beforeOperator = $this->getBeforeOperator($tokens, $index, $blockEdgeDefinitions);
+            $beforeOperator = $this->getBeforeOperator($tokens, $index);
 
             if (null === $beforeOperator) {
                 continue; // contains something we cannot fix because of priorities
@@ -129,10 +127,11 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
     }
 
     /**
-     * @return null|array{start: int, end: int} null if contains ++/-- operator
+     * @return ?array{start: int, end: int} null if contains ++/-- operator
      */
-    private function getBeforeOperator(Tokens $tokens, int $index, array $blockEdgeDefinitions): ?array
+    private function getBeforeOperator(Tokens $tokens, int $index): ?array
     {
+        $blockEdgeDefinitions = Tokens::getBlockEdgeDefinitions();
         $index = $tokens->getPrevMeaningfulToken($index);
         $before = ['end' => $index];
 
