@@ -134,15 +134,15 @@ namespace Foo {
 
         $index = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
 
-        $namespaceisNamed = false;
+        $namespaceIsNamed = false;
 
         $index = $tokens->getNextMeaningfulToken($index);
         while ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
             $index = $tokens->getNextMeaningfulToken($index);
-            $namespaceisNamed = true;
+            $namespaceIsNamed = true;
         }
 
-        if (!$namespaceisNamed) {
+        if (!$namespaceIsNamed) {
             return;
         }
 
