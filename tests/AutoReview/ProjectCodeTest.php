@@ -737,6 +737,22 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
+    public function testAllTestsForShortOpenTagAreHandled(): void
+    {
+        $testClassesWithShortOpenTag = array_filter(self::getTestClasses(), function (string $className) {
+            return str_contains($this->getFileContentForClass($className), 'short_open_tag')
+            && self::class !== $className;
+        });
+        $testFilesWithShortOpenTag = array_map(fn ($className) => './'.$this->getFilePathForClass($className), $testClassesWithShortOpenTag);
+
+        $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
+        $phpunitFiles = (array) simplexml_load_string($phpunitXmlContent)->xpath('testsuites/testsuite[@name="short-open-tag"]')[0]->file;
+
+        sort($testFilesWithShortOpenTag);
+        sort($phpunitFiles);
+        self::assertSame($testFilesWithShortOpenTag, $phpunitFiles);
+    }
+
     /**
      * @return iterable<string, array{class-string<TestCase>}>
      */
@@ -843,14 +859,21 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param class-string $className
      */
-    private function getFileContentForClass(string $className): string
+    private function getFilePathForClass(string $className): string
     {
         $file = $className;
         $file = preg_replace('#^PhpCsFixer\\\Tests\\\#', 'tests\\', $file);
         $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
-        $file = str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
 
-        return file_get_contents($file);
+        return str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
+    }
+
+    /**
+     * @param class-string $className
+     */
+    private function getFileContentForClass(string $className): string
+    {
+        return file_get_contents($this->getFilePathForClass($className));
     }
 
     /**
