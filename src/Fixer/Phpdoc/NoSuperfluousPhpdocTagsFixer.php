@@ -35,7 +35,16 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @phpstan-type _TypeInfo array{types: list<string>, allows_null: bool}
+ * @phpstan-type _TypeInfo array{
+ *   types: list<string>,
+ *   allows_null: bool,
+ * }
+ * @phpstan-type _DocumentElement array{
+ *   index: int,
+ *   type: 'classy'|'function'|'property',
+ *   modifiers: array<int, Token>,
+ *   types: array<int, Token>,
+ * }
  */
 final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -208,12 +217,7 @@ class Foo {
     }
 
     /**
-     * @return null|array{
-     *       index: int,
-     *       type: 'classy'|'function'|'property',
-     *       modifiers: array<int, Token>,
-     *       types: array<int, Token>,
-     * }
+     * @return null|_DocumentElement
      */
     private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?array
     {
@@ -295,14 +299,9 @@ class Foo {
     }
 
     /**
-     * @param array{
-     *       index: int,
-     *       type: 'function',
-     *       modifiers: array<int, Token>,
-     *       types: array<int, Token>,
-     * } $element
-     * @param null|non-empty-string $namespace
-     * @param array<string, string> $shortNames
+     * @param _DocumentElement&array{type: 'function'} $element
+     * @param null|non-empty-string                    $namespace
+     * @param array<string, string>                    $shortNames
      */
     private function fixFunctionDocComment(
         string $content,
@@ -357,14 +356,9 @@ class Foo {
     }
 
     /**
-     * @param array{
-     *       index: int,
-     *       type: 'property',
-     *       modifiers: array<int, Token>,
-     *       types: array<int, Token>,
-     * } $element
-     * @param null|non-empty-string $namespace
-     * @param array<string, string> $shortNames
+     * @param _DocumentElement&array{type: 'property'} $element
+     * @param null|non-empty-string                    $namespace
+     * @param array<string, string>                    $shortNames
      */
     private function fixPropertyDocComment(
         string $content,
@@ -392,12 +386,7 @@ class Foo {
     }
 
     /**
-     * @param array{
-     *       index: int,
-     *       type: 'classy',
-     *       modifiers: array<int, Token>,
-     *       types: array<int, Token>,
-     * } $element
+     * @param _DocumentElement&array{type: 'classy'} $element
      */
     private function fixClassDocComment(string $content, array $element): string
     {
@@ -677,6 +666,9 @@ class Foo {
         ~ix', '$1$2', $docComment);
     }
 
+    /**
+     * @param _DocumentElement $element
+     */
     private function removeSuperfluousModifierAnnotation(DocBlock $docBlock, array $element): void
     {
         foreach (['abstract' => T_ABSTRACT, 'final' => T_FINAL] as $annotationType => $modifierToken) {
