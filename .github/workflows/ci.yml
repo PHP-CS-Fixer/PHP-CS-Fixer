@@ -216,7 +216,7 @@ jobs:
         if: env.PHP_MIN == matrix.php-version && matrix.run-fixer == 'yes'
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
-        run: php php-cs-fixer check --diff -v --config .php-cs-fixer.php-lowest.php
+        run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
 
   deployment:
     needs: tests
