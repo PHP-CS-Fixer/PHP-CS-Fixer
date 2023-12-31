@@ -706,6 +706,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             || !str_starts_with($symbol, '\\')
             // or if it's a global symbol
             || strpos($symbol, '\\') === strrpos($symbol, '\\')
+            // or if the symbol is shape/generic/parentheses type
+            || str_contains($symbol, '{') || str_contains($symbol, '<') || str_contains($symbol, '(') || str_contains($symbol, '[')
         ) {
             return;
         }

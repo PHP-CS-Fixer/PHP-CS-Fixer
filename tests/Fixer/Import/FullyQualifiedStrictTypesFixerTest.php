@@ -1341,6 +1341,21 @@ namespace Foo\Bar;
 final class SomeClass {}',
         ];
 
+        yield 'PHPDoc with generics must not crash' => [
+            '<?php
+
+/**
+ * @param Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
+            '<?php
+
+/**
+ * @param \Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
+        ];
+
         yield 'Test multiple PHPDoc blocks' => [
             '<?php
 
