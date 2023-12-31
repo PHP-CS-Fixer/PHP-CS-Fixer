@@ -302,32 +302,28 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        Preg::matchAll('/@([^\s]+)(\s+)('.TypeExpression::REGEX_TYPES.')(?!\S)/', $phpDocContent, $matches);
-
-        foreach ($matches[3] as $i => $typeName) {
-            if (!\in_array($matches[1][$i], $allowedTags, true)) {
-                continue;
+        $phpDocContentNew = Preg::replaceCallback('/@([^\s]+)(\s+)('.TypeExpression::REGEX_TYPES.')(?!\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
+            if (!\in_array($matches[1], $allowedTags, true)) {
+                return $matches[0];
             }
 
-            if (true === $this->configuration['import_symbols'] && isset($matches[3][0])) {
-                $this->registerSymbolForImport('class', $matches[3][0], $uses, $namespaceName);
+            if (true === $this->configuration['import_symbols']) {
+                $this->registerSymbolForImport('class', $matches[3], $uses, $namespaceName);
             }
 
-            $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
-
-            if (null !== $shortTokens) {
-                // Replace tag+type in order to avoid replacing type multiple times (when same type is used in multiple places)
-                $phpDocContent = str_replace(
-                    $matches[0][$i],
-                    '@'.$matches[1][$i].$matches[2][$i].implode('', array_map(
-                        static fn (Token $token) => $token->getContent(),
-                        $shortTokens
-                    )),
-                    $phpDocContent
-                );
-
-                $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContent]);
+            $shortTokens = $this->determineShortType($matches[3], $uses, $namespaceName);
+            if (null === $shortTokens) {
+                return $matches[0];
             }
+
+            return '@'.$matches[1].$matches[2].implode('', array_map(
+                static fn (Token $token) => $token->getContent(),
+                $shortTokens
+            ));
+        }, $phpDocContent);
+
+        if ($phpDocContentNew !== $phpDocContent) {
+            $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContentNew]);
         }
     }
 
