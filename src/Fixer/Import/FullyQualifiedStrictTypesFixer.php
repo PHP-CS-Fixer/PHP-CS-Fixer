@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -301,7 +302,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        Preg::matchAll('#@([^\s]+)(\s+)([a-zA-Z0-9_\\\\]+)#', $phpDocContent, $matches);
+        Preg::matchAll('/@([^\s]+)(\s+)('.TypeExpression::REGEX_TYPES.')(?!\S)/', $phpDocContent, $matches);
 
         foreach ($matches[3] as $i => $typeName) {
             if (!\in_array($matches[1][$i], $allowedTags, true)) {
