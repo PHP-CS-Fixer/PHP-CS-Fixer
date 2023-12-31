@@ -157,11 +157,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$compareValues of static method PhpCsFixer\\\\Utils\\:\\:stableSort\\(\\) expects callable\\(array\\{element\\: array, position\\: int\\}, array\\{element\\: array, position\\: int\\}\\)\\: \\(\\-1\\|0\\|1\\), Closure\\(array, array\\)\\: int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/SingleLineCommentStyleFixer.php',
