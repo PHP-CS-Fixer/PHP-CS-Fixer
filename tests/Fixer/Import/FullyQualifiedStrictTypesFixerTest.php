@@ -1232,6 +1232,18 @@ use Foo\Bar\Baz;
 use Foo\Bar\Bam;
 
 /**
+ * @see Baz|null
+ * @see Bam|null
+ */
+class SomeClass {}',
+            '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+use Foo\Bar\Bam;
+
+/**
  * @see \Foo\Bar\Baz|null
  * @see \Foo\Bar\Bam|null
  */

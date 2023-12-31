@@ -308,7 +308,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
 
             // TODO fix all, even complex/nested, phpdoc types
-            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+$/', $matches[3])) {
+            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[3])) {
                 return $matches[0];
             }
 
