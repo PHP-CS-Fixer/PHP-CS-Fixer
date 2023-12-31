@@ -260,7 +260,7 @@ function foo() {
     }
 
     /**
-     * @return list<string|array{int}>
+     * @return list<array{int}|string>
      */
     private static function getNonBooleanOperators(): array
     {
