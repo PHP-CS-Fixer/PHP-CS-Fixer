@@ -302,26 +302,26 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        $phpDocContentNew = Preg::replaceCallback('/@([^\s]+)(\s+)('.TypeExpression::REGEX_TYPES.')(?!\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
-            if (!\in_array($matches[1], $allowedTags, true)) {
+        $phpDocContentNew = Preg::replaceCallback('/(\*\s*@)([^\s]+)(\s+)('.TypeExpression::REGEX_TYPES.')(?!\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
+            if (!\in_array($matches[2], $allowedTags, true)) {
                 return $matches[0];
             }
 
             // TODO fix all, even complex/nested, phpdoc types
-            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[3])) {
+            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[4])) {
                 return $matches[0];
             }
 
             if (true === $this->configuration['import_symbols']) {
-                $this->registerSymbolForImport('class', $matches[3], $uses, $namespaceName);
+                $this->registerSymbolForImport('class', $matches[4], $uses, $namespaceName);
             }
 
-            $shortTokens = $this->determineShortType($matches[3], $uses, $namespaceName);
+            $shortTokens = $this->determineShortType($matches[4], $uses, $namespaceName);
             if (null === $shortTokens) {
                 return $matches[0];
             }
 
-            return '@'.$matches[1].$matches[2].implode('', array_map(
+            return $matches[1].$matches[2].$matches[3].implode('', array_map(
                 static fn (Token $token) => $token->getContent(),
                 $shortTokens
             ));
