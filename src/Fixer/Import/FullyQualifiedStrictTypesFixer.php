@@ -303,31 +303,29 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $phpDocContent = $phpDoc->getContent();
         Preg::matchAll('#@([^\s]+)(\s+)([a-zA-Z0-9_\\\\]+)#', $phpDocContent, $matches);
 
-        if ([] !== $matches[0]) {
-            foreach ($matches[3] as $i => $typeName) {
-                if (!\in_array($matches[1][$i], $allowedTags, true)) {
-                    continue;
-                }
+        foreach ($matches[3] as $i => $typeName) {
+            if (!\in_array($matches[1][$i], $allowedTags, true)) {
+                continue;
+            }
 
-                if (true === $this->configuration['import_symbols'] && isset($matches[3][0])) {
-                    $this->registerSymbolForImport('class', $matches[3][0], $uses, $namespaceName);
-                }
+            if (true === $this->configuration['import_symbols'] && isset($matches[3][0])) {
+                $this->registerSymbolForImport('class', $matches[3][0], $uses, $namespaceName);
+            }
 
-                $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
+            $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
 
-                if (null !== $shortTokens) {
-                    // Replace tag+type in order to avoid replacing type multiple times (when same type is used in multiple places)
-                    $phpDocContent = str_replace(
-                        $matches[0][$i],
-                        '@'.$matches[1][$i].$matches[2][$i].implode('', array_map(
-                            static fn (Token $token) => $token->getContent(),
-                            $shortTokens
-                        )),
-                        $phpDocContent
-                    );
+            if (null !== $shortTokens) {
+                // Replace tag+type in order to avoid replacing type multiple times (when same type is used in multiple places)
+                $phpDocContent = str_replace(
+                    $matches[0][$i],
+                    '@'.$matches[1][$i].$matches[2][$i].implode('', array_map(
+                        static fn (Token $token) => $token->getContent(),
+                        $shortTokens
+                    )),
+                    $phpDocContent
+                );
 
-                    $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContent]);
-                }
+                $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContent]);
             }
         }
     }
