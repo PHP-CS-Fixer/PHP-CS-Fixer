@@ -497,7 +497,7 @@ Custom values:
             'doteardown' => 10,
         ];
 
-        $getPositionType = function (array $element) use ($phpunitPositions): int {
+        $getPositionType = function (array $element) use ($phpunitPositions) {
             $type = $element['type'];
 
             if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
@@ -539,17 +539,8 @@ Custom values:
 
         return Utils::stableSort(
             $elements,
-            /**
-             * @return array{element: _ClassElement, position: int}
-             */
             static fn (array $element): array => ['element' => $element, 'position' => $getPositionType($element)],
-            /**
-             * @param array{element: _ClassElement, position: int} $a
-             * @param array{element: _ClassElement, position: int} $b
-             *
-             * @return -1|0|1
-             */
-            fn (array $a, array $b): int => ($a['position'] === $b['position']) ? $this->sortGroupElements($a['element'], $b['element']) : $a['position'] <=> $b['position'],
+            fn ($a, $b): int => ($a['position'] === $b['position']) ? $this->sortGroupElements($a['element'], $b['element']) : $a['position'] <=> $b['position'],
         );
     }
 
