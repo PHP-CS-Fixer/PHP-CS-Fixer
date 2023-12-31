@@ -1232,22 +1232,21 @@ use Foo\Bar\Baz;
 use Foo\Bar\Bam;
 
 /**
- * @see Baz|null
- * @see Bam|null
- */
-class SomeClass {}',
-            '<?php
-
-namespace Foo\Bar;
-
-use Foo\Bar\Baz;
-use Foo\Bar\Bam;
-
-/**
  * @see \Foo\Bar\Baz|null
  * @see \Foo\Bar\Bam|null
  */
 class SomeClass {}',
+        ];
+
+        yield 'Test PHPDoc union' => [
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|int|null $v
+ */
+function foo($v) {}',
         ];
 
         yield 'Test PHPDoc in interface' => [
@@ -1342,12 +1341,6 @@ final class SomeClass {}',
         ];
 
         yield 'PHPDoc with generics must not crash' => [
-            '<?php
-
-/**
- * @param Iterator<mixed, \SplFileInfo> $iter
- */
-function foo($iter) {}',
             '<?php
 
 /**

@@ -307,6 +307,11 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
+            // TODO fix all, even complex/nested, phpdoc types
+            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+$/', $matches[3])) {
+                return $matches[0];
+            }
+
             if (true === $this->configuration['import_symbols']) {
                 $this->registerSymbolForImport('class', $matches[3], $uses, $namespaceName);
             }
@@ -706,8 +711,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             || !str_starts_with($symbol, '\\')
             // or if it's a global symbol
             || strpos($symbol, '\\') === strrpos($symbol, '\\')
-            // or if the symbol is shape/generic/parentheses type
-            || str_contains($symbol, '{') || str_contains($symbol, '<') || str_contains($symbol, '(') || str_contains($symbol, '[')
         ) {
             return;
         }
