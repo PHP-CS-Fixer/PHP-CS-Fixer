@@ -252,11 +252,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$index might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$end might not be defined\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
