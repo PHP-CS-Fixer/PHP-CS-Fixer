@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -64,7 +65,7 @@ class Config implements ConfigInterface
     public function __construct(string $name = 'default')
     {
         // @TODO 4.0 cleanup
-        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+        if (Utils::isFutureModeEnabled()) {
             $this->name = $name.' (future mode)';
             $this->rules = ['@PER-CS' => true];
         } else {
