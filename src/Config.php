@@ -57,13 +57,20 @@ class Config implements ConfigInterface
      *
      * @var array<string, array<string, mixed>|bool>
      */
-    private array $rules = ['@PSR12' => true];
+    private array $rules;
 
     private bool $usingCache = true;
 
     public function __construct(string $name = 'default')
     {
-        $this->name = $name;
+        // @TODO 4.0 cleanup
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            $this->name = $name.' (future mode)';
+            $this->rules = ['@PER-CS' => true];
+        } else {
+            $this->name = $name;
+            $this->rules = ['@PSR12' => true];
+        }
     }
 
     public function getCacheFile(): string
