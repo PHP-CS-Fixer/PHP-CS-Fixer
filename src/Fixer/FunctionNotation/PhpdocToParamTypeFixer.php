@@ -136,7 +136,8 @@ function bar($foo) {}
                 }
 
                 if (null !== $typeInfo) {
-                    [$paramType, $isNullable] = $typeInfo;
+                    $paramType = $typeInfo['commonType'];
+                    $isNullable = $typeInfo['isNullable'];
                 } elseif (null !== $unionTypes) {
                     $paramType = $unionTypes;
                     $isNullable = false;

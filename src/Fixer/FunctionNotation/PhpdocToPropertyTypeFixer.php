@@ -22,6 +22,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @phpstan-import-type _CommonTypeInfo from AbstractPhpdocToTypeDeclarationFixer
+ */
 final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
     private const TYPE_CHECK_TEMPLATE = '<?php class A { private %s $b; }';
@@ -142,7 +145,8 @@ class Foo {
                 continue;
             }
 
-            [$propertyType, $isNullable] = $typeInfo;
+            $propertyType = $typeInfo['commonType'];
+            $isNullable = $typeInfo['isNullable'];
 
             if (\in_array($propertyType, ['callable', 'never', 'void'], true)) {
                 continue;
@@ -199,6 +203,8 @@ class Foo {
     /**
      * @param array<string, int> $propertyIndices
      * @param Annotation[]       $annotations
+     *
+     * @return ?_CommonTypeInfo
      */
     private function resolveApplicableType(array $propertyIndices, array $annotations): ?array
     {
@@ -237,7 +243,7 @@ class Foo {
             }
 
             if (null !== $unionTypes) {
-                $typeInfo = [$unionTypes, false];
+                $typeInfo = ['commonType' => $unionTypes, 'isNullable' => false];
             }
 
             if (\array_key_exists($propertyName, $propertyTypes) && $typeInfo !== $propertyTypes[$propertyName]) {

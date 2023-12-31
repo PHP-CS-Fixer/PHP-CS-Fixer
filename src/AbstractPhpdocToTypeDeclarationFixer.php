@@ -29,6 +29,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @phpstan-type _CommonTypeInfo array{commonType: string, isNullable: bool}
  */
 abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -166,7 +168,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     abstract protected function createTokensFromRawType(string $type): Tokens;
 
     /**
-     * @return null|array{string, bool}
+     * @return ?_CommonTypeInfo
      */
     protected function getCommonTypeInfo(TypeExpression $typesExpression, bool $isReturnType): ?array
     {
@@ -201,7 +203,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             return null;
         }
 
-        return [$commonType, $isNullable];
+        return ['commonType' => $commonType, 'isNullable' => $isNullable];
     }
 
     protected function getUnionTypes(TypeExpression $typesExpression, bool $isReturnType): ?string
