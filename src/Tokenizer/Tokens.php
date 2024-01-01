@@ -1223,7 +1223,7 @@ class Tokens extends \SplFixedArray
         }
 
         // inlined extractTokenKind() call on the hot path
-        /** @var non-empty-string */
+        /** @var int|non-empty-string */
         $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         return isset($blockEdgeKinds[$tokenKind]);
