@@ -322,14 +322,13 @@ class Tokens extends \SplFixedArray
                 if (isset($this->blockEndCache[$index])) {
                     unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
                 }
+
+                $this->unregisterFoundToken($this[$index]);
             }
 
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
-            if (isset($this[$index])) {
-                $this->unregisterFoundToken($this[$index]);
-            }
             $this->registerFoundToken($newval);
         }
 
