@@ -52,7 +52,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace. Fixes function arguments, exceptions in `catch` block, `extend` and `implements` of classes and interfaces.',
+            'Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace.',
             [
                 new CodeSample(
                     '<?php

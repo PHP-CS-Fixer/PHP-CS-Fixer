@@ -3,9 +3,7 @@ Rule ``fully_qualified_strict_types``
 =====================================
 
 Removes the leading part of fully qualified symbol references if a given symbol
-is imported or belongs to the current namespace. Fixes function arguments,
-exceptions in ``catch`` block, ``extend`` and ``implements`` of classes and
-interfaces.
+is imported or belongs to the current namespace.
 
 Configuration
 -------------
