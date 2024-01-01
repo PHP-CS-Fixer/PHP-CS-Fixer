@@ -378,7 +378,8 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // we are moving the tokens, we need to clear the indices Cache
+        // we are moving the tokens, we need to clear the index-based Cache
+        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
