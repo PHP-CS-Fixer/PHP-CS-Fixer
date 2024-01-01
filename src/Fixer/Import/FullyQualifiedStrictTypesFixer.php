@@ -162,12 +162,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([
-            T_FUNCTION,
-            T_DOC_COMMENT,
-            T_IMPLEMENTS,
-            T_EXTENDS,
             T_CATCH,
             T_DOUBLE_COLON,
+            T_DOC_COMMENT,
+            T_EXTENDS,
+            T_FUNCTION,
+            T_IMPLEMENTS,
+            T_INSTANCEOF,
+            T_NEW,
         ]);
     }
 
@@ -241,8 +243,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
                 } elseif ($tokens[$index]->isGivenKind(T_CATCH)) {
                     $this->fixCatch($tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
-                    $this->fixClassStaticAccess($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind([T_DOUBLE_COLON])) {
+                    $this->fixPrevName($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW])) {
+                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
                 }
 
                 if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
@@ -390,7 +394,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixClassStaticAccess(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixPrevName(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         $classConstantRef = ['content' => '', 'tokens' => []];
 
@@ -402,6 +406,27 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $classConstantRef['content'] = $tokens[$index]->getContent().$classConstantRef['content'];
             } else {
                 $classConstantRef['tokens'] = array_reverse($classConstantRef['tokens']);
+                $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function fixNextName(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    {
+        $classConstantRef = ['content' => '', 'tokens' => []];
+
+        while (true) {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
+                $classConstantRef['tokens'][] = $index;
+                $classConstantRef['content'] .= $tokens[$index]->getContent();
+            } else {
                 $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
 
                 break;
