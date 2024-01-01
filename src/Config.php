@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
