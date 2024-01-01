@@ -119,7 +119,8 @@ $c = 3;
             }
 
             $content = $token->getContent();
-            // @TODO PHP 8.0 - no more need for `?: ''`
+
+            /** @TODO PHP 8.0 - no more need for `?: ''` */
             $commentContent = substr($content, 2, -2) ?: ''; // @phpstan-ignore-line
 
             if ($this->hashEnabled && str_starts_with($content, '#')) {
