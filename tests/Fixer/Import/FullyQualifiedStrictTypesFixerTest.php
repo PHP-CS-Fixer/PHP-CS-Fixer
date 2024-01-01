@@ -336,6 +336,11 @@ namespace B {
             '<?php namespace B; $res = ($v->obj()) instanceof \B\A;',
         ];
 
+        yield 'use trait' => [
+            '<?php use A\B; class Foo { use \A\C; use \D; use B { B::bar as baz; } };',
+            '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
+        ];
+
         yield 'starts with but not full name extends' => [
             '<?php namespace a\abcd;
 class Foo extends \a\abcdTest { }',

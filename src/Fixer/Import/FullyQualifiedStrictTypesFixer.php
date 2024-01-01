@@ -170,6 +170,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             T_IMPLEMENTS,
             T_INSTANCEOF,
             T_NEW,
+            CT::T_USE_TRAIT,
         ]);
     }
 
@@ -245,7 +246,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $this->fixCatch($tokens, $index, $uses, $namespaceName);
                 } elseif ($tokens[$index]->isGivenKind([T_DOUBLE_COLON])) {
                     $this->fixPrevName($tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW])) {
+                } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
                     $this->fixNextName($tokens, $index, $uses, $namespaceName);
                 }
 
