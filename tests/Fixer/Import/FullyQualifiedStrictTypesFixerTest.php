@@ -349,7 +349,7 @@ namespace B {
         ];
 
         yield 'use trait complex' => [
-            '<?php use A\B; class Foo { use \A\C; use \D; use B { B::bar as baz; } };',
+            '<?php use A\B; class Foo { use A\C; use D; use B { B::bar as baz; } };',
             '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
         ];
 
