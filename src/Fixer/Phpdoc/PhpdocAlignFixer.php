@@ -323,7 +323,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
                 if ('' !== $item['var']) {
                     $line .=
-                        $this->getIndent(($hintMax ?: -1) - \strlen($item['hint']) + 1)
+                        $this->getIndent((0 !== $hintMax ? $hintMax : -1) - \strlen($item['hint']) + 1)
                         .$item['var']
                         .(
                             '' !== $item['desc']
