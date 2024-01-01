@@ -312,6 +312,30 @@ namespace B {
             ['leading_backslash_in_global_namespace' => true],
         ];
 
+        yield 'new class' => [
+            '<?php use A\B; new B();',
+            '<?php use A\B; new \A\B();',
+        ];
+
+        yield 'new class namespaced' => [
+            '<?php namespace B; new A();',
+            '<?php namespace B; new \B\A();',
+        ];
+
+        yield 'new class not imported' => [
+            '<?php new \A\B(); new A\B();',
+        ];
+
+        yield 'instanceof' => [
+            '<?php use A\B; $res = $v instanceof B;',
+            '<?php use A\B; $res = $v instanceof \A\B;',
+        ];
+
+        yield 'instanceof namespaced' => [
+            '<?php namespace B; $res = ($v->obj()) instanceof A;',
+            '<?php namespace B; $res = ($v->obj()) instanceof \B\A;',
+        ];
+
         yield 'starts with but not full name extends' => [
             '<?php namespace a\abcd;
 class Foo extends \a\abcdTest { }',
@@ -376,6 +400,8 @@ namespace Z\B\C\D
 namespace Foo\Test;
 use Other\BaseClass;
 use Other\CaughtThrowable;
+use Other\Cl;
+use Other\Cl2;
 use Other\FunctionArgument;
 use Other\FunctionReturnType;
 use Other\Interface1;
@@ -395,6 +421,10 @@ class Foo extends BaseClass implements Interface1, Interface2
         } catch (CaughtThrowable $e) {}
     }
 }
+
+new Cl();
+
+if ($a instanceof Cl2) { return false; }
             ',
             '<?php
 
@@ -412,6 +442,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         } catch (\Other\CaughtThrowable $e) {}
     }
 }
+
+new \Other\Cl();
+
+if ($a instanceof \Other\Cl2) { return false; }
             ',
             ['import_symbols' => true],
         ];
