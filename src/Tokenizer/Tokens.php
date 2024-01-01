@@ -295,10 +295,18 @@ class Tokens extends \SplFixedArray
      */
     public function offsetUnset($index): void
     {
-        $this->changed = true;
-        $this->namespaceDeclarations = null;
         if (isset($this[$index])) {
+            if (isset($this->blockStartCache[$index])) {
+                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+            }
+            if (isset($this->blockEndCache[$index])) {
+                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+            }
+
             $this->unregisterFoundToken($this[$index]);
+
+            $this->changed = true;
+            $this->namespaceDeclarations = null;
         }
 
         parent::offsetUnset($index);
