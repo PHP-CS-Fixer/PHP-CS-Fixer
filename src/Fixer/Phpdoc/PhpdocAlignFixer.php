@@ -308,7 +308,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                             $tagMax - \strlen($item['tag']) + 1,
                             '' !== $item['static'] ? 1 : 0
                         )
-                        .($item['static'] ?: $this->getIndent(6 /* \strlen('static') */, 0));
+                        .('' !== $item['static'] ? $item['static'] : $this->getIndent(6 /* \strlen('static') */, 0));
                     $hintVerticalAlignIndent = 1;
                 } else {
                     $hintVerticalAlignIndent = $tagMax - \strlen($item['tag']) + 1;
