@@ -314,7 +314,31 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
+        // # cache usage count with following variant: tests/Fixer/: 102_074
+        // $this->blockStartCache = [];
+        // $this->blockEndCache = [];
+
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
+            // # cache usage count with following variant: tests/Fixer/: 108_464
+            // $this->blockStartCache = [];
+            // $this->blockEndCache = [];
+
+            if (isset($this[$index]) && self::isTokenBlockEdge($this[$index])) {
+                // # cache usage count with following variant: tests/Fixer/: 113_324
+                // $this->blockStartCache = [];
+                // $this->blockEndCache = [];
+            }
+
+            if (isset($this[$index])) {
+                // # cache usage count with following variant: tests/Fixer/: 114_574
+                if (isset($this->blockStartCache[$index])) {
+                    unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+                }
+                if (isset($this->blockEndCache[$index])) {
+                    unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+                }
+            }
+
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
