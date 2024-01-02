@@ -1265,7 +1265,7 @@ class SomeClass {}',
 namespace Ns;
 
 /**
- * @param \Exception|int|null $v
+ * @param \Exception|\Exception2|int|null $v
  */
 function foo($v) {}',
         ];
