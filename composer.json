@@ -21,6 +21,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-filter": "*",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^3.4",
