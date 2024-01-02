@@ -861,6 +861,9 @@ String Notation
 - `heredoc_to_nowdoc <./string_notation/heredoc_to_nowdoc.rst>`_
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
+- `multiline_string_to_heredoc <./string_notation/multiline_string_to_heredoc.rst>`_
+
+  Convert multiline string to ``heredoc`` or ``nowdoc``.
 - `no_binary_string <./string_notation/no_binary_string.rst>`_
 
   There should not be a binary flag before strings.
