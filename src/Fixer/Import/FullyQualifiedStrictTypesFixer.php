@@ -307,7 +307,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            // TODO fix all, even complex/nested, phpdoc types
+            // @TODO parse the complex type using TypeExpression and fix all names inside (like `int|string` or `list<int|string>`)
             if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[4])) {
                 return $matches[0];
             }
