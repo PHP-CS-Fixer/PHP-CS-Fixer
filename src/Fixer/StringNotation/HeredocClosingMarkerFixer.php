@@ -74,7 +74,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $closingMarkerRegex = '~[\r\n]\s*'.preg_quote($this->configuration['closing_marker'], '~').'(?!\w)~';
+        $closingMarkerRegex = '~(^|[\r\n])\s*'.preg_quote($this->configuration['closing_marker'], '~').'(?!\w)~';
 
         $startIndex = null;
         foreach ($tokens as $index => $token) {
@@ -84,11 +84,16 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 continue;
             }
 
+            if (null !== $startIndex && Preg::match($closingMarkerRegex, $token->getContent())) {
+                $startIndex = null;
+
+                continue;
+            }
+
             if (null !== $startIndex && $token->isGivenKind(T_END_HEREDOC)) {
-                $content = $tokens->generatePartialCode($startIndex, $index);
-                if (!Preg::match($closingMarkerRegex, $content)) {
-                    [$tokens[$startIndex], $tokens[$index]] = $this->convertClosingMarker($tokens[$startIndex], $token);
-                }
+                [$tokens[$startIndex], $tokens[$index]] = $this->convertClosingMarker($tokens[$startIndex], $token);
+
+                $startIndex = null;
 
                 continue;
             }
