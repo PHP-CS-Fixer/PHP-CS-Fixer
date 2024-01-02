@@ -494,6 +494,17 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             ) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, \strlen($namespaceName) + 1);
+
+                // if short names are the same, but long one are different then it cannot be shortened
+                foreach ($uses as $useLongName => $useShortName) {
+                    if (
+                        strtolower($typeNameShort) === strtolower($useShortName)
+                        && strtolower($typeName) !== strtolower($useLongName)
+                    ) {
+                        return;
+                    }
+                }
+
                 $this->replaceClassWithShort($tokens, $class, $typeNameShort);
             }
         }
