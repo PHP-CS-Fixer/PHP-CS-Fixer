@@ -371,6 +371,11 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return int */ fn() => 1;',
         ];
 
+        yield 'arrow function (static)' => [
+            '<?php /** @return int */ static fn(): int => 1;',
+            '<?php /** @return int */ static fn() => 1;',
+        ];
+
         yield 'support for arrow function' => [
             '<?php
             Utils::stableSort(
