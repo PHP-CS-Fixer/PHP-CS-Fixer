@@ -569,6 +569,16 @@ function foo(A $a, \Other\B $b) {}
         yield '@link shall not crash fixer' => [
             '<?php
 
+use Symfony\Component\Validator\Constraints\Valid;
+/**
+ * {@link Valid} is assumed.
+ *
+ * @return void
+ */
+function validate(): void {}
+',
+            '<?php
+
 /**
  * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
  *
@@ -576,8 +586,7 @@ function foo(A $a, \Other\B $b) {}
  */
 function validate(): void {}
 ',
-            null,
-            ['import_symbols' => true],
+            ['import_symbols' => true, 'phpdoc_tags' => ['link']],
         ];
 
         yield 'import short name only once (ignore consequent same-name, different-namespace symbols)' => [

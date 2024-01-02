@@ -302,7 +302,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        $phpDocContentNew = Preg::replaceCallback('/(\*\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
+        $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
             if (!\in_array($matches[2], $allowedTags, true)) {
                 return $matches[0];
             }
