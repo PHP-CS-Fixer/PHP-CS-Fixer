@@ -31,7 +31,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Unify `heredoc` or `nowdoc` closing marker if possible.',
+            'Unify `heredoc` or `nowdoc` closing marker where possible.',
             [
                 new CodeSample(
                     <<<'EOF'

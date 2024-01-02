@@ -2,7 +2,7 @@
 Rule ``heredoc_closing_marker``
 ===============================
 
-Unify ``heredoc`` or ``nowdoc`` closing marker if possible.
+Unify ``heredoc`` or ``nowdoc`` closing marker where possible.
 
 Configuration
 -------------
