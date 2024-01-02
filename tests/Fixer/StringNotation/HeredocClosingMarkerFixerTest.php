@@ -70,6 +70,22 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
+        yield 'heredoc /w custom preferred closing marker' => [
+            <<<'EOD'
+                <?php $a = <<<EOF
+                xxx
+                EOF;
+
+                EOD,
+            <<<'EOD'
+                <?php $a = <<<TEST
+                xxx
+                TEST;
+
+                EOD,
+            ['closing_marker' => 'EOF'],
+        ];
+
         yield 'heredoc /w b' => [
             <<<'EOF'
                 <?php $a = b<<<EOD
