@@ -23,7 +23,7 @@ Whether the closing marker should be wrapped in double quotes.
 
 Allowed types: ``bool``
 
-Default value: ``true``
+Default value: ``false``
 
 ``reserved_closing_markers``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,7 +47,7 @@ Example #1
    --- Original
    +++ New
    -<?php $a = <<<"TEST"
-   +<?php $a = <<<"EOD"
+   +<?php $a = <<<EOD
     Foo
    -TEST;
    +EOD;
@@ -61,8 +61,8 @@ With configuration: ``['closing_marker' => 'EOF']``.
 
    --- Original
    +++ New
-   -<?php $a = <<<"TEST"
-   +<?php $a = <<<"EOF"
+   -<?php $a = <<<'TEST'
+   +<?php $a = <<<'EOF'
     Foo
    -TEST;
    +EOF;
@@ -70,14 +70,14 @@ With configuration: ``['closing_marker' => 'EOF']``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['explicit_heredoc_style' => false]``.
+With configuration: ``['explicit_heredoc_style' => true]``.
 
 .. code-block:: diff
 
    --- Original
    +++ New
    -<?php $a = <<<"TEST"
-   +<?php $a = <<<EOD
+   +<?php $a = <<<"EOD"
     Foo
    -TEST;
    +EOD;

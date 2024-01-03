@@ -43,7 +43,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 ),
                 new CodeSample(
                     <<<'EOD'
-                        <?php $a = <<<"TEST"
+                        <?php $a = <<<'TEST'
                         Foo
                         TEST;
 
@@ -57,7 +57,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                         TEST;
 
                         EOD,
-                    ['explicit_heredoc_style' => false]
+                    ['explicit_heredoc_style' => true]
                 ),
             ]
         );
@@ -104,7 +104,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 'Whether the closing marker should be wrapped in double quotes.'
             ))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(true)
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
