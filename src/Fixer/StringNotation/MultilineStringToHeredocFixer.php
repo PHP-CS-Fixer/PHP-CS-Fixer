@@ -140,7 +140,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
                 $heredocEndToken,
             ]);
         } else {
-            for ($i = $stringStartIndex + 1; $i < $stringEndIndex; $i++) {
+            for ($i = $stringStartIndex + 1; $i < $stringEndIndex; ++$i) {
                 if ($tokens[$i]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
                     $tokens[$i] = new Token([
                         $tokens[$i]->getId(),
