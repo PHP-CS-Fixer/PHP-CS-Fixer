@@ -353,6 +353,31 @@ namespace B {
             '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
         ];
 
+        yield 'typed property in function' => [
+            '<?php use A\B; function foo(B $v) {}',
+            '<?php use A\B; function foo(\A\B $v) {}',
+        ];
+
+        yield 'typed property in class' => [
+            '<?php use A\B; class Cl { public B $p; }',
+            '<?php use A\B; class Cl { public \A\B $p; }',
+        ];
+
+        yield 'typed promoted property in class' => [
+            '<?php use A\B; class Cl { public function __construct(B $p) {} }',
+            '<?php use A\B; class Cl { public function __construct(\A\B $p) {} }',
+        ];
+
+        yield 'typed property in anonymous class' => [
+            '<?php use A\B; new class() { public B $p; };',
+            '<?php use A\B; new class() { public \A\B $p; };',
+        ];
+
+        yield 'typed nullable property in class' => [
+            '<?php use A\B; class Cl { public ?B $p = null, $r; }',
+            '<?php use A\B; class Cl { public ?\A\B $p = null, $r; }',
+        ];
+
         yield 'starts with but not full name extends' => [
             '<?php namespace a\abcd;
 class Foo extends \a\abcdTest { }',

@@ -173,6 +173,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             T_IMPLEMENTS,
             T_INSTANCEOF,
             T_NEW,
+            T_VARIABLE,
         ]);
     }
 
@@ -250,6 +251,11 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                 } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
                     $this->fixNextName($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+                    $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                    if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
+                        $this->fixPrevName($tokens, $index, $uses, $namespaceName);
+                    }
                 }
 
                 if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
