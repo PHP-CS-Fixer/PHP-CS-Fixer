@@ -122,7 +122,7 @@ final class Application extends BaseApplication
             parent::getLongVersion(),
             $versionCommit ? sprintf(' <info>(%s)</info>', $versionCommit) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
-            ' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>.',
+            ' by <comment>Fabien Potencier</comment>, <comment>Dariusz Ruminski</comment> and <comment>contributors</comment>.',
             "\nPHP runtime: <info>".PHP_VERSION.'</info>',
         ]);
     }
