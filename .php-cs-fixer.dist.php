@@ -17,6 +17,7 @@ $header = <<<'EOF'
 
     (c) Fabien Potencier <fabien@symfony.com>
         Dariusz Rumiński <dariusz.ruminski@gmail.com>
+        and contributors <https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/graphs/contributors>
 
     This source file is subject to the MIT license that is bundled
     with this source code in the file LICENSE.
