@@ -91,7 +91,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\\\'\\\\])/';
+        static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\'\\\\])/';
         static $doubleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
         static $heredocSyntaxRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
 
@@ -115,20 +115,20 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
             $isDoubleQuotedString =
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
-            $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
-            if (
-                (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
-                || (false === $this->configuration['double_quoted'] && $isDoubleQuotedString)
-                || (false === $this->configuration['heredoc_syntax'] && $isHeredocSyntax)
-            ) {
-                continue;
-            }
 
-            $regex = $heredocSyntaxRegex;
             if ($isSingleQuotedString) {
                 $regex = $singleQuotedRegex;
+                $escape = true === $this->configuration['single_quoted'];
             } elseif ($isDoubleQuotedString) {
                 $regex = $doubleQuotedRegex;
+                $escape = true === $this->configuration['double_quoted'];
+            } else {
+                $regex = $heredocSyntaxRegex;
+                $escape = true === $this->configuration['heredoc_syntax'];
+            }
+
+            if (!$escape) {
+                continue;
             }
 
             $newContent = Preg::replace($regex, '\\\\\\\\$1', $content);
