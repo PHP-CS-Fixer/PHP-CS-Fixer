@@ -37,7 +37,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Darius Matulionis <darius@matulionis.lt>
  * @author Adriano Pilger <adriano.pilger@gmail.com>
  *
- * @phpstan-type UseImportInfo array{
+ * @phpstan-type _UseImportInfo array{
  *  namespace: non-empty-string,
  *  startIndex: int,
  *  endIndex: int,
@@ -285,8 +285,8 @@ use Bar;
     /**
      * This method is used for sorting the uses in a namespace.
      *
-     * @param UseImportInfo $first
-     * @param UseImportInfo $second
+     * @param _UseImportInfo $first
+     * @param _UseImportInfo $second
      *
      * @internal
      */
@@ -304,8 +304,8 @@ use Bar;
     /**
      * This method is used for sorting the uses statements in a namespace by length.
      *
-     * @param UseImportInfo $first
-     * @param UseImportInfo $second
+     * @param _UseImportInfo $first
+     * @param _UseImportInfo $second
      *
      * @internal
      */
@@ -336,7 +336,7 @@ use Bar;
     /**
      * @param list<int> $uses
      *
-     * @return array<int, UseImportInfo>
+     * @return array<int, _UseImportInfo>
      */
     private function getNewOrder(array $uses, Tokens $tokens): array
     {
@@ -521,9 +521,9 @@ use Bar;
     }
 
     /**
-     * @param array<int, UseImportInfo> $indices
+     * @param array<int, _UseImportInfo> $indices
      *
-     * @return array<int, UseImportInfo>
+     * @return array<int, _UseImportInfo>
      */
     private function sortByAlgorithm(array $indices): array
     {
@@ -537,7 +537,7 @@ use Bar;
     }
 
     /**
-     * @param array<int, UseImportInfo> $usesOrder
+     * @param array<int, _UseImportInfo> $usesOrder
      */
     private function setNewOrder(Tokens $tokens, array $usesOrder): void
     {

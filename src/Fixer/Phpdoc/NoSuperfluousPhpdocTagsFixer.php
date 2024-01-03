@@ -35,11 +35,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @phpstan-type TypeInfo array{
+ * @phpstan-type _TypeInfo array{
  *   types: list<string>,
  *   allows_null: bool,
  * }
- * @phpstan-type DocumentElement array{
+ * @phpstan-type _DocumentElement array{
  *   index: int,
  *   type: 'classy'|'function'|'property',
  *   modifiers: array<int, Token>,
@@ -48,7 +48,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /** @var TypeInfo */
+    /** @var _TypeInfo */
     private const NO_TYPE_INFO = [
         'types' => [],
         'allows_null' => true,
@@ -217,7 +217,7 @@ class Foo {
     }
 
     /**
-     * @return null|DocumentElement
+     * @return null|_DocumentElement
      */
     private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?array
     {
@@ -299,9 +299,9 @@ class Foo {
     }
 
     /**
-     * @param array{type: 'function'}&DocumentElement $element
-     * @param null|non-empty-string                   $namespace
-     * @param array<string, string>                   $shortNames
+     * @param _DocumentElement&array{type: 'function'} $element
+     * @param null|non-empty-string                    $namespace
+     * @param array<string, string>                    $shortNames
      */
     private function fixFunctionDocComment(
         string $content,
@@ -356,9 +356,9 @@ class Foo {
     }
 
     /**
-     * @param array{type: 'property'}&DocumentElement $element
-     * @param null|non-empty-string                   $namespace
-     * @param array<string, string>                   $shortNames
+     * @param _DocumentElement&array{type: 'property'} $element
+     * @param null|non-empty-string                    $namespace
+     * @param array<string, string>                    $shortNames
      */
     private function fixPropertyDocComment(
         string $content,
@@ -386,7 +386,7 @@ class Foo {
     }
 
     /**
-     * @param array{type: 'classy'}&DocumentElement $element
+     * @param _DocumentElement&array{type: 'classy'} $element
      */
     private function fixClassDocComment(string $content, array $element): string
     {
@@ -398,7 +398,7 @@ class Foo {
     }
 
     /**
-     * @return array<non-empty-string, TypeInfo>
+     * @return array<non-empty-string, _TypeInfo>
      */
     private function getArgumentsInfo(Tokens $tokens, int $start, int $end): array
     {
@@ -437,7 +437,7 @@ class Foo {
     }
 
     /**
-     * @return TypeInfo
+     * @return _TypeInfo
      */
     private function getReturnTypeInfo(Tokens $tokens, int $closingParenthesisIndex): array
     {
@@ -451,7 +451,7 @@ class Foo {
     /**
      * @param int $index The index of the first token of the type hint
      *
-     * @return TypeInfo
+     * @return _TypeInfo
      */
     private function parseTypeHint(Tokens $tokens, int $index): array
     {
@@ -502,7 +502,7 @@ class Foo {
     }
 
     /**
-     * @param TypeInfo              $info
+     * @param _TypeInfo             $info
      * @param null|non-empty-string $namespace
      * @param array<string, string> $symbolShortNames
      */
@@ -667,7 +667,7 @@ class Foo {
     }
 
     /**
-     * @param DocumentElement $element
+     * @param _DocumentElement $element
      */
     private function removeSuperfluousModifierAnnotation(DocBlock $docBlock, array $element): void
     {
