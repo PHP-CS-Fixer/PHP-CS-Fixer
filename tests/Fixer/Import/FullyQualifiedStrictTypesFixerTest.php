@@ -1779,6 +1779,54 @@ function foo($a) {}',
             '<?php use A\B; try{ foo(0); } catch (B) {}',
             '<?php use A\B; try{ foo(0); } catch (\A\B) {}',
         ];
+
+        yield 'import new symbols from attributes' => [
+            '<?php
+
+namespace Foo\Test;
+use Other\ClassAttr;
+use Other\MethodAttr;
+use Other\PromotedAttr;
+use Other\PropertyAttr;
+
+#[ClassAttr]
+#[\AllowDynamicProperties]
+class Foo
+{
+    #[PropertyAttr]
+    public int $prop;
+
+    public function __construct(
+        #[PromotedAttr]
+        public int $arg
+    ) {}
+
+    #[MethodAttr]
+    public function foo(): void {}
+}
+            ',
+            '<?php
+
+namespace Foo\Test;
+
+#[\Other\ClassAttr]
+#[\AllowDynamicProperties]
+class Foo
+{
+    #[\Other\PropertyAttr]
+    public int $prop;
+
+    public function __construct(
+        #[\Other\PromotedAttr]
+        public int $arg
+    ) {}
+
+    #[\Other\MethodAttr]
+    public function foo(): void {}
+}
+            ',
+            ['import_symbols' => true],
+        ];
     }
 
     /**
