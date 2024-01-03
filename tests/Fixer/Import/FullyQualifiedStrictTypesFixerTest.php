@@ -312,6 +312,40 @@ namespace B {
             ['leading_backslash_in_global_namespace' => true],
         ];
 
+        yield 'new class' => [
+            '<?php use A\B; new B();',
+            '<?php use A\B; new \A\B();',
+        ];
+
+        yield 'new class namespaced' => [
+            '<?php namespace B; new A();',
+            '<?php namespace B; new \B\A();',
+        ];
+
+        yield 'new class not imported' => [
+            '<?php new \A\B(); new A\B();',
+        ];
+
+        yield 'instanceof' => [
+            '<?php use A\B; $res = $v instanceof B;',
+            '<?php use A\B; $res = $v instanceof \A\B;',
+        ];
+
+        yield 'instanceof namespaced' => [
+            '<?php namespace B; $res = ($v->obj()) instanceof A;',
+            '<?php namespace B; $res = ($v->obj()) instanceof \B\A;',
+        ];
+
+        yield 'use trait simple' => [
+            '<?php use A\B; class Foo { use B; };',
+            '<?php use A\B; class Foo { use \A\B; };',
+        ];
+
+        yield 'use trait complex' => [
+            '<?php use A\B; class Foo { use \A\C; use \D; use B { B::bar as baz; } };',
+            '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
+        ];
+
         yield 'starts with but not full name extends' => [
             '<?php namespace a\abcd;
 class Foo extends \a\abcdTest { }',
@@ -378,8 +412,10 @@ use Other\BaseClass;
 use Other\CaughtThrowable;
 use Other\FunctionArgument;
 use Other\FunctionReturnType;
+use Other\InstanceOfClass;
 use Other\Interface1;
 use Other\Interface2;
+use Other\NewClass;
 use Other\PropertyPhpDoc;
 use Other\StaticFunctionCall;
 
@@ -395,6 +431,10 @@ class Foo extends BaseClass implements Interface1, Interface2
         } catch (CaughtThrowable $e) {}
     }
 }
+
+new NewClass();
+
+if ($a instanceof InstanceOfClass) { return false; }
             ',
             '<?php
 
@@ -412,6 +452,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         } catch (\Other\CaughtThrowable $e) {}
     }
 }
+
+new \Other\NewClass();
+
+if ($a instanceof \Other\InstanceOfClass) { return false; }
             ',
             ['import_symbols' => true],
         ];
