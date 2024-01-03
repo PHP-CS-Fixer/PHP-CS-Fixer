@@ -857,7 +857,7 @@ String Notation
   Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.
 - `heredoc_closing_marker <./string_notation/heredoc_closing_marker.rst>`_
 
-  Unify ``heredoc`` or ``nowdoc`` closing marker where possible.
+  Unify ``heredoc`` or ``nowdoc`` closing marker.
 - `heredoc_to_nowdoc <./string_notation/heredoc_to_nowdoc.rst>`_
 
   Convert ``heredoc`` to ``nowdoc`` where possible.

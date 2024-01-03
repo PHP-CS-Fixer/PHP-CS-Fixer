@@ -31,23 +31,23 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Unify `heredoc` or `nowdoc` closing marker where possible.',
+            'Unify `heredoc` or `nowdoc` closing marker.',
             [
                 new CodeSample(
-                    <<<'EOF'
+                    <<<'EOD'
                         <?php $a = <<<"TEST"
                         Foo
                         TEST;
 
-                        EOF
+                        EOD
                 ),
                 new CodeSample(
-                    <<<'EOF'
+                    <<<'EOD'
                         <?php $a = <<<"TEST"
                         Foo
                         TEST;
 
-                        EOF,
+                        EOD,
                     ['closing_marker' => 'EOF']
                 ),
             ]
@@ -74,8 +74,6 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $closingMarkerRegex = '~(^|[\r\n])\s*'.preg_quote($this->configuration['closing_marker'], '~').'(?!\w)~';
-
         $startIndex = null;
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_START_HEREDOC)) {
@@ -84,14 +82,14 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if (null !== $startIndex && Preg::match($closingMarkerRegex, $token->getContent())) {
-                $startIndex = null;
-
-                continue;
-            }
-
             if (null !== $startIndex && $token->isGivenKind(T_END_HEREDOC)) {
-                [$tokens[$startIndex], $tokens[$index]] = $this->convertClosingMarker($tokens[$startIndex], $token);
+                $newClosingMarker = $this->configuration['closing_marker'];
+                $content = $tokens->generatePartialCode($startIndex + 1, $index - 1);
+                while (Preg::match('~(^|[\r\n])\s*'.preg_quote($newClosingMarker, '~').'(?!\w)~', $content)) {
+                    $newClosingMarker .= '_';
+                }
+
+                [$tokens[$startIndex], $tokens[$index]] = $this->convertClosingMarker($tokens[$startIndex], $token, $newClosingMarker);
 
                 $startIndex = null;
 
@@ -103,16 +101,14 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
     /**
      * @return array{Token, Token}
      */
-    private function convertClosingMarker(Token $startToken, Token $endToken): array
+    private function convertClosingMarker(Token $startToken, Token $endToken, string $newClosingMarker): array
     {
-        $preferredClosingMarker = $this->configuration['closing_marker'];
-
         return [new Token([
             $startToken->getId(),
-            Preg::replace('/<<<\h*["\']?\K[^\s"\']+/', $preferredClosingMarker, $startToken->getContent()),
+            Preg::replace('/<<<\h*["\']?\K[^\s"\']+/', $newClosingMarker, $startToken->getContent()),
         ]), new Token([
             $endToken->getId(),
-            Preg::replace('/[^\s"\']+/', $preferredClosingMarker, $endToken->getContent()),
+            Preg::replace('/[^\s"\']+/', $newClosingMarker, $endToken->getContent()),
         ])];
     }
 }

@@ -118,6 +118,12 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
 
         yield 'heredoc /w content starting with preferred closing marker' => [
             <<<'EOF'
+                <?php $a = <<<EOD_
+                EOD xxx
+                EOD_;
+
+                EOF,
+            <<<'EOF'
                 <?php $a = <<<TEST
                 EOD xxx
                 TEST;
@@ -126,6 +132,12 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'heredoc /w content starting with whitespace and preferred closing marker' => [
+            <<<'EOF'
+                <?php $a = <<<EOD_
+                 EOD xxx
+                EOD_;
+
+                EOF,
             <<<'EOF'
                 <?php $a = <<<TEST
                  EOD xxx
@@ -136,6 +148,12 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
 
         yield 'heredoc /w content starting with preferred closing marker and single quote' => [
             <<<'EOF'
+                <?php $a = <<<EOD_
+                EOD'
+                EOD_;
+
+                EOF,
+            <<<'EOF'
                 <?php $a = <<<TEST
                 EOD'
                 TEST;
@@ -144,6 +162,12 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'heredoc /w content starting with preferred closing marker and semicolon' => [
+            <<<'EOF'
+                <?php $a = <<<EOD_
+                EOD;
+                EOD_;
+
+                EOF,
             <<<'EOF'
                 <?php $a = <<<TEST
                 EOD;
