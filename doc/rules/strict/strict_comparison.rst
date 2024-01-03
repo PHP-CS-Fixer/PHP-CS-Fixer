@@ -37,6 +37,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Strict\\StrictComparisonFixer <./../../../src/Fixer/Strict/StrictComparisonFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Strict\\StrictComparisonFixer <./../../../tests/Fixer/Strict/StrictComparisonFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Strict\\StrictComparisonFixerTest <./../../../tests/Fixer/Strict/StrictComparisonFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -41,6 +41,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../../../src/Fixer/Whitespace/LineEndingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../../../tests/Fixer/Whitespace/LineEndingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\LineEndingFixerTest <./../../../tests/Fixer/Whitespace/LineEndingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

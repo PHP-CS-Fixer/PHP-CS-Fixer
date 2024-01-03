@@ -39,6 +39,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../../../src/Fixer/Operator/LongToShorthandOperatorFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../../../tests/Fixer/Operator/LongToShorthandOperatorFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\LongToShorthandOperatorFixerTest <./../../../tests/Fixer/Operator/LongToShorthandOperatorFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

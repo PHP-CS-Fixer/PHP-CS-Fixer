@@ -84,6 +84,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixer <./../../../src/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixer <./../../../tests/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixerTest <./../../../tests/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -39,6 +39,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../../../src/Fixer/Whitespace/IndentationTypeFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../../../tests/Fixer/Whitespace/IndentationTypeFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\IndentationTypeFixerTest <./../../../tests/Fixer/Whitespace/IndentationTypeFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -30,6 +30,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSingleLineVarSpacingFixer <./../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSingleLineVarSpacingFixer <./../../../tests/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocSingleLineVarSpacingFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

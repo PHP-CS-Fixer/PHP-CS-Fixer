@@ -104,6 +104,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocToCommentFixer <./../../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocToCommentFixer <./../../../tests/Fixer/Phpdoc/PhpdocToCommentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocToCommentFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocToCommentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

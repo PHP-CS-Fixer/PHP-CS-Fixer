@@ -71,6 +71,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../../../src/Fixer/Casing/LowercaseStaticReferenceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../../../tests/Fixer/Casing/LowercaseStaticReferenceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\LowercaseStaticReferenceFixerTest <./../../../tests/Fixer/Casing/LowercaseStaticReferenceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

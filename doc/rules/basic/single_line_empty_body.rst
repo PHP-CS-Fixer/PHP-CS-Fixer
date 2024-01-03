@@ -37,6 +37,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../../../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../../../tests/Fixer/Basic/SingleLineEmptyBodyFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\SingleLineEmptyBodyFixerTest <./../../../tests/Fixer/Basic/SingleLineEmptyBodyFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -30,6 +30,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Casing\\MagicConstantCasingFixer <./../../../src/Fixer/Casing/MagicConstantCasingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Casing\\MagicConstantCasingFixer <./../../../tests/Fixer/Casing/MagicConstantCasingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\MagicConstantCasingFixerTest <./../../../tests/Fixer/Casing/MagicConstantCasingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

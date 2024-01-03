@@ -29,6 +29,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../tests/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixerTest <./../../../tests/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

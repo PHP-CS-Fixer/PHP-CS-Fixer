@@ -49,6 +49,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../../../src/Fixer/ClassNotation/SelfAccessorFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../../../tests/Fixer/ClassNotation/SelfAccessorFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\SelfAccessorFixerTest <./../../../tests/Fixer/ClassNotation/SelfAccessorFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

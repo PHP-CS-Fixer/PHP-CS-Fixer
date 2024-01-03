@@ -48,6 +48,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../tests/Fixer/Whitespace/SingleBlankLineAtEofFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\SingleBlankLineAtEofFixerTest <./../../../tests/Fixer/Whitespace/SingleBlankLineAtEofFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

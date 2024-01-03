@@ -77,6 +77,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../../../tests/Fixer/ControlStructure/NoUnneededBracesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\NoUnneededBracesFixerTest <./../../../tests/Fixer/ControlStructure/NoUnneededBracesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -93,6 +93,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../../../tests/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

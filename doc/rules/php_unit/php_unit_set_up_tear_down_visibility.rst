@@ -53,6 +53,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixer <./../../../src/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixer <./../../../tests/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

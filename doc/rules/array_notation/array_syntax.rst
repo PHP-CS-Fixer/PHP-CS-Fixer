@@ -66,6 +66,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../../../tests/Fixer/ArrayNotation/ArraySyntaxFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\ArraySyntaxFixerTest <./../../../tests/Fixer/ArrayNotation/ArraySyntaxFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

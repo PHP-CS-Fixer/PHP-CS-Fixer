@@ -109,6 +109,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../tests/Fixer/Whitespace/StatementIndentationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\StatementIndentationFixerTest <./../../../tests/Fixer/Whitespace/StatementIndentationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

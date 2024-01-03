@@ -72,6 +72,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixerTest <./../../../tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

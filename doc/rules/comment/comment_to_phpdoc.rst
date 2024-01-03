@@ -68,6 +68,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../../../src/Fixer/Comment/CommentToPhpdocFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../../../tests/Fixer/Comment/CommentToPhpdocFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\CommentToPhpdocFixerTest <./../../../tests/Fixer/Comment/CommentToPhpdocFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

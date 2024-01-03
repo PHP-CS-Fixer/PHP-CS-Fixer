@@ -31,6 +31,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../../../src/Fixer/Whitespace/MethodChainingIndentationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../../../tests/Fixer/Whitespace/MethodChainingIndentationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\MethodChainingIndentationFixerTest <./../../../tests/Fixer/Whitespace/MethodChainingIndentationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

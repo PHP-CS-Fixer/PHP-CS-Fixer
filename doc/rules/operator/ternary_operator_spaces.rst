@@ -34,6 +34,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\TernaryOperatorSpacesFixer <./../../../src/Fixer/Operator/TernaryOperatorSpacesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\TernaryOperatorSpacesFixer <./../../../tests/Fixer/Operator/TernaryOperatorSpacesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\TernaryOperatorSpacesFixerTest <./../../../tests/Fixer/Operator/TernaryOperatorSpacesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

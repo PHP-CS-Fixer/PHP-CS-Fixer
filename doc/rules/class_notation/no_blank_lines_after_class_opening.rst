@@ -40,6 +40,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixer <./../../../src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixer <./../../../tests/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixerTest <./../../../tests/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

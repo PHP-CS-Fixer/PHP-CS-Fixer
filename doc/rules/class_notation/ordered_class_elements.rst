@@ -203,6 +203,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../../../tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\OrderedClassElementsFixerTest <./../../../tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

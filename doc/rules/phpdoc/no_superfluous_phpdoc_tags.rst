@@ -133,6 +133,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\NoSuperfluousPhpdocTagsFixer <./../../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\NoSuperfluousPhpdocTagsFixer <./../../../tests/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\NoSuperfluousPhpdocTagsFixerTest <./../../../tests/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

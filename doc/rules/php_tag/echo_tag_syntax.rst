@@ -128,6 +128,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../../../src/Fixer/PhpTag/EchoTagSyntaxFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../../../tests/Fixer/PhpTag/EchoTagSyntaxFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpTag\\EchoTagSyntaxFixerTest <./../../../tests/Fixer/PhpTag/EchoTagSyntaxFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

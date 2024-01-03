@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\IsNullFixer <./../../../src/Fixer/LanguageConstruct/IsNullFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\IsNullFixer <./../../../tests/Fixer/LanguageConstruct/IsNullFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\IsNullFixerTest <./../../../tests/Fixer/LanguageConstruct/IsNullFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

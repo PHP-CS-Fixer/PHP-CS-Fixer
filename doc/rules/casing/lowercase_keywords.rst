@@ -51,6 +51,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../../../src/Fixer/Casing/LowercaseKeywordsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../../../tests/Fixer/Casing/LowercaseKeywordsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\LowercaseKeywordsFixerTest <./../../../tests/Fixer/Casing/LowercaseKeywordsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

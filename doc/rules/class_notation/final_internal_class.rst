@@ -122,6 +122,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\FinalInternalClassFixer <./../../../src/Fixer/ClassNotation/FinalInternalClassFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\FinalInternalClassFixer <./../../../tests/Fixer/ClassNotation/FinalInternalClassFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\FinalInternalClassFixerTest <./../../../tests/Fixer/ClassNotation/FinalInternalClassFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

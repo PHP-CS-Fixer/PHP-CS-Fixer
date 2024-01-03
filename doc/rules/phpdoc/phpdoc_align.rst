@@ -118,6 +118,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAlignFixer <./../../../src/Fixer/Phpdoc/PhpdocAlignFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAlignFixer <./../../../tests/Fixer/Phpdoc/PhpdocAlignFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocAlignFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocAlignFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

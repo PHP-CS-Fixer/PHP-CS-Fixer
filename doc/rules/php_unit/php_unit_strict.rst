@@ -85,6 +85,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitStrictFixer <./../../../src/Fixer/PhpUnit/PhpUnitStrictFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitStrictFixer <./../../../tests/Fixer/PhpUnit/PhpUnitStrictFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitStrictFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitStrictFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

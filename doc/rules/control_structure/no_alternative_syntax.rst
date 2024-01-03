@@ -59,6 +59,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\NoAlternativeSyntaxFixer <./../../../src/Fixer/ControlStructure/NoAlternativeSyntaxFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ControlStructure\\NoAlternativeSyntaxFixer <./../../../tests/Fixer/ControlStructure/NoAlternativeSyntaxFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\NoAlternativeSyntaxFixerTest <./../../../tests/Fixer/ControlStructure/NoAlternativeSyntaxFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

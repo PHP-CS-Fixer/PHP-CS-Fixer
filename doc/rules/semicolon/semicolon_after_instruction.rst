@@ -29,6 +29,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Semicolon\\SemicolonAfterInstructionFixer <./../../../src/Fixer/Semicolon/SemicolonAfterInstructionFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Semicolon\\SemicolonAfterInstructionFixer <./../../../tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Semicolon\\SemicolonAfterInstructionFixerTest <./../../../tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

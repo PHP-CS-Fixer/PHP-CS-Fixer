@@ -30,6 +30,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer <./../../../src/Fixer/FunctionNotation/NoTrailingCommaInSinglelineFunctionCallFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer <./../../../tests/Fixer/FunctionNotation/NoTrailingCommaInSinglelineFunctionCallFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixerTest <./../../../tests/Fixer/FunctionNotation/NoTrailingCommaInSinglelineFunctionCallFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -24,6 +24,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSpaceFixer <./../../../src/Fixer/Operator/NotOperatorWithSpaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSpaceFixer <./../../../tests/Fixer/Operator/NotOperatorWithSpaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NotOperatorWithSpaceFixerTest <./../../../tests/Fixer/Operator/NotOperatorWithSpaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

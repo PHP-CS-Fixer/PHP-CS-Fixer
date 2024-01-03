@@ -142,6 +142,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

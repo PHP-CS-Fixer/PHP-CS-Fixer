@@ -46,6 +46,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../../../src/Fixer/Casing/MagicMethodCasingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../../../tests/Fixer/Casing/MagicMethodCasingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\MagicMethodCasingFixerTest <./../../../tests/Fixer/Casing/MagicMethodCasingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

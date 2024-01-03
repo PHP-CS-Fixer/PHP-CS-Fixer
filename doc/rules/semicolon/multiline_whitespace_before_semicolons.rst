@@ -67,6 +67,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../tests/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixerTest <./../../../tests/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

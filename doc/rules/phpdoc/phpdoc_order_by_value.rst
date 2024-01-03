@@ -66,6 +66,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderByValueFixer <./../../../src/Fixer/Phpdoc/PhpdocOrderByValueFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderByValueFixer <./../../../tests/Fixer/Phpdoc/PhpdocOrderByValueFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocOrderByValueFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocOrderByValueFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

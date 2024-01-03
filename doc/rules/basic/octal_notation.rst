@@ -30,6 +30,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../src/Fixer/Basic/OctalNotationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../tests/Fixer/Basic/OctalNotationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\OctalNotationFixerTest <./../../../tests/Fixer/Basic/OctalNotationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -42,6 +42,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixerTest <./../../../tests/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

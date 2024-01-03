@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../../../src/Fixer/Phpdoc/PhpdocIndentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../../../tests/Fixer/Phpdoc/PhpdocIndentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocIndentFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocIndentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

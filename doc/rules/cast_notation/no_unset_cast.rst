@@ -34,6 +34,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../tests/Fixer/CastNotation/NoUnsetCastFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\CastNotation\\NoUnsetCastFixerTest <./../../../tests/Fixer/CastNotation/NoUnsetCastFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

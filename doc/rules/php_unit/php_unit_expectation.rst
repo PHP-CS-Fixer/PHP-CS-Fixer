@@ -194,6 +194,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../../../tests/Fixer/PhpUnit/PhpUnitExpectationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitExpectationFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitExpectationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

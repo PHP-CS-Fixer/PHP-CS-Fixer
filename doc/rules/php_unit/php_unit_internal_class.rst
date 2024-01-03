@@ -63,6 +63,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitInternalClassFixer <./../../../src/Fixer/PhpUnit/PhpUnitInternalClassFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitInternalClassFixer <./../../../tests/Fixer/PhpUnit/PhpUnitInternalClassFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitInternalClassFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitInternalClassFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

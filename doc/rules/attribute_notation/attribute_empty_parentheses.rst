@@ -61,6 +61,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../../../src/Fixer/AttributeNotation/AttributeEmptyParenthesesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../../../tests/Fixer/AttributeNotation/AttributeEmptyParenthesesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixerTest <./../../../tests/Fixer/AttributeNotation/AttributeEmptyParenthesesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

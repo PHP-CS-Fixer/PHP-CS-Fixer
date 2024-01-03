@@ -32,6 +32,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../../../src/Fixer/Casing/IntegerLiteralCaseFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../../../tests/Fixer/Casing/IntegerLiteralCaseFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\IntegerLiteralCaseFixerTest <./../../../tests/Fixer/Casing/IntegerLiteralCaseFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -36,6 +36,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Import\\NoLeadingImportSlashFixer <./../../../src/Fixer/Import/NoLeadingImportSlashFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Import\\NoLeadingImportSlashFixer <./../../../tests/Fixer/Import/NoLeadingImportSlashFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\NoLeadingImportSlashFixerTest <./../../../tests/Fixer/Import/NoLeadingImportSlashFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

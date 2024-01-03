@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../../../src/Fixer/Comment/NoTrailingWhitespaceInCommentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../../../tests/Fixer/Comment/NoTrailingWhitespaceInCommentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixerTest <./../../../tests/Fixer/Comment/NoTrailingWhitespaceInCommentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

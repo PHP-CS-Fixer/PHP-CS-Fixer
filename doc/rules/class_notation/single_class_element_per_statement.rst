@@ -93,6 +93,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../../../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../../../tests/Fixer/ClassNotation/SingleClassElementPerStatementFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixerTest <./../../../tests/Fixer/ClassNotation/SingleClassElementPerStatementFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

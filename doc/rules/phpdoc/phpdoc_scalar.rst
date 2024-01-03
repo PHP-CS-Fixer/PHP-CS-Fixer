@@ -79,6 +79,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../../../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../../../tests/Fixer/Phpdoc/PhpdocScalarFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocScalarFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocScalarFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

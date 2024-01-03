@@ -71,6 +71,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixer <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixerTest <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

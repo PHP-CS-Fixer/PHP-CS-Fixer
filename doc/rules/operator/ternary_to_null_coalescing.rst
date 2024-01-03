@@ -36,6 +36,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../../../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../../../tests/Fixer/Operator/TernaryToNullCoalescingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\TernaryToNullCoalescingFixerTest <./../../../tests/Fixer/Operator/TernaryToNullCoalescingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

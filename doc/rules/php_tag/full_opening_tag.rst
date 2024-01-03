@@ -39,6 +39,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../../../src/Fixer/PhpTag/FullOpeningTagFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../../../tests/Fixer/PhpTag/FullOpeningTagFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpTag\\FullOpeningTagFixerTest <./../../../tests/Fixer/PhpTag/FullOpeningTagFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

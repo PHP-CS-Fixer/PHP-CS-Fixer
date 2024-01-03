@@ -30,6 +30,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../tests/Fixer/StringNotation/HeredocToNowdocFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\HeredocToNowdocFixerTest <./../../../tests/Fixer/StringNotation/HeredocToNowdocFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

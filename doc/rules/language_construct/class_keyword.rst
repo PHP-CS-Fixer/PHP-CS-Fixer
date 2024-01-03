@@ -41,6 +41,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordFixer <./../../../src/Fixer/LanguageConstruct/ClassKeywordFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordFixer <./../../../tests/Fixer/LanguageConstruct/ClassKeywordFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\ClassKeywordFixerTest <./../../../tests/Fixer/LanguageConstruct/ClassKeywordFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../../../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../../../tests/Fixer/ClassNotation/SingleTraitInsertPerStatementFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixerTest <./../../../tests/Fixer/ClassNotation/SingleTraitInsertPerStatementFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

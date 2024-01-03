@@ -31,6 +31,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixerTest <./../../../tests/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

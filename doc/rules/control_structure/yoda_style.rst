@@ -121,6 +121,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer <./../../../src/Fixer/ControlStructure/YodaStyleFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer <./../../../tests/Fixer/ControlStructure/YodaStyleFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\YodaStyleFixerTest <./../../../tests/Fixer/ControlStructure/YodaStyleFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

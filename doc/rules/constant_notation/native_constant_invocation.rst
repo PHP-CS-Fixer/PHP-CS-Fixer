@@ -151,6 +151,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../../../tests/Fixer/ConstantNotation/NativeConstantInvocationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ConstantNotation\\NativeConstantInvocationFixerTest <./../../../tests/Fixer/ConstantNotation/NativeConstantInvocationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

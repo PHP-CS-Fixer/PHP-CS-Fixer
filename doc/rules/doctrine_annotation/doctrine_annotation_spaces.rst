@@ -156,6 +156,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixerTest <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

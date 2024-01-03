@@ -43,6 +43,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Alias\\PowToExponentiationFixer <./../../../src/Fixer/Alias/PowToExponentiationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Alias\\PowToExponentiationFixer <./../../../tests/Fixer/Alias/PowToExponentiationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\PowToExponentiationFixerTest <./../../../tests/Fixer/Alias/PowToExponentiationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

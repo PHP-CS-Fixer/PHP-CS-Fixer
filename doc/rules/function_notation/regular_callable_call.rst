@@ -52,6 +52,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\RegularCallableCallFixer <./../../../src/Fixer/FunctionNotation/RegularCallableCallFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\RegularCallableCallFixer <./../../../tests/Fixer/FunctionNotation/RegularCallableCallFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\RegularCallableCallFixerTest <./../../../tests/Fixer/FunctionNotation/RegularCallableCallFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -80,6 +80,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixer <./../../../src/Fixer/FunctionNotation/ReturnTypeDeclarationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixer <./../../../tests/Fixer/FunctionNotation/ReturnTypeDeclarationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixerTest <./../../../tests/Fixer/FunctionNotation/ReturnTypeDeclarationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

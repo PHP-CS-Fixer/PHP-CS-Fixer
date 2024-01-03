@@ -40,6 +40,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../../../src/Fixer/Strict/DeclareStrictTypesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../../../tests/Fixer/Strict/DeclareStrictTypesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Strict\\DeclareStrictTypesFixerTest <./../../../tests/Fixer/Strict/DeclareStrictTypesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

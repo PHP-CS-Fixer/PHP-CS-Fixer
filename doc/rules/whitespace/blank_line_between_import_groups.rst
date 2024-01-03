@@ -96,6 +96,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../../../src/Fixer/Whitespace/BlankLineBetweenImportGroupsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../../../tests/Fixer/Whitespace/BlankLineBetweenImportGroupsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixerTest <./../../../tests/Fixer/Whitespace/BlankLineBetweenImportGroupsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

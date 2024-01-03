@@ -44,6 +44,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimConsecutiveBlankLineSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimConsecutiveBlankLineSeparationFixer <./../../../tests/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocTrimConsecutiveBlankLineSeparationFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

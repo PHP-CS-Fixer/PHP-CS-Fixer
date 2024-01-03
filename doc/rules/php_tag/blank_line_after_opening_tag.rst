@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../tests/Fixer/PhpTag/BlankLineAfterOpeningTagFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixerTest <./../../../tests/Fixer/PhpTag/BlankLineAfterOpeningTagFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

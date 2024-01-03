@@ -79,6 +79,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\CastNotation\\CastSpacesFixer <./../../../src/Fixer/CastNotation/CastSpacesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\CastNotation\\CastSpacesFixer <./../../../tests/Fixer/CastNotation/CastSpacesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\CastNotation\\CastSpacesFixerTest <./../../../tests/Fixer/CastNotation/CastSpacesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

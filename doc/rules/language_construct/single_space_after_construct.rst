@@ -72,6 +72,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixerTest <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

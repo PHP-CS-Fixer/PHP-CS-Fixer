@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../../../src/Fixer/Alias/ArrayPushFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../../../tests/Fixer/Alias/ArrayPushFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\ArrayPushFixerTest <./../../../tests/Fixer/Alias/ArrayPushFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -41,6 +41,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\StandardizeIncrementFixer <./../../../src/Fixer/Operator/StandardizeIncrementFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\StandardizeIncrementFixer <./../../../tests/Fixer/Operator/StandardizeIncrementFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\StandardizeIncrementFixerTest <./../../../tests/Fixer/Operator/StandardizeIncrementFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

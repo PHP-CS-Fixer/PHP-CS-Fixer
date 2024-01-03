@@ -40,6 +40,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\VoidReturnFixer <./../../../src/Fixer/FunctionNotation/VoidReturnFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\VoidReturnFixer <./../../../tests/Fixer/FunctionNotation/VoidReturnFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\VoidReturnFixerTest <./../../../tests/Fixer/FunctionNotation/VoidReturnFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

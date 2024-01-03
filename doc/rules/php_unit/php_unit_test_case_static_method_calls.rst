@@ -97,6 +97,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestCaseStaticMethodCallsFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestCaseStaticMethodCallsFixer <./../../../tests/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitTestCaseStaticMethodCallsFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

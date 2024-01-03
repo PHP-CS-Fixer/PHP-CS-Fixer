@@ -31,6 +31,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/LinebreakAfterOpeningTagFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixer <./../../../tests/Fixer/PhpTag/LinebreakAfterOpeningTagFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixerTest <./../../../tests/Fixer/PhpTag/LinebreakAfterOpeningTagFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

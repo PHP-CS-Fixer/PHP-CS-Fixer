@@ -52,6 +52,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

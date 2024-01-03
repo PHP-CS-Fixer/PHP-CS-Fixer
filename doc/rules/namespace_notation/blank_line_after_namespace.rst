@@ -50,6 +50,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLineAfterNamespaceFixer <./../../../src/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLineAfterNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\NamespaceNotation\\BlankLineAfterNamespaceFixerTest <./../../../tests/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

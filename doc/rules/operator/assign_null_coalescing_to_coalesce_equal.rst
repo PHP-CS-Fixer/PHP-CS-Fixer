@@ -33,6 +33,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixer <./../../../src/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixer <./../../../tests/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixerTest <./../../../tests/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

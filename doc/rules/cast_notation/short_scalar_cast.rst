@@ -49,6 +49,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../../../src/Fixer/CastNotation/ShortScalarCastFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../../../tests/Fixer/CastNotation/ShortScalarCastFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\CastNotation\\ShortScalarCastFixerTest <./../../../tests/Fixer/CastNotation/ShortScalarCastFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -65,6 +65,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../../../src/Fixer/Basic/NoTrailingCommaInSinglelineFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../../../tests/Fixer/Basic/NoTrailingCommaInSinglelineFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixerTest <./../../../tests/Fixer/Basic/NoTrailingCommaInSinglelineFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

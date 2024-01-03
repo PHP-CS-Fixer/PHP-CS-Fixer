@@ -34,6 +34,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Comment\\NoEmptyCommentFixer <./../../../src/Fixer/Comment/NoEmptyCommentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Comment\\NoEmptyCommentFixer <./../../../tests/Fixer/Comment/NoEmptyCommentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\NoEmptyCommentFixerTest <./../../../tests/Fixer/Comment/NoEmptyCommentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

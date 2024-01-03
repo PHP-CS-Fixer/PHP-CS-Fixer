@@ -124,6 +124,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderNameFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderNameFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

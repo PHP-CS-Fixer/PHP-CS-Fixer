@@ -33,6 +33,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../../../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../../../tests/Fixer/ReturnNotation/ReturnAssignmentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ReturnNotation\\ReturnAssignmentFixerTest <./../../../tests/Fixer/ReturnNotation/ReturnAssignmentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

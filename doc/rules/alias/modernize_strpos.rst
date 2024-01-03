@@ -46,6 +46,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../src/Fixer/Alias/ModernizeStrposFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../tests/Fixer/Alias/ModernizeStrposFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\ModernizeStrposFixerTest <./../../../tests/Fixer/Alias/ModernizeStrposFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

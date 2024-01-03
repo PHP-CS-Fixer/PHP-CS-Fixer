@@ -258,6 +258,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../src/Fixer/Basic/BracesPositionFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../tests/Fixer/Basic/BracesPositionFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\BracesPositionFixerTest <./../../../tests/Fixer/Basic/BracesPositionFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

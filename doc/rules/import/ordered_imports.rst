@@ -193,6 +193,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer <./../../../src/Fixer/Import/OrderedImportsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer <./../../../tests/Fixer/Import/OrderedImportsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\OrderedImportsFixerTest <./../../../tests/Fixer/Import/OrderedImportsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

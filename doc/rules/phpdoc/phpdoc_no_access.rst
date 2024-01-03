@@ -36,6 +36,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAccessFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAccessFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAccessFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoAccessFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoAccessFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoAccessFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -35,6 +35,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../../../src/Fixer/Whitespace/ArrayIndentationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../../../tests/Fixer/Whitespace/ArrayIndentationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\ArrayIndentationFixerTest <./../../../tests/Fixer/Whitespace/ArrayIndentationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

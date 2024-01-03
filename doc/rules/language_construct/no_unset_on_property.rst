@@ -41,6 +41,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\NoUnsetOnPropertyFixer <./../../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\NoUnsetOnPropertyFixer <./../../../tests/Fixer/LanguageConstruct/NoUnsetOnPropertyFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\NoUnsetOnPropertyFixerTest <./../../../tests/Fixer/LanguageConstruct/NoUnsetOnPropertyFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

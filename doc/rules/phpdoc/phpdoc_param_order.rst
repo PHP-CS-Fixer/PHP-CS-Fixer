@@ -28,6 +28,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../../../tests/Fixer/Phpdoc/PhpdocParamOrderFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocParamOrderFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocParamOrderFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../../../src/Fixer/Basic/EncodingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../../../tests/Fixer/Basic/EncodingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\EncodingFixerTest <./../../../tests/Fixer/Basic/EncodingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

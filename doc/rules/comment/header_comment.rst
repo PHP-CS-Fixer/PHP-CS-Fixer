@@ -129,6 +129,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../../../src/Fixer/Comment/HeaderCommentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../../../tests/Fixer/Comment/HeaderCommentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest <./../../../tests/Fixer/Comment/HeaderCommentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

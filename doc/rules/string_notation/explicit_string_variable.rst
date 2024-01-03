@@ -49,6 +49,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\ExplicitStringVariableFixer <./../../../src/Fixer/StringNotation/ExplicitStringVariableFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\StringNotation\\ExplicitStringVariableFixer <./../../../tests/Fixer/StringNotation/ExplicitStringVariableFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\ExplicitStringVariableFixerTest <./../../../tests/Fixer/StringNotation/ExplicitStringVariableFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

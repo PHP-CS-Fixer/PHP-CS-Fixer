@@ -61,6 +61,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\IncrementStyleFixer <./../../../src/Fixer/Operator/IncrementStyleFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\IncrementStyleFixer <./../../../tests/Fixer/Operator/IncrementStyleFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\IncrementStyleFixerTest <./../../../tests/Fixer/Operator/IncrementStyleFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

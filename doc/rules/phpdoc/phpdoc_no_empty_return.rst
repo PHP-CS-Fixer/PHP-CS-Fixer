@@ -44,6 +44,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../../../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoEmptyReturnFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoEmptyReturnFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

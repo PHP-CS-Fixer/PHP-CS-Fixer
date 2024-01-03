@@ -49,6 +49,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../../../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../../../tests/Fixer/Casing/NativeTypeDeclarationCasingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\NativeTypeDeclarationCasingFixerTest <./../../../tests/Fixer/Casing/NativeTypeDeclarationCasingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -63,6 +63,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../../../src/Fixer/ListNotation/ListSyntaxFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../../../tests/Fixer/ListNotation/ListSyntaxFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ListNotation\\ListSyntaxFixerTest <./../../../tests/Fixer/ListNotation/ListSyntaxFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

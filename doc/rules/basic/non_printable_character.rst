@@ -68,6 +68,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../../../src/Fixer/Basic/NonPrintableCharacterFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../../../tests/Fixer/Basic/NonPrintableCharacterFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\NonPrintableCharacterFixerTest <./../../../tests/Fixer/Basic/NonPrintableCharacterFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -36,6 +36,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimFixer <./../../../src/Fixer/Phpdoc/PhpdocTrimFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimFixer <./../../../tests/Fixer/Phpdoc/PhpdocTrimFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocTrimFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocTrimFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

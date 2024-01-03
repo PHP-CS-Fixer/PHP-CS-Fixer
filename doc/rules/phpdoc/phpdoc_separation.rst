@@ -168,6 +168,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../tests/Fixer/Phpdoc/PhpdocSeparationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocSeparationFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocSeparationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

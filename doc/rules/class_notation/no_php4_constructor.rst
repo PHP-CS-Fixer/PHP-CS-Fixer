@@ -45,6 +45,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../../../tests/Fixer/ClassNotation/NoPhp4ConstructorFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoPhp4ConstructorFixerTest <./../../../tests/Fixer/ClassNotation/NoPhp4ConstructorFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -99,6 +99,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../tests/Fixer/FunctionNotation/PhpdocToReturnTypeFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixerTest <./../../../tests/Fixer/FunctionNotation/PhpdocToReturnTypeFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

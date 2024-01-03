@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../../../src/Fixer/Operator/NoSpaceAroundDoubleColonFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../../../tests/Fixer/Operator/NoSpaceAroundDoubleColonFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixerTest <./../../../tests/Fixer/Operator/NoSpaceAroundDoubleColonFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

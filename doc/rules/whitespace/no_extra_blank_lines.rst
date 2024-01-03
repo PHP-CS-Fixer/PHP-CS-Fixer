@@ -232,6 +232,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../tests/Fixer/Whitespace/NoExtraBlankLinesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\NoExtraBlankLinesFixerTest <./../../../tests/Fixer/Whitespace/NoExtraBlankLinesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

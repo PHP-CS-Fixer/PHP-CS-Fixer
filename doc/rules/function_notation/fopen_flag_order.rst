@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagOrderFixer <./../../../src/Fixer/FunctionNotation/FopenFlagOrderFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagOrderFixer <./../../../tests/Fixer/FunctionNotation/FopenFlagOrderFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\FopenFlagOrderFixerTest <./../../../tests/Fixer/FunctionNotation/FopenFlagOrderFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

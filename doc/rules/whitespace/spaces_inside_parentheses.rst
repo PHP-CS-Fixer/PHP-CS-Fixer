@@ -106,6 +106,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../../../src/Fixer/Whitespace/SpacesInsideParenthesesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../../../tests/Fixer/Whitespace/SpacesInsideParenthesesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\SpacesInsideParenthesesFixerTest <./../../../tests/Fixer/Whitespace/SpacesInsideParenthesesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

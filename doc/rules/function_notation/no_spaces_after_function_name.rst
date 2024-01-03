@@ -43,6 +43,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../../../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../../../tests/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixerTest <./../../../tests/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

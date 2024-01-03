@@ -82,6 +82,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../../../src/Fixer/Operator/ConcatSpaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../../../tests/Fixer/Operator/ConcatSpaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\ConcatSpaceFixerTest <./../../../tests/Fixer/Operator/ConcatSpaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

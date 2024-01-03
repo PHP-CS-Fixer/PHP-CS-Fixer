@@ -35,6 +35,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../../../src/Fixer/Operator/NoUselessNullsafeOperatorFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../../../tests/Fixer/Operator/NoUselessNullsafeOperatorFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NoUselessNullsafeOperatorFixerTest <./../../../tests/Fixer/Operator/NoUselessNullsafeOperatorFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

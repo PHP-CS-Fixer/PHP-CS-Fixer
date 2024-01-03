@@ -57,6 +57,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\CastNotation\\LowercaseCastFixer <./../../../src/Fixer/CastNotation/LowercaseCastFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\CastNotation\\LowercaseCastFixer <./../../../tests/Fixer/CastNotation/LowercaseCastFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\CastNotation\\LowercaseCastFixerTest <./../../../tests/Fixer/CastNotation/LowercaseCastFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

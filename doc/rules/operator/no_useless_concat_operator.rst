@@ -58,6 +58,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\NoUselessConcatOperatorFixer <./../../../src/Fixer/Operator/NoUselessConcatOperatorFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\NoUselessConcatOperatorFixer <./../../../tests/Fixer/Operator/NoUselessConcatOperatorFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NoUselessConcatOperatorFixerTest <./../../../tests/Fixer/Operator/NoUselessConcatOperatorFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

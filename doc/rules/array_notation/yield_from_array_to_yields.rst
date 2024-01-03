@@ -56,6 +56,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../../../tests/Fixer/ArrayNotation/YieldFromArrayToYieldsFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixerTest <./../../../tests/Fixer/ArrayNotation/YieldFromArrayToYieldsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

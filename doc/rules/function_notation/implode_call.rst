@@ -51,6 +51,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../../../tests/Fixer/FunctionNotation/ImplodeCallFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\ImplodeCallFixerTest <./../../../tests/Fixer/FunctionNotation/ImplodeCallFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

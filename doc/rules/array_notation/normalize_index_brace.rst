@@ -35,6 +35,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../../../src/Fixer/ArrayNotation/NormalizeIndexBraceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../../../tests/Fixer/ArrayNotation/NormalizeIndexBraceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixerTest <./../../../tests/Fixer/ArrayNotation/NormalizeIndexBraceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

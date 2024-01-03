@@ -98,6 +98,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../../../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../../../tests/Fixer/Operator/UnaryOperatorSpacesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\UnaryOperatorSpacesFixerTest <./../../../tests/Fixer/Operator/UnaryOperatorSpacesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -42,6 +42,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../../../src/Fixer/ClassNotation/FinalClassFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../../../tests/Fixer/ClassNotation/FinalClassFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\FinalClassFixerTest <./../../../tests/Fixer/ClassNotation/FinalClassFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

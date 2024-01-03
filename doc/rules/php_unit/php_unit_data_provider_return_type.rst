@@ -66,6 +66,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

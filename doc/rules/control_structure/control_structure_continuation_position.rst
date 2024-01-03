@@ -73,6 +73,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../../../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../../../tests/Fixer/ControlStructure/ControlStructureContinuationPositionFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixerTest <./../../../tests/Fixer/ControlStructure/ControlStructureContinuationPositionFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

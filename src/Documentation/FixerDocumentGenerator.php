@@ -238,7 +238,8 @@ final class FixerDocumentGenerator
         $fileName = "`{$className} <./../../../{$fileName}>`_";
 
         $testFileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);
-        $testFileName = Preg::replace('~.*\K(?= <|\.php>)~', 'Test', $testFileName);
+        $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
+        $testFileName = Preg::replace('~(?= <|\.php>)~', 'Test', $testFileName);
 
         $doc .= <<<RST
 

@@ -101,6 +101,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../tests/Fixer/LanguageConstruct/ErrorSuppressionFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\ErrorSuppressionFixerTest <./../../../tests/Fixer/LanguageConstruct/ErrorSuppressionFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

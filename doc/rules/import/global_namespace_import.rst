@@ -125,6 +125,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../tests/Fixer/Import/GlobalNamespaceImportFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\GlobalNamespaceImportFixerTest <./../../../tests/Fixer/Import/GlobalNamespaceImportFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

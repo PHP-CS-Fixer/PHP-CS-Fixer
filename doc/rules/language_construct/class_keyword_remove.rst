@@ -30,6 +30,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../../../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../../../tests/Fixer/LanguageConstruct/ClassKeywordRemoveFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixerTest <./../../../tests/Fixer/LanguageConstruct/ClassKeywordRemoveFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

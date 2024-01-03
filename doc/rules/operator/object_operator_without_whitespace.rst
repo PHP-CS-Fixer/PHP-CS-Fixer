@@ -29,6 +29,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\ObjectOperatorWithoutWhitespaceFixer <./../../../src/Fixer/Operator/ObjectOperatorWithoutWhitespaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\ObjectOperatorWithoutWhitespaceFixer <./../../../tests/Fixer/Operator/ObjectOperatorWithoutWhitespaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\ObjectOperatorWithoutWhitespaceFixerTest <./../../../tests/Fixer/Operator/ObjectOperatorWithoutWhitespaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -41,6 +41,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\NoBinaryStringFixer <./../../../src/Fixer/StringNotation/NoBinaryStringFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\StringNotation\\NoBinaryStringFixer <./../../../tests/Fixer/StringNotation/NoBinaryStringFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\NoBinaryStringFixerTest <./../../../tests/Fixer/StringNotation/NoBinaryStringFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

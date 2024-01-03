@@ -86,6 +86,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../../../src/Fixer/Import/SingleImportPerStatementFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../../../tests/Fixer/Import/SingleImportPerStatementFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\SingleImportPerStatementFixerTest <./../../../tests/Fixer/Import/SingleImportPerStatementFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -51,6 +51,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Semicolon\\NoEmptyStatementFixer <./../../../src/Fixer/Semicolon/NoEmptyStatementFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Semicolon\\NoEmptyStatementFixer <./../../../tests/Fixer/Semicolon/NoEmptyStatementFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Semicolon\\NoEmptyStatementFixerTest <./../../../tests/Fixer/Semicolon/NoEmptyStatementFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

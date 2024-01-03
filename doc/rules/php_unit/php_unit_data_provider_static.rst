@@ -105,6 +105,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderStaticFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderStaticFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

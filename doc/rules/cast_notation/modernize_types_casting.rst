@@ -48,6 +48,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\CastNotation\\ModernizeTypesCastingFixer <./../../../src/Fixer/CastNotation/ModernizeTypesCastingFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\CastNotation\\ModernizeTypesCastingFixer <./../../../tests/Fixer/CastNotation/ModernizeTypesCastingFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\CastNotation\\ModernizeTypesCastingFixerTest <./../../../tests/Fixer/CastNotation/ModernizeTypesCastingFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

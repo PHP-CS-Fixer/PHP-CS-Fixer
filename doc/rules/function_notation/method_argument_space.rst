@@ -339,6 +339,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixerTest <./../../../tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

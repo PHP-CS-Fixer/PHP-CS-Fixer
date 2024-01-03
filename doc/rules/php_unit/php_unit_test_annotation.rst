@@ -77,6 +77,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../tests/Fixer/PhpUnit/PhpUnitTestAnnotationFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitTestAnnotationFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

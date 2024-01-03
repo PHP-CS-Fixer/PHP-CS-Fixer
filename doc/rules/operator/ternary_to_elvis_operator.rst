@@ -48,6 +48,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../../../tests/Fixer/Operator/TernaryToElvisOperatorFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\TernaryToElvisOperatorFixerTest <./../../../tests/Fixer/Operator/TernaryToElvisOperatorFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

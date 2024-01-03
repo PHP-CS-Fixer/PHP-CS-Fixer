@@ -22,6 +22,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../../../src/Fixer/Import/GroupImportFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../../../tests/Fixer/Import/GroupImportFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\GroupImportFixerTest <./../../../tests/Fixer/Import/GroupImportFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

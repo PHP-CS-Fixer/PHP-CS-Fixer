@@ -32,6 +32,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\NoMultilineWhitespaceAroundDoubleArrowFixer <./../../../src/Fixer/ArrayNotation/NoMultilineWhitespaceAroundDoubleArrowFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ArrayNotation\\NoMultilineWhitespaceAroundDoubleArrowFixer <./../../../tests/Fixer/ArrayNotation/NoMultilineWhitespaceAroundDoubleArrowFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\NoMultilineWhitespaceAroundDoubleArrowFixerTest <./../../../tests/Fixer/ArrayNotation/NoMultilineWhitespaceAroundDoubleArrowFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

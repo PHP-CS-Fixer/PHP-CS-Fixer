@@ -88,6 +88,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../../../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../../../tests/Fixer/Phpdoc/AlignMultilineCommentFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\AlignMultilineCommentFixerTest <./../../../tests/Fixer/Phpdoc/AlignMultilineCommentFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

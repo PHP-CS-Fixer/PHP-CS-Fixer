@@ -36,6 +36,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixer <./../../../src/Fixer/LanguageConstruct/ExplicitIndirectVariableFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixer <./../../../tests/Fixer/LanguageConstruct/ExplicitIndirectVariableFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixerTest <./../../../tests/Fixer/LanguageConstruct/ExplicitIndirectVariableFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

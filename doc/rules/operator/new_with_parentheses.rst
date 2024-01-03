@@ -90,6 +90,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../../../src/Fixer/Operator/NewWithParenthesesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../../../tests/Fixer/Operator/NewWithParenthesesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NewWithParenthesesFixerTest <./../../../tests/Fixer/Operator/NewWithParenthesesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

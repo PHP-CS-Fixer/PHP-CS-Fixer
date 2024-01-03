@@ -37,6 +37,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Alias\\EregToPregFixer <./../../../src/Fixer/Alias/EregToPregFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Alias\\EregToPregFixer <./../../../tests/Fixer/Alias/EregToPregFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\EregToPregFixerTest <./../../../tests/Fixer/Alias/EregToPregFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -61,6 +61,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../../../tests/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixerTest <./../../../tests/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

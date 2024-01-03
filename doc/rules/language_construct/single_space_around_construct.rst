@@ -120,6 +120,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixerTest <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -38,6 +38,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Alias\\BacktickToShellExecFixer <./../../../src/Fixer/Alias/BacktickToShellExecFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Alias\\BacktickToShellExecFixer <./../../../tests/Fixer/Alias/BacktickToShellExecFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\BacktickToShellExecFixerTest <./../../../tests/Fixer/Alias/BacktickToShellExecFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -188,6 +188,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../src/Fixer/Basic/BracesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../tests/Fixer/Basic/BracesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\BracesFixerTest <./../../../tests/Fixer/Basic/BracesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

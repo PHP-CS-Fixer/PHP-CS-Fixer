@@ -82,6 +82,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../tests/Fixer/ControlStructure/NoUnneededControlParenthesesFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixerTest <./../../../tests/Fixer/ControlStructure/NoUnneededControlParenthesesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

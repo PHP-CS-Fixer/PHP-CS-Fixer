@@ -45,6 +45,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../../../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../../../tests/Fixer/StringNotation/NoTrailingWhitespaceInStringFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixerTest <./../../../tests/Fixer/StringNotation/NoTrailingWhitespaceInStringFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

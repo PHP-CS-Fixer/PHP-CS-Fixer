@@ -87,6 +87,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../../../tests/Fixer/ClassNotation/NoUnneededFinalMethodFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixerTest <./../../../tests/Fixer/ClassNotation/NoUnneededFinalMethodFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

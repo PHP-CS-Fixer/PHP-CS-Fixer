@@ -34,6 +34,6 @@ References
 ----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSummaryFixer <./../../../src/Fixer/Phpdoc/PhpdocSummaryFixer.php>`_
-- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSummaryFixer <./../../../tests/Fixer/Phpdoc/PhpdocSummaryFixerTest.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocSummaryFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocSummaryFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
