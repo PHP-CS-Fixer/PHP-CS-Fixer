@@ -96,7 +96,7 @@ class T_Mixed
 
 // https://wiki.php.net/rfc/throw_expression
 if (1) {
-    foo() ?? throw new \Exception();
+    foo() ?? throw new Exception();
     $a = $condition && throw new Exception();
     $callable = static fn () => throw new Exception();
     $value = $falsableValue ?: throw new InvalidArgumentException();

@@ -191,13 +191,13 @@ interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C,
         ];
 
         yield 'interface in global namespace with global extend' => [
-            '<?php interface Foo1 extends ArrayAccess2{}',
             '<?php interface Foo1 extends \ArrayAccess2{}',
+            '<?php interface Foo1 extends ArrayAccess2{}',
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'interface in global namespace with multiple extend' => [
-            '<?php use B\Exception; interface Foo extends ArrayAccess, \Exception, Exception {}',
+            '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, Exception {}',
             '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, \B\Exception {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
@@ -277,9 +277,12 @@ class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\
         yield 'catch in multiple namespaces' => [
             '<?php
 namespace {
-    try{ foo(); } catch (Exception $z) {}
-    try{ foo(); } catch (A\X $z) {}
-    try{ foo(); } catch (B\Z $z) {}
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
 }
 namespace A {
     try{ foo(); } catch (\Exception $z) {}
@@ -294,8 +297,11 @@ namespace B {
 ',
             '<?php
 namespace {
+    try{ foo(); } catch (Exception $z) {}
     try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (A\X $z) {}
     try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (B\Z $z) {}
     try{ foo(); } catch (\B\Z $z) {}
 }
 namespace A {
@@ -323,6 +329,7 @@ namespace B {
         ];
 
         yield 'new class not imported' => [
+            '<?php new A\B(); new A\B();',
             '<?php new \A\B(); new A\B();',
         ];
 
@@ -342,7 +349,7 @@ namespace B {
         ];
 
         yield 'use trait complex' => [
-            '<?php use A\B; class Foo { use \A\C; use \D; use B { B::bar as baz; } };',
+            '<?php use A\B; class Foo { use A\C; use D; use B { B::bar as baz; } };',
             '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
         ];
 

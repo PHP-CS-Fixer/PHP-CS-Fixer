@@ -129,7 +129,7 @@ With configuration: ``['leading_backslash_in_global_namespace' => true]``.
         try {
             foo();
    -    } catch (\Exception|\Foo\A $e) {
-   +    } catch (Exception|A $e) {
+   +    } catch (\Exception|A $e) {
         }
     }
     namespace Foo\Bar {
