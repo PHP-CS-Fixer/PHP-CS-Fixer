@@ -69,11 +69,34 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 ->setAllowedTypes(['string'])
                 ->setDefault('EOD')
                 ->getOption(),
+            (new FixerOptionBuilder(
+                'reserved_closing_markers',
+                'Reserved closing markers to be kept unchanged.'
+            ))
+                ->setAllowedTypes(['array'])
+                ->setDefault([
+                    'CSS',
+                    'DIFF',
+                    'HTML',
+                    'JS',
+                    'JSON',
+                    'MD',
+                    'PHP',
+                    'PYTHON',
+                    'RST',
+                    'TS',
+                    'SQL',
+                    'XML',
+                    'YAML',
+                ])
+                ->getOption(),
         ]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $reservedClosingMarkers = $this->configuration['reserved_closing_markers'];
+
         $startIndex = null;
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_START_HEREDOC)) {
@@ -84,6 +107,16 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
             if (null !== $startIndex && $token->isGivenKind(T_END_HEREDOC)) {
                 $newClosingMarker = $this->configuration['closing_marker'];
+
+                Preg::match('~(?:^|[\r\n])\s*(\S++)~', $token->getContent(), $matches);
+                $existingClosingMarker = $matches[1];
+
+                if ($newClosingMarker === $existingClosingMarker || \in_array($existingClosingMarker, $reservedClosingMarkers, true)) {
+                    $startIndex = null;
+
+                    continue;
+                }
+
                 $content = $tokens->generatePartialCode($startIndex + 1, $index - 1);
                 while (Preg::match('~(^|[\r\n])\s*'.preg_quote($newClosingMarker, '~').'(?!\w)~', $content)) {
                     $newClosingMarker .= '_';

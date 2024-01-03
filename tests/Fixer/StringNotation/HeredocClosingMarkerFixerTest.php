@@ -24,7 +24,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param array<string, string> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideFixCases
      */
@@ -114,6 +114,43 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 TEST;
 
                 EOF,
+        ];
+
+        yield 'heredoc and reserved closing marker' => [
+            <<<'EOF'
+                <?php $a = <<<PHP
+                xxx
+                PHP;
+
+                EOF,
+        ];
+
+        yield 'heredoc and reserved custom closing marker' => [
+            <<<'EOF'
+                <?php $a = <<<Žlutý
+                xxx
+                Žlutý;
+                $b = <<<EOD
+                xxx2
+                EOD;
+                $c = <<<EOD
+                xxx3
+                EOD;
+
+                EOF,
+            <<<'EOF'
+                <?php $a = <<<Žlutý
+                xxx
+                Žlutý;
+                $b = <<<Žlutý2
+                xxx2
+                Žlutý2;
+                $c = <<<PHP
+                xxx3
+                PHP;
+
+                EOF,
+            ['reserved_closing_markers' => ['Žlutý']],
         ];
 
         yield 'heredoc /w content starting with preferred closing marker' => [

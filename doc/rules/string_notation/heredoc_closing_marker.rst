@@ -16,6 +16,15 @@ Allowed types: ``string``
 
 Default value: ``'EOD'``
 
+``reserved_closing_markers``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Reserved closing markers to be kept unchanged.
+
+Allowed types: ``array``
+
+Default value: ``['CSS', 'DIFF', 'HTML', 'JS', 'JSON', 'MD', 'PHP', 'PYTHON', 'RST', 'TS', 'SQL', 'XML', 'YAML']``
+
 Examples
 --------
 
