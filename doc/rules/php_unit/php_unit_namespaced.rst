@@ -131,7 +131,10 @@ The rule is part of the following rule sets:
   ``['target' => '6.0']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitNamespacedFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

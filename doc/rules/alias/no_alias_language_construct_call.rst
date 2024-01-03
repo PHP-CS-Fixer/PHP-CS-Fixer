@@ -26,7 +26,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Alias\\NoAliasLanguageConstructCallFixer <./../../../src/Fixer/Alias/NoAliasLanguageConstructCallFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Alias\\NoAliasLanguageConstructCallFixer <./../../../src/Fixer/Alias/NoAliasLanguageConstructCallFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\NoAliasLanguageConstructCallFixerTest <./../../../tests/Fixer/Alias/NoAliasLanguageConstructCallFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

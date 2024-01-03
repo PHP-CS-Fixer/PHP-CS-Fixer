@@ -237,12 +237,19 @@ final class FixerDocumentGenerator
         $fileName = substr($fileName, strrpos($fileName, '/src/Fixer/') + 1);
         $fileName = "`{$className} <./../../../{$fileName}>`_";
 
+        $testFileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);
+        $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
+        $testFileName = Preg::replace('~(?= <|\.php>)~', 'Test', $testFileName);
+
         $doc .= <<<RST
 
-            Source class
-            ------------
+            References
+            ----------
 
-            {$fileName}
+            - Fixer class: {$fileName}
+            - Test class: {$testFileName}
+
+            The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
             RST;
 
         $doc = str_replace("\t", '<TAB>', $doc);

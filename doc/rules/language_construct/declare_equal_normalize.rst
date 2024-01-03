@@ -59,7 +59,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixer <./../../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixer <./../../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixerTest <./../../../tests/Fixer/LanguageConstruct/DeclareEqualNormalizeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

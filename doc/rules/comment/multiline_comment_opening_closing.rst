@@ -41,7 +41,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Comment\\MultilineCommentOpeningClosingFixer <./../../../src/Fixer/Comment/MultilineCommentOpeningClosingFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Comment\\MultilineCommentOpeningClosingFixer <./../../../src/Fixer/Comment/MultilineCommentOpeningClosingFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\MultilineCommentOpeningClosingFixerTest <./../../../tests/Fixer/Comment/MultilineCommentOpeningClosingFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

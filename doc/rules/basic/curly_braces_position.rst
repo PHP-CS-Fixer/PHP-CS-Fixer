@@ -226,7 +226,10 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
    +$result = true;
    +    return $result;
    +};
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../../../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../../../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\CurlyBracesPositionFixerTest <./../../../tests/Fixer/Basic/CurlyBracesPositionFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

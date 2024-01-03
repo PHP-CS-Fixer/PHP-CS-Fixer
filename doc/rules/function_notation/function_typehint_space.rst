@@ -38,7 +38,10 @@ Example #2
    -function sample(array  $a)
    +function sample(array $a)
     {}
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../../../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../../../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixerTest <./../../../tests/Fixer/FunctionNotation/FunctionTypehintSpaceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

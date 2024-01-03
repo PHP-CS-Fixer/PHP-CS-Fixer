@@ -228,7 +228,10 @@ The rule is part of the following rule sets:
   ``['tokens' => ['attribute', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\NoExtraBlankLinesFixerTest <./../../../tests/Fixer/Whitespace/NoExtraBlankLinesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

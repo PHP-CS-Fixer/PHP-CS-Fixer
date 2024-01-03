@@ -158,7 +158,10 @@ The rule is part of the following rule sets:
   ``['target' => '4.3']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

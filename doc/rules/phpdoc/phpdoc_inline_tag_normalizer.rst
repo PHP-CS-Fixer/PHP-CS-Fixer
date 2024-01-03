@@ -62,7 +62,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixer <./../../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixer <./../../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

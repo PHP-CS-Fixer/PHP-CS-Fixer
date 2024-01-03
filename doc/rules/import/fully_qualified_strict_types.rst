@@ -190,7 +190,10 @@ The rule is part of the following rule sets:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\FullyQualifiedStrictTypesFixerTest <./../../../tests/Fixer/Import/FullyQualifiedStrictTypesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

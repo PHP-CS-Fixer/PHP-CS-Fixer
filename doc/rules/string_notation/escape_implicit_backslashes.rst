@@ -143,7 +143,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixerTest <./../../../tests/Fixer/StringNotation/EscapeImplicitBackslashesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
