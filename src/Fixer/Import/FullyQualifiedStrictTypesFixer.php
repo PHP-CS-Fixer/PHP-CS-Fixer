@@ -454,7 +454,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         if (str_starts_with($longTypeContent, '\\') || '' === $namespaceName) {
-            $typeName = str_starts_with($longTypeContent, '\\') ? substr($longTypeContent, 1) : $longTypeContent;
+            $typeName = ltrim($longTypeContent, '\\');
             $typeNameLower = strtolower($typeName);
 
             if (isset($uses[$typeNameLower])) {
