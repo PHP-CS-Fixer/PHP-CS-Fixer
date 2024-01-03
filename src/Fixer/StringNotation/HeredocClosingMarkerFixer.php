@@ -26,6 +26,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @author Michael Vorisek <https://github.com/mvorisek>
+ */
 final class HeredocClosingMarkerFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
