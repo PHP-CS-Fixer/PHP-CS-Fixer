@@ -1541,25 +1541,53 @@ class SomeClass
 }',
         ];
 
-        yield 'Leading backslash in global namespace' => [
+        yield 'Leading backslash in global namespace - standard phpdoc' => [
             '<?php
 
 /**
  * @param \DateTimeInterface $dateTime
+ * @param callable(): (\Closure(): void) $fx
  * @return \DateTimeInterface
  * @see \DateTimeImmutable
  * @throws \Exception
  */
-function foo($dateTime) {}',
+function foo($dateTime, $fx) {}',
             '<?php
 
 /**
  * @param DateTimeInterface $dateTime
+ * @param callable(): (\Closure(): void) $fx
  * @return DateTimeInterface
  * @see DateTimeImmutable
  * @throws Exception
  */
-function foo($dateTime) {}',
+function foo($dateTime, $fx) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'Leading backslash in global namespace - reserved phpdoc' => [
+            '<?php
+
+/**
+ * @param int $v
+ * @phpstan-param positive-int $v
+ * @param \'GET\'|\'POST\' $method
+ * @param \Closure $fx
+ * @psalm-param Closure(): (callable(): Closure) $fx
+ * @return list<int>
+ */
+function foo($v, $method, $fx) {}',
+            '<?php
+
+/**
+ * @param int $v
+ * @phpstan-param positive-int $v
+ * @param \'GET\'|\'POST\' $method
+ * @param Closure $fx
+ * @psalm-param Closure(): (callable(): Closure) $fx
+ * @return list<int>
+ */
+function foo($v, $method, $fx) {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
 
