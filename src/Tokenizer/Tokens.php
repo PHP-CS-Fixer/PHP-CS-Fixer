@@ -133,22 +133,25 @@ class Tokens extends \SplFixedArray
      */
     public static function detectBlockType(Token $token): ?array
     {
-        if (!self::isTokenBlockEdge($token)) {
-            return null;
+        static $blockEdgeKinds = null;
+
+        if (null === $blockEdgeKinds) {
+            $blockEdgeKinds = [];
+            foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
+                $blockEdgeKinds[
+                    \is_string($definition['start']) ? $definition['start'] : $definition['start'][0]
+                ] = ['type' => $type, 'isStart' => true];
+                $blockEdgeKinds[
+                    \is_string($definition['end']) ? $definition['end'] : $definition['end'][0]
+                ] = ['type' => $type, 'isStart' => false];
+            }
         }
 
-        foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
-            if ($token->equals($definition['start'])) {
-                return ['type' => $type, 'isStart' => true];
-            }
+        // inlined extractTokenKind() call on the hot path
+        /** @var int|non-empty-string */
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
-            if ($token->equals($definition['end'])) {
-                return ['type' => $type, 'isStart' => false];
-            }
-        }
-
-        // @phpstan-ignore-next-line if happens, we have error to fix in code
-        return new \LogicException('Unexpected block detetion issue.');
+        return $blockEdgeKinds[$tokenKind] ?? null;
     }
 
     /**
@@ -1204,29 +1207,6 @@ class Tokens extends \SplFixedArray
     {
         $transformers = Transformers::createSingleton();
         $transformers->transform($this);
-    }
-
-    private static function isTokenBlockEdge(Token $token): bool
-    {
-        static $blockEdgeKinds = null;
-
-        if (null === $blockEdgeKinds) {
-            $blockEdgeKinds = [];
-            foreach (self::getBlockEdgeDefinitions() as $definition) {
-                $blockEdgeKinds[
-                    \is_string($definition['start']) ? $definition['start'] : $definition['start'][0]
-                ] = true;
-                $blockEdgeKinds[
-                    \is_string($definition['end']) ? $definition['end'] : $definition['end'][0]
-                ] = true;
-            }
-        }
-
-        // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
-
-        return isset($blockEdgeKinds[$tokenKind]);
     }
 
     /**
