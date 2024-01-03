@@ -16,6 +16,15 @@ Allowed types: ``string``
 
 Default value: ``'EOD'``
 
+``explicit_heredoc_style``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether the closing marker should be wrapped in double quotes.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 ``reserved_closing_markers``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -57,6 +66,21 @@ With configuration: ``['closing_marker' => 'EOF']``.
     Foo
    -TEST;
    +EOF;
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['explicit_heredoc_style' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   -<?php $a = <<<"TEST"
+   +<?php $a = <<<EOD
+    Foo
+   -TEST;
+   +EOD;
 Source class
 ------------
 

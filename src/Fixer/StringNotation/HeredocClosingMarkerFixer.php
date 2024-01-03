@@ -50,6 +50,15 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                         EOD,
                     ['closing_marker' => 'EOF']
                 ),
+                new CodeSample(
+                    <<<'EOD'
+                        <?php $a = <<<"TEST"
+                        Foo
+                        TEST;
+
+                        EOD,
+                    ['explicit_heredoc_style' => false]
+                ),
             ]
         );
     }
@@ -89,6 +98,13 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                     'XML',
                     'YAML',
                 ])
+                ->getOption(),
+            (new FixerOptionBuilder(
+                'explicit_heredoc_style',
+                'Whether the closing marker should be wrapped in double quotes.'
+            ))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }
@@ -139,11 +155,11 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
      */
     private function convertClosingMarker(Token $startToken, Token $endToken, string $newClosingMarker): array
     {
-        $isNowdoc = \str_contains($startToken->getContent(), '\'');
+        $isNowdoc = str_contains($startToken->getContent(), '\'');
 
         $markerQuote = $isNowdoc
             ? '\''
-            : (\str_contains($startToken->getContent(), '"') ? '"' : '');
+            : (true === $this->configuration['explicit_heredoc_style'] ? '"' : '');
 
         return [new Token([
             $startToken->getId(),
