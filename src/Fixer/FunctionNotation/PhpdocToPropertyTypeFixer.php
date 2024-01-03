@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @phpstan-import-type _CommonTypeInfo from AbstractPhpdocToTypeDeclarationFixer
+ * @phpstan-import-type CommonTypeInfo from AbstractPhpdocToTypeDeclarationFixer
  */
 final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
@@ -204,7 +204,7 @@ class Foo {
      * @param array<string, int> $propertyIndices
      * @param Annotation[]       $annotations
      *
-     * @return ?_CommonTypeInfo
+     * @return ?CommonTypeInfo
      */
     private function resolveApplicableType(array $propertyIndices, array $annotations): ?array
     {

@@ -30,7 +30,7 @@ use PhpCsFixer\Utils;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  *
- * @phpstan-type _ClassElement array{
+ * @phpstan-type ClassElement array{
  *  start: int,
  *  visibility: string,
  *  abstract: bool,
@@ -332,7 +332,7 @@ Custom values:
     }
 
     /**
-     * @return list<_ClassElement>
+     * @return list<ClassElement>
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
@@ -478,9 +478,9 @@ Custom values:
     }
 
     /**
-     * @param list<_ClassElement> $elements
+     * @param list<ClassElement> $elements
      *
-     * @return list<_ClassElement>
+     * @return list<ClassElement>
      */
     private function sortElements(array $elements): array
     {
@@ -545,8 +545,8 @@ Custom values:
     }
 
     /**
-     * @param _ClassElement $a
-     * @param _ClassElement $b
+     * @param ClassElement $a
+     * @param ClassElement $b
      */
     private function sortGroupElements(array $a, array $b): int
     {
@@ -560,7 +560,7 @@ Custom values:
     }
 
     /**
-     * @param list<_ClassElement> $elements
+     * @param list<ClassElement> $elements
      */
     private function sortTokens(Tokens $tokens, int $startIndex, int $endIndex, array $elements): void
     {
