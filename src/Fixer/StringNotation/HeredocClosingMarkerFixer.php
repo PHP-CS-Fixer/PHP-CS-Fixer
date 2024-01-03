@@ -52,7 +52,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 ),
                 new CodeSample(
                     <<<'EOD'
-                        <?php $a = <<<"TEST"
+                        <?php $a = <<<TEST
                         Foo
                         TEST;
 

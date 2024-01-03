@@ -76,7 +76,7 @@ With configuration: ``['explicit_heredoc_style' => true]``.
 
    --- Original
    +++ New
-   -<?php $a = <<<"TEST"
+   -<?php $a = <<<TEST
    +<?php $a = <<<"EOD"
     Foo
    -TEST;
