@@ -571,7 +571,7 @@ function foo(A $a, \Other\B $b) {}
 
 use Symfony\Component\Validator\Constraints\Valid;
 /**
- * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ * {@link Valid} is assumed.
  *
  * @return void
  */
@@ -586,7 +586,7 @@ function validate(): void {}
  */
 function validate(): void {}
 ',
-            ['import_symbols' => true],
+            ['import_symbols' => true, 'phpdoc_tags' => ['link']],
         ];
 
         yield 'import short name only once (ignore consequent same-name, different-namespace symbols)' => [
@@ -1259,6 +1259,17 @@ use Foo\Bar\Bam;
 class SomeClass {}',
         ];
 
+        yield 'Test PHPDoc union' => [
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|\Exception2|int|null $v
+ */
+function foo($v) {}',
+        ];
+
         yield 'Test PHPDoc in interface' => [
             '<?php
 
@@ -1348,6 +1359,15 @@ namespace Foo\Bar;
  * @see \Foo\Bar\Bam
  */
 final class SomeClass {}',
+        ];
+
+        yield 'PHPDoc with generics must not crash' => [
+            '<?php
+
+/**
+ * @param \Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
         ];
 
         yield 'Test multiple PHPDoc blocks' => [
