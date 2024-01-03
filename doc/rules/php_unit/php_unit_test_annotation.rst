@@ -73,7 +73,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitTestAnnotationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

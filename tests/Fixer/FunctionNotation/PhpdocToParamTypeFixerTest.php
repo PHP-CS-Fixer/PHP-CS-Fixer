@@ -478,6 +478,31 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     function bar($x) {}
                 ',
         ];
+
+        yield 'support for arrow function' => [
+            '<?php
+            Utils::stableSort(
+                $elements,
+                /**
+                 * @param int $a
+                 *
+                 * @return array
+                 */
+                static fn(int $a) => [$a],
+                fn($a, $b) => 1,
+            );',
+            '<?php
+            Utils::stableSort(
+                $elements,
+                /**
+                 * @param int $a
+                 *
+                 * @return array
+                 */
+                static fn($a) => [$a],
+                fn($a, $b) => 1,
+            );',
+        ];
     }
 
     /**

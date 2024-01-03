@@ -30,7 +30,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\CastNotation\\NoUnsetCastFixerTest <./../../../tests/Fixer/CastNotation/NoUnsetCastFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

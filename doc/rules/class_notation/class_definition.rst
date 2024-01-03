@@ -202,7 +202,10 @@ The rule is part of the following rule sets:
   ``['single_line' => true]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest <./../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

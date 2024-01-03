@@ -25,7 +25,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../../../src/Fixer/LanguageConstruct/DeclareParenthesesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../../../src/Fixer/LanguageConstruct/DeclareParenthesesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\DeclareParenthesesFixerTest <./../../../tests/Fixer/LanguageConstruct/DeclareParenthesesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

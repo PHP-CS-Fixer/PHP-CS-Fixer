@@ -63,7 +63,10 @@ The rule is part of the following rule set:
   ``['strategy' => 'new_line_for_chained_calls']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixerTest <./../../../tests/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

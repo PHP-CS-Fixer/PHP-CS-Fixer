@@ -68,7 +68,10 @@ With configuration: ``['constructs' => ['yield_from']]``.
 
    -yield  from  baz();
    +yield from baz();
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixerTest <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -29,7 +29,10 @@ The rule is part of the following rule sets:
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixer <./../../../src/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixer <./../../../src/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\AssignNullCoalescingToCoalesceEqualFixerTest <./../../../tests/Fixer/Operator/AssignNullCoalescingToCoalesceEqualFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

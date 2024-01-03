@@ -191,13 +191,13 @@ interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C,
         ];
 
         yield 'interface in global namespace with global extend' => [
-            '<?php interface Foo1 extends ArrayAccess2{}',
             '<?php interface Foo1 extends \ArrayAccess2{}',
+            '<?php interface Foo1 extends ArrayAccess2{}',
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'interface in global namespace with multiple extend' => [
-            '<?php use B\Exception; interface Foo extends ArrayAccess, \Exception, Exception {}',
+            '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, Exception {}',
             '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, \B\Exception {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
@@ -277,9 +277,12 @@ class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\
         yield 'catch in multiple namespaces' => [
             '<?php
 namespace {
-    try{ foo(); } catch (Exception $z) {}
-    try{ foo(); } catch (A\X $z) {}
-    try{ foo(); } catch (B\Z $z) {}
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
 }
 namespace A {
     try{ foo(); } catch (\Exception $z) {}
@@ -294,8 +297,11 @@ namespace B {
 ',
             '<?php
 namespace {
+    try{ foo(); } catch (Exception $z) {}
     try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (A\X $z) {}
     try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (B\Z $z) {}
     try{ foo(); } catch (\B\Z $z) {}
 }
 namespace A {
@@ -310,6 +316,41 @@ namespace B {
 }
 ',
             ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'new class' => [
+            '<?php use A\B; new B();',
+            '<?php use A\B; new \A\B();',
+        ];
+
+        yield 'new class namespaced' => [
+            '<?php namespace B; new A();',
+            '<?php namespace B; new \B\A();',
+        ];
+
+        yield 'new class not imported' => [
+            '<?php new A\B(); new A\B();',
+            '<?php new \A\B(); new A\B();',
+        ];
+
+        yield 'instanceof' => [
+            '<?php use A\B; $res = $v instanceof B;',
+            '<?php use A\B; $res = $v instanceof \A\B;',
+        ];
+
+        yield 'instanceof namespaced' => [
+            '<?php namespace B; $res = ($v->obj()) instanceof A;',
+            '<?php namespace B; $res = ($v->obj()) instanceof \B\A;',
+        ];
+
+        yield 'use trait simple' => [
+            '<?php use A\B; class Foo { use B; };',
+            '<?php use A\B; class Foo { use \A\B; };',
+        ];
+
+        yield 'use trait complex' => [
+            '<?php use A\B; class Foo { use A\C; use D; use B { B::bar as baz; } };',
+            '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
         ];
 
         yield 'starts with but not full name extends' => [
@@ -378,8 +419,10 @@ use Other\BaseClass;
 use Other\CaughtThrowable;
 use Other\FunctionArgument;
 use Other\FunctionReturnType;
+use Other\InstanceOfClass;
 use Other\Interface1;
 use Other\Interface2;
+use Other\NewClass;
 use Other\PropertyPhpDoc;
 use Other\StaticFunctionCall;
 
@@ -395,6 +438,10 @@ class Foo extends BaseClass implements Interface1, Interface2
         } catch (CaughtThrowable $e) {}
     }
 }
+
+new NewClass();
+
+if ($a instanceof InstanceOfClass) { return false; }
             ',
             '<?php
 
@@ -412,6 +459,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         } catch (\Other\CaughtThrowable $e) {}
     }
 }
+
+new \Other\NewClass();
+
+if ($a instanceof \Other\InstanceOfClass) { return false; }
             ',
             ['import_symbols' => true],
         ];
@@ -520,7 +571,7 @@ function foo(A $a, \Other\B $b) {}
 
 use Symfony\Component\Validator\Constraints\Valid;
 /**
- * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ * {@link Valid} is assumed.
  *
  * @return void
  */
@@ -535,7 +586,7 @@ function validate(): void {}
  */
 function validate(): void {}
 ',
-            ['import_symbols' => true],
+            ['import_symbols' => true, 'phpdoc_tags' => ['link']],
         ];
 
         yield 'import short name only once (ignore consequent same-name, different-namespace symbols)' => [
@@ -1208,6 +1259,17 @@ use Foo\Bar\Bam;
 class SomeClass {}',
         ];
 
+        yield 'Test PHPDoc union' => [
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|\Exception2|int|null $v
+ */
+function foo($v) {}',
+        ];
+
         yield 'Test PHPDoc in interface' => [
             '<?php
 
@@ -1297,6 +1359,15 @@ namespace Foo\Bar;
  * @see \Foo\Bar\Bam
  */
 final class SomeClass {}',
+        ];
+
+        yield 'PHPDoc with generics must not crash' => [
+            '<?php
+
+/**
+ * @param \Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
         ];
 
         yield 'Test multiple PHPDoc blocks' => [
