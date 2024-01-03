@@ -101,7 +101,10 @@ The rule is part of the following rule set:
   ``['force' => true]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderStaticFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

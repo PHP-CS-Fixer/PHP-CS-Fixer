@@ -25,7 +25,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixerTest <./../../../tests/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

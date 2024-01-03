@@ -39,7 +39,7 @@ is_countable($foo);
 [$a, &$b] = $array; // `list_syntax` rule
 
 // https://github.com/php/php-src/pull/2978 instanceof now allows literals as the first operand (the result is always false).
-null instanceof \stdClass;
+null instanceof stdClass;
 
 // https://wiki.php.net/rfc/trailing-comma-function-calls Trailing commas in function and method calls are now allowed.
 foo(
@@ -63,7 +63,7 @@ mb_strlen($str); // `native_function_casing` rule
 $c = \get_class($d); // `native_function_invocation` rule
 $a = rtrim($b); // `no_alias_functions` rule
 $foo->bar($arg1, $arg2); // `no_spaces_inside_parenthesis` rule
-final class MyClass extends \PHPUnit_Framework_TestCase
+final class MyClass extends PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {

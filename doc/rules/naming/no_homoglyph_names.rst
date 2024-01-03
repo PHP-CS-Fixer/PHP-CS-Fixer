@@ -34,7 +34,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Naming\\NoHomoglyphNamesFixer <./../../../src/Fixer/Naming/NoHomoglyphNamesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Naming\\NoHomoglyphNamesFixer <./../../../src/Fixer/Naming/NoHomoglyphNamesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Naming\\NoHomoglyphNamesFixerTest <./../../../tests/Fixer/Naming/NoHomoglyphNamesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

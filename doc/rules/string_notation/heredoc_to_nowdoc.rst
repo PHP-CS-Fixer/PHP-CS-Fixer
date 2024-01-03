@@ -26,7 +26,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\HeredocToNowdocFixerTest <./../../../tests/Fixer/StringNotation/HeredocToNowdocFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -79,7 +79,10 @@ With configuration: ``['named_class' => false]``.
 
    -$x = new X();
    +$x = new X;
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../../../src/Fixer/Operator/NewWithBracesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../../../src/Fixer/Operator/NewWithBracesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NewWithBracesFixerTest <./../../../tests/Fixer/Operator/NewWithBracesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

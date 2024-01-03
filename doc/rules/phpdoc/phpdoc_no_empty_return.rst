@@ -40,7 +40,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../../../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../../../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoEmptyReturnFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

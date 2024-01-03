@@ -14,7 +14,7 @@ function iterable_foo(iterable $foo): void
         echo $str[-2];
     } catch (ExceptionType1|ExceptionType2 $e) {
         // Code to handle the exception
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         // ...
     }
 }

@@ -184,7 +184,10 @@ With configuration: ``['position_after_functions_and_oop_constructs' => 'same']`
    +        }
         }
     }
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../src/Fixer/Basic/BracesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../src/Fixer/Basic/BracesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\BracesFixerTest <./../../../tests/Fixer/Basic/BracesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -34,7 +34,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../../../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../../../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\NoUselessSprintfFixerTest <./../../../tests/Fixer/FunctionNotation/NoUselessSprintfFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

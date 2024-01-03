@@ -138,7 +138,10 @@ With configuration: ``['order' => 'alpha', 'case_sensitive' => true]``.
 
    -interface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}
    +interface ExampleB extends CaseSensitiveA, CasesensitiveA, Casesensitivea {}
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\OrderedInterfacesFixerTest <./../../../tests/Fixer/ClassNotation/OrderedInterfacesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

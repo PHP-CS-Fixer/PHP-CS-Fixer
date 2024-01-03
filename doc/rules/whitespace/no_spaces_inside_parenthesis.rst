@@ -42,7 +42,10 @@ Example #2
    +function foo($bar, $baz)
     {
     }
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../../../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../../../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixerTest <./../../../tests/Fixer/Whitespace/NoSpacesInsideParenthesisFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

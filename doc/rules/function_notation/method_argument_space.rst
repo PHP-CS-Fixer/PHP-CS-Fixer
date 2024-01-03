@@ -335,7 +335,10 @@ The rule is part of the following rule sets:
   ``['on_multiline' => 'ignore']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixerTest <./../../../tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

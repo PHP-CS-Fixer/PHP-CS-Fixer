@@ -66,7 +66,10 @@ With configuration: ``['namespaces' => true]``.
         function Bar(){}
    -}
    +
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixerTest <./../../../tests/Fixer/ControlStructure/NoUnneededCurlyBracesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -243,7 +243,10 @@ The rule is part of the following rule sets:
   ``['statements' => ['return']]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\BlankLineBeforeStatementFixerTest <./../../../tests/Fixer/Whitespace/BlankLineBeforeStatementFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

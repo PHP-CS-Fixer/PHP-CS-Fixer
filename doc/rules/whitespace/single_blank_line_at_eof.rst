@@ -44,7 +44,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\SingleBlankLineAtEofFixerTest <./../../../tests/Fixer/Whitespace/SingleBlankLineAtEofFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
