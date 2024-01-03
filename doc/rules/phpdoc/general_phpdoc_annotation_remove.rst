@@ -79,12 +79,10 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
      * @version 1.0
      */
     function foo() {}
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../tests/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../tests/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

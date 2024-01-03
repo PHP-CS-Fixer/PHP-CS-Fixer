@@ -42,12 +42,10 @@ The rule is part of the following rule sets:
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../src/Fixer/Alias/ModernizeStrposFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../src/Fixer/Alias/ModernizeStrposFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../tests/Fixer/Alias/ModernizeStrposFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../tests/Fixer/Alias/ModernizeStrposFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -62,12 +62,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../tests/Fixer/Phpdoc/PhpdocTypesFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../tests/Fixer/Phpdoc/PhpdocTypesFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -77,12 +77,10 @@ The rule is part of the following rule sets:
   ``['only_booleans' => true]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../src/Fixer/Operator/OperatorLinebreakFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../src/Fixer/Operator/OperatorLinebreakFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../tests/Fixer/Operator/OperatorLinebreakFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../tests/Fixer/Operator/OperatorLinebreakFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

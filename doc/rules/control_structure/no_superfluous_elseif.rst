@@ -30,12 +30,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoSuperfluousElseifFixer <./../../../src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\NoSuperfluousElseifFixer <./../../../src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\ControlStructure\\NoSuperfluousElseifFixer <./../../../tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\ControlStructure\\NoSuperfluousElseifFixer <./../../../tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

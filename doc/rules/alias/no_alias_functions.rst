@@ -127,12 +127,10 @@ The rule is part of the following rule sets:
 
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../tests/Fixer/Alias/NoAliasFunctionsFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../tests/Fixer/Alias/NoAliasFunctionsFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

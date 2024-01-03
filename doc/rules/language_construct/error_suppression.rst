@@ -97,12 +97,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../tests/Fixer/LanguageConstruct/ErrorSuppressionFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../tests/Fixer/LanguageConstruct/ErrorSuppressionFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

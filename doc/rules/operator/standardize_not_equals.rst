@@ -26,12 +26,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../tests/Fixer/Operator/StandardizeNotEqualsFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../tests/Fixer/Operator/StandardizeNotEqualsFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

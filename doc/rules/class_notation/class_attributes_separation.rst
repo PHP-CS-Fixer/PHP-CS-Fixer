@@ -145,12 +145,10 @@ The rule is part of the following rule sets:
   ``['elements' => ['method' => 'one']]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../tests/Fixer/ClassNotation/ClassAttributesSeparationFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../tests/Fixer/ClassNotation/ClassAttributesSeparationFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -28,12 +28,10 @@ The rule is part of the following rule set:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../tests/Fixer/FunctionNotation/SingleLineThrowFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../tests/Fixer/FunctionNotation/SingleLineThrowFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

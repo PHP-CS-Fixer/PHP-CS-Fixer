@@ -26,12 +26,10 @@ The rule is part of the following rule sets:
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../src/Fixer/Basic/OctalNotationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../src/Fixer/Basic/OctalNotationFixer.php>`_
+- Test class: `PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../tests/Fixer/Basic/OctalNotationFixerTest.php>`_
 
-Test class
-------------
-
-`PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../tests/Fixer/Basic/OctalNotationFixerTest.php>`_
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
