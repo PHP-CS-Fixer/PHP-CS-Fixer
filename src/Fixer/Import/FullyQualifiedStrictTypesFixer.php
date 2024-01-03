@@ -162,6 +162,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([
+            CT::T_USE_TRAIT,
             T_CATCH,
             T_DOUBLE_COLON,
             T_DOC_COMMENT,
@@ -170,7 +171,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             T_IMPLEMENTS,
             T_INSTANCEOF,
             T_NEW,
-            CT::T_USE_TRAIT,
         ]);
     }
 
