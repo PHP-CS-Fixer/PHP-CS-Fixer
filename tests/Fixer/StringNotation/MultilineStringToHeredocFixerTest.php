@@ -152,6 +152,7 @@ final class MultilineStringToHeredocFixerTest extends AbstractFixerTestCase
                 \\\\"
                 \'
                 \
+                "{$rawPath}"
 
                 EOD;
                 EOF,
@@ -164,6 +165,7 @@ final class MultilineStringToHeredocFixerTest extends AbstractFixerTestCase
                 \\\\\"
                 \'
                 \
+                \"{$rawPath}\"
                 ";
                 EOD,
         ];
