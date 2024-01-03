@@ -2493,13 +2493,13 @@ class Foo {
             '<?php
     /**
      */
-    $a = fn ($foo): int => 1;
+    fn ($foo): int => 1;
 ',
             '<?php
     /**
-     * @return intgit st
+     * @return int
      */
-    $a = fn ($foo): int => 1;
+    fn ($foo): int => 1;
 ',
         ];
 
