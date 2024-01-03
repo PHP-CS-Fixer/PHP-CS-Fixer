@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../tests/Fixer/PhpTag/BlankLineAfterOpeningTagFixerTest.php>`_

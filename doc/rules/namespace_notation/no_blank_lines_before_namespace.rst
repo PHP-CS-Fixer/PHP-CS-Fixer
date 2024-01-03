@@ -31,3 +31,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\NoBlankLinesBeforeNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/NoBlankLinesBeforeNamespaceFixerTest.php>`_

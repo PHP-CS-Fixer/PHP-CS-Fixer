@@ -33,3 +33,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../../../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../../../tests/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixerTest.php>`_

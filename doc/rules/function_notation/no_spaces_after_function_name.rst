@@ -43,3 +43,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../../../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoSpacesAfterFunctionNameFixer <./../../../tests/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixerTest.php>`_

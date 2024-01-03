@@ -86,3 +86,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../../../src/Fixer/Import/SingleImportPerStatementFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../../../tests/Fixer/Import/SingleImportPerStatementFixerTest.php>`_

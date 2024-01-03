@@ -168,3 +168,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../tests/Fixer/Phpdoc/PhpdocSeparationFixerTest.php>`_

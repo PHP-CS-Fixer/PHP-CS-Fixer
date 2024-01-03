@@ -51,3 +51,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Strict\\StrictParamFixer <./../../../src/Fixer/Strict/StrictParamFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Strict\\StrictParamFixer <./../../../tests/Fixer/Strict/StrictParamFixerTest.php>`_

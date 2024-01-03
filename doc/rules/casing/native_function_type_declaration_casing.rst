@@ -76,3 +76,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../../../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../../../tests/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixerTest.php>`_

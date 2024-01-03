@@ -94,3 +94,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\TypeDeclarationSpacesFixer <./../../../src/Fixer/Whitespace/TypeDeclarationSpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\TypeDeclarationSpacesFixer <./../../../tests/Fixer/Whitespace/TypeDeclarationSpacesFixerTest.php>`_

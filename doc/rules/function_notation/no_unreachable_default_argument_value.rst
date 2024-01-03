@@ -45,3 +45,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\NoUnreachableDefaultArgumentValueFixer <./../../../src/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoUnreachableDefaultArgumentValueFixer <./../../../tests/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixerTest.php>`_

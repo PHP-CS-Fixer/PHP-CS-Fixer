@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagOrderFixer <./../../../src/Fixer/FunctionNotation/FopenFlagOrderFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagOrderFixer <./../../../tests/Fixer/FunctionNotation/FopenFlagOrderFixerTest.php>`_

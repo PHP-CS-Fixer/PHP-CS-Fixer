@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\ClassReferenceNameCasingFixer <./../../../src/Fixer/Casing/ClassReferenceNameCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\ClassReferenceNameCasingFixer <./../../../tests/Fixer/Casing/ClassReferenceNameCasingFixerTest.php>`_

@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureBracesFixer <./../../../src/Fixer/ControlStructure/ControlStructureBracesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureBracesFixer <./../../../tests/Fixer/ControlStructure/ControlStructureBracesFixerTest.php>`_

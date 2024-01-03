@@ -66,3 +66,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php>`_

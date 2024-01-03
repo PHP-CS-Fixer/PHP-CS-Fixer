@@ -48,3 +48,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\TernaryToElvisOperatorFixer <./../../../tests/Fixer/Operator/TernaryToElvisOperatorFixerTest.php>`_

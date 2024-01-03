@@ -37,3 +37,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Strict\\StrictComparisonFixer <./../../../src/Fixer/Strict/StrictComparisonFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Strict\\StrictComparisonFixer <./../../../tests/Fixer/Strict/StrictComparisonFixerTest.php>`_

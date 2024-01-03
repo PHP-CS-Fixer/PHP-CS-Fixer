@@ -99,3 +99,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../../../src/Fixer/Alias/RandomApiMigrationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../../../tests/Fixer/Alias/RandomApiMigrationFixerTest.php>`_

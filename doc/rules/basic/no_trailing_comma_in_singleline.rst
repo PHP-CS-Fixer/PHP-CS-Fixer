@@ -65,3 +65,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../../../src/Fixer/Basic/NoTrailingCommaInSinglelineFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\NoTrailingCommaInSinglelineFixer <./../../../tests/Fixer/Basic/NoTrailingCommaInSinglelineFixerTest.php>`_

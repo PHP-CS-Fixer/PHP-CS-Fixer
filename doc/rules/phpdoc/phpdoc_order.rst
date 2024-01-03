@@ -126,3 +126,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocOrderFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderFixer <./../../../tests/Fixer/Phpdoc/PhpdocOrderFixerTest.php>`_

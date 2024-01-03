@@ -62,3 +62,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\SingleQuoteFixer <./../../../src/Fixer/StringNotation/SingleQuoteFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\SingleQuoteFixer <./../../../tests/Fixer/StringNotation/SingleQuoteFixerTest.php>`_

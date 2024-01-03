@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\StandardizeIncrementFixer <./../../../src/Fixer/Operator/StandardizeIncrementFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\StandardizeIncrementFixer <./../../../tests/Fixer/Operator/StandardizeIncrementFixerTest.php>`_

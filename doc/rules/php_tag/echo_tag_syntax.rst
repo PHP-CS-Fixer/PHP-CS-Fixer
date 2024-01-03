@@ -128,3 +128,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../../../src/Fixer/PhpTag/EchoTagSyntaxFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../../../tests/Fixer/PhpTag/EchoTagSyntaxFixerTest.php>`_

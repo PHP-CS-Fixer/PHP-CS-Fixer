@@ -118,3 +118,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLinesBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/BlankLinesBeforeNamespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLinesBeforeNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/BlankLinesBeforeNamespaceFixerTest.php>`_

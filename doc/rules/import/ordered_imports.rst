@@ -193,3 +193,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer <./../../../src/Fixer/Import/OrderedImportsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer <./../../../tests/Fixer/Import/OrderedImportsFixerTest.php>`_

@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../../../src/Fixer/Basic/EncodingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\EncodingFixer <./../../../tests/Fixer/Basic/EncodingFixerTest.php>`_

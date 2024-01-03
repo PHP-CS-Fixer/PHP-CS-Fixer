@@ -33,3 +33,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\TrimArraySpacesFixer <./../../../src/Fixer/ArrayNotation/TrimArraySpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\TrimArraySpacesFixer <./../../../tests/Fixer/ArrayNotation/TrimArraySpacesFixerTest.php>`_

@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../../../src/Fixer/Phpdoc/PhpdocIndentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocIndentFixer <./../../../tests/Fixer/Phpdoc/PhpdocIndentFixerTest.php>`_

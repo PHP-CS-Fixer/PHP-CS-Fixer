@@ -210,3 +210,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\NativeFunctionInvocationFixer <./../../../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NativeFunctionInvocationFixer <./../../../tests/Fixer/FunctionNotation/NativeFunctionInvocationFixerTest.php>`_

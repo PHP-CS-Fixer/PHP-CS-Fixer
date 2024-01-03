@@ -88,3 +88,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\VisibilityRequiredFixer <./../../../src/Fixer/ClassNotation/VisibilityRequiredFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\VisibilityRequiredFixer <./../../../tests/Fixer/ClassNotation/VisibilityRequiredFixerTest.php>`_

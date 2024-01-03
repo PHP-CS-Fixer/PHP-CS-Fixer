@@ -65,3 +65,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer <./../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer <./../../../tests/Fixer/ClassNotation/OrderedTraitsFixerTest.php>`_

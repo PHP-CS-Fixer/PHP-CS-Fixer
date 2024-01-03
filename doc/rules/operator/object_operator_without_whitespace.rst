@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\ObjectOperatorWithoutWhitespaceFixer <./../../../src/Fixer/Operator/ObjectOperatorWithoutWhitespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\ObjectOperatorWithoutWhitespaceFixer <./../../../tests/Fixer/Operator/ObjectOperatorWithoutWhitespaceFixerTest.php>`_

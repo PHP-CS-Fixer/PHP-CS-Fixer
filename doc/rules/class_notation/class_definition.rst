@@ -206,3 +206,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php>`_

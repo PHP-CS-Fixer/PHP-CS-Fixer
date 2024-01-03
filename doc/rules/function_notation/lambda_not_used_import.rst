@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\LambdaNotUsedImportFixer <./../../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\LambdaNotUsedImportFixer <./../../../tests/Fixer/FunctionNotation/LambdaNotUsedImportFixerTest.php>`_

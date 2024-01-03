@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\UseArrowFunctionsFixer <./../../../src/Fixer/FunctionNotation/UseArrowFunctionsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\UseArrowFunctionsFixer <./../../../tests/Fixer/FunctionNotation/UseArrowFunctionsFixerTest.php>`_

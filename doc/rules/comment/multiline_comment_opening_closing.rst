@@ -45,3 +45,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\MultilineCommentOpeningClosingFixer <./../../../src/Fixer/Comment/MultilineCommentOpeningClosingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\MultilineCommentOpeningClosingFixer <./../../../tests/Fixer/Comment/MultilineCommentOpeningClosingFixerTest.php>`_

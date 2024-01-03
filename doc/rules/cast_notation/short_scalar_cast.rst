@@ -49,3 +49,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../../../src/Fixer/CastNotation/ShortScalarCastFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\CastNotation\\ShortScalarCastFixer <./../../../tests/Fixer/CastNotation/ShortScalarCastFixerTest.php>`_

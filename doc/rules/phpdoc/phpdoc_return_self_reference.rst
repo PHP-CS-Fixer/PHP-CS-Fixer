@@ -93,3 +93,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../../../tests/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixerTest.php>`_

@@ -112,3 +112,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\SelfStaticAccessorFixer <./../../../src/Fixer/ClassNotation/SelfStaticAccessorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\SelfStaticAccessorFixer <./../../../tests/Fixer/ClassNotation/SelfStaticAccessorFixerTest.php>`_

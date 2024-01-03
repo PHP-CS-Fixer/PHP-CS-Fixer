@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveIssetsFixer <./../../../tests/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixerTest.php>`_

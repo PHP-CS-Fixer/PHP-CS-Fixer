@@ -39,3 +39,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../../../src/Fixer/Operator/LongToShorthandOperatorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\LongToShorthandOperatorFixer <./../../../tests/Fixer/Operator/LongToShorthandOperatorFixerTest.php>`_

@@ -99,3 +99,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../tests/Fixer/FunctionNotation/PhpdocToReturnTypeFixerTest.php>`_

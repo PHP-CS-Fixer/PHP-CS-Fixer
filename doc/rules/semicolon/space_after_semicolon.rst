@@ -69,3 +69,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Semicolon\\SpaceAfterSemicolonFixer <./../../../src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Semicolon\\SpaceAfterSemicolonFixer <./../../../tests/Fixer/Semicolon/SpaceAfterSemicolonFixerTest.php>`_

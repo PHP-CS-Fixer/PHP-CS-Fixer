@@ -35,3 +35,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../../../src/Fixer/Whitespace/ArrayIndentationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer <./../../../tests/Fixer/Whitespace/ArrayIndentationFixerTest.php>`_

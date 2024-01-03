@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarAnnotationCorrectOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocVarAnnotationCorrectOrderFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarAnnotationCorrectOrderFixer <./../../../tests/Fixer/Phpdoc/PhpdocVarAnnotationCorrectOrderFixerTest.php>`_

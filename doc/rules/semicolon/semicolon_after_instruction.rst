@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Semicolon\\SemicolonAfterInstructionFixer <./../../../src/Fixer/Semicolon/SemicolonAfterInstructionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Semicolon\\SemicolonAfterInstructionFixer <./../../../tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php>`_

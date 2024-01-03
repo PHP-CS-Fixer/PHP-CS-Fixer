@@ -70,3 +70,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../../../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../../../tests/Fixer/LanguageConstruct/NullableTypeDeclarationFixerTest.php>`_

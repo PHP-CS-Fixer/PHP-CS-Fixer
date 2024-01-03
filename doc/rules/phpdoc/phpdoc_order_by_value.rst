@@ -66,3 +66,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderByValueFixer <./../../../src/Fixer/Phpdoc/PhpdocOrderByValueFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocOrderByValueFixer <./../../../tests/Fixer/Phpdoc/PhpdocOrderByValueFixerTest.php>`_

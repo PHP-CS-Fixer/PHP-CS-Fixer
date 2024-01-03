@@ -97,3 +97,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../../../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../../../tests/Fixer/Comment/SingleLineCommentStyleFixerTest.php>`_

@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\NoEmptyPhpdocFixer <./../../../src/Fixer/Phpdoc/NoEmptyPhpdocFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\NoEmptyPhpdocFixer <./../../../tests/Fixer/Phpdoc/NoEmptyPhpdocFixerTest.php>`_

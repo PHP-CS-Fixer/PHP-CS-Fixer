@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\StringLengthToEmptyFixer <./../../../src/Fixer/StringNotation/StringLengthToEmptyFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\StringLengthToEmptyFixer <./../../../tests/Fixer/StringNotation/StringLengthToEmptyFixerTest.php>`_

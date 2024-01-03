@@ -122,3 +122,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\FinalInternalClassFixer <./../../../src/Fixer/ClassNotation/FinalInternalClassFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalInternalClassFixer <./../../../tests/Fixer/ClassNotation/FinalInternalClassFixerTest.php>`_

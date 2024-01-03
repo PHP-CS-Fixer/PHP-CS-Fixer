@@ -116,3 +116,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\FunctionDeclarationFixer <./../../../src/Fixer/FunctionNotation/FunctionDeclarationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionDeclarationFixer <./../../../tests/Fixer/FunctionNotation/FunctionDeclarationFixerTest.php>`_

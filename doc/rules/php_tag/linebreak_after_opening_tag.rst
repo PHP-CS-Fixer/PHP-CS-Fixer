@@ -31,3 +31,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/LinebreakAfterOpeningTagFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpTag\\LinebreakAfterOpeningTagFixer <./../../../tests/Fixer/PhpTag/LinebreakAfterOpeningTagFixerTest.php>`_

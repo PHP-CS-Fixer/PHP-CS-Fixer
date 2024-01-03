@@ -39,3 +39,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\StaticLambdaFixer <./../../../src/Fixer/FunctionNotation/StaticLambdaFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\StaticLambdaFixer <./../../../tests/Fixer/FunctionNotation/StaticLambdaFixerTest.php>`_

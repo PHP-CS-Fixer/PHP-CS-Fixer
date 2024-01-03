@@ -67,3 +67,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Semicolon\\MultilineWhitespaceBeforeSemicolonsFixer <./../../../tests/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixerTest.php>`_

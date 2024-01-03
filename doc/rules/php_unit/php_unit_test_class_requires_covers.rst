@@ -39,3 +39,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestClassRequiresCoversFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestClassRequiresCoversFixer <./../../../tests/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixerTest.php>`_

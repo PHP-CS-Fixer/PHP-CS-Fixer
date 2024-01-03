@@ -42,3 +42,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\StringLineEndingFixer <./../../../src/Fixer/StringNotation/StringLineEndingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\StringLineEndingFixer <./../../../tests/Fixer/StringNotation/StringLineEndingFixerTest.php>`_

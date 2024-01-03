@@ -22,3 +22,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\SimplifiedIfReturnFixer <./../../../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\SimplifiedIfReturnFixer <./../../../tests/Fixer/ControlStructure/SimplifiedIfReturnFixerTest.php>`_

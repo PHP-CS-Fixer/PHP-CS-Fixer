@@ -39,3 +39,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../../../src/Fixer/PhpTag/FullOpeningTagFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpTag\\FullOpeningTagFixer <./../../../tests/Fixer/PhpTag/FullOpeningTagFixerTest.php>`_

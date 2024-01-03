@@ -40,3 +40,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\FinalPublicMethodForAbstractClassFixer <./../../../src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalPublicMethodForAbstractClassFixer <./../../../tests/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixerTest.php>`_

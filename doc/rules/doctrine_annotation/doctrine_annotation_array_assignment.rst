@@ -74,3 +74,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationArrayAssignmentFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationArrayAssignmentFixer <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixerTest.php>`_

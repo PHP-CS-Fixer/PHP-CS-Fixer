@@ -46,3 +46,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixer <./../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixer <./../../../tests/Fixer/ClassNotation/NoNullPropertyInitializationFixerTest.php>`_

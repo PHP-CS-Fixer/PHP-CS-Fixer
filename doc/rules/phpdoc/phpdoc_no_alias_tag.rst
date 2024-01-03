@@ -74,3 +74,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoAliasTagFixerTest.php>`_

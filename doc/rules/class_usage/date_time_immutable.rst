@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassUsage\\DateTimeImmutableFixer <./../../../src/Fixer/ClassUsage/DateTimeImmutableFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassUsage\\DateTimeImmutableFixer <./../../../tests/Fixer/ClassUsage/DateTimeImmutableFixerTest.php>`_

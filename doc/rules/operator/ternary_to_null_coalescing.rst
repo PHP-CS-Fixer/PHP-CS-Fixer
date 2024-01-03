@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../../../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../../../tests/Fixer/Operator/TernaryToNullCoalescingFixerTest.php>`_

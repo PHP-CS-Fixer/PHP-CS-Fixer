@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ReturnNotation\\NoUselessReturnFixer <./../../../src/Fixer/ReturnNotation/NoUselessReturnFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ReturnNotation\\NoUselessReturnFixer <./../../../tests/Fixer/ReturnNotation/NoUselessReturnFixerTest.php>`_

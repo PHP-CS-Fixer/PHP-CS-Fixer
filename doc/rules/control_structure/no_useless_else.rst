@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../../../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUselessElseFixer <./../../../tests/Fixer/ControlStructure/NoUselessElseFixerTest.php>`_

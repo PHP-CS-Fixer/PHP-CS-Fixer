@@ -83,3 +83,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../../../src/Fixer/Operator/NewWithBracesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../../../tests/Fixer/Operator/NewWithBracesFixerTest.php>`_

@@ -32,3 +32,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\NamespaceNotation\\NoLeadingNamespaceWhitespaceFixer <./../../../src/Fixer/NamespaceNotation/NoLeadingNamespaceWhitespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\NoLeadingNamespaceWhitespaceFixer <./../../../tests/Fixer/NamespaceNotation/NoLeadingNamespaceWhitespaceFixerTest.php>`_

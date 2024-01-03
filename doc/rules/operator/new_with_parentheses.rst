@@ -90,3 +90,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../../../src/Fixer/Operator/NewWithParenthesesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NewWithParenthesesFixer <./../../../tests/Fixer/Operator/NewWithParenthesesFixerTest.php>`_

@@ -80,3 +80,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixer <./../../../src/Fixer/FunctionNotation/ReturnTypeDeclarationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\ReturnTypeDeclarationFixer <./../../../tests/Fixer/FunctionNotation/ReturnTypeDeclarationFixerTest.php>`_

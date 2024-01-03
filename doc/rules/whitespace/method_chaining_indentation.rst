@@ -31,3 +31,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../../../src/Fixer/Whitespace/MethodChainingIndentationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\MethodChainingIndentationFixer <./../../../tests/Fixer/Whitespace/MethodChainingIndentationFixerTest.php>`_

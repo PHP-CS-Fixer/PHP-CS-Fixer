@@ -85,3 +85,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAddMissingParamAnnotationFixer <./../../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAddMissingParamAnnotationFixer <./../../../tests/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixerTest.php>`_

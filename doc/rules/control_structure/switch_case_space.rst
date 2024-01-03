@@ -42,3 +42,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSpaceFixer <./../../../src/Fixer/ControlStructure/SwitchCaseSpaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSpaceFixer <./../../../tests/Fixer/ControlStructure/SwitchCaseSpaceFixerTest.php>`_

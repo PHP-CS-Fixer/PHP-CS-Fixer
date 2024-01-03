@@ -71,3 +71,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../../../src/Fixer/Casing/LowercaseStaticReferenceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../../../tests/Fixer/Casing/LowercaseStaticReferenceFixerTest.php>`_

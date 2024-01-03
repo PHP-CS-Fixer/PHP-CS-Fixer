@@ -42,3 +42,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixerTest.php>`_

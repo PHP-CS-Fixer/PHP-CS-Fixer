@@ -77,3 +77,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer <./../../../tests/Fixer/PhpUnit/PhpUnitTestAnnotationFixerTest.php>`_

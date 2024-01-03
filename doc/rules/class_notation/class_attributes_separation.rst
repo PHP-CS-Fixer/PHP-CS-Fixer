@@ -149,3 +149,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../tests/Fixer/ClassNotation/ClassAttributesSeparationFixerTest.php>`_

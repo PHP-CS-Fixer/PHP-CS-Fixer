@@ -43,3 +43,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarWithoutNameFixer <./../../../src/Fixer/Phpdoc/PhpdocVarWithoutNameFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocVarWithoutNameFixer <./../../../tests/Fixer/Phpdoc/PhpdocVarWithoutNameFixerTest.php>`_

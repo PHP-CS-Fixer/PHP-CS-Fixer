@@ -339,3 +339,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer <./../../../tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php>`_

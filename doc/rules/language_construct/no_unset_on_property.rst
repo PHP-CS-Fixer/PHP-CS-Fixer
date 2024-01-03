@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\NoUnsetOnPropertyFixer <./../../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\NoUnsetOnPropertyFixer <./../../../tests/Fixer/LanguageConstruct/NoUnsetOnPropertyFixerTest.php>`_

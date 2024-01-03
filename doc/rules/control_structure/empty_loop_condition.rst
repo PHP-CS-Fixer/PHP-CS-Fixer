@@ -67,3 +67,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopConditionFixer <./../../../src/Fixer/ControlStructure/EmptyLoopConditionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopConditionFixer <./../../../tests/Fixer/ControlStructure/EmptyLoopConditionFixerTest.php>`_

@@ -91,3 +91,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\FunctionToConstantFixer <./../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\FunctionToConstantFixer <./../../../tests/Fixer/LanguageConstruct/FunctionToConstantFixerTest.php>`_

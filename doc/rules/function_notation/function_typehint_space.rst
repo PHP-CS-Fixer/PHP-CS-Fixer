@@ -42,3 +42,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../../../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\FunctionTypehintSpaceFixer <./../../../tests/Fixer/FunctionNotation/FunctionTypehintSpaceFixerTest.php>`_

@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\NoBinaryStringFixer <./../../../src/Fixer/StringNotation/NoBinaryStringFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\NoBinaryStringFixer <./../../../tests/Fixer/StringNotation/NoBinaryStringFixerTest.php>`_

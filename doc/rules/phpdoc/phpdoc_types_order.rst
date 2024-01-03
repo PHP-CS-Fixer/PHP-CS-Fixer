@@ -142,3 +142,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../../../tests/Fixer/Phpdoc/PhpdocTypesOrderFixerTest.php>`_

@@ -46,3 +46,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../../../src/Fixer/Casing/MagicMethodCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\MagicMethodCasingFixer <./../../../tests/Fixer/Casing/MagicMethodCasingFixerTest.php>`_

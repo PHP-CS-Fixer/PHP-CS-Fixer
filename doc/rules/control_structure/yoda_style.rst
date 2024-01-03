@@ -121,3 +121,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer <./../../../src/Fixer/ControlStructure/YodaStyleFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer <./../../../tests/Fixer/ControlStructure/YodaStyleFixerTest.php>`_

@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\NoLeadingImportSlashFixer <./../../../src/Fixer/Import/NoLeadingImportSlashFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\NoLeadingImportSlashFixer <./../../../tests/Fixer/Import/NoLeadingImportSlashFixerTest.php>`_

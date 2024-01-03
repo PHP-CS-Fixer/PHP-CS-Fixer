@@ -70,3 +70,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../../../tests/Fixer/ControlStructure/NoUnneededCurlyBracesFixerTest.php>`_

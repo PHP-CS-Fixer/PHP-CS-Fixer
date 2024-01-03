@@ -118,3 +118,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAlignFixer <./../../../src/Fixer/Phpdoc/PhpdocAlignFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAlignFixer <./../../../tests/Fixer/Phpdoc/PhpdocAlignFixerTest.php>`_

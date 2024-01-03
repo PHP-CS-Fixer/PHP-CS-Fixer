@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Semicolon\\NoSinglelineWhitespaceBeforeSemicolonsFixer <./../../../src/Fixer/Semicolon/NoSinglelineWhitespaceBeforeSemicolonsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Semicolon\\NoSinglelineWhitespaceBeforeSemicolonsFixer <./../../../tests/Fixer/Semicolon/NoSinglelineWhitespaceBeforeSemicolonsFixerTest.php>`_

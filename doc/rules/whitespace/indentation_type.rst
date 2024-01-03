@@ -39,3 +39,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../../../src/Fixer/Whitespace/IndentationTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\IndentationTypeFixer <./../../../tests/Fixer/Whitespace/IndentationTypeFixerTest.php>`_

@@ -37,3 +37,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\NoMultipleStatementsPerLineFixer <./../../../src/Fixer/Basic/NoMultipleStatementsPerLineFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\NoMultipleStatementsPerLineFixer <./../../../tests/Fixer/Basic/NoMultipleStatementsPerLineFixerTest.php>`_

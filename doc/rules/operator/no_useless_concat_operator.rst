@@ -58,3 +58,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\NoUselessConcatOperatorFixer <./../../../src/Fixer/Operator/NoUselessConcatOperatorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NoUselessConcatOperatorFixer <./../../../tests/Fixer/Operator/NoUselessConcatOperatorFixerTest.php>`_

@@ -59,3 +59,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoAlternativeSyntaxFixer <./../../../src/Fixer/ControlStructure/NoAlternativeSyntaxFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoAlternativeSyntaxFixer <./../../../tests/Fixer/ControlStructure/NoAlternativeSyntaxFixerTest.php>`_

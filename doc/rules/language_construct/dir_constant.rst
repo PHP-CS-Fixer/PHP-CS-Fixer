@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\DirConstantFixer <./../../../src/Fixer/LanguageConstruct/DirConstantFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\DirConstantFixer <./../../../tests/Fixer/LanguageConstruct/DirConstantFixerTest.php>`_

@@ -115,3 +115,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../../../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../../../tests/Fixer/PhpUnit/PhpUnitMockFixerTest.php>`_

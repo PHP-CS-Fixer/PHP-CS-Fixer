@@ -96,3 +96,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../../../src/Fixer/Whitespace/BlankLineBetweenImportGroupsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBetweenImportGroupsFixer <./../../../tests/Fixer/Whitespace/BlankLineBetweenImportGroupsFixerTest.php>`_

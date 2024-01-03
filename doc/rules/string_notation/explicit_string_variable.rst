@@ -49,3 +49,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\ExplicitStringVariableFixer <./../../../src/Fixer/StringNotation/ExplicitStringVariableFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\ExplicitStringVariableFixer <./../../../tests/Fixer/StringNotation/ExplicitStringVariableFixerTest.php>`_

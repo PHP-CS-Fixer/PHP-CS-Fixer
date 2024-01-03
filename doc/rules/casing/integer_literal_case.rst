@@ -32,3 +32,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../../../src/Fixer/Casing/IntegerLiteralCaseFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\IntegerLiteralCaseFixer <./../../../tests/Fixer/Casing/IntegerLiteralCaseFixerTest.php>`_

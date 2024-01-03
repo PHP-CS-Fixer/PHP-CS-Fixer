@@ -72,3 +72,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixerTest.php>`_

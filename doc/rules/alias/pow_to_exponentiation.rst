@@ -43,3 +43,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\PowToExponentiationFixer <./../../../src/Fixer/Alias/PowToExponentiationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\PowToExponentiationFixer <./../../../tests/Fixer/Alias/PowToExponentiationFixerTest.php>`_

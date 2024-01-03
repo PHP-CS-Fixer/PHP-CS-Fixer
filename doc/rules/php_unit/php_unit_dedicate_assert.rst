@@ -142,3 +142,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertFixerTest.php>`_

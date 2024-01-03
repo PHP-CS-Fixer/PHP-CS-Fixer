@@ -23,3 +23,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../../../src/Fixer/ArrayNotation/ReturnToYieldFromFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\ReturnToYieldFromFixer <./../../../tests/Fixer/ArrayNotation/ReturnToYieldFromFixerTest.php>`_

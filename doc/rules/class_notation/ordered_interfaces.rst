@@ -142,3 +142,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../../../tests/Fixer/ClassNotation/OrderedInterfacesFixerTest.php>`_

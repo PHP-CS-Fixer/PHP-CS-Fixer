@@ -232,3 +232,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../tests/Fixer/Whitespace/NoExtraBlankLinesFixerTest.php>`_

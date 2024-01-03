@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixer <./../../../src/Fixer/LanguageConstruct/ExplicitIndirectVariableFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ExplicitIndirectVariableFixer <./../../../tests/Fixer/LanguageConstruct/ExplicitIndirectVariableFixerTest.php>`_

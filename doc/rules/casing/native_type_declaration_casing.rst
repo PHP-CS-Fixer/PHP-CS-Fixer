@@ -49,3 +49,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../../../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\NativeTypeDeclarationCasingFixer <./../../../tests/Fixer/Casing/NativeTypeDeclarationCasingFixerTest.php>`_

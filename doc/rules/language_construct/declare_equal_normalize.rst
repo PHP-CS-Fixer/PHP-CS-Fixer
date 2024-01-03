@@ -63,3 +63,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixer <./../../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareEqualNormalizeFixer <./../../../tests/Fixer/LanguageConstruct/DeclareEqualNormalizeFixerTest.php>`_

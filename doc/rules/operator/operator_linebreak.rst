@@ -81,3 +81,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../src/Fixer/Operator/OperatorLinebreakFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\OperatorLinebreakFixer <./../../../tests/Fixer/Operator/OperatorLinebreakFixerTest.php>`_

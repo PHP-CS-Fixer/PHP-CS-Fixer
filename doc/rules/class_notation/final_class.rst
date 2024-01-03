@@ -42,3 +42,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../../../src/Fixer/ClassNotation/FinalClassFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../../../tests/Fixer/ClassNotation/FinalClassFixerTest.php>`_

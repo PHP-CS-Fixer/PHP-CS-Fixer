@@ -131,3 +131,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\NoAliasFunctionsFixer <./../../../tests/Fixer/Alias/NoAliasFunctionsFixerTest.php>`_

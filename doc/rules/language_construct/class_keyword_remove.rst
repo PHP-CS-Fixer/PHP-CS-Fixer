@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../../../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../../../tests/Fixer/LanguageConstruct/ClassKeywordRemoveFixerTest.php>`_

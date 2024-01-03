@@ -35,3 +35,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\NoBlankLinesAfterPhpdocFixer <./../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\NoBlankLinesAfterPhpdocFixer <./../../../tests/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixerTest.php>`_

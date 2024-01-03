@@ -61,3 +61,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSizeClassFixer <./../../../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSizeClassFixer <./../../../tests/Fixer/PhpUnit/PhpUnitSizeClassFixerTest.php>`_

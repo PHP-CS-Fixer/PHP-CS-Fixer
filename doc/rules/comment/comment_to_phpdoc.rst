@@ -68,3 +68,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../../../src/Fixer/Comment/CommentToPhpdocFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../../../tests/Fixer/Comment/CommentToPhpdocFixerTest.php>`_

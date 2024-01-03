@@ -93,3 +93,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixerTest.php>`_

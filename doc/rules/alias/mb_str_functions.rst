@@ -52,3 +52,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\MbStrFunctionsFixer <./../../../src/Fixer/Alias/MbStrFunctionsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\MbStrFunctionsFixer <./../../../tests/Fixer/Alias/MbStrFunctionsFixerTest.php>`_

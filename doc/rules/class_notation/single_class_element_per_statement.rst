@@ -93,3 +93,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../../../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\SingleClassElementPerStatementFixer <./../../../tests/Fixer/ClassNotation/SingleClassElementPerStatementFixerTest.php>`_

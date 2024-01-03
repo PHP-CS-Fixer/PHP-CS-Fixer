@@ -51,3 +51,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../../../tests/Fixer/FunctionNotation/ImplodeCallFixerTest.php>`_

@@ -43,3 +43,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\CombineNestedDirnameFixer <./../../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\CombineNestedDirnameFixer <./../../../tests/Fixer/FunctionNotation/CombineNestedDirnameFixerTest.php>`_

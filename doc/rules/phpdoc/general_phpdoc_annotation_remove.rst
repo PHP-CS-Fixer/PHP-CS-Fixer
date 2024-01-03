@@ -83,3 +83,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../tests/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixerTest.php>`_

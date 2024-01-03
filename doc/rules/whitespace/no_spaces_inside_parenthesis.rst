@@ -46,3 +46,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../../../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../../../tests/Fixer/Whitespace/NoSpacesInsideParenthesisFixerTest.php>`_

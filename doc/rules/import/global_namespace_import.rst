@@ -125,3 +125,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../tests/Fixer/Import/GlobalNamespaceImportFixerTest.php>`_

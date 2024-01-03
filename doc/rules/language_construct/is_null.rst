@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\IsNullFixer <./../../../src/Fixer/LanguageConstruct/IsNullFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\IsNullFixer <./../../../tests/Fixer/LanguageConstruct/IsNullFixerTest.php>`_

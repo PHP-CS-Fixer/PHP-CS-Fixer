@@ -84,3 +84,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoBreakCommentFixer <./../../../src/Fixer/ControlStructure/NoBreakCommentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoBreakCommentFixer <./../../../tests/Fixer/ControlStructure/NoBreakCommentFixerTest.php>`_

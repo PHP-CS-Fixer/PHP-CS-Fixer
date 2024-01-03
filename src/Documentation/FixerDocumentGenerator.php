@@ -245,6 +245,18 @@ final class FixerDocumentGenerator
             {$fileName}
             RST;
 
+        $fileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);
+        $fileName = Preg::replace('~.*\K(?=\.php>)~', 'Test', $fileName);
+
+        $doc .= <<<RST
+
+
+            Test class
+            ------------
+
+            {$fileName}
+            RST;
+
         $doc = str_replace("\t", '<TAB>', $doc);
 
         return "{$doc}\n";

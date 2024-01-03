@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../../../src/Fixer/Operator/NoSpaceAroundDoubleColonFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NoSpaceAroundDoubleColonFixer <./../../../tests/Fixer/Operator/NoSpaceAroundDoubleColonFixerTest.php>`_

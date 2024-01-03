@@ -37,3 +37,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\EregToPregFixer <./../../../src/Fixer/Alias/EregToPregFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\EregToPregFixer <./../../../tests/Fixer/Alias/EregToPregFixerTest.php>`_

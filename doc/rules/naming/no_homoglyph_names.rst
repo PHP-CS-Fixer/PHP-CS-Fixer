@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Naming\\NoHomoglyphNamesFixer <./../../../src/Fixer/Naming/NoHomoglyphNamesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Naming\\NoHomoglyphNamesFixer <./../../../tests/Fixer/Naming/NoHomoglyphNamesFixerTest.php>`_

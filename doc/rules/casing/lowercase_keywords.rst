@@ -51,3 +51,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../../../src/Fixer/Casing/LowercaseKeywordsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\LowercaseKeywordsFixer <./../../../tests/Fixer/Casing/LowercaseKeywordsFixerTest.php>`_

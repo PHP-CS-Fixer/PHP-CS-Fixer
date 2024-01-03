@@ -52,3 +52,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\RegularCallableCallFixer <./../../../src/Fixer/FunctionNotation/RegularCallableCallFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\RegularCallableCallFixer <./../../../tests/Fixer/FunctionNotation/RegularCallableCallFixerTest.php>`_

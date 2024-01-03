@@ -35,3 +35,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../../../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../../../tests/Fixer/Whitespace/CompactNullableTypehintFixerTest.php>`_

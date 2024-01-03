@@ -40,3 +40,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../../../src/Fixer/Strict/DeclareStrictTypesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../../../tests/Fixer/Strict/DeclareStrictTypesFixerTest.php>`_

@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoSuperfluousElseifFixer <./../../../src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoSuperfluousElseifFixer <./../../../tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php>`_

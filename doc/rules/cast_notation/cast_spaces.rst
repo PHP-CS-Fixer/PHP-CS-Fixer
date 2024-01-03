@@ -79,3 +79,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\CastNotation\\CastSpacesFixer <./../../../src/Fixer/CastNotation/CastSpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\CastNotation\\CastSpacesFixer <./../../../tests/Fixer/CastNotation/CastSpacesFixerTest.php>`_

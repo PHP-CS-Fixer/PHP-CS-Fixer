@@ -55,3 +55,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\NoMixedEchoPrintFixer <./../../../src/Fixer/Alias/NoMixedEchoPrintFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\NoMixedEchoPrintFixer <./../../../tests/Fixer/Alias/NoMixedEchoPrintFixerTest.php>`_

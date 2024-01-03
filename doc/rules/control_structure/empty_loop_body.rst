@@ -58,3 +58,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../../../src/Fixer/ControlStructure/EmptyLoopBodyFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../../../tests/Fixer/ControlStructure/EmptyLoopBodyFixerTest.php>`_

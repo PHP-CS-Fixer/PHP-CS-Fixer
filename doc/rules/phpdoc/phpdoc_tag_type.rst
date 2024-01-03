@@ -67,3 +67,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagTypeFixer <./../../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagTypeFixer <./../../../tests/Fixer/Phpdoc/PhpdocTagTypeFixerTest.php>`_

@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\LogicalOperatorsFixer <./../../../src/Fixer/Operator/LogicalOperatorsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\LogicalOperatorsFixer <./../../../tests/Fixer/Operator/LogicalOperatorsFixerTest.php>`_

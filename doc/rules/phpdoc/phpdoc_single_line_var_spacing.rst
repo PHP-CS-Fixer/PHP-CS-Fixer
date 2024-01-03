@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSingleLineVarSpacingFixer <./../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSingleLineVarSpacingFixer <./../../../tests/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixerTest.php>`_

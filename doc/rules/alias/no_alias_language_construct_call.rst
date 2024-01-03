@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\NoAliasLanguageConstructCallFixer <./../../../src/Fixer/Alias/NoAliasLanguageConstructCallFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\NoAliasLanguageConstructCallFixer <./../../../tests/Fixer/Alias/NoAliasLanguageConstructCallFixerTest.php>`_

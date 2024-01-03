@@ -37,3 +37,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\ProtectedToPrivateFixer <./../../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\ProtectedToPrivateFixer <./../../../tests/Fixer/ClassNotation/ProtectedToPrivateFixerTest.php>`_

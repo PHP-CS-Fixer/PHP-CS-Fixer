@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../../../tests/Fixer/Operator/StandardizeNotEqualsFixerTest.php>`_

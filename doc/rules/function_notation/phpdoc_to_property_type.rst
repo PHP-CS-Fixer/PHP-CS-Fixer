@@ -73,3 +73,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../../../tests/Fixer/FunctionNotation/PhpdocToPropertyTypeFixerTest.php>`_

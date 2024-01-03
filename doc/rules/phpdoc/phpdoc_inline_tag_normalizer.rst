@@ -66,3 +66,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixer <./../../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocInlineTagNormalizerFixer <./../../../tests/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixerTest.php>`_

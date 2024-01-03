@@ -71,3 +71,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationBracesFixer <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixerTest.php>`_

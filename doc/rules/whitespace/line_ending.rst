@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../../../src/Fixer/Whitespace/LineEndingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\LineEndingFixer <./../../../tests/Fixer/Whitespace/LineEndingFixerTest.php>`_

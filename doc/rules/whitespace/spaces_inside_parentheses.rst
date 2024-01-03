@@ -106,3 +106,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../../../src/Fixer/Whitespace/SpacesInsideParenthesesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\SpacesInsideParenthesesFixer <./../../../tests/Fixer/Whitespace/SpacesInsideParenthesesFixerTest.php>`_

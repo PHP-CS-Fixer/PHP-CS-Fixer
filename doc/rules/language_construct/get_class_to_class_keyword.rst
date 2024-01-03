@@ -51,3 +51,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../../../src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../../../tests/Fixer/LanguageConstruct/GetClassToClassKeywordFixerTest.php>`_

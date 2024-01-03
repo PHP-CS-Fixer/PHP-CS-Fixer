@@ -203,3 +203,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../../../tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php>`_

@@ -70,3 +70,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\PsrAutoloadingFixer <./../../../src/Fixer/Basic/PsrAutoloadingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\PsrAutoloadingFixer <./../../../tests/Fixer/Basic/PsrAutoloadingFixerTest.php>`_

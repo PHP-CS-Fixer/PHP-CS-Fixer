@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\TernaryOperatorSpacesFixer <./../../../src/Fixer/Operator/TernaryOperatorSpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\TernaryOperatorSpacesFixer <./../../../tests/Fixer/Operator/TernaryOperatorSpacesFixerTest.php>`_

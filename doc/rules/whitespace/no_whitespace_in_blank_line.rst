@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../../../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoWhitespaceInBlankLineFixer <./../../../tests/Fixer/Whitespace/NoWhitespaceInBlankLineFixerTest.php>`_

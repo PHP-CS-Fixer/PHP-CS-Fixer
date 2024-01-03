@@ -45,3 +45,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../../../tests/Fixer/ClassNotation/NoPhp4ConstructorFixerTest.php>`_

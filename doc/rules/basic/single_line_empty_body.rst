@@ -37,3 +37,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../../../src/Fixer/Basic/SingleLineEmptyBodyFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\SingleLineEmptyBodyFixer <./../../../tests/Fixer/Basic/SingleLineEmptyBodyFixerTest.php>`_

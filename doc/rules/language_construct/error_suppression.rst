@@ -101,3 +101,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../tests/Fixer/LanguageConstruct/ErrorSuppressionFixerTest.php>`_

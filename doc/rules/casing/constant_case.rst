@@ -71,3 +71,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../../../src/Fixer/Casing/ConstantCaseFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../../../tests/Fixer/Casing/ConstantCaseFixerTest.php>`_

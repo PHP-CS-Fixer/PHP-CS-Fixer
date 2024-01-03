@@ -77,3 +77,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../../../src/Fixer/ControlStructure/NoUnneededBracesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededBracesFixer <./../../../tests/Fixer/ControlStructure/NoUnneededBracesFixerTest.php>`_

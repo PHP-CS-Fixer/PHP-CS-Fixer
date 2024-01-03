@@ -151,3 +151,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../../../tests/Fixer/ConstantNotation/NativeConstantInvocationFixerTest.php>`_

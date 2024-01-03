@@ -35,3 +35,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ReturnNotation\\SimplifiedNullReturnFixer <./../../../src/Fixer/ReturnNotation/SimplifiedNullReturnFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ReturnNotation\\SimplifiedNullReturnFixer <./../../../tests/Fixer/ReturnNotation/SimplifiedNullReturnFixerTest.php>`_

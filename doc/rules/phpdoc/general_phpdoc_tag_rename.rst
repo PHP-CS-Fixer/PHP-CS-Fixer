@@ -129,3 +129,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../../../tests/Fixer/Phpdoc/GeneralPhpdocTagRenameFixerTest.php>`_

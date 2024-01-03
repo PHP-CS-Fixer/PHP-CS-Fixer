@@ -46,3 +46,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../src/Fixer/Alias/ModernizeStrposFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\ModernizeStrposFixer <./../../../tests/Fixer/Alias/ModernizeStrposFixerTest.php>`_

@@ -134,3 +134,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../../../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../../../tests/Fixer/ControlStructure/TrailingCommaInMultilineFixerTest.php>`_

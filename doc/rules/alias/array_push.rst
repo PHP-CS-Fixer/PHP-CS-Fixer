@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../../../src/Fixer/Alias/ArrayPushFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../../../tests/Fixer/Alias/ArrayPushFixerTest.php>`_

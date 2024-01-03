@@ -37,3 +37,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\IncludeFixer <./../../../src/Fixer/ControlStructure/IncludeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\IncludeFixer <./../../../tests/Fixer/ControlStructure/IncludeFixerTest.php>`_

@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../../../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoTrailingCommaInListCallFixer <./../../../tests/Fixer/ControlStructure/NoTrailingCommaInListCallFixerTest.php>`_

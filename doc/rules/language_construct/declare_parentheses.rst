@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../../../src/Fixer/LanguageConstruct/DeclareParenthesesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\DeclareParenthesesFixer <./../../../tests/Fixer/LanguageConstruct/DeclareParenthesesFixerTest.php>`_

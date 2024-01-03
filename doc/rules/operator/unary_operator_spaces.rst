@@ -98,3 +98,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../../../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\UnaryOperatorSpacesFixer <./../../../tests/Fixer/Operator/UnaryOperatorSpacesFixerTest.php>`_

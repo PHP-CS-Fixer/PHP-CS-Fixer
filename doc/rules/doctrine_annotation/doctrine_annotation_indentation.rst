@@ -77,3 +77,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixerTest.php>`_

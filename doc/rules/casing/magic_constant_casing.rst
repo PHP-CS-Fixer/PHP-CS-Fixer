@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\MagicConstantCasingFixer <./../../../src/Fixer/Casing/MagicConstantCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\MagicConstantCasingFixer <./../../../tests/Fixer/Casing/MagicConstantCasingFixerTest.php>`_

@@ -33,3 +33,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAnnotationWithoutDotFixer <./../../../src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAnnotationWithoutDotFixer <./../../../tests/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixerTest.php>`_

@@ -63,3 +63,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../../../src/Fixer/ListNotation/ListSyntaxFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../../../tests/Fixer/ListNotation/ListSyntaxFixerTest.php>`_

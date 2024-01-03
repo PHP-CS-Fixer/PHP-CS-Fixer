@@ -82,3 +82,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../tests/Fixer/ControlStructure/NoUnneededControlParenthesesFixerTest.php>`_

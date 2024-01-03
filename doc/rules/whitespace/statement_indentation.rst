@@ -109,3 +109,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../tests/Fixer/Whitespace/StatementIndentationFixerTest.php>`_

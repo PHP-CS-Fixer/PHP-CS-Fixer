@@ -51,3 +51,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Semicolon\\NoEmptyStatementFixer <./../../../src/Fixer/Semicolon/NoEmptyStatementFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Semicolon\\NoEmptyStatementFixer <./../../../tests/Fixer/Semicolon/NoEmptyStatementFixerTest.php>`_

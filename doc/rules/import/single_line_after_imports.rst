@@ -61,3 +61,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../../../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../../../tests/Fixer/Import/SingleLineAfterImportsFixerTest.php>`_

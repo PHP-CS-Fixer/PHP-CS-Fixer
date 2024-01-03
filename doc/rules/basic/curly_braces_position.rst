@@ -230,3 +230,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../../../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../../../tests/Fixer/Basic/CurlyBracesPositionFixerTest.php>`_

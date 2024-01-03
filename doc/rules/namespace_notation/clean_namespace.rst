@@ -45,3 +45,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\NamespaceNotation\\CleanNamespaceFixer <./../../../src/Fixer/NamespaceNotation/CleanNamespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\CleanNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/CleanNamespaceFixerTest.php>`_

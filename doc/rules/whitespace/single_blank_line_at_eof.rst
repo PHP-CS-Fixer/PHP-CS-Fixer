@@ -48,3 +48,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\SingleBlankLineAtEofFixer <./../../../tests/Fixer/Whitespace/SingleBlankLineAtEofFixerTest.php>`_

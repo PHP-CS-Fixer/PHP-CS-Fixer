@@ -162,3 +162,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNoExpectationAnnotationFixer <./../../../tests/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixerTest.php>`_

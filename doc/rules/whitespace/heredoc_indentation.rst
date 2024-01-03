@@ -80,3 +80,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../../../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../../../tests/Fixer/Whitespace/HeredocIndentationFixerTest.php>`_

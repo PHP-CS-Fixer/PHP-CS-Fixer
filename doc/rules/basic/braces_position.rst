@@ -258,3 +258,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../src/Fixer/Basic/BracesPositionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../tests/Fixer/Basic/BracesPositionFixerTest.php>`_

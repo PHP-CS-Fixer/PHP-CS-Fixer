@@ -50,3 +50,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLineAfterNamespaceFixer <./../../../src/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\NamespaceNotation\\BlankLineAfterNamespaceFixer <./../../../tests/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixerTest.php>`_

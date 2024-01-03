@@ -55,3 +55,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockShortWillReturnFixer <./../../../src/Fixer/PhpUnit/PhpUnitMockShortWillReturnFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockShortWillReturnFixer <./../../../tests/Fixer/PhpUnit/PhpUnitMockShortWillReturnFixerTest.php>`_

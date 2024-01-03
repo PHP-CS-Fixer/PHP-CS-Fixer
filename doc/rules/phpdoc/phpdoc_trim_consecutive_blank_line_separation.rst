@@ -44,3 +44,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimConsecutiveBlankLineSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimConsecutiveBlankLineSeparationFixer <./../../../tests/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixerTest.php>`_

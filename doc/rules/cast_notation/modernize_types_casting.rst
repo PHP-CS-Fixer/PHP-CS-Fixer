@@ -48,3 +48,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\CastNotation\\ModernizeTypesCastingFixer <./../../../src/Fixer/CastNotation/ModernizeTypesCastingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\CastNotation\\ModernizeTypesCastingFixer <./../../../tests/Fixer/CastNotation/ModernizeTypesCastingFixerTest.php>`_

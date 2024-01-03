@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../../../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\SingleTraitInsertPerStatementFixer <./../../../tests/Fixer/ClassNotation/SingleTraitInsertPerStatementFixerTest.php>`_

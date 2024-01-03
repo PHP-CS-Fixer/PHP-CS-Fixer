@@ -63,3 +63,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMethodCasingFixer <./../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMethodCasingFixer <./../../../tests/Fixer/PhpUnit/PhpUnitMethodCasingFixerTest.php>`_

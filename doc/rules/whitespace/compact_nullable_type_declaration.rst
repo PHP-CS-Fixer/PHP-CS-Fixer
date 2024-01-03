@@ -41,3 +41,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../../../src/Fixer/Whitespace/CompactNullableTypeDeclarationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypeDeclarationFixer <./../../../tests/Fixer/Whitespace/CompactNullableTypeDeclarationFixerTest.php>`_

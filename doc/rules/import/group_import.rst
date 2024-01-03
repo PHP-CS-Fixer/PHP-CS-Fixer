@@ -22,3 +22,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../../../src/Fixer/Import/GroupImportFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\GroupImportFixer <./../../../tests/Fixer/Import/GroupImportFixerTest.php>`_

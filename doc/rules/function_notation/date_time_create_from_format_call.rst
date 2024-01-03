@@ -40,3 +40,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../../../src/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../../../tests/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixerTest.php>`_

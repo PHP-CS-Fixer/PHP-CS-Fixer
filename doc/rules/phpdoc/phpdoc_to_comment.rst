@@ -104,3 +104,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocToCommentFixer <./../../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocToCommentFixer <./../../../tests/Fixer/Phpdoc/PhpdocToCommentFixerTest.php>`_

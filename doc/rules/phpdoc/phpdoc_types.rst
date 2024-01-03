@@ -66,3 +66,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../tests/Fixer/Phpdoc/PhpdocTypesFixerTest.php>`_

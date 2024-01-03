@@ -42,3 +42,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSemicolonToColonFixer <./../../../src/Fixer/ControlStructure/SwitchCaseSemicolonToColonFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\SwitchCaseSemicolonToColonFixer <./../../../tests/Fixer/ControlStructure/SwitchCaseSemicolonToColonFixerTest.php>`_

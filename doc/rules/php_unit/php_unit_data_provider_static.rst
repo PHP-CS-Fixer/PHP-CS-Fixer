@@ -105,3 +105,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderStaticFixerTest.php>`_

@@ -118,3 +118,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../../../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../../../tests/Fixer/ClassNotation/OrderedTypesFixerTest.php>`_

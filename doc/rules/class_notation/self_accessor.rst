@@ -49,3 +49,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../../../src/Fixer/ClassNotation/SelfAccessorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\SelfAccessorFixer <./../../../tests/Fixer/ClassNotation/SelfAccessorFixerTest.php>`_

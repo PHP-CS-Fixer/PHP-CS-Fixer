@@ -68,3 +68,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../../../src/Fixer/Basic/NonPrintableCharacterFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../../../tests/Fixer/Basic/NonPrintableCharacterFixerTest.php>`_

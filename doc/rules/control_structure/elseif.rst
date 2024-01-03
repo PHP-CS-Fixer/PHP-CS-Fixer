@@ -39,3 +39,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\ElseifFixer <./../../../src/Fixer/ControlStructure/ElseifFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\ElseifFixer <./../../../tests/Fixer/ControlStructure/ElseifFixerTest.php>`_

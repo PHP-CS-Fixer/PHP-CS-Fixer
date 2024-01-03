@@ -147,3 +147,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../tests/Fixer/StringNotation/EscapeImplicitBackslashesFixerTest.php>`_

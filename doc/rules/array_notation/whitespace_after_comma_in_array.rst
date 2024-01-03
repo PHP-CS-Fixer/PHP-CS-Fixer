@@ -61,3 +61,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\WhitespaceAfterCommaInArrayFixer <./../../../tests/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixerTest.php>`_

@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Casing\\NativeFunctionCasingFixer <./../../../src/Fixer/Casing/NativeFunctionCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Casing\\NativeFunctionCasingFixer <./../../../tests/Fixer/Casing/NativeFunctionCasingFixerTest.php>`_

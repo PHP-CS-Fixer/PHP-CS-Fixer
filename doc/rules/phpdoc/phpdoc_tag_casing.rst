@@ -53,3 +53,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../../../tests/Fixer/Phpdoc/PhpdocTagCasingFixerTest.php>`_

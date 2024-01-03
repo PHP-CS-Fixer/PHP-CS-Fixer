@@ -133,3 +133,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\NoSuperfluousPhpdocTagsFixer <./../../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\NoSuperfluousPhpdocTagsFixer <./../../../tests/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixerTest.php>`_

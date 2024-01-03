@@ -79,3 +79,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../../../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocScalarFixer <./../../../tests/Fixer/Phpdoc/PhpdocScalarFixerTest.php>`_

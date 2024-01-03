@@ -54,3 +54,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\SimpleToComplexStringVariableFixer <./../../../src/Fixer/StringNotation/SimpleToComplexStringVariableFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\SimpleToComplexStringVariableFixer <./../../../tests/Fixer/StringNotation/SimpleToComplexStringVariableFixerTest.php>`_

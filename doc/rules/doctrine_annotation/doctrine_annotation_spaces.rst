@@ -156,3 +156,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationSpacesFixer <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixerTest.php>`_

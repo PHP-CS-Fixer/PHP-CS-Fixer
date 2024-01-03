@@ -73,3 +73,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../../../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../../../tests/Fixer/ControlStructure/ControlStructureContinuationPositionFixerTest.php>`_

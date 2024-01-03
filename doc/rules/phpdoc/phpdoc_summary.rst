@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSummaryFixer <./../../../src/Fixer/Phpdoc/PhpdocSummaryFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSummaryFixer <./../../../tests/Fixer/Phpdoc/PhpdocSummaryFixerTest.php>`_

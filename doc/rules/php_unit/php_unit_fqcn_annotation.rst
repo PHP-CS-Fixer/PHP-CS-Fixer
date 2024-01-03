@@ -44,3 +44,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixer <./../../../tests/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixerTest.php>`_

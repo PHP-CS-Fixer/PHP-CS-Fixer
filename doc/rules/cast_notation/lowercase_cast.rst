@@ -57,3 +57,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\CastNotation\\LowercaseCastFixer <./../../../src/Fixer/CastNotation/LowercaseCastFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\CastNotation\\LowercaseCastFixer <./../../../tests/Fixer/CastNotation/LowercaseCastFixerTest.php>`_

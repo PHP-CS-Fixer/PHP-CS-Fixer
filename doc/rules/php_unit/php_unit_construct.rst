@@ -84,3 +84,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitConstructFixer <./../../../tests/Fixer/PhpUnit/PhpUnitConstructFixerTest.php>`_

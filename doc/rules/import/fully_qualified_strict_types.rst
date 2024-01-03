@@ -194,3 +194,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../tests/Fixer/Import/FullyQualifiedStrictTypesFixerTest.php>`_

@@ -33,3 +33,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../../../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ReturnNotation\\ReturnAssignmentFixer <./../../../tests/Fixer/ReturnNotation/ReturnAssignmentFixerTest.php>`_

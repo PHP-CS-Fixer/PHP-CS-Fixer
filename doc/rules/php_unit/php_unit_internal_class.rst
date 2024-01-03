@@ -63,3 +63,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitInternalClassFixer <./../../../src/Fixer/PhpUnit/PhpUnitInternalClassFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitInternalClassFixer <./../../../tests/Fixer/PhpUnit/PhpUnitInternalClassFixerTest.php>`_

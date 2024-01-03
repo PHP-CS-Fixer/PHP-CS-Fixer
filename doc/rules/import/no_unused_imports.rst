@@ -32,3 +32,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\NoUnusedImportsFixer <./../../../src/Fixer/Import/NoUnusedImportsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\NoUnusedImportsFixer <./../../../tests/Fixer/Import/NoUnusedImportsFixerTest.php>`_

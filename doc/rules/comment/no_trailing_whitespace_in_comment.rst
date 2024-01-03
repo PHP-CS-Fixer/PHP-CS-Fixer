@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../../../src/Fixer/Comment/NoTrailingWhitespaceInCommentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\NoTrailingWhitespaceInCommentFixer <./../../../tests/Fixer/Comment/NoTrailingWhitespaceInCommentFixerTest.php>`_

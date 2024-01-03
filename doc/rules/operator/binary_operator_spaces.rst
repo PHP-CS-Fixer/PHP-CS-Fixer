@@ -276,3 +276,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\BinaryOperatorSpacesFixer <./../../../tests/Fixer/Operator/BinaryOperatorSpacesFixerTest.php>`_

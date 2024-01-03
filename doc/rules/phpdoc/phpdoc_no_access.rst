@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAccessFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAccessFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAccessFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoAccessFixerTest.php>`_

@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../../../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../../../tests/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixerTest.php>`_

@@ -58,3 +58,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ControlStructure\\SwitchContinueToBreakFixer <./../../../src/Fixer/ControlStructure/SwitchContinueToBreakFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ControlStructure\\SwitchContinueToBreakFixer <./../../../tests/Fixer/ControlStructure/SwitchContinueToBreakFixerTest.php>`_

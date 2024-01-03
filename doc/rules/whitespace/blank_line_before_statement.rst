@@ -247,3 +247,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\BlankLineBeforeStatementFixer <./../../../tests/Fixer/Whitespace/BlankLineBeforeStatementFixerTest.php>`_

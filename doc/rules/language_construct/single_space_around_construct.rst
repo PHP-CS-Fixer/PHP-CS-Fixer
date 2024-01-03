@@ -120,3 +120,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAroundConstructFixer <./../../../tests/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixerTest.php>`_

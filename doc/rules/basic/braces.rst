@@ -188,3 +188,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../src/Fixer/Basic/BracesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../tests/Fixer/Basic/BracesFixerTest.php>`_

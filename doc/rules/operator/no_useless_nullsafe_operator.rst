@@ -35,3 +35,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../../../src/Fixer/Operator/NoUselessNullsafeOperatorFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NoUselessNullsafeOperatorFixer <./../../../tests/Fixer/Operator/NoUselessNullsafeOperatorFixerTest.php>`_

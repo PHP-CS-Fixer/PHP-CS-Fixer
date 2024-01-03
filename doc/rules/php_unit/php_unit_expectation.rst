@@ -194,3 +194,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../../../tests/Fixer/PhpUnit/PhpUnitExpectationFixerTest.php>`_

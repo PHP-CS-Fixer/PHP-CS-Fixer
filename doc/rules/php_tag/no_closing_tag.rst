@@ -40,3 +40,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpTag\\NoClosingTagFixer <./../../../src/Fixer/PhpTag/NoClosingTagFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpTag\\NoClosingTagFixer <./../../../tests/Fixer/PhpTag/NoClosingTagFixerTest.php>`_

@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\CastNotation\\NoUnsetCastFixer <./../../../tests/Fixer/CastNotation/NoUnsetCastFixerTest.php>`_

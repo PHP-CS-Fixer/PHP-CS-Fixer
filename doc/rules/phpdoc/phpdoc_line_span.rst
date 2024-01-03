@@ -79,3 +79,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocLineSpanFixer <./../../../src/Fixer/Phpdoc/PhpdocLineSpanFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocLineSpanFixer <./../../../tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php>`_

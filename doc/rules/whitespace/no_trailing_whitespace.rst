@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\NoTrailingWhitespaceFixer <./../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoTrailingWhitespaceFixer <./../../../tests/Fixer/Whitespace/NoTrailingWhitespaceFixerTest.php>`_

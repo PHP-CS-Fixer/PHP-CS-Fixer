@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Import\\NoUnneededImportAliasFixer <./../../../src/Fixer/Import/NoUnneededImportAliasFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Import\\NoUnneededImportAliasFixer <./../../../tests/Fixer/Import/NoUnneededImportAliasFixerTest.php>`_

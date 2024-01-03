@@ -52,3 +52,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoUselessInheritdocFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixerTest.php>`_

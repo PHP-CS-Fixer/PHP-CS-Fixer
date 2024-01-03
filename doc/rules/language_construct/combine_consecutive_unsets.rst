@@ -29,3 +29,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveUnsetsFixer <./../../../src/Fixer/LanguageConstruct/CombineConsecutiveUnsetsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\LanguageConstruct\\CombineConsecutiveUnsetsFixer <./../../../tests/Fixer/LanguageConstruct/CombineConsecutiveUnsetsFixerTest.php>`_

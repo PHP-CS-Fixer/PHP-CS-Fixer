@@ -61,3 +61,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\IncrementStyleFixer <./../../../src/Fixer/Operator/IncrementStyleFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\IncrementStyleFixer <./../../../tests/Fixer/Operator/IncrementStyleFixerTest.php>`_

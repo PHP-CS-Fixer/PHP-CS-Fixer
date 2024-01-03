@@ -24,3 +24,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSuccessorSpaceFixer <./../../../src/Fixer/Operator/NotOperatorWithSuccessorSpaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSuccessorSpaceFixer <./../../../tests/Fixer/Operator/NotOperatorWithSuccessorSpaceFixerTest.php>`_

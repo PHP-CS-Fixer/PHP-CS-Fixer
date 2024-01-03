@@ -61,3 +61,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../../../src/Fixer/AttributeNotation/AttributeEmptyParenthesesFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\AttributeNotation\\AttributeEmptyParenthesesFixer <./../../../tests/Fixer/AttributeNotation/AttributeEmptyParenthesesFixerTest.php>`_

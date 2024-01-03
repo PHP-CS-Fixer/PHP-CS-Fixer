@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\NoEmptyCommentFixer <./../../../src/Fixer/Comment/NoEmptyCommentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\NoEmptyCommentFixer <./../../../tests/Fixer/Comment/NoEmptyCommentFixerTest.php>`_

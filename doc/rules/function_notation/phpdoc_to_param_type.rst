@@ -72,3 +72,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php>`_

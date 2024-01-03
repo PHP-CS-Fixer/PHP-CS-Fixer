@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoPackageFixer <./../../../src/Fixer/Phpdoc/PhpdocNoPackageFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoPackageFixer <./../../../tests/Fixer/Phpdoc/PhpdocNoPackageFixerTest.php>`_

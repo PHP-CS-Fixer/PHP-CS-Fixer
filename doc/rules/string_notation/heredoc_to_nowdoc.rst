@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\HeredocToNowdocFixer <./../../../tests/Fixer/StringNotation/HeredocToNowdocFixerTest.php>`_

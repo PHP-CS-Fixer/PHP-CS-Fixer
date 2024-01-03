@@ -36,3 +36,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimFixer <./../../../src/Fixer/Phpdoc/PhpdocTrimFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTrimFixer <./../../../tests/Fixer/Phpdoc/PhpdocTrimFixerTest.php>`_

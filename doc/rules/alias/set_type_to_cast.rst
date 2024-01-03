@@ -43,3 +43,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\SetTypeToCastFixer <./../../../src/Fixer/Alias/SetTypeToCastFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\SetTypeToCastFixer <./../../../tests/Fixer/Alias/SetTypeToCastFixerTest.php>`_

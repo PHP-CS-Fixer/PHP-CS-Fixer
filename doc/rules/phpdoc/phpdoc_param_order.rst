@@ -28,3 +28,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocParamOrderFixer <./../../../tests/Fixer/Phpdoc/PhpdocParamOrderFixerTest.php>`_

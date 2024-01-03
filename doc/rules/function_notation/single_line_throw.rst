@@ -32,3 +32,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\SingleLineThrowFixer <./../../../tests/Fixer/FunctionNotation/SingleLineThrowFixerTest.php>`_

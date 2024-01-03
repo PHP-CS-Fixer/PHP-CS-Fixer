@@ -70,3 +70,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Whitespace\\NoSpacesAroundOffsetFixer <./../../../src/Fixer/Whitespace/NoSpacesAroundOffsetFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Whitespace\\NoSpacesAroundOffsetFixer <./../../../tests/Fixer/Whitespace/NoSpacesAroundOffsetFixerTest.php>`_

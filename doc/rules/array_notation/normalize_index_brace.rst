@@ -35,3 +35,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../../../src/Fixer/ArrayNotation/NormalizeIndexBraceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\NormalizeIndexBraceFixer <./../../../tests/Fixer/ArrayNotation/NormalizeIndexBraceFixerTest.php>`_

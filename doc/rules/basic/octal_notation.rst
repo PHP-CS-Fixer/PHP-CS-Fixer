@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../src/Fixer/Basic/OctalNotationFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Basic\\OctalNotationFixer <./../../../tests/Fixer/Basic/OctalNotationFixerTest.php>`_

@@ -87,3 +87,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../../../tests/Fixer/ClassNotation/NoUnneededFinalMethodFixerTest.php>`_

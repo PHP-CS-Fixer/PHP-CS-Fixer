@@ -30,3 +30,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\CastNotation\\NoShortBoolCastFixer <./../../../src/Fixer/CastNotation/NoShortBoolCastFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\CastNotation\\NoShortBoolCastFixer <./../../../tests/Fixer/CastNotation/NoShortBoolCastFixerTest.php>`_

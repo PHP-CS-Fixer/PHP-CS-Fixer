@@ -66,3 +66,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../../../tests/Fixer/ArrayNotation/ArraySyntaxFixerTest.php>`_

@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../../../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\NoUselessSprintfFixer <./../../../tests/Fixer/FunctionNotation/NoUselessSprintfFixerTest.php>`_

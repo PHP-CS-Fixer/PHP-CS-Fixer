@@ -85,3 +85,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitStrictFixer <./../../../src/Fixer/PhpUnit/PhpUnitStrictFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitStrictFixer <./../../../tests/Fixer/PhpUnit/PhpUnitStrictFixerTest.php>`_

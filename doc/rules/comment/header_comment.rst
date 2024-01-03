@@ -129,3 +129,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../../../src/Fixer/Comment/HeaderCommentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\HeaderCommentFixer <./../../../tests/Fixer/Comment/HeaderCommentFixerTest.php>`_

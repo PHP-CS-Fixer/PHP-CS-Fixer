@@ -135,3 +135,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../../../tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php>`_

@@ -40,3 +40,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixer <./../../../src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ClassNotation\\NoBlankLinesAfterClassOpeningFixer <./../../../tests/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixerTest.php>`_

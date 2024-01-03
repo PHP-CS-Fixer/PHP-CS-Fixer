@@ -72,3 +72,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagsFixer <./../../../src/Fixer/FunctionNotation/FopenFlagsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\FunctionNotation\\FopenFlagsFixer <./../../../tests/Fixer/FunctionNotation/FopenFlagsFixerTest.php>`_

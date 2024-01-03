@@ -45,3 +45,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../../../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\StringNotation\\NoTrailingWhitespaceInStringFixer <./../../../tests/Fixer/StringNotation/NoTrailingWhitespaceInStringFixerTest.php>`_

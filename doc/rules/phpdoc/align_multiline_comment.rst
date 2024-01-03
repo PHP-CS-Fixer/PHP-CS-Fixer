@@ -88,3 +88,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../../../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Phpdoc\\AlignMultilineCommentFixer <./../../../tests/Fixer/Phpdoc/AlignMultilineCommentFixerTest.php>`_

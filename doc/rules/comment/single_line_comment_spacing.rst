@@ -34,3 +34,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Comment\\SingleLineCommentSpacingFixer <./../../../src/Fixer/Comment/SingleLineCommentSpacingFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Comment\\SingleLineCommentSpacingFixer <./../../../tests/Fixer/Comment/SingleLineCommentSpacingFixerTest.php>`_

@@ -82,3 +82,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../../../src/Fixer/Operator/ConcatSpaceFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../../../tests/Fixer/Operator/ConcatSpaceFixerTest.php>`_

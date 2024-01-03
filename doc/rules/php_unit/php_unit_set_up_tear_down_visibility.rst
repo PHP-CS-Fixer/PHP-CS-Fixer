@@ -53,3 +53,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixer <./../../../src/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSetUpTearDownVisibilityFixer <./../../../tests/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixerTest.php>`_

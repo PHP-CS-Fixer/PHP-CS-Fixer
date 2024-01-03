@@ -56,3 +56,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\ArrayNotation\\YieldFromArrayToYieldsFixer <./../../../tests/Fixer/ArrayNotation/YieldFromArrayToYieldsFixerTest.php>`_

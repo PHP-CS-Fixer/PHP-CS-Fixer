@@ -124,3 +124,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderNameFixerTest.php>`_

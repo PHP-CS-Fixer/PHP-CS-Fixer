@@ -38,3 +38,8 @@ Source class
 ------------
 
 `PhpCsFixer\\Fixer\\Alias\\BacktickToShellExecFixer <./../../../src/Fixer/Alias/BacktickToShellExecFixer.php>`_
+
+Test class
+------------
+
+`PhpCsFixer\\Fixer\\Alias\\BacktickToShellExecFixer <./../../../tests/Fixer/Alias/BacktickToShellExecFixerTest.php>`_
