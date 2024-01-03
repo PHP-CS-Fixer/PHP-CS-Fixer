@@ -410,12 +410,12 @@ namespace Z\B\C\D
 namespace Foo\Test;
 use Other\BaseClass;
 use Other\CaughtThrowable;
-use Other\Cl;
-use Other\Cl2;
 use Other\FunctionArgument;
 use Other\FunctionReturnType;
+use Other\InstanceOfClass;
 use Other\Interface1;
 use Other\Interface2;
+use Other\NewClass;
 use Other\PropertyPhpDoc;
 use Other\StaticFunctionCall;
 
@@ -432,9 +432,9 @@ class Foo extends BaseClass implements Interface1, Interface2
     }
 }
 
-new Cl();
+new NewClass();
 
-if ($a instanceof Cl2) { return false; }
+if ($a instanceof InstanceOfClass) { return false; }
             ',
             '<?php
 
@@ -453,9 +453,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 }
 
-new \Other\Cl();
+new \Other\NewClass();
 
-if ($a instanceof \Other\Cl2) { return false; }
+if ($a instanceof \Other\InstanceOfClass) { return false; }
             ',
             ['import_symbols' => true],
         ];
