@@ -144,6 +144,25 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
+        yield 'heredoc and reserved closing marker - preserve double quoted marker' => [
+            <<<'EOF'
+                <?php $a = <<<"PHP"
+                xxx
+                PHP;
+                $a = <<<'PHP'
+                PHP;
+
+                EOF,
+            <<<'EOF'
+                <?php $a = <<<"php"
+                xxx
+                php;
+                $a = <<<'Php'
+                Php;
+
+                EOF,
+        ];
+
         yield 'heredoc and reserved custom closing marker' => [
             <<<'EOF'
                 <?php $a = <<<Žlutý
