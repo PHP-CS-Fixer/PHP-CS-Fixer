@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @author Michael Vorisek <https://github.com/mvorisek>
+ */
 final class MultilineStringToHeredocFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
