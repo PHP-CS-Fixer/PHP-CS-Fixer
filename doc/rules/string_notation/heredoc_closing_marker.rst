@@ -81,7 +81,10 @@ With configuration: ``['explicit_heredoc_style' => true]``.
     Foo
    -TEST;
    +EOD;
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\StringNotation\\HeredocClosingMarkerFixer <./../../../src/Fixer/StringNotation/HeredocClosingMarkerFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\HeredocClosingMarkerFixer <./../../../src/Fixer/StringNotation/HeredocClosingMarkerFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\HeredocClosingMarkerFixerTest <./../../../tests/Fixer/StringNotation/HeredocClosingMarkerFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
