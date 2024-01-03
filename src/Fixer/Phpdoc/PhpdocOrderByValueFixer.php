@@ -113,7 +113,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
                 if (\in_array($type, ['property', 'property-read', 'property-write'], true)) {
                     $replacePattern = sprintf(
-                        '/(?s)\*\s*@%s\s+(?P<optionalTypes>.+\s+)?\$(?P<comparableContent>[^\s]+).*/',
+                        '/(?s)\*\s*@%s\s+(?P<optionalTypes>.+\s+)?\$(?P<comparableContent>\S+).*/',
                         $type
                     );
 
