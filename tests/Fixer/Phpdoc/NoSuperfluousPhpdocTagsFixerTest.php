@@ -2489,6 +2489,20 @@ class Foo {
 }',
         ];
 
+        yield 'static return for arrow function' => [
+            '<?php
+    /**
+     */
+    $a = fn ($foo): int => 1;
+',
+            '<?php
+    /**
+     * @return intgit st
+     */
+    $a = fn ($foo): int => 1;
+',
+        ];
+
         yield 'union type on parameter' => [
             '<?php
 class Foo {
