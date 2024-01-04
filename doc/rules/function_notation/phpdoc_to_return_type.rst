@@ -33,7 +33,7 @@ Default value: ``true``
 ``union_types``
 ~~~~~~~~~~~~~~~
 
-Fix also union types; turned on by default on PHP > 8.0.0.
+Fix also union types; turned on by default on PHP >= 8.0.0.
 
 Allowed types: ``bool``
 
