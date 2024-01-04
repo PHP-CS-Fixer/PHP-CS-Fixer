@@ -36,99 +36,99 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'basic fix' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = "World";
                 echo "Hello {$name}!";
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $name = "World";
                 echo "Hello ${name}!";
-                INPUT,
+                EOD,
         ];
 
         yield 'heredoc' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo <<<TEST
                 Hello {$name}!
                 TEST;
 
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo <<<TEST
                 Hello ${name}!
                 TEST;
 
-                INPUT,
+                EOD,
         ];
 
         yield 'implicit' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo "Hello $name!";
-                EXPECTED,
+                EOD,
         ];
 
         yield 'implicit again' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo "Hello { $name }!";
-                EXPECTED,
+                EOD,
         ];
 
         yield 'escaped' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo "Hello \${name}";
-                EXPECTED,
+                EOD,
         ];
 
         yield 'double dollar' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo "Hello \${$name}";
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo "Hello $${name}";
-                INPUT,
+                EOD,
         ];
 
         yield 'double dollar heredoc' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo <<<TEST
                 Hello \${$name}!
                 TEST;
 
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo <<<TEST
                 Hello $${name}!
                 TEST;
 
-                INPUT,
+                EOD,
         ];
 
         yield 'double dollar single quote' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $name = 'World';
                 echo 'Hello $${name}';
-                EXPECTED,
+                EOD,
         ];
     }
 }

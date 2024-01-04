@@ -27,36 +27,36 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
 {
     public function testFixAccess(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @access public
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixMany(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             /**
              * Hello!
              * @notaccess bar
              */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             /**
              * Hello!
@@ -65,20 +65,20 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
              * @access foo
              */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testDoNothing(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @var access
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }

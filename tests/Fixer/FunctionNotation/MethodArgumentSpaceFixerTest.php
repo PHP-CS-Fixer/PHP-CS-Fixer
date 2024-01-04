@@ -380,21 +380,21 @@ $a#
         ];
 
         yield 'test half-multiline function becomes fully-multiline' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 functionCall(
                     'a',
                     'b',
                     'c'
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 functionCall(
                     'a', 'b',
                     'c'
                 );
-                INPUT,
+                EOD,
         ];
 
         yield 'test wrongly formatted half-multiline function becomes fully-multiline' => [
@@ -410,7 +410,7 @@ f(1,2,
         ];
 
         yield 'function calls with here doc cannot be anything but multiline' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 str_replace(
                     "\n",
@@ -420,36 +420,36 @@ f(1,2,
 
                 TEXT
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 str_replace("\n", PHP_EOL, <<<'TEXT'
                    1) someFile.php
 
                 TEXT
                 );
-                INPUT,
+                EOD,
         ];
 
         yield 'test barely multiline function with blank lines becomes fully-multiline' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 functionCall(
                     'a',
                     'b',
                     'c'
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 functionCall('a', 'b',
 
                     'c');
-                INPUT,
+                EOD,
         ];
 
         yield 'test indentation is preserved' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 if (true) {
                     functionCall(
@@ -458,8 +458,8 @@ f(1,2,
                         'c'
                     );
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 if (true) {
                     functionCall(
@@ -467,129 +467,129 @@ f(1,2,
                         'c'
                     );
                 }
-                INPUT,
+                EOD,
         ];
 
         yield 'test multiline array arguments do not trigger multiline' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 defraculate(1, array(
                     'a',
                     'b',
                     'c',
                 ), 42);
-                EXPECTED,
+                EOD,
         ];
 
         yield 'test multiline function arguments do not trigger multiline' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 defraculate(1, function () {
                     $a = 42;
                 }, 42);
-                EXPECTED,
+                EOD,
         ];
 
         yield 'test violation after opening parenthesis' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 defraculate(
                     1,
                     2,
                     3
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 defraculate(
                     1, 2, 3);
-                INPUT,
+                EOD,
         ];
 
         yield 'test violation after opening parenthesis, indented with two spaces' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 defraculate(
                   1,
                   2,
                   3
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 defraculate(
                   1, 2, 3);
-                INPUT,
+                EOD,
         ];
 
         yield 'test violation after opening parenthesis, indented with tabs' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 defraculate(
                 	1,
                 	2,
                 	3
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 defraculate(
                 	1, 2, 3);
-                INPUT,
+                EOD,
         ];
 
         yield 'test violation before closing parenthesis' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 defraculate(
                     1,
                     2,
                     3
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 defraculate(1, 2, 3
                 );
-                INPUT,
+                EOD,
         ];
 
         yield 'test violation before closing parenthesis in nested call' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 getSchwifty('rick', defraculate(
                     1,
                     2,
                     3
                 ), 'morty');
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 getSchwifty('rick', defraculate(1, 2, 3
                 ), 'morty');
-                INPUT,
+                EOD,
         ];
 
         yield 'test with comment between arguments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 functionCall(
                     'a', /* comment */
                     'b',
                     'c'
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 functionCall(
                     'a',/* comment */'b',
                     'c'
                 );
-                INPUT,
+                EOD,
         ];
 
         yield 'test with deeply nested arguments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 foo(
                     'a',
@@ -605,8 +605,8 @@ f(1,2,
                         ),
                     ]
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 foo('a',
                     'b',
@@ -618,22 +618,22 @@ f(1,2,
                                 'i',
                             ]),
                     ]);
-                INPUT,
+                EOD,
         ];
 
         yield 'multiline string argument' => [
-            <<<'UNAFFECTED'
+            <<<'EOD'
                 <?php
                 $this->with('<?php
                 %s
                 class FooClass
                 {
                 }', $comment, false);
-                UNAFFECTED,
+                EOD,
         ];
 
         yield 'arrays with whitespace inside' => [
-            <<<'UNAFFECTED'
+            <<<'EOD'
                 <?php
                 $a = array/**/(  1);
                 $a = array/**/( 12,
@@ -641,22 +641,22 @@ f(1,2,
                 $a = array/***/(123,  7);
                 $a = array (        1,
                 2);
-                UNAFFECTED,
+                EOD,
         ];
 
         yield 'test code that should not be affected (because not a function nor a method)' => [
-            <<<'UNAFFECTED'
+            <<<'EOD'
                 <?php
                 if (true &&
                     true
                     ) {
                     // do whatever
                 }
-                UNAFFECTED,
+                EOD,
         ];
 
         yield 'test ungodly code' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 $a = function#
                 (#
@@ -675,8 +675,8 @@ f(1,2,
                     $d1
                 ) {
                 };
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $a = function#
                 (#
@@ -691,11 +691,11 @@ f(1,2,
                 use ($b1,
                 $c1,$d1) {
                 };
-                INPUT,
+                EOD,
         ];
 
         yield 'test list' => [
-            <<<'UNAFFECTED'
+            <<<'EOD'
                 <?php
                 // no fix
                 list($a,
@@ -707,21 +707,21 @@ f(1,2,
                 array(1,
                     2,3
                 );
-                UNAFFECTED,
+                EOD,
         ];
 
         yield 'test function argument with multiline echo in it' => [
-            <<<'UNAFFECTED'
+            <<<'EOD'
                 <?php
                 call_user_func(function ($arguments) {
                     echo 'a',
                       'b';
                 }, $argv);
-                UNAFFECTED,
+                EOD,
         ];
 
         yield 'test function argument with oneline echo in it' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 call_user_func(
                     function ($arguments) {
@@ -729,25 +729,25 @@ f(1,2,
                 },
                     $argv
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 call_user_func(function ($arguments) {
                     echo 'a', 'b';
                 },
                 $argv);
-                INPUT,
+                EOD,
         ];
 
         yield 'ensure_single_line' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 function foo($a, $b) {
                     // foo
                 }
                 foo($a, $b);
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 function foo(
                     $a,
@@ -759,12 +759,12 @@ f(1,2,
                     $a,
                     $b
                 );
-                INPUT,
+                EOD,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_with_random_comments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 function foo(/* foo */// bar
                     $a, /* foo */// bar
@@ -776,20 +776,20 @@ f(1,2,
                     $a, /* foo */// bar
                     $b#foo
                 );
-                EXPECTED,
+                EOD,
             null,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_with_consecutive_newlines' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 function foo($a, $b) {
                     // foo
                 }
                 foo($a, $b);
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 function foo(
 
@@ -813,19 +813,19 @@ f(1,2,
 
 
                 );
-                INPUT,
+                EOD,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_methods' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 class Foo {
                     public static function foo1($a, $b, $c) {}
                     private function foo2($a, $b, $c) {}
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 class Foo {
                     public static function foo1(
@@ -839,19 +839,19 @@ f(1,2,
                         $c
                     ) {}
                 }
-                INPUT,
+                EOD,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_methods_in_anonymous_class' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 new class {
                     public static function foo1($a, $b, $c) {}
                     private function foo2($a, $b, $c) {}
                 };
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 new class {
                     public static function foo1(
@@ -865,19 +865,19 @@ f(1,2,
                         $c
                     ) {}
                 };
-                INPUT,
+                EOD,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'ensure_single_line_keep_spaces_after_comma' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 function foo($a,    $b) {
                     // foo
                 }
                 foo($a,    $b);
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 function foo(
                     $a,
@@ -889,7 +889,7 @@ f(1,2,
                     $a,
                     $b
                 );
-                INPUT,
+                EOD,
             [
                 'on_multiline' => 'ensure_single_line',
                 'keep_multiple_spaces_after_comma' => true,
@@ -995,7 +995,7 @@ foo(
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD_'
                 <?php
                 foo(
                     <<<'EOD'
@@ -1003,8 +1003,8 @@ foo(
                         EOD,
                     'baz'
                 );
-                EXPECTED,
-            <<<'INPUT'
+                EOD_,
+            <<<'EOD_'
                 <?php
                 foo(
                     <<<'EOD'
@@ -1013,18 +1013,18 @@ foo(
                     ,
                     'baz'
                 );
-                INPUT,
+                EOD_,
             ['after_heredoc' => true],
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 foo(
                     $bar,
                     $baz,
                 );
-                EXPECTED,
+                EOD,
             null,
             ['on_multiline' => 'ensure_fully_multiline'],
         ];

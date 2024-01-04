@@ -29,8 +29,8 @@ final class TextReporterTest extends AbstractReporterTestCase
 {
     protected static function createNoErrorReport(): string
     {
-        return <<<'TEXT'
-            TEXT;
+        return <<<'EOD'
+            EOD;
     }
 
     protected static function createSimpleReport(): string
@@ -38,7 +38,7 @@ final class TextReporterTest extends AbstractReporterTestCase
         return str_replace(
             "\n",
             PHP_EOL,
-            <<<'TEXT'
+            <<<'EOD'
                    1) someFile.php
                       ---------- begin diff ----------
                 --- Original
@@ -55,7 +55,7 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                TEXT
+                EOD
         );
     }
 
@@ -64,7 +64,7 @@ final class TextReporterTest extends AbstractReporterTestCase
         return str_replace(
             "\n",
             PHP_EOL,
-            <<<'TEXT'
+            <<<'EOD'
                    1) someFile.php
                       ---------- begin diff ----------
                 --- Original
@@ -81,7 +81,7 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                TEXT
+                EOD
         );
     }
 
@@ -90,10 +90,10 @@ final class TextReporterTest extends AbstractReporterTestCase
         return str_replace(
             "\n",
             PHP_EOL,
-            <<<'TEXT'
+            <<<'EOD'
                    1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
 
-                TEXT
+                EOD
         );
     }
 
@@ -102,7 +102,7 @@ final class TextReporterTest extends AbstractReporterTestCase
         return str_replace(
             "\n",
             PHP_EOL,
-            <<<'TEXT'
+            <<<'EOD'
                    1) someFile.php
                       ---------- begin diff ----------
                 --- Original
@@ -121,7 +121,7 @@ final class TextReporterTest extends AbstractReporterTestCase
 
                 Fixed 1 of 10 files in 1.234 seconds, 2.500 MB memory used
 
-                TEXT
+                EOD
         );
     }
 
@@ -130,7 +130,7 @@ final class TextReporterTest extends AbstractReporterTestCase
         return str_replace(
             "\n",
             PHP_EOL,
-            <<<'TEXT'
+            <<<'EOD'
                    1) someFile.php (<comment>some_fixer_name_here_1, some_fixer_name_here_2</comment>)
                 <comment>      ---------- begin diff ----------</comment>
                 this text is a diff ;)
@@ -144,7 +144,7 @@ final class TextReporterTest extends AbstractReporterTestCase
 
                 Found 2 of 10 files that can be fixed in 1.234 seconds, 2.500 MB memory used
 
-                TEXT
+                EOD
         );
     }
 

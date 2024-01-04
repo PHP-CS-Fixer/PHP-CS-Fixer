@@ -68,41 +68,41 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /*
                  * WUT
                  */
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /********
                  * WUT
                  ********/
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /*\
                  * False DocBlock
                  */
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /**\
                  * False DocBlock
                  */
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 # Hash
                 #*** Hash asterisk
@@ -115,7 +115,7 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 Weird multiline comment
                 */
 
-                EOT,
+                EOD,
         ];
     }
 }

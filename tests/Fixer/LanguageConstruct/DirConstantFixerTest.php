@@ -36,7 +36,7 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        $multiLinePatternToFix = <<<'FIX'
+        $multiLinePatternToFix = <<<'EOD'
             <?php $x =
             dirname
 
@@ -47,13 +47,13 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
             )
 
             ;
-            FIX;
-        $multiLinePatternFixed = <<<'FIXED'
+            EOD;
+        $multiLinePatternFixed = <<<'EOD'
             <?php $x =
             __DIR__
 
             ;
-            FIXED;
+            EOD;
 
         yield ['<?php $x = "dirname";'];
 

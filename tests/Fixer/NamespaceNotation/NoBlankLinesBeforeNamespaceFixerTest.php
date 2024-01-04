@@ -80,7 +80,7 @@ namespace Foo;
 
     public function testFixExampleWithComment(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             /*
@@ -92,9 +92,9 @@ namespace Foo;
              * with this source code in the file LICENSE.
              */
             namespace PhpCsFixer\Fixer\Contrib;
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             /*
@@ -107,7 +107,7 @@ namespace Foo;
              */
 
             namespace PhpCsFixer\Fixer\Contrib;
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }

@@ -35,7 +35,7 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        $multiLinePatternToFix = <<<'FIX'
+        $multiLinePatternToFix = <<<'EOD'
             <?php $x =
             is_null
 
@@ -48,8 +48,8 @@ final class IsNullFixerTest extends AbstractFixerTestCase
             )
 
             ;
-            FIX;
-        $multiLinePatternFixed = <<<'FIXED'
+            EOD;
+        $multiLinePatternFixed = <<<'EOD'
             <?php $x =
             null === json_decode
                 (
@@ -57,7 +57,7 @@ final class IsNullFixerTest extends AbstractFixerTestCase
                 )
 
             ;
-            FIXED;
+            EOD;
 
         yield ['<?php $x = "is_null";'];
 

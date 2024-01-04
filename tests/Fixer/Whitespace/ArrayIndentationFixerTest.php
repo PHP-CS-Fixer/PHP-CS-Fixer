@@ -36,39 +36,39 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
     {
         yield from self::withLongArraySyntaxCases([
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         'foo',
                         'bar' => 'baz',
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       'foo',
                             'bar' => 'baz',
                      ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                         $foo = [
                             'foo',
                             'bar' => 'baz',
                         ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                         $foo = [
                       'foo',
                             'bar' => 'baz',
                      ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         ['bar', 'baz'],
@@ -77,8 +77,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'baz'
                         ],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                             ['bar', 'baz'],
@@ -87,10 +87,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                              'baz'
                              ],
                      ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         ['foo',
@@ -102,8 +102,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                     'baz']],
                             'baz'],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                      ['foo',
@@ -115,10 +115,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         'baz']],
                       'baz'],
                      ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     class Foo
                     {
@@ -141,8 +141,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ];
                         }
                     }
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     class Foo
                     {
@@ -165,10 +165,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                              ];
                         }
                     }
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         'foo' => foo(
@@ -184,8 +184,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                     2
                                  ),
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                        'foo' => foo(
@@ -201,10 +201,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                          2
                                       ),
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         'foo' => ['bar' => [
@@ -212,8 +212,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         ]],
                         'qux',
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       'foo' => ['bar' => [
@@ -221,10 +221,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                       ]],
                       'qux',
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         'foo' => [
@@ -232,8 +232,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                        ->foo(),
                         ],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       'foo' => [
@@ -241,10 +241,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                     ->foo(),
                       ],
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         [new Foo(
@@ -252,8 +252,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         [new Foo(
                                 )],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                           [new Foo(
@@ -261,10 +261,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                       [new Foo(
                               )],
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = new Foo([
                         (new Bar())
@@ -279,8 +279,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                               ])
                         ,
                     ]);
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = new Foo([
                                    (new Bar())
@@ -295,10 +295,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                    ])
                              ,
                     ]);
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
 
                     class Foo
@@ -316,8 +316,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ];
                         }
                     }
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
 
                     class Foo
@@ -335,10 +335,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                      ];
                         }
                     }
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
 
                     class Foo
@@ -361,8 +361,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         }
                     }
 
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
 
                     class Foo
@@ -385,10 +385,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         }
                     }
 
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
 
                     $foo = [
@@ -397,8 +397,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             .bar()
                         ,
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
 
                     $foo = [
@@ -407,26 +407,26 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           .bar()
                     ,
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         [new \stdClass()],
                         'foo',
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       [new \stdClass()],
                      'foo',
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         $bar
@@ -434,8 +434,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             : 'foo'
                         ,
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       $bar
@@ -443,10 +443,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           : 'foo'
                           ,
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         $bar ?
@@ -454,8 +454,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'foo'
                         ,
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       $bar ?
@@ -463,10 +463,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           'foo'
                           ,
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
 
                     $foo = [
@@ -476,8 +476,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'bar',
                         ],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
 
                     $foo = [
@@ -487,26 +487,26 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                        'bar',
                       ],
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         'foo', // comment
                         'bar',
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       'foo', // comment
                     'bar',
                      ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [[[
                         'foo',
@@ -514,8 +514,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ],
                     ],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [[[
                       'foo',
@@ -523,10 +523,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ],
                      ],
                       ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         [
@@ -534,8 +534,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                 'foo',
                                 'bar',
                             ]]];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                     [
@@ -543,10 +543,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         'foo',
                         'bar',
                      ]]];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         [
@@ -559,8 +559,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ]
                             ]
                         ]];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                     [
@@ -573,10 +573,10 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ]
                      ]
                     ]];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [[
                         [
@@ -591,8 +591,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ],[]],[]]
                     ]
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [[
                     [
@@ -607,28 +607,28 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ],[]],[]]
                     ]
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php if ($foo): ?>
                         <?php foo([
                             'bar',
                             'baz',
                         ]) ?>
                     <?php endif ?>
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php if ($foo): ?>
                         <?php foo([
                               'bar',
                           'baz',
                        ]) ?>
                     <?php endif ?>
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <div>
                         <a
                             class="link"
@@ -640,8 +640,8 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             Link text
                         </a>
                     </div>
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <div>
                         <a
                             class="link"
@@ -653,25 +653,25 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             Link text
                         </a>
                     </div>
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $arr = [
                         'a' => 'b',
 
                         //  'c' => 'd',
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $arr = [
                         'a' => 'b',
 
                     //  'c' => 'd',
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
                 '<?php
@@ -682,7 +682,7 @@ $foo = [
 ];',
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         'foo' =>
@@ -694,8 +694,8 @@ $foo = [
                              .' long'
                               .' string'
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       'foo' =>
@@ -707,10 +707,10 @@ $foo = [
                                  .' long'
                                   .' string'
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         $test
@@ -721,8 +721,8 @@ $foo = [
                                   321,
                               ],
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                         $test
@@ -733,28 +733,28 @@ $foo = [
                                        321,
                               ],
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [[
                         new Foo(
                             'foo'
                         ),
                     ]];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [[
                           new Foo(
                               'foo'
                           ),
                     ]];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $array = [
                         'foo' => [
@@ -763,8 +763,8 @@ $foo = [
                             ],
                         ], // <- this one
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $array = [
                         'foo' => [
@@ -773,62 +773,62 @@ $foo = [
                             ],
                     ], // <- this one
                     ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<'EXPECTED'
+                <<<'EOD'
                     <?php
                     $foo = [
                         ...$foo,
                         ...$bar,
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       ...$foo,
                             ...$bar,
                      ];
-                    INPUT,
+                    EOD,
             ],
         ]);
 
         yield 'array destructuring' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                     <?php
                     [
                         $foo,
                         $bar,
                         $baz
                     ] = $arr;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                     <?php
                     [
                     $foo,
                                 $bar,
                       $baz
                     ] = $arr;
-                INPUT,
+                EOD,
         ];
 
         yield 'array destructuring using list' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                     <?php
                     list(
                         $foo,
                         $bar,
                         $baz
                     ) = $arr;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                     <?php
                     list(
                     $foo,
                                 $bar,
                       $baz
                     ) = $arr;
-                INPUT,
+                EOD,
         ];
     }
 
@@ -845,75 +845,75 @@ $foo = [
     {
         yield from self::withLongArraySyntaxCases([
             [
-                <<<EXPECTED
+                <<<EOD
                     <?php
                     \$foo = [
                     \t'foo',
                     \t'bar' => 'baz',
                     ];
-                    EXPECTED,
-                <<<'INPUT'
+                    EOD,
+                <<<'EOD'
                     <?php
                     $foo = [
                       'foo',
                             'bar' => 'baz',
                      ];
-                    INPUT,
+                    EOD,
             ],
             [
-                <<<EXPECTED
+                <<<EOD
                     <?php
                     \$foo = [
                     \t'foo',
                     \t'bar' => 'baz',
                     ];
-                    EXPECTED,
-                <<<INPUT
+                    EOD,
+                <<<EOD
                     <?php
                     \$foo = [
                     \t\t\t'foo',
                     \t\t'bar' => 'baz',
                      ];
-                    INPUT,
+                    EOD,
             ],
         ]);
 
         yield 'array destructuring' => [
-            <<<EXPECTED
+            <<<EOD
                     <?php
                     [
                     \t\$foo,
                     \t\$bar,
                     \t\$baz
                     ] = \$arr;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                     <?php
                     [
                     $foo,
                                 $bar,
                       $baz
                     ] = $arr;
-                INPUT,
+                EOD,
         ];
 
         yield 'array destructuring using list' => [
-            <<<EXPECTED
+            <<<EOD
                     <?php
                     list(
                     \t\$foo,
                     \t\$bar,
                     \t\$baz
                     ) = \$arr;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                     <?php
                     list(
                     $foo,
                                 $bar,
                       $baz
                     ) = $arr;
-                INPUT,
+                EOD,
         ];
     }
 

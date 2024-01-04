@@ -82,20 +82,20 @@ echo Foo::A, Foo::B;
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { protected static $foo = 1; protected static $bar; protected static $baz=2 ; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { protected static $foo = 1,$bar,$baz=2 ; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {}
@@ -103,37 +103,37 @@ echo Foo::A, Foo::B;
                 class Bar
                 {
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { protected static $foo = 1; protected static $bar; protected static $baz=2 ; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { protected static $foo = 1, $bar,  $baz=2 ; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { const ONE = 1; const TWO = 2; protected static $foo = 1; protected static $bar; protected static $baz=2 ; const THREE = 3; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { const ONE = 1, TWO = 2; protected static $foo = 1, $bar,  $baz=2 ; const THREE = 3; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -141,8 +141,8 @@ echo Foo::A, Foo::B;
                     protected static $bar;
                     protected static $baz=2;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -150,11 +150,11 @@ echo Foo::A, Foo::B;
                     $bar,
                    $baz=2;
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -165,8 +165,8 @@ echo Foo::A, Foo::B;
                     protected static $bar;
                     protected static $baz=2;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -177,11 +177,11 @@ echo Foo::A, Foo::B;
                     $bar,
                    $baz=2;
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -194,8 +194,8 @@ echo Foo::A, Foo::B;
                     // this is an inline comment, not a docblock
                     private $var = false;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -208,11 +208,11 @@ echo Foo::A, Foo::B;
                     // this is an inline comment, not a docblock
                     private $var = false;
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -227,8 +227,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -243,11 +243,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'line_breaks_1' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -267,8 +267,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -283,11 +283,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'line_breaks_2' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -302,8 +302,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -317,11 +317,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'line_breaks_3' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -336,8 +336,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -351,11 +351,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'line_breaks_4' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -371,8 +371,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -384,11 +384,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'line_breaks_5' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -399,8 +399,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -411,11 +411,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'line_breaks_6' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -426,8 +426,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -438,11 +438,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'whitespace_1' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {    public $one = 1; public $bar = null; public $initialized = false; public $configured = false; public $called = false; public $arguments = array();
@@ -451,8 +451,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {    public $one = 1; public $bar = null,$initialized = false,$configured = false,$called = false,$arguments = array();
@@ -461,11 +461,11 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield 'whitespace_2' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {    public $one = 1;  public $bar = null;  public $initialized = false;  public $configured = false;  public $called=false;  public $arguments = array();
@@ -474,8 +474,8 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {    public $one = 1;  public $bar = null,$initialized = false,$configured = false,$called=false,$arguments = array();
@@ -484,137 +484,137 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { protected static $foo = 1; protected static $bar; protected static $baz=1; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { protected static $foo = 1, $bar, $baz=1; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {   protected static $foo = 1;   protected static $bar;   protected static $baz=1; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {   protected static $foo = 1, $bar, $baz=1; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { protected $foo = 1; protected $bar; protected $baz=2; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { protected $foo = 1, $bar, $baz=2; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { var $foo = 1; var $bar; var $baz=2; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { var $foo = 1, $bar, $baz=2; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { var $foo = 1; var $bar; public function doSomething1() {} var $baz=2; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { var $foo = 1, $bar; public function doSomething1() {} var $baz=2; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { var $foo = 1; var $bar; public function doSomething2() { global $one, $two, $three; } var $baz=2; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { var $foo = 1, $bar; public function doSomething2() { global $one, $two, $three; } var $baz=2; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doSomething3() {} protected $foo = 1; protected $bar; protected $baz=2; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doSomething3() {} protected $foo = 1, $bar, $baz=2; }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doSomethingElse() {} protected $foo = 1; protected $bar; protected $baz=2; private $acme =array(); }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doSomethingElse() {} protected $foo = 1, $bar, $baz=2; private $acme =array(); }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doSomewhere() {} protected $foo = 1; protected $bar; protected $baz=2; private $acme1 =array(); }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doSomewhere() {} protected $foo = 1, $bar, $baz=2; private $acme1 =array(); }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doThis() { global $one1, $two2, $three3; } protected $foo = 1; protected $bar; protected $baz=2; private $acme2 =array(); }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { public function doThis() { global $one1, $two2, $three3; } protected $foo = 1, $bar, $baz=2; private $acme2 =array(); }
-                EOT
+                EOD
         ];
 
         yield [
@@ -716,7 +716,7 @@ echo Foo::A, Foo::B;
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                     <?php
 
                     class Foo
@@ -726,8 +726,8 @@ echo Foo::A, Foo::B;
                         protected static $foo = 1;
                         protected static $bar = 2;
                     }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                     <?php
 
                     class Foo
@@ -735,12 +735,12 @@ echo Foo::A, Foo::B;
                         const SOME_CONST = 'a', OTHER_CONST = 'b';
                         protected static $foo = 1, $bar = 2;
                     }
-                EOT,
+                EOD,
             ['elements' => ['const', 'property']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                     <?php
 
                     class Foo
@@ -749,8 +749,8 @@ echo Foo::A, Foo::B;
                         const OTHER_CONST = 'b';
                         protected static $foo = 1, $bar = 2;
                     }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                     <?php
 
                     class Foo
@@ -758,12 +758,12 @@ echo Foo::A, Foo::B;
                         const SOME_CONST = 'a', OTHER_CONST = 'b';
                         protected static $foo = 1, $bar = 2;
                     }
-                EOT,
+                EOD,
             ['elements' => ['const']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                     <?php
 
                     class Foo
@@ -772,8 +772,8 @@ echo Foo::A, Foo::B;
                         protected static $foo = 1;
                         protected static $bar = 2;
                     }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                     <?php
 
                     class Foo
@@ -781,7 +781,7 @@ echo Foo::A, Foo::B;
                         const SOME_CONST = 'a', OTHER_CONST = 'b';
                         protected static $foo = 1, $bar = 2;
                     }
-                EOT,
+                EOD,
             ['elements' => ['property']],
         ];
 

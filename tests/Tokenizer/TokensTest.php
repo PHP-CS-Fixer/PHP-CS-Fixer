@@ -453,7 +453,7 @@ final class TokensTest extends TestCase
 
     public function testTokenKindsFound(): void
     {
-        $code = <<<'EOF'
+        $code = <<<'EOD'
             <?php
 
             class Foo
@@ -467,7 +467,7 @@ final class TokensTest extends TestCase
                     return 'bar';
                 }
             }
-            EOF;
+            EOD;
 
         $tokens = Tokens::fromCode($code);
 
@@ -1532,12 +1532,12 @@ $bar;',
      */
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             $after = get_class($after);
             $before = get_class($before);
-            EOF;
+            EOD;
 
         $tokens = Tokens::fromCode($input);
         $tokens->insertSlices([
@@ -1550,32 +1550,32 @@ $bar;',
     public static function provideInsertSlicesAtMultiplePlacesCases(): iterable
     {
         yield 'one slice count' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 $after = /*foo*/get_class($after);
                 $before = /*foo*/get_class($before);
-                EOF,
+                EOD,
             [new Token([T_COMMENT, '/*foo*/'])],
         ];
 
         yield 'two slice count' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 $after = (string) get_class($after);
                 $before = (string) get_class($before);
-                EOF,
+                EOD,
             [new Token([T_STRING_CAST, '(string)']), new Token([T_WHITESPACE, ' '])],
         ];
 
         yield 'three slice count' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 $after = !(bool) get_class($after);
                 $before = !(bool) get_class($before);
-                EOF,
+                EOD,
             [new Token('!'), new Token([T_BOOL_CAST, '(bool)']), new Token([T_WHITESPACE, ' '])],
         ];
     }

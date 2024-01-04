@@ -68,7 +68,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
 
     public function testFixExampleWithCommentTooMuch(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             /*
@@ -82,9 +82,9 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
 
             namespace PhpCsFixer\Fixer\Contrib;
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             /*
@@ -99,14 +99,14 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
 
             namespace PhpCsFixer\Fixer\Contrib;
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixExampleWithCommentTooLittle(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             /*
@@ -120,9 +120,9 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
 
             namespace PhpCsFixer\Fixer\Contrib;
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             /*
@@ -135,7 +135,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
              */
             namespace PhpCsFixer\Fixer\Contrib;
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }

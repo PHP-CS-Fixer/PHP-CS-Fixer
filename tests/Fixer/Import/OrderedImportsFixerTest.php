@@ -35,7 +35,7 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
 
     public static function provideFixWithMultipleNamespaceCases(): iterable
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             namespace FooRoo {
@@ -92,9 +92,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     }
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             namespace FooRoo {
@@ -151,11 +151,11 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     }
                 }
             }
-            EOF;
+            EOD;
 
         yield [$expected, $input];
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php namespace Space1 {
                 use Foo\Bar\Foo;
                 use Symfony\Annotation\Template;
@@ -171,9 +171,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
             }
 
             namespace Space4{}
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php namespace Space1 {
                 use Symfony\Annotation\Template;
                 use Foo\Bar\Foo;
@@ -189,7 +189,7 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
             }
 
             namespace Space4{}
-            EOF;
+            EOD;
 
         yield [$expected, $input];
 
@@ -231,7 +231,7 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
 
     public function testFixWithComment(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -267,9 +267,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -305,14 +305,14 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithTraits(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use Foo\Bar;
@@ -343,9 +343,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Foo\Bar\FooBar as FooBaz;
@@ -376,14 +376,14 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixWithTraitImports(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -422,9 +422,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     return function () use ($bar, $baz) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -463,14 +463,14 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                     return function () use ($bar, $baz) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixWithDifferentCases(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -485,9 +485,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
             class Test
             {
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -502,25 +502,25 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
             class Test
             {
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithoutUses(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             $c = 1;
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testOrderWithTrailingDigit(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use abc\Bar;
@@ -533,9 +533,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
             class Test
             {
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use abc2\Bar2;
@@ -548,26 +548,26 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
             class Test
             {
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testCodeWithImportsOnly(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use Aaa;
             use Bbb;
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Bbb;
             use Aaa;
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -633,7 +633,7 @@ B#
     public static function provideFixCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 The normal
                 use of this fixer
                 should not change this sentence nor those statements below
@@ -669,8 +669,8 @@ B#
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 The normal
                 use of this fixer
                 should not change this sentence nor those statements below
@@ -706,7 +706,7 @@ B#
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF,
+                EOD,
         ];
 
         yield [
@@ -1236,7 +1236,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use Acme;
@@ -1258,9 +1258,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Acme;
@@ -1282,7 +1282,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1295,7 +1295,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'case_sensitive' => true,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use Acme;
@@ -1304,9 +1304,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
             use Fooo;
 
             class AnnotatedClass { }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Acme;
@@ -1315,7 +1315,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             use BaRr;
 
             class AnnotatedClass { }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1327,7 +1327,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             namespace FooRoo {
@@ -1384,9 +1384,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     }
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             namespace FooRoo {
@@ -1443,7 +1443,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     }
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1455,7 +1455,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -1493,9 +1493,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -1533,7 +1533,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1545,7 +1545,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use Foo\Bar;
@@ -1578,9 +1578,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Foo\Bar\FooBar as FooBaz;
@@ -1613,7 +1613,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1625,7 +1625,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -1666,9 +1666,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $baz) {};
                 }
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -1709,7 +1709,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     return function () use ($bar, $baz) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1721,7 +1721,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -1736,9 +1736,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
             class Test
             {
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -1753,7 +1753,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             class Test
             {
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1765,7 +1765,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use abc\Bar;
@@ -1778,9 +1778,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
             class Test
             {
             }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use abc2\Bar2;
@@ -1793,7 +1793,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
             class Test
             {
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1805,19 +1805,19 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use Aaa;
             use Bbb;
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Bbb;
             use Aaa;
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -1829,11 +1829,11 @@ use function some\a\{fn_a, fn_b, fn_c,};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             $c = 1;
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
@@ -1854,7 +1854,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public static function provideFixByLengthCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 The normal
                 use of this fixer
                 should not change this sentence nor those statements below
@@ -1892,9 +1892,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF,
+                EOD,
 
-            <<<'EOF'
+            <<<'EOD'
                 The normal
                 use of this fixer
                 should not change this sentence nor those statements below
@@ -1932,7 +1932,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF,
+                EOD,
         ];
 
         yield [
@@ -2174,7 +2174,7 @@ use function some\a\{fn_a, fn_b};
             'imports_order' => null,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             The normal
             use of this fixer
             should not change this sentence nor those statements below
@@ -2212,7 +2212,7 @@ use function some\a\{fn_a, fn_b};
                     return function () use ($bar, $foo) {};
                 }
             }
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
@@ -2223,23 +2223,23 @@ use function some\a\{fn_a, fn_b};
             'case_sensitive' => true,
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             use AA;
             use Aaa;
 
             class Foo { }
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             use Aaa;
             use AA;
 
             class Foo { }
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }

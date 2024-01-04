@@ -41,7 +41,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo {}
@@ -49,24 +49,24 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                 class Bar
                 {
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo { const C1 = 1; protected $abc = 'abc'; public function baz($y, $z) {} private function bar1($x) { return 1; } }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 interface FooInterface
@@ -90,8 +90,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
                     public function def();
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 interface FooInterface
@@ -115,11 +115,11 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
                     public function def();
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo extends FooParent implements FooInterface1, FooInterface2
@@ -200,8 +200,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     {
                     } // end foo5
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo extends FooParent implements FooInterface1, FooInterface2
@@ -282,11 +282,11 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                         }
                     }
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -302,8 +302,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function foo($a) { return 1; }
                     public function baz() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -319,11 +319,11 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const C = 1;
                     public function baz() {}
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 trait FooTrait
@@ -335,8 +335,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected function abc() {
                     }
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 trait FooTrait
@@ -348,11 +348,11 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
                     use BazTrait;
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /**
@@ -367,8 +367,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     }
                 }
 
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /**
@@ -383,11 +383,11 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     use FooTrait;
                 }
 
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -419,8 +419,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected static function protStatFunc() {}
                     public function __destruct() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -452,12 +452,12 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public $pubProp3;
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             ['order' => ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -489,8 +489,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     use BarTrait;
                     use BazTrait;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -522,12 +522,12 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public $pubProp3;
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             ['order' => ['public', 'protected', 'private']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -559,8 +559,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected function protFunc() {}
                     private function privFunc() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -592,7 +592,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public $pubProp3;
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'use_trait',
@@ -617,7 +617,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -653,8 +653,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected static function protStatFunc() {}
                     public function __destruct() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -690,12 +690,12 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public $pubProp3;
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             ['order' => ['use_trait', 'constant', 'property', 'construct', 'method', 'destruct']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -731,8 +731,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     use BarTrait;
                     use BazTrait;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -768,12 +768,12 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public $pubProp3;
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             ['order' => ['public', 'protected', 'private']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -809,8 +809,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     abstract protected function absProtFunc();
                     private function privFunc() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -846,7 +846,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public $pubProp3;
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'use_trait',
@@ -875,7 +875,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -883,8 +883,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function test2(){}
                     public abstract function test1();
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -892,7 +892,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public abstract function test1();
                     public function test2(){}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'method_public',
@@ -902,7 +902,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -930,8 +930,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function __get($prop) {}
                     public function __toString() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -959,7 +959,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     abstract public function custom3();
                     protected static function custom2() {}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'construct',
@@ -984,7 +984,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -993,8 +993,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function bar() {}
                     public function __toString() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 abstract class Foo
@@ -1003,7 +1003,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function pub() {}
                     public function bar() {}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'method:foo',
@@ -1016,7 +1016,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 class Example
                 {
@@ -1030,8 +1030,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function D(){}
                     private function E(){}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 class Example
                 {
@@ -1045,7 +1045,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     public function C(){}
                     public function C1(){}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'property_public_static',
@@ -1057,7 +1057,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 class Foo
                 {
@@ -1096,8 +1096,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected function protFunc() {}
                     private function privFunc() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 class Foo
                 {
@@ -1136,7 +1136,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected function __construct() {}
                     protected static function protStatFunc() {}
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'use_trait',
@@ -1162,7 +1162,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 abstract class Foo
                 {
@@ -1205,8 +1205,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     abstract protected function absProtFunc();
                     private function privFunc() {}
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 abstract class Foo
                 {
@@ -1249,7 +1249,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected static function protStatFunc() {}
                     abstract public static function absPubStatFunc1();
                 }
-                EOT,
+                EOD,
             [
                 'order' => [
                     'use_trait',
@@ -1279,7 +1279,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1290,8 +1290,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected const C4 = 4;
                     private const C5 = 5;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1302,11 +1302,11 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected const C4 = 4;
                     public const C3 = 3;
                 }
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1317,8 +1317,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected const C4a = 4;
                     private const C5 = 5;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1329,12 +1329,12 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected const C4a = 4;
                     public const C3b = 3;
                 }
-                EOT,
+                EOD,
             ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1343,8 +1343,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const AA = 2;
                     const Ab = 3;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1353,12 +1353,12 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const Ab = 3;
                     const A_ = 1;
                 }
-                EOT,
+                EOD,
             ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1367,8 +1367,8 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const A_ = 1;
                     const Ab = 3;
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1377,7 +1377,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const Ab = 3;
                     const A_ = 1;
                 }
-                EOT,
+                EOD,
             ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA, 'case_sensitive' => true],
         ];
 

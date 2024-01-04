@@ -33,7 +33,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
 {
     public function getDefinition(): FixerDefinitionInterface
     {
-        $codeSample = <<<'EOF'
+        $codeSample = <<<'EOD'
             <?php
 
             $singleQuoted = 'String with \" and My\Prefix\\';
@@ -44,7 +44,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
             Interpret my \100 but not my \999
             HEREDOC;
 
-            EOF;
+            EOD;
 
         return new FixerDefinition(
             'Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.',

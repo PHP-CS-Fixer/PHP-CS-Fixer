@@ -36,7 +36,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                                 <?php
                     /**
                      * @param EngineInterface $templating
@@ -44,7 +44,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
                      * @return void
                      */
 
-                EOF
+                EOD
         ];
 
         yield [
@@ -72,7 +72,7 @@ function foo(){}
 
     public function testFixMore(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -85,9 +85,9 @@ function foo(){}
                  *  @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  *
@@ -104,14 +104,14 @@ function foo(){}
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testClassDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -126,9 +126,9 @@ function foo(){}
                */
             class Bar {}
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -148,35 +148,35 @@ function foo(){}
                */
             class Bar {}
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testEmptyDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testEmptyLargerEmptyDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  *
@@ -185,58 +185,58 @@ function foo(){}
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testSuperSimpleDocBlockStart(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Test.
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  *
                  * Test.
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testSuperSimpleDocBlockEnd(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Test.
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Test.
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithLinesWithoutAsterisk(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             /**
@@ -247,7 +247,7 @@ function foo(){}
             {
             }
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }

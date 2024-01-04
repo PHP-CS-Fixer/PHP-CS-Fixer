@@ -145,23 +145,23 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'heredoc and reserved closing marker' => [
-            <<<'PHP_'
+            <<<'EOD'
                 <?php $a = <<<PHP
                 xxx
                 PHP;
 
-                PHP_,
+                EOD,
         ];
 
         yield 'heredoc and reserved closing marker - different case' => [
-            <<<'PHP_'
+            <<<'EOD'
                 <?php $a = <<<PHP
                 xxx
                 PHP;
                 $a = <<<PHP
                 PHP;
 
-                PHP_,
+                EOD,
             <<<'PHP'
                 <?php $a = <<<php
                 xxx
@@ -191,7 +191,7 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 EOD;
 
                 PHP,
-            <<<'PHP_'
+            <<<'EOD'
                 <?php $a = <<<Žlutý
                 xxx
                 Žlutý;
@@ -208,7 +208,7 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 xxx3
                 PHP;
 
-                PHP_,
+                EOD,
             ['reserved_closing_markers' => ['Žlutý']],
         ];
 

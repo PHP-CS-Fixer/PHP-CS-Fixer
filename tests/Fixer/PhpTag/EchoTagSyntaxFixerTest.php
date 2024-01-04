@@ -60,43 +60,43 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
         yield ['<?=/*this */ /** should be in the result*/ \'Foo\';', '<?php /*this */ /** should be in the result*/ echo \'Foo\';'];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?=/*comment*/
                   1
                 ?>
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php /*comment*/ echo
                   1
                 ?>
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?=/*comment*/ 1
                 ?>
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                   /*comment*/ echo 1
                 ?>
-                EOT
+                EOD
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?=/*comment*/
                   1
                 ?>
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                   /*comment*/
                   echo
                   1
                 ?>
-                EOT
+                EOD
         ];
     }
 

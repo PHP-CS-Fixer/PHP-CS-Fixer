@@ -94,7 +94,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                     ]
                 ),
                 new CodeSample(
-                    <<<'SAMPLE'
+                    <<<'EOD_'
                         <?php
                         sample(
                             <<<EOD
@@ -104,7 +104,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                             'bar'
                         );
 
-                        SAMPLE
+                        EOD_
                     ,
                     ['after_heredoc' => true]
                 ),

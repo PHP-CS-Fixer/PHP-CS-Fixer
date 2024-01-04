@@ -33,22 +33,22 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
             'Converts explicit variables in double-quoted strings and heredoc syntax from simple to complex format (`${` to `{$`).',
             [
                 new CodeSample(
-                    <<<'EOT'
+                    <<<'EOD'
                         <?php
                         $name = 'World';
                         echo "Hello ${name}!";
 
-                        EOT
+                        EOD
                 ),
                 new CodeSample(
-                    <<<'EOT'
+                    <<<'EOD'
                         <?php
                         $name = 'World';
                         echo <<<TEST
                         Hello ${name}!
                         TEST;
 
-                        EOT
+                        EOD
                 ),
             ],
             "Doesn't touch implicit variables. Works together nicely with `explicit_string_variable`."

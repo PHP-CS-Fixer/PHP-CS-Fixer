@@ -33,7 +33,7 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
             'DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.',
             [
                 new CodeSample(
-                    <<<'EOT'
+                    <<<'EOD'
                         <?php
 
                         /******
@@ -48,7 +48,7 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
                          * DocBlock with arbitrary asterisk count at the end
                          **/
 
-                        EOT
+                        EOD
                 ),
             ]
         );

@@ -42,7 +42,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        $code = <<<'EOF'
+        $code = <<<'EOD'
             <?php
             /**
              * Hello there!
@@ -54,7 +54,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
              * @param bool   $bar Bar
              */
 
-            EOF;
+            EOD;
 
         return new FixerDefinition(
             'Annotations in PHPDoc should be ordered in defined sequence.',

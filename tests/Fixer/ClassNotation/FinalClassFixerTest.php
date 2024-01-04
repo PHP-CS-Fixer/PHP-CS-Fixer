@@ -166,7 +166,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
         // Multiline tests
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 use Doctrine\ORM;
                 #[IgnoredAttribute("Some-Value"), IgnoredAttribute("Another-Value")]
@@ -176,11 +176,11 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                  * line
                  */
                 class MyEntity {}
-                EOF,
+                EOD,
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 use Doctrine\ORM;
                 #[
@@ -193,7 +193,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                  * line
                  */
                 class MyEntity {}
-                EOF,
+                EOD,
         ];
     }
 
@@ -228,7 +228,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly /* ... */ class MyEntity {}'];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 use Doctrine\ORM;
                 #[ORM\Mapping\Entity]
@@ -238,7 +238,7 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                  * line
                  */
                 class MyEntity {}
-                EOF,
+                EOD,
         ];
     }
 }

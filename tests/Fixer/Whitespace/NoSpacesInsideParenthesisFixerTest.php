@@ -35,7 +35,7 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 
     public function testLeaveNewLinesAlone(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             class Foo
@@ -52,7 +52,7 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
                     };
                 }
             }
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 

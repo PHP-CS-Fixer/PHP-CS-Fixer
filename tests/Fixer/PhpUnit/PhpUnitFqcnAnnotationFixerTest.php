@@ -36,7 +36,7 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * @covers \Foo
@@ -59,8 +59,8 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
                      * @uses static::someOtherFunction
                      */
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * @covers Foo
@@ -83,7 +83,7 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
                      * @uses static::someOtherFunction
                      */
                 }
-                EOF
+                EOD
         ];
 
         yield [

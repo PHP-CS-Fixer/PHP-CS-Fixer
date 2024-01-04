@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-$header = <<<'EOF'
+$header = <<<'EOD'
     This file is part of PHP CS Fixer.
 
     (c) Fabien Potencier <fabien@symfony.com>
@@ -20,7 +20,7 @@ $header = <<<'EOF'
 
     This source file is subject to the MIT license that is bundled
     with this source code in the file LICENSE.
-    EOF;
+    EOD;
 
 $finder = (new PhpCsFixer\Finder())
     ->ignoreDotFiles(false)

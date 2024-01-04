@@ -64,24 +64,24 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                     foo(1, function (int $a, Foo $b) use ($c, $d) {
                         return bar($a, $c);
                     }, 2);
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(fn () => 1);
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                     foo(function () {
 
@@ -90,74 +90,74 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
 
                     });
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(fn ($a) => fn () => $a + 1);
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                     foo(function ($a) {
                         return function () use ($a) {
                             return $a + 1;
                         };
                     });
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(function () {// comment
                         return 1;
                     });
-                EXPECTED
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(function () {
                         // comment
                         return 1;
                     });
-                EXPECTED
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(function () {
                         return 1; // comment
                     });
-                EXPECTED
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(function () {
                         return 1;
                         // comment
                     });
-                EXPECTED
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     foo(function () {
                         return
                             1;
                     });
-                EXPECTED
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     $func = function (
                         $a,
@@ -165,18 +165,18 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     ) {
                         return 1;
                     };
-                EXPECTED
+                EOD
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                     $func = function () {
                         return function () {
                             foo();
                         };
                     };
-                EXPECTED
+                EOD
         ];
 
         yield [

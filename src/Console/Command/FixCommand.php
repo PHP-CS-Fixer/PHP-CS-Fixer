@@ -84,7 +84,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
      */
     public function getHelp(): string
     {
-        return <<<'EOF'
+        return <<<'EOD'
             The <info>%command.name%</info> command tries to %command.name% as much coding standards
             problems as possible on a given file or files in a given directory and its subdirectories:
 
@@ -120,7 +120,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             The <comment>--rules</comment> option limits the rules to apply to the
             project:
 
-            EOF. /* @TODO: 4.0 - change to @PER */ <<<'EOF'
+            EOD. /* @TODO: 4.0 - change to @PER */ <<<'EOD'
 
                 <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
 
@@ -189,7 +189,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             * 32 - Configuration error of a Fixer.
             * 64 - Exception raised within the application.
 
-            EOF;
+            EOD;
     }
 
     protected function configure(): void

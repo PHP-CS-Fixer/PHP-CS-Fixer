@@ -44,7 +44,7 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 
     public function testLeaveNewLinesAlone(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             class Foo
@@ -60,7 +60,7 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
                     };
                 }
             }
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
@@ -96,21 +96,21 @@ $a = $b[ # z
 
     public function testLeaveComplexString(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testLeaveFunctions(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             function someFunc()    {   $someVar = [];   }
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
@@ -399,26 +399,26 @@ $var = $arr[0]{     0
     private static function provideMultiDimensionalArrayCases(): iterable
     {
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 $arr1[]  ["some_offset"] [] {"foo"} = 3;
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                EOT,
+                EOD,
             ['positions' => ['inside']],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                EOT,
+                EOD,
             ['positions' => ['outside']],
         ];
     }

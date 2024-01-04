@@ -91,12 +91,12 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php $a = '\\foo\\bar\\\\';
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php $a = "\\foo\\bar\\\\";
-                EOF
+                EOD
         ];
 
         yield [
@@ -145,9 +145,9 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         yield ['<?php $a = B"foo\n bar";'];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php $a = "\\\n";
-                EOF
+                EOD
         ];
 
         yield [
@@ -157,7 +157,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 // none
                 $a = 'start \' end';
@@ -165,8 +165,8 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $b = 'start \\\' end';
                 // two escaped baskslash
                 $c = 'start \\\\\' end';
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 // none
                 $a = "start ' end";
@@ -174,18 +174,18 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $b = "start \\' end";
                 // two escaped baskslash
                 $c = "start \\\\' end";
-                EOT,
+                EOD,
             ['strings_containing_single_quote_chars' => true],
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 // one unescaped backslash
                 $a = "start \' end";
                 // one escaped + one unescaped baskslash
                 $b = "start \\\' end";
-                EOT,
+                EOD,
             null,
             ['strings_containing_single_quote_chars' => true],
         ];

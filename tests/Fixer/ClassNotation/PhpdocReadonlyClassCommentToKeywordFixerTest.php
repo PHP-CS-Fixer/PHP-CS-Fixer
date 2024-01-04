@@ -38,32 +38,32 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
     public static function provideFixCases(): iterable
     {
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
 
                 readonly class C {
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /** @readonly */
                 class C {
                 }
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /**
                  */
                 readonly class C {
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /**
@@ -71,11 +71,11 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
                  */
                 class C {
                 }
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /**
@@ -84,8 +84,8 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
                  */
                 readonly class C {
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /**
@@ -95,19 +95,19 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
                  */
                 class C {
                 }
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /**
                  */
                 final readonly class C {
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /**
@@ -115,19 +115,19 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
                  */
                 final class C {
                 }
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
 
                 /**
                  */
                 abstract readonly class C {
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 /**
@@ -135,34 +135,34 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
                  */
                 abstract class C {
                 }
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 /**
                  */
                 readonly class A {
                 }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * @readonly
                  */
                 readonly class A {
                 }
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 /** Class A. */
                 class A {
                 }
-                EOT,
+                EOD,
         ];
     }
 }

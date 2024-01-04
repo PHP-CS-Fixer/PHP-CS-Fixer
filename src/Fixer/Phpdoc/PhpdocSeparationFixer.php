@@ -54,7 +54,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        $code = <<<'EOF'
+        $code = <<<'EOD'
             <?php
             /**
              * Hello there!
@@ -69,7 +69,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
              * @return int  Return the number of changes.
              */
 
-            EOF;
+            EOD;
 
         return new FixerDefinition(
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other. Annotations of a different type are separated by a single blank line.',
@@ -87,7 +87,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
                     ['return', 'param'],
                 ]]),
                 new CodeSample(
-                    <<<'EOF'
+                    <<<'EOD'
                         <?php
                         /**
                          * @ORM\Id
@@ -98,7 +98,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
                          * @Assert\Type("string")
                          */
 
-                        EOF,
+                        EOD,
                     ['groups' => [['ORM\*'], ['Assert\*']]],
                 ),
                 new CodeSample($code, ['skip_unlisted_annotations' => true]),

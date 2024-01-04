@@ -40,7 +40,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'properties' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 class Foo {
                     public $var;
@@ -55,8 +55,8 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     private static $FooBar3;
                     public $old = 'foo';
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 class Foo {
                     public $var;
@@ -72,28 +72,28 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     $FooBar3;
                     var $old = 'foo';
                 }
-                EOF,
+                EOD,
         ];
 
         yield 'properties after method' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 class Foo {
                     public function aaa() {}
                     public $bbb;
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 class Foo {
                     public function aaa() {}
                     var $bbb;
                 }
-                EOF,
+                EOD,
         ];
 
         yield 'methods' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 class MyTestWithAnonymousClass extends TestCase
                 {
@@ -107,8 +107,8 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     ) {
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 class MyTestWithAnonymousClass extends TestCase
                 {
@@ -122,11 +122,11 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     ) {
                     }
                 }
-                EOF,
+                EOD,
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 abstract class Foo {
                     public function& foo0() {}
@@ -149,8 +149,8 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                             $bar = function($baz) {};
                         }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 abstract class Foo {
                     public function& foo0() {}
@@ -175,41 +175,41 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                             $bar = function($baz) {};
                         }
                 }
-                EOF,
+                EOD,
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 abstract class Foo1 {
                     public function& foo0($a) {}
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 abstract class Foo1 {
                     function& foo0($a) {}
                 }
-                EOF,
+                EOD,
         ];
 
-        yield 'leave functions alone' => [<<<'EOF'
+        yield 'leave functions alone' => [<<<'EOD'
             <?php
             function foo() {
                 static $foo;
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone with variables matching OOP words' => [<<<'EOF'
+        yield 'leave functions alone with variables matching OOP words' => [<<<'EOD'
             <?php
             function foo() {
                 static $class;
                 $interface = 'foo';
                 $trait = 'bar';
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone inside conditionals' => [<<<'EOF'
+        yield 'leave functions alone inside conditionals' => [<<<'EOD'
             <?php
             if (!function_exists('foo')) {
                 function foo($arg)
@@ -217,9 +217,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone inside conditionals with OOP word in comment' => [<<<'EOF'
+        yield 'leave functions alone inside conditionals with OOP word in comment' => [<<<'EOD'
             <?php
             /* class <= this is just a stop-word */
             if (!function_exists('foo')) {
@@ -228,18 +228,18 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone with OOP word in comment' => [<<<'EOF'
+        yield 'leave functions alone with OOP word in comment' => [<<<'EOD'
             <?php
             /* class */
             function foo($arg)
             {
                 return $arg;
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone outside classes with OOP word in inline HTML' => [<<<'EOF'
+        yield 'leave functions alone outside classes with OOP word in inline HTML' => [<<<'EOD'
             <?php
             if (!function_exists('foo')) {
                 function foo($arg)
@@ -250,9 +250,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone outside classes with OOP word in string value' => [<<<'EOF'
+        yield 'leave functions alone outside classes with OOP word in string value' => [<<<'EOD'
             <?php
             if (!function_exists('foo')) {
                 function foo($arg)
@@ -260,9 +260,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return 'she has class right?';
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone outside classes with OOP word in function name' => [<<<'EOF'
+        yield 'leave functions alone outside classes with OOP word in function name' => [<<<'EOD'
             <?php
 
             comment_class();
@@ -273,9 +273,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $arg;
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'leave functions alone after class' => [<<<'EOF'
+        yield 'leave functions alone after class' => [<<<'EOD'
             <?php
 
             class Foo
@@ -289,9 +289,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return 'bar';
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'curly open syntax' => [<<<'EOF'
+        yield 'curly open syntax' => [<<<'EOD'
             <?php
 
             class Foo
@@ -304,9 +304,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     $bar = "bar"; // test if variable after T_CURLY_OPEN is intact
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'dollar open curly braces syntax' => [<<<'EOF'
+        yield 'dollar open curly braces syntax' => [<<<'EOD'
             <?php
 
             class Foo {
@@ -316,9 +316,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     $bar = "bar"; // test if variable after T_DOLLAR_OPEN_CURLY_BRACES is intact
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'leave JavaScript outside PHP alone' => [<<<'EOF'
+        yield 'leave JavaScript outside PHP alone' => [<<<'EOD'
             <?php
             function foo()
             {
@@ -330,9 +330,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 alert(bar);
             }
             </script>
-            EOF];
+            EOD];
 
-        yield 'leave JavaScript in string alone' => [<<<'EOF'
+        yield 'leave JavaScript in string alone' => [<<<'EOD'
             <?php
             function registerJS()
             {
@@ -342,9 +342,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
             }
             </script>';
             }
-            EOF];
+            EOD];
 
-        yield 'leave JavaScript in variable alone' => [<<<'EOF'
+        yield 'leave JavaScript in variable alone' => [<<<'EOD'
             <?php
             class Foo
             {
@@ -361,9 +361,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     return $script;
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'comma separated properties' => [<<<'EOF'
+        yield 'comma separated properties' => [<<<'EOD'
             <?php
             class Foo
             {
@@ -373,8 +373,8 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 public $baz1 = null, $baz2, $baz3 = false;
                 public $foo, $bar;
             }
-            EOF,
-            <<<'EOF'
+            EOD,
+            <<<'EOD'
                 <?php
                 class Foo
                 {
@@ -384,9 +384,9 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     public $baz1 = null, $baz2, $baz3 = false;
                     var $foo, $bar;
                 }
-                EOF];
+                EOD];
 
-        yield 'var declarations with array value' => [<<<'EOF'
+        yield 'var declarations with array value' => [<<<'EOD'
             <?php
             class Foo
             {
@@ -398,8 +398,8 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
                 public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
             }
-            EOF,
-            <<<'EOF'
+            EOD,
+            <<<'EOD'
                 <?php
                 class Foo
                 {
@@ -411,7 +411,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     public $foo4a = '1a', $foo5a = array(1, 2, 3), $foo6a = 10;
                     public $foo4b = '1b', $foo5b = array(1, 2, 3), $foo6b = 10;
                 }
-                EOF];
+                EOD];
 
         yield [
             '<?php class A { public const B=1; }',

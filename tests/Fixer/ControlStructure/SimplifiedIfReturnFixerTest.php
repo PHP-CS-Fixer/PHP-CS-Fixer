@@ -81,7 +81,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 function f1() { return (bool) ($f1)      ; }
                 function f2() { return true; } return false;
@@ -92,8 +92,8 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 function f7() { return ! ($f7)      ; }
                 function f8() { return false; } return true;
                 function f9() { return ! ($f9)      ; }
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 function f1() { if ($f1) { return true; } return false; }
                 function f2() { return true; } return false;
@@ -104,11 +104,11 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 function f7() { if ($f7) { return false; } return true; }
                 function f8() { return false; } return true;
                 function f9() { if ($f9) { return false; } return true; }
-                EOT,
+                EOD,
         ];
 
         yield 'preserve-comments' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 // C1
                 return (bool)
@@ -135,8 +135,8 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 // C1
                 if
@@ -163,11 +163,11 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT,
+                EOD,
         ];
 
         yield 'preserve-comments-braceless' => [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 // C1
                 return (bool)
@@ -192,8 +192,8 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 // C1
                 if
@@ -218,7 +218,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT,
+                EOD,
         ];
 
         yield 'else-if' => [

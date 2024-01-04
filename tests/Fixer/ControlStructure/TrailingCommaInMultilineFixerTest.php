@@ -576,22 +576,22 @@ $a
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD_'
                 <?php
                 $a = [
                     <<<'EOD'
                         foo
                         EOD,
                 ];
-                EXPECTED,
-            <<<'INPUT'
+                EOD_,
+            <<<'EOD_'
                 <?php
                 $a = [
                     <<<'EOD'
                         foo
                         EOD
                 ];
-                INPUT,
+                EOD_,
             ['after_heredoc' => true],
         ];
 

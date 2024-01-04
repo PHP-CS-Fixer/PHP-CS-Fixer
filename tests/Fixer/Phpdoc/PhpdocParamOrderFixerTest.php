@@ -27,7 +27,7 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
 {
     public function testNoChanges(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -35,13 +35,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testNoChangesMultiple(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -50,13 +50,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testOnlyParamsUntyped(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -68,8 +68,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -81,13 +81,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testOnlyParamsUntypedMixed(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -99,8 +99,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -112,13 +112,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testOnlyParamsTyped(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -130,8 +130,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -143,13 +143,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testOnlyParamsUndocumented(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -160,8 +160,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e, $f) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -172,13 +172,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e, $f) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testOnlyParamsSuperfluousAnnotation(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -189,8 +189,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -201,13 +201,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testOnlyParamsSuperfluousAnnotations(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -220,8 +220,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -234,13 +234,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testParamsUntyped(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -256,8 +256,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -273,13 +273,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testParamsTyped(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -295,8 +295,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -312,13 +312,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testParamsDescription(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -334,8 +334,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -351,13 +351,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testParamsMultilineDescription(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -376,8 +376,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -396,13 +396,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testComplexTypes(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -415,8 +415,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e, $f) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -429,13 +429,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e, $f) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testVariousMethodDeclarations(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             abstract class C {
                 /**
@@ -506,8 +506,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 private static function m7(Foo $a, array $b, $c) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             abstract class C {
                 /**
@@ -578,13 +578,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 private static function m7(Foo $a, array $b, $c) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testParamsWithOtherAnnotationsInBetween(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * [c1] Method description
@@ -603,8 +603,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @throws FooException
              */
             function foo($a, $b) {}
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             /**
              * [c1] Method description
@@ -623,13 +623,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @throws FooException
              */
             function foo($a, $b) {}
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testParamsBlankLines(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -651,8 +651,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -674,13 +674,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m($a, $b, $c, $d, $e) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testNestedPhpdoc(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * @param string[] $array
@@ -694,9 +694,9 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @return bool
              */
             function string_array_walk(array &$array, callable $callback, $userdata = null) {}
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
             /**
              * @param callable $callback {
@@ -710,14 +710,14 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @return bool
              */
             function string_array_walk(array &$array, callable $callback, $userdata = null) {}
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testMultiNestedPhpdoc(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * @param string[] $a
@@ -738,9 +738,9 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @return bool
              */
             function m(array &$a, callable $b, $c = null, $d) {}
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
             /**
              * @param mixed    $c
@@ -761,14 +761,14 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @return bool
              */
             function m(array &$a, callable $b, $c = null, $d) {}
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testMultipleNestedPhpdoc(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * @param string[] $array
@@ -793,9 +793,9 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @return bool
              */
             function string_array_walk(array &$array, callable $callback, $userdata = null, $foo) {}
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
             /**
              * @param $superfluous1 Superfluous
@@ -820,14 +820,14 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @return bool
              */
             function string_array_walk(array &$array, callable $callback, $userdata = null, $foo) {}
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testNonMatchingParamName(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * @param Foo $fooBar
@@ -835,9 +835,9 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param OtherClassLorem $x
              */
             function f(Foo $fooBar, Payment $foo, OtherClassLoremIpsum $y) {}
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
             /**
              * @param $fooSomethingNotMatchingTheName
@@ -845,14 +845,14 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param OtherClassLorem $x
              */
             function f(Foo $fooBar, Payment $foo, OtherClassLoremIpsum $y) {}
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testPlainFunction(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * A plain function
@@ -863,8 +863,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param $d
              */
             function m($a, $b, $c, $d) {}
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             /**
              * A plain function
@@ -875,13 +875,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param $a
              */
             function m($a, $b, $c, $d) {}
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testCommentsInSignature(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -892,8 +892,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public/*1*/function/*2*/m/*3*/(/*4*/$a, $b,/*5*/$c, $d){}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -904,13 +904,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public/*1*/function/*2*/m/*3*/(/*4*/$a, $b,/*5*/$c, $d){}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testClosure(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * @param array $a
@@ -919,8 +919,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param int   $d
              */
             $closure = function (array $a, $b, Foo $c, $d) {};
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             /**
              * @param       $b
@@ -929,13 +929,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param array $a
              */
             $closure = function (array $a, $b, Foo $c, $d) {};
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testArrowFunction(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             /**
              * @param array $a
@@ -944,8 +944,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param int   $d
              */
             $closure = fn (array $a, $b, Foo $c, $d) => null;
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             /**
              * @param       $b
@@ -954,13 +954,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
              * @param array $a
              */
             $closure = fn (array $a, $b, Foo $c, $d) => null;
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testInterface(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             Interface I
             {
@@ -981,8 +981,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public static function bar(array $a, $b);
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             Interface I
             {
@@ -1003,13 +1003,13 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public static function bar(array $a, $b);
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 
     public function testPhp7ParamTypes(): void
     {
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             class C {
                 /**
@@ -1019,8 +1019,8 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m(array $a, $b, bool $c) {}
             }
-            EOT;
-        $input = <<<'EOT'
+            EOD;
+        $input = <<<'EOD'
             <?php
             class C {
                 /**
@@ -1030,7 +1030,7 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                  */
                 public function m(array $a, $b, bool $c) {}
             }
-            EOT;
+            EOD;
         $this->doTest($expected, $input);
     }
 }

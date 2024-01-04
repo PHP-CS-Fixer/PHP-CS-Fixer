@@ -312,7 +312,7 @@ try {
             'exclude' => [],
         ]);
 
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
             var_dump(
                 \null,
@@ -328,9 +328,9 @@ try {
                 m_pi,
                 m_PI
             );
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
             var_dump(
                 null,
@@ -346,7 +346,7 @@ try {
                 m_pi,
                 m_PI
             );
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -371,23 +371,23 @@ try {
             'exclude' => [],
         ]);
 
-        $expected = <<<EOT
+        $expected = <<<EOD
             <?php
             var_dump(
                 \\null,
                 {$dontFixMe},
                 \\{$fixMe}
             );
-            EOT;
+            EOD;
 
-        $input = <<<EOT
+        $input = <<<EOD
             <?php
             var_dump(
                 null,
                 {$dontFixMe},
                 {$fixMe}
             );
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -403,7 +403,7 @@ try {
             'exclude' => [],
         ]);
 
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -415,9 +415,9 @@ try {
                 \M_PI,
                 M_EULER
             );
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -429,7 +429,7 @@ try {
                 M_PI,
                 M_EULER
             );
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -438,7 +438,7 @@ try {
     {
         $this->fixer->configure(['scope' => 'namespaced']);
 
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
 
             namespace space1 {
@@ -447,9 +447,9 @@ try {
             namespace {
                 echo PHP_VERSION;
             }
-            EOT;
+            EOD;
 
-        $input = <<<'EOT'
+        $input = <<<'EOD'
             <?php
 
             namespace space1 {
@@ -458,7 +458,7 @@ try {
             namespace {
                 echo PHP_VERSION;
             }
-            EOT;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -467,11 +467,11 @@ try {
     {
         $this->fixer->configure(['scope' => 'namespaced']);
 
-        $expected = <<<'EOT'
+        $expected = <<<'EOD'
             <?php
 
             echo PHP_VERSION . PHP_EOL;
-            EOT;
+            EOD;
 
         $this->doTest($expected);
     }

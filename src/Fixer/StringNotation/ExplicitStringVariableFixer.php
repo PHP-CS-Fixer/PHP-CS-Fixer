@@ -32,13 +32,13 @@ final class ExplicitStringVariableFixer extends AbstractFixer
         return new FixerDefinition(
             'Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.',
             [new CodeSample(
-                <<<'EOT'
+                <<<'EOD'
                     <?php
                     $a = "My name is $name !";
                     $b = "I live in $state->country !";
                     $c = "I have $farm[0] chickens !";
 
-                    EOT
+                    EOD
             )],
             'The reasoning behind this rule is the following:'
                 ."\n".'- When there are two valid ways of doing the same thing, using both is confusing, there should be a coding standard to follow.'

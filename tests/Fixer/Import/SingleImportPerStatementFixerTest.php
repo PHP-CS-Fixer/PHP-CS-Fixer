@@ -47,7 +47,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 use Some, Not, PHP, Like, Use, Statement;
                 <?php
 
@@ -64,8 +64,8 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                 use FooJ;
                 use FooZ;
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 use Some, Not, PHP, Like, Use, Statement;
                 <?php
 
@@ -78,11 +78,11 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                         FooJ;
                 use FooZ;
 
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 namespace {
@@ -115,8 +115,8 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                     use BarZ;
                 }
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 namespace {
@@ -141,7 +141,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                     use BarZ;
                 }
 
-                EOF
+                EOD
         ];
 
         yield [

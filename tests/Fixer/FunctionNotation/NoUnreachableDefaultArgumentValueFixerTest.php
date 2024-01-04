@@ -63,18 +63,18 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                                     <?php
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                                         function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                                     <?php
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                                         function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-                EOT
+                EOD
         ];
 
         yield [
@@ -98,7 +98,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                                     <?php
                                         function foo(
                                             $a, // test
@@ -106,8 +106,8 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                             $c, // abc
                                             $d
                                         ) {}
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                                     <?php
                                         function foo(
                                             $a = 1, // test
@@ -115,7 +115,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                             $c = null, // abc
                                             $d
                                         ) {}
-                EOT
+                EOD
         ];
 
         yield [

@@ -37,129 +37,129 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixImportConstantsCases(): iterable
     {
         yield 'non-global names' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 echo FOO, \Bar\BAZ, namespace\FOO2;
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [1]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 echo \FOO, FOO, \FOO;
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [2]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const Bar\FOO;
                 echo \FOO;
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [3]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 const FOO = 1;
                 echo \FOO;
-                EXPECTED
+                EOD
         ];
 
         yield 'without namespace / do not import' => [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 echo \FOO, \BAR, \FOO;
-                INPUT
+                EOD
         ];
 
         yield 'with namespace' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const BAR;
                 use const FOO;
                 echo FOO, BAR;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 echo \FOO, \BAR;
-                INPUT
+                EOD
         ];
 
         yield 'with namespace with {} syntax' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test {
                 use const BAR;
                 use const FOO;
                     echo FOO, BAR;
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                EOD
         ];
 
         yield 'ignore other imported types' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use BAR;
                 use const BAR;
                 use const FOO;
                 echo FOO, BAR;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use BAR;
                 echo \FOO, \BAR;
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [1]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const BAR;
                 use const FOO;
                 echo FOO, BAR;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const BAR;
                 echo \FOO, \BAR;
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [2]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const \BAR;
                 use const FOO;
                 echo FOO, BAR, BAR;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const \BAR;
                 echo \FOO, \BAR, BAR;
-                INPUT
+                EOD
         ];
 
         yield 'handle case sensitivity' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const fOO;
@@ -167,34 +167,34 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const Foo;
                 const foO = 1;
                 echo FOO, Foo;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const fOO;
                 const foO = 1;
                 echo \FOO, \Foo;
-                INPUT
+                EOD
         ];
 
         yield 'handle aliased imports' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const BAR as BAZ;
                 use const FOO;
                 echo FOO, BAZ;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const BAR as BAZ;
                 echo \FOO, \BAR;
-                INPUT
+                EOD
         ];
 
         yield 'ignore class constants' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const FOO;
@@ -202,31 +202,31 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     const FOO = 1;
                 }
                 echo FOO;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 class Bar {
                     const FOO = 1;
                 }
                 echo \FOO;
-                INPUT
+                EOD
         ];
 
         yield 'global namespace' => [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 echo \FOO, \BAR;
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 namespace {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                EOD
         ];
     }
 
@@ -242,71 +242,71 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixImportFunctionsCases(): iterable
     {
         yield 'non-global names' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 foo();
                 Bar\baz();
                 namespace\foo2();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [1]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 \foo();
                 Foo();
                 \foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [2]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function Bar\foo;
                 \Foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [3]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 function foo() {}
                 \Foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'without namespace / do not import' => [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 \foo();
                 \bar();
                 \Foo();
-                INPUT
+                EOD
         ];
 
         yield 'with namespace' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function bar;
                 use function foo;
                 foo();
                 bar();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 \foo();
                 \bar();
-                INPUT
+                EOD
         ];
 
         yield 'with namespace with {} syntax' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test {
                 use function bar;
@@ -314,18 +314,18 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     foo();
                     bar();
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test {
                     \foo();
                     \bar();
                 }
-                INPUT
+                EOD
         ];
 
         yield 'ignore other imported types' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use bar;
@@ -333,36 +333,36 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function foo;
                 foo();
                 bar();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use bar;
                 \foo();
                 \bar();
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [1]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function bar;
                 use function foo;
                 foo();
                 Bar();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function bar;
                 \foo();
                 \Bar();
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [2]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function \bar;
@@ -370,37 +370,37 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 Bar();
                 bar();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function \bar;
                 \foo();
                 \Bar();
                 bar();
-                INPUT
+                EOD
         ];
 
         yield 'handle aliased imports' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function bar as baz;
                 use function foo;
                 foo();
                 baz();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function bar as baz;
                 \foo();
                 \Bar();
-                INPUT
+                EOD
         ];
 
         yield 'ignore class methods' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function foo;
@@ -408,19 +408,19 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     function foo() {}
                 }
                 foo();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 class Bar {
                     function foo() {}
                 }
                 \foo();
-                INPUT
+                EOD
         ];
 
         yield 'name already used' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 class Bar {
@@ -433,7 +433,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     }
                 }
                 \foo();
-                EXPECTED
+                EOD
         ];
     }
 
@@ -449,7 +449,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixImportClassesCases(): iterable
     {
         yield 'non-global names' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 new Foo();
@@ -458,11 +458,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var Foo|Bar\Baz $x */
                 $x = x();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [1]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 new \Foo();
@@ -470,33 +470,33 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [2]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar\foo;
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [3]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 class foo {}
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'name already used [4]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
 
@@ -505,21 +505,21 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EOD
         ];
 
         yield 'without namespace / do not import' => [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 /** @var \Foo $foo */
                 $foo = new \foo();
                 new \Bar();
                 \FOO::baz();
-                INPUT
+                EOD
         ];
 
         yield 'with namespace' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar;
@@ -531,8 +531,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @return Baz<string, foo> */
                 function x() {}
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
 
@@ -541,11 +541,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @return \Baz<string, \foo> */
                 function x() {}
-                INPUT
+                EOD
         ];
 
         yield 'with namespace with {} syntax' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test {
                 use Bar;
@@ -553,36 +553,36 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     new Foo();
                     Bar::baz();
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test {
                     new \Foo();
                     \Bar::baz();
                 }
-                INPUT
+                EOD
         ];
 
         yield 'phpdoc only' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Throwable;
 
                 /** @throws Throwable */
                 function x() {}
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
 
                 /** @throws \Throwable */
                 function x() {}
-                INPUT
+                EOD
         ];
 
         yield 'ignore other imported types' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function Bar;
@@ -590,36 +590,36 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use Foo;
                 new Foo();
                 Bar::baz();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function Bar;
                 new \Foo();
                 \Bar::baz();
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [1]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar;
                 use Foo;
                 new Foo();
                 bar::baz();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar;
                 new \Foo();
                 \bar::baz();
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [2]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use \Bar;
@@ -627,19 +627,19 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new Foo();
                 new bar();
                 new Bar();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use \Bar;
                 new \Foo();
                 new \bar();
                 new Bar();
-                INPUT
+                EOD
         ];
 
         yield 'respect already imported names [3]' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Throwable;
@@ -649,8 +649,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @throws Throwable */
                 function y() {}
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Throwable;
@@ -660,11 +660,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @throws \Throwable */
                 function y() {}
-                INPUT
+                EOD
         ];
 
         yield 'handle aliased imports' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar as Baz;
@@ -674,8 +674,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var Baz $bar */
                 $bar = new Baz();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar as Baz;
@@ -684,11 +684,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \bar $bar */
                 $bar = new \bar();
-                INPUT
+                EOD
         ];
 
         yield 'handle typehints' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar;
@@ -697,18 +697,18 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 class Abc {
                     function bar(Foo $a, Bar $b, foo &$c, Baz ...$d) {}
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 class Abc {
                     function bar(\Foo $a, \Bar $b, \foo &$c, \Baz ...$d) {}
                 }
-                INPUT
+                EOD
         ];
 
         yield 'handle typehints 2' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Bar;
@@ -716,50 +716,50 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 class Abc {
                     function bar(?Foo $a): ?Bar {}
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 class Abc {
                     function bar(?\Foo $a): ?\Bar {}
                 }
-                INPUT
+                EOD
         ];
 
         yield 'try catch' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (Exception $e) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 try {
                 } catch (\Exception $e) {
                 }
-                INPUT
+                EOD
         ];
 
         yield 'try catch with comments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (/* ... */ Exception $e /* ... */) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 try {
                 } catch (/* ... */ \Exception $e /* ... */) {
                 }
-                INPUT
+                EOD
         ];
     }
 
@@ -777,39 +777,39 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixImportClasses80Cases(): iterable
     {
         yield 'try catch without variable' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (Exception) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 try {
                 } catch (\Exception) {
                 }
-                INPUT
+                EOD
         ];
 
         yield 'try catch without variable and comments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (/* non-capturing catch */ Exception /* just because! */) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 try {
                 } catch (/* non-capturing catch */ \Exception /* just because! */) {
                 }
-                INPUT
+                EOD
         ];
     }
 
@@ -825,48 +825,48 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixFullyQualifyConstantsCases(): iterable
     {
         yield 'already fqn or sub namespace' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 use const FOO;
                 use const BAR;
                 echo \FOO, Baz\BAR;
-                EXPECTED
+                EOD
         ];
 
         yield 'handle all occurrences' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace X;
                 use const FOO;
                 use const BAR;
                 echo \FOO, \BAR, \FOO;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace X;
                 use const FOO;
                 use const BAR;
                 echo FOO, BAR, FOO;
-                INPUT
+                EOD
         ];
 
         yield 'ignore other imports and non-imported names' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use FOO;
                 use const BAR;
                 use const Baz;
                 echo FOO, \BAR, BAZ, QUX;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use FOO;
                 use const BAR;
                 use const Baz;
                 echo FOO, BAR, BAZ, QUX;
-                INPUT
+                EOD
         ];
     }
 
@@ -882,17 +882,17 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixFullyQualifyFunctionsCases(): iterable
     {
         yield 'already fqn or sub namespace' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 use function foo;
                 use function bar;
                 \foo();
                 Baz\bar();
-                EXPECTED
+                EOD
         ];
 
         yield 'handle all occurrences' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace X;
                 use function foo;
@@ -900,8 +900,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 \foo();
                 \bar();
                 \Foo();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace X;
                 use function foo;
@@ -909,11 +909,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 bar();
                 Foo();
-                INPUT
+                EOD
         ];
 
         yield 'ignore other imports and non-imported names' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use foo;
@@ -921,8 +921,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 \bar();
                 baz();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use foo;
@@ -930,7 +930,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 bar();
                 baz();
-                INPUT
+                EOD
         ];
     }
 
@@ -946,7 +946,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixFullyQualifyClassesCases(): iterable
     {
         yield 'already fqn or sub namespace' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 use Foo;
                 use Bar;
@@ -959,11 +959,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @param Baz\Bar $bar
                  */
                 function abc(\Foo $foo, Baz\Bar $bar = null) {}
-                EXPECTED
+                EOD
         ];
 
         yield 'handle all occurrences' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace X;
                 use Foo;
@@ -979,8 +979,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @return array<string, ?\Bar<int, \foo>>|null
                  */
                 function abc($foo, \Bar $bar = null) {}
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace X;
                 use Foo;
@@ -996,11 +996,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @return array<string, ?Bar<int, foo>>|null
                  */
                 function abc($foo, Bar $bar = null) {}
-                INPUT
+                EOD
         ];
 
         yield 'ignore other imports and non-imported names' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function Foo;
@@ -1008,8 +1008,8 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new Foo();
                 new \Bar();
                 new Baz();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function Foo;
@@ -1017,45 +1017,45 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new Foo();
                 new Bar();
                 new Baz();
-                INPUT
+                EOD
         ];
 
         yield 'try catch' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (\Exception $e) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (Exception $e) {
                 }
-                INPUT
+                EOD
         ];
 
         yield 'try catch with comments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (/* ... */ \Exception $e /* ... */) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (/* ... */ Exception $e /* ... */) {
                 }
-                INPUT
+                EOD
         ];
 
         yield 'key in PHPDoc\'s array shape matching class name' => [
@@ -1110,41 +1110,41 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideFixFullyQualifyClasses80Cases(): iterable
     {
         yield 'try catch without variable' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (\Exception) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (Exception) {
                 }
-                INPUT
+                EOD
         ];
 
         yield 'try catch without variable and comments' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (/* non-capturing catch */ \Exception /* just because! */) {
                 }
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use Exception;
                 try {
                 } catch (/* non-capturing catch */ Exception /* just because! */) {
                 }
-                INPUT
+                EOD
         ];
     }
 
@@ -1160,18 +1160,18 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     public static function provideMultipleNamespacesCases(): iterable
     {
         yield [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 echo \FOO, \BAR;
 
                 namespace OtherTest;
                 echo \FOO, \BAR;
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 namespace Test {
                     echo \FOO, \BAR;
@@ -1181,11 +1181,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace OtherTest {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 namespace {
                     echo \FOO, \BAR;
@@ -1195,11 +1195,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace OtherTest {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                EOD
         ];
 
         yield [
-            <<<'INPUT'
+            <<<'EOD'
                 <?php
                 namespace Test {
                     echo \FOO, \BAR;
@@ -1209,7 +1209,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                EOD
         ];
     }
 
@@ -1266,7 +1266,7 @@ class Bar
     public static function provideFix81Cases(): iterable
     {
         yield 'ignore enum methods' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use function foo;
@@ -1274,19 +1274,19 @@ class Bar
                     function foo() {}
                 }
                 foo();
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 enum Bar {
                     function foo() {}
                 }
                 \foo();
-                INPUT
+                EOD
         ];
 
         yield 'ignore enum constants' => [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php
                 namespace Test;
                 use const FOO;
@@ -1294,15 +1294,15 @@ class Bar
                     const FOO = 1;
                 }
                 echo FOO;
-                EXPECTED,
-            <<<'INPUT'
+                EOD,
+            <<<'EOD'
                 <?php
                 namespace Test;
                 enum Bar {
                     const FOO = 1;
                 }
                 echo \FOO;
-                INPUT
+                EOD
         ];
     }
 }

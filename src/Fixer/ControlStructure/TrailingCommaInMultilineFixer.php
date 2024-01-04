@@ -63,7 +63,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             [
                 new CodeSample("<?php\narray(\n    1,\n    2\n);\n"),
                 new CodeSample(
-                    <<<'SAMPLE'
+                    <<<'EOD_'
                         <?php
                             $x = [
                                 'foo',
@@ -72,7 +72,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                                     EOD
                             ];
 
-                        SAMPLE
+                        EOD_
                     ,
                     ['after_heredoc' => true]
                 ),

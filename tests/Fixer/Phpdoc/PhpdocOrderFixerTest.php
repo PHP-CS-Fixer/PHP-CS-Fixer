@@ -45,7 +45,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
 
     public function testNoChanges(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Do some cool stuff.
@@ -58,7 +58,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @return void|bar
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
@@ -71,14 +71,14 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure($config);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @param EngineInterface $templating
                  * @param string          $name
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
@@ -91,7 +91,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure($config);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
@@ -99,7 +99,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  *
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
@@ -123,7 +123,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure($config);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
@@ -131,13 +131,13 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  *
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testFixBasicCase(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @param string $foo
@@ -145,9 +145,9 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @throws Exception
@@ -155,14 +155,14 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param string $foo
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixCompleteCase(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -186,9 +186,9 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -212,14 +212,14 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param bool   $bar Bar
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testExampleFromSymfony(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Renders a template.
@@ -233,9 +233,9 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  *
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Renders a template.
@@ -249,7 +249,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @throws \RuntimeException         if the template cannot be rendered
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -258,7 +258,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Do some cool stuff.
@@ -271,7 +271,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @throws Exception
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
@@ -279,7 +279,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @param string $foo
@@ -287,9 +287,9 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @throws Exception
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @throws Exception
@@ -297,7 +297,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param string $foo
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -306,7 +306,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -330,9 +330,9 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  *         jkaskdnaksdnkasndansdnansdajsdnkasd
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -356,7 +356,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param bool   $bar Bar
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -365,7 +365,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['order' => ['param', 'return', 'throws']]);
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Renders a template.
@@ -379,7 +379,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @throws \RuntimeException         if the template cannot be rendered
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($input);
     }
@@ -411,7 +411,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixBasicCaseWithDifferentOrdersCases(): iterable
     {
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @throws Exception
@@ -419,10 +419,10 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param string $foo
                  */
 
-            EOF;
+            EOD;
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * @return bool
@@ -430,13 +430,13 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * @param string $foo
                      */
 
-                EOF,
+                EOD,
             $input,
             ['order' => ['return', 'throws', 'param']],
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * @throws Exception
@@ -444,7 +444,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * @param string $foo
                      */
 
-                EOF,
+                EOD,
             null,
             ['order' => ['throws', 'return', 'param']],
         ];
@@ -460,7 +460,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
             'internal',
         ]]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -484,9 +484,9 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @internal
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -510,7 +510,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param bool   $bar Bar
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -533,7 +533,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     public static function provideFixCompleteCasesWithCustomOrdersCases(): iterable
     {
         yield 'intepacuthre' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -554,8 +554,8 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * @return int  Return the number of changes.
                      **/
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -576,12 +576,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
+                EOD,
             ['order' => ['internal', 'template', 'param', 'custom', 'throws', 'return']],
         ];
 
         yield 'pare' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -602,8 +602,8 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -624,12 +624,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
+                EOD,
             ['order' => ['param', 'return']],
         ];
 
         yield 'pareth' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -650,8 +650,8 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -672,12 +672,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
+                EOD,
             ['order' => ['param', 'return', 'throws']],
         ];
 
         yield 'pathre' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -698,8 +698,8 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * @return int  Return the number of changes.
                      **/
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -720,12 +720,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
+                EOD,
             ['order' => ['param', 'throws', 'return']],
         ];
 
         yield 'tepathre' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -746,8 +746,8 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         asldnaksdkjasdasd
                      **/
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -768,12 +768,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
+                EOD,
             ['order' => ['template', 'param', 'throws', 'return']],
         ];
 
         yield 'tepathre2' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -794,8 +794,8 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         asldnaksdkjasdasd
                      **/
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     /**
                      * Hello there
@@ -816,7 +816,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
 
-                EOF,
+                EOD,
             ['order' => ['template', 'param', 'throws', 'return']],
         ];
     }

@@ -2316,7 +2316,7 @@ class TestClass {
     public function testIsWhilePartOfDoWhile(): void
     {
         $source =
-<<<'SRC'
+<<<'EOD'
     <?php
     // `not do`
     while(false) {
@@ -2354,7 +2354,7 @@ class TestClass {
 
     // `not do`, `do`
     if(false){}while(false){}do{}while(false);
-    SRC;
+    EOD;
 
         $expected = [
             3 => false,
@@ -2579,7 +2579,7 @@ namespace b { use D\C; }
 
         yield [
             [3, 10, 34, 45, 54, 59, 77, 95],
-            <<<'EOF'
+            <<<'EOD'
                 use Zoo\Bar;
                 use Foo\Bar;
                 use Foo\Zar\Baz;
@@ -2601,7 +2601,7 @@ namespace b { use D\C; }
                 class AnnotatedClass
                 {
                 }
-                EOF,
+                EOD,
         ];
 
         yield [

@@ -42,170 +42,170 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 
     public function testFix(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there.
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithPeriod(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello.
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithQuestionMark(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello?
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithExclamationMark(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello!
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithInvertedQuestionMark(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello¿
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithInvertedExclamationMark(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello¡
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithUnicodeQuestionMark(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * ハロー？
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithUnicodeExclamationMark(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * ハロー！
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testWithJapanesePeriod(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * ハロー。
                  */
 
-            EOF;
+            EOD;
         $this->doTest($expected);
     }
 
     public function testFixIncBlank(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hi.
                  *
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hi
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixMultiline(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello
                  * there.
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello
                  * there
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithList(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Options:
@@ -221,14 +221,14 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  *  * b: bbb
                  *  * c: ccc
                  */
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testWithTags(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there.
@@ -238,9 +238,9 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there
@@ -250,14 +250,14 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithLongDescription(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there.
@@ -268,9 +268,9 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there
@@ -281,14 +281,14 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testCrazyMultiLineComments(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Clients accept an array of constructor parameters.
@@ -325,9 +325,9 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  * @param string $foo
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Clients accept an array of constructor parameters
@@ -364,20 +364,20 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
                  * @param string $foo
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWithNoDescription(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
@@ -411,13 +411,13 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 
     public function testEmptyDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }

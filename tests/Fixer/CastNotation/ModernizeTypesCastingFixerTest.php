@@ -36,7 +36,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        $multiLinePatternToFix = <<<'FIX'
+        $multiLinePatternToFix = <<<'EOD'
             <?php $x =
             intval
 
@@ -49,8 +49,8 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
             )
 
             ;
-            FIX;
-        $multiLinePatternFixed = <<<'FIXED'
+            EOD;
+        $multiLinePatternFixed = <<<'EOD'
             <?php $x =
             (int) (
                 mt_rand
@@ -61,9 +61,9 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
             )
 
             ;
-            FIXED;
+            EOD;
 
-        $overriddenFunction = <<<'OVERRIDDEN'
+        $overriddenFunction = <<<'EOD'
             <?php
 
             class overridesIntval
@@ -79,9 +79,9 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
                     return intval(mt_rand(0, 100));
                 }
             }
-            OVERRIDDEN;
+            EOD;
 
-        $overriddenFunctionFixed = <<<'OVERRIDDEN'
+        $overriddenFunctionFixed = <<<'EOD'
             <?php
 
             class overridesIntval
@@ -97,7 +97,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
                     return (int) (mt_rand(0, 100));
                 }
             }
-            OVERRIDDEN;
+            EOD;
 
         yield ['<?php $x = "intval";'];
 

@@ -39,7 +39,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
             'Heredoc/nowdoc content must be properly indented.',
             [
                 new CodeSample(
-                    <<<'SAMPLE'
+                    <<<'EOD_'
                         <?php
                             $heredoc = <<<EOD
                         abc
@@ -51,17 +51,17 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                             def
                         EOD;
 
-                        SAMPLE
+                        EOD_
                 ),
                 new CodeSample(
-                    <<<'SAMPLE'
+                    <<<'EOD_'
                         <?php
                             $nowdoc = <<<'EOD'
                         abc
                             def
                         EOD;
 
-                        SAMPLE
+                        EOD_
                     ,
                     ['indentation' => 'same_as_start']
                 ),

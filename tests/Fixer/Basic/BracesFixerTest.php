@@ -5429,7 +5429,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
     public static function provideNowdocInTemplatesCases(): iterable
     {
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 if (true) {
                     $var = <<<'NOWDOC'
@@ -5438,8 +5438,8 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 if (true) {
                 $var = <<<'NOWDOC'
@@ -5448,11 +5448,11 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT,
+                EOD,
         ];
 
         yield [
-            <<<'EOT'
+            <<<'EOD'
                 <?php
                 if (true) {
                     $var = <<<HEREDOC
@@ -5461,8 +5461,8 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT,
-            <<<'EOT'
+                EOD,
+            <<<'EOD'
                 <?php
                 if (true) {
                 $var = <<<HEREDOC
@@ -5471,7 +5471,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT,
+                EOD,
         ];
     }
 

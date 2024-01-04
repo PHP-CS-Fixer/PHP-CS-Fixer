@@ -25,7 +25,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 {
-    private string $template = <<<'EOF'
+    private string $template = <<<'EOD'
         <?php
         use \DateTime;
 
@@ -90,7 +90,7 @@ final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
                 // comment
             }
         }
-        EOF;
+        EOD;
 
     /**
      * @param list<int>    $lineNumberRemoved Line numbers expected to be removed after fixing
@@ -152,34 +152,34 @@ final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 
     public function testFix(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             $a = new Bar();
 
             $a = new FooBaz();
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             $a = new Bar();
 
 
             $a = new FooBaz();
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixWithManyEmptyLines(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             $a = new Bar();
 
             $a = new FooBaz();
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             $a = new Bar();
 
@@ -189,7 +189,7 @@ final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 
 
             $a = new FooBaz();
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -250,20 +250,20 @@ TEXT;
 
     public function testFixWithMultilineString(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             $a = 'Foo
 
 
             Bar';
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testFixWithTrickyMultilineStrings(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             $a = 'Foo';
 
@@ -278,9 +278,9 @@ TEXT;
 
 
             FooFoo';
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             $a = 'Foo';
 
@@ -298,14 +298,14 @@ TEXT;
 
 
             FooFoo';
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixWithCommentWithQuote(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             $a = 'foo';
 
@@ -313,9 +313,9 @@ TEXT;
             $b = 'foobar';
 
             $c = 'bar';
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             $a = 'foo';
 
@@ -325,7 +325,7 @@ TEXT;
 
 
             $c = 'bar';
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -369,7 +369,7 @@ TEXT;
     public static function provideFixWithCommentsCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 //class Test
                 $a; //
@@ -381,8 +381,8 @@ TEXT;
                 //
 
                 $d;
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 //class Test
                 $a; //
@@ -401,7 +401,7 @@ TEXT;
 
 
                 $d;
-                EOF
+                EOD
         ];
 
         yield [
@@ -572,7 +572,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
     public static function provideRemoveLinesBetweenUseStatementsCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 use Zxy\Qux;
@@ -589,9 +589,9 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
                 $a = new Bar2();
                 $a = new Baz();
                 $a = new Qux();
-                EOF,
+                EOD,
 
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 use Zxy\Qux;
@@ -611,7 +611,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
                 $a = new Bar2();
                 $a = new Baz();
                 $a = new Qux();
-                EOF,
+                EOD,
         ];
 
         yield [

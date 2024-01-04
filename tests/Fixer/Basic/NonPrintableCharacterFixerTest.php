@@ -232,13 +232,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "Double \" quote \u{200b} inside";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo 'Double " quote %s inside';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -246,13 +246,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "Single ' quote \u{200b} inside";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo 'Single \' quote %s inside';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -260,19 +260,19 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo <<<STRING
                     Quotes ' and " to be handled \u{200b} properly \\' and \\"
                 STRING
                 ;
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo <<<'STRING'
                         Quotes ' and " to be handled %s properly \' and \"
                     STRING
                     ;
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -280,13 +280,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "\\\u{200b}\"";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo '\\%s"';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -294,13 +294,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "\\\u{200b}'";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo '\\%s\'';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -308,13 +308,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "Backslash 1 \\ \u{200b}";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo 'Backslash 1 \ %s';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -322,13 +322,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "Backslash 2 \\ \u{200b}";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo 'Backslash 2 \\ %s';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -336,13 +336,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "Backslash 3 \\\\ \u{200b}";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo 'Backslash 3 \\\ %s';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),
@@ -350,13 +350,13 @@ TXT;
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'EOD'
                 <?php echo "Backslash 4 \\\\ \u{200b}";
-                EXPECTED,
+                EOD,
             sprintf(
-                <<<'INPUT'
+                <<<'EOD'
                     <?php echo 'Backslash 4 \\\\ %s';
-                    INPUT
+                    EOD
                 ,
                 pack('H*', 'e2808b')
             ),

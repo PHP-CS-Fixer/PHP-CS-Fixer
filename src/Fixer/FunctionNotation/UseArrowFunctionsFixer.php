@@ -34,13 +34,13 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             'Anonymous functions with one-liner return statement must use arrow functions.',
             [
                 new CodeSample(
-                    <<<'SAMPLE'
+                    <<<'EOD'
                         <?php
                         foo(function ($a) use ($b) {
                             return $a + $b;
                         });
 
-                        SAMPLE
+                        EOD
                     ,
                 ),
             ],

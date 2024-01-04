@@ -55,12 +55,12 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
             'Converts readonly comment on classes to the readonly keyword.',
             [
                 new VersionSpecificCodeSample(
-                    <<<EOT
+                    <<<EOD
                             <?php
                             /** @readonly */
                             class C {
                             }\n
-                        EOT,
+                        EOD,
                     new VersionSpecification(8_02_00)
                 ),
             ],

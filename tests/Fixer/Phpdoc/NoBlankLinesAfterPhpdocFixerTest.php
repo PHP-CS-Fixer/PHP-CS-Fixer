@@ -27,7 +27,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 {
     public function testSimpleExampleIsNotChanged(): void
     {
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             /**
@@ -44,14 +44,14 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 }
             }
 
-            EOF;
+            EOD;
 
         $this->doTest($input);
     }
 
     public function testComplexExampleIsNotChanged(): void
     {
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             /**
              * This is the hello function.
@@ -109,14 +109,14 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 public function silly() {}
             }
 
-            EOF;
+            EOD;
 
         $this->doTest($input);
     }
 
     public function testCommentsAreNotChanged(): void
     {
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             /*
@@ -127,35 +127,35 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 
             namespace Foo\Bar;
 
-            EOF;
+            EOD;
 
         $this->doTest($input);
     }
 
     public function testLineBeforeDeclareIsNotRemoved(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             /**
              * This is some license header.
              */
 
             declare(strict_types=1);
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testLineBeforeUseStatementIsNotRemoved(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             /**
              * This is some license header.
              */
 
             use Foo\Bar;
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
@@ -171,47 +171,47 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
     public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * This describes what my script does.
                  */
 
                 include 'vendor/autoload.php';
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * This describes what my script does.
                  */
 
                 include_once 'vendor/autoload.php';
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * This describes what my script does.
                  */
 
                 require 'vendor/autoload.php';
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * This describes what my script does.
                  */
 
                 require_once 'vendor/autoload.php';
-                EOF
+                EOD
         ];
     }
 
@@ -251,7 +251,7 @@ class Foo {}'
 
     public function testFixesSimpleClass(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             /**
@@ -259,9 +259,9 @@ class Foo {}'
              */
             class Bar {}
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             /**
@@ -271,14 +271,14 @@ class Foo {}'
 
             class Bar {}
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixesIndentedClass(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
                 /**
@@ -288,9 +288,9 @@ class Foo {}'
                     private $a;
                 }
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
                 /**
@@ -301,14 +301,14 @@ class Foo {}'
                     private $a;
                 }
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixesOthers(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
                 /**
@@ -321,9 +321,9 @@ class Foo {}'
                  */
                 $foo = 123;
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
                 /**
@@ -339,14 +339,14 @@ class Foo {}'
 
                 $foo = 123;
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testWhitespaceInDocBlockAboveNamespaceIsNotTouched(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             /**
@@ -355,7 +355,7 @@ class Foo {}'
 
             namespace Foo\Bar\Baz;
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
@@ -382,7 +382,7 @@ class Foo {}'
     public static function provideInlineTypehintingDocsBeforeFlowBreakCases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 function parseTag($tag)
                 {
@@ -394,11 +394,11 @@ class Foo {}'
                         return $tag->getDescription();
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 function parseTag($tag)
                 {
@@ -410,11 +410,11 @@ class Foo {}'
                         throw new Exception($tag->getDescription());
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 function parseTag($tag)
                 {
@@ -428,11 +428,11 @@ class Foo {}'
 
                 FOO:
                 }
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 function parseTag($tag)
                 {
@@ -446,11 +446,11 @@ class Foo {}'
                         }
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 function parseTag($tag)
                 {
@@ -464,7 +464,7 @@ class Foo {}'
                         }
                     }
                 }
-                EOF
+                EOD
         ];
     }
 }

@@ -34,7 +34,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 *@return void
 */');
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @param EngineInterface $templating
@@ -42,23 +42,23 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return void
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @param EngineInterface $templating
                  * @return void
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixMoreTags(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -72,9 +72,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -87,14 +87,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testFixSpreadOut(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -110,9 +110,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -134,14 +134,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testMultiLineComments(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -158,9 +158,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hello there!
@@ -174,14 +174,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return bool
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testCrazyMultiLineComments(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Clients accept an array of constructor parameters.
@@ -218,14 +218,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @param string $foo
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testDoctrineExample(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
             /**
              * PersistentObject base class that implements getter/setter methods for all mapped fields and associations
@@ -259,14 +259,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
              * @author Benjamin Eberlei <kontakt@beberlei.de>
              */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testSymfonyExample(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Constructor.
@@ -315,14 +315,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @param MetadataBag                                                      $metaBag MetadataBag.
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testDeprecatedAndSeeTags(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Hi!
@@ -339,9 +339,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return void
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Hi!
@@ -357,14 +357,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return void
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testPropertyTags(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @author Bar Baz <foo@example.com>
@@ -374,9 +374,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @property-write int $bar
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @author Bar Baz <foo@example.com>
@@ -387,14 +387,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @property-write int $bar
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testClassDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -414,9 +414,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
              */
             class Bar {}
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -439,14 +439,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
              */
             class Bar {}
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testPoorAlignment(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -461,9 +461,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
              */
             class Bar {}
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
 
             namespace Foo;
@@ -482,14 +482,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
              */
             class Bar {}
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
 
     public function testMoveUnknownAnnotations(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * @expectedException Exception
@@ -505,9 +505,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @param string $input
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * @expectedException Exception
@@ -523,7 +523,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @param string $input
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -577,20 +577,20 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 
     public function testEmptyDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testLargerEmptyDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  *
@@ -599,19 +599,19 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  *
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testOneLineDocBlock(): void
     {
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /** Foo */
                 const Foo = 1;
 
-            EOF;
+            EOD;
 
         $this->doTest($expected);
     }
@@ -684,7 +684,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
             ['property', 'property-read', 'property-write'],
         ]]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Attempt to authenticate using HTTP Basic Auth.
@@ -696,9 +696,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Attempt to authenticate using HTTP Basic Auth.
@@ -709,7 +709,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -725,7 +725,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
             ],
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Attempt to authenticate using HTTP Basic Auth.
@@ -744,9 +744,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Attempt to authenticate using HTTP Basic Auth.
@@ -765,7 +765,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -781,7 +781,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
             ],
         ]);
 
-        $expected = <<<'EOF'
+        $expected = <<<'EOD'
             <?php
                 /**
                  * Attempt to authenticate using HTTP Basic Auth.
@@ -798,9 +798,9 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
                  */
 
-            EOF;
+            EOD;
 
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
                 /**
                  * Attempt to authenticate using HTTP Basic Auth.
@@ -818,7 +818,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @throws \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException
                  */
 
-            EOF;
+            EOD;
 
         $this->doTest($expected, $input);
     }
@@ -842,7 +842,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
      */
     public static function provideDocCodeCases(): iterable
     {
-        $input = <<<'EOF'
+        $input = <<<'EOD'
             <?php
             /**
              * Hello there!
@@ -856,10 +856,10 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
              * @return int  Return the number of changes.
              */
 
-            EOF;
+            EOD;
 
         yield 'laravel' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * Hello there!
@@ -875,7 +875,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-                EOF,
+                EOD,
             $input,
             ['groups' => [
                 ['param', 'return'],
@@ -888,7 +888,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'all_tags' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * Hello there!
@@ -902,13 +902,13 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-                EOF,
+                EOD,
             $input,
             ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
         ];
 
         yield 'default_groups_standard_tags' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * Hello there!
@@ -925,8 +925,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * Hello there!
@@ -938,11 +938,11 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-                EOF,
+                EOD,
         ];
 
         yield 'default_groups_all_tags' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * Hello there!
@@ -959,8 +959,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * Hello there!
@@ -972,11 +972,11 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @return int  Return the number of changes.
                  */
 
-                EOF,
+                EOD,
         ];
 
         yield 'Separated unlisted tags with default config' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * @not-in-any-group1
@@ -986,8 +986,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @not-in-any-group3
                  */
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * @not-in-any-group1
@@ -995,11 +995,11 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @not-in-any-group3
                  */
 
-                EOF,
+                EOD,
         ];
 
         yield 'Skip unlisted tags' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * @in-group-1
@@ -1011,8 +1011,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @not-in-any-group3
                  */
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * @in-group-1
@@ -1024,7 +1024,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @not-in-any-group3
                  */
 
-                EOF,
+                EOD,
             [
                 'groups' => [['in-group-1', 'in-group-1-too']],
                 'skip_unlisted_annotations' => true,
@@ -1032,7 +1032,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'Doctrine annotations' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * @ORM\Id
@@ -1040,8 +1040,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @ORM\GeneratedValue
                  */
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * @ORM\Id
@@ -1051,14 +1051,14 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @ORM\GeneratedValue
                  */
 
-                EOF,
+                EOD,
             ['groups' => [
                 ['ORM\Id', 'ORM\Column', 'ORM\GeneratedValue'],
             ]],
         ];
 
         yield 'With wildcard' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 /**
                  * @ORM\Id
@@ -1069,8 +1069,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @Assert\Type("string")
                  */
 
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 /**
                  * @ORM\Id
@@ -1083,7 +1083,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  * @Assert\Type("string")
                  */
 
-                EOF,
+                EOD,
             ['groups' => [
                 ['ORM\*'],
                 ['Assert\*'],

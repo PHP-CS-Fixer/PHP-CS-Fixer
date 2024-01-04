@@ -63,7 +63,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'simple class 1' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -73,8 +73,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -84,11 +84,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'simple class 2' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -101,8 +101,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     )#
                     {}
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -115,10 +115,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     )#
                     {}
                 }
-                EOF
+                EOD
         ];
 
-        yield 'namespace' => [<<<'EOF'
+        yield 'namespace' => [<<<'EOD'
             <?php
 
             namespace Baz\Qux;
@@ -135,9 +135,9 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     var_dump(2);
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'namespace 2' => [<<<'EOF'
+        yield 'namespace 2' => [<<<'EOD'
             <?php
 
             namespace Baz\Qux
@@ -163,10 +163,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     }
                 }
             }
-            EOF];
+            EOD];
 
         yield 'namespace global' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 namespace {
@@ -178,8 +178,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 namespace {
@@ -191,10 +191,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 }
-                EOF
+                EOD
         ];
 
-        yield 'PHP 5 only' => [<<<'EOF'
+        yield 'PHP 5 only' => [<<<'EOD'
             <?php
 
             class Foo
@@ -209,10 +209,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     var_dump(3);
                 }
             }
-            EOF];
+            EOD];
 
         yield 'PHP 4 only' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -230,8 +230,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -249,11 +249,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'both the right way 1' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -271,8 +271,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -299,11 +299,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
+                EOD,
         ];
 
         yield 'both the right way 2' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -321,8 +321,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -349,11 +349,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'both the right way 3' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -371,8 +371,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -399,11 +399,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'both the other way around 1' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -424,8 +424,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -456,11 +456,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'PHP 4 parent' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParEnt
@@ -479,8 +479,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParEnt
@@ -499,11 +499,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'PHP 4 parent init' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -522,8 +522,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -542,11 +542,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'mixed parent' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -565,8 +565,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -585,11 +585,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'mixed parent 2' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -608,8 +608,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -628,11 +628,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'parent other' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -651,8 +651,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -671,11 +671,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'parent other 2' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -694,8 +694,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo extends FooParent
@@ -714,11 +714,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'class with anonymous' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -729,8 +729,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         $this->bar = function () {};
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo {
@@ -741,11 +741,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         $this->bar = function () {};
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield 'class with comments' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                 class  /* test */
                 // another
@@ -754,8 +754,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                 public function /* test */ __construct($param) {
                 }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                 class  /* test */
                 // another
@@ -764,10 +764,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                 public function /* test */ Foo($param) {
                 }
                 }
-                EOF
+                EOD
         ];
 
-        yield 'alpha beta' => [<<<'EOF'
+        yield 'alpha beta' => [<<<'EOD'
             <?php
 
             class Foo
@@ -781,9 +781,9 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     echo 'beta';
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'alpha beta trick 1' => [<<<'EOF'
+        yield 'alpha beta trick 1' => [<<<'EOD'
             <?php
 
             class Foo
@@ -798,9 +798,9 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     echo 'beta';
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'alpha beta trick 2' => [<<<'EOF'
+        yield 'alpha beta trick 2' => [<<<'EOD'
             <?php
 
             class Foo
@@ -815,9 +815,9 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     echo 'beta';
                 }
             }
-            EOF];
+            EOD];
 
-        yield 'alpha beta trick 3' => [<<<'EOF'
+        yield 'alpha beta trick 3' => [<<<'EOD'
             <?php
 
             class Foo
@@ -833,10 +833,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     echo 'beta';
                 }
             }
-            EOF];
+            EOD];
 
         yield 'alpha beta trick 4 with another class' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -860,8 +860,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         $this->foo = 1;
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -885,19 +885,19 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         $this->foo = 1;
                     }
                 }
-                EOF
+                EOD
         ];
 
-        yield 'abstract' => [<<<'EOF'
+        yield 'abstract' => [<<<'EOD'
             <?php
 
             abstract class Foo
             {
                 abstract function Foo();
             }
-            EOF];
+            EOD];
 
-        yield 'abstract trick' => [<<<'EOF'
+        yield 'abstract trick' => [<<<'EOD'
             <?php
 
             abstract class Foo
@@ -915,10 +915,10 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     $this->baz = 1;
                 }
             }
-            EOF];
+            EOD];
 
         yield 'parent multiple classes' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     class Class1 extends Parent1
                     {
@@ -937,8 +937,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ?>
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     class Class1 extends Parent1
                     {
@@ -957,11 +957,11 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ?>
-                EOF
+                EOD
         ];
 
         yield 'infinite recursion' => [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
                     class Parent1
                     {
@@ -980,8 +980,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ?>
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
                     class Parent1
                     {
@@ -1000,7 +1000,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ?>
-                EOF
+                EOD
         ];
     }
 
@@ -1017,7 +1017,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield [
-            <<<'EOF'
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1027,8 +1027,8 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF,
-            <<<'EOF'
+                EOD,
+            <<<'EOD'
                 <?php
 
                 class Foo
@@ -1038,7 +1038,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF
+                EOD
         ];
 
         yield [
