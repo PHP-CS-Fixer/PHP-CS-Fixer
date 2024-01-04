@@ -38,6 +38,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Tomas Jadrny <developer@tomasjadrny.cz>
  * @author Greg Korba <greg@codito.dev>
  * @author SpacePossum <possumfromspace@gmail.com>
+ * @author Michael Vorisek <https://github.com/mvorisek>
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
