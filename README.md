@@ -36,31 +36,6 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ## Documentation
 
-### Run with docker
-
-You can take a ready built docker image to run ``php-cs-fixer``.
-
-```console
-docker run -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:latest fix src
-```
-
-or integrate as check into Gitlab CI like this:
-
-```yaml
-php-cs-fixer:
-  image: ghcr.io/php-cs-fixer/php-cs-fixer:3.41-php8.2
-  script:
-    php-cs-fixer fix --diff --dry-run --format=txt src
-```
-
-There are different tags for each stability and php version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
-
-* `3.41.1-php8.1`
-* `3.41-php8.2`
-* `3-php7.4`
-* `latest-php8.3` (latest stable Fixer release)
-* `edge-php8.0` (current build from main branch)
-
 ### Installation
 
 The recommended way to install PHP CS Fixer is to use [Composer](https://getcomposer.org/download/)
@@ -80,6 +55,29 @@ composer require --dev friendsofphp/php-cs-fixer
 
 For more details and other installation methods, see
 [installation instructions](./doc/installation.rst).
+
+### Run with Docker
+
+You can take a ready built docker image to run ``php-cs-fixer``.
+
+```console
+docker run -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:latest fix src
+```
+
+Or integrate as check into Gitlab CI like this:
+
+```yaml
+php-cs-fixer:
+  image: ghcr.io/php-cs-fixer/php-cs-fixer:3.41-php8.2
+  script:
+    php-cs-fixer fix --diff --dry-run --format=txt src
+```
+
+There are different tags for each stability and php version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
+
+* `3.41.1-php8.1`
+* `3.41-php8.2`
+* `3-php7.4`
 
 ### Usage
 
