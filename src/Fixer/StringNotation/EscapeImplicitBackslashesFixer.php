@@ -28,6 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ * @author Michael Vorisek <https://github.com/mvorisek>
  */
 final class EscapeImplicitBackslashesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -91,21 +92,26 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\'\\\\])/';
-        static $doubleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
-        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        $singleQuotedReservedRegex = '[\'\\\]';
+        $doubleQuotedReservedRegex = '(?:[efnrtv$"\\\0-7]|x[0-9A-Fa-f]|u{|$)';
+        $heredocSyntaxReservedRegex = '(?:[efnrtv$\\\0-7]|x[0-9A-Fa-f]|u{|$)';
 
         $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
-            $content = $token->getContent();
             if ($token->equalsAny(['"', 'b"', 'B"'])) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
-            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || !str_contains($content, '\\')) {
+
+            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING])) {
                 continue;
             }
 
-            // Nowdoc syntax
+            $content = $token->getContent();
+            if (!str_contains($content, '\\')) {
+                continue;
+            }
+
+            // nowdoc syntax
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && '\'' === substr(rtrim($tokens[$index - 1]->getContent()), -1)) {
                 continue;
             }
@@ -116,22 +122,26 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
 
-            if ($isSingleQuotedString) {
-                $regex = $singleQuotedRegex;
-                $escape = true === $this->configuration['single_quoted'];
-            } elseif ($isDoubleQuotedString) {
-                $regex = $doubleQuotedRegex;
-                $escape = true === $this->configuration['double_quoted'];
+            $escapeBackslashes = $isSingleQuotedString
+                ? true === $this->configuration['single_quoted']
+                : ($isDoubleQuotedString
+                    ? true === $this->configuration['double_quoted']
+                    : true === $this->configuration['heredoc_syntax']);
+
+            $reservedRegex = $isSingleQuotedString
+                ? $singleQuotedReservedRegex
+                : ($isDoubleQuotedString
+                    ? $doubleQuotedReservedRegex
+                    : $heredocSyntaxReservedRegex);
+
+            if ($escapeBackslashes) {
+                $regex = '/(?<!\\\)\\\((?:\\\\\\\)*)(?!'.$reservedRegex.')/';
+                $newContent = Preg::replace($regex, '\\\\\\\$1', $content);
             } else {
-                $regex = $heredocSyntaxRegex;
-                $escape = true === $this->configuration['heredoc_syntax'];
+                $regex = '/(?<!\\\)\\\\\\\((?:\\\\\\\)*)(?!'.$reservedRegex.')/';
+                $newContent = Preg::replace($regex, '\\\$1', $content);
             }
 
-            if (!$escape) {
-                continue;
-            }
-
-            $newContent = Preg::replace($regex, '\\\\\\\\$1', $content);
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }
@@ -141,15 +151,15 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('single_quoted', 'Whether to fix single-quoted strings.'))
+            (new FixerOptionBuilder('single_quoted', 'Whether to escape backslashes in single-quoted strings.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('double_quoted', 'Whether to fix double-quoted strings.'))
+            (new FixerOptionBuilder('double_quoted', 'Whether to escape backslashes in double-quoted strings.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
-            (new FixerOptionBuilder('heredoc_syntax', 'Whether to fix heredoc syntax.'))
+            (new FixerOptionBuilder('heredoc_syntax', 'Whether to escape backslashes in heredoc syntax.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),

@@ -26,7 +26,7 @@ Configuration
 ``double_quoted``
 ~~~~~~~~~~~~~~~~~
 
-Whether to fix double-quoted strings.
+Whether to escape backslashes in double-quoted strings.
 
 Allowed types: ``bool``
 
@@ -35,7 +35,7 @@ Default value: ``true``
 ``heredoc_syntax``
 ~~~~~~~~~~~~~~~~~~
 
-Whether to fix heredoc syntax.
+Whether to escape backslashes in heredoc syntax.
 
 Allowed types: ``bool``
 
@@ -44,7 +44,7 @@ Default value: ``true``
 ``single_quoted``
 ~~~~~~~~~~~~~~~~~
 
-Whether to fix single-quoted strings.
+Whether to escape backslashes in single-quoted strings.
 
 Allowed types: ``bool``
 

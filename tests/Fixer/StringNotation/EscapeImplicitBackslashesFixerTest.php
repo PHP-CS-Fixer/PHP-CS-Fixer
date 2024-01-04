@@ -40,16 +40,16 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
     {
         yield [
             <<<'EOF'
-                <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
+                <?php $var = 'String (\\\'\r\n\x0\) for My\Prefix\\';
                 EOF,
         ];
 
         yield [
             <<<'EOF'
-                <?php $var = 'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
+                <?php $var = 'String (\\\'\\r\\n\\x0\\) for My\\Prefix\\';
                 EOF,
             <<<'EOF'
-                <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
+                <?php $var = 'String (\\\'\r\n\x0\) for My\Prefix\\';
                 EOF,
             ['single_quoted' => true],
         ];
@@ -159,7 +159,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php
-                $var = 'backslash \\ already escaped';
+                $var = 'backslash \ not escaped';
                 $var = 'code coverage';
                 $var = "backslash \\ already escaped";
                 $var = "code coverage";
@@ -337,7 +337,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php
-                $var = b'backslash \\ already escaped';
+                $var = b'backslash \ not escaped';
                 $var = b'code coverage';
                 $var = b"backslash \\ already escaped";
                 $var = b"code coverage";
@@ -515,7 +515,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php
-                $var = B'backslash \\ already escaped';
+                $var = B'backslash \ not escaped';
                 $var = B'code coverage';
                 $var = B"backslash \\ already escaped";
                 $var = B"code coverage";
@@ -655,6 +655,191 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 TXT;
 
                 EOF,
+        ];
+
+        yield 'unescaped backslashes in single quoted string' => [
+            <<<'EOF'
+                <?php
+                '\\';
+                '\\\\';
+                '\\\\\\';
+                '\b';
+                '\b';
+                '\\\b';
+                '\\\b';
+                '\\\\\b';
+                '\\\\\b';
+                '\\\\\\\b';
+                '\\\\\\\b';
+                '\"';
+                '\"';
+                '\\\"';
+                '\\\"';
+                '\\\\\"';
+                '\\\\\"';
+                '\\\\\\\"';
+                '\\\\\\\"';
+                '\$v';
+                '\$v';
+                '\{$v}';
+                '\{$v}';
+                '\n';
+                '\n';
+                EOF,
+            <<<'EOF'
+                <?php
+                '\\';
+                '\\\\';
+                '\\\\\\';
+                '\b';
+                '\\b';
+                '\\\b';
+                '\\\\b';
+                '\\\\\b';
+                '\\\\\\b';
+                '\\\\\\\b';
+                '\\\\\\\\b';
+                '\"';
+                '\\"';
+                '\\\"';
+                '\\\\"';
+                '\\\\\"';
+                '\\\\\\"';
+                '\\\\\\\"';
+                '\\\\\\\\"';
+                '\$v';
+                '\\$v';
+                '\{$v}';
+                '\\{$v}';
+                '\n';
+                '\\n';
+                EOF,
+        ];
+
+        yield 'unescaped backslashes in double quoted string' => [
+            <<<'EOF'
+                <?php
+                "\\";
+                "\\\\";
+                "\\\\\\";
+                "\b";
+                "\b";
+                "\\\b";
+                "\\\b";
+                "\\\\\b";
+                "\\\\\b";
+                "\\\\\\\b";
+                "\\\\\\\b";
+                "\$v";
+                "\\$v";
+                "\{$v}";
+                "\\{$v}";
+                "\n";
+                "\\n";
+                EOF,
+            <<<'EOF'
+                <?php
+                "\\";
+                "\\\\";
+                "\\\\\\";
+                "\b";
+                "\\b";
+                "\\\b";
+                "\\\\b";
+                "\\\\\b";
+                "\\\\\\b";
+                "\\\\\\\b";
+                "\\\\\\\\b";
+                "\$v";
+                "\\$v";
+                "\{$v}";
+                "\\{$v}";
+                "\n";
+                "\\n";
+                EOF,
+            ['double_quoted' => false],
+        ];
+
+        yield 'unescaped backslashes in heredoc' => [
+            <<<'EOD_'
+                <?php
+                <<<EOD
+                \
+                \
+                \\\
+                \\\
+                \\\\\
+                \\\\\
+                \\\\\\\
+                \b
+                \b
+                \\\b
+                \\\b
+                \\\\\b
+                \\\\\b
+                \\\\\\\b
+                \'
+                \'
+                \\\'
+                \\\'
+                \\\\\'
+                \\\\\'
+                \\\\\\\'
+                \"
+                \"
+                \\\"
+                \\\"
+                \\\\\"
+                \\\\\"
+                \\\\\\\"
+                \$v
+                \\$v
+                \{$v}
+                \\{$v}
+                \n
+                \\n
+                EOD;
+                EOD_,
+            <<<'EOD_'
+                <?php
+                <<<EOD
+                \
+                \\
+                \\\
+                \\\\
+                \\\\\
+                \\\\\\
+                \\\\\\\
+                \b
+                \\b
+                \\\b
+                \\\\b
+                \\\\\b
+                \\\\\\b
+                \\\\\\\b
+                \'
+                \\'
+                \\\'
+                \\\\'
+                \\\\\'
+                \\\\\\'
+                \\\\\\\'
+                \"
+                \\"
+                \\\"
+                \\\\"
+                \\\\\"
+                \\\\\\"
+                \\\\\\\"
+                \$v
+                \\$v
+                \{$v}
+                \\{$v}
+                \n
+                \\n
+                EOD;
+                EOD_,
+            ['heredoc_syntax' => false],
         ];
     }
 }
