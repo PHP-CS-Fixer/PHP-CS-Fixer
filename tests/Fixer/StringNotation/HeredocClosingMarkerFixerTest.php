@@ -180,6 +180,9 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 $aNormCase = <<<Žlutý
                 xxx
                 Žlutý;
+                $aNormCase = <<<Žlutý
+                xxx
+                Žlutý;
                 $b = <<<EOD
                 xxx2
                 EOD;
@@ -192,9 +195,12 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<Žlutý
                 xxx
                 Žlutý;
-                $aNormCase = <<<ŽlUTý
+                $aNormCase = <<<ŽluTý
                 xxx
-                ŽlUTý;
+                ŽluTý;
+                $aNormCase = <<<ŽLUTÝ
+                xxx
+                ŽLUTÝ;
                 $b = <<<Žlutý2
                 xxx2
                 Žlutý2;

@@ -129,9 +129,9 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
                 $newClosingMarker = $this->configuration['closing_marker'];
 
-                $existingClosingMarkerUpper = strtoupper($existingClosingMarker);
+                $existingClosingMarkerUpper = mb_strtoupper($existingClosingMarker);
                 foreach ($reservedClosingMarkers as $reservedClosingMarker) {
-                    if (strtoupper($reservedClosingMarker) === $existingClosingMarkerUpper) {
+                    if (mb_strtoupper($reservedClosingMarker) === $existingClosingMarkerUpper) {
                         $newClosingMarker = $reservedClosingMarker;
 
                         break;
