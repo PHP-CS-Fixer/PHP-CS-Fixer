@@ -73,7 +73,6 @@ php-cs-fixer:
     php-cs-fixer fix --diff --dry-run --format=txt src
 ```
 
-
 `$FIXER_VERSION` used in example above is an identifier of a release you want to use, which is based on Fixer and PHP versions combined. There are different tags for each Fixer's SemVer level and PHP version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
 
 * `3.47.0-php7.4`
