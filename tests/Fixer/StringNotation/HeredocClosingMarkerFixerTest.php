@@ -45,13 +45,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOD
                 xxx EOD xxx
                 EOD;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                 xxx EOD xxx
                 TEST;
-
                 PHP,
         ];
 
@@ -60,13 +58,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<'EOD'
                 xxx EOD xxx
                 EOD;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<'TEST'
                 xxx EOD xxx
                 TEST;
-
                 PHP,
         ];
 
@@ -75,13 +71,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOF
                 xxx
                 EOF;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                 xxx
                 TEST;
-
                 PHP,
             ['closing_marker' => 'EOF'],
         ];
@@ -97,7 +91,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 $b = <<<'EOD'
                 xxx3
                 EOD;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
@@ -109,7 +102,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 $b = <<<'TEST'
                 xxx3
                 TEST;
-
                 PHP,
             ['explicit_heredoc_style' => true],
         ];
@@ -119,13 +111,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = b<<<EOD
                 xxx EOD xxx
                 EOD;
-
                 PHP,
             <<<'PHP'
                 <?php $a = b<<<TEST
                 xxx EOD xxx
                 TEST;
-
                 PHP,
         ];
 
@@ -134,13 +124,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = B<<<EOD
                 xxx EOD xxx
                 EOD;
-
                 PHP,
             <<<'PHP'
                 <?php $a = B<<<TEST
                 xxx EOD xxx
                 TEST;
-
                 PHP,
         ];
 
@@ -149,7 +137,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<PHP
                 xxx
                 PHP;
-
                 PHP_,
         ];
 
@@ -160,7 +147,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 PHP;
                 $a = <<<PHP
                 PHP;
-
                 PHP_,
             <<<'PHP'
                 <?php $a = <<<php
@@ -168,7 +154,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 php;
                 $a = <<<Php
                 Php;
-
                 PHP,
         ];
 
@@ -189,7 +174,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 $c = <<<EOD
                 xxx3
                 EOD;
-
                 PHP,
             <<<'PHP_'
                 <?php $a = <<<Žlutý
@@ -207,7 +191,6 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 $c = <<<PHP
                 xxx3
                 PHP;
-
                 PHP_,
             ['reserved_closing_markers' => ['Žlutý']],
         ];
@@ -246,13 +229,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOD_
                 EOD xxx
                 EOD_;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                 EOD xxx
                 TEST;
-
                 PHP,
         ];
 
@@ -261,13 +242,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOD_
                  EOD xxx
                 EOD_;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                  EOD xxx
                 TEST;
-
                 PHP,
         ];
 
@@ -276,13 +255,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOD_
                 EOD'
                 EOD_;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                 EOD'
                 TEST;
-
                 PHP,
         ];
 
@@ -291,13 +268,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOD_
                 EOD;
                 EOD_;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                 EOD;
                 TEST;
-
                 PHP,
         ];
 
@@ -306,13 +281,11 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 <?php $a = <<<EOD
                 xxx EOD
                 EOD;
-
                 PHP,
             <<<'PHP'
                 <?php $a = <<<TEST
                 xxx EOD
                 TEST;
-
                 PHP,
         ];
     }
