@@ -75,7 +75,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
-            (new FixerOptionBuilder('union_types', 'Fix also union types; may have unexpected behaviour due to PHP bad type coercion system.'))
+            (new FixerOptionBuilder('union_types', 'Fix also union types.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
