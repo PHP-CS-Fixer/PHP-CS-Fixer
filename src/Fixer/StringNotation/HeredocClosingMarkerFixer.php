@@ -125,8 +125,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
             }
 
             if (null !== $startIndex && $token->isGivenKind(T_END_HEREDOC)) {
-                Preg::match('~(?:^|[\r\n])\s*(\S+)~', $token->getContent(), $matches);
-                $existingClosingMarker = $matches[1];
+                $existingClosingMarker = trim($token->getContent());
 
                 $newClosingMarker = $this->configuration['closing_marker'];
 
@@ -169,7 +168,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
             Preg::replace('/<<<\h*\K["\']?[^\s"\']+["\']?/', $markerQuote.$newClosingMarker.$markerQuote, $startToken->getContent()),
         ]), new Token([
             $endToken->getId(),
-            Preg::replace('/[^\s"\']+/', $newClosingMarker, $endToken->getContent()),
+            Preg::replace('/\S+/', $newClosingMarker, $endToken->getContent()),
         ])];
     }
 }
