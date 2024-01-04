@@ -41,53 +41,53 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'heredoc' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<EOD
                 xxx EOD xxx
                 EOD;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 xxx EOD xxx
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'nowdoc' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<'EOD'
                 xxx EOD xxx
                 EOD;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<'TEST'
                 xxx EOD xxx
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc /w custom preferred closing marker' => [
-            <<<'EOD'
+            <<<'PHP'
                 <?php $a = <<<EOF
                 xxx
                 EOF;
 
-                EOD,
-            <<<'EOD'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 xxx
                 TEST;
 
-                EOD,
+                PHP,
             ['closing_marker' => 'EOF'],
         ];
 
         yield 'heredoc /w custom explicit style' => [
-            <<<'EOD_'
+            <<<'PHP'
                 <?php $a = <<<"EOD"
                 xxx
                 EOD;
@@ -98,8 +98,8 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 xxx3
                 EOD;
 
-                EOD_,
-            <<<'EOD'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 xxx
                 TEST;
@@ -110,70 +110,70 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 xxx3
                 TEST;
 
-                EOD,
+                PHP,
             ['explicit_heredoc_style' => true],
         ];
 
         yield 'heredoc /w b' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = b<<<EOD
                 xxx EOD xxx
                 EOD;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = b<<<TEST
                 xxx EOD xxx
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc /w B' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = B<<<EOD
                 xxx EOD xxx
                 EOD;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = B<<<TEST
                 xxx EOD xxx
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc and reserved closing marker' => [
-            <<<'EOF'
+            <<<'PHP_'
                 <?php $a = <<<PHP
                 xxx
                 PHP;
 
-                EOF,
+                PHP_,
         ];
 
         yield 'heredoc and reserved closing marker - different case' => [
-            <<<'EOF'
+            <<<'PHP_'
                 <?php $a = <<<PHP
                 xxx
                 PHP;
                 $a = <<<PHP
                 PHP;
 
-                EOF,
-            <<<'EOF'
+                PHP_,
+            <<<'PHP'
                 <?php $a = <<<php
                 xxx
                 php;
                 $a = <<<Php
                 Php;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc and reserved custom closing marker' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<Žlutý
                 xxx
                 Žlutý;
@@ -190,8 +190,8 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 xxx3
                 EOD;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP_'
                 <?php $a = <<<Žlutý
                 xxx
                 Žlutý;
@@ -208,83 +208,83 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
                 xxx3
                 PHP;
 
-                EOF,
+                PHP_,
             ['reserved_closing_markers' => ['Žlutý']],
         ];
 
         yield 'heredoc /w content starting with preferred closing marker' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<EOD_
                 EOD xxx
                 EOD_;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 EOD xxx
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc /w content starting with whitespace and preferred closing marker' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<EOD_
                  EOD xxx
                 EOD_;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                  EOD xxx
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc /w content starting with preferred closing marker and single quote' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<EOD_
                 EOD'
                 EOD_;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 EOD'
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc /w content starting with preferred closing marker and semicolon' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<EOD_
                 EOD;
                 EOD_;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 EOD;
                 TEST;
 
-                EOF,
+                PHP,
         ];
 
         yield 'heredoc /w content ending with preferred closing marker' => [
-            <<<'EOF'
+            <<<'PHP'
                 <?php $a = <<<EOD
                 xxx EOD
                 EOD;
 
-                EOF,
-            <<<'EOF'
+                PHP,
+            <<<'PHP'
                 <?php $a = <<<TEST
                 xxx EOD
                 TEST;
 
-                EOF,
+                PHP,
         ];
     }
 }
