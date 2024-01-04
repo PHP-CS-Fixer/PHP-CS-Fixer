@@ -24,6 +24,7 @@ Rules
 
   ``['import_symbols' => true]``
 
+- `heredoc_closing_marker <./../rules/string_notation/heredoc_closing_marker.rst>`_
 - `heredoc_to_nowdoc <./../rules/string_notation/heredoc_to_nowdoc.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 

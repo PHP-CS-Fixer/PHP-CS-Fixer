@@ -80,6 +80,14 @@ With configuration: ``['explicit_heredoc_style' => true]``.
    +<?php $a = <<<"EOD"
     Foo
     EOD;
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
 References
 ----------
 

@@ -58,6 +58,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'fully_qualified_strict_types' => [
                 'import_symbols' => true,
             ],
+            'heredoc_closing_marker' => true,
             'heredoc_to_nowdoc' => true,
             'method_argument_space' => [
                 'on_multiline' => 'ensure_fully_multiline',
