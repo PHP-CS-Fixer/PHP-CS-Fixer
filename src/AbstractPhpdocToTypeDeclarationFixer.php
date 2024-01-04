@@ -77,7 +77,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
                 ->getOption(),
             (new FixerOptionBuilder('union_types', 'Fix also union types; turned on by default on PHP > 8.0.0.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(PHP_VERSION_ID >= 8_00_00)
+                ->setDefault(\PHP_VERSION_ID >= 8_00_00)
                 ->getOption(),
         ]);
     }
