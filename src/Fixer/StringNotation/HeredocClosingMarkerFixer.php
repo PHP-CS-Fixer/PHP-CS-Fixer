@@ -119,7 +119,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $reservedClosingMarkers = $this->configuration['reserved_closing_markers'];
+        $reservedClosingMarkersMap = null;
 
         $startIndex = null;
         foreach ($tokens as $index => $token) {
@@ -132,16 +132,14 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
             if (null !== $startIndex && $token->isGivenKind(T_END_HEREDOC)) {
                 $existingClosingMarker = trim($token->getContent());
 
-                $newClosingMarker = $this->configuration['closing_marker'];
-
-                $existingClosingMarkerUpper = mb_strtoupper($existingClosingMarker);
-                foreach ($reservedClosingMarkers as $reservedClosingMarker) {
-                    if (mb_strtoupper($reservedClosingMarker) === $existingClosingMarkerUpper) {
-                        $newClosingMarker = $reservedClosingMarker;
-
-                        break;
+                if (null === $reservedClosingMarkersMap) {
+                    $reservedClosingMarkersMap = [];
+                    foreach ($this->configuration['reserved_closing_markers'] as $v) {
+                        $reservedClosingMarkersMap[mb_strtoupper($v)] = $v;
                     }
                 }
+
+                $newClosingMarker = $reservedClosingMarkersMap[mb_strtoupper($existingClosingMarker)] ?? $this->configuration['closing_marker'];
 
                 $content = $tokens->generatePartialCode($startIndex + 1, $index - 1);
                 while (Preg::match('~(^|[\r\n])\s*'.preg_quote($newClosingMarker, '~').'(?!\w)~', $content)) {
