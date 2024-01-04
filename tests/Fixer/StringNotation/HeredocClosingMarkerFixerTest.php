@@ -212,6 +212,35 @@ final class HeredocClosingMarkerFixerTest extends AbstractFixerTestCase
             ['reserved_closing_markers' => ['Žlutý']],
         ];
 
+        yield 'no longer colliding reserved marker recovery' => [
+            <<<'PHP'
+                <?php
+                $a = <<<CSS
+                    CSS;
+                $a = <<<CSS
+                    CSS;
+                $a = <<<CSS_
+                    CSS
+                    CSS_;
+                $a = <<<CSS
+                    CSS_
+                    CSS;
+                PHP,
+            <<<'PHP'
+                <?php
+                $a = <<<CSS_
+                    CSS_;
+                $a = <<<CSS__
+                    CSS__;
+                $a = <<<CSS__
+                    CSS
+                    CSS__;
+                $a = <<<CSS__
+                    CSS_
+                    CSS__;
+                PHP,
+        ];
+
         yield 'heredoc /w content starting with preferred closing marker' => [
             <<<'PHP'
                 <?php $a = <<<EOD_
