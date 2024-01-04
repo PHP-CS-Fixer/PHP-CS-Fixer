@@ -73,12 +73,12 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                     ['closing_marker' => 'EOF']
                 ),
                 new CodeSample(
-                    <<<'EOD'
-                        <?php $a = <<<TEST
+                    <<<'EOD_'
+                        <?php $a = <<<EOD
                         Foo
-                        TEST;
+                        EOD;
 
-                        EOD,
+                        EOD_,
                     ['explicit_heredoc_style' => true]
                 ),
             ]
