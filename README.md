@@ -73,11 +73,12 @@ php-cs-fixer:
     php-cs-fixer fix --diff --dry-run --format=txt src
 ```
 
-There are different tags for each stability and php version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
 
-* `3.41.1-php8.1`
-* `3.41-php8.2`
-* `3-php7.4`
+`$FIXER_VERSION` used in example above is an identifier of a release you want to use, which is based on Fixer and PHP versions combined. There are different tags for each Fixer's SemVer level and PHP version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
+
+* `3.47.0-php7.4`
+* `3.47-php8.0`
+* `3-php8.3`
 
 ### Usage
 
