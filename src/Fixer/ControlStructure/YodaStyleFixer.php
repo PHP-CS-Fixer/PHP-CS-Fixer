@@ -306,7 +306,7 @@ return $foo === count($bar);
         int $endLeft,
         int $compareOperatorIndex,
         int $startRight,
-        int $endRight
+        int $endRight,
     ): int {
         $type = $tokens[$compareOperatorIndex]->getId();
         $content = $tokens[$compareOperatorIndex]->getContent();

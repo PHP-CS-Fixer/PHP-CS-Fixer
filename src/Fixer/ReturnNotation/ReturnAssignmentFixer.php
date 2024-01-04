@@ -302,7 +302,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
         int $assignVarIndex,
         int $assignVarOperatorIndex,
         int $returnIndex,
-        int $returnVarEndIndex
+        int $returnVarEndIndex,
     ): int {
         $inserted = 0;
         $originalIndent = $tokens[$assignVarIndex - 1]->isWhitespace()

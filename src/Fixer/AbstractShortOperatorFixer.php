@@ -95,7 +95,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         int $equalsIndex,
         int $operatorIndex,
         array $assignRange,
-        array $operatorRange
+        array $operatorRange,
     ): void {
         $tokens[$equalsIndex] = $this->getReplacementToken($tokens[$operatorIndex]);
         $tokens->clearTokenAndMergeSurroundingWhitespace($operatorIndex);

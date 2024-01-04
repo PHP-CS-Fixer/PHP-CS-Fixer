@@ -464,7 +464,7 @@ Fixing examples:
              * @param list<CodeSampleInterface> $samples
              */
             public function __construct(
-                array $samples
+                array $samples,
             ) {
                 parent::__construct();
                 $this->samples = $samples;

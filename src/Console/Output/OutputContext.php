@@ -28,7 +28,7 @@ final class OutputContext
     public function __construct(
         ?OutputInterface $output,
         int $terminalWidth,
-        int $filesCount
+        int $filesCount,
     ) {
         $this->output = $output;
         $this->terminalWidth = $terminalWidth;

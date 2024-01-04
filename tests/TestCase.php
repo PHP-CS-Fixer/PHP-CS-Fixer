@@ -64,7 +64,7 @@ abstract class TestCase extends BaseTestCase
             $this->previouslyDefinedErrorHandler = set_error_handler(
                 function (
                     int $code,
-                    string $message
+                    string $message,
                 ) {
                     if (E_USER_DEPRECATED === $code || E_DEPRECATED === $code) {
                         $this->actualDeprecations[] = $message;

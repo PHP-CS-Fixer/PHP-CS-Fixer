@@ -683,7 +683,7 @@ while ($y) { continue (2); }
         int $afterCloseIndex,
         int $openIndex,
         int $closeIndex,
-        ?string $configType
+        ?string $configType,
     ): void {
         $statements = $this->configuration['statements'];
 

@@ -35,7 +35,7 @@ final class ProgressOutputFactoryTest extends TestCase
     public function testValidProcessOutputIsCreated(
         string $outputType,
         OutputContext $context,
-        string $expectedOutputClass
+        string $expectedOutputClass,
     ): void {
         self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }

@@ -188,7 +188,7 @@ final class ConfigurationResolver
         ConfigInterface $config,
         array $options,
         string $cwd,
-        ToolInfoInterface $toolInfo
+        ToolInfoInterface $toolInfo,
     ) {
         $this->defaultConfig = $config;
         $this->cwd = $cwd;

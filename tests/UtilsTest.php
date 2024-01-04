@@ -177,7 +177,7 @@ final class UtilsTest extends TestCase
         array $expected,
         array $elements,
         callable $getComparableValueCallback,
-        callable $compareValuesCallback
+        callable $compareValuesCallback,
     ): void {
         self::assertSame(
             $expected,

@@ -61,7 +61,7 @@ final class TokensTest extends TestCase
         array $sequence,
         int $start = 0,
         int $end = null,
-        $caseSensitive = true
+        $caseSensitive = true,
     ): void {
         $tokens = Tokens::fromCode($source);
 
@@ -654,7 +654,7 @@ final class TokensTest extends TestCase
         int $direction,
         int $index,
         array $findTokens,
-        bool $caseSensitive = true
+        bool $caseSensitive = true,
     ): void {
         $source =
             '<?php

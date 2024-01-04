@@ -182,7 +182,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     private function getReplaceCandidate(
         Tokens $tokens,
         FunctionsAnalyzer $functionAnalyzer,
-        int $index
+        int $index,
     ): ?array {
         if (!$tokens[$index]->isGivenKind(T_STRING)) {
             return null;
@@ -219,7 +219,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     private function fixGetClassCall(
         Tokens $tokens,
         FunctionsAnalyzer $functionAnalyzer,
-        int $index
+        int $index,
     ): ?array {
         if (!isset($this->functionsFixMap['get_class']) && !isset($this->functionsFixMap['get_class_this'])) {
             return null;

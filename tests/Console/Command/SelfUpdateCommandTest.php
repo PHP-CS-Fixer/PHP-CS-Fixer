@@ -101,7 +101,7 @@ final class SelfUpdateCommandTest extends TestCase
         array $input,
         bool $decorated,
         string $expectedFileContents,
-        string $expectedDisplay
+        string $expectedDisplay,
     ): void {
         $versionChecker = $this->createNewVersionCheckerDouble($latestVersion, $latestMinorVersion);
 
@@ -260,7 +260,7 @@ final class SelfUpdateCommandTest extends TestCase
         bool $latestMajorVersionSuccess,
         bool $latestMinorVersionSuccess,
         array $input,
-        bool $decorated
+        bool $decorated,
     ): void {
         $versionChecker = $this->createNewVersionCheckerDouble(
             self::getNewMajorReleaseVersion(),
@@ -467,7 +467,7 @@ final class SelfUpdateCommandTest extends TestCase
         string $latestVersion = Application::VERSION,
         ?string $latestMinorVersion = Application::VERSION,
         bool $latestMajorVersionSuccess = true,
-        bool $latestMinorVersionSuccess = true
+        bool $latestMinorVersionSuccess = true,
     ): NewVersionCheckerInterface {
         return new class($latestVersion, $latestMinorVersion, $latestMajorVersionSuccess, $latestMinorVersionSuccess) implements NewVersionCheckerInterface {
             private string $latestVersion;
@@ -479,7 +479,7 @@ final class SelfUpdateCommandTest extends TestCase
                 string $latestVersion,
                 ?string $latestMinorVersion,
                 bool $latestMajorVersionSuccess = true,
-                bool $latestMinorVersionSuccess = true
+                bool $latestMinorVersionSuccess = true,
             ) {
                 $this->latestVersion = $latestVersion;
                 $this->latestMinorVersion = $latestMinorVersion;
