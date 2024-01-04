@@ -93,8 +93,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php $a = '\\foo\\bar\\\\';
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php $a = "\\foo\\bar\\\\";
                 EOF
@@ -165,8 +164,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $b = 'start \\\' end';
                 // two escaped baskslash
                 $c = 'start \\\\\' end';
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 // none
@@ -175,8 +173,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $b = "start \\' end";
                 // two escaped baskslash
                 $c = "start \\\\' end";
-                EOT
-            ,
+                EOT,
             ['strings_containing_single_quote_chars' => true],
         ];
 
@@ -187,8 +184,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 $a = "start \' end";
                 // one escaped + one unescaped baskslash
                 $b = "start \\\' end";
-                EOT
-            ,
+                EOT,
             null,
             ['strings_containing_single_quote_chars' => true],
         ];

@@ -5438,8 +5438,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 if (true) {
@@ -5449,8 +5448,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT
-            ,
+                EOT,
         ];
 
         yield [
@@ -5463,8 +5461,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 if (true) {
@@ -5474,8 +5471,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
                 <?php
                 }
 
-                EOT
-            ,
+                EOT,
         ];
     }
 

@@ -476,8 +476,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
                             $this->View->element('non_existent_element');
                         }
                     }
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                     <?php
                     final class MyTest extends \PHPUnit_Framework_TestCase
@@ -500,8 +499,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
                             $this->View->element('non_existent_element');
                         }
                     }
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'message on newline' => [
@@ -539,8 +537,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
                             ccc();
                         }
                     }
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                     <?php
                     final class MyTest extends \PHPUnit_Framework_TestCase
@@ -584,8 +581,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
                             ccc();
                         }
                     }
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'annotation with double @' => [

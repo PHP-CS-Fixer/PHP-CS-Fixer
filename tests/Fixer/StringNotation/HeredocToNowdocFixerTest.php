@@ -47,12 +47,11 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             <?php $a = <<<'TEST'
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = <<<TEST
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = <<<TEST
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -60,13 +59,12 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo \\ $bar \n
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = <<<TEST
-                Foo \\\\ \$bar \\n
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = <<<TEST
+            Foo \\\\ \$bar \\n
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -74,13 +72,12 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = <<<"TEST"
-                Foo
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = <<<"TEST"
+            Foo
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -121,14 +118,13 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             a
             HTML;
 
-            EOF
-            , <<<'EOF'
-                <?php
-                $html = <<<   HTML
-                a
-                HTML;
+            EOF, <<<'EOF'
+            <?php
+            $html = <<<   HTML
+            a
+            HTML;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -136,23 +132,21 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = <<<           "TEST"
-                Foo
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = <<<           "TEST"
+            Foo
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<EOF
             <?php echo <<<'TEST'\r\nFoo\r\nTEST;
 
-            EOF
-            , <<<EOF
-                <?php echo <<<TEST\r\nFoo\r\nTEST;
+            EOF, <<<EOF
+            <?php echo <<<TEST\r\nFoo\r\nTEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -167,12 +161,11 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             <?php $a = b<<<'TEST'
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = b<<<TEST
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = b<<<TEST
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -180,13 +173,12 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo \\ $bar \n
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = b<<<TEST
-                Foo \\\\ \$bar \\n
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = b<<<TEST
+            Foo \\\\ \$bar \\n
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -194,13 +186,12 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = b<<<"TEST"
-                Foo
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = b<<<"TEST"
+            Foo
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -241,14 +232,13 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             a
             HTML;
 
-            EOF
-            , <<<'EOF'
-                <?php
-                $html = b<<<   HTML
-                a
-                HTML;
+            EOF, <<<'EOF'
+            <?php
+            $html = b<<<   HTML
+            a
+            HTML;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -256,23 +246,21 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = b<<<           "TEST"
-                Foo
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = b<<<           "TEST"
+            Foo
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<EOF
             <?php echo b<<<'TEST'\r\nFoo\r\nTEST;
 
-            EOF
-            , <<<EOF
-                <?php echo b<<<TEST\r\nFoo\r\nTEST;
+            EOF, <<<EOF
+            <?php echo b<<<TEST\r\nFoo\r\nTEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -287,12 +275,11 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             <?php $a = B<<<'TEST'
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = B<<<TEST
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = B<<<TEST
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -300,13 +287,12 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo \\ $bar \n
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = B<<<TEST
-                Foo \\\\ \$bar \\n
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = B<<<TEST
+            Foo \\\\ \$bar \\n
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -314,13 +300,12 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = B<<<"TEST"
-                Foo
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = B<<<"TEST"
+            Foo
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -361,14 +346,13 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             a
             HTML;
 
-            EOF
-            , <<<'EOF'
-                <?php
-                $html = B<<<   HTML
-                a
-                HTML;
+            EOF, <<<'EOF'
+            <?php
+            $html = B<<<   HTML
+            a
+            HTML;
 
-                EOF
+            EOF
         ];
 
         yield [<<<'EOF'
@@ -376,23 +360,21 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
             Foo
             TEST;
 
-            EOF
-            , <<<'EOF'
-                <?php $a = B<<<           "TEST"
-                Foo
-                TEST;
+            EOF, <<<'EOF'
+            <?php $a = B<<<           "TEST"
+            Foo
+            TEST;
 
-                EOF
+            EOF
         ];
 
         yield [<<<EOF
             <?php echo B<<<'TEST'\r\nFoo\r\nTEST;
 
-            EOF
-            , <<<EOF
-                <?php echo B<<<TEST\r\nFoo\r\nTEST;
+            EOF, <<<EOF
+            <?php echo B<<<TEST\r\nFoo\r\nTEST;
 
-                EOF
+            EOF
         ];
     }
 }

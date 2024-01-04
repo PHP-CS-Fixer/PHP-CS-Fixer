@@ -73,8 +73,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -102,8 +101,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     )#
                     {}
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -1029,8 +1027,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 

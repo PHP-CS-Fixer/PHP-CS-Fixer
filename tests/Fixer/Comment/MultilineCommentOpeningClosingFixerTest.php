@@ -74,16 +74,14 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 /*
                  * WUT
                  */
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
 
                 /********
                  * WUT
                  ********/
-                EOT
-            ,
+                EOT,
         ];
 
         yield [
@@ -93,16 +91,14 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 /*\
                  * False DocBlock
                  */
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
 
                 /**\
                  * False DocBlock
                  */
-                EOT
-            ,
+                EOT,
         ];
 
         yield [
@@ -119,8 +115,7 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 Weird multiline comment
                 */
 
-                EOT
-            ,
+                EOT,
         ];
     }
 }

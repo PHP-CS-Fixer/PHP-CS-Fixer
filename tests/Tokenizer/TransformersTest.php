@@ -67,8 +67,7 @@ final class TransformersTest extends TestCase
                     }
                 }
 
-                SOURCE
-            ,
+                SOURCE,
             [46 => CT::T_USE_TRAIT],
         ];
     }
