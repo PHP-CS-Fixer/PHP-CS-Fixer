@@ -30,6 +30,15 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+``union_types``
+~~~~~~~~~~~~~~~
+
+Fix also union types; turned on by default on PHP >= 8.0.0.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
@@ -64,6 +73,24 @@ With configuration: ``['scalar_types' => false]``.
     <?php
     class Foo {
         /** @var int */
+        private $foo;
+        /** @var \Traversable */
+   -    private $bar;
+   +    private \Traversable $bar;
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['union_types' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo {
+        /** @var int|string */
         private $foo;
         /** @var \Traversable */
    -    private $bar;
