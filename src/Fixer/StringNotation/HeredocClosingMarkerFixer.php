@@ -31,6 +31,25 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class HeredocClosingMarkerFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var list<string>
+     */
+    public const RESERVED_CLOSING_MARKERS = [
+        'CSS',
+        'DIFF',
+        'HTML',
+        'JS',
+        'JSON',
+        'MD',
+        'PHP',
+        'PYTHON',
+        'RST',
+        'TS',
+        'SQL',
+        'XML',
+        'YAML',
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -86,21 +105,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 'Reserved closing markers to be kept unchanged.'
             ))
                 ->setAllowedTypes(['array'])
-                ->setDefault([
-                    'CSS',
-                    'DIFF',
-                    'HTML',
-                    'JS',
-                    'JSON',
-                    'MD',
-                    'PHP',
-                    'PYTHON',
-                    'RST',
-                    'TS',
-                    'SQL',
-                    'XML',
-                    'YAML',
-                ])
+                ->setDefault(self::RESERVED_CLOSING_MARKERS)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'explicit_heredoc_style',
