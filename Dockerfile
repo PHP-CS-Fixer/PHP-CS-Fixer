@@ -30,7 +30,7 @@ COPY --from=vendor /fixer/vendor /fixer/vendor
 RUN ln -s /fixer/php-cs-fixer /usr/local/bin/php-cs-fixer
 ENTRYPOINT ["/usr/local/bin/php-cs-fixer"]
 
-FROM base as dev
+FROM base as php
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
 ARG PHP_XDEBUG_VERSION
