@@ -272,7 +272,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 $name,
                 implode(',', array_map(
                     static fn (int $n): string => sprintf('$x%d', $n),
-                    array_keys(array_fill(0, $arguments ?? 0, true)),
+                    array_keys(array_fill(0, $arguments, true)),
                 ))
             );
 
