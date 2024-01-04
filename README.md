@@ -68,7 +68,7 @@ Or integrate as check into Gitlab CI like this:
 
 ```yaml
 php-cs-fixer:
-  image: ghcr.io/php-cs-fixer/php-cs-fixer:3.41-php8.2
+  image: ghcr.io/php-cs-fixer/php-cs-fixer:$FIXER_VERSION
   script:
     php-cs-fixer fix --diff --dry-run --format=txt src
 ```
