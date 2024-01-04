@@ -42,16 +42,14 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         'foo',
                         'bar' => 'baz',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
                       'foo',
                             'bar' => 'baz',
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -60,16 +58,14 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'foo',
                             'bar' => 'baz',
                         ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                         $foo = [
                       'foo',
                             'bar' => 'baz',
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -81,8 +77,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'baz'
                         ],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -92,8 +87,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                              'baz'
                              ],
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -108,8 +102,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                     'baz']],
                             'baz'],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -122,8 +115,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         'baz']],
                       'baz'],
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -149,8 +141,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ];
                         }
                     }
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     class Foo
@@ -174,8 +165,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                              ];
                         }
                     }
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -194,8 +184,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                     2
                                  ),
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -212,8 +201,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                          2
                                       ),
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -224,8 +212,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         ]],
                         'qux',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -234,8 +221,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                       ]],
                       'qux',
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -246,8 +232,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                        ->foo(),
                         ],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -256,8 +241,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                     ->foo(),
                       ],
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -268,8 +252,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         [new Foo(
                                 )],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -278,8 +261,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                       [new Foo(
                               )],
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -297,8 +279,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                               ])
                         ,
                     ]);
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = new Foo([
@@ -314,8 +295,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                    ])
                              ,
                     ]);
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -336,8 +316,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ];
                         }
                     }
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
 
@@ -356,8 +335,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                      ];
                         }
                     }
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -383,8 +361,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         }
                     }
 
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
 
@@ -408,8 +385,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         }
                     }
 
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -421,8 +397,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             .bar()
                         ,
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
 
@@ -432,8 +407,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           .bar()
                     ,
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -442,16 +416,14 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         [new \stdClass()],
                         'foo',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
                       [new \stdClass()],
                      'foo',
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -462,8 +434,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             : 'foo'
                         ,
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -472,8 +443,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           : 'foo'
                           ,
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -484,8 +454,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'foo'
                         ,
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -494,8 +463,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           'foo'
                           ,
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -508,8 +476,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'bar',
                         ],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
 
@@ -520,8 +487,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                        'bar',
                       ],
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -530,16 +496,14 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         'foo', // comment
                         'bar',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
                       'foo', // comment
                     'bar',
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -550,8 +514,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ],
                     ],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [[[
@@ -560,8 +523,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ],
                      ],
                       ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -572,8 +534,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                                 'foo',
                                 'bar',
                             ]]];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -582,8 +543,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                         'foo',
                         'bar',
                      ]]];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -599,8 +559,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ]
                             ]
                         ]];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -614,8 +573,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ]
                      ]
                     ]];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -633,8 +591,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             ],[]],[]]
                     ]
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [[
@@ -650,8 +607,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     ],[]],[]]
                     ]
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -661,8 +617,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'baz',
                         ]) ?>
                     <?php endif ?>
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php if ($foo): ?>
                         <?php foo([
@@ -670,8 +625,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                           'baz',
                        ]) ?>
                     <?php endif ?>
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -686,8 +640,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             Link text
                         </a>
                     </div>
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <div>
                         <a
@@ -700,8 +653,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             Link text
                         </a>
                     </div>
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -711,8 +663,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 
                         //  'c' => 'd',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $arr = [
@@ -720,8 +671,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 
                     //  'c' => 'd',
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 '<?php
@@ -744,8 +694,7 @@ $foo = [
                              .' long'
                               .' string'
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -758,8 +707,7 @@ $foo = [
                                  .' long'
                                   .' string'
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -773,8 +721,7 @@ $foo = [
                                   321,
                               ],
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
@@ -786,8 +733,7 @@ $foo = [
                                        321,
                               ],
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -797,8 +743,7 @@ $foo = [
                             'foo'
                         ),
                     ]];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [[
@@ -806,8 +751,7 @@ $foo = [
                               'foo'
                           ),
                     ]];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -819,8 +763,7 @@ $foo = [
                             ],
                         ], // <- this one
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $array = [
@@ -830,8 +773,7 @@ $foo = [
                             ],
                     ], // <- this one
                     ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<'EXPECTED'
@@ -840,16 +782,14 @@ $foo = [
                         ...$foo,
                         ...$bar,
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
                       ...$foo,
                             ...$bar,
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
         ]);
 
@@ -861,8 +801,7 @@ $foo = [
                         $bar,
                         $baz
                     ] = $arr;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                     <?php
                     [
@@ -870,8 +809,7 @@ $foo = [
                                 $bar,
                       $baz
                     ] = $arr;
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield 'array destructuring using list' => [
@@ -882,8 +820,7 @@ $foo = [
                         $bar,
                         $baz
                     ) = $arr;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                     <?php
                     list(
@@ -891,8 +828,7 @@ $foo = [
                                 $bar,
                       $baz
                     ) = $arr;
-                INPUT
-            ,
+                INPUT,
         ];
     }
 
@@ -915,16 +851,14 @@ $foo = [
                     \t'foo',
                     \t'bar' => 'baz',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<'INPUT'
                     <?php
                     $foo = [
                       'foo',
                             'bar' => 'baz',
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
             [
                 <<<EXPECTED
@@ -933,16 +867,14 @@ $foo = [
                     \t'foo',
                     \t'bar' => 'baz',
                     ];
-                    EXPECTED
-                ,
+                    EXPECTED,
                 <<<INPUT
                     <?php
                     \$foo = [
                     \t\t\t'foo',
                     \t\t'bar' => 'baz',
                      ];
-                    INPUT
-                ,
+                    INPUT,
             ],
         ]);
 
@@ -954,8 +886,7 @@ $foo = [
                     \t\$bar,
                     \t\$baz
                     ] = \$arr;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                     <?php
                     [
@@ -963,8 +894,7 @@ $foo = [
                                 $bar,
                       $baz
                     ] = $arr;
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield 'array destructuring using list' => [
@@ -975,8 +905,7 @@ $foo = [
                     \t\$bar,
                     \t\$baz
                     ) = \$arr;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                     <?php
                     list(
@@ -984,8 +913,7 @@ $foo = [
                                 $bar,
                       $baz
                     ) = $arr;
-                INPUT
-            ,
+                INPUT,
         ];
     }
 

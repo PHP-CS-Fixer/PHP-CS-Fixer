@@ -41,19 +41,16 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
             <<<'EOF'
                 <?php $var = 'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php $var = 'String (\\\'\r\n\x0) for My\Prefix\\';
-                EOF
-            ,
+                EOF,
             ['single_quoted' => true],
         ];
 
@@ -84,8 +81,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \u
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 $var = "\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
@@ -112,8 +108,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \u
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -128,8 +123,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \e\f\n\r\t\v \\ \$ ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -144,8 +138,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \0 \00 \000 \0000 \00000 ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -160,8 +153,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \xA \x99 \u{0} ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -184,8 +176,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 code coverage
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -193,8 +184,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 <?php
                 $var = "\A\a \' \8\9 \xZ \u";
                 $var = "$foo \A\a \' \8\9 \xZ \u ${bar}";
-                EOF
-            ,
+                EOF,
             null,
             ['double_quoted' => false],
         ];
@@ -221,8 +211,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
             null,
             ['heredoc_syntax' => false],
         ];
@@ -230,19 +219,16 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php $var = b'String (\\\'\r\n\x0) for My\Prefix\\';
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
             <<<'EOF'
                 <?php $var = b'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php $var = b'String (\\\'\r\n\x0) for My\Prefix\\';
-                EOF
-            ,
+                EOF,
             ['single_quoted' => true],
         ];
 
@@ -273,8 +259,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \u
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 $var = b"\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
@@ -301,8 +286,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \u
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -317,8 +301,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \e\f\n\r\t\v \\ \$ ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -333,8 +316,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \0 \00 \000 \0000 \00000 ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -349,8 +331,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \xA \x99 \u{0} ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -373,8 +354,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 code coverage
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -382,8 +362,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 <?php
                 $var = b"\A\a \' \8\9 \xZ \u";
                 $var = b"$foo \A\a \' \8\9 \xZ \u ${bar}";
-                EOF
-            ,
+                EOF,
             null,
             ['double_quoted' => false],
         ];
@@ -410,8 +389,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
             null,
             ['heredoc_syntax' => false],
         ];
@@ -419,19 +397,16 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php $var = B'String (\\\'\r\n\x0) for My\Prefix\\';
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
             <<<'EOF'
                 <?php $var = B'String (\\\'\\r\\n\\x0) for My\\Prefix\\';
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php $var = B'String (\\\'\r\n\x0) for My\Prefix\\';
-                EOF
-            ,
+                EOF,
             ['single_quoted' => true],
         ];
 
@@ -462,8 +437,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \u
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 $var = B"\A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z";
@@ -490,8 +464,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \u
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -506,8 +479,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \e\f\n\r\t\v \\ \$ ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -522,8 +494,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \0 \00 \000 \0000 \00000 ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -538,8 +509,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $foo \xA \x99 \u{0} ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -562,8 +532,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 code coverage
                 NOWDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -571,8 +540,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 <?php
                 $var = B"\A\a \' \8\9 \xZ \u";
                 $var = B"$foo \A\a \' \8\9 \xZ \u ${bar}";
-                EOF
-            ,
+                EOF,
             null,
             ['double_quoted' => false],
         ];
@@ -599,8 +567,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 ${bar}
                 HEREDOC_SYNTAX;
 
-                EOF
-            ,
+                EOF,
             null,
             ['heredoc_syntax' => false],
         ];
@@ -614,8 +581,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $var = "\\\\bar";
                 $var = "\\\\\\bar";
                 $var = "\\\\\\bar";
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 $var = "\bar";
@@ -624,8 +590,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $var = "\\\\bar";
                 $var = "\\\\\bar";
                 $var = "\\\\\\bar";
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -637,8 +602,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $var = '\\\\bar';
                 $var = '\\\\\\bar';
                 $var = '\\\\\\bar';
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 $var = '\bar';
@@ -647,8 +611,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 $var = '\\\\bar';
                 $var = '\\\\\bar';
                 $var = '\\\\\\bar';
-                EOF
-            ,
+                EOF,
             ['single_quoted' => true],
         ];
 
@@ -664,8 +627,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\\bar
                 TXT;
 
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 $var = <<<TXT
@@ -677,8 +639,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\\bar
                 TXT;
 
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -693,8 +654,7 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\\bar
                 TXT;
 
-                EOF
-            ,
+                EOF,
         ];
     }
 }

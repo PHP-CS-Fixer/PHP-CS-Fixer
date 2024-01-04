@@ -669,8 +669,7 @@ B#
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 The normal
                 use of this fixer
@@ -707,8 +706,7 @@ B#
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -1894,8 +1892,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF
-            ,
+                EOF,
 
             <<<'EOF'
                 The normal
@@ -1935,8 +1932,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
                         return function () use ($bar, $foo) {};
                     }
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield [

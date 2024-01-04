@@ -45,15 +45,13 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                     foo(<<<EOD
                         EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<EOD
                 EOD
                     );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -63,16 +61,14 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
 
                         EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<EOD
 
                 EOD
                     );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -84,8 +80,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                             def
                         EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<EOD
@@ -94,8 +89,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                     def
                 EOD
                     );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -108,8 +102,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
 
                         EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<'EOD'
@@ -119,8 +112,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
 
                 EOD
                     );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -131,8 +123,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                             def
                         EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<'EOD'
@@ -140,8 +131,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                                 def
                             EOD
                     );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -153,8 +143,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                         {$ghi}
                         EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<EOD
@@ -163,8 +152,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                 {$ghi}
                 EOD
                     );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -176,8 +164,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                         abc
                         FOO;
                         EOD;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     $a = <<<'EOD'
@@ -186,8 +173,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                 abc
                 FOO;
                 EOD;
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -241,14 +227,12 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                 <?php foo(<<<EOD
                     EOD
                 );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php foo(<<<EOD
                 EOD
                 );
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield [
@@ -260,8 +244,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                         def
                     EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<EOD
@@ -270,8 +253,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                     def
                 EOD
                     );
-                INPUT
-            ,
+                INPUT,
             ['indentation' => 'same_as_start'],
         ];
 
@@ -284,8 +266,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                         def
                     EOD
                     );
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(<<<EOD
@@ -294,8 +275,7 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
                             def
                         EOD
                     );
-                INPUT
-            ,
+                INPUT,
             ['indentation' => 'same_as_start'],
         ];
     }

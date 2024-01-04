@@ -1,0 +1,47 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types /w leading_backslash_in_global_namespace
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "fully_qualified_strict_types": {"leading_backslash_in_global_namespace": true}
+}
+--EXPECT--
+<?php
+
+/**
+ * @param \DateTime $dateTime
+ * @param int       $v
+ *
+ * @phpstan-param positive-int $v
+ *
+ * @param \'GET\'|\'POST\' $method
+ * @param \Closure $fx
+ *
+ * @psalm-param Closure(): (callable(): Closure) $fx
+ *
+ * @return list<int>
+ */
+function foo($dateTime, $v, $method, $fx) {}
+
+try {
+    fx();
+} catch (\Exception $e) {
+}
+
+--INPUT--
+<?php
+
+/**
+ * @param DateTime $dateTime
+ * @param int $v
+ * @phpstan-param positive-int $v
+ * @param \'GET\'|\'POST\' $method
+ * @param Closure $fx
+ * @psalm-param Closure(): (callable(): Closure) $fx
+ * @return list<int>
+ */
+function foo($dateTime, $v, $method, $fx) {
+}
+
+try { fx(); } catch (Exception $e) {
+}

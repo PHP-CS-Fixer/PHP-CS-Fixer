@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.46.0
+---------------------
+
+* chore: fix internal typehints in Tokens (#7656)
+* chore: reduce PHPStan baseline (#7643)
+* docs: Show class with unit tests and BC promise info (#7667)
+* feat: change default ruleset to `@PER-CS` (only behind PHP_CS_FIXER_FUTURE_MODE=1) (#7650)
+* feat: Support new/instanceof/use trait in `fully_qualified_strict_types` (#7653)
+* fix: FQCN parse phpdoc using full grammar regex (#7649)
+* fix: Handle FQCN properly with `leading_backslash_in_global_namespace` option enabled (#7654)
+* fix: PhpdocToParamTypeFixerTest - support for arrow functions (#7647)
+* fix: PHP_CS_FIXER_FUTURE_MODE - proper boolean validation (#7651)
+
 Changelog for v3.45.0
 ---------------------
 

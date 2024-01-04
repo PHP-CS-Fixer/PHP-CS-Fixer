@@ -188,8 +188,7 @@ final class TokensAnalyzerTest extends TestCase
                     use Foo\Bar; // expected in the return value
                 }
 
-                PHP
-            ,
+                PHP,
         ];
     }
 
@@ -2602,8 +2601,7 @@ namespace b { use D\C; }
                 class AnnotatedClass
                 {
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
