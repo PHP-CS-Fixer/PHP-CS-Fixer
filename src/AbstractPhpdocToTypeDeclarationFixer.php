@@ -75,6 +75,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
+            (new FixerOptionBuilder('union_types', 'Fix also union types; may have unexpected behaviour due to PHP bad type coercion system.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
         ]);
     }
 
@@ -211,6 +215,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         }
 
         if (!$typesExpression->isUnionType() || '|' !== $typesExpression->getTypesGlue()) {
+            return null;
+        }
+
+        if (false === $this->configuration['union_types']) {
             return null;
         }
 
