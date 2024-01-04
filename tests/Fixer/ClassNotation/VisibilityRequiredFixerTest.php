@@ -107,8 +107,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     ) {
                     }
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 class MyTestWithAnonymousClass extends TestCase
@@ -123,8 +122,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                     ) {
                     }
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -151,8 +149,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                             $bar = function($baz) {};
                         }
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 abstract class Foo {
@@ -178,8 +175,7 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                             $bar = function($baz) {};
                         }
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -188,15 +184,13 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
                 abstract class Foo1 {
                     public function& foo0($a) {}
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 abstract class Foo1 {
                     function& foo0($a) {}
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'leave functions alone' => [<<<'EOF'

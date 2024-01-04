@@ -64,8 +64,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                 use FooJ;
                 use FooZ;
 
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 use Some, Not, PHP, Like, Use, Statement;
                 <?php
@@ -116,8 +115,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                     use BarZ;
                 }
 
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 

@@ -402,13 +402,11 @@ $var = $arr[0]{     0
             <<<'EOT'
                 <?php
                 $arr1[]  ["some_offset"] [] {"foo"} = 3;
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                EOT
-            ,
+                EOT,
             ['positions' => ['inside']],
         ];
 
@@ -416,13 +414,11 @@ $var = $arr[0]{     0
             <<<'EOT'
                 <?php
                 $arr1[  ][ "some_offset"   ][     ]{ "foo" } = 3;
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 $arr1[  ]  [ "some_offset"   ] [     ] { "foo" } = 3;
-                EOT
-            ,
+                EOT,
             ['positions' => ['outside']],
         ];
     }

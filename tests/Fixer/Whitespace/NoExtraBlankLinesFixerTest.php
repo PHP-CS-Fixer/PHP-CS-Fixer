@@ -381,8 +381,7 @@ TEXT;
                 //
 
                 $d;
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
                 //class Test
@@ -590,8 +589,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
                 $a = new Bar2();
                 $a = new Baz();
                 $a = new Qux();
-                EOF
-            ,
+                EOF,
 
             <<<'EOF'
                 <?php
@@ -613,8 +611,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
                 $a = new Bar2();
                 $a = new Baz();
                 $a = new Qux();
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
