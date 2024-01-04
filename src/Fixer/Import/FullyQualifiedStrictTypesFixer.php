@@ -312,10 +312,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            if (true === $this->configuration['import_symbols']) {
-                $this->registerSymbolForImport('class', $matches[4], $uses, $namespaceName);
-            }
-
             $shortTokens = $this->determineShortType($matches[4], $uses, $namespaceName);
             if (null === $shortTokens) {
                 return $matches[0];
@@ -449,6 +445,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $longTypeContent = $class['content'];
 
+        if ((new TypeAnalysis($longTypeContent))->isReservedType()) {
+            return;
+        }
+
         if (true === $this->configuration['import_symbols']) {
             $this->registerSymbolForImport('class', $longTypeContent, $uses, $namespaceName);
         }
@@ -506,14 +506,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            if ((new TypeAnalysis($typeName))->isReservedType()) {
-                return;
-            }
-
-            if (true === $this->configuration['import_symbols']) {
-                $this->registerSymbolForImport('class', $typeName, $uses, $namespaceName);
-            }
-
             $shortType = $this->determineShortType($typeName, $uses, $namespaceName);
 
             if (null !== $shortType) {
@@ -529,8 +521,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      *
      * @return null|Token[]
      */
-    private function determineShortType(string $typeName, array $uses, string $namespaceName): ?array
+    private function determineShortType(string $typeName, array &$uses, string $namespaceName): ?array
     {
+        if ((new TypeAnalysis($typeName))->isReservedType()) {
+            return null;
+        }
+
+        if (true === $this->configuration['import_symbols']) {
+            $this->registerSymbolForImport('class', $typeName, $uses, $namespaceName);
+        }
+
         $withLeadingBackslash = str_starts_with($typeName, '\\');
         if ($withLeadingBackslash) {
             $typeName = substr($typeName, 1);
