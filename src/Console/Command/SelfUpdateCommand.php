@@ -134,7 +134,11 @@ final class SelfUpdateCommand extends Command
             $remoteTag = $latestVersionOfCurrentMajor;
         }
 
-        $localFilename = realpath($_SERVER['argv'][0]) ?: $_SERVER['argv'][0];
+        $localFilename = $_SERVER['argv'][0];
+        $realPath = realpath($localFilename);
+        if (false !== $realPath) {
+            $localFilename = $realPath;
+        }
 
         if (!is_writable($localFilename)) {
             $output->writeln(sprintf('<error>No permission to update</error> "%s" <error>file.</error>', $localFilename));

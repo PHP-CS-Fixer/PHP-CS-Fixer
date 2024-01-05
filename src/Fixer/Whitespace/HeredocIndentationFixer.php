@@ -127,7 +127,9 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
             return;
         }
 
-        for ($index = $end - 1, $last = true; $index > $start; --$index, $last = false) {
+        $index = $end - 1;
+
+        for ($last = true; $index > $start; --$index, $last = false) {
             if (!$tokens[$index]->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_WHITESPACE])) {
                 continue;
             }

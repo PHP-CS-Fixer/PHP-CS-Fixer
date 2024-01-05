@@ -174,7 +174,8 @@ final class Foo {
             }
 
             if (null !== $typeInfo) {
-                [$returnType, $isNullable] = $typeInfo;
+                $returnType = $typeInfo['commonType'];
+                $isNullable = $typeInfo['isNullable'];
             } elseif (null !== $unionTypes) {
                 $returnType = $unionTypes;
                 $isNullable = false;

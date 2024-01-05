@@ -179,6 +179,9 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         $tokens->insertAt($index, $replacements);
     }
 
+    /**
+     * @return ?array{int, int, list<Token>}
+     */
     private function getReplaceCandidate(
         Tokens $tokens,
         FunctionsAnalyzer $functionAnalyzer,
@@ -216,6 +219,9 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         return $this->getReplacementTokenClones($lowerContent, $braceOpenIndex, $braceCloseIndex);
     }
 
+    /**
+     * @return ?array{int, int, list<Token>}
+     */
     private function fixGetClassCall(
         Tokens $tokens,
         FunctionsAnalyzer $functionAnalyzer,
@@ -267,12 +273,15 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         return null;
     }
 
+    /**
+     * @return array{int, int, list<Token>}
+     */
     private function getReplacementTokenClones(string $lowerContent, int $braceOpenIndex, int $braceCloseIndex): array
     {
-        $clones = [];
-        foreach ($this->functionsFixMap[$lowerContent] as $token) {
-            $clones[] = clone $token;
-        }
+        $clones = array_map(
+            static fn (Token $token): Token => clone $token,
+            $this->functionsFixMap[$lowerContent],
+        );
 
         return [
             $braceOpenIndex,
