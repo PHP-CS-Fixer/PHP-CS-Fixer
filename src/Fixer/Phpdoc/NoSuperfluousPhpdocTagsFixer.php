@@ -262,7 +262,7 @@ class Foo {
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 $element['index'] = $index;
                 $element['type'] = 'function';
 
