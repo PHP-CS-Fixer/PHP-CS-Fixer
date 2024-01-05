@@ -165,6 +165,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         return $tokens->isAnyTokenKindsFound([
             CT::T_USE_TRAIT,
+            ...(\defined('T_ATTRIBUTE') ? [T_ATTRIBUTE] : []), // @TODO: drop condition when PHP 8.0+ is required
             T_CATCH,
             T_DOUBLE_COLON,
             T_DOC_COMMENT,
@@ -173,6 +174,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             T_IMPLEMENTS,
             T_INSTANCEOF,
             T_NEW,
+            T_VARIABLE,
         ]);
     }
 
@@ -249,6 +251,13 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
                     $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                 } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
+                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+                    $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                    if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
+                        $this->fixPrevName($tokens, $index, $uses, $namespaceName);
+                    }
+                } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
                     $this->fixNextName($tokens, $index, $uses, $namespaceName);
                 }
 
@@ -488,6 +497,17 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             ) {
                 // if the type starts with namespace and the type is not the same as the namespace it can be shortened
                 $typeNameShort = substr($typeName, \strlen($namespaceName) + 1);
+
+                // if short names are the same, but long one are different then it cannot be shortened
+                foreach ($uses as $useLongName => $useShortName) {
+                    if (
+                        strtolower($typeNameShort) === strtolower($useShortName)
+                        && strtolower($typeName) !== strtolower($useLongName)
+                    ) {
+                        return;
+                    }
+                }
+
                 $this->replaceClassWithShort($tokens, $class, $typeNameShort);
             }
         }
