@@ -268,6 +268,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         $this->fixPhpDoc($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
                     }
                 }
+
+                if ($analyseRelativeUses) {
+                    foreach ($uses as $useLongNameLower => $useShortName) {
+                        if (strtolower($useShortName) === $useLongNameLower) {
+                            unset($uses[$useLongNameLower]);
+                        }
+                    }
+                }
             }
 
             if (true === $this->configuration['import_symbols'] && [] !== $this->symbolsForImport) {
@@ -776,8 +784,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             return;
         }
 
-        $this->symbolsForImport[$kind][$normalisedName] = ltrim($symbol, '\\');
-        ksort($this->symbolsForImport[$kind], SORT_NATURAL);
+        if ($normalisedName !== $this->normaliseSymbolName($namespaceName.'\\'.$shortSymbol)) {
+            $this->symbolsForImport[$kind][$normalisedName] = ltrim($symbol, '\\');
+            ksort($this->symbolsForImport[$kind], SORT_NATURAL);
+        }
 
         // We must fake that the symbol is imported, so that it can be shortened.
         $uses[$normalisedName] = $shortSymbol;

@@ -711,6 +711,73 @@ class Foo extends \A\A implements \B\A, \C\A
             null,
             ['import_symbols' => true],
         ];
+
+        yield 'import with relative and absolute symbols - global' => [
+            <<<'EOD'
+                <?php
+
+                new Exception();
+                new Exception();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new Exception();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - global and leading backslash' => [
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new \Exception();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new Exception();
+                EOD,
+            ['import_symbols' => true, 'leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - namespaced' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns2\Foo4;
+                use Ns\Foo3\Sub3;
+                use Ns\Foo\Sub2;
+
+                new Foo();
+                new Foo\Sub();
+                new Foo();
+                new Foo2();
+                new Sub2();
+                new Sub3();
+                new \Ns2\Foo();
+                new Foo4();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new Foo();
+                new Foo\Sub();
+                new \Ns\Foo();
+                new \Ns\Foo2();
+                new \Ns\Foo\Sub2();
+                new \Ns\Foo3\Sub3();
+                new \Ns2\Foo();
+                new \Ns2\Foo4();
+                EOD,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
