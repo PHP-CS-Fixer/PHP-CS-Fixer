@@ -383,7 +383,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'arrow function (as argument ended with ,)' => [
-
             '<?php
             Utils::stableSort(
                 $elements,
