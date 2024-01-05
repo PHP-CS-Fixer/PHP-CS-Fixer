@@ -266,12 +266,9 @@ final class CiConfigurationTest extends TestCase
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/docker.yml'));
 
-        $phpVersions = [];
-
-        foreach ($yaml['jobs']['build-and-push-image']['strategy']['matrix']['include'] as $job) {
-            $phpVersions[] = $job['php-version'];
-        }
-
-        return $phpVersions;
+        return array_map(
+            static fn($item) => $item['php-version'],
+            $yaml['jobs']['build-and-push-image']['strategy']['matrix']['include']
+        );
     }
 }
