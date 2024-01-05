@@ -607,8 +607,7 @@ if ($foo) {
                 }
 
                 $searchEndIndex = $tokens->findBlockEnd($blockType, $searchEndIndex);
-
-                continue;
+                $searchEndToken = $tokens[$searchEndIndex];
             }
 
             if (!$searchEndToken->equalsAny([';', ',', '}', [T_CLOSE_TAG]])) {

@@ -1166,6 +1166,35 @@ else if (true)
     else
      echo 5;',
         ];
+
+        yield 'mixex if-else with and without braces' => [
+            '<?php
+if (true)
+    if (true) {
+        if (true)
+            echo 1;
+        else
+            echo 2;
+    }
+    else {
+        echo 3;
+    }
+else
+    echo 4;',
+            '<?php
+if (true)
+  if (true) {
+          if (true)
+               echo 1;
+  else
+        echo 2;
+   }
+ else {
+    echo 3;
+ }
+    else
+     echo 4;',
+        ];
     }
 
     /**
