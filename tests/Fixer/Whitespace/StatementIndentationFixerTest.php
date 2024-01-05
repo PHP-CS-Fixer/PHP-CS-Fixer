@@ -1195,6 +1195,25 @@ if (true)
     else
      echo 4;',
         ];
+
+        yield 'empty if and else without braces' => [
+            '<?php
+if (true) {
+    if (false);
+    elseif (false);
+    else if (false);
+    else
+        echo 1;
+}',
+            '<?php
+  if (true) {
+   if (false);
+  elseif (false);
+ else if (false);
+else
+echo 1;
+}',
+        ];
     }
 
     /**
