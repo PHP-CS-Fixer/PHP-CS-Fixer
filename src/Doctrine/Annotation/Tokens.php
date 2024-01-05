@@ -233,7 +233,7 @@ final class Tokens extends \SplFixedArray
     /**
      * Inserts a token at the given index.
      */
-    public function insertAt(int $index, Token $token): void
+    public function insertAt(int $index, AnnotationToken $token): void
     {
         $this->setSize($this->getSize() + 1);
 
