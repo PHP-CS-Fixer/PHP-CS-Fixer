@@ -3,7 +3,7 @@ name: Create and publish a Docker images
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 env:
   REGISTRY: ghcr.io
