@@ -604,10 +604,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $typeNameShort = substr($typeName, $namespaceNameLength + 1);
 
             // if short names are the same, but long one are different then it cannot be shortened
-            foreach ($uses as $useLongName => $useShortName) {
+            foreach ($uses as $useLongNameLower => $useShortName) {
                 if (
                     strtolower($typeNameShort) === strtolower($useShortName)
-                    && strtolower($typeName) !== strtolower($useLongName)
+                    && strtolower($typeName) !== $useLongNameLower
                 ) {
                     return null;
                 }
@@ -739,9 +739,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $symbolArr = explode('\\', $symbol, 2);
                 $symbolFirstPartLower = strtolower($symbolArr[0]);
                 $resolvedSymbol = $namespaceName.'\\'.$symbol;
-                foreach ($uses as $useFullName => $useShortName) {
+                foreach ($uses as $useLongNameLower => $useShortName) {
                     if (strtolower($useShortName) === $symbolFirstPartLower) {
-                        $resolvedSymbol = $useFullName.(isset($symbolArr[1]) ? '\\'.$symbolArr[1] : '');
+                        $resolvedSymbol = $useLongNameLower.(isset($symbolArr[1]) ? '\\'.$symbolArr[1] : '');
                     }
                 }
 
