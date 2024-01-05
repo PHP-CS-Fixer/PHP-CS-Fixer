@@ -1224,12 +1224,12 @@ use Ping\Pong\Pyng\Pung;
 class SomeClass
 {
     public function doSomething(
-        \Ping\Something $something,
-        Pung\Pang $other,
-        \Ping\Pong\Pung $other1,
+        Ping\Something $something,
+        Ping\Pong\Pung\Pang $other,
+        Ping\Pong\Pung $other1,
         Pang\Pung $other2,
-        Pyng\Pung\Pong $other3,
-        \Foo\Bar\Baz\Buz $other4
+        Pung\Pong $other3,
+        Bar\Baz\Buz $other4
     ){}
 }',
             '<?php

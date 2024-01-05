@@ -47,12 +47,30 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
     /**
      * @var array{
+     *     const?: list<class-string>,
+     *     class?: list<class-string>,
+     *     function?: list<class-string>
+     * }|null
+     */
+    private ?array $discoveredSymbols;
+
+    /**
+     * @var array{
      *     const?: array<string, class-string>,
      *     class?: array<string, class-string>,
      *     function?: array<string, class-string>
      * }
      */
     private array $symbolsForImport = [];
+
+    /** @var array<string, string> */
+    private array $cacheUsesLast = [];
+
+    /** @var array<string, string> */
+    private array $cacheUseNameByShortNameLower;
+
+    /** @var array<string, string> */
+    private array $cacheUseShortNameByNameLower;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -234,19 +252,27 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach ($tokens->getNamespaceDeclarations() as $namespace) {
-            $namespaceName = strtolower($namespace->getFullName());
+        $this->symbolsForImport = [];
+
+        foreach ($tokens->getNamespaceDeclarations() as $namespaceIndex => $namespace) {
+            $namespace = $tokens->getNamespaceDeclarations()[$namespaceIndex];
+
+            $namespaceName = $namespace->getFullName();
             $uses = [];
             $lastUse = null;
 
             foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace) as $use) {
-                $uses[$this->normaliseSymbolName($use->getFullName())] = $use->getShortName();
+                $uses[ltrim($use->getFullName(), '\\')] = $use->getShortName();
                 $lastUse = $use;
             }
 
-            foreach (/*true === $this->configuration['import_symbols'] ? [true, false] : */[false] as $importSymbolsPhase) {
-                for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
-                    if ($importSymbolsPhase && $tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE, T_TRAIT])) {
+            $indexDiff = 0;
+            foreach (true === $this->configuration['import_symbols'] ? [true, false] : [false] as $discoverSymbolsPhase) {
+                $this->discoveredSymbols = $discoverSymbolsPhase ? [] : null;
+
+                for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex() + $indexDiff; ++$index) {
+                    $origSize = \count($tokens);
+                    if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE, T_TRAIT])) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
@@ -265,25 +291,21 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         }
                     } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($importSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
+                    } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         $this->determineShortType($matches[1], $uses, $namespaceName);
-                    }
-
-                    if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                    } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                         $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
                     }
+
+                    $indexDiff += \count($tokens) - $origSize;
                 }
 
-                if ($importSymbolsPhase) {
-                    foreach ($uses as $useLongNameLower => $useShortName) {
-                        if (strtolower($useShortName) === $useLongNameLower) {
-                            unset($uses[$useLongNameLower]);
-                        }
-                    }
+                if ($discoverSymbolsPhase) {
+                    $this->setupUsesFromDiscoveredSymbols($uses, $namespaceName);
                 }
             }
 
-            if (true === $this->configuration['import_symbols'] && [] !== $this->symbolsForImport) {
+            if ([] !== $this->symbolsForImport) {
                 $atIndex = (null !== $lastUse) ? $lastUse->getEndIndex() + 1 : $namespace->getEndIndex() + 1;
 
                 // Insert all registered FQCNs
@@ -297,7 +319,150 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixFunction(FunctionsAnalyzer $functionsAnalyzer, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function refreshUsesCache(array $uses): void
+    {
+        if ($this->cacheUsesLast !== $uses) {
+            $this->cacheUsesLast = $uses;
+            $this->cacheUseNameByShortNameLower = [];
+            $this->cacheUseShortNameByNameLower = [];
+            foreach ($uses as $useLongName => $useShortName) {
+                $this->cacheUseNameByShortNameLower[strtolower($useShortName)] = $useLongName;
+                $this->cacheUseShortNameByNameLower[strtolower($useLongName)] = $useShortName;
+            }
+        }
+    }
+
+    /**
+     * Resolve absolute or relative symbol to normalized FQCN.
+     *
+     * @param array<string, string> $uses
+     */
+    private function resolveSymbol(string $symbol, array $uses, string $namespaceName)
+    {
+        if (str_starts_with($symbol, '\\')) {
+            $resolvedSymbol = substr($symbol, 1);
+        } else {
+            $this->refreshUsesCache($uses);
+
+            $symbolArr = explode('\\', $symbol, 2);
+            $shortStartNameLower = strtolower($symbolArr[0]);
+            if (isset($this->cacheUseNameByShortNameLower[$shortStartNameLower])) {
+                $resolvedSymbol = $this->cacheUseNameByShortNameLower[$shortStartNameLower].(isset($symbolArr[1]) ? '\\'.$symbolArr[1] : '');
+            } else {
+                $resolvedSymbol = ('' !== $namespaceName ? $namespaceName.'\\' : '').$symbol;
+            }
+        }
+
+        return $resolvedSymbol;
+    }
+
+    /**
+     * Shorten normalized FQCN as much as possible.
+     *
+     * @param array<string, string> $uses
+     */
+    private function shortenSymbol(string $fqcn, array $uses, string $namespaceName): string
+    {
+        $this->refreshUsesCache($uses);
+
+        $res = null;
+
+        $iMin = 0;
+        if (str_starts_with($fqcn, $namespaceName.'\\')) {
+            $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
+            if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])])) {
+                $res = $tmpRes;
+                $iMin = substr_count($namespaceName, '\\') - 1;
+            }
+        }
+
+        $tmp = $fqcn;
+        for ($i = substr_count($fqcn, '\\'); $i >= $iMin; --$i) {
+            if (isset($this->cacheUseShortNameByNameLower[strtolower($tmp)])) {
+                $res = $this->cacheUseShortNameByNameLower[strtolower($tmp)].substr($fqcn, \strlen($tmp));
+
+                break;
+            }
+
+            if ($i > 0) {
+                $tmp = substr($tmp, 0, strrpos($tmp, '\\'));
+            }
+        }
+
+        if (null === $res) {
+            $res = $fqcn;
+            if ('' !== $namespaceName
+                || true === $this->configuration['leading_backslash_in_global_namespace']
+                || isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $res, 2)[0])])
+            ) {
+                $res = '\\'.$res;
+            }
+        }
+
+        return $res;
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function setupUsesFromDiscoveredSymbols(array &$uses, string $namespaceName): void
+    {
+        foreach ($this->discoveredSymbols as $kind => $discoveredSymbols) {
+            $discoveredFqcnByShortNameLower = [];
+
+            if ('' === $namespaceName) {
+                foreach ($discoveredSymbols as $symbol) {
+                    if (!str_starts_with($symbol, '\\')) {
+                        $shortStartName = explode('\\', ltrim($symbol, '\\'), 2)[0];
+                        $shortStartNameLower = strtolower($shortStartName);
+                        $discoveredFqcnByShortNameLower[$shortStartNameLower] = $this->resolveSymbol($shortStartName, $uses, $namespaceName);
+                    }
+                }
+            }
+
+            foreach ($uses as $useLongName => $useShortName) {
+                $discoveredFqcnByShortNameLower[strtolower($useShortName)] = $useLongName;
+            }
+
+            uasort($discoveredSymbols, static fn ($a, $b) => substr_count($a, '\\') <=> substr_count($b, '\\'));
+            foreach ($discoveredSymbols as $symbol) {
+                $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
+                if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
+                    if ('' !== $namespaceName && !str_starts_with($symbol, '\\') && str_contains($symbol, '\\')) { // @TODO add option to force all classes to be imported
+                        continue;
+                    }
+
+                    $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
+                }
+                // else short name collision - keep unimported
+            }
+
+            foreach ($uses as $useLongName => $useShortName) {
+                $discoveredLongName = $discoveredFqcnByShortNameLower[strtolower($useShortName)] ?? null;
+                if (strtolower($discoveredLongName) === strtolower($useLongName)) {
+                    unset($discoveredFqcnByShortNameLower[strtolower($useShortName)]);
+                }
+            }
+
+            foreach ($discoveredFqcnByShortNameLower as $fqcn) {
+                $shortenedName = ltrim($this->shortenSymbol($fqcn, [], $namespaceName), '\\');
+                if (str_contains($shortenedName, '\\')) { // prevent importing non-namespaced names in global namespace
+                    $shortEndName = str_contains($fqcn, '\\') ? substr($fqcn, strrpos($fqcn, '\\') + 1) : $fqcn;
+                    $uses[$fqcn] = $shortEndName;
+                    $this->symbolsForImport[$kind][$shortEndName] = $fqcn;
+                }
+            }
+
+            if (isset($this->symbolsForImport[$kind])) {
+                ksort($this->symbolsForImport[$kind], SORT_NATURAL);
+            }
+        }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
+    private function fixFunction(FunctionsAnalyzer $functionsAnalyzer, Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $index);
 
@@ -319,7 +484,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixPhpDoc(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixPhpDoc(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         $allowedTags = $this->configuration['phpdoc_tags'];
 
@@ -329,7 +494,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
+        $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, $uses, $namespaceName) {
             if (!\in_array($matches[2], $allowedTags, true)) {
                 return $matches[0];
             }
@@ -358,7 +523,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixExtendsImplements(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         // We handle `extends` and `implements` with similar logic, but we need to exit the loop under different conditions.
         $isExtends = $tokens[$index]->equals([T_EXTENDS]);
@@ -368,7 +533,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         while (true) {
             if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
                 if ([] !== $extend['tokens']) {
-                    $this->shortenClassIfPossible($tokens, $extend, $uses, $namespaceName);
+                    $index += $this->shortenClassIfPossible($tokens, $extend, $uses, $namespaceName);
                 }
 
                 if ($tokens[$index]->equalsAny($isExtends ? [[T_IMPLEMENTS], '{'] : ['{'])) {
@@ -388,7 +553,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixCatch(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixCatch(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         $index = $tokens->getNextMeaningfulToken($index); // '('
         $index = $tokens->getNextMeaningfulToken($index); // first part of first exception class to be caught
@@ -401,7 +566,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     break;
                 }
 
-                $this->shortenClassIfPossible($tokens, $caughtExceptionClass, $uses, $namespaceName);
+                $index += $this->shortenClassIfPossible($tokens, $caughtExceptionClass, $uses, $namespaceName);
 
                 if ($tokens[$index]->equals(')')) {
                     break;
@@ -420,7 +585,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixPrevName(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixPrevName(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         $classConstantRef = ['content' => '', 'tokens' => []];
 
@@ -433,7 +598,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             } else {
                 $classConstantRef['tokens'] = array_reverse($classConstantRef['tokens']);
                 if ([] !== $classConstantRef['tokens']) {
-                    $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+                    $index += $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
                 }
 
                 break;
@@ -444,7 +609,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixNextName(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixNextName(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         $classConstantRef = ['content' => '', 'tokens' => []];
 
@@ -456,7 +621,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $classConstantRef['content'] .= $tokens[$index]->getContent();
             } else {
                 if ([] !== $classConstantRef['tokens']) {
-                    $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+                    $index += $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
                 }
 
                 break;
@@ -468,76 +633,22 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      * @param array{content: string, tokens: array<int>} $class
      * @param array<string, string>                      $uses
      */
-    private function shortenClassIfPossible(Tokens $tokens, array $class, array &$uses, string $namespaceName): void
+    private function shortenClassIfPossible(Tokens $tokens, array $class, array $uses, string $namespaceName): int
     {
-        $longTypeContent = $class['content'];
-
-        if ((new TypeAnalysis($longTypeContent))->isReservedType()) {
-            return;
+        $newTokens = $this->determineShortType($class['content'], $uses, $namespaceName);
+        if (null === $newTokens) {
+            return 0;
         }
 
-        if (true === $this->configuration['import_symbols']) {
-            $this->registerSymbolForImport('class', $longTypeContent, $uses, $namespaceName);
+        $this->replaceClassWithShort($tokens, $class, $newTokens);
 
-//            if ($analyseRelativeUses) {
-//                return;
-//            }
-        }
-
-        if (str_starts_with($longTypeContent, '\\') || '' === $namespaceName) {
-            $typeName = ltrim($longTypeContent, '\\');
-            $typeNameLower = strtolower($typeName);
-
-            if (isset($uses[$typeNameLower])) {
-                // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
-                $this->replaceClassWithShort($tokens, $class, $uses[$typeNameLower]);
-            } elseif ('' === $namespaceName) {
-                $inUses = false;
-                foreach ($uses as $useShortName) {
-                    if (strtolower($useShortName) === $typeNameLower) {
-                        $inUses = true;
-
-                        break;
-                    }
-                }
-
-                if (!$inUses) {
-                    if (true === $this->configuration['leading_backslash_in_global_namespace']) {
-                        if ($typeName === $longTypeContent) {
-                            $tokens->insertAt($class['tokens'][0], new Token([T_NS_SEPARATOR, '\\']));
-                        }
-                    } else {
-                        // if we are in the global namespace and the type is not imported the leading '\' can be removed
-                        $this->replaceClassWithShort($tokens, $class, $typeName);
-                    }
-                }
-            } elseif (
-                $typeNameLower !== $namespaceName
-                && str_starts_with($typeNameLower, $namespaceName)
-                && '\\' === $typeNameLower[\strlen($namespaceName)]
-            ) {
-                // if the type starts with namespace and the type is not the same as the namespace it can be shortened
-                $typeNameShort = substr($typeName, \strlen($namespaceName) + 1);
-
-                // if short names are the same, but long one are different then it cannot be shortened
-                foreach ($uses as $useLongName => $useShortName) {
-                    if (
-                        strtolower($typeNameShort) === strtolower($useShortName)
-                        && strtolower($typeName) !== strtolower($useLongName)
-                    ) {
-                        return;
-                    }
-                }
-
-                $this->replaceClassWithShort($tokens, $class, $typeNameShort);
-            }
-        }
+        return \count($newTokens) - \count($class['tokens']);
     }
 
     /**
      * @param array<string, string> $uses
      */
-    private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array &$uses, string $namespaceName): void
+    private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array $uses, string $namespaceName): void
     {
         $typeStartIndex = $type->getStartIndex();
 
@@ -563,84 +674,46 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      *
      * @return null|Token[]
      */
-    private function determineShortType(string $typeName, array &$uses, string $namespaceName): ?array
+    private function determineShortType(string $typeName, array $uses, string $namespaceName): ?array
     {
         if ((new TypeAnalysis($typeName))->isReservedType()) {
             return null;
         }
 
-        if (true === $this->configuration['import_symbols']) {
-            $this->registerSymbolForImport('class', $typeName, $uses, $namespaceName);
+        if (null !== $this->discoveredSymbols) {
+            $this->discoveredSymbols['class'][] = $typeName;
 
-//            if ($analyseRelativeUses) {
-//                return null;
-//            }
-        }
-
-        $withLeadingBackslash = str_starts_with($typeName, '\\');
-        if ($withLeadingBackslash) {
-            $typeName = substr($typeName, 1);
-        }
-        $typeNameLower = strtolower($typeName);
-        $namespaceNameLength = \strlen($namespaceName);
-
-        if (isset($uses[$typeNameLower]) && ($withLeadingBackslash || '' === $namespaceName)) {
-            // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
-            return $this->namespacedStringToTokens($uses[$typeNameLower]);
-        }
-
-        if ('' === $namespaceName) {
-            // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
-            foreach ($uses as $useShortName) {
-                if (strtolower($useShortName) === $typeNameLower) {
-                    return null;
-                }
-            }
-
-            // if we are in the global namespace and the type is not imported,
-            // we enforce/remove leading backslash (depending on the configuration)
-            if (true === $this->configuration['leading_backslash_in_global_namespace']) {
-                if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {
-                    return $this->namespacedStringToTokens($typeName, true);
-                }
-            } else {
-                return $this->namespacedStringToTokens($typeName);
-            }
-        }
-        if (!str_contains($typeName, '\\')) {
-            // If we're NOT in the global namespace, there's no related import,
-            // AND used type is from global namespace, then it can't be shortened.
             return null;
         }
-        if ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName.'\\')) {
-            // if the type starts with namespace and the type is not the same as the namespace it can be shortened
-            $typeNameShort = substr($typeName, $namespaceNameLength + 1);
 
-            // if short names are the same, but long one are different then it cannot be shortened
-            foreach ($uses as $useLongNameLower => $useShortName) {
-                if (
-                    strtolower($typeNameShort) === strtolower($useShortName)
-                    && strtolower($typeName) !== $useLongNameLower
-                ) {
-                    return null;
-                }
-            }
-
-            return $this->namespacedStringToTokens($typeNameShort);
+        $fqcn = $this->resolveSymbol($typeName, $uses, $namespaceName);
+        $shortenedType = $this->shortenSymbol($fqcn, $uses, $namespaceName);
+        if ($shortenedType === $typeName) {
+            return null;
         }
 
-        return null;
+        return $this->namespacedStringToTokens($shortenedType);
     }
 
     /**
      * @param array{content: string, tokens: array<int>} $class
+     * @param list<Token>                                $newTokens
      */
-    private function replaceClassWithShort(Tokens $tokens, array $class, string $short): void
+    private function replaceClassWithShort(Tokens $tokens, array $class, array $newTokens): void
     {
+        [$newTokens, $extraTokens] = [
+            \array_slice($newTokens, 0, -\count($class['tokens'])),
+            \array_slice($newTokens, -\count($class['tokens'])),
+        ];
+
         $i = 0; // override the tokens
 
-        foreach ($this->namespacedStringToTokens($short) as $shortToken) {
-            $tokens[$class['tokens'][$i]] = $shortToken;
+        foreach ($extraTokens as $token) {
+            $tokens->insertAt($class['tokens'][0], $token);
+        }
+
+        foreach ($newTokens as $token) {
+            $tokens[$class['tokens'][$i]] = $token;
             ++$i;
         }
 
@@ -711,12 +784,13 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @return list<Token>
      */
-    private function namespacedStringToTokens(string $input, bool $withLeadingBackslash = false): array
+    private function namespacedStringToTokens(string $input): array
     {
         $tokens = [];
 
-        if ($withLeadingBackslash) {
+        if (str_starts_with($input, '\\')) {
             $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            $input = substr($input, 1);
         }
 
         $parts = explode('\\', $input);
@@ -738,58 +812,5 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     private function createImportProcessor(): ImportProcessor
     {
         return new ImportProcessor($this->whitespacesConfig);
-    }
-
-    /**
-     * @param "class"|"const"|"function" $kind
-     * @param class-string               $symbol
-     * @param array<string, string>      $uses
-     */
-    private function registerSymbolForImport(string $kind, string $symbol, array &$uses, string $namespaceName): void
-    {
-        if ('' === $namespaceName && !str_starts_with($symbol, '\\')) {
-            $symbol = '\\'.$symbol;
-        }
-
-        $normalisedName = $this->normaliseSymbolName($symbol);
-
-        // Do NOT register symbol for importing if:
-        if (
-            // we already have the symbol in existing imports
-            isset($uses[$normalisedName])
-            // or if the symbol is not a FQCN
-            || !str_starts_with($symbol, '\\')
-            // or if it's a global symbol
-            || strpos($symbol, '\\') === strrpos($symbol, '\\')
-        ) {
-            return;
-        }
-
-        $shortSymbol = substr($symbol, strrpos($symbol, '\\') + 1);
-        $importedShortNames = array_map(
-            static fn (string $name): string => strtolower($name),
-            array_values($uses)
-        );
-
-        // If symbol
-        if (\in_array(strtolower($shortSymbol), $importedShortNames, true)) {
-            return;
-        }
-
-        if ($normalisedName !== $this->normaliseSymbolName($namespaceName.'\\'.$shortSymbol)) {
-            $this->symbolsForImport[$kind][$normalisedName] = ltrim($symbol, '\\');
-            ksort($this->symbolsForImport[$kind], SORT_NATURAL);
-        }
-
-        // We must fake that the symbol is imported, so that it can be shortened.
-        $uses[$normalisedName] = $shortSymbol;
-    }
-
-    /**
-     * @param class-string $name
-     */
-    private function normaliseSymbolName(string $name): string
-    {
-        return strtolower(ltrim($name, '\\'));
     }
 }
