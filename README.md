@@ -58,7 +58,7 @@ For more details and other installation methods, see
 
 ### Run with Docker
 
-You can take a ready built docker image to run ``php-cs-fixer``.
+You can use pre-built Docker images to run ``php-cs-fixer``.
 
 ```console
 docker run -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:$FIXER_VERSION fix src
