@@ -2053,7 +2053,7 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(Bar $foo): Foo\Bar\Ba3{}
+    public function doSomething(Bar $foo): Bar\Ba3{}
     public function doSomethingMore(Bar|B $foo): Baz{}
     public function doSomethingElse(Bar&A\Z $foo): Baz{}
 }',
