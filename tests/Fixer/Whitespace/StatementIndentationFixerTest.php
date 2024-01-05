@@ -1125,7 +1125,7 @@ while (true);',
             '<?php
 do
   foo();
-while (true);',
+ while (true);',
         ];
 
         yield 'nested control structures without braces' => [
