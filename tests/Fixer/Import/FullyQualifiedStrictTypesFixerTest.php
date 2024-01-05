@@ -359,13 +359,8 @@ namespace B {
         ];
 
         yield 'typed property in class' => [
-            '<?php use A\B; class Cl { public B $p; }',
-            '<?php use A\B; class Cl { public \A\B $p; }',
-        ];
-
-        yield 'typed promoted property in class' => [
-            '<?php use A\B; class Cl { public function __construct(B $p) {} }',
-            '<?php use A\B; class Cl { public function __construct(\A\B $p) {} }',
+            '<?php use A\B; class Cl { public B $p; var B $p2; }',
+            '<?php use A\B; class Cl { public \A\B $p; var \A\B $p2; }',
         ];
 
         yield 'typed property in anonymous class' => [
@@ -1778,6 +1773,11 @@ function foo($a) {}',
         yield 'caught exception without var' => [
             '<?php use A\B; try{ foo(0); } catch (B) {}',
             '<?php use A\B; try{ foo(0); } catch (\A\B) {}',
+        ];
+
+        yield 'typed promoted property in class' => [
+            '<?php use A\B; class Cl { public function __construct(private B $p2) {} }',
+            '<?php use A\B; class Cl { public function __construct(private \A\B $p2) {} }',
         ];
 
         yield 'import new symbols from attributes' => [
