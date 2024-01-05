@@ -241,28 +241,32 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $lastUse = $use;
             }
 
-            for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
-                if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
-                    $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
-                    $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind(T_CATCH)) {
-                    $this->fixCatch($tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
-                    $this->fixPrevName($tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
-                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
-                    $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                    if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
-                        $this->fixPrevName($tokens, $index, $uses, $namespaceName);
+            foreach (true === $this->configuration['import_symbols'] ? [true, false] : [false] as $analyseRelativeUses) {
+                for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
+                    if ($analyseRelativeUses && $tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE, T_TRAIT])) {
+                        $this->fixNextName($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                        $this->fixFunction($analyseRelativeUses, $functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
+                        $this->fixExtendsImplements($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind(T_CATCH)) {
+                        $this->fixCatch($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+                        $this->fixPrevName($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
+                        $this->fixNextName($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+                        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                        if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
+                            $this->fixPrevName($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                        }
+                    } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
+                        $this->fixNextName($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
                     }
-                } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
-                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                }
 
-                if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-                    $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
+                    if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                        $this->fixPhpDoc($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    }
                 }
             }
 
@@ -280,7 +284,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixFunction(FunctionsAnalyzer $functionsAnalyzer, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixFunction(bool $analyseRelativeUses, FunctionsAnalyzer $functionsAnalyzer, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $index);
 
@@ -288,21 +292,21 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $argument = $functionsAnalyzer->getFunctionArguments($tokens, $index)[$i];
 
             if ($argument->hasTypeAnalysis()) {
-                $this->replaceByShortType($tokens, $argument->getTypeAnalysis(), $uses, $namespaceName);
+                $this->replaceByShortType($analyseRelativeUses, $tokens, $argument->getTypeAnalysis(), $uses, $namespaceName);
             }
         }
 
         $returnTypeAnalysis = $functionsAnalyzer->getFunctionReturnType($tokens, $index);
 
         if (null !== $returnTypeAnalysis) {
-            $this->replaceByShortType($tokens, $returnTypeAnalysis, $uses, $namespaceName);
+            $this->replaceByShortType($analyseRelativeUses, $tokens, $returnTypeAnalysis, $uses, $namespaceName);
         }
     }
 
     /**
      * @param array<string, string> $uses
      */
-    private function fixPhpDoc(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixPhpDoc(bool $analyseRelativeUses, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         $allowedTags = $this->configuration['phpdoc_tags'];
 
@@ -312,7 +316,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $phpDoc = $tokens[$index];
         $phpDocContent = $phpDoc->getContent();
-        $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName) {
+        $phpDocContentNew = Preg::replaceCallback('/([*{]\h*@)(\S+)(\h+)('.TypeExpression::REGEX_TYPES.')(?!(?!\})\S)/', function ($matches) use ($allowedTags, &$uses, $namespaceName, $analyseRelativeUses) {
             if (!\in_array($matches[2], $allowedTags, true)) {
                 return $matches[0];
             }
@@ -322,7 +326,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            $shortTokens = $this->determineShortType($matches[4], $uses, $namespaceName);
+            $shortTokens = $this->determineShortType($analyseRelativeUses, $matches[4], $uses, $namespaceName);
             if (null === $shortTokens) {
                 return $matches[0];
             }
@@ -341,7 +345,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixExtendsImplements(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixExtendsImplements(bool $analyseRelativeUses, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         // We handle `extends` and `implements` with similar logic, but we need to exit the loop under different conditions.
         $isExtends = $tokens[$index]->equals([T_EXTENDS]);
@@ -351,7 +355,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         while (true) {
             if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
                 if ([] !== $extend['tokens']) {
-                    $this->shortenClassIfPossible($tokens, $extend, $uses, $namespaceName);
+                    $this->shortenClassIfPossible($analyseRelativeUses, $tokens, $extend, $uses, $namespaceName);
                 }
 
                 if ($tokens[$index]->equalsAny($isExtends ? [[T_IMPLEMENTS], '{'] : ['{'])) {
@@ -371,7 +375,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixCatch(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixCatch(bool $analyseRelativeUses, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         $index = $tokens->getNextMeaningfulToken($index); // '('
         $index = $tokens->getNextMeaningfulToken($index); // first part of first exception class to be caught
@@ -384,7 +388,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     break;
                 }
 
-                $this->shortenClassIfPossible($tokens, $caughtExceptionClass, $uses, $namespaceName);
+                $this->shortenClassIfPossible($analyseRelativeUses, $tokens, $caughtExceptionClass, $uses, $namespaceName);
 
                 if ($tokens[$index]->equals(')')) {
                     break;
@@ -403,7 +407,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixPrevName(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixPrevName(bool $analyseRelativeUses, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         $classConstantRef = ['content' => '', 'tokens' => []];
 
@@ -416,7 +420,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             } else {
                 $classConstantRef['tokens'] = array_reverse($classConstantRef['tokens']);
                 if ([] !== $classConstantRef['tokens']) {
-                    $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+                    $this->shortenClassIfPossible($analyseRelativeUses, $tokens, $classConstantRef, $uses, $namespaceName);
                 }
 
                 break;
@@ -427,7 +431,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function fixNextName(Tokens $tokens, int $index, array &$uses, string $namespaceName): void
+    private function fixNextName(bool $analyseRelativeUses, Tokens $tokens, int $index, array &$uses, string $namespaceName): void
     {
         $classConstantRef = ['content' => '', 'tokens' => []];
 
@@ -439,7 +443,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $classConstantRef['content'] .= $tokens[$index]->getContent();
             } else {
                 if ([] !== $classConstantRef['tokens']) {
-                    $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+                    $this->shortenClassIfPossible($analyseRelativeUses, $tokens, $classConstantRef, $uses, $namespaceName);
                 }
 
                 break;
@@ -451,7 +455,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      * @param array{content: string, tokens: array<int>} $class
      * @param array<string, string>                      $uses
      */
-    private function shortenClassIfPossible(Tokens $tokens, array $class, array &$uses, string $namespaceName): void
+    private function shortenClassIfPossible(bool $analyseRelativeUses, Tokens $tokens, array $class, array &$uses, string $namespaceName): void
     {
         $longTypeContent = $class['content'];
 
@@ -460,7 +464,11 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         if (true === $this->configuration['import_symbols']) {
-            $this->registerSymbolForImport('class', $longTypeContent, $uses, $namespaceName);
+            $this->registerSymbolForImport($analyseRelativeUses, 'class', $longTypeContent, $uses, $namespaceName);
+
+            if ($analyseRelativeUses) {
+                return;
+            }
         }
 
         if (str_starts_with($longTypeContent, '\\') || '' === $namespaceName) {
@@ -516,7 +524,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array &$uses, string $namespaceName): void
+    private function replaceByShortType(bool $analyseRelativeUses, Tokens $tokens, TypeAnalysis $type, array &$uses, string $namespaceName): void
     {
         $typeStartIndex = $type->getStartIndex();
 
@@ -527,7 +535,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            $shortType = $this->determineShortType($typeName, $uses, $namespaceName);
+            $shortType = $this->determineShortType($analyseRelativeUses, $typeName, $uses, $namespaceName);
 
             if (null !== $shortType) {
                 $tokens->overrideRange($startIndex, $endIndex, $shortType);
@@ -542,14 +550,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      *
      * @return null|Token[]
      */
-    private function determineShortType(string $typeName, array &$uses, string $namespaceName): ?array
+    private function determineShortType(bool $analyseRelativeUses, string $typeName, array &$uses, string $namespaceName): ?array
     {
         if ((new TypeAnalysis($typeName))->isReservedType()) {
             return null;
         }
 
         if (true === $this->configuration['import_symbols']) {
-            $this->registerSymbolForImport('class', $typeName, $uses, $namespaceName);
+            $this->registerSymbolForImport($analyseRelativeUses, 'class', $typeName, $uses, $namespaceName);
+
+            if ($analyseRelativeUses) {
+                return null;
+            }
         }
 
         $withLeadingBackslash = str_starts_with($typeName, '\\');
@@ -720,8 +732,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      * @param class-string               $symbol
      * @param array<string, string>      $uses
      */
-    private function registerSymbolForImport(string $kind, string $symbol, array &$uses, string $namespaceName): void
+    private function registerSymbolForImport(bool $analyseRelativeUses, string $kind, string $symbol, array &$uses, string $namespaceName): void
     {
+        if ($analyseRelativeUses) {
+            if (!str_starts_with($symbol, '\\')) {
+                $uses['implicit-use-'.\count($uses)] = explode('\\', $symbol, 2)[0];
+            }
+
+            return;
+        }
+
         $normalisedName = $this->normaliseSymbolName($symbol);
 
         // Do NOT register symbol for importing if:

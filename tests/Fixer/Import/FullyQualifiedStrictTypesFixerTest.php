@@ -640,6 +640,77 @@ class Foo extends \A\A implements \B\A, \C\A
 }',
             ['import_symbols' => true],
         ];
+
+        yield 'import only if not already implicitly used by class declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                class City
+                {
+                    public \Ns2\City $city;
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by interface declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                interface City
+                {
+                    public function f(\Ns2\City $city);
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by trait declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                trait City
+                {
+                    public \Ns2\City $city;
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage via native type' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                new MyCl();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in phpdoc' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                /** @var MyCl */;
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
