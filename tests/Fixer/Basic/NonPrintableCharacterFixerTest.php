@@ -234,8 +234,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "Double \" quote \u{200b} inside";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo 'Double " quote %s inside';
@@ -249,8 +248,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "Single ' quote \u{200b} inside";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo 'Single \' quote %s inside';
@@ -267,8 +265,7 @@ TXT;
                     Quotes ' and " to be handled \u{200b} properly \\' and \\"
                 STRING
                 ;
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo <<<'STRING'
@@ -285,8 +282,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "\\\u{200b}\"";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo '\\%s"';
@@ -300,8 +296,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "\\\u{200b}'";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo '\\%s\'';
@@ -315,8 +310,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "Backslash 1 \\ \u{200b}";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 1 \ %s';
@@ -330,8 +324,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "Backslash 2 \\ \u{200b}";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 2 \\ %s';
@@ -345,8 +338,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "Backslash 3 \\\\ \u{200b}";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 3 \\\ %s';
@@ -360,8 +352,7 @@ TXT;
         yield [
             <<<'EXPECTED'
                 <?php echo "Backslash 4 \\\\ \u{200b}";
-                EXPECTED
-            ,
+                EXPECTED,
             sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 4 \\\\ %s';

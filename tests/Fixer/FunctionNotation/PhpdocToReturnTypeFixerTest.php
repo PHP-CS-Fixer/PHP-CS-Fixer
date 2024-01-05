@@ -170,6 +170,12 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             ['scalar_types' => false],
         ];
 
+        yield 'do not fix union types when configured as such' => [
+            '<?php /** @return int|string */ function my_foo() {}',
+            null,
+            ['union_types' => false],
+        ];
+
         yield 'array native type' => [
             '<?php /** @return array */ function my_foo(): array {}',
             '<?php /** @return array */ function my_foo() {}',

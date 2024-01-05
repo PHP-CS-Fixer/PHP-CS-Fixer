@@ -47,7 +47,10 @@ The rule is part of the following rule sets:
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../../../src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../../../src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixerTest <./../../../tests/Fixer/LanguageConstruct/GetClassToClassKeywordFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

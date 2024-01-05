@@ -125,7 +125,10 @@ The rule is part of the following rule sets:
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixerTest <./../../../tests/Fixer/Phpdoc/GeneralPhpdocTagRenameFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

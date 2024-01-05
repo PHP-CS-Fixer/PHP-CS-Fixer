@@ -68,8 +68,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                                         function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                                     <?php
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
@@ -107,8 +106,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                             $c, // abc
                                             $d
                                         ) {}
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                                     <?php
                                         function foo(

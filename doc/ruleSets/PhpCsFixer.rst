@@ -50,6 +50,10 @@ Rules
 
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
+- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
 - `ordered_types <./../rules/class_notation/ordered_types.rst>`_
 - `php_unit_internal_class <./../rules/php_unit/php_unit_internal_class.rst>`_

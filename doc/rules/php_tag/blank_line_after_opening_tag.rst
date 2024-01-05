@@ -34,7 +34,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixer <./../../../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpTag\\BlankLineAfterOpeningTagFixerTest <./../../../tests/Fixer/PhpTag/BlankLineAfterOpeningTagFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

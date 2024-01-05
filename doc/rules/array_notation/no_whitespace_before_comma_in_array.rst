@@ -77,10 +77,16 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixer <./../../../src/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixer <./../../../src/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\NoWhitespaceBeforeCommaInArrayFixerTest <./../../../tests/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -30,6 +30,15 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+``union_types``
+~~~~~~~~~~~~~~~
+
+Fix also union types; turned on by default on PHP >= 8.0.0.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
@@ -68,7 +77,27 @@ With configuration: ``['scalar_types' => false]``.
    +function foo(Foo $foo) {}
     /** @param string $foo */
     function bar($foo) {}
-Source class
-------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['union_types' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    /** @param Foo $foo */
+   -function foo($foo) {}
+   +function foo(Foo $foo) {}
+    /** @param int|string $foo */
+    function bar($foo) {}
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\PhpdocToParamTypeFixerTest <./../../../tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -20,7 +20,10 @@ Example #1
    +if (! $bar) {
         echo "Help!";
     }
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSuccessorSpaceFixer <./../../../src/Fixer/Operator/NotOperatorWithSuccessorSpaceFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\NotOperatorWithSuccessorSpaceFixer <./../../../src/Fixer/Operator/NotOperatorWithSuccessorSpaceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NotOperatorWithSuccessorSpaceFixerTest <./../../../tests/Fixer/Operator/NotOperatorWithSuccessorSpaceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

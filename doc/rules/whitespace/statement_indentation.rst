@@ -105,7 +105,10 @@ The rule is part of the following rule sets:
   ``['stick_comment_to_next_continuous_control_statement' => true]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../../../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\StatementIndentationFixerTest <./../../../tests/Fixer/Whitespace/StatementIndentationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

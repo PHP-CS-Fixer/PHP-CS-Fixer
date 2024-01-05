@@ -60,6 +60,17 @@ class Foo {
 ',
                     ['scalar_types' => false]
                 ),
+                new CodeSample(
+                    '<?php
+class Foo {
+    /** @var int|string */
+    private $foo;
+    /** @var \Traversable */
+    private $bar;
+}
+',
+                    ['union_types' => false]
+                ),
             ],
             null,
             'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@var` annotation is mandatory for the fixer to make changes, signatures of properties without it (no docblock) will not be fixed. [3] Manual actions might be required for newly typed properties that are read before initialization.'

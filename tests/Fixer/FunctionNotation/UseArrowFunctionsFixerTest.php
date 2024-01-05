@@ -67,8 +67,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
             <<<'EXPECTED'
                 <?php
                     foo(1, fn (int $a, Foo $b) => bar($a, $c), 2);
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(1, function (int $a, Foo $b) use ($c, $d) {
@@ -81,8 +80,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
             <<<'EXPECTED'
                 <?php
                     foo(fn () => 1);
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(function () {
@@ -99,8 +97,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
             <<<'EXPECTED'
                 <?php
                     foo(fn ($a) => fn () => $a + 1);
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                     foo(function ($a) {

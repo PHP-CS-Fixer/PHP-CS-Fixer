@@ -49,7 +49,10 @@ With configuration: ``['tags' => ['foo']]``.
    - * @Foo
    + * @foo
      */
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagCasingFixer <./../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocTagCasingFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocTagCasingFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

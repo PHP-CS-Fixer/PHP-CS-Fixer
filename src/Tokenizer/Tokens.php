@@ -1373,7 +1373,7 @@ class Tokens extends \SplFixedArray
     private function registerFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var non-empty-string */
+        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1390,7 +1390,7 @@ class Tokens extends \SplFixedArray
     private function unregisterFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var non-empty-string */
+        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);

@@ -20,6 +20,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Utils;
 
 /**
+ * @author Michael Vorisek <https://github.com/mvorisek>
+ *
  * @internal
  */
 final class TypeExpression

@@ -135,6 +135,12 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             ['scalar_types' => false],
         ];
 
+        yield 'do not fix union types when configured as such' => [
+            '<?php class Foo { /** @var int|string */ private $foo; }',
+            null,
+            ['union_types' => false],
+        ];
+
         yield 'array native type' => [
             '<?php class Foo { /** @var array */ private array $foo; }',
             '<?php class Foo { /** @var array */ private $foo; }',

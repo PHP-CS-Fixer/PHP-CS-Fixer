@@ -70,7 +70,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoAliasTagFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

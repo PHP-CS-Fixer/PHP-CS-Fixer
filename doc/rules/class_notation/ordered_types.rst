@@ -114,7 +114,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../../../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\OrderedTypesFixer <./../../../src/Fixer/ClassNotation/OrderedTypesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\OrderedTypesFixerTest <./../../../tests/Fixer/ClassNotation/OrderedTypesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
