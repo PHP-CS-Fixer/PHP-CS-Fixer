@@ -798,6 +798,37 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
             ['import_symbols' => true],
         ];
+
+        yield 'fix to longest imported name' => [
+            <<<'EOD'
+                <?php
+
+                use A\B;
+                use A\X as Y;
+                use S as R;
+                use S\T;
+
+                new B();
+                new B\C();
+                new X();
+                new X\Z();
+                new T();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use A\B;
+                use A\X as Y;
+                use S as R;
+                use S\T;
+
+                new \A\B();
+                new \A\B\C();
+                new \A\X();
+                new \A\X\Z();
+                new R\T();
+                EOD,
+        ];
     }
 
     /**
