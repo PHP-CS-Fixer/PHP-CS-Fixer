@@ -716,14 +716,17 @@ class Foo extends \A\A implements \B\A, \C\A
             <<<'EOD'
                 <?php
 
+                use Foo\Bar;
                 new Exception();
                 new Exception();
+                new Bar();
                 EOD,
             <<<'EOD'
                 <?php
 
                 new \Exception();
                 new Exception();
+                new Foo\Bar();
                 EOD,
             ['import_symbols' => true],
         ];
@@ -732,14 +735,17 @@ class Foo extends \A\A implements \B\A, \C\A
             <<<'EOD'
                 <?php
 
+                use Foo\Bar;
                 new \Exception();
                 new \Exception();
+                new Bar();
                 EOD,
             <<<'EOD'
                 <?php
 
                 new \Exception();
                 new Exception();
+                new Foo\Bar();
                 EOD,
             ['import_symbols' => true, 'leading_backslash_in_global_namespace' => true],
         ];

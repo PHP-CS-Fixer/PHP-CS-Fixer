@@ -743,7 +743,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     private function registerSymbolForImport(bool $analyseRelativeUses, string $kind, string $symbol, array &$uses, string $namespaceName): void
     {
         if ($analyseRelativeUses) {
-            if (!str_starts_with($symbol, '\\')) {
+            if (!str_starts_with($symbol, '\\') && '' !== $namespaceName) {
                 $symbolArr = explode('\\', $symbol, 2);
                 $symbolFirstPartLower = strtolower($symbolArr[0]);
                 $resolvedSymbol = $namespaceName.'\\'.$symbol;
@@ -757,6 +757,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
 
             return;
+        }
+
+        if ('' === $namespaceName && !str_starts_with($symbol, '\\')) {
+            $symbol = '\\'.$symbol;
         }
 
         $normalisedName = $this->normaliseSymbolName($symbol);
