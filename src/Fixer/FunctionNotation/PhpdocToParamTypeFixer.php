@@ -72,6 +72,16 @@ function bar($foo) {}
 ',
                     ['scalar_types' => false]
                 ),
+                new CodeSample(
+                    '<?php
+
+/** @param Foo $foo */
+function foo($foo) {}
+/** @param int|string $foo */
+function bar($foo) {}
+',
+                    ['union_types' => false]
+                ),
             ],
             null,
             'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@param` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented.'

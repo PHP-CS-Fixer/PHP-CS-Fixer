@@ -440,6 +440,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             ['scalar_types' => false],
         ];
 
+        yield 'do not fix union types when configured as such' => [
+            '<?php /** @param int|string $foo */ function my_foo($foo) {}',
+            null,
+            ['union_types' => false],
+        ];
+
         yield 'do not fix function call' => [
             '<?php
                     /** @param string $foo */

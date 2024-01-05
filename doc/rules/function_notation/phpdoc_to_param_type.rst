@@ -30,6 +30,15 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+``union_types``
+~~~~~~~~~~~~~~~
+
+Fix also union types; turned on by default on PHP >= 8.0.0.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
@@ -67,6 +76,23 @@ With configuration: ``['scalar_types' => false]``.
    -function foo($foo) {}
    +function foo(Foo $foo) {}
     /** @param string $foo */
+    function bar($foo) {}
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['union_types' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    /** @param Foo $foo */
+   -function foo($foo) {}
+   +function foo(Foo $foo) {}
+    /** @param int|string $foo */
     function bar($foo) {}
 References
 ----------

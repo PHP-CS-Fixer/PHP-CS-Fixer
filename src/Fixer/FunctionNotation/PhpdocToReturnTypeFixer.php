@@ -80,6 +80,16 @@ function bar() {}
 ',
                     ['scalar_types' => false]
                 ),
+                new CodeSample(
+                    '<?php
+
+/** @return Foo */
+function foo() {}
+/** @return int|string */
+function bar() {}
+',
+                    ['union_types' => false]
+                ),
                 new VersionSpecificCodeSample(
                     '<?php
 final class Foo {
