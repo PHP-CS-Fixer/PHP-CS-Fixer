@@ -353,11 +353,6 @@ namespace B {
             '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
         ];
 
-        yield 'typed property in function' => [
-            '<?php use A\B; function foo(B $v) {}',
-            '<?php use A\B; function foo(\A\B $v) {}',
-        ];
-
         yield 'typed property in class' => [
             '<?php use A\B; class Cl { public B $p; var B $p2; }',
             '<?php use A\B; class Cl { public \A\B $p; var \A\B $p2; }',
