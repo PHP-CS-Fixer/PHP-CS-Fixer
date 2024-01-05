@@ -372,6 +372,29 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     */
+    public function testThereIsNoUsageOfExtract(string $className): void
+    {
+        $tokens = $this->createTokensForClass($className);
+
+        $stringTokens = array_filter(
+            $tokens->toArray(),
+            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
+        );
+
+        $strings = array_map(
+            static fn (Token $token): string => $token->getContent(),
+            $stringTokens
+        );
+
+        $strings = array_unique($strings);
+        $message = sprintf('Class %s must not use "extract()", explicitly extract only the keys that are needed - you never know what\'s else inside.', $className);
+        self::assertNotContains('extract', $strings, $message);
+    }
+
+    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
