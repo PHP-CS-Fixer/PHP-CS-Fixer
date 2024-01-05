@@ -337,7 +337,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      *
      * @param array<string, string> $uses
      */
-    private function resolveSymbol(string $symbol, array $uses, string $namespaceName)
+    private function resolveSymbol(string $symbol, array $uses, string $namespaceName): string
     {
         if (str_starts_with($symbol, '\\')) {
             $resolvedSymbol = substr($symbol, 1);
