@@ -1073,7 +1073,7 @@ if ($foo) {
             ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
-        yield 'if/else/elseif without braces' => [
+        yield 'if-elseif-else without braces' => [
             '<?php
 if ($foo)
     foo();
@@ -1126,6 +1126,45 @@ while (true);',
 do
   foo();
 while (true);',
+        ];
+
+        yield 'nested control structures without braces' => [
+            '<?php
+if (true)
+    if (true)
+        if (true)
+            for ($i = 0; $i < 1; ++$i)
+                echo 1;
+        elseif (true)
+            foreach ([] as $foo)
+                echo 2;
+        else if (true)
+            while (true)
+                echo 3;
+        else
+            do
+                echo 4;
+            while (true);
+    else
+        echo 5;',
+            '<?php
+if (true)
+if (true)
+ if (true)
+    for ($i = 0; $i < 1; ++$i)
+  echo 1;
+elseif (true)
+  foreach ([] as $foo)
+   echo 2;
+else if (true)
+  while (true)
+   echo 3;
+  else
+  do
+      echo 4;
+      while (true);
+    else
+     echo 5;',
         ];
     }
 

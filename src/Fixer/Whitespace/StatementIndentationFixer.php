@@ -577,8 +577,25 @@ if ($foo) {
     {
         $endIndex = null;
 
+        $ifLevel = 0;
+        $doWhileLevel = 0;
         for ($searchEndIndex = $index; $searchEndIndex <= $parentScopeEndIndex; ++$searchEndIndex) {
             $searchEndToken = $tokens[$searchEndIndex];
+
+            if (
+                $searchEndToken->isGivenKind(T_IF)
+                && !$tokens[$tokens->getPrevMeaningfulToken($searchEndIndex)]->isGivenKind(T_ELSE)
+            ) {
+                ++$ifLevel;
+
+                continue;
+            }
+
+            if ($searchEndToken->isGivenKind(T_DO)) {
+                ++$doWhileLevel;
+
+                continue;
+            }
 
             if ($searchEndToken->equalsAny(['(', '{', [CT::T_ARRAY_SQUARE_BRACE_OPEN]])) {
                 if ($searchEndToken->equals('(')) {
@@ -594,11 +611,43 @@ if ($foo) {
                 continue;
             }
 
-            if ($searchEndToken->equalsAny([';', ',', '}', [T_CLOSE_TAG]])) {
-                $endIndex = $tokens->getPrevNonWhitespace($searchEndIndex);
-
-                break;
+            if (!$searchEndToken->equalsAny([';', ',', '}', [T_CLOSE_TAG]])) {
+                continue;
             }
+
+            $controlStructureContinuationIndex = $tokens->getNextMeaningfulToken($searchEndIndex);
+
+            if (
+                $ifLevel > 0
+                && null !== $controlStructureContinuationIndex
+                && $tokens[$controlStructureContinuationIndex]->isGivenKind([T_ELSE, T_ELSEIF])
+            ) {
+                if (
+                    $tokens[$controlStructureContinuationIndex]->isGivenKind(T_ELSE)
+                    && !$tokens[$tokens->getNextMeaningfulToken($controlStructureContinuationIndex)]->isGivenKind(T_IF)
+                ) {
+                    --$ifLevel;
+                }
+
+                $searchEndIndex = $controlStructureContinuationIndex;
+
+                continue;
+            }
+
+            if (
+                $doWhileLevel > 0
+                && null !== $controlStructureContinuationIndex
+                && $tokens[$controlStructureContinuationIndex]->isGivenKind([T_WHILE])
+            ) {
+                --$doWhileLevel;
+                $searchEndIndex = $controlStructureContinuationIndex;
+
+                continue;
+            }
+
+            $endIndex = $tokens->getPrevNonWhitespace($searchEndIndex);
+
+            break;
         }
 
         return $endIndex ?? $tokens->getPrevMeaningfulToken($parentScopeEndIndex);
