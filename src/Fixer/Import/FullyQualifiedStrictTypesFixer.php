@@ -736,7 +736,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         if ($analyseRelativeUses) {
             if (!str_starts_with($symbol, '\\')) {
-                $uses['implicit-use-'.\count($uses)] = explode('\\', $symbol, 2)[0];
+                $symbolArr = explode('\\', $symbol, 2);
+                $symbolFirstPartLower = strtolower($symbolArr[0]);
+                $resolvedSymbol = $namespaceName.'\\'.$symbol;
+                foreach ($uses as $useFullName => $useShortName) {
+                    if (strtolower($useShortName) === $symbolFirstPartLower) {
+                        $resolvedSymbol = $useFullName.(isset($symbolArr[1]) ? '\\'.$symbolArr[1] : '');
+                    }
+                }
+
+                $uses[$this->normaliseSymbolName($resolvedSymbol)] = $symbolArr[0];
             }
 
             return;
