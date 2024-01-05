@@ -699,6 +699,20 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'import only if not already implicitly used by short name usage in attribute' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                #[MyCl]
+                class Cl {}
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
         yield 'import only if not already implicitly used by short name usage in phpdoc' => [
             <<<'EOD'
                 <?php

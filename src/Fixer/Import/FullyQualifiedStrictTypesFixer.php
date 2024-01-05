@@ -42,6 +42,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
+    private const REGEX_CLASS = '(?:\\\\?+'.TypeExpression::REGEX_IDENTIFIER
+        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
+
     /**
      * @var array{
      *     const?: array<string, class-string>,
@@ -262,6 +265,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         }
                     } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
                         $this->fixNextName($analyseRelativeUses, $tokens, $index, $uses, $namespaceName);
+                    } elseif ($analyseRelativeUses && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
+                        $this->determineShortType($analyseRelativeUses, $matches[1], $uses, $namespaceName);
                     }
 
                     if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
