@@ -18,7 +18,11 @@ A *config* knows about the code style rules and the files and directories that m
 
 ## How to contribute
 
-ℹ️ **IMPORTANT**: before contributing with really significant changes that require a lot of effort or are crucial from this tool's architecture perspective, please open [RFC on GitHub Discussion](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/rfc). The development effort should start only after the proposal is discussed and the approach aligned.
+> [!IMPORTANT]
+> Before contributing with _really_ significant changes that require a lot of effort or are crucial from this tool's
+> architecture perspective, please
+> open [RFC on GitHub Discussion](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/rfc). The
+> development effort should start only after the proposal is discussed and the approach aligned.
 
 ### Development
 
