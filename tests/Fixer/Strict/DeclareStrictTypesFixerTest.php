@@ -151,7 +151,7 @@ $a = 456;
             'x<?php',
         ];
 
-        yield 'file with shebang /w open tag xx' => [
+        yield 'file with shebang /w open tag' => [
             <<<'EOD'
                 #!x
                 <?php declare(strict_types=1);
@@ -166,6 +166,14 @@ $a = 456;
             <<<'EOD'
                 #!x
                 y
+                EOD,
+        ];
+
+        yield 'file with shebang not followed by open tag' => [
+            <<<'EOD'
+                #!x
+                #!not_a_shebang
+                <?php
                 EOD,
         ];
     }
