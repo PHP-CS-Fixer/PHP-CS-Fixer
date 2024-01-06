@@ -61,6 +61,20 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         return true;
     }
 
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    {
+        $openTagIndex = $this->getOpenTagIndex($tokens);
+
+        $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $openTagIndex, null, false);
+        if (null === $sequenceLocation) {
+            $this->insertSequence($openTagIndex, $tokens); // declaration not found, insert one
+
+            return;
+        }
+
+        $this->fixStrictTypesCasingAndValue($tokens, $sequenceLocation);
+    }
+
     private function getOpenTagIndex(Tokens $tokens): ?int
     {
         if ($tokens[0]->isGivenKind(T_OPEN_TAG)) {
@@ -79,20 +93,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
 
         return null;
-    }
-
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
-    {
-        $openTagIndex = $this->getOpenTagIndex($tokens);
-
-        $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $openTagIndex, null, false);
-        if (null === $sequenceLocation) {
-            $this->insertSequence($openTagIndex, $tokens); // declaration not found, insert one
-
-            return;
-        }
-
-        $this->fixStrictTypesCasingAndValue($tokens, $sequenceLocation);
     }
 
     /**
