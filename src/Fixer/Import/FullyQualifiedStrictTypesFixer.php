@@ -306,7 +306,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
 
             if ([] !== $this->symbolsForImport) {
-                $atIndex = (null !== $lastUse) ? $lastUse->getEndIndex() + 1 : $namespace->getEndIndex() + 1;
+                if (null !== $lastUse) {
+                    $atIndex = $lastUse->getEndIndex() + 1;
+                } elseif (0 !== $namespace->getEndIndex()) {
+                    $atIndex = $namespace->getEndIndex() + 1;
+                } else {
+                    $firstTokenIndex = $tokens->getNextMeaningfulToken($namespace->getScopeStartIndex());
+                    if (null !== $firstTokenIndex && $tokens[$firstTokenIndex]->isGivenKind(T_DECLARE)) {
+                        $atIndex = $tokens->getNextTokenOfKind($firstTokenIndex, [';']) + 1;
+                    } else {
+                        $atIndex = $namespace->getScopeStartIndex() + 1;
+                    }
+                }
 
                 // Insert all registered FQCNs
                 $this->createImportProcessor()->insertImports($tokens, $this->symbolsForImport, $atIndex);

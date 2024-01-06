@@ -541,6 +541,52 @@ namespace Foo\Baz {
             ['import_symbols' => true],
         ];
 
+        yield 'import new symbols with no existing imports nor namespace /wo declare' => [
+            <<<'EOD'
+                <?php
+
+                use Ns\A;
+                // comment
+
+                foo();
+
+                function foo(A $v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                foo();
+
+                function foo(\Ns\A $v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols with no existing imports nor namespace /w declare' => [
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                declare(strict_types=1);
+                use Ns\A;
+
+                function foo(A $v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                declare(strict_types=1);
+
+                function foo(\Ns\A $v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'import new symbols with custom whitespace config' => [
             '<?php
 
