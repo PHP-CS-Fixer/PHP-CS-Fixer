@@ -49,8 +49,8 @@ You can do some things to increase the chance that your pull request is accepted
 > [!IMPORTANT]
 > Your pull request will have much higher chance of getting merged if you allow maintainers to push changes to your
 > branch. You can do it by ticking "Allow edits and access to secrets by maintainers" checkbox, but please keep in mind
-> this option is available only if your PR is created from user's fork. If your fork is a part of organisation, then
-> you can add [Fixer maintainers](https://github.com/orgs/PHP-CS-Fixer/people) as a members of that repository. This way
+> this option is available only if your PR is created from a user's fork. If your fork is a part of organisation, then
+> you can add [Fixer maintainers](https://github.com/orgs/PHP-CS-Fixer/people) as members of that repository. This way
 > maintainers will be able to provide required changes or rebase your branch (only up-to-date PRs can be merged).
 
 ## Working With Docker
