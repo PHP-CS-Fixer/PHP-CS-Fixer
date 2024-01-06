@@ -133,6 +133,41 @@ $a = 456;
         yield ['  <?php echo 123;']; // first statement must be an open tag
 
         yield ['<?= 123;']; // first token open with echo is not fixed
+
+        yield 'empty file /wo open tag' => [
+            '',
+        ];
+
+        yield 'empty file /w open tag' => [
+            '<?php declare(strict_types=1);',
+            '<?php',
+        ];
+
+        yield 'non-empty file /wo open tag' => [
+            'x',
+        ];
+
+        yield 'non-empty file /w open tag' => [
+            'x<?php',
+        ];
+
+        yield 'file with shebang /w open tag xx' => [
+            <<<'EOD'
+                #!x
+                <?php declare(strict_types=1);
+                EOD,
+            <<<'EOD'
+                #!x
+                <?php
+                EOD,
+        ];
+
+        yield 'file with shebang /wo open tag' => [
+            <<<'EOD'
+                #!x
+                y
+                EOD,
+        ];
     }
 
     /**

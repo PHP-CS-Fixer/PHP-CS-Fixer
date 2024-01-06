@@ -53,7 +53,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return isset($tokens[0]) && $tokens[0]->isGivenKind(T_OPEN_TAG);
+        return null !== $this->getOpenTagIndex($tokens);
     }
 
     public function isRisky(): bool
@@ -61,19 +61,33 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         return true;
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    private function getOpenTagIndex(Tokens $tokens): ?int
     {
-        // check if the declaration is already done
-        $searchIndex = $tokens->getNextMeaningfulToken(0);
-        if (null === $searchIndex) {
-            $this->insertSequence(1, $tokens); // declaration not found, insert one
-
-            return;
+        if ($tokens[0]->isGivenKind(T_OPEN_TAG)) {
+            return 0;
         }
 
-        $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $searchIndex, null, false);
+        if ($tokens[0]->isGivenKind(T_INLINE_HTML)) {
+            $content = $tokens[0]->getContent();
+            if (str_starts_with($content, '#!')
+                && !str_contains(rtrim($content, "\r\n"), "\n")
+                && !str_contains(rtrim($content, "\r\n"), "\r")
+                && $tokens[1]->isGivenKind(T_OPEN_TAG)
+            ) {
+                return 1;
+            }
+        }
+
+        return null;
+    }
+
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    {
+        $openTagIndex = $this->getOpenTagIndex($tokens);
+
+        $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $openTagIndex, null, false);
         if (null === $sequenceLocation) {
-            $this->insertSequence(1, $tokens); // declaration not found, insert one
+            $this->insertSequence($openTagIndex, $tokens); // declaration not found, insert one
 
             return;
         }
@@ -102,7 +116,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
     }
 
-    private function insertSequence(int $index, Tokens $tokens): void
+    private function insertSequence(int $openTagIndex, Tokens $tokens): void
     {
         $sequence = [
             new Token([T_DECLARE, 'declare']),
@@ -113,27 +127,26 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             new Token(')'),
             new Token(';'),
         ];
-        $endIndex = \count($sequence);
+        $nextIndex = $openTagIndex + \count($sequence) + 1;
 
-        $tokens->insertAt($index, $sequence);
+        $tokens->insertAt($openTagIndex + 1, $sequence);
 
-        // transform "<?php\n" to "<?php " if needed
-        if ($index > 0 && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && str_contains($tokens[$index - 1]->getContent(), "\n")) {
-            $tokens[$index - 1] = new Token([$tokens[$index - 1]->getId(), trim($tokens[$index - 1]->getContent()).' ']);
+        // transform "<?php" or "<?php\n" to "<?php " if needed
+        $content = $tokens[$openTagIndex]->getContent();
+        if (!str_contains($content, ' ') || str_contains($content, "\n")) {
+            $tokens[$openTagIndex] = new Token([$tokens[$openTagIndex]->getId(), trim($tokens[$openTagIndex]->getContent()).' ']);
         }
 
-        if (\count($tokens) - 2 === $endIndex - $index) {
+        if (\count($tokens) === $nextIndex) {
             return; // no more tokens after sequence, single_blank_line_at_eof might add a line
         }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-        if (!$tokens[$index + $endIndex]->isWhitespace()) {
-            $tokens->insertAt($index + $endIndex, new Token([T_WHITESPACE, $lineEnding]));
-
-            return;
+        if ($tokens[$nextIndex]->isWhitespace()) {
+            $content = $tokens[$nextIndex]->getContent();
+            $tokens[$nextIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content, " \t")]);
+        } else {
+            $tokens->insertAt($nextIndex, new Token([T_WHITESPACE, $lineEnding]));
         }
-
-        $content = $tokens[$index + $endIndex]->getContent();
-        $tokens[$index + $endIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content, " \t")]);
     }
 }
