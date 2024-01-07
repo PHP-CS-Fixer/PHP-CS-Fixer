@@ -372,6 +372,18 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     */
+    public function testThereIsNoUsageOfExtract(string $className): void
+    {
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
+
+        $message = sprintf('Class %s must not use "extract()", explicitly extract only the keys that are needed - you never know what\'s else inside.', $className);
+        self::assertNotContains('extract', $calledFunctions, $message);
+    }
+
+    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
