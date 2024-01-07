@@ -41,7 +41,7 @@ You can do some things to increase the chance that your pull request is accepted
 
 * Submit [single](https://en.wikipedia.org/wiki/Single-responsibility_principle) pull request per fix or feature.
 * Keep meaningful commit logs, don't use meaningless messages (e.g. `foo`, `more work`, `more work`, `more work`) and don't push complex PR as a single commit.
-* Don't override your branch history with [rebase](https://git-scm.com/docs/git-rebase) or [commit --amend](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend), because it makes review rounds harder and also complicates work for PRs built on top of your PR. All commits from your branch will be squashed (without commit messages) during the merge.
+* Don't [amend](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend) commits because it makes review rounds harder - all commits from your branch will be squashed (without commit messages) during the merge.
 * Follow the conventions used in the project.
 * Remember about tests and documentation.
 * Don't bump `PhpCsFixer\Console\Application::VERSION`, it's done during release.
