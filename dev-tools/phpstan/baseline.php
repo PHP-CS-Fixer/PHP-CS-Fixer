@@ -54,11 +54,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
@@ -157,21 +152,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:sortElements\\(\\) has parameter \\$elements with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Comment\\\\NoEmptyCommentFixer\\:\\:getCommentBlock\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/NoEmptyCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/SingleLineCommentStyleFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
@@ -207,19 +187,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\PhpdocToPropertyTypeFixer\\:\\:resolveApplicableType\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\OrderedImportsFixer\\:\\:getNewOrder\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/OrderedImportsFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$k might not be defined\\.$#',
@@ -232,29 +202,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/OrderedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\SingleImportPerStatementFixer\\:\\:getGroupDeclaration\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\DeclareEqualNormalizeFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:fixGetClassCall\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:getReplaceCandidate\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:getReplacementTokenClones\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$configuration \\(array\\{syntax\\: \'long\'\\|\'short\'\\}\\) of method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configure\\(\\) should be contravariant with parameter \\$configuration \\(array\\<string, mixed\\>\\) of method PhpCsFixer\\\\AbstractFixer\\:\\:configure\\(\\)$#',
@@ -272,54 +222,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/ConcatSpaceFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\OperatorLinebreakFixer\\:\\:getNonBooleanOperators\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\TernaryToElvisOperatorFixer\\:\\:getBeforeOperator\\(\\) has parameter \\$blockEdgeDefinitions with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitConstructFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:annotationIsSuperfluous\\(\\) has parameter \\$info with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:removeSuperfluousModifierAnnotation\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:toComparableNames\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$index with its key variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$index might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$end might not be defined\\.$#',

@@ -2456,6 +2456,78 @@ class Foo {
     public function doFoo($bar): Baz {}
 }',
         ];
+
+        yield 'superfluous parameter type for anonymous function' => [
+            '<?php
+/**  */
+function (int $foo) { return 1; };',
+            '<?php
+/** @param int $foo */
+function (int $foo) { return 1; };',
+        ];
+
+        yield 'superfluous return type for anonymous function' => [
+            '<?php
+/**  */
+function ($foo): int { return 1; };',
+            '<?php
+/** @return int */
+function ($foo): int { return 1; };',
+        ];
+
+        yield 'superfluous parameter type for static anonymous function' => [
+            '<?php
+/**  */
+static function (int $foo) { return 1; };',
+            '<?php
+/** @param int $foo */
+static function (int $foo) { return 1; };',
+        ];
+
+        yield 'superfluous return type for static anonymous function' => [
+            '<?php
+/**  */
+static function ($foo): int { return 1; };',
+            '<?php
+/** @return int */
+static function ($foo): int { return 1; };',
+        ];
+
+        yield 'superfluous parameter type for arrow function' => [
+            '<?php
+/**  */
+fn (int $foo) => 1;',
+            '<?php
+/** @param int $foo */
+fn (int $foo) => 1;',
+        ];
+
+        yield 'superfluous return type for arrow function' => [
+            '<?php
+/**  */
+fn ($foo): int => 1;',
+            '<?php
+/** @return int */
+fn ($foo): int => 1;',
+        ];
+
+        yield 'superfluous parameter type for static arrow function' => [
+            '<?php
+/**  */
+static fn (int $foo) => 1;',
+            '<?php
+/** @param int $foo */
+static fn (int $foo) => 1;',
+        ];
+
+        yield 'superfluous return type for static arrow function' => [
+            '<?php
+/**  */
+static fn ($foo): int => 1;',
+            '<?php
+/** @return int */
+static fn ($foo): int => 1;',
+        ];
     }
 
     /**

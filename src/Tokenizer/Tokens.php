@@ -205,7 +205,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @return array<self::BLOCK_TYPE_*, array<'end'|'start', array{int, string}|string>>
+     * @return array<self::BLOCK_TYPE_*, array{start: array{int, string}|string, end: array{int, string}|string}>
      */
     public static function getBlockEdgeDefinitions(): array
     {

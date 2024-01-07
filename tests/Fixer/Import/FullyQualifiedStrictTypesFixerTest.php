@@ -353,6 +353,21 @@ namespace B {
             '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
         ];
 
+        yield 'typed property in class' => [
+            '<?php use A\B; class Cl { public B $p; var B $p2; }',
+            '<?php use A\B; class Cl { public \A\B $p; var \A\B $p2; }',
+        ];
+
+        yield 'typed property in anonymous class' => [
+            '<?php use A\B; new class() { public B $p; };',
+            '<?php use A\B; new class() { public \A\B $p; };',
+        ];
+
+        yield 'typed nullable property in class' => [
+            '<?php use A\B; class Cl { public ?B $p = null, $r; }',
+            '<?php use A\B; class Cl { public ?\A\B $p = null, $r; }',
+        ];
+
         yield 'starts with but not full name extends' => [
             '<?php namespace a\abcd;
 class Foo extends \a\abcdTest { }',
@@ -1753,6 +1768,59 @@ function foo($a) {}',
         yield 'caught exception without var' => [
             '<?php use A\B; try{ foo(0); } catch (B) {}',
             '<?php use A\B; try{ foo(0); } catch (\A\B) {}',
+        ];
+
+        yield 'typed promoted property in class' => [
+            '<?php use A\B; class Cl { public function __construct(private B $p2) {} }',
+            '<?php use A\B; class Cl { public function __construct(private \A\B $p2) {} }',
+        ];
+
+        yield 'import new symbols from attributes' => [
+            '<?php
+
+namespace Foo\Test;
+use Other\ClassAttr;
+use Other\MethodAttr;
+use Other\PromotedAttr;
+use Other\PropertyAttr;
+
+#[ClassAttr]
+#[\AllowDynamicProperties]
+class Foo
+{
+    #[PropertyAttr]
+    public int $prop;
+
+    public function __construct(
+        #[PromotedAttr]
+        public int $arg
+    ) {}
+
+    #[MethodAttr]
+    public function foo(): void {}
+}
+            ',
+            '<?php
+
+namespace Foo\Test;
+
+#[\Other\ClassAttr]
+#[\AllowDynamicProperties]
+class Foo
+{
+    #[\Other\PropertyAttr]
+    public int $prop;
+
+    public function __construct(
+        #[\Other\PromotedAttr]
+        public int $arg
+    ) {}
+
+    #[\Other\MethodAttr]
+    public function foo(): void {}
+}
+            ',
+            ['import_symbols' => true],
         ];
     }
 

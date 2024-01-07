@@ -285,11 +285,11 @@ echo 1;
         $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);
 
-        [$foundStart, $foundEnd, $foundIsEmpty] = $method->invoke($this->fixer, $tokens, $startIndex);
+        $foundInfo = $method->invoke($this->fixer, $tokens, $startIndex);
 
-        self::assertSame($startIndex, $foundStart, 'Find start index of block failed.');
-        self::assertSame($endIndex, $foundEnd, 'Find end index of block failed.');
-        self::assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
+        self::assertSame($startIndex, $foundInfo['blockStart'], 'Find start index of block failed.');
+        self::assertSame($endIndex, $foundInfo['blockEnd'], 'Find end index of block failed.');
+        self::assertSame($isEmpty, $foundInfo['isEmpty'], 'Is empty comment block detection failed.');
     }
 
     public static function provideGetCommentBlockCases(): iterable
