@@ -30,6 +30,15 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+``union_types``
+~~~~~~~~~~~~~~~
+
+Fix also union types; turned on by default on PHP >= 8.0.0.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
@@ -69,7 +78,28 @@ With configuration: ``['scalar_types' => false]``.
    -    private $bar;
    +    private \Traversable $bar;
     }
-Source class
-------------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['union_types' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo {
+        /** @var int|string */
+        private $foo;
+        /** @var \Traversable */
+   -    private $bar;
+   +    private \Traversable $bar;
+    }
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToPropertyTypeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\PhpdocToPropertyTypeFixerTest <./../../../tests/Fixer/FunctionNotation/PhpdocToPropertyTypeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

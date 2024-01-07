@@ -77,6 +77,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
+            (new FixerOptionBuilder('union_types', 'Fix also union types; turned on by default on PHP >= 8.0.0.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(\PHP_VERSION_ID >= 8_00_00)
+                ->getOption(),
         ]);
     }
 
@@ -213,6 +217,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         }
 
         if (!$typesExpression->isUnionType() || '|' !== $typesExpression->getTypesGlue()) {
+            return null;
+        }
+
+        if (false === $this->configuration['union_types']) {
             return null;
         }
 

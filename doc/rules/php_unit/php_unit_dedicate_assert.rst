@@ -138,7 +138,10 @@ The rule is part of the following rule sets:
   ``['target' => '5.6']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

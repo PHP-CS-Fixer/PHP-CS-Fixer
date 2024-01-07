@@ -57,7 +57,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../../../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../../../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\SingleLineAfterImportsFixerTest <./../../../tests/Fixer/Import/SingleLineAfterImportsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

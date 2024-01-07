@@ -9,9 +9,9 @@ services:
         DOCKER_GROUP_ID: ${DOCKER_GROUP_ID:-1000}
     user: ${DOCKER_USER_ID:-1000}:${DOCKER_GROUP_ID:-1000}
     extra_hosts:
-      # Required for Docker Linux until natively supported.
-      # See https://github.com/docker/for-linux/issues/264
-      - 'host.docker.internal: 172.17.0.1'
+      # Allow container to connect to host to use XDebug step debugging.
+      # This is not needed when using Docker Desktop as it supports this natively.
+      - 'host.docker.internal:host-gateway'
     environment:
       XDEBUG_MODE: ${XDEBUG_MODE:-off}
       XDEBUG_CONFIG: 'idekey=${XDEBUG_IDEKEY:-PHPSTORM} client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}'

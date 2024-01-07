@@ -40,7 +40,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixer <./../../../src/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitFqcnAnnotationFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

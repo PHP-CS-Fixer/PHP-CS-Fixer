@@ -583,8 +583,7 @@ $a
                         foo
                         EOD,
                 ];
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 $a = [
@@ -592,8 +591,7 @@ $a
                         foo
                         EOD
                 ];
-                INPUT
-            ,
+                INPUT,
             ['after_heredoc' => true],
         ];
 

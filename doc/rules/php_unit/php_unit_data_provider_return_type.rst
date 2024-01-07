@@ -62,7 +62,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderReturnTypeFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

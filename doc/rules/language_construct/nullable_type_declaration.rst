@@ -66,7 +66,10 @@ With configuration: ``['syntax' => 'question_mark']``.
    +    public ?bool $internal;
    +    public ?\Closure $callback;
     }
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../../../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixer <./../../../src/Fixer/LanguageConstruct/NullableTypeDeclarationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\NullableTypeDeclarationFixerTest <./../../../tests/Fixer/LanguageConstruct/NullableTypeDeclarationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

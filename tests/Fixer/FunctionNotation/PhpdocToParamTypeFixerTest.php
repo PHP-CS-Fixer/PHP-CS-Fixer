@@ -440,6 +440,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             ['scalar_types' => false],
         ];
 
+        yield 'do not fix union types when configured as such' => [
+            '<?php /** @param int|string $foo */ function my_foo($foo) {}',
+            null,
+            ['union_types' => false],
+        ];
+
         yield 'do not fix function call' => [
             '<?php
                     /** @param string $foo */
@@ -477,6 +483,31 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
                     function bar($x) {}
                 ',
+        ];
+
+        yield 'support for arrow function' => [
+            '<?php
+            Utils::stableSort(
+                $elements,
+                /**
+                 * @param int $a
+                 *
+                 * @return array
+                 */
+                static fn(int $a) => [$a],
+                fn($a, $b) => 1,
+            );',
+            '<?php
+            Utils::stableSort(
+                $elements,
+                /**
+                 * @param int $a
+                 *
+                 * @return array
+                 */
+                static fn($a) => [$a],
+                fn($a, $b) => 1,
+            );',
         ];
     }
 

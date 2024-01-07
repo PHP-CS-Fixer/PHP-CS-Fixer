@@ -36,7 +36,10 @@ The rule is part of the following rule sets:
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\VoidReturnFixer <./../../../src/Fixer/FunctionNotation/VoidReturnFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\VoidReturnFixer <./../../../src/Fixer/FunctionNotation/VoidReturnFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\VoidReturnFixerTest <./../../../tests/Fixer/FunctionNotation/VoidReturnFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

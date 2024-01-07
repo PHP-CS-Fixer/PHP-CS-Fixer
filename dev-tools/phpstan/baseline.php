@@ -54,11 +54,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
@@ -162,11 +157,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/SingleLineCommentStyleFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
@@ -242,24 +232,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$index with its key variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$index might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$end might not be defined\\.$#',

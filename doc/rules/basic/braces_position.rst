@@ -254,7 +254,10 @@ The rule is part of the following rule sets:
   ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../src/Fixer/Basic/BracesPositionFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\BracesPositionFixer <./../../../src/Fixer/Basic/BracesPositionFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\BracesPositionFixerTest <./../../../tests/Fixer/Basic/BracesPositionFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

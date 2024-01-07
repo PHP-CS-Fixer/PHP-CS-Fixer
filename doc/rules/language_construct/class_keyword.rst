@@ -37,7 +37,10 @@ Example #1
    -$bar = "\PhpCsFixer\Tokenizer\Tokens";
    +$foo = \PhpCsFixer\Tokenizer\Tokens::class;
    +$bar = \PhpCsFixer\Tokenizer\Tokens::class;
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordFixer <./../../../src/Fixer/LanguageConstruct/ClassKeywordFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordFixer <./../../../src/Fixer/LanguageConstruct/ClassKeywordFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\ClassKeywordFixerTest <./../../../tests/Fixer/LanguageConstruct/ClassKeywordFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -138,7 +138,10 @@ The rule is part of the following rule sets:
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesOrderFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocTypesOrderFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocTypesOrderFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

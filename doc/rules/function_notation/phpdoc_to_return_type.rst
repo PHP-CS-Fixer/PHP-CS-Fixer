@@ -30,6 +30,15 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+``union_types``
+~~~~~~~~~~~~~~~
+
+Fix also union types; turned on by default on PHP >= 8.0.0.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
@@ -79,6 +88,23 @@ With configuration: ``['scalar_types' => false]``.
 Example #3
 ~~~~~~~~~~
 
+With configuration: ``['union_types' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    /** @return Foo */
+   -function foo() {}
+   +function foo(): Foo {}
+    /** @return int|string */
+    function bar() {}
+
+Example #4
+~~~~~~~~~~
+
 *Default* configuration.
 
 .. code-block:: diff
@@ -95,7 +121,10 @@ Example #3
             return new static($prototype);
         }
     }
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixer <./../../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\PhpdocToReturnTypeFixerTest <./../../../tests/Fixer/FunctionNotation/PhpdocToReturnTypeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

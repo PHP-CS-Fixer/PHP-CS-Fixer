@@ -121,7 +121,10 @@ The rule is part of the following rule sets:
   ``['import_classes' => false, 'import_constants' => false, 'import_functions' => false]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Import\\GlobalNamespaceImportFixer <./../../../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\GlobalNamespaceImportFixerTest <./../../../tests/Fixer/Import/GlobalNamespaceImportFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

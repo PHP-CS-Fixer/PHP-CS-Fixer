@@ -89,7 +89,10 @@ The rule is part of the following rule sets:
   ``['target' => '7.5']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDedicateAssertInternalTypeFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

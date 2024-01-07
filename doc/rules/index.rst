@@ -431,7 +431,7 @@ Import
 
 - `fully_qualified_strict_types <./import/fully_qualified_strict_types.rst>`_
 
-  Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace. Fixes function arguments, exceptions in ``catch`` block, ``extend`` and ``implements`` of classes and interfaces.
+  Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace.
 - `global_namespace_import <./import/global_namespace_import.rst>`_
 
   Imports or fully qualifies global classes/functions/constants.
@@ -855,6 +855,9 @@ String Notation
 - `explicit_string_variable <./string_notation/explicit_string_variable.rst>`_
 
   Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.
+- `heredoc_closing_marker <./string_notation/heredoc_closing_marker.rst>`_
+
+  Unify ``heredoc`` or ``nowdoc`` closing marker.
 - `heredoc_to_nowdoc <./string_notation/heredoc_to_nowdoc.rst>`_
 
   Convert ``heredoc`` to ``nowdoc`` where possible.

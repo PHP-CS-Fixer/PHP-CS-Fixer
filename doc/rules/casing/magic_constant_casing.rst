@@ -26,7 +26,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Casing\\MagicConstantCasingFixer <./../../../src/Fixer/Casing/MagicConstantCasingFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Casing\\MagicConstantCasingFixer <./../../../src/Fixer/Casing/MagicConstantCasingFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\MagicConstantCasingFixerTest <./../../../tests/Fixer/Casing/MagicConstantCasingFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

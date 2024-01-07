@@ -76,7 +76,10 @@ The rule is part of the following rule sets:
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../../../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\HeredocIndentationFixer <./../../../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\HeredocIndentationFixerTest <./../../../tests/Fixer/Whitespace/HeredocIndentationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

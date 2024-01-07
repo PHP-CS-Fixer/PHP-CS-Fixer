@@ -164,7 +164,10 @@ The rule is part of the following rule sets:
   ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocSeparationFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocSeparationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
