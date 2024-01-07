@@ -316,5 +316,47 @@ final class MultilineStringToHeredocFixerTest extends AbstractFixerTestCase
                 EOD;
                 EOF,
         ];
+
+        yield 'simple strings prefixed with b/B' => [
+            <<<'EOF'
+                <?php
+                $a = <<<'EOD'
+                line1
+                line2
+                EOD;
+                $b = <<<EOD
+                line1
+                line2
+                EOD;
+                EOF,
+            <<<'EOD'
+                <?php
+                $a = b'line1
+                line2';
+                $b = B"line1
+                line2";
+                EOD,
+        ];
+
+        yield 'double quoted /w simple variable prefixed with b/B' => [
+            <<<'EOF'
+                <?php
+                $a = <<<EOD
+                line1$var
+                line2
+                EOD;
+                $b = <<<EOD
+                line1$var
+                line2
+                EOD;
+                EOF,
+            <<<'EOD'
+                <?php
+                $a = b"line1$var
+                line2";
+                $b = B"line1$var
+                line2";
+                EOD,
+        ];
     }
 }

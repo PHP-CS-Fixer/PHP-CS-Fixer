@@ -92,7 +92,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
                     if ($tokens[$index]->isGivenKind(T_START_HEREDOC)) {
                         $inHeredoc = true;
                     }
-                } elseif ($token->equals('"')) {
+                } elseif ($token->equalsAny(['"', 'b"', 'B"'])) {
                     $complexStringStartIndex = $index;
                 }
             } elseif ($token->equals('"')) {
@@ -109,6 +109,9 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
 
         if ($tokens[$stringStartIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
             $content = $tokens[$stringStartIndex]->getContent();
+            if ('b' === strtolower(substr($content, 0, 1))) {
+                $content = substr($content, 1);
+            }
             $isSingleQuoted = str_starts_with($content, '\'');
             $content = substr($content, 1, -1);
 
