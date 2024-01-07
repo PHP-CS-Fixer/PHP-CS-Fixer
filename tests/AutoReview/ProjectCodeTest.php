@@ -376,58 +376,37 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
-        $tokens = $this->createTokensForClass($className);
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
 
-        $stringTokens = array_filter(
-            $tokens->toArray(),
-            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
-        );
-
-        $strings = array_map(
-            static fn (Token $token): string => $token->getContent(),
-            $stringTokens
-        );
-
-        $strings = array_unique($strings);
         $message = sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
-        self::assertNotContains('preg_filter', $strings, $message);
-        self::assertNotContains('preg_grep', $strings, $message);
-        self::assertNotContains('preg_match', $strings, $message);
-        self::assertNotContains('preg_match_all', $strings, $message);
-        self::assertNotContains('preg_replace', $strings, $message);
-        self::assertNotContains('preg_replace_callback', $strings, $message);
-        self::assertNotContains('preg_split', $strings, $message);
+        self::assertNotContains('preg_filter', $calledFunctions, $message);
+        self::assertNotContains('preg_grep', $calledFunctions, $message);
+        self::assertNotContains('preg_match', $calledFunctions, $message);
+        self::assertNotContains('preg_match_all', $calledFunctions, $message);
+        self::assertNotContains('preg_replace', $calledFunctions, $message);
+        self::assertNotContains('preg_replace_callback', $calledFunctions, $message);
+        self::assertNotContains('preg_split', $calledFunctions, $message);
     }
 
     /**
      * @dataProvider provideTestClassCases
      */
-    public function testNoPHPUnitMockUsed(string $testClassName): void
+    public function testNoPHPUnitMockUsed(string $className): void
     {
-        $tokens = $this->createTokensForClass($testClassName);
-        $stringTokens = array_filter(
-            $tokens->toArray(),
-            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
-        );
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
 
-        $strings = array_map(
-            static fn (Token $token): string => $token->getContent(),
-            $stringTokens
-        );
-        $strings = array_unique($strings);
-
-        $message = sprintf('Class %s must not use PHPUnit\'s mock, it shall use anonymous class instead.', $testClassName);
-        self::assertNotContains('getMockBuilder', $strings, $message);
-        self::assertNotContains('createMock', $strings, $message);
-        self::assertNotContains('createMockForIntersectionOfInterfaces', $strings, $message);
-        self::assertNotContains('createPartialMock', $strings, $message);
-        self::assertNotContains('createTestProxy', $strings, $message);
-        self::assertNotContains('getMockForAbstractClass', $strings, $message);
-        self::assertNotContains('getMockFromWsdl', $strings, $message);
-        self::assertNotContains('getMockForTrait', $strings, $message);
-        self::assertNotContains('getMockClass', $strings, $message);
-        self::assertNotContains('createConfiguredMock', $strings, $message);
-        self::assertNotContains('getObjectForTrait', $strings, $message);
+        $message = sprintf('Class %s must not use PHPUnit\'s mock, it shall use anonymous class instead.', $className);
+        self::assertNotContains('getMockBuilder', $calledFunctions, $message);
+        self::assertNotContains('createMock', $calledFunctions, $message);
+        self::assertNotContains('createMockForIntersectionOfInterfaces', $calledFunctions, $message);
+        self::assertNotContains('createPartialMock', $calledFunctions, $message);
+        self::assertNotContains('createTestProxy', $calledFunctions, $message);
+        self::assertNotContains('getMockForAbstractClass', $calledFunctions, $message);
+        self::assertNotContains('getMockFromWsdl', $calledFunctions, $message);
+        self::assertNotContains('getMockForTrait', $calledFunctions, $message);
+        self::assertNotContains('getMockClass', $calledFunctions, $message);
+        self::assertNotContains('createConfiguredMock', $calledFunctions, $message);
+        self::assertNotContains('getObjectForTrait', $calledFunctions, $message);
     }
 
     /**
@@ -827,6 +806,26 @@ final class ProjectCodeTest extends TestCase
             $constantName = $constant->getName();
             self::assertSame(strtoupper($constantName), $constantName, $className);
         }
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function extractFunctionNamesCalledInClass(string $className): array
+    {
+        $tokens = $this->createTokensForClass($className);
+
+        $stringTokens = array_filter(
+            $tokens->toArray(),
+            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
+        );
+
+        $strings = array_map(
+            static fn (Token $token): string => $token->getContent(),
+            $stringTokens
+        );
+
+        return array_unique($strings);
     }
 
     private function createTokensForClass(string $className): Tokens
