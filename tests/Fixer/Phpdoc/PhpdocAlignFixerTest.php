@@ -1486,6 +1486,9 @@ function foo($typeless): void {}',
         $this->fixer->configure($config);
     }
 
+    /**
+     * @return  iterable<array{array<string,mixed>, string}>
+     */
     public static function provideInvalidConfigurationCases(): iterable
     {
         yield 'zero' => [
