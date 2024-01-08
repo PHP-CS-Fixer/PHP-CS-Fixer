@@ -91,6 +91,20 @@ $foo = $bar;
 // linebreak already present in file with Windows line endings
 '),
         ];
+
+        yield 'file with shebang' => [
+            <<<'EOD'
+                #!x
+                <?php
+                echo 1;
+                echo 2;
+                EOD,
+            <<<'EOD'
+                #!x
+                <?php echo 1;
+                echo 2;
+                EOD,
+        ];
     }
 
     /**

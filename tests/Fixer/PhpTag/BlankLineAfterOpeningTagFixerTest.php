@@ -40,10 +40,8 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
 
-    $a = 0;
     echo 1;',
             '<?php
-    $a = 0;
     echo 1;',
         ];
 
@@ -137,6 +135,20 @@ Html here
             '<?= $bar;
 $foo = $bar;
 ?>',
+        ];
+
+        yield 'file with shebang' => [
+            <<<'EOD'
+                #!x
+                <?php
+
+                echo 1;
+                EOD,
+            <<<'EOD'
+                #!x
+                <?php
+                echo 1;
+                EOD,
         ];
     }
 
