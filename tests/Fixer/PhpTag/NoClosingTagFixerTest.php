@@ -174,14 +174,5 @@ if (true) {
         yield [
             '<? /**/', '<? /**/?>',
         ];
-
-        yield [
-            '<?= "somestring"; ?> <?= "anotherstring"; ?>',
-        ];
-
-        yield [
-            '<?= 1;',
-            '<?= 1; ?>',
-        ];
     }
 }

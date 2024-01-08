@@ -37,16 +37,11 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        return $tokens->isMonolithicPhp() && $tokens->isTokenKindFound(T_OPEN_TAG);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
-            return;
-        }
-
         // ignore if linebreak already present
         if (str_contains($tokens[0]->getContent(), "\n")) {
             return;

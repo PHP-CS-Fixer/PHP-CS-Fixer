@@ -48,17 +48,12 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        return $tokens->isMonolithicPhp() && $tokens->isTokenKindFound(T_OPEN_TAG);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
-            return;
-        }
 
         $newlineFound = false;
 

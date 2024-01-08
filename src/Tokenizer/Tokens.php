@@ -1138,7 +1138,7 @@ class Tokens extends \SplFixedArray
      */
     public function isMonolithicPhp(): bool
     {
-        if (1 !== ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO))) {
+        if (1 !== $this->countTokenKind(T_OPEN_TAG) || 0 !== $this->countTokenKind(T_OPEN_TAG_WITH_ECHO)) {
             return false;
         }
 
