@@ -84,6 +84,10 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 T_TRAIT,
             ];
 
+            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {  // @TODO: drop condition when PHP 8.0+ is required
+                $notBeforeKinds[] = T_NULLSAFE_OBJECT_OPERATOR;
+            }
+
             if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
                 $notBeforeKinds[] = T_ENUM;
             }
