@@ -400,7 +400,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
         }
 
-        // shortening is not possible, add leading backslash is needed
+        // shortening is not possible, add leading backslash if needed
         if (null === $res) {
             $res = $fqcn;
             if ('' !== $namespaceName
