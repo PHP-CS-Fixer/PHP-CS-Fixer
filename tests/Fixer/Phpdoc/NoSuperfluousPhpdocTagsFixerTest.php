@@ -2529,7 +2529,7 @@ static fn ($foo): int => 1;',
 static fn ($foo): int => 1;',
         ];
 
-        yield 'multiline description must be kept even if there is no description on the phpdoc tag line' => [
+        yield 'multiline @param must be kept even if there is no description on the phpdoc tag line' => [
             <<<'EOD'
                 <?php
                 /**
@@ -2538,6 +2538,18 @@ static fn ($foo): int => 1;',
                  *                    - foo2
                  */
                 function foo(string $arg) {}
+                EOD,
+        ];
+
+        yield 'multiline @return must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @return string
+                 *                - foo
+                 *                - foo2
+                 */
+                function foo(string $arg): string {}
                 EOD,
         ];
     }
