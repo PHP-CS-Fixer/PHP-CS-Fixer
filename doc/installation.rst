@@ -85,7 +85,7 @@ To integrate php-cs-fixer as check into Gitlab-CI, you can use a configuration l
 .. code-block:: yaml
 
     php-cs-fixer:
-      image: ghcr.io/php-cs-fixer/php-cs-fixer:$FIXER_VERSION
+      image: ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3}
       script:
         php-cs-fixer fix --diff --dry-run --format=txt src
 
