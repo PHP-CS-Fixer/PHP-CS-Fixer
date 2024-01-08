@@ -2528,6 +2528,18 @@ static fn ($foo): int => 1;',
 /** @return int */
 static fn ($foo): int => 1;',
         ];
+
+        yield 'multiline description must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param string $arg
+                 *                    - foo
+                 *                    - foo2
+                 */
+                function foo(string $arg) {}
+                EOD,
+        ];
     }
 
     /**
