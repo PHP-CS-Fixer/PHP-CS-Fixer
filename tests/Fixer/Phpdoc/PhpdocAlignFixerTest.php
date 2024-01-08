@@ -1487,7 +1487,7 @@ function foo($typeless): void {}',
     }
 
     /**
-     * @return  iterable<array{array<string,mixed>, string}>
+     * @return iterable<array{array<string,mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
