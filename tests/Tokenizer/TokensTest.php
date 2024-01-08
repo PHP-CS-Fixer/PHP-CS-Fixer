@@ -436,9 +436,9 @@ final class TokensTest extends TestCase
         yield [false, "<?=' '\n?><?\n"];
 
         // short open tag echo
-        yield [false, "<?=' ';\n"];
+        yield [true, "<?=' ';\n"];
 
-        yield [false, "<?=' '?>"];
+        yield [true, "<?=' '?>"];
 
         yield [false, " <?=' ';\n"];
 

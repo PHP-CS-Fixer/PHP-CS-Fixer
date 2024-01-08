@@ -112,7 +112,14 @@ echo 1;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isMonolithicPhp();
+        if ($tokens->isMonolithicPhp()) {
+            $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
+            if (!$tokens[$openTagIndex]->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
