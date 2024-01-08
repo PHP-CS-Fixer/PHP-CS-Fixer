@@ -732,7 +732,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage via native type' => [
+        yield 'import only if not already implicitly used by short name usage in class instantiation' => [
             <<<'EOD'
                 <?php
 

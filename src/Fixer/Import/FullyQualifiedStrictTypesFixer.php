@@ -351,20 +351,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     private function resolveSymbol(string $symbol, array $uses, string $namespaceName): string
     {
         if (str_starts_with($symbol, '\\')) {
-            $resolvedSymbol = substr($symbol, 1);
-        } else {
-            $this->refreshUsesCache($uses);
-
-            $symbolArr = explode('\\', $symbol, 2);
-            $shortStartNameLower = strtolower($symbolArr[0]);
-            if (isset($this->cacheUseNameByShortNameLower[$shortStartNameLower])) {
-                $resolvedSymbol = $this->cacheUseNameByShortNameLower[$shortStartNameLower].(isset($symbolArr[1]) ? '\\'.$symbolArr[1] : '');
-            } else {
-                $resolvedSymbol = ('' !== $namespaceName ? $namespaceName.'\\' : '').$symbol;
-            }
+            return substr($symbol, 1);
         }
 
-        return $resolvedSymbol;
+        $this->refreshUsesCache($uses);
+
+        $symbolArr = explode('\\', $symbol, 2);
+        $shortStartNameLower = strtolower($symbolArr[0]);
+        if (isset($this->cacheUseNameByShortNameLower[$shortStartNameLower])) {
+            return $this->cacheUseNameByShortNameLower[$shortStartNameLower].(isset($symbolArr[1]) ? '\\'.$symbolArr[1] : '');
+        }
+
+        return ('' !== $namespaceName ? $namespaceName.'\\' : '').$symbol;
     }
 
     /**
@@ -378,6 +376,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $res = null;
 
+        // try to shorten the name using namespace
         $iMin = 0;
         if (str_starts_with($fqcn, $namespaceName.'\\')) {
             $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
@@ -387,6 +386,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
         }
 
+        // try to shorten the name using uses
         $tmp = $fqcn;
         for ($i = substr_count($fqcn, '\\'); $i >= $iMin; --$i) {
             if (isset($this->cacheUseShortNameByNameLower[strtolower($tmp)])) {
@@ -400,6 +400,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
         }
 
+        // shortening is not possible, add leading backslash is needed
         if (null === $res) {
             $res = $fqcn;
             if ('' !== $namespaceName
