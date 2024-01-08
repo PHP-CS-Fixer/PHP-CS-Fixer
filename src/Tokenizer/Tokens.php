@@ -1138,7 +1138,7 @@ class Tokens extends \SplFixedArray
      */
     public function isMonolithicPhp(): bool
     {
-        if (0 === $this->count()) {
+        if (1 !== ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO))) {
             return false;
         }
 
@@ -1150,7 +1150,7 @@ class Tokens extends \SplFixedArray
             return Preg::match('/^#!.+$/', $this[0]->getContent());
         }
 
-        return 1 === ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
+        return true;
     }
 
     /**

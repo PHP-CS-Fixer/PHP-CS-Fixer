@@ -53,7 +53,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return null !== $this->getOpenTagIndex($tokens);
+        return $tokens->isMonolithicPhp();
     }
 
     public function isRisky(): bool
@@ -63,7 +63,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $openTagIndex = $this->getOpenTagIndex($tokens);
+        $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
 
         $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $openTagIndex, null, false);
         if (null === $sequenceLocation) {
@@ -73,26 +73,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
 
         $this->fixStrictTypesCasingAndValue($tokens, $sequenceLocation);
-    }
-
-    private function getOpenTagIndex(Tokens $tokens): ?int
-    {
-        if ($tokens[0]->isGivenKind(T_OPEN_TAG)) {
-            return 0;
-        }
-
-        if ($tokens[0]->isGivenKind(T_INLINE_HTML)) {
-            $content = $tokens[0]->getContent();
-            if (str_starts_with($content, '#!')
-                && !str_contains(rtrim($content, "\r\n"), "\n")
-                && !str_contains(rtrim($content, "\r\n"), "\r")
-                && $tokens[1]->isGivenKind(T_OPEN_TAG)
-            ) {
-                return 1;
-            }
-        }
-
-        return null;
     }
 
     /**

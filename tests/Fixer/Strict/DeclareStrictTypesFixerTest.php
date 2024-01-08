@@ -49,8 +49,17 @@ class A {
             '<?php declare/* A b C*/(strict_types=1);',
         ];
 
-        yield [
-            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
+        yield 'monolithic file with closing tag' => [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>',
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>',
+        ];
+
+        yield 'monolithic file with closing tag and extra new line' => [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>'."\n",
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>'."\n",
+        ];
+
+        yield 'monolithic file with closing tag and extra content' => [
             '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
         ];
 
