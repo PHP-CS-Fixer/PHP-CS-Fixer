@@ -332,14 +332,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function refreshUsesCache(array $uses): void
     {
-        if ($this->cacheUsesLast !== $uses) {
-            $this->cacheUsesLast = $uses;
-            $this->cacheUseNameByShortNameLower = [];
-            $this->cacheUseShortNameByNameLower = [];
-            foreach ($uses as $useLongName => $useShortName) {
-                $this->cacheUseNameByShortNameLower[strtolower($useShortName)] = $useLongName;
-                $this->cacheUseShortNameByNameLower[strtolower($useLongName)] = $useShortName;
-            }
+        if ($this->cacheUsesLast === $uses) {
+            return;
+        }
+
+        $this->cacheUsesLast = $uses;
+        $this->cacheUseNameByShortNameLower = [];
+        $this->cacheUseShortNameByNameLower = [];
+        foreach ($uses as $useLongName => $useShortName) {
+            $this->cacheUseNameByShortNameLower[strtolower($useShortName)] = $useLongName;
+            $this->cacheUseShortNameByNameLower[strtolower($useLongName)] = $useShortName;
         }
     }
 
