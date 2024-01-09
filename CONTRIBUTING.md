@@ -40,8 +40,8 @@ A *config* knows about the code style rules and the files and directories that m
 You can do some things to increase the chance that your pull request is accepted without communication ping-pong between you and the reviewers:
 
 * Submit [single](https://en.wikipedia.org/wiki/Single-responsibility_principle) pull request per fix or feature.
-* Don't amend commits because it makes review rounds harder - all commits from your branch will be squashed (without commit messages) during merge, so you can treat pull request as a playground, without keeping everything tidy at any point.
-* If your changes are not up-to-date, [rebase](https://git-scm.com/docs/git-rebase) your branch onto the parent branch. Do it regularly whenever your branch is behind `master` branch, that will eliminate risk of problems after the merge.
+* Keep meaningful commit logs, don't use meaningless messages (e.g. `foo`, `more work`, `more work`, `more work`) and don't push complex PR as a single commit.
+* Don't [amend](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend) commits because it makes review rounds harder - all commits from your branch will be squashed (without commit messages) during the merge.
 * Follow the conventions used in the project.
 * Remember about tests and documentation.
 * Don't bump `PhpCsFixer\Console\Application::VERSION`, it's done during release.

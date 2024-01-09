@@ -77,6 +77,18 @@ Install `PHIVE <https://phar.io>`_ and issue the following command:
 
     phive install php-cs-fixer # use `--global` for global install
 
+Gitlab-CI (Docker)
+~~~~~~~~~~~~~~~~~~
+
+To integrate php-cs-fixer as check into Gitlab-CI, you can use a configuration like this:
+
+.. code-block:: yaml
+
+    php-cs-fixer:
+      image: ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3}
+      script:
+        php-cs-fixer check --diff --format=txt src
+
 Update
 ------
 

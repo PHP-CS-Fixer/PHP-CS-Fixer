@@ -139,7 +139,18 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                     }
                 }
 
-                $newClosingMarker = $reservedClosingMarkersMap[mb_strtoupper($existingClosingMarker)] ?? $this->configuration['closing_marker'];
+                $existingClosingMarker = mb_strtoupper($existingClosingMarker);
+                do {
+                    $newClosingMarker = $reservedClosingMarkersMap[$existingClosingMarker] ?? null;
+                    if (!str_ends_with($existingClosingMarker, '_')) {
+                        break;
+                    }
+                    $existingClosingMarker = substr($existingClosingMarker, 0, -1);
+                } while (null === $newClosingMarker);
+
+                if (null === $newClosingMarker) {
+                    $newClosingMarker = $this->configuration['closing_marker'];
+                }
 
                 $content = $tokens->generatePartialCode($startIndex + 1, $index - 1);
                 while (Preg::match('~(^|[\r\n])\s*'.preg_quote($newClosingMarker, '~').'(?!\w)~', $content)) {
