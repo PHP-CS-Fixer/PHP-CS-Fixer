@@ -15,8 +15,6 @@ PHP 8.0 test.
 
 declare(strict_types=1);
 
-use MyExample\MyAttribute2;
-
 // https://wiki.php.net/rfc/named_params
 array_fill(start_index: 0, num: 100, value: 50);
 htmlspecialchars($string, double_encode: false);
@@ -32,7 +30,7 @@ $country = $session?->user?->getAddress()?->country;
 // https://wiki.php.net/rfc/shorter_attribute_syntax
 // https://wiki.php.net/rfc/shorter_attribute_syntax_change
 #[MyAttribute]
-#[MyAttribute2]
+#[MyExample\MyAttribute]
 #[MyAttribute(1234)]
 #[MyAttribute(value: 1234)]
 #[MyAttribute(MyAttribute::VALUE)]
@@ -192,7 +190,7 @@ $country = $session?->user?->getAddress()?->country;
 // https://wiki.php.net/rfc/shorter_attribute_syntax
 // https://wiki.php.net/rfc/shorter_attribute_syntax_change
 #[MyAttribute]
-#[\MyExample\MyAttribute2]
+#[\MyExample\MyAttribute]
 #[MyAttribute(1234)]
 #[MyAttribute(value: 1234)]
 #[MyAttribute(MyAttribute::VALUE)]
