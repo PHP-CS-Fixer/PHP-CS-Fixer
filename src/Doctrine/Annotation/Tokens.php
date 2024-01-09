@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Doctrine\Annotation;
 
-use PhpCsFixer\Doctrine\Annotation\Token as AnnotationToken;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 
@@ -97,13 +96,13 @@ final class Tokens extends \SplFixedArray
             if (0 !== $nbScannedTokensToUse) {
                 $ignoredTextLength = $nextAtPosition - $ignoredTextPosition;
                 if (0 !== $ignoredTextLength) {
-                    $tokens[] = new AnnotationToken(DocLexer::T_NONE, substr($content, $ignoredTextPosition, $ignoredTextLength));
+                    $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition, $ignoredTextLength));
                 }
 
                 $lastTokenEndIndex = 0;
                 foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $token) {
                     if ($token->isType(DocLexer::T_STRING)) {
-                        $token = new AnnotationToken(
+                        $token = new Token(
                             $token->getType(),
                             '"'.str_replace('"', '""', $token->getContent()).'"',
                             $token->getPosition()
@@ -112,14 +111,14 @@ final class Tokens extends \SplFixedArray
 
                     $missingTextLength = $token->getPosition() - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
-                        $tokens[] = new AnnotationToken(DocLexer::T_NONE, substr(
+                        $tokens[] = new Token(DocLexer::T_NONE, substr(
                             $content,
                             $nextAtPosition + $lastTokenEndIndex,
                             $missingTextLength
                         ));
                     }
 
-                    $tokens[] = new AnnotationToken($token->getType(), $token->getContent());
+                    $tokens[] = new Token($token->getType(), $token->getContent());
                     $lastTokenEndIndex = $token->getPosition() + \strlen($token->getContent());
                 }
 
@@ -130,7 +129,7 @@ final class Tokens extends \SplFixedArray
         }
 
         if ($ignoredTextPosition < \strlen($content)) {
-            $tokens[] = new AnnotationToken(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
+            $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
         }
 
         return self::fromArray($tokens);
@@ -233,12 +232,12 @@ final class Tokens extends \SplFixedArray
     /**
      * Inserts a token at the given index.
      */
-    public function insertAt(int $index, AnnotationToken $token): void
+    public function insertAt(int $index, Token $token): void
     {
         $this->setSize($this->getSize() + 1);
 
         for ($i = $this->getSize() - 1; $i > $index; --$i) {
-            $this[$i] = $this[$i - 1] ?? new AnnotationToken();
+            $this[$i] = $this[$i - 1] ?? new Token();
         }
 
         $this[$index] = $token;
@@ -250,7 +249,7 @@ final class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "null" given.');
         }
 
-        if (!$token instanceof AnnotationToken) {
+        if (!$token instanceof Token) {
             $type = \gettype($token);
 
             if ('object' === $type) {
