@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\IndexRange;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -552,24 +553,23 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $isExtends = $tokens[$index]->equals([T_EXTENDS]);
         $index = $tokens->getNextMeaningfulToken($index);
 
-        $typeStartIndex = null;
-        $typeEndIndex = null;
+        $typeIndexRange = null;
 
         while (true) {
             if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
-                if (null !== $typeStartIndex) {
-                    $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
+                if (null !== $typeIndexRange) {
+                    $index += $this->shortenClassIfPossible($tokens, $typeIndexRange, $uses, $namespaceName);
                 }
-                $typeStartIndex = null;
+                $typeIndexRange = null;
 
                 if ($tokens[$index]->equalsAny($isExtends ? [[T_IMPLEMENTS], '{'] : ['{'])) {
                     break;
                 }
             } else {
-                if (null === $typeStartIndex) {
-                    $typeStartIndex = $index;
+                if (null === $typeIndexRange) {
+                    $typeIndexRange = new IndexRange($index, $index);
                 }
-                $typeEndIndex = $index;
+                $typeIndexRange->end = $index;
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
@@ -584,26 +584,25 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $index = $tokens->getNextMeaningfulToken($index); // '('
         $index = $tokens->getNextMeaningfulToken($index); // first part of first exception class to be caught
 
-        $typeStartIndex = null;
-        $typeEndIndex = null;
+        $typeIndexRange = null;
 
         while (true) {
             if ($tokens[$index]->equalsAny([')', [T_VARIABLE], [CT::T_TYPE_ALTERNATION]])) {
-                if (null === $typeStartIndex) {
+                if (null === $typeIndexRange) {
                     break;
                 }
 
-                $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
-                $typeStartIndex = null;
+                $index += $this->shortenClassIfPossible($tokens, $typeIndexRange, $uses, $namespaceName);
+                $typeIndexRange = null;
 
                 if ($tokens[$index]->equals(')')) {
                     break;
                 }
             } else {
-                if (null === $typeStartIndex) {
-                    $typeStartIndex = $index;
+                if (null === $typeIndexRange) {
+                    $typeIndexRange = new IndexRange($index, $index);
                 }
-                $typeEndIndex = $index;
+                $typeIndexRange->end = $index;
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
@@ -615,8 +614,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixPrevName(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        $typeStartIndex = null;
-        $typeEndIndex = null;
+        $typeIndexRange = null;
 
         while (true) {
             $index = $tokens->getPrevMeaningfulToken($index);
@@ -625,13 +623,13 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
 
             if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
-                $typeStartIndex = $index;
-                if (null === $typeEndIndex) {
-                    $typeEndIndex = $index;
+                if (null === $typeIndexRange) {
+                    $typeIndexRange = new IndexRange($index, $index);
                 }
+                $typeIndexRange->start = $index;
             } else {
-                if (null !== $typeEndIndex) {
-                    $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
+                if (null !== $typeIndexRange) {
+                    $index += $this->shortenClassIfPossible($tokens, $typeIndexRange, $uses, $namespaceName);
                 }
 
                 break;
@@ -644,20 +642,19 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixNextName(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        $typeStartIndex = null;
-        $typeEndIndex = null;
+        $typeIndexRange = null;
 
         while (true) {
             $index = $tokens->getNextMeaningfulToken($index);
 
             if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
-                if (null === $typeStartIndex) {
-                    $typeStartIndex = $index;
+                if (null === $typeIndexRange) {
+                    $typeIndexRange = new IndexRange($index, $index);
                 }
-                $typeEndIndex = $index;
+                $typeIndexRange->end = $index;
             } else {
-                if (null !== $typeStartIndex) {
-                    $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
+                if (null !== $typeIndexRange) {
+                    $index += $this->shortenClassIfPossible($tokens, $typeIndexRange, $uses, $namespaceName);
                 }
 
                 break;
@@ -668,17 +665,17 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * @param array<string, string> $uses
      */
-    private function shortenClassIfPossible(Tokens $tokens, int $typeStartIndex, int $typeEndIndex, array $uses, string $namespaceName): int
+    private function shortenClassIfPossible(Tokens $tokens, IndexRange $typeIndexRange, array $uses, string $namespaceName): int
     {
-        $content = $tokens->generatePartialCode($typeStartIndex, $typeEndIndex);
+        $content = $tokens->generatePartialCode($typeIndexRange->start, $typeIndexRange->end);
         $newTokens = $this->determineShortType($content, $uses, $namespaceName);
         if (null === $newTokens) {
             return 0;
         }
 
-        $tokens->overrideRange($typeStartIndex, $typeEndIndex, $newTokens);
+        $tokens->overrideRange($typeIndexRange->start, $typeIndexRange->end, $newTokens);
 
-        return \count($newTokens) - ($typeEndIndex - $typeStartIndex) - 1;
+        return \count($newTokens) - $typeIndexRange->count();
     }
 
     /**
@@ -694,11 +691,11 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
-        foreach ($types as [$startIndex, $endIndex]) {
-            $content = $tokens->generatePartialCode($startIndex, $endIndex);
+        foreach ($types as $indexRange) {
+            $content = $tokens->generatePartialCode($indexRange->start, $indexRange->end);
             $newTokens = $this->determineShortType($content, $uses, $namespaceName);
             if (null !== $newTokens) {
-                $tokens->overrideRange($startIndex, $endIndex, $newTokens);
+                $tokens->overrideRange($indexRange->start, $indexRange->end, $newTokens);
             }
         }
     }
@@ -732,16 +729,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<IndexRange>
      */
     private function getTypes(Tokens $tokens, int $index, int $endIndex): iterable
     {
         $skipNextYield = false;
-        $typeStartIndex = $typeEndIndex = null;
+        $typeIndexRange = null;
         while (true) {
             if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
                 $index = $tokens->getNextMeaningfulToken($index);
-                $typeStartIndex = $typeEndIndex = null;
+                $typeIndexRange = null;
 
                 continue;
             }
@@ -750,20 +747,21 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])
                 || $index > $endIndex
             ) {
-                if (!$skipNextYield && null !== $typeStartIndex) {
+                if (!$skipNextYield && null !== $typeIndexRange) {
                     $origCount = \count($tokens);
 
-                    yield [$typeStartIndex, $typeEndIndex];
+                    yield $typeIndexRange;
 
                     $endIndex += \count($tokens) - $origCount;
 
                     // type tokens were possibly updated, restart type match
                     $skipNextYield = true;
-                    $index = $typeEndIndex = $typeStartIndex;
+                    $index = $typeIndexRange->start;
+                    $typeIndexRange->end = $typeIndexRange->start;
                 } else {
                     $skipNextYield = false;
                     $index = $tokens->getNextMeaningfulToken($index);
-                    $typeStartIndex = $typeEndIndex = null;
+                    $typeIndexRange = null;
                 }
 
                 if ($index > $endIndex) {
@@ -773,10 +771,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 continue;
             }
 
-            if (null === $typeStartIndex) {
-                $typeStartIndex = $index;
+            if (null === $typeIndexRange) {
+                $typeIndexRange = new IndexRange($index);
             }
-            $typeEndIndex = $index;
+            $typeIndexRange->end = $index;
 
             $index = $tokens->getNextMeaningfulToken($index);
         }

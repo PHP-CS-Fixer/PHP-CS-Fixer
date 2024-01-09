@@ -37,6 +37,7 @@ use PhpCsFixer\Runner\FileCachingLintingIterator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\IndexRange;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -176,49 +177,50 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($className);
 
-        self::assertEmpty(
-            $rc->getProperties(\ReflectionProperty::IS_PUBLIC),
-            sprintf('Class \'%s\' should not have public properties.', $className)
-        );
+        $analysePropertiesFx = static function (int $propertyVisibility, array $exceptionProps) use ($className, $rc): void {
+            $allowedProps = [];
+            $definedProps = $rc->getProperties($propertyVisibility);
 
-        if ($rc->isFinal()) {
-            return;
-        }
+            if (false !== $rc->getParentClass()) {
+                $allowedProps = $rc->getParentClass()->getProperties($propertyVisibility);
+            }
 
-        $allowedProps = [];
-        $definedProps = $rc->getProperties(\ReflectionProperty::IS_PROTECTED);
+            $allowedProps = array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $allowedProps);
+            $definedProps = array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $definedProps);
 
-        if (false !== $rc->getParentClass()) {
-            $allowedProps = $rc->getParentClass()->getProperties(\ReflectionProperty::IS_PROTECTED);
-        }
+            $extraProps = array_diff($definedProps, $allowedProps, $exceptionProps);
+            sort($extraProps);
 
-        $allowedProps = array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $allowedProps);
+            self::assertEmpty(
+                $extraProps,
+                sprintf(
+                    "Class '%s' should not have "
+                        .[\ReflectionProperty::IS_PROTECTED => 'protected', \ReflectionProperty::IS_PUBLIC => 'public'][$propertyVisibility]
+                        ." properties.\nViolations:\n%s",
+                    $className,
+                    implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraProps))
+                )
+            );
+        };
 
-        $definedProps = array_map(static fn (\ReflectionProperty $item): string => $item->getName(), $definedProps);
+        $exceptionPublicPropsPerClass = [
+            IndexRange::class => ['start', 'end'],
+        ];
 
-        $exceptionPropsPerClass = [
+        $exceptionProtectedPropsPerClass = [
             AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
             AbstractPhpdocTypesFixer::class => ['tags'],
             AbstractProxyFixer::class => ['proxyFixers'],
             FixCommand::class => ['defaultDescription', 'defaultName'],
         ];
 
-        $extraProps = array_diff(
-            $definedProps,
-            $allowedProps,
-            $exceptionPropsPerClass[$className] ?? []
-        );
+        $analysePropertiesFx(\ReflectionProperty::IS_PUBLIC, $exceptionPublicPropsPerClass[$className] ?? []);
 
-        sort($extraProps);
+        if ($rc->isFinal()) {
+            return;
+        }
 
-        self::assertEmpty(
-            $extraProps,
-            sprintf(
-                "Class '%s' should not have protected properties.\nViolations:\n%s",
-                $className,
-                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraProps))
-            )
-        );
+        $analysePropertiesFx(\ReflectionProperty::IS_PROTECTED, $exceptionProtectedPropsPerClass[$className] ?? []);
     }
 
     /**
