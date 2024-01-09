@@ -270,9 +270,15 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             foreach (true === $this->configuration['import_symbols'] ? [true, false] : [false] as $discoverSymbolsPhase) {
                 $this->discoveredSymbols = $discoverSymbolsPhase ? [] : null;
 
+                $classyKinds = [T_CLASS, T_INTERFACE, T_TRAIT];
+                if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
+                    $classyKinds[] = T_ENUM;
+                }
+
                 for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex() + $indexDiff; ++$index) {
                     $origSize = \count($tokens);
-                    if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind([T_CLASS, T_INTERFACE, T_TRAIT])) {
+
+                    if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);

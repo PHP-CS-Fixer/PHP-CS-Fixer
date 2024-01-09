@@ -2114,6 +2114,21 @@ class SomeClass
     public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
 }',
         ];
+
+        yield 'import only if not already implicitly used by enum declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                enum City
+                {
+                    public function f(\Ns2\City $city) {}
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
