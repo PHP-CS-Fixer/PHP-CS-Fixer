@@ -682,11 +682,11 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
-        foreach ($types as $typeName => [$startIndex, $endIndex]) {
-            $shortType = $this->determineShortType($typeName, $uses, $namespaceName);
-
-            if (null !== $shortType) {
-                $tokens->overrideRange($startIndex, $endIndex, $shortType);
+        foreach ($types as [$startIndex, $endIndex]) {
+            $content = $tokens->generatePartialCode($startIndex, $endIndex);
+            $newTokens = $this->determineShortType($content, $uses, $namespaceName);
+            if (null !== $newTokens) {
+                $tokens->overrideRange($startIndex, $endIndex, $newTokens);
             }
         }
     }
@@ -720,18 +720,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @return iterable<string, array{int, int}>
+     * @return iterable<array{int, int}>
      */
     private function getTypes(Tokens $tokens, int $index, int $endIndex): iterable
     {
         $skipNextYield = false;
         $typeStartIndex = $typeEndIndex = null;
-        $type = null;
         while (true) {
             if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $typeStartIndex = $typeEndIndex = null;
-                $type = null;
 
                 continue;
             }
@@ -743,19 +741,17 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 if (!$skipNextYield && null !== $typeStartIndex) {
                     $origCount = \count($tokens);
 
-                    yield $type => [$typeStartIndex, $typeEndIndex];
+                    yield [$typeStartIndex, $typeEndIndex];
 
                     $endIndex += \count($tokens) - $origCount;
 
                     // type tokens were possibly updated, restart type match
                     $skipNextYield = true;
                     $index = $typeEndIndex = $typeStartIndex;
-                    $type = null;
                 } else {
                     $skipNextYield = false;
                     $index = $tokens->getNextMeaningfulToken($index);
                     $typeStartIndex = $typeEndIndex = null;
-                    $type = null;
                 }
 
                 if ($index > $endIndex) {
@@ -767,11 +763,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             if (null === $typeStartIndex) {
                 $typeStartIndex = $index;
-                $type = '';
             }
-
             $typeEndIndex = $index;
-            $type .= $tokens[$index]->getContent();
 
             $index = $tokens->getNextMeaningfulToken($index);
         }
