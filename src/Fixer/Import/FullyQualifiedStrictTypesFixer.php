@@ -542,22 +542,25 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         // We handle `extends` and `implements` with similar logic, but we need to exit the loop under different conditions.
         $isExtends = $tokens[$index]->equals([T_EXTENDS]);
         $index = $tokens->getNextMeaningfulToken($index);
-        $extend = ['content' => '', 'tokens' => []];
+
+        $typeStartIndex = null;
+        $typeEndIndex = null;
 
         while (true) {
             if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
-                if ([] !== $extend['tokens']) {
-                    $index += $this->shortenClassIfPossible($tokens, $extend, $uses, $namespaceName);
+                if (null !== $typeStartIndex) {
+                    $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
                 }
+                $typeStartIndex = null;
 
                 if ($tokens[$index]->equalsAny($isExtends ? [[T_IMPLEMENTS], '{'] : ['{'])) {
                     break;
                 }
-
-                $extend = ['content' => '', 'tokens' => []];
             } else {
-                $extend['tokens'][] = $index;
-                $extend['content'] .= $tokens[$index]->getContent();
+                if (null === $typeStartIndex) {
+                    $typeStartIndex = $index;
+                }
+                $typeEndIndex = $index;
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
@@ -572,24 +575,26 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $index = $tokens->getNextMeaningfulToken($index); // '('
         $index = $tokens->getNextMeaningfulToken($index); // first part of first exception class to be caught
 
-        $caughtExceptionClass = ['content' => '', 'tokens' => []];
+        $typeStartIndex = null;
+        $typeEndIndex = null;
 
         while (true) {
             if ($tokens[$index]->equalsAny([')', [T_VARIABLE], [CT::T_TYPE_ALTERNATION]])) {
-                if ([] === $caughtExceptionClass['tokens']) {
+                if (null === $typeStartIndex) {
                     break;
                 }
 
-                $index += $this->shortenClassIfPossible($tokens, $caughtExceptionClass, $uses, $namespaceName);
+                $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
+                $typeStartIndex = null;
 
                 if ($tokens[$index]->equals(')')) {
                     break;
                 }
-
-                $caughtExceptionClass = ['content' => '', 'tokens' => []];
             } else {
-                $caughtExceptionClass['tokens'][] = $index;
-                $caughtExceptionClass['content'] .= $tokens[$index]->getContent();
+                if (null === $typeStartIndex) {
+                    $typeStartIndex = $index;
+                }
+                $typeEndIndex = $index;
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
@@ -601,18 +606,20 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixPrevName(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        $classConstantRef = ['content' => '', 'tokens' => []];
+        $typeStartIndex = null;
+        $typeEndIndex = null;
 
         while (true) {
             $index = $tokens->getPrevMeaningfulToken($index);
 
             if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
-                $classConstantRef['tokens'][] = $index;
-                $classConstantRef['content'] = $tokens[$index]->getContent().$classConstantRef['content'];
+                $typeStartIndex = $index;
+                if (null === $typeEndIndex) {
+                    $typeEndIndex = $index;
+                }
             } else {
-                $classConstantRef['tokens'] = array_reverse($classConstantRef['tokens']);
-                if ([] !== $classConstantRef['tokens']) {
-                    $index += $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+                if (null !== $typeEndIndex) {
+                    $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
                 }
 
                 break;
@@ -625,17 +632,20 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixNextName(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        $classConstantRef = ['content' => '', 'tokens' => []];
+        $typeStartIndex = null;
+        $typeEndIndex = null;
 
         while (true) {
             $index = $tokens->getNextMeaningfulToken($index);
 
             if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
-                $classConstantRef['tokens'][] = $index;
-                $classConstantRef['content'] .= $tokens[$index]->getContent();
+                if (null === $typeStartIndex) {
+                    $typeStartIndex = $index;
+                }
+                $typeEndIndex = $index;
             } else {
-                if ([] !== $classConstantRef['tokens']) {
-                    $index += $this->shortenClassIfPossible($tokens, $classConstantRef, $uses, $namespaceName);
+                if (null !== $typeStartIndex) {
+                    $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
                 }
 
                 break;
@@ -644,19 +654,19 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @param array{content: string, tokens: array<int>} $class
-     * @param array<string, string>                      $uses
+     * @param array<string, string> $uses
      */
-    private function shortenClassIfPossible(Tokens $tokens, array $class, array $uses, string $namespaceName): int
+    private function shortenClassIfPossible(Tokens $tokens, int $typeStartIndex, int $typeEndIndex, array $uses, string $namespaceName): int
     {
-        $newTokens = $this->determineShortType($class['content'], $uses, $namespaceName);
+        $content = $tokens->generatePartialCode($typeStartIndex, $typeEndIndex);
+        $newTokens = $this->determineShortType($content, $uses, $namespaceName);
         if (null === $newTokens) {
             return 0;
         }
 
-        $tokens->overrideRange(reset($class['tokens']), end($class['tokens']), $newTokens);
+        $tokens->overrideRange($typeStartIndex, $typeEndIndex, $newTokens);
 
-        return \count($newTokens) - \count($class['tokens']);
+        return \count($newTokens) - ($typeEndIndex - $typeStartIndex) - 1;
     }
 
     /**
