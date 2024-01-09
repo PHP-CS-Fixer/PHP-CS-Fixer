@@ -378,7 +378,14 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // we are moving the tokens, we need to clear the indices Cache
+        // should already be true
+        if (!$this->changed) {
+            // must never happen
+            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
+        }
+
+        // we are moving the tokens, we need to clear the index-based Cache
+        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
