@@ -284,7 +284,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     }
                 }
 
-                if ([] !== $this->symbolsForImport) {
+                if ([] !== $this->symbolsForImport) { // @phpstan-ignore-line self::$symbolsForImport property is updated by self::symbolsForImport() impure method
                     if (null !== $lastUseAnalysis) {
                         $atIndex = $lastUseAnalysis->getEndIndex() + 1;
                     } elseif (0 !== $namespace->getEndIndex()) {
@@ -299,7 +299,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     }
 
                     // Insert all registered FQCNs
-                    $this->createImportProcessor()->insertImports($tokens, $this->symbolsForImport, $atIndex);
+                    $this->createImportProcessor()->insertImports($tokens, $this->symbolsForImport, $atIndex); // @phpstan-ignore-line self::$symbolsForImport property is updated by self::symbolsForImport() impure method
 
                     $this->symbolsForImport = [];
                 }
@@ -454,8 +454,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
     /**
      * @param array<string, string> $uses
-     *
-     * @phpstan-impure
      */
     private function setupUsesFromDiscoveredSymbols(array &$uses, string $namespaceName): void
     {
