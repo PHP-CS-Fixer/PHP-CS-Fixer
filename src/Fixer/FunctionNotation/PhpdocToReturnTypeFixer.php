@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
-use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -153,8 +152,7 @@ final class Foo {
                 continue;
             }
 
-            /** @var Annotation $returnTypeAnnotation */
-            $returnTypeAnnotation = current($returnTypeAnnotations);
+            $returnTypeAnnotation = $returnTypeAnnotations[0];
 
             $typesExpression = $returnTypeAnnotation->getTypeExpression();
 
@@ -185,9 +183,12 @@ final class Foo {
                 continue;
             }
 
-            $startIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
+            $paramsStartIndex = $tokens->getNextTokenOfKind($index, ['(']);
+            $paramsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramsStartIndex);
 
-            if ($this->hasReturnTypeHint($tokens, $startIndex)) {
+            $bodyStartIndex = $tokens->getNextTokenOfKind($paramsEndIndex, ['{', ';', [T_DOUBLE_ARROW]]);
+
+            if ($this->hasReturnTypeHint($tokens, $bodyStartIndex)) {
                 continue;
             }
 
@@ -195,10 +196,8 @@ final class Foo {
                 continue;
             }
 
-            $endFuncIndex = $tokens->getPrevTokenOfKind($startIndex, [')']);
-
             $tokens->insertAt(
-                $endFuncIndex + 1,
+                $paramsEndIndex + 1,
                 array_merge(
                     [
                         new Token([CT::T_TYPE_COLON, ':']),
