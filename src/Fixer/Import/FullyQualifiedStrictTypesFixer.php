@@ -256,11 +256,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
 
-        /** @var array{
-         *     const?: array<string, class-string>,
-         *     class?: array<string, class-string>,
-         *     function?: array<string, class-string>
-         * } */
         $this->symbolsForImport = [];
 
         foreach ([self::KIND_CLASS, self::KIND_FUNCTION, self::KIND_CONST] as $kind) {
@@ -459,6 +454,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
     /**
      * @param array<string, string> $uses
+     *
+     * @phpstan-impure
      */
     private function setupUsesFromDiscoveredSymbols(array &$uses, string $namespaceName): void
     {
