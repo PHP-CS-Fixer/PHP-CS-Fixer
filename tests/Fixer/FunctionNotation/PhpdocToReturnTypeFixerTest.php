@@ -387,8 +387,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             Utils::stableSort(
                 $elements,
                 /**
-                 * @param int $a
-                 *
                  * @return array
                  */
                 static fn($a): array => [$a],
@@ -398,8 +396,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             Utils::stableSort(
                 $elements,
                 /**
-                 * @param int $a
-                 *
                  * @return array
                  */
                 static fn($a) => [$a],
