@@ -457,11 +457,27 @@ yield  from  baz();
         return false;
     }
 
-    private function isMultilineConstant(Tokens $tokens, int $index): bool
+    private function isMultilineConstant(Tokens $tokens, int $constantIndex): bool
     {
-        $scopeEnd = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]) - 1;
-        $hasMoreThanOneConstant = null !== $tokens->findSequence([new Token(',')], $index + 1, $scopeEnd);
+        $isMultilineConstant = false;
+        $hasMoreThanOneConstant = false;
+        $index = $constantIndex;
+        while (!$tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
+            ++$index;
 
-        return $hasMoreThanOneConstant && $tokens->isPartialCodeMultiline($index, $scopeEnd);
+            $isMultilineConstant = $isMultilineConstant || str_contains($tokens[$index]->getContent(), "\n");
+
+            if ($tokens[$index]->equals(',')) {
+                $hasMoreThanOneConstant = true;
+            }
+
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+
+            if (null !== $blockType && true === $blockType['isStart']) {
+                $index = $tokens->findBlockEnd($blockType['type'], $index);
+            }
+        }
+
+        return $hasMoreThanOneConstant && $isMultilineConstant;
     }
 }
