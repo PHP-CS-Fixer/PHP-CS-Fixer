@@ -58,7 +58,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before EscapeImplicitBackslashesFixer.
+     * Must run before EscapeImplicitBackslashesFixer, HeredocIndentationFixer.
      */
     public function getPriority(): int
     {
