@@ -97,7 +97,7 @@ final class Tokens extends \SplFixedArray
             if (0 !== $nbScannedTokensToUse) {
                 $ignoredTextLength = $nextAtPosition - $ignoredTextPosition;
                 if (0 !== $ignoredTextLength) {
-                    $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition, $ignoredTextLength));
+                    $tokens[] = new AnnotationToken(DocLexer::T_NONE, substr($content, $ignoredTextPosition, $ignoredTextLength));
                 }
 
                 $lastTokenEndIndex = 0;
@@ -112,14 +112,14 @@ final class Tokens extends \SplFixedArray
 
                     $missingTextLength = $token->getPosition() - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
-                        $tokens[] = new Token(DocLexer::T_NONE, substr(
+                        $tokens[] = new AnnotationToken(DocLexer::T_NONE, substr(
                             $content,
                             $nextAtPosition + $lastTokenEndIndex,
                             $missingTextLength
                         ));
                     }
 
-                    $tokens[] = new Token($token->getType(), $token->getContent());
+                    $tokens[] = new AnnotationToken($token->getType(), $token->getContent());
                     $lastTokenEndIndex = $token->getPosition() + \strlen($token->getContent());
                 }
 
@@ -130,7 +130,7 @@ final class Tokens extends \SplFixedArray
         }
 
         if ($ignoredTextPosition < \strlen($content)) {
-            $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
+            $tokens[] = new AnnotationToken(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
         }
 
         return self::fromArray($tokens);
@@ -238,7 +238,7 @@ final class Tokens extends \SplFixedArray
         $this->setSize($this->getSize() + 1);
 
         for ($i = $this->getSize() - 1; $i > $index; --$i) {
-            $this[$i] = $this[$i - 1] ?? new Token();
+            $this[$i] = $this[$i - 1] ?? new AnnotationToken();
         }
 
         $this[$index] = $token;
@@ -250,7 +250,7 @@ final class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "null" given.');
         }
 
-        if (!$token instanceof Token) {
+        if (!$token instanceof AnnotationToken) {
             $type = \gettype($token);
 
             if ('object' === $type) {
