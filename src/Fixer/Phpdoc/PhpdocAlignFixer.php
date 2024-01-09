@@ -212,24 +212,15 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $allowPositiveInteger = static function ($value) {
-            if (\is_int($value) && $value <= 0) {
-                throw new InvalidOptionsException('The "spacing" option is invalid. It must be greater than zero.');
-            }
-
-            return \is_int($value);
-        };
-
-        $allowArrayOfPositiveIntegers = static function ($value) {
-            if (\is_array($value)) {
-                foreach ($value as $val) {
-                    if (\is_int($val) && $val <= 0) {
-                        throw new InvalidOptionsException('The option "spacing" is invalid. All spacings must be greater than zero.');
-                    }
+        $allowPositiveIntegers = static function ($value) {
+            $spacings = \is_array($value) ? $value : [$value];
+            foreach ($spacings as $val) {
+                if (\is_int($val) && $val <= 0) {
+                    throw new InvalidOptionsException('The option "spacing" is invalid. All spacings must be greater than zero.');
                 }
             }
 
-            return \is_array($value);
+            return true;
         };
 
         $tags = new FixerOptionBuilder(
@@ -250,12 +241,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         $spacing = new FixerOptionBuilder(
             'spacing',
-            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer '.
-            'or different spacings for different tags using an associative array of positive integers '.
-            '`[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`.'
+            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`.'
         );
         $spacing->setAllowedTypes(['int', 'int[]'])
-            ->setAllowedValues([$allowPositiveInteger, $allowArrayOfPositiveIntegers])
+            ->setAllowedValues([$allowPositiveIntegers])
             ->setDefault(self::DEFAULT_SPACING)
         ;
 

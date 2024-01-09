@@ -1493,12 +1493,12 @@ function foo($typeless): void {}',
     {
         yield 'zero' => [
             ['spacing' => 0],
-            'The "spacing" option is invalid. It must be greater than zero.',
+            'The option "spacing" is invalid. All spacings must be greater than zero.',
         ];
 
         yield 'negative' => [
             ['spacing' => -2],
-            'The "spacing" option is invalid. It must be greater than zero.',
+            'The option "spacing" is invalid. All spacings must be greater than zero.',
         ];
 
         yield 'zeroInArray' => [
