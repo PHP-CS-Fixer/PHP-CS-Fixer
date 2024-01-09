@@ -328,8 +328,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             if (self::KIND_FUNCTION === $kind) {
                 // @TODO impl. locally declared functions discovery and locate/fix functions usages (invocations)
+                // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/7460
             } elseif (self::KIND_CONST === $kind) {
                 // @TODO impl. locally declared constants discovery and locate/fix discovery usages
+                // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/7460
             } else {
                 if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
                     $this->fixNextName($tokens, $index, $uses, $namespaceName);
