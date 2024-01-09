@@ -66,7 +66,7 @@ final class PregTest extends TestCase
 
         yield 'php_version_dependent' => ['([\\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
 
-        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, ' (NUL is not a valid modifier|Null byte in regex) '];
+        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, '/NUL( byte)? is not a valid modifier|Null byte in regex/'];
     }
 
     /**
