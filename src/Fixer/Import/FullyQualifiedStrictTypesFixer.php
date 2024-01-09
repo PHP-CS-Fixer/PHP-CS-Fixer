@@ -654,7 +654,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             return 0;
         }
 
-        $this->replaceClassWithShort($tokens, $class, $newTokens);
+        $tokens->overrideRange(reset($class['tokens']), end($class['tokens']), $newTokens);
 
         return \count($newTokens) - \count($class['tokens']);
     }
@@ -707,34 +707,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         return $this->namespacedStringToTokens($shortenedType);
-    }
-
-    /**
-     * @param array{content: string, tokens: array<int>} $class
-     * @param list<Token>                                $newTokens
-     */
-    private function replaceClassWithShort(Tokens $tokens, array $class, array $newTokens): void
-    {
-        [$newTokens, $extraTokens] = [
-            \array_slice($newTokens, 0, -\count($class['tokens'])),
-            \array_slice($newTokens, -\count($class['tokens'])),
-        ];
-
-        $i = 0; // override the tokens
-
-        foreach ($extraTokens as $token) {
-            $tokens->insertAt($class['tokens'][0], $token);
-        }
-
-        foreach ($newTokens as $token) {
-            $tokens[$class['tokens'][$i]] = $token;
-            ++$i;
-        }
-
-        // clear the leftovers
-        for ($j = \count($class['tokens']) - 1; $j >= $i; --$j) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($class['tokens'][$j]);
-        }
     }
 
     /**

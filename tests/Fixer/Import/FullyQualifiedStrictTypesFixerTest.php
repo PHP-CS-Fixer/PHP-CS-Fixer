@@ -856,8 +856,8 @@ class Foo extends \A\A implements \B\A, \C\A
 
                 new B();
                 new B\C();
-                new X();
-                new X\Z();
+                new Y();
+                new Y\Z();
                 new T();
                 EOD,
             <<<'EOD'
