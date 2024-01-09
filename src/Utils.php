@@ -77,11 +77,11 @@ final class Utils
      * @template T
      * @template R
      *
-     * @param list<T>                  $elements
-     * @param callable(T): R           $getComparedValue a callable that takes a single element and returns the value to compare
-     * @param callable(R, R): (-1|0|1) $compareValues    a callable that compares two values
+     * @param list<T>             $elements
+     * @param callable(T): R      $getComparedValue a callable that takes a single element and returns the value to compare
+     * @param callable(R, R): int $compareValues    a callable that compares two values
      *
-     * @return mixed[]
+     * @return list<T>
      */
     public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues): array
     {

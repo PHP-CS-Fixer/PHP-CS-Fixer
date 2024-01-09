@@ -152,11 +152,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$compareValues of static method PhpCsFixer\\\\Utils\\:\\:stableSort\\(\\) expects callable\\(array\\{element\\: array, position\\: int\\}, array\\{element\\: array, position\\: int\\}\\)\\: \\(\\-1\\|0\\|1\\), Closure\\(array, array\\)\\: int given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
