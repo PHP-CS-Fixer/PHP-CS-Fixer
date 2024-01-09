@@ -1471,6 +1471,51 @@ function foo($typeless): void {}',
      */
 ',
         ];
+
+        yield 'left align with changed default spacing' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT,
+                'spacing' => ['_default' => 2, 'return' => 4],
+            ],
+            '<?php
+    /**
+     * @property  string  $bar  Foo-Bar lorem ipsum
+     * @param  EngineInterface  $templating
+     * @param  string  $format
+     * @param  int  $code  An HTTP response status code
+     *                     See constants
+     * @param  bool  $debug
+     * @param  bool  $debug  See constants
+     *                       See constants
+     * @param  mixed  &$reference  A parameter passed by reference
+     *
+     * @return    Foo    description foo
+     *
+     * @throws  Foo  description foo
+     *               description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @property string $bar                    Foo-Bar lorem ipsum
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+        ];
     }
 
     /**

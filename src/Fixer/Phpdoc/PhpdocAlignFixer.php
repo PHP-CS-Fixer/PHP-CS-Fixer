@@ -90,6 +90,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
     private const DEFAULT_SPACING = 1;
 
+    private const DEFAULT_SPACING_KEY = '_default';
+
     private string $regex;
 
     private string $regexCommentLine;
@@ -102,6 +104,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
      * @var int|int[]
      */
     private $spacing = 1;
+
+    private int $defaultSpacing = 1;
 
     public function configure(array $configuration): void
     {
@@ -137,6 +141,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $this->regexCommentLine = '/'.$indentRegex.'\*(?!\h?+@)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
         $this->align = $this->configuration['align'];
         $this->spacing = $this->configuration['spacing'];
+        $this->defaultSpacing = $this->configuration['spacing'][self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING;
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -241,7 +246,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         $spacing = new FixerOptionBuilder(
             'spacing',
-            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`.'
+            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`. If you want to define default spacing to more than 1 space use `_default` key in config array, e.g.: `[\'tagA\' => spacingForA, \'tagB\' => spacingForB, \'_default\' => spacingForAllOthers]`.'
         );
         $spacing->setAllowedTypes(['int', 'int[]'])
             ->setAllowedValues([$allowPositiveIntegers])
@@ -387,7 +392,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     {
         return (\is_int($this->spacing)) ?
             $this->spacing :
-            ($this->spacing[$tag] ?? self::DEFAULT_SPACING);
+            ($this->spacing[$tag] ?? $this->defaultSpacing);
     }
 
     /**
