@@ -258,7 +258,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $this->symbolsForImport = [];
 
-        foreach ([self::KIND_CLASS /* , self::KIND_FUNCTION, self::KIND_CONST */] as $kind) {
+        foreach ([self::KIND_CLASS, self::KIND_FUNCTION, self::KIND_CONST] as $kind) {
             foreach ($tokens->getNamespaceDeclarations() as $namespaceIndex => $namespace) {
                 $namespace = $tokens->getNamespaceDeclarations()[$namespaceIndex];
 
@@ -326,29 +326,35 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex() + $indexDiff; ++$index) {
             $origSize = \count($tokens);
 
-            if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
-                $this->fixNextName($tokens, $index, $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
-                $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
-                $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind(T_CATCH)) {
-                $this->fixCatch($tokens, $index, $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
-                $this->fixPrevName($tokens, $index, $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
-                $this->fixNextName($tokens, $index, $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
-                $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
+            if (self::KIND_FUNCTION === $kind) {
+                // @TODO impl. locally declared functions discovery and locate/fix functions usages (invocations)
+            } elseif (self::KIND_CONST === $kind) {
+                // @TODO impl. locally declared constants discovery and locate/fix discovery usages
+            } else {
+                if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
+                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                    $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
+                    $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_CATCH)) {
+                    $this->fixCatch($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
                     $this->fixPrevName($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
+                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+                    $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                    if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
+                        $this->fixPrevName($tokens, $index, $uses, $namespaceName);
+                    }
+                } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
+                    $this->fixNextName($tokens, $index, $uses, $namespaceName);
+                } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
+                    $this->determineShortType($matches[1], $uses, $namespaceName);
+                } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                    $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
                 }
-            } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
-                $this->fixNextName($tokens, $index, $uses, $namespaceName);
-            } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
-                $this->determineShortType($matches[1], $uses, $namespaceName);
-            } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-                $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
             }
 
             $indexDiff += \count($tokens) - $origSize;

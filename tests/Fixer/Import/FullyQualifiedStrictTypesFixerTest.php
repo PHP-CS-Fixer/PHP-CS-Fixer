@@ -875,6 +875,28 @@ class Foo extends \A\A implements \B\A, \C\A
                 new R\T();
                 EOD,
         ];
+
+        yield 'imported function must not be used for class shortening' => [
+            <<<'EOD'
+                <?php
+
+                use function Foo\Bar\u;
+
+                echo Foo\Bar\u::class;
+                echo u::class;
+                EOD,
+        ];
+
+        yield 'imported constant must not be used for class shortening' => [
+            <<<'EOD'
+                <?php
+
+                use const Foo\Bar\U;
+
+                echo Foo\Bar\U::class;
+                echo U::class;
+                EOD,
+        ];
     }
 
     /**
