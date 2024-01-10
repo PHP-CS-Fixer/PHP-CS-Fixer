@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -35,6 +36,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  */
 final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -86,14 +88,22 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         'psalm-method',
     ];
 
+    private const DEFAULT_SPACING = 1;
+
+    private const DEFAULT_SPACING_KEY = '_default';
+
     private string $regex;
 
     private string $regexCommentLine;
 
+    private string $align;
+
     /**
-     * @var string
+     * same spacing for all or specific for different tags.
+     *
+     * @var int|int[]
      */
-    private $align;
+    private $spacing = 1;
 
     public function configure(array $configuration): void
     {
@@ -128,6 +138,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $this->regex = '/'.$indentRegex.'\*\h*@(?J)(?:'.implode('|', $types).')'.$desc.'\h*\r?$/';
         $this->regexCommentLine = '/'.$indentRegex.'\*(?!\h?+@)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
         $this->align = $this->configuration['align'];
+        $this->spacing = $this->configuration['spacing'];
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -140,6 +151,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
              * @param  int  $code       an HTTP response status code
              * @param    bool         $debug
              * @param  mixed    &$reference     a parameter passed by reference
+             *
+             * @return Foo description foo
+             *
+             * @throws Foo            description foo
+             *             description foo
+             *
              */
 
             EOF;
@@ -150,6 +167,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                 new CodeSample($code),
                 new CodeSample($code, ['align' => self::ALIGN_VERTICAL]),
                 new CodeSample($code, ['align' => self::ALIGN_LEFT]),
+                new CodeSample($code, ['align' => self::ALIGN_LEFT, 'spacing' => 2]),
+                new CodeSample($code, ['align' => self::ALIGN_LEFT, 'spacing' => ['param' => 2]]),
             ],
         );
     }
@@ -195,6 +214,17 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $allowPositiveIntegers = static function ($value) {
+            $spacings = \is_array($value) ? $value : [$value];
+            foreach ($spacings as $val) {
+                if (\is_int($val) && $val <= 0) {
+                    throw new InvalidOptionsException('The option "spacing" is invalid. All spacings must be greater than zero.');
+                }
+            }
+
+            return true;
+        };
+
         $tags = new FixerOptionBuilder(
             'tags',
             'The tags that should be aligned. Allowed values are tags with name (`\''.implode('\', \'', self::TAGS_WITH_NAME).'\'`), tags with method signature (`\''.implode('\', \'', self::TAGS_WITH_METHOD_SIGNATURE).'\'`) and any custom tag with description (e.g. `@tag <desc>`).'
@@ -211,7 +241,16 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             ->setDefault(self::ALIGN_VERTICAL)
         ;
 
-        return new FixerConfigurationResolver([$tags->getOption(), $align->getOption()]);
+        $spacing = new FixerOptionBuilder(
+            'spacing',
+            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`. If you want to define default spacing to more than 1 space use `_default` key in config array, e.g.: `[\'tagA\' => spacingForA, \'tagB\' => spacingForB, \'_default\' => spacingForAllOthers]`.'
+        );
+        $spacing->setAllowedTypes(['int', 'int[]'])
+            ->setAllowedValues([$allowPositiveIntegers])
+            ->setDefault(self::DEFAULT_SPACING)
+        ;
+
+        return new FixerConfigurationResolver([$tags->getOption(), $align->getOption(), $spacing->getOption()]);
     }
 
     private function fixDocBlock(DocBlock $docBlock): void
@@ -260,6 +299,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
             $itemOpeningLine = null;
 
+            $currTag = null;
+            $spacingForTag = $this->spacingForTag($currTag);
+
             // update
             foreach ($items as $j => $item) {
                 if (null === $item['tag']) {
@@ -270,10 +312,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                         continue;
                     }
 
-                    $extraIndent = 2;
+                    $extraIndent = 2 * $spacingForTag;
 
                     if (\in_array($itemOpeningLine['tag'], self::TAGS_WITH_NAME, true) || \in_array($itemOpeningLine['tag'], self::TAGS_WITH_METHOD_SIGNATURE, true)) {
-                        $extraIndent += $varMax + 1;
+                        $extraIndent += $varMax + $spacingForTag;
                     }
 
                     if ($hasStatic) {
@@ -295,6 +337,10 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                     continue;
                 }
 
+                $currTag = $item['tag'];
+
+                $spacingForTag = $this->spacingForTag($currTag);
+
                 $itemOpeningLine = $item;
 
                 $line =
@@ -305,38 +351,45 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                 if ($hasStatic) {
                     $line .=
                         $this->getIndent(
-                            $tagMax - \strlen($item['tag']) + 1,
-                            '' !== $item['static'] ? 1 : 0
+                            $tagMax - \strlen($item['tag']) + $spacingForTag,
+                            '' !== $item['static'] ? $spacingForTag : 0
                         )
                         .('' !== $item['static'] ? $item['static'] : $this->getIndent(6 /* \strlen('static') */, 0));
-                    $hintVerticalAlignIndent = 1;
+                    $hintVerticalAlignIndent = $spacingForTag;
                 } else {
-                    $hintVerticalAlignIndent = $tagMax - \strlen($item['tag']) + 1;
+                    $hintVerticalAlignIndent = $tagMax - \strlen($item['tag']) + $spacingForTag;
                 }
 
                 $line .=
                     $this->getIndent(
                         $hintVerticalAlignIndent,
-                        '' !== $item['hint'] ? 1 : 0
+                        '' !== $item['hint'] ? $spacingForTag : 0
                     )
                     .$item['hint'];
 
                 if ('' !== $item['var']) {
                     $line .=
-                        $this->getIndent((0 !== $hintMax ? $hintMax : -1) - \strlen($item['hint']) + 1)
+                        $this->getIndent((0 !== $hintMax ? $hintMax : -1) - \strlen($item['hint']) + $spacingForTag, $spacingForTag)
                         .$item['var']
                         .(
                             '' !== $item['desc']
-                            ? $this->getIndent($varMax - \strlen($item['var']) + 1).$item['desc']
+                            ? $this->getIndent($varMax - \strlen($item['var']) + $spacingForTag, $spacingForTag).$item['desc']
                             : ''
                         );
                 } elseif ('' !== $item['desc']) {
-                    $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'];
+                    $line .= $this->getIndent($hintMax - \strlen($item['hint']) + $spacingForTag, $spacingForTag).$item['desc'];
                 }
 
                 $docBlock->getLine($current + $j)->setContent($line.$lineEnding);
             }
         }
+    }
+
+    private function spacingForTag(?string $tag): int
+    {
+        return (\is_int($this->spacing))
+            ? $this->spacing
+            : ($this->spacing[$tag] ?? $this->spacing[self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING);
     }
 
     /**
@@ -419,18 +472,20 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             return 0;
         }
 
+        $spacingForTag = $this->spacingForTag($item['tag']);
+
         // Indent according to existing values:
         return
-            $this->getSentenceIndent($item['static']) +
-            $this->getSentenceIndent($item['tag']) +
-            $this->getSentenceIndent($item['hint']) +
-            $this->getSentenceIndent($item['var']);
+            $this->getSentenceIndent($item['static'], $spacingForTag) +
+            $this->getSentenceIndent($item['tag'], $spacingForTag) +
+            $this->getSentenceIndent($item['hint'], $spacingForTag) +
+            $this->getSentenceIndent($item['var'], $spacingForTag);
     }
 
     /**
      * Get indent for sentence.
      */
-    private function getSentenceIndent(?string $sentence): int
+    private function getSentenceIndent(?string $sentence, int $spacingForTag = 1): int
     {
         if (null === $sentence) {
             return 0;
@@ -438,6 +493,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         $length = \strlen($sentence);
 
-        return 0 === $length ? 0 : $length + 1;
+        return 0 === $length ? 0 : $length + $spacingForTag;
     }
 }

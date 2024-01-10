@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -28,7 +29,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param array{align: string, tags: array<string>} $configuration
+     * @param array{align: string, tags: array<string>, spacing: array<string,int>} $configuration
      */
     public function testFix(
         array $configuration,
@@ -1338,6 +1339,224 @@ function foo($typeless): void {}',
  *                     Bar.
  */
 function foo($typeless): void {}',
+        ];
+
+        yield 'left align and @param with 2 spaces' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT,
+                'spacing' => ['param' => 2],
+            ],
+            '<?php
+    /**
+     * @param  EngineInterface  $templating
+     * @param  string  $format
+     * @param  int  $code  An HTTP response status code
+     *                     See constants
+     * @param  bool  $debug
+     * @param  bool  $debug  See constants
+     *                       See constants
+     * @param  mixed  &$reference  A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo description foo
+     *             description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+        ];
+
+        yield 'vertical align with various spacing' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_VERTICAL,
+                'spacing' => ['param' => 2, 'return' => 4],
+            ],
+            '<?php
+    /**
+     * @param  EngineInterface  $templating
+     * @param  string           $format
+     * @param  int              $code        An HTTP response status code
+     *                                       See constants
+     * @param  bool             $debug
+     * @param  bool             $debug       See constants
+     *                                       See constants
+     * @param  mixed            &$reference  A parameter passed by reference
+     *
+     * @return    Foo    description foo bar hello world!
+     *                   return description continuation
+     *
+     * @throws Foo description foo
+     *             description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo bar hello world!
+    *        return description continuation
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+        ];
+
+        yield 'left align with various spacing' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT,
+                'spacing' => ['param' => 2, 'return' => 4],
+            ],
+            '<?php
+    /**
+     * @param  EngineInterface  $templating
+     * @param  string  $format
+     * @param  int  $code  An HTTP response status code
+     *                     See constants
+     * @param  bool  $debug
+     * @param  bool  $debug  See constants
+     *                       See constants
+     * @param  mixed  &$reference  A parameter passed by reference
+     *
+     * @return    Foo    description foo
+     *
+     * @throws Foo description foo
+     *             description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+        ];
+
+        yield 'left align with changed default spacing' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT,
+                'spacing' => ['_default' => 2, 'return' => 4],
+            ],
+            '<?php
+    /**
+     * @property  string  $bar  Foo-Bar lorem ipsum
+     * @param  EngineInterface  $templating
+     * @param  string  $format
+     * @param  int  $code  An HTTP response status code
+     *                     See constants
+     * @param  bool  $debug
+     * @param  bool  $debug  See constants
+     *                       See constants
+     * @param  mixed  &$reference  A parameter passed by reference
+     *
+     * @return    Foo    description foo
+     *
+     * @throws  Foo  description foo
+     *               description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @property string $bar                    Foo-Bar lorem ipsum
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideInvalidConfigurationCases
+     *
+     * @param array<string,mixed> $config
+     */
+    public function testInvalidConfiguration(array $config, string $expectedMessage): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $this->fixer->configure($config);
+    }
+
+    /**
+     * @return iterable<array{array<string,mixed>, string}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'zero' => [
+            ['spacing' => 0],
+            'The option "spacing" is invalid. All spacings must be greater than zero.',
+        ];
+
+        yield 'negative' => [
+            ['spacing' => -2],
+            'The option "spacing" is invalid. All spacings must be greater than zero.',
+        ];
+
+        yield 'zeroInArray' => [
+            ['spacing' => ['param' => 1, 'return' => 0]],
+            'The option "spacing" is invalid. All spacings must be greater than zero.',
+        ];
+
+        yield 'negativeInArray' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT,
+                'spacing' => ['return' => 2, 'param' => -1],
+            ],
+            'The option "spacing" is invalid. All spacings must be greater than zero.',
         ];
     }
 }
