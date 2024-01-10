@@ -31,6 +31,7 @@ Rules
 
 - `method_chaining_indentation <./../rules/whitespace/method_chaining_indentation.rst>`_
 - `multiline_comment_opening_closing <./../rules/comment/multiline_comment_opening_closing.rst>`_
+- `multiline_string_to_heredoc <./../rules/string_notation/multiline_string_to_heredoc.rst>`_
 - `multiline_whitespace_before_semicolons <./../rules/semicolon/multiline_whitespace_before_semicolons.rst>`_ with config:
 
   ``['strategy' => 'new_line_for_chained_calls']``
