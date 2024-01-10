@@ -114,9 +114,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                 continue;
             }
 
-            $token = new Token([$token->getId(), $newContent]);
-
-            $tokens[$index] = $token;
+            $tokens[$index] = new Token([$token->getId(), $newContent]);
         }
     }
 
