@@ -89,7 +89,7 @@ final class TokenTest extends TestCase
             42,
             [
                 42,
-                9001,
+                9_001,
             ],
         ];
     }
@@ -112,13 +112,13 @@ final class TokenTest extends TestCase
     {
         yield 'different-value' => [
             42,
-            9001,
+            9_001,
         ];
 
         yield 'array-without-value' => [
             42,
             [
-                9001,
+                9_001,
             ],
         ];
     }

@@ -98,8 +98,8 @@ final class VersionSpecificationTest extends TestCase
 
     public static function provideIsSatisfiedByReturnsFalseCases(): iterable
     {
-        yield 'version-greater-than-maximum' => [null, 1000, 1001];
+        yield 'version-greater-than-maximum' => [null, 1_000, 1_001];
 
-        yield 'version-less-than-minimum' => [2000, null, 1999];
+        yield 'version-less-than-minimum' => [2_000, null, 1_999];
     }
 }

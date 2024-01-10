@@ -66,7 +66,7 @@ final class CTTest extends TestCase
      */
     public function testConstants(string $name, int $value): void
     {
-        self::assertGreaterThan(10000, $value);
+        self::assertGreaterThan(10_000, $value);
         self::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
     }
 

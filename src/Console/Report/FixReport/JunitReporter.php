@@ -53,7 +53,7 @@ final class JunitReporter implements ReporterInterface
                 'time',
                 sprintf(
                     '%.3f',
-                    $reportSummary->getTime() / 1000
+                    $reportSummary->getTime() / 1_000
                 )
             );
         }
