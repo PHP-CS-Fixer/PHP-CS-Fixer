@@ -73,6 +73,13 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
      */
     private int $type;
 
+    /** @var array<self::TYPE_*, string> */
+    private static $typesMap = [
+        self::TYPE_CLASS => 'class',
+        self::TYPE_FUNCTION => 'function',
+        self::TYPE_CONSTANT => 'constant',
+    ];
+
     /**
      * @param self::TYPE_* $type
      */
@@ -148,6 +155,11 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     public function getType(): int
     {
         return $this->type;
+    }
+
+    public function getHumanFriendlyType(): string
+    {
+        return self::$typesMap[$this->type];
     }
 
     public function isClass(): bool
