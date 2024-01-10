@@ -137,6 +137,14 @@ $foo = $bar;
 ?>',
         ];
 
+        yield 'empty file with open tag without new line' => [
+            '<?php',
+        ];
+
+        yield 'empty file with open tag with new line' => [
+            "<?php\n",
+        ];
+
         yield 'file with shebang' => [
             <<<'EOD'
                 #!x
