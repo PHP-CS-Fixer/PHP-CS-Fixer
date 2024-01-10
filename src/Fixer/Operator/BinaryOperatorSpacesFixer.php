@@ -552,19 +552,19 @@ $array = [
         $this->deepestLevel = 0;
         $this->currentLevel = 0;
 
-        foreach ($toAlign as $tokenContent => $alignStrategy) {
-            // This fixer works partially on Tokens and partially on string representation of code.
-            // During the process of fixing internal state of single Token may be affected by injecting ALIGN_PLACEHOLDER to its content.
-            // The placeholder will be resolved by `replacePlaceholders` method by removing placeholder or changing it into spaces.
-            // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
-            // still be injected and removed, which will cause the `changed` flag to be set.
-            // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
-            $tokensClone = clone $tokens;
+        // This fixer works partially on Tokens and partially on string representation of code.
+        // During the process of fixing internal state of single Token may be affected by injecting ALIGN_PLACEHOLDER to its content.
+        // The placeholder will be resolved by `replacePlaceholders` method by removing placeholder or changing it into spaces.
+        // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
+        // still be injected and removed, which will cause the `changed` flag to be set.
+        // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+        $tokensClone = clone $tokens;
 
+        foreach ($toAlign as $tokenContent => $alignStrategy) {
             if ('=>' === $tokenContent) {
-                $this->injectAlignmentPlaceholdersForArrow($tokensClone, 0, \count($tokens));
+                $this->injectAlignmentPlaceholdersForArrow($tokensClone, 0, \count($tokensClone));
             } else {
-                $this->injectAlignmentPlaceholdersDefault($tokensClone, 0, \count($tokens), $tokenContent);
+                $this->injectAlignmentPlaceholdersDefault($tokensClone, 0, \count($tokensClone), $tokenContent);
             }
 
             // for all tokens that should be aligned but do not have anything to align with, fix spacing if needed
@@ -575,20 +575,20 @@ $array = [
                 || self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE === $alignStrategy
             ) {
                 if ('=>' === $tokenContent) {
-                    for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
+                    for ($index = $tokensClone->count() - 2; $index > 0; --$index) {
+                        if ($tokensClone[$index]->isGivenKind(T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
                 } elseif ('=' === $tokenContent) {
-                    for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ('=' === $tokens[$index]->getContent() && !$this->isEqualPartOfDeclareStatement($tokens, $index) && $this->tokensAnalyzer->isBinaryOperator($index)) {
+                    for ($index = $tokensClone->count() - 2; $index > 0; --$index) {
+                        if ('=' === $tokensClone[$index]->getContent() && !$this->isEqualPartOfDeclareStatement($tokensClone, $index) && $this->tokensAnalyzer->isBinaryOperator($index)) {
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
                 } else {
-                    for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        $content = $tokens[$index]->getContent();
+                    for ($index = $tokensClone->count() - 2; $index > 0; --$index) {
+                        $content = $tokensClone[$index]->getContent();
                         if (strtolower($content) === $tokenContent && $this->tokensAnalyzer->isBinaryOperator($index)) { // never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
@@ -596,7 +596,11 @@ $array = [
                 }
             }
 
-            $tokens->setCode($this->replacePlaceholders($tokensClone, $alignStrategy, $tokenContent));
+            $tokensClone->setCode($this->replacePlaceholders($tokensClone, $alignStrategy, $tokenContent));
+        }
+
+        if ($tokensClone->generateCode() !== $tokens->generateCode()) {
+            $tokens->setCode($tokensClone->generateCode());
         }
     }
 
@@ -925,7 +929,7 @@ $array = [
 
                     if ($delta > 0) {
                         $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
-                        $lines[$index] = $line;
+                        $lines[$index] = $this->getReAlignedLineWithMultipleShiftsInSingleLine($line, $alignStrategy, $placeholder, $tokenContent, $delta);
                     }
                 }
             }
@@ -934,5 +938,59 @@ $array = [
         }
 
         return $tmpCode;
+    }
+
+    private function getReAlignedLineWithMultipleShiftsInSingleLine(
+        string $line,
+        string $alignStrategy,
+        string $placeholder,
+        string $tokenContent,
+        int $delta
+    ): string {
+        if (
+            self::ALIGN === $alignStrategy
+            || self::ALIGN_BY_SCOPE === $alignStrategy
+        ) {
+            return $line;
+        }
+
+        $strAlreadyAligned = str_replace(
+            $placeholder.$tokenContent,
+            '',
+            mb_strstr($line, $placeholder.$tokenContent)
+        );
+
+        $quotedOperators = [];
+        foreach (array_keys($this->alignOperatorTokens) as $alignOperatorToken) {
+            $quotedOperators[] = preg_quote($alignOperatorToken, '/');
+        }
+
+        $count = 0;
+        $replacedStr = Preg::replaceCallback(
+            '/\s*?('.implode('|', $quotedOperators).')/',
+            static function ($matches) use (&$count, $delta) {
+                $tokenWithEmptyStr = $matches[0];
+                $token = $matches[1];
+                $emptyStrCount = mb_substr_count($tokenWithEmptyStr, ' ');
+                $reAlignedStr = $tokenWithEmptyStr;
+                if (0 === $count) {
+                    if ($emptyStrCount - $delta > 0) {
+                        $reAlignedStr = str_repeat(' ', $emptyStrCount - $delta).$token;
+                    }
+                } else {
+                    $reAlignedStr = str_repeat(' ', $delta).$tokenWithEmptyStr;
+                }
+                ++$count;
+
+                return $reAlignedStr;
+            },
+            $strAlreadyAligned,
+        );
+
+        return mb_strstr(
+            $line,
+            $placeholder.$tokenContent,
+            true
+        ).$placeholder.$tokenContent.$replacedStr;
     }
 }
