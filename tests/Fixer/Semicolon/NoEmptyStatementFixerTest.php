@@ -516,9 +516,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     public static function provideFixMultipleSemicolonsCases(): iterable
     {
         yield [
-            '<?php $foo = 2 ; //
-                    '.'
-',
+            '<?php $foo = 2 ; //'."\n                    \n",
             '<?php $foo = 2 ; //
                     ;
 ',
