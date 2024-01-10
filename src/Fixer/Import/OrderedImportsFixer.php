@@ -12,6 +12,28 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace PhpCsFixer\Fixer\Import\Dto;
+
+/**
+ * @internal
+ *
+ * @readonly
+ */
+final class UseImportInfoDto
+{
+    /**
+     * @param non-empty-string    $namespace
+     * @param self::IMPORT_TYPE_* $importType
+     */
+    public function __construct(
+        public readonly string $namespace,
+        public readonly int $startIndex,
+        public readonly int $endIndex,
+        public readonly string $importType,
+        public readonly bool $group,
+    ) {}
+}
+
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
@@ -36,14 +58,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Darius Matulionis <darius@matulionis.lt>
  * @author Adriano Pilger <adriano.pilger@gmail.com>
- *
- * @phpstan-type _UseImportInfo array{
- *  namespace: non-empty-string,
- *  startIndex: int,
- *  endIndex: int,
- *  importType: self::IMPORT_TYPE_*,
- *  group: bool,
- * }
  */
 final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -285,16 +299,13 @@ use Bar;
     /**
      * This method is used for sorting the uses in a namespace.
      *
-     * @param _UseImportInfo $first
-     * @param _UseImportInfo $second
-     *
      * @internal
      */
-    private function sortAlphabetically(array $first, array $second): int
+    private function sortAlphabetically(Dto\UseImportInfoDto $first, Dto\UseImportInfoDto $second): int
     {
         // Replace backslashes by spaces before sorting for correct sort order
-        $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
-        $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
+        $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first->namespace));
+        $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second->namespace));
 
         return true === $this->configuration['case_sensitive']
             ? $firstNamespace <=> $secondNamespace
@@ -304,15 +315,12 @@ use Bar;
     /**
      * This method is used for sorting the uses statements in a namespace by length.
      *
-     * @param _UseImportInfo $first
-     * @param _UseImportInfo $second
-     *
      * @internal
      */
-    private function sortByLength(array $first, array $second): int
+    private function sortByLength(Dto\UseImportInfoDto $first, Dto\UseImportInfoDto $second): int
     {
-        $firstNamespace = (self::IMPORT_TYPE_CLASS === $first['importType'] ? '' : $first['importType'].' ').$this->prepareNamespace($first['namespace']);
-        $secondNamespace = (self::IMPORT_TYPE_CLASS === $second['importType'] ? '' : $second['importType'].' ').$this->prepareNamespace($second['namespace']);
+        $firstNamespace = (self::IMPORT_TYPE_CLASS === $first->importType ? '' : $first->importType.' ').$this->prepareNamespace($first->namespace);
+        $secondNamespace = (self::IMPORT_TYPE_CLASS === $second->importType ? '' : $second->importType.' ').$this->prepareNamespace($second->namespace);
 
         $firstNamespaceLength = \strlen($firstNamespace);
         $secondNamespaceLength = \strlen($secondNamespace);
@@ -336,7 +344,7 @@ use Bar;
     /**
      * @param list<int> $uses
      *
-     * @return array<int, _UseImportInfo>
+     * @return array<int, Dto\UseImportInfoDto>
      */
     private function getNewOrder(array $uses, Tokens $tokens): array
     {
@@ -451,13 +459,13 @@ use Bar;
                         $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                     }
 
-                    $indices[$startIndex] = [
-                        'namespace' => $namespace,
-                        'startIndex' => $startIndex,
-                        'endIndex' => $index - 1,
-                        'importType' => $type,
-                        'group' => $group,
-                    ];
+                    $indices[$startIndex] = new Dto\UseImportInfoDto(
+                        namespace: $namespace,
+                        startIndex: $startIndex,
+                        endIndex: $index - 1,
+                        importType: $type,
+                        group: $group,
+                    );
 
                     $originalIndices[] = $startIndex;
 
@@ -484,7 +492,7 @@ use Bar;
             $groupedByTypes = [];
 
             foreach ($indices as $startIndex => $item) {
-                $groupedByTypes[$item['importType']][$startIndex] = $item;
+                $groupedByTypes[$item->importType][$startIndex] = $item;
             }
 
             // Sorting each group by algorithm.
@@ -521,9 +529,9 @@ use Bar;
     }
 
     /**
-     * @param array<int, _UseImportInfo> $indices
+     * @param array<int, Dto\UseImportInfoDto> $indices
      *
-     * @return array<int, _UseImportInfo>
+     * @return array<int, Dto\UseImportInfoDto>
      */
     private function sortByAlgorithm(array $indices): array
     {
@@ -537,26 +545,26 @@ use Bar;
     }
 
     /**
-     * @param array<int, _UseImportInfo> $usesOrder
+     * @param array<int, Dto\UseImportInfoDto> $usesOrder
      */
     private function setNewOrder(Tokens $tokens, array $usesOrder): void
     {
         $mapStartToEnd = [];
 
         foreach ($usesOrder as $use) {
-            $mapStartToEnd[$use['startIndex']] = $use['endIndex'];
+            $mapStartToEnd[$use->startIndex] = $use->endIndex;
         }
 
         // Now insert the new tokens, starting from the end
         foreach (array_reverse($usesOrder, true) as $index => $use) {
             $code = sprintf(
                 '<?php use %s%s;',
-                self::IMPORT_TYPE_CLASS === $use['importType'] ? '' : ' '.$use['importType'].' ',
-                $use['namespace']
+                self::IMPORT_TYPE_CLASS === $use->importType ? '' : ' '.$use->importType.' ',
+                $use->namespace
             );
 
             $numberOfInitialTokensToClear = 3; // clear `<?php use `
-            if (self::IMPORT_TYPE_CLASS !== $use['importType']) {
+            if (self::IMPORT_TYPE_CLASS !== $use->importType) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 if ($tokens[$prevIndex]->equals(',')) {
                     $numberOfInitialTokensToClear = 5; // clear `<?php use const ` or `<?php use function `
@@ -570,7 +578,7 @@ use Bar;
 
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
 
-            if ($use['group']) {
+            if ($use->group) {
                 // a group import must start with `use` and cannot be part of comma separated import list
                 $prev = $tokens->getPrevMeaningfulToken($index);
                 if ($tokens[$prev]->equals(',')) {
