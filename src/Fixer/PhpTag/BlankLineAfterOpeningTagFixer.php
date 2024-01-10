@@ -48,14 +48,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if ($tokens->isMonolithicPhp()) {
-            $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
-            if (!$tokens[$openTagIndex]->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

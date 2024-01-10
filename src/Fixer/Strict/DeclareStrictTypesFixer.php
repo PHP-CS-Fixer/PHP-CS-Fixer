@@ -53,14 +53,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if ($tokens->isMonolithicPhp()) {
-            $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
-            if (!$tokens[$openTagIndex]->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
     }
 
     public function isRisky(): bool
