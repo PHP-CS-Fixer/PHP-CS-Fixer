@@ -695,16 +695,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixAttribute(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        $attributeAnalyses = AttributeAnalyzer::collectFor($tokens, $index);
+        $attributeAnalysis = AttributeAnalyzer::collectFor($tokens, $index)[0];
 
-        foreach ($attributeAnalyses as $attributeAnalysis) {
-            foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                $index = $attribute['start'];
-                while ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
-                    $index = $tokens->getPrevMeaningfulToken($index);
-                }
-                $this->fixNextName($tokens, $index, $uses, $namespaceName);
+        foreach ($attributeAnalysis->getAttributes() as $attribute) {
+            $index = $attribute['start'];
+            while ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
+                $index = $tokens->getPrevMeaningfulToken($index);
             }
+            $this->fixNextName($tokens, $index, $uses, $namespaceName);
         }
     }
 
