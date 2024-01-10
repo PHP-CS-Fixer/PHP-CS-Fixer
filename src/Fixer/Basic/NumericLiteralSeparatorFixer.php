@@ -84,7 +84,10 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('override_existing', 'Reformat literals already containing underscores.'))
+            (new FixerOptionBuilder(
+                'override_existing',
+                'Whether literals already containing underscores should be reformatted.'
+            ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
