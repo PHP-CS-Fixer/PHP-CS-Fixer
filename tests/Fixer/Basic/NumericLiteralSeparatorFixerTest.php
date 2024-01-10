@@ -26,16 +26,42 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, ?array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
     public static function provideFixCases(): iterable
     {
-        $cases = [
+        yield 'no_override_existing#01' => [
+            '<?php echo 0B01010100_01101000;',
+        ];
+
+        yield 'no_override_existing#02' => [
+            '<?php echo 70_10_00;',
+        ];
+
+        yield 'override_existing#01' => [
+            '<?php echo 1_234.5;',
+            '<?php echo 123_4.5;',
+            ['override_existing' => true],
+        ];
+
+        yield 'override_existing#02' => [
+            '<?php echo 701_000;',
+            '<?php echo 70_10_00;',
+            ['override_existing' => true],
+        ];
+
+        yield from self::yieldCases([
             'decimal' => [
                 '1234' => '1_234',
                 '-1234' => '-1_234',
@@ -71,16 +97,52 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 '0123456' => '0123_456',
                 '01234567' => '01_234_567',
             ],
+        ]);
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
+     */
+    public function testFix81(string $expected, ?string $input = null, ?array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'no_override_existing#02' => [
+            '<?php echo 0o123_45;',
         ];
 
-        if (\PHP_VERSION_ID >= 8_01_00) {
-            // Test new 8.1 Octal notation
-            $cases['octal'] += [
+        yield 'override_existing#01' => [
+            '<?php echo 1_234.5;',
+            '<?php echo 123_4.5;',
+            ['override_existing' => true],
+        ];
+
+        yield from self::yieldCases([
+            'octal' => [
                 '0o12345' => '0o12_345',
                 '0o123456' => '0o123_456',
-            ];
-        }
+            ],
+        ]);
+    }
 
+    /**
+     * @param array<string, array<mixed, mixed>> $cases
+     *
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, mixed>}>
+     */
+    private static function yieldCases(array $cases): iterable
+    {
         foreach ($cases as $pairsType => $pairs) {
             foreach ($pairs as $withoutSeparator => $withSeparator) {
                 yield "{$pairsType}#{$withoutSeparator}" => [
@@ -89,50 +151,5 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 ];
             }
         }
-    }
-
-    /**
-     * @dataProvider provideFixNoOverrideExistingCases
-     */
-    public function testFixNoOverrideExisting(string $expected, ?string $input = null): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->fixer->configure(['override_existing' => false]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixNoOverrideExistingCases(): iterable
-    {
-        yield 'no_override_existing#01' => [
-            sprintf('<?php echo %s;', '0B01010100_01101000'),
-            sprintf('<?php echo %s;', '0B01010100_01101000'),
-        ];
-
-        yield 'no_override_existing#02' => [
-            sprintf('<?php echo %s;', '70_10_00'),
-            sprintf('<?php echo %s;', '70_10_00'),
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixOverrideExistingCases
-     */
-    public function testFixOverrideExisting(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['override_existing' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixOverrideExistingCases(): iterable
-    {
-        yield 'override_existing#01' => [
-            sprintf('<?php echo %s;', '1_234.5'),
-            sprintf('<?php echo %s;', '123_4.5'),
-        ];
-
-        yield 'override_existing#02' => [
-            sprintf('<?php echo %s;', '701_000'),
-            sprintf('<?php echo %s;', '70_10_00'),
-        ];
     }
 }
