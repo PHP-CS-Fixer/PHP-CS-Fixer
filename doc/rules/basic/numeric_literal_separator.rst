@@ -10,7 +10,7 @@ Configuration
 ``override_existing``
 ~~~~~~~~~~~~~~~~~~~~~
 
-Reformat literals already containing underscores.
+Whether literals already containing underscores should be reformatted.
 
 Allowed types: ``bool``
 
@@ -59,10 +59,11 @@ With configuration: ``['strategy' => 'use_separator']``.
     <?php
    -$integer = 12345678;
    -$octal = 0123456;
+   -$binary = 0b0010010011011010;
+   -$hexadecimal = 0x3D458F4F;
    +$integer = 12_345_678;
    +$octal = 0123_456;
-    $binary = 0b00100100;
-   -$hexadecimal = 0x3D458F4F;
+   +$binary = 0b00100100_11011010;
    +$hexadecimal = 0x3D_45_8F_4F;
 
 Example #3

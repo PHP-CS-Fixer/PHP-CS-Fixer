@@ -61,7 +61,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         <?php
                         $integer = 12345678;
                         $octal = 0123456;
-                        $binary = 0b00100100;
+                        $binary = 0b0010010011011010;
                         $hexadecimal = 0x3D458F4F;
 
                         PHP
