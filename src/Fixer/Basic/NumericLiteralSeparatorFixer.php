@@ -34,6 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - {@link https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/rules/numeric-separators-style.js}
  *
  * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
+ * @author Greg Korba <greg@codito.dev>
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
