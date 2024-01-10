@@ -317,10 +317,7 @@ else?><?php echo 5;',
                         }  '.'
                             return 2;
                         '.'
-                    }  '.'
-                        return 3;
-                    '.'
-                ',
+                    }'."  \n                        return 3;\n                    ",
             '<?php
                     if ($x) {
                         if ($y) {
@@ -347,9 +344,7 @@ else?><?php echo 5;',
         yield [
             '<?php
                     if (false)
-                        echo 1;
-                    '.'
-                ',
+                        echo 1;'."\n                    ",
             '<?php
                     if (false)
                         echo 1;

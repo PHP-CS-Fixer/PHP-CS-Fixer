@@ -158,7 +158,7 @@ namespace Foo {
         yield [
             '<?php
             namespace Foo7;
-                function Bar(){}',
+                function Bar(){}'."\n            ",
             '<?php
             namespace Foo7 {
                 function Bar(){}
@@ -181,7 +181,7 @@ namespace Foo {
         yield [
             '<?php
             namespace A;
-                class X {}',
+                class X {}'."\n            ",
             '<?php
             namespace A {
                 class X {}

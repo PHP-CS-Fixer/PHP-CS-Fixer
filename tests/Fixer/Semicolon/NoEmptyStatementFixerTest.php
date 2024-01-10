@@ -355,15 +355,14 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } catch (\Exception $e){
                         //
                     } finally {
-                    }  '.'
-                ',
+                    }'."  \n",
             '<?php
                     try {
                         throw new \Exception("Foo.");
                     } catch (\Exception $e){
                         //
                     } finally {
-                    }  ;',
+                    }  ;'."\n",
         ];
 
         foreach (['break', 'continue'] as $ops) {
@@ -545,9 +544,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = 5;
-
-    ',
+            '<?php $foo = 5;'."\n\n    ",
             '<?php $foo = 5;;
 ;
     ;',

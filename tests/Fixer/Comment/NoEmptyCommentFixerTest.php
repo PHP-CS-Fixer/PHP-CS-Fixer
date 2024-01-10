@@ -55,10 +55,9 @@ echo 1;',
 
         yield [
             '<?php
-                    echo 1;',
+                    echo 1;'."\n",
             '<?php
-                    echo 1;//
-                ',
+                    echo 1;//'."\n",
         ];
 
         yield [
