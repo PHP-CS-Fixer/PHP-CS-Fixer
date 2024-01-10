@@ -3,6 +3,8 @@
 name: "Issues and Pull Requests"
 
 on:
+  # Allow running on demand using Github UI
+  workflow_dispatch:
   schedule:
     - cron: "0 12 * * *"
 
