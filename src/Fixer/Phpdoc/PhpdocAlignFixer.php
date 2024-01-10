@@ -105,8 +105,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private $spacing = 1;
 
-    private int $defaultSpacing = 1;
-
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -141,7 +139,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $this->regexCommentLine = '/'.$indentRegex.'\*(?!\h?+@)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/';
         $this->align = $this->configuration['align'];
         $this->spacing = $this->configuration['spacing'];
-        $this->defaultSpacing = $this->configuration['spacing'][self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING;
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -390,9 +387,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
     private function spacingForTag(?string $tag): int
     {
-        return (\is_int($this->spacing)) ?
-            $this->spacing :
-            ($this->spacing[$tag] ?? $this->defaultSpacing);
+        return (\is_int($this->spacing))
+            ? $this->spacing
+            : ($this->spacing[$tag] ?? $this->spacing[self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING);
     }
 
     /**
