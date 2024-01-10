@@ -98,8 +98,7 @@ string {}',
                     function foo6(int $a): string {}
                     function foo7(int $a): string {}
                     function foo8(int $a): string {}
-                    function foo9(int $a): string {}
-                ',
+                    function foo9(int $a): string {}',
             '<?php
                     function foo1(int $a):string {}
                     function foo2(int $a):string {}
@@ -109,8 +108,7 @@ string {}',
                     function foo6(int $a):string {}
                     function foo7(int $a):string {}
                     function foo8(int $a):string {}
-                    function foo9(int $a):string {}
-                ',
+                    function foo9(int $a):string {}',
         ];
 
         yield [

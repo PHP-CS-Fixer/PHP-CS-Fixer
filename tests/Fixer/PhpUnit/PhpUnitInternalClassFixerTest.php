@@ -406,15 +406,13 @@ class Test extends TestCase
             #[SimpleTest]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
             '<?php
 
             #[SimpleTest]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
         ];
 
         yield 'it adds the internal tag along other tags when there is an attribute' => [
@@ -427,8 +425,7 @@ class Test extends TestCase
             #[SimpleTest]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
             '<?php
 
             /**
@@ -437,8 +434,7 @@ class Test extends TestCase
             #[SimpleTest]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
         ];
 
         yield 'it adds a docblock above when there are attributes' => [
@@ -451,16 +447,14 @@ class Test extends TestCase
             #[Annotated]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
             '<?php
 
             #[SimpleTest]
             #[Annotated]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
         ];
 
         yield 'it adds the internal tag along other tags when there are attributes' => [
@@ -474,8 +468,7 @@ class Test extends TestCase
             #[Annotated]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
             '<?php
 
             /**
@@ -485,8 +478,7 @@ class Test extends TestCase
             #[Annotated]
             class Test extends TestCase
             {
-            }
-            ',
+            }',
         ];
     }
 

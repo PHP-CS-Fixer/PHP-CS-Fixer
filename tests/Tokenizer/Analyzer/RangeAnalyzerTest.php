@@ -52,8 +52,7 @@ final class RangeAnalyzerTest extends TestCase
                 '<?php
                     $a = 1;
                     ($a = 1);
-                    (($a = 1 ));
-                ',
+                    (($a = 1 ));',
                 $range1,
                 $range2,
             ];
@@ -70,8 +69,7 @@ final class RangeAnalyzerTest extends TestCase
             true,
             '<?php
                 foo(1);
-                /* */ foo/* */(1) /* */ ;
-            ',
+                /* */ foo/* */(1) /* */ ;',
             ['start' => 1, 'end' => 5],
             ['start' => 9, 'end' => 17],
         ];
@@ -85,8 +83,7 @@ final class RangeAnalyzerTest extends TestCase
         $code = '<?php
             $a = [1,2,3];
             echo $a[1];
-            echo $a{1};
-        ';
+            echo $a{1};';
 
         $tokens = Tokens::fromCode($code);
 

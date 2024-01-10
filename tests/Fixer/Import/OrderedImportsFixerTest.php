@@ -198,16 +198,14 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                 use B;
                 use C;
                 $foo = new C();
-                use A;
-            ';
+                use A;';
 
         $input =
             '<?php
                 use C;
                 use B;
                 $foo = new C();
-                use A;
-            ';
+                use A;';
 
         yield [$expected, $input];
 
@@ -853,13 +851,11 @@ use const some\a\{
             '<?php
 use C\B;
 use function B\fn_a;
-use const A\ConstA;
-            ',
+use const A\ConstA;',
             '<?php
 use const A\ConstA;
 use function B\fn_a;
-use C\B;
-            ',
+use C\B;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'function', 'const'],
@@ -929,13 +925,11 @@ use Foo\Bor\{
             '<?php
 use Z\Z;
 use function X\X;
-use const Y\Y;
-            ',
+use const Y\Y;',
             '<?php
 use const Y\Y;
 use function X\X;
-use Z\Z;
-            ',
+use Z\Z;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'function', 'const'],
@@ -946,13 +940,11 @@ use Z\Z;
             '<?php
 use Z\Z;
 use const Y\Y;
-use function X\X;
-            ',
+use function X\X;',
             '<?php
 use function X\X;
 use const Y\Y;
-use Z\Z;
-            ',
+use Z\Z;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'const', 'function'],
@@ -963,13 +955,11 @@ use Z\Z;
             '<?php
 use function Z\Z;
 use Y\Y;
-use const X\X;
-            ',
+use const X\X;',
             '<?php
 use const X\X;
 use Y\Y;
-use function Z\Z;
-            ',
+use function Z\Z;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['function', 'class', 'const'],
@@ -980,13 +970,11 @@ use function Z\Z;
             '<?php
 use function Z\Z;
 use const Y\Y;
-use X\X;
-            ',
+use X\X;',
             '<?php
 use X\X;
 use const Y\Y;
-use function Z\Z;
-            ',
+use function Z\Z;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['function', 'const', 'class'],
@@ -997,13 +985,11 @@ use function Z\Z;
             '<?php
 use const Z\Z;
 use function Y\Y;
-use X\X;
-            ',
+use X\X;',
             '<?php
 use X\X;
 use function Y\Y;
-use const Z\Z;
-            ',
+use const Z\Z;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['const', 'function', 'class'],
@@ -1014,13 +1000,11 @@ use const Z\Z;
             '<?php
 use const Z\Z;
 use Y\Y;
-use function X\X;
-            ',
+use function X\X;',
             '<?php
 use function X\X;
 use Y\Y;
-use const Z\Z;
-            ',
+use const Z\Z;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['const', 'class', 'function'],
@@ -1032,14 +1016,12 @@ use const Z\Z;
 use A\A1;
 use A\A10;
 use A\A2;
-use A\A20;
-            ',
+use A\A20;',
             '<?php
 use A\A20;
 use A\A2;
 use A\A10;
-use A\A1;
-            ',
+use A\A1;',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
             ],

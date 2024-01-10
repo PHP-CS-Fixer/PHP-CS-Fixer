@@ -76,12 +76,10 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         yield [
             '<?php namespace Foo;
                 $a = new exception;
-                $b = new \Exception;
-            ',
+                $b = new \Exception;',
             '<?php namespace Foo;
                 $a = new exception;
-                $b = new \EXCEPTION;
-            ',
+                $b = new \EXCEPTION;',
         ];
 
         yield [
@@ -92,8 +90,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
 
                 $a1 = \exception();
                 $b1 = new \A\exception;
-                $c1 = new \A\B\C\exception;
-            ',
+                $c1 = new \A\B\C\exception;',
         ];
 
         yield [
@@ -197,15 +194,13 @@ namespace Foo {
                 \Closure::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
-            ',
+                \A\B\\Bar::bind(fn () => null, null, new class {});',
             '<?php
                 CLOSURE::bind(fn () => null, null, new class {});
                 \CLOSURE::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
-            ',
+                \A\B\\Bar::bind(fn () => null, null, new class {});',
         ];
 
         yield [
@@ -226,8 +221,7 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
                 $b23 = [1,error,2];
                 $b24 = [1,error,2,];
                 $b3 = [error];
-                $b4 = $a->{error};
-            ',
+                $b4 = $a->{error};',
         ];
 
         yield [
@@ -239,8 +233,7 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
                 $b23 = [1,\error,2];
                 $b24 = [1,\error,2,];
                 $b3 = [\error];
-                $b4 = $a->{\error};
-            ',
+                $b4 = $a->{\error};',
         ];
 
         yield ['<?php echo error ?><?php echo error;'];

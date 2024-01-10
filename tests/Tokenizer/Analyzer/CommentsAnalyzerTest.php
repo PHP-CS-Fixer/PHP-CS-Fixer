@@ -451,8 +451,7 @@ enum Foo: int {
             switch ($x) {
                 /* */
                 case 1: return 2;
-            }
-            ',
+            }',
         ];
 
         yield 'switch and enum' => [
@@ -461,8 +460,7 @@ enum Foo: int {
                 /* */
                 case 1: return 2;
             }
-            enum E {}
-            ',
+            enum E {}',
         ];
     }
 
@@ -491,8 +489,7 @@ enum Foo: int {
                 $var = 123;
 
                 return;
-            }
-            ',
+            }',
             false,
         ];
 
@@ -504,8 +501,7 @@ enum Foo: int {
                 $var = 123;
 
                 return;
-            }
-            ',
+            }',
             false,
         ];
 
@@ -515,8 +511,7 @@ enum Foo: int {
             {
                 /** @todo something */
                 return;
-            }
-            ',
+            }',
             true,
         ];
 
@@ -526,8 +521,7 @@ enum Foo: int {
             {
                 // @todo something
                 return;
-            }
-            ',
+            }',
             true,
         ];
     }

@@ -62,8 +62,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case 42:
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -71,8 +70,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case false:
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -81,8 +79,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     case false:
                         break;
                     default:
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -90,14 +87,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case "prod":
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case "prod" :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -105,14 +100,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case "prod":
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case "prod"       :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -120,14 +113,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case 42:
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case 42 :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -135,14 +126,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case false:
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case false :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -151,15 +140,13 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     case false:
                         break;
                     default:
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case false :
                         break;
                     default :
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -167,14 +154,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case 42:
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case 42    :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -182,27 +167,23 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case $b ? "c" : "d":
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case $b ? "c" : "d" :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
             '<?php
                 switch ($a) {
                     case $b ? "c" : "d": break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case $b ? "c" : "d" : break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -210,14 +191,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case $b ?: $c:
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case $b ?: $c :
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -252,8 +231,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                }
-                ',
+                }',
             '<?php
                 $a = 5.1;
                 $b = 1.0;
@@ -285,8 +263,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                }
-                ',
+                }',
             [
                 '<?php
                     switch ($a) {
@@ -299,8 +276,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                                 default:
                                     echo 1   ;
                             }
-                    }
-                    ',
+                    }',
                 '<?php
                     switch ($a) {
                         case 42   :
@@ -312,8 +288,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                                 default :
                                     echo 1   ;
                             }
-                    }
-                    ',
+                    }',
             ],
         ];
 
@@ -362,14 +337,12 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly":
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly" :
                         break;
-                }
-                ',
+                }',
         ];
     }
 
@@ -398,8 +371,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 match ($baz) {
                     3 => "e",
                     default   => "f"
-                };
-            ',
+                };',
         ];
 
         yield [

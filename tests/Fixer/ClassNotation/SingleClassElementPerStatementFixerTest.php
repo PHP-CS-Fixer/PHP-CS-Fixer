@@ -653,16 +653,14 @@ echo Foo::A, Foo::B;
                         protected const PROTECTED_CONST = 0;
                         public const PUBLIC_CONST_TWO = 0;
                         public const TEST_71 = 0;
-                    }
-                ',
+                    }',
             '<?php
                     class Token {
                         const PUBLIC_CONST = 0;
                         private const PRIVATE_CONST = 0;
                         protected const PROTECTED_CONST = 0;
                         public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -805,8 +803,7 @@ echo Foo::A, Foo::B;
                             public function a() {}
                         };
                     }
-                }
-            ',
+                }',
             '<?php
                 $a = new class() {
                     const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
@@ -824,8 +821,7 @@ echo Foo::A, Foo::B;
                             public function a() {}
                         };
                     }
-                }
-            ',
+                }',
         ];
     }
 

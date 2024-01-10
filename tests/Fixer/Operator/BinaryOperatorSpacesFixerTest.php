@@ -123,24 +123,20 @@ $this->a
         yield [
             '<?php
 $a//
-     = 1;
-                ',
+     = 1;',
             '<?php
 $a//
-     =  1;
-                ',
+     =  1;',
             ['operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE]],
         ];
 
         yield [
             '<?php
     $a =  1;
-    $b = 2;
-            ',
+    $b = 2;',
             '<?php
     $a =  1;
-    $b=2;
-            ',
+    $b=2;',
             ['operators' => ['=' => BinaryOperatorSpacesFixer::AT_LEAST_SINGLE_SPACE]],
         ];
 
@@ -192,13 +188,11 @@ $a//
             '<?php
                     [1 =>   "foo"];
                     [2    => "foo"];
-                    [3 => "foo"];
-                ',
+                    [3 => "foo"];',
             '<?php
                     [1 =>   "foo"];
                     [2    =>"foo"];
-                    [3=>"foo"];
-                ',
+                    [3=>"foo"];',
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
         ];
 
@@ -206,13 +200,11 @@ $a//
             '<?php
                     [1 => "foo"];
                     [2 => "foo"];
-                    [3 => "foo"];
-                ',
+                    [3 => "foo"];',
             '<?php
                     [1 =>   "foo"];
                     [2    =>"foo"];
-                    [3=>"foo"];
-                ',
+                    [3=>"foo"];',
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
@@ -238,13 +230,11 @@ $a//
             '<?php
     $ade = $b !==   $a;
     $b = $b   !==   $a;
-    $c = $b   !== $a;
-                ',
+    $c = $b   !== $a;',
             '<?php
     $ade = $b!==   $a;
     $b = $b!==   $a;
-    $c = $b!==$a;
-                ',
+    $c = $b!==$a;',
             ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
         ];
 
@@ -252,13 +242,11 @@ $a//
             '<?php
     $aab = $b !== $e;
     $b = $b   !== $c;
-    $c = $b   !== $d;
-                ',
+    $c = $b   !== $d;',
             '<?php
     $aab = $b         !==$e;
     $b = $b     !==$c;
-    $c = $b             !==$d;
-                ',
+    $c = $b             !==$d;',
             ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
@@ -269,16 +257,14 @@ $a//
     $c  *=31;
 
     $d = $e and $f;
-    $d = $g   or    $h;
-                ',
+    $d = $g   or    $h;',
             '<?php
     $aaa*= 11;
     $b *= 21;
     $c*=31;
 
     $d = $e   and    $f;
-    $d = $g   or    $h;
-                ',
+    $d = $g   or    $h;',
             [
                 'operators' => [
                     'and' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
@@ -292,13 +278,11 @@ $a//
             '<?php
     $abc = $b !== $a;
     $b = $b   !== $a;
-    $c = $b   !== $a;
-                ',
+    $c = $b   !== $a;',
             '<?php
     $abc = $b         !==    $a;
     $b = $b     !==     $a;
-    $c = $b             !==    $a;
-                ',
+    $c = $b             !==    $a;',
             ['operators' => ['!==' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
@@ -317,24 +301,20 @@ $a//
         yield [
             '<?php
                     [1 => "foo",
-                     2 => "foo"];
-                ',
+                     2 => "foo"];',
             '<?php
                     [1 =>   "foo",
-                     2   => "foo"];
-                ',
+                     2   => "foo"];',
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
         yield [
             '<?php
                     [1 => "foo"];
-                    $i += 1;
-                ',
+                    $i += 1;',
             '<?php
                     [1 => "foo"];
-                    $i+= 1;
-                ',
+                    $i+= 1;',
             ['operators' => ['+=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
@@ -355,16 +335,14 @@ $a//
                     $ø5  => $ø2ø2ø,
                 );
                 $a = 12 + 1;
-                $a = 13 + 41;
-                ',
+                $a = 13 + 41;',
             '<?php $a    =   1   +    2; $b = array(
                     $øøø =>$ø0ø0ø,
                     $ø4  =>  $ø1ø1ø,
                     $ø5=>$ø2ø2ø,
                 );
                 $a = 12   +  1;
-                $a = 13+41;
-                ',
+                $a = 13+41;',
             ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
         ];
 
@@ -372,13 +350,11 @@ $a//
             '<?php
                     \putenv("{$name}= {$value}");
                 $b                     = $c + 1;
-                                    $b = $c - 1;
-                ',
+                                    $b = $c - 1;',
             '<?php
                     \putenv("{$name}= {$value}");
                 $b =$c+1;
-                                    $b =$c  -  1;
-                ',
+                                    $b =$c  -  1;',
             ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
         ];
 
@@ -386,13 +362,11 @@ $a//
             '<?php
                     declare(ticks=1);
                     $a = 1;
-                    $b = 1;
-                ',
+                    $b = 1;',
             '<?php
                     declare(ticks=1);
                     $a   = 1;
-                    $b              = 1;
-                ',
+                    $b              = 1;',
             ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
@@ -400,8 +374,7 @@ $a//
             '<?php
                     $map = [
                         "ø" => "oe",
-                    ];
-                ',
+                    ];',
             null,
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
         ];
@@ -436,11 +409,9 @@ $a//
 
         yield [
             '<?php
-                    $foo = 1+$bar;
-                ',
+                    $foo = 1+$bar;',
             '<?php
-                    $foo  =  1 + $bar;
-                ',
+                    $foo  =  1 + $bar;',
             [
                 'default' => BinaryOperatorSpacesFixer::NO_SPACE,
                 'operators' => ['=' => BinaryOperatorSpacesFixer::SINGLE_SPACE],
@@ -449,11 +420,9 @@ $a//
 
         yield [
             '<?php
-                    $foo = 1    +    $bar|$a;
-                ',
+                    $foo = 1    +    $bar|$a;',
             '<?php
-                    $foo  =  1    +    $bar | $a;
-                ',
+                    $foo  =  1    +    $bar | $a;',
             [
                 'default' => null,
                 'operators' => [
@@ -470,16 +439,14 @@ $a//
  #
 $a|         // foo
 $b#
-   |$d;
-                ',
+   |$d;',
             '<?php
                     $foo           = $d #
   |
  #
 $a |         // foo
 $b#
-   | $d;
-                ',
+   | $d;',
             [
                 'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
             ],
@@ -519,13 +486,11 @@ $a = $ae?? $b;
             '<?php
                     $c                 = [$d] = $e[1];
                     function A(){}[$a] = $a[$c];
-                    $b                 = 1;
-                ',
+                    $b                 = 1;',
             '<?php
                     $c = [$d] = $e[1];
                     function A(){}[$a] = $a[$c];
-                    $b = 1;
-                ',
+                    $b = 1;',
             ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
         ];
 
@@ -535,15 +500,13 @@ $a = $ae?? $b;
                         "a" => $a,
                         "b" => $b,
                         "c" => $c
-                    ] = $array;
-                ',
+                    ] = $array;',
             '<?php
                     $d = [
                         "a"=>$a,
                         "b"   => $b,
                         "c" =>   $c
-                    ] = $array;
-                ',
+                    ] = $array;',
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 
@@ -563,15 +526,13 @@ $a = $ae?? $b;
              $testD = $testE["abcdef"] / $testF * 100;
 
              $testA = $testB["abc"]    / $testC * 10000000    * 100;
-             $testD = $testE["abcdef"] / $testF * 10000000000 * 100;
-            ',
+             $testD = $testE["abcdef"] / $testF * 10000000000 * 100;',
             '<?php
              $testA = $testB["abc"]/$testC * 100;
              $testD = $testE["abcdef"]/$testF * 100;
 
              $testA = $testB["abc"]/$testC * 10000000 * 100;
-             $testD = $testE["abcdef"]/$testF * 10000000000 * 100;
-            ',
+             $testD = $testE["abcdef"]/$testF * 10000000000 * 100;',
             ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL],
         ];
     }
@@ -742,8 +703,7 @@ $b;',
 
         yield [
             '<?php $a = 1 //
-                    || 2;
-                ',
+                    || 2;',
         ];
 
         yield [
@@ -816,8 +776,7 @@ $b;
             '<?php
                 function a(string &$x) { return $x + 1; };
                 $b = function (string &$x) { return $x + 1; };
-                $c = fn (string &$x) => $x + 1;
-            ',
+                $c = fn (string &$x) => $x + 1;',
         ];
     }
 
@@ -1504,8 +1463,7 @@ $b;
         $aa    = 23;
         $a[$b] = array(66);
     } while ($i = 1);
-    $a = 3;
-    ',
+    $a = 3;',
             '<?php
     $ccc = 1;
     $bb = 1;
@@ -1571,8 +1529,7 @@ $b;
         $aa = 23;
         $a[$b] = array(66);
     } while ($i = 1);
-    $a = 3;
-    ',
+    $a = 3;',
         ];
 
         yield [
@@ -1789,8 +1746,7 @@ $start = (
                 switch ($a) {
                     case "prod":
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -2221,8 +2177,7 @@ $start = (
                 $formMapper
                     ->add(\'foo\', null, [\'required\' => false])
                     ->add(\'dummy_field\', null, [\'required\' => false])
-                ;
-                ',
+                ;',
         ];
 
         yield [
@@ -2230,50 +2185,43 @@ $start = (
                 $formMapper
                     ->add(\'foo\', null, array(\'required\' => false))
                     ->add(\'dummy_field\', null, array(\'required\' => false))
-                ;
-                ',
+                ;',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));',
         ];
 
         yield [
@@ -2288,8 +2236,7 @@ $start = (
         "foo"     => $bar[123],
         "a"       => foo(),
         "b"       => 1,
-    ];
-    ',
+    ];',
             '<?php
 
     function foo() {}
@@ -2301,8 +2248,7 @@ $start = (
         "foo" => $bar[123],
         "a" => foo(),
         "b" => 1,
-    ];
-    ',
+    ];',
         ];
 
         yield [
@@ -2512,8 +2458,7 @@ function test()
         "expected"    => null,
         "ourCustomer" => Customer::seed(),
     ];
-}
-                ',
+}',
         ];
     }
 
@@ -2533,8 +2478,7 @@ function test()
                 switch ($a) {
                     case "prod":
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -2965,8 +2909,7 @@ function test()
                 $formMapper
                     ->add(\'foo\', null, [\'required\' => false])
                     ->add(\'dummy_field\', null, [\'required\' => false])
-                ;
-                ',
+                ;',
         ];
 
         yield [
@@ -2974,50 +2917,43 @@ function test()
                 $formMapper
                     ->add(\'foo\', null, array(\'required\' => false))
                     ->add(\'dummy_field\', null, array(\'required\' => false))
-                ;
-                ',
+                ;',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(["server1" => $object], ["addedAt" => "DESC"], 5);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(["server2" => $object], ["checkedAt" => "desc"], 50);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array("server1" => $object), array("addedAt" => "DESC"), 5);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array("server2" => $object), array("checkedAt" => "desc"), 50);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy($foo[123]);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy($foo[123]);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy([1, 2, 3]);',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy((1 + 2));
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy((1 + 2));',
         ];
 
         yield [
             '<?php
     $dummy001 = $this->get("doctrine")->getRepository("AppBundle:Entity")->findBy(array(1, 2));
-    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));
-    ',
+    $foobar = $this->getDoctrine()->getRepository("AppBundle:Entity")->findBy(array(1, 2));',
         ];
 
         yield [
@@ -3032,8 +2968,7 @@ function test()
         "foo"     => $bar[123],
         "a"       => foo(),
         "b"       => 1,
-    ];
-    ',
+    ];',
             '<?php
 
     function foo() {}
@@ -3045,8 +2980,7 @@ function test()
         "foo" => $bar[123],
         "a" => foo(),
         "b" => 1,
-    ];
-    ',
+    ];',
         ];
 
         yield [
@@ -3256,8 +3190,7 @@ function test()
         "expected"    => null,
         "ourCustomer" => Customer::seed(),
     ];
-}
-                ',
+}',
         ];
     }
 
@@ -3285,8 +3218,7 @@ function test()
                     4   =>   2,
                     5 =>  1,
                      6 => 7,
-                );
-            '
+                );'
         );
     }
 
@@ -3307,12 +3239,10 @@ function test()
         yield [
             '<?php
                     $a = fn() => null;
-                    $b = fn() => null;
-                ',
+                    $b = fn() => null;',
             '<?php
                     $a = fn()    =>      null;
-                    $b = fn()      =>  null;
-                ',
+                    $b = fn()      =>  null;',
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
         ];
 

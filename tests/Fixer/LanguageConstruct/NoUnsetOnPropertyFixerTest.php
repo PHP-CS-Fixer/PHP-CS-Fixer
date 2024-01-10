@@ -126,8 +126,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 unset(a()[b()["a"]]);
                 unset(a()[b()]);
                 unset(a()["a"]);
-                unset(c($a)->a);
-            ',
+                unset(c($a)->a);',
         ];
 
         yield 'It replaces an unset on a property with = null 1' => [

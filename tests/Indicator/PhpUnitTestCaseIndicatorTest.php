@@ -187,8 +187,7 @@ class Foo extends A implements TestInterface, SomethingElse
                 [10, 11],
             ],
             '<?php
-                class MyTest extends Foo {}
-            ',
+                class MyTest extends Foo {}',
         ];
 
         yield 'two PHPUnit classes' => [
@@ -198,8 +197,7 @@ class Foo extends A implements TestInterface, SomethingElse
             ],
             '<?php
                 class My1Test extends Foo1 {}
-                class My2Test extends Foo2 { public function A8() {} }
-            ',
+                class My2Test extends Foo2 { public function A8() {} }',
         ];
 
         yield 'mixed classes' => [
@@ -212,8 +210,7 @@ class Foo extends A implements TestInterface, SomethingElse
                 class My1Test extends Foo1 { public function A2() {} }
                 class Foo2 { public function A3() {} }
                 class My2Test extends Foo2 { public function A4() {} }
-                class Foo3 { public function A5() { return function (){}; } }
-            ',
+                class Foo3 { public function A5() { return function (){}; } }',
         ];
 
         yield 'class with anonymous class inside' => [
@@ -225,8 +222,7 @@ class Foo extends A implements TestInterface, SomethingElse
                     {
                         return new class {};
                     }
-                }
-            ',
+                }',
         ];
     }
 }

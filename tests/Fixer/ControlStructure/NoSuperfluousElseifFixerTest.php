@@ -288,8 +288,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 $a = $bar ?? throw new \Exception();
             } elseif ($bar) {
                 echo 1;
-            }
-            ',
+            }',
         ];
     }
 }

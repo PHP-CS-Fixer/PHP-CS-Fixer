@@ -75,8 +75,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 $var = clone ($obj1 ?: $obj2);
-                $var = clone ($obj1 ? $obj1->getSubject() : $obj2);
-                ',
+                $var = clone ($obj1 ? $obj1->getSubject() : $obj2);',
         ];
 
         yield [
@@ -93,20 +92,17 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 foo(clone $a);
                 foo(clone $a, 1);
-                $a = $b ? clone $b : $c;
-                ',
+                $a = $b ? clone $b : $c;',
             '<?php
                 foo(clone($a));
                 foo(clone($a), 1);
-                $a = $b ? clone($b) : $c;
-                ',
+                $a = $b ? clone($b) : $c;',
         ];
 
         yield [
             '<?php
                 echo (1 + 2) . $foo;
-                print (1 + 2) . $foo;
-                ',
+                print (1 + 2) . $foo;',
         ];
 
         yield [
@@ -149,16 +145,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo 10 * (2 + 3);
                 echo ("foo"), ("bar");
                 echo my_awesome_function("foo");
-                echo $this->getOutput(1);
-                ',
+                echo $this->getOutput(1);',
             '<?php
                 echo ($a ? $b : $c);
                 echo ($a ? $b : $c) ? $d : $e;
                 echo 10 * (2 + 3);
                 echo ("foo"), ("bar");
                 echo my_awesome_function("foo");
-                echo $this->getOutput(1);
-                ',
+                echo $this->getOutput(1);',
         ];
 
         yield [
@@ -191,8 +185,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case "prod":
                         break;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -200,14 +193,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case "prod":
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case ("prod"):
                         break;
-                }
-                ',
+                }',
             'switch_case',
         ];
 
@@ -215,26 +206,22 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 switch ($a) {
                     case $x;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case($x);
-                }
-                ',
+                }',
         ];
 
         yield [
             '<?php
                 switch ($a) {
                     case 2;
-                }
-                ',
+                }',
             '<?php
                 switch ($a) {
                     case(2);
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -269,8 +256,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                }
-                ',
+                }',
             '<?php
                 $a = 5.1;
                 $b = 1.0;
@@ -302,8 +288,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                }
-                ',
+                }',
             'switch_case',
         ];
 
@@ -322,56 +307,45 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                function foo() { yield "prod"; }
-                ',
+                function foo() { yield "prod"; }',
         ];
 
         yield [
             '<?php
-                function foo() { yield (1 + 2) * 10; }
-                ',
+                function foo() { yield (1 + 2) * 10; }',
         ];
 
         yield [
             '<?php
-                function foo() { yield (1 + 2) * 10; }
-                ',
+                function foo() { yield (1 + 2) * 10; }',
             '<?php
-                function foo() { yield ((1 + 2) * 10); }
-                ',
+                function foo() { yield ((1 + 2) * 10); }',
         ];
 
         yield [
             '<?php
-                function foo() { yield "prod"; }
-                ',
+                function foo() { yield "prod"; }',
             '<?php
-                function foo() { yield ("prod"); }
-                ',
+                function foo() { yield ("prod"); }',
         ];
 
         yield [
             '<?php
-                function foo() { yield 2; }
-                ',
+                function foo() { yield 2; }',
             '<?php
-                function foo() { yield(2); }
-                ',
+                function foo() { yield(2); }',
         ];
 
         yield [
             '<?php
-                function foo() { $a = (yield $x); }
-                ',
+                function foo() { $a = (yield $x); }',
             '<?php
-                function foo() { $a = (yield($x)); }
-                ',
+                function foo() { $a = (yield($x)); }',
         ];
 
         yield [
             '<?php
-                $var = clone ($obj1->getSubject() ?? $obj2);
-                ',
+                $var = clone ($obj1->getSubject() ?? $obj2);',
         ];
     }
 
@@ -415,8 +389,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 function foo5() { yield from "prod"; }
                 function foo6() { $a = (yield $x); }
                 function foo7() { yield from 2; }
-                function foo8() { $a = (yield from $x); }
-                ',
+                function foo8() { $a = (yield from $x); }',
             '<?php
                 function foo3() { $a = (yield $x); }
                 function foo4() { yield from ((1 + 2) * 10); }
@@ -424,8 +397,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 function foo5() { yield from ("prod"); }
                 function foo6() { $a = (yield($x)); }
                 function foo7() { yield from(2); }
-                function foo8() { $a = (yield from($x)); }
-                ',
+                function foo8() { $a = (yield from($x)); }',
         ];
 
         yield 'clone stuff' => [
@@ -473,12 +445,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         yield 'print - sequence' => [
             '<?php
                 $b7 =[ print $a, 1];
-                $b7 =[1, print $a];
-            ',
+                $b7 =[1, print $a];',
             '<?php
                 $b7 =[ print ($a), 1];
-                $b7 =[1, print ($a)];
-            ',
+                $b7 =[1, print ($a)];',
         ];
 
         yield 'print - wrapped block' => [
@@ -502,8 +472,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $b6 = foo(print $a);
                 $b7 =[ print $a   ,];
 
-                $b8 =[ print ($a+1) . "1"   ,];
-            ',
+                $b8 =[ print ($a+1) . "1"   ,];',
             '<?php
                 for ( (print $b+1); foo(); ++$i ) {}
                 for( print ($b+1); foo(); ++$i ) {}
@@ -519,8 +488,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $b6 = foo(print ($a));
                 $b7 =[ (print ($a))   ,];
 
-                $b8 =[ (print ($a+1) . "1")   ,];
-            ',
+                $b8 =[ (print ($a+1) . "1")   ,];',
         ];
 
         yield 'simple' => [
@@ -557,35 +525,29 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 $fn1 = array_map(fn() => 1, $array);
                 $fn2 = array_map($array, fn() => 2);
-                $fn3 = array_map($array, fn() => 3, $array);
-            ',
+                $fn3 = array_map($array, fn() => 3, $array);',
             '<?php
                 $fn1 = array_map(fn() => (1), $array);
                 $fn2 = array_map($array, fn() => (2));
-                $fn3 = array_map($array, fn() => (3), $array);
-            ',
+                $fn3 = array_map($array, fn() => (3), $array);',
         ];
 
         yield 'wrapped FN with return type' => [
             '<?php
-                $fn8 = fn(): int => 123456;
-            ',
+                $fn8 = fn(): int => 123456;',
             '<?php
-                $fn8 = fn(): int => (123456);
-            ',
+                $fn8 = fn(): int => (123456);',
         ];
 
         yield 'wrapped `for` elements' => [
             '<?php
                 for (!$a; $a < 10; ++$a){
                     echo $a;
-                }
-            ',
+                }',
             '<?php
                 for (!($a); ($a < 10); (++$a)){
                     echo $a;
-                }
-            ',
+                }',
         ];
 
         $statements = [
@@ -642,8 +604,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                             continue 2;
                         }
                     }
-                }
-            ',
+                }',
             '<?php
                 while((foo() && $f)) {
                     while(bar()) {
@@ -653,8 +614,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                             continue (2);
                         }
                     }
-                }
-            ',
+                }',
         ];
 
         yield 'switch case' => [
@@ -675,16 +635,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                         break;
                     case 1 + $a + 4:
                         break;
-                }
-                ',
+                }',
             '<?php
                 switch ($x) {
                     case ($a) + 1 + 3:
                         break;
                     case 1 + ($a) + 4:
                         break;
-                }
-                ',
+                }',
         ];
 
         yield 'bin pre bin' => [
@@ -712,14 +670,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $b1 = [1 + $d];
                 $b2 = [1 + $d,];
                 $b3 = [1,1 + $d + 1];
-                $b4 = [1,1 + $d,];
-            ',
+                $b4 = [1,1 + $d,];',
             '<?php
                 $b1 = [1 + ($d)];
                 $b2 = [1 + ($d),];
                 $b3 = [1,1 + ($d) + 1];
-                $b4 = [1,1 + ($d),];
-            ',
+                $b4 = [1,1 + ($d),];',
         ];
 
         yield 'bin doggybag' => [
@@ -731,8 +687,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a = $b + !$c + $d;
                 $b = !$a[1]++;
                 $c = $c + !!!(bool) -$a;
-                throw $b . "";
-            ',
+                throw $b . "";',
             '<?php
                 while((foo())[1]){bar();}
                 ($aR) . "";
@@ -741,8 +696,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a = $b + !($c) + $d;
                 $b = !($a)[1]++;
                 $c = $c + !!!(bool) -($a);
-                throw($b) . "";
-            ',
+                throw($b) . "";',
         ];
 
         $statements = [
@@ -799,16 +753,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 foo();
                 while(foo()){
                     $a = foo2();
-                }
-            ',
+                }',
             '<?php
                 $a = ([]);
                 $b = ([1,([])]);
                 (foo());
                 while(foo()){
                     $a = (foo2());
-                }
-            ',
+                }',
         ];
 
         yield 'access' => [
@@ -851,14 +803,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a1 = !$foo;
                 $a2 = +$f;
                 $a3 = -$f;
-                $a4 = @bar();
-            ',
+                $a4 = @bar();',
             '<?php
                 $a1 = !($foo);
                 $a2 = +($f);
                 $a3 = -($f);
-                $a4 = @(bar());
-            ',
+                $a4 = @(bar());',
         ];
 
         yield 'pre op ! function call' => [
@@ -891,8 +841,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a = !$a[1]++;
                 while(!!!(bool) $a2[1] ){echo 1;}
                 $b = @$a[1];
-                $b = ++$a[1];
-            ',
+                $b = ++$a[1];',
             '<?php
                 $b0 = !!!(bool) ($a1);
                 $b1 = [!!!(bool) ($a2),1];
@@ -902,8 +851,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a = !($a)[1]++;
                 while(!!!(bool) ($a2)[1] ){echo 1;}
                 $b = @($a)[1];
-                $b = ++($a)[1];
-            ',
+                $b = ++($a)[1];',
         ];
 
         yield 'logic &&' => [
@@ -925,14 +873,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 echo 1 + 2 + 3;
                 echo 1.5 + 2.5 + 3.5;
                 echo 1 + $obj->value + 3;
-                echo 1 + Obj::VALUE + 3;
-            ',
+                echo 1 + Obj::VALUE + 3;',
             '<?php
                 echo 1 + (2) + 3;
                 echo 1.5 + (2.5) + 3.5;
                 echo 1 + ($obj->value) + 3;
-                echo 1 + (Obj::VALUE) + 3;
-            ',
+                echo 1 + (Obj::VALUE) + 3;',
         ];
 
         yield 'new class as sequence element' => [
@@ -949,13 +895,11 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 while(foo()) { bar(); }
                 while(bar()){foo1();};
-                if($a){foo();}
-            ',
+                if($a){foo();}',
             '<?php
                 while(foo()) { (bar()); }
                 while(bar()){(foo1());};
-                if($a){(foo());}
-            ',
+                if($a){(foo());}',
         ];
 
         yield 'block type dynamic var brace' => [
@@ -985,16 +929,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $b0 = [1, 2, 3,];
                 $b1 = [$a + 1];
                 $b2 = [-1 + $a];
-                $b3 = [2 + $c];
-            ',
+                $b3 = [2 + $c];',
             '<?php
                 echo $a13 = [(1)];
                 $bX = [(1),];
                 $b0 = [(1),(2),(3),];
                 $b1 = [($a) + 1];
                 $b2 = [-1 + ($a)];
-                $b3 = [2 + ($c)];
-            ',
+                $b3 = [2 + ($c)];',
         ];
 
         yield 'multiple array construct elements' => [
@@ -1087,8 +1029,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                         self instanceof $a;
                         $a instanceof self;
                     }
-                }
-            ',
+                }',
             '<?php
                 ; ($foo instanceof Foo);
                 ; ($foo() instanceof Foo);
@@ -1108,8 +1049,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                         (self instanceof $a);
                         ($a instanceof self);
                     }
-                }
-            ',
+                }',
         ];
 
         yield 'wrapped negative instanceof' => [
@@ -1131,8 +1071,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
                 if (!$x instanceof $v) {
                     echo 123;
-                }
-            ',
+                }',
             '<?php
                 !($z instanceof $z[1]);
                 $z2 = !($foo[1]->b(1)[2] instanceof A\Foo);
@@ -1151,8 +1090,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
                 if (!($x instanceof $v)) {
                     echo 123;
-                }
-            ',
+                }',
         ];
 
         yield 'wrapped negative instanceof 2' => [
@@ -1215,25 +1153,21 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         yield 'destructuring square brace + comments' => [
             '<?php
                 [/*A*/$a/*B*/] = z();
-                [/*A*/$a/*B*/, $c] = z();
-            ',
+                [/*A*/$a/*B*/, $c] = z();',
             '<?php
                 [/*A*/($a)/*B*/] = z();
-                [/*A*/($a)/*B*/,($c)] = z();
-            ',
+                [/*A*/($a)/*B*/,($c)] = z();',
         ];
 
         yield 'multiple fix cases' => [
             '<?php
                 $aF=array(1);$a=array(1);$a=array(1);$a=array(1);
                 $bF=array(1);$b=array(1);$b=array(1);$b=array(1);
-                $cF=array(1);$c=array(1);$c=array(1);$c=array(1);
-            ',
+                $cF=array(1);$c=array(1);$c=array(1);$c=array(1);',
             '<?php
                 $aF=array((1));$a=array((1));$a=array((1));$a=array((1));
                 $bF=array((1));$b=array((1));$b=array((1));$b=array((1));
-                $cF=array((1));$c=array((1));$c=array((1));$c=array((1));
-            ',
+                $cF=array((1));$c=array((1));$c=array((1));$c=array((1));',
         ];
 
         yield 'multiple fix cases with space inserts' => [
@@ -1249,12 +1183,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         yield 'more space around concat handling' => [
             '<?php
                 $s2 = "a". 0.1 . 2 .    "b"    . "c";
-                $f = \'x\' .  \'y\'  . \'z\';
-            ',
+                $f = \'x\' .  \'y\'  . \'z\';',
             '<?php
                 $s2 = "a".(0.1). (2) .    ("b")    . "c";
-                $f = \'x\' . ( \'y\' ) . \'z\';
-            ',
+                $f = \'x\' . ( \'y\' ) . \'z\';',
         ];
 
         $assignOperators = [
@@ -1314,8 +1246,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 trait X{}++$i;
 
                 try{}catch(E $e){}$i++;
-                try {} finally {}++$i;
-            ',
+                try {} finally {}++$i;',
             '<?php
                 while(foo()){}  (++$i);
                 for(;;){}(++$i);
@@ -1349,8 +1280,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 trait X{}(++$i);
 
                 try{}catch(E $e){}($i++);
-                try {} finally {}(++$i);
-            ',
+                try {} finally {}(++$i);',
         ];
 
         yield 'do not fix' => [
@@ -1474,8 +1404,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
                 // halt compiler
 
-                __halt_compiler();
-            ',
+                __halt_compiler();',
         ];
 
         yield 'do not fix ' => [
@@ -1522,15 +1451,13 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     while (foo()) {
                         break 2;
                     }
-                }
-            ',
+                }',
             '<?php
                 while (foo()) {
                     while (foo()) {
                         break (2);
                     }
-                }
-            ',
+                }',
         ];
 
         yield 'config: clone' => [
@@ -1546,25 +1473,21 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                     while (foo()) {
                         continue 2;
                     }
-                }
-            ',
+                }',
             '<?php
                 while (foo()) {
                     while (foo()) {
                         continue (2);
                     }
-                }
-            ',
+                }',
         ];
 
         yield 'config: echo_print' => [
             ['statements' => ['echo_print']],
             '<?php
-                echo 1; print 2;
-            ',
+                echo 1; print 2;',
             '<?php
-                echo (1); print (2);
-            ',
+                echo (1); print (2);',
         ];
 
         yield 'config: return' => [
@@ -1578,13 +1501,11 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php
                 switch ($a) {
                     case 22: echo 1;
-                }
-            ',
+                }',
             '<?php
                 switch ($a) {
                     case (22): echo 1;
-                }
-            ',
+                }',
         ];
 
         yield 'config: yield' => [
@@ -1648,12 +1569,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         yield 'PHP8 bin doggybag' => [
             '<?php
                 $s = $a{$d}(1) + 1;
-                $t = $a{1}(2);
-            ',
+                $t = $a{1}(2);',
             '<?php
                 $s = ($a{$d}(1)) + 1;
-                $t = ($a{1}(2));
-            ',
+                $t = ($a{1}(2));',
         ];
     }
 
@@ -1695,23 +1614,19 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 \$r = match (\$food) {
                     'apple' => 'An apple',
                     'cake' => 'Some cake',
-                };
-            ",
+                };",
             "<?php
                 \$r = match ((\$food)) {
                     'apple' => 'An apple',
                     'cake' => 'Some cake',
-                };
-            ",
+                };",
         ];
 
         yield 'wrapped FN with return types' => [
             '<?php
-                $fn8 = fn(): int|bool => 123456;
-            ',
+                $fn8 = fn(): int|bool => 123456;',
             '<?php
-                $fn8 = fn(): int|bool => (123456);
-            ',
+                $fn8 = fn(): int|bool => (123456);',
         ];
 
         yield [
@@ -1753,14 +1668,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 enum Foo: string
                 {
                     case Bar = "do fix";
-                }
-            ',
+                }',
             '<?php
                 enum Foo: string
                 {
                     case Bar = ("do fix");
-                }
-            ',
+                }',
         ];
 
         yield [
@@ -1770,20 +1683,16 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
         yield 'wrapped FN with return types' => [
             '<?php
-                $fn8 = fn(): A&B => new C();
-            ',
+                $fn8 = fn(): A&B => new C();',
             '<?php
-                $fn8 = fn(): A&B => (new C());
-            ',
+                $fn8 = fn(): A&B => (new C());',
         ];
 
         yield 'wrapped FN with return types and ref' => [
             '<?php
-                $fn9 = fn & (): D & E => new F();
-            ',
+                $fn9 = fn & (): D & E => new F();',
             '<?php
-                $fn9 = fn & (): D & E => (new F());
-            ',
+                $fn9 = fn & (): D & E => (new F());',
         ];
 
         yield [

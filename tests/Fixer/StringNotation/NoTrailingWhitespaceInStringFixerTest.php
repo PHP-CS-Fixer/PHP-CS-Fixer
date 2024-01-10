@@ -95,8 +95,7 @@ bar
 $b
 
    baz
-EOD;
-                ',
+EOD;',
             '
 <?php
 $a = <<<EOD
@@ -106,8 +105,7 @@ bar
 $b
     '.'
    baz  '.'
-EOD;
-                ',
+EOD;',
         ];
 
         yield [
@@ -118,8 +116,7 @@ $a = <<<\'EOD\'
 bar
 
    baz
-EOD;
-                ',
+EOD;',
             '
 <?php
 $a = <<<\'EOD\'
@@ -127,8 +124,7 @@ $a = <<<\'EOD\'
 bar
     '.'
    baz  '.'
-EOD;
-                ',
+EOD;',
         ];
 
         yield [

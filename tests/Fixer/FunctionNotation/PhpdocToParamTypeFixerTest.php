@@ -74,16 +74,14 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     * @param string $bar
                     */
                     function my_foo() {}
-                    function my_foo2($bar) {}
-                    ',
+                    function my_foo2($bar) {}',
         ];
 
         yield 'invalid - phpdoc param with keyword' => [
             '<?php
                     /** @param Break $foo */ function foo_break($foo) {}
                     /** @param __CLASS__ $foo */ function foo_class($foo) {}
-                    /** @param I\Want\To\Break\\\\Free $foo */ function foo_queen($foo) {}
-                ',
+                    /** @param I\Want\To\Break\\\\Free $foo */ function foo_queen($foo) {}',
         ];
 
         yield 'non-root class with single int param' => [
@@ -217,26 +215,22 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             '<?php
                     class Foo {
                         /** @param self $foo */ function my_foo(self $foo) {}
-                    }
-                ',
+                    }',
             '<?php
                     class Foo {
                         /** @param self $foo */ function my_foo($foo) {}
-                    }
-                ',
+                    }',
         ];
 
         yield 'report static as self' => [
             '<?php
                     class Foo {
                         /** @param static $foo */ function my_foo(self $foo) {}
-                    }
-                ',
+                    }',
             '<?php
                     class Foo {
                         /** @param static $foo */ function my_foo($foo) {}
-                    }
-                ',
+                    }',
         ];
 
         yield 'skip resource special type' => [
@@ -378,21 +372,18 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             '<?php
                      namespace App;
                      /** @param array|Traversable $foo */
-                     function my_foo($foo) {}
-                ',
+                     function my_foo($foo) {}',
         ];
 
         yield 'array and traversable with leading slash in a namespace' => [
             '<?php
                      namespace App;
                      /** @param array|\Traversable $foo */
-                     function my_foo(iterable $foo) {}
-                ',
+                     function my_foo(iterable $foo) {}',
             '<?php
                      namespace App;
                      /** @param array|\Traversable $foo */
-                     function my_foo($foo) {}
-                ',
+                     function my_foo($foo) {}',
         ];
 
         yield 'array and imported traversable in a namespace' => [
@@ -400,14 +391,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                      namespace App;
                      use Traversable;
                      /** @param array|Traversable $foo */
-                     function my_foo(iterable $foo) {}
-                ',
+                     function my_foo(iterable $foo) {}',
             '<?php
                      namespace App;
                      use Traversable;
                      /** @param array|Traversable $foo */
-                     function my_foo($foo) {}
-                ',
+                     function my_foo($foo) {}',
         ];
 
         yield 'array and object aliased as traversable in a namespace' => [
@@ -415,8 +404,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                      namespace App;
                      use Foo as Traversable;
                      /** @param array|Traversable $foo */
-                     function my_foo($foo) {}
-                ',
+                     function my_foo($foo) {}',
         ];
 
         yield 'array of object and traversable' => [
@@ -451,8 +439,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     /** @param string $foo */
                     function bar($notFoo) {
                         return baz($foo);
-                    }
-                ',
+                    }',
         ];
 
         yield 'do not fix function call when no parameter' => [
@@ -460,29 +447,25 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     /** @param string $foo */
                     function bar() {
                         return baz($foo);
-                    }
-                ',
+                    }',
         ];
 
         yield 'intersection types' => [
             '<?php
                     /** @param Bar&Baz $x */
-                    function bar($x) {}
-                ',
+                    function bar($x) {}',
         ];
 
         yield 'very long class name before ampersand' => [
             '<?php
                     /** @param Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz $x */
-                    function bar($x) {}
-                ',
+                    function bar($x) {}',
         ];
 
         yield 'very long class name after ampersand' => [
             '<?php
                     /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
-                    function bar($x) {}
-                ',
+                    function bar($x) {}',
         ];
 
         yield 'support for arrow function' => [

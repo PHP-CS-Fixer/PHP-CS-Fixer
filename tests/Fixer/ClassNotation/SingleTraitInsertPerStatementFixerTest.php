@@ -168,15 +168,13 @@ class Z
 {
     use X\Y\Z0;use X\Y\Z0;use M;
     use X\Y\Z1;use X\Y\Z1;
-}
-                ',
+}',
             '<?php
 class Z
 {
     use X\Y\Z0, X\Y\Z0, M;
     use X\Y\Z1, X\Y\Z1;
-}
-                ',
+}',
         ];
 
         yield 'comments' => [

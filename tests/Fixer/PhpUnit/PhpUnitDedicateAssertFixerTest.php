@@ -43,14 +43,12 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
                     $this->assertNan($a);
                     $this->assertNan($a);
                     $this->assertTrue(test\is_nan($a));
-                    $this->assertTrue(test\a\is_nan($a));
-                '),
+                    $this->assertTrue(test\a\is_nan($a));'),
             self::generateTest('
                     $this->assertTrue(is_nan($a));
                     $this->assertTrue(\is_nan($a));
                     $this->assertTrue(test\is_nan($a));
-                    $this->assertTrue(test\a\is_nan($a));
-                '),
+                    $this->assertTrue(test\a\is_nan($a));'),
         ];
 
         yield [
@@ -58,14 +56,12 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
                     $this->assertFileExists($a);
-                    $this->assertFileNotExists($a);
-                '),
+                    $this->assertFileNotExists($a);'),
             self::generateTest('
                     $this->assertTrue(file_exists($a));
                     $this->assertFalse(file_exists($a));
                     $this->assertTrue(\file_exists($a));
-                    $this->assertFalse(\file_exists($a));
-                '),
+                    $this->assertFalse(\file_exists($a));'),
         ];
 
         yield [
@@ -73,25 +69,21 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
                     $this->assertNull($a);
                     $this->assertNotNull($a);
                     $this->assertNull($a);
-                    $this->assertNotNull($a, "my message");
-                '),
+                    $this->assertNotNull($a, "my message");'),
             self::generateTest('
                     $this->assertTrue(is_null($a));
                     $this->assertFalse(is_null($a));
                     $this->assertTrue(\is_null($a));
-                    $this->assertFalse(\is_null($a), "my message");
-                '),
+                    $this->assertFalse(\is_null($a), "my message");'),
         ];
 
         yield [
             self::generateTest('
                     $this->assertEmpty($a);
-                    $this->assertNotEmpty($a);
-                '),
+                    $this->assertNotEmpty($a);'),
             self::generateTest('
                     $this->assertTrue(empty($a));
-                    $this->ASSERTFALSE(empty($a));
-                '),
+                    $this->ASSERTFALSE(empty($a));'),
         ];
 
         yield [
@@ -99,25 +91,21 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
                     $this->assertInfinite($a);
-                    $this->assertFinite($a, b"my message");
-                '),
+                    $this->assertFinite($a, b"my message");'),
             self::generateTest('
                     $this->assertTrue(is_infinite($a));
                     $this->assertFalse(is_infinite($a), "my message");
                     $this->assertTrue(\is_infinite($a));
-                    $this->assertFalse(\is_infinite($a), b"my message");
-                '),
+                    $this->assertFalse(\is_infinite($a), b"my message");'),
         ];
 
         yield [
             self::generateTest('
                     $this->assertArrayHasKey("test", $a);
-                    $this->assertArrayNotHasKey($b, $a, $c);
-                '),
+                    $this->assertArrayNotHasKey($b, $a, $c);'),
             self::generateTest('
                     $this->assertTrue(\array_key_exists("test", $a));
-                    $this->ASSERTFALSE(array_key_exists($b, $a), $c);
-                '),
+                    $this->ASSERTFALSE(array_key_exists($b, $a), $c);'),
         ];
 
         yield [
@@ -280,50 +268,41 @@ $a#
         yield '$a instanceof class' => [
             self::generateTest('
                 $this->assertInstanceOf(SomeClass::class, $x);
-                $this->assertInstanceOf(SomeClass::class, $y, $message);
-            '),
+                $this->assertInstanceOf(SomeClass::class, $y, $message);'),
             self::generateTest('
                 $this->assertTrue($x instanceof SomeClass);
-                $this->assertTrue($y instanceof SomeClass, $message);
-            '),
+                $this->assertTrue($y instanceof SomeClass, $message);'),
         ];
 
         yield '$a instanceof class\a\b' => [
             self::generateTest('
-                $this->assertInstanceOf(\PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer::class, $ii);
-            '),
+                $this->assertInstanceOf(\PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer::class, $ii);'),
             self::generateTest('
-                $this->assertTrue($ii instanceof \PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer);
-            '),
+                $this->assertTrue($ii instanceof \PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer);'),
         ];
 
         yield '$a instanceof $b' => [
             self::generateTest('
                 $this->assertInstanceOf($tty, $abc/* 1 *//* 2 */);
-                $this->assertInstanceOf($oo, $def, $message);
-            '),
+                $this->assertInstanceOf($oo, $def, $message);'),
             self::generateTest('
                 $this->assertTrue($abc instanceof /* 1 */$tty /* 2 */);
-                $this->assertTrue($def instanceof $oo, $message);
-            '),
+                $this->assertTrue($def instanceof $oo, $message);'),
         ];
 
         yield 'do not fix instance of' => [
             self::generateTest('
                 $this->assertTrue($gg instanceof $ijl . "X", $something);
-                $this->assertTrue($ff instanceof $klh . $b(1,2,$message), $noMsg);
-            '),
+                $this->assertTrue($ff instanceof $klh . $b(1,2,$message), $noMsg);'),
         ];
 
         yield '!$a instanceof class' => [
             self::generateTest('
                 $this->assertNotInstanceOf(SomeClass::class, $x);
-                $this->assertNotInstanceOf(SomeClass::class, $y, $message);
-            '),
+                $this->assertNotInstanceOf(SomeClass::class, $y, $message);'),
             self::generateTest('
                 $this->assertTrue(!$x instanceof SomeClass);
-                $this->assertTrue(!$y instanceof SomeClass, $message);
-            '),
+                $this->assertTrue(!$y instanceof SomeClass, $message);'),
         ];
     }
 
@@ -358,8 +337,7 @@ $a#
                 $this->assertTrue(is_int($a) || \is_bool($b));
                 $this->assertTrue($a&&is_int($a));
                 static::assertTrue(is_null);
-                self::assertTrue(is_null);
-            '),
+                self::assertTrue(is_null);'),
         ];
 
         yield 'not in class' => [
@@ -473,16 +451,14 @@ $a#
                     $this->assertCount(3, $a);
                     $this->assertNotCount(4, $a);
                     $this->assertCount(5, $a, "abc");
-                    $this->assertCount(6, $a, "def");
-                '),
+                    $this->assertCount(6, $a, "def");'),
             self::generateTest('
                     $this->assertSame(1, %1$s($a));
                     $this->assertSame(2, %1$s($a));
                     $this->assertEquals(3, %1$s($a));
                     $this->assertNotSame(4, %1$s($a));
                     $this->assertEquals(5, %1$s($a), "abc");
-                    $this->assertSame(6, \%1$s($a), "def");
-                '),
+                    $this->assertSame(6, \%1$s($a), "def");'),
         ];
 
         yield 'comment handling' => [
@@ -543,8 +519,7 @@ $a# 5
             self::generateTest('
                     Foo::assertSame(1, sizeof($a));
                     $this->assertSame(1, sizeof2(2));
-                    $this->assertSame(1, sizeof::foo);
-                '),
+                    $this->assertSame(1, sizeof::foo);'),
         ];
     }
 

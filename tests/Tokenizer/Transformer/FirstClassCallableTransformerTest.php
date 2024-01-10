@@ -81,8 +81,7 @@ strlen(/* */.../* */);
 $closure(   ...);
 $invokableObject(...  );
 $obj->method(  ...  );
-$obj->$methodStr(  /* */  ... /* */  );
-            ',
+$obj->$methodStr(  /* */  ... /* */  );',
         ];
 
         yield 'not cases' => [
@@ -94,8 +93,7 @@ $obj->$methodStr(  /* */  ... /* */  );
                 foo(named: $arg, ...$args);
                 foo(...$nulls);
                 $fruits = ["banana", "orange", ...$parts, "watermelon"];
-                $a = [...$array1, ...$array2];
-            ',
+                $a = [...$array1, ...$array2];',
         ];
     }
 }

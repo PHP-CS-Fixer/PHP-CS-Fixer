@@ -445,8 +445,7 @@ namespace A\B6 {
     use C5\B5;
 
     use const C0\Z5;
-}
-            ',
+}',
             '<?php
 namespace A\B6 {
     use C1\B1;use const C6\Z1;
@@ -454,8 +453,7 @@ namespace A\B6 {
     use C3\B3;use const C8\Z3;
     use C4\B4;use const C9\Z4;
     use C5\B5;use const C0\Z5;
-}
-            ',
+}',
         ];
 
         yield 'lots of inserts in multiple namespaces' => [
@@ -484,8 +482,7 @@ namespace A\B5 {
     use C\B;
 
     use const C\Z;
-}
-            ',
+}',
             '<?php
 namespace A\B1 {
     use C\B;use const C\Z;
@@ -501,8 +498,7 @@ namespace A\B4 {
 }
 namespace A\B5 {
     use C\B;use const C\Z;
-}
-            ',
+}',
         ];
 
         yield [

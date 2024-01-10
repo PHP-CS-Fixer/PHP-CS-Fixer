@@ -59,8 +59,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 $a = $b&$c;
                 $a &+ $b;
                 const A1 = B&C;
-                const B1 = D::X & C;
-            ',
+                const B1 = D::X & C;',
         ];
 
         if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
@@ -264,8 +263,7 @@ class Number
                 f3(CONST_A&CONST_B);
                 function f4(A&B $x, C&D $y, E&F $z) {};
                 f5(CONST_A&CONST_B);
-                $x = ($y&$z);
-            ',
+                $x = ($y&$z);',
             [
                 15 => CT::T_TYPE_INTERSECTION,
                 22 => CT::T_TYPE_INTERSECTION,
@@ -306,8 +304,7 @@ $a = static function (A&B&int $a):int|null {};
                 function f1(array&callable $x) {};
                 function f2(callable&array $x) {};
                 function f3(string&callable $x) {};
-                function f4(callable&string $x) {};
-            ',
+                function f4(callable&string $x) {};',
             [
                 7 => CT::T_TYPE_INTERSECTION,
                 22 => CT::T_TYPE_INTERSECTION,
@@ -349,8 +346,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 f(FOO|BAR&BAZ&$x);
                 fn(FOO&BAR&BAZ&$x) => 0; // Intersection found
                 fn(FOO|BAR|BAZ&$x) => 0;
-                f(FOO&BAR&BAZ&$x);
-            ',
+                f(FOO&BAR&BAZ&$x);',
             [
                 35 => CT::T_TYPE_INTERSECTION,
                 37 => CT::T_TYPE_INTERSECTION,
@@ -497,8 +493,7 @@ class Dnf
         yield 'arrow function with DNF types' => [
             '<?php
                 $f1 = fn (): A|(B&C) => new Foo();
-                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
-            ',
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();',
             [
                 16 => CT::T_TYPE_INTERSECTION,
                 38 => CT::T_TYPE_INTERSECTION,

@@ -1093,13 +1093,11 @@ $this
                     foo("bar")
                         ->method1()
                         ->method2()
-                    ;
-                ',
+                    ;',
             '<?php
                     foo("bar")
                         ->method1()
-                        ->method2();
-                ',
+                        ->method2();',
         ];
 
         yield [
@@ -1107,13 +1105,11 @@ $this
                     $result = $arrayOfAwesomeObjects["most awesome object"]
                         ->method1()
                         ->method2()
-                    ;
-                ',
+                    ;',
             '<?php
                     $result = $arrayOfAwesomeObjects["most awesome object"]
                         ->method1()
-                        ->method2();
-                ',
+                        ->method2();',
         ];
 
         yield [
@@ -1122,8 +1118,7 @@ $this
                     $bar = [
                         1 => 2,
                         3 => $baz->method(),
-                    ];
-                ',
+                    ];',
         ];
 
         yield [
@@ -1186,14 +1181,12 @@ switch ($foo) {
                 $foo?->method1()
                     ?->method2()
                     ?->method3()
-                ;
-                ',
+                ;',
             '<?php
 
                 $foo?->method1()
                     ?->method2()
-                    ?->method3();
-                '
+                    ?->method3();'
         );
     }
 }

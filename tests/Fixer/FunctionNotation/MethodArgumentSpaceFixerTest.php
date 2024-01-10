@@ -321,8 +321,7 @@ list(
         yield 'skip short array' => [
             '<?php
     $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
-    $bar = ["a" ,"b" ,"c"];
-    ',
+    $bar = ["a" ,"b" ,"c"];',
         ];
 
         yield 'don\'t change HEREDOC and NOWDOC' => [
@@ -966,13 +965,11 @@ $example = function () use ($message1,$message2) {
 foo(
     /* bar */
     "baz"
-);
-            ',
+);',
             '<?php
 foo(
     /* bar */ "baz"
-);
-            ',
+);',
         ];
     }
 

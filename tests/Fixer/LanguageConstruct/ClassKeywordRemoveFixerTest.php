@@ -39,52 +39,44 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             "<?php
                 use Foo\\Bar\\Thing;
 
-                echo 'Foo\\Bar\\Thing';
-                ",
+                echo 'Foo\\Bar\\Thing';",
             '<?php
                 use Foo\Bar\Thing;
 
-                echo Thing::class;
-                ',
+                echo Thing::class;',
         ];
 
         yield [
             '<?php
                 use Foo\\Bar;
             '."
-                echo 'Foo\\Bar\\Thing';
-                ",
+                echo 'Foo\\Bar\\Thing';",
             '<?php
                 use Foo\Bar;
             '.'
-                echo Bar\Thing::class;
-                ',
+                echo Bar\Thing::class;',
         ];
 
         yield [
             "<?php
                 namespace Foo;
                 use Foo\\Bar;
-                echo 'Foo\\Bar\\Baz';
-                ",
+                echo 'Foo\\Bar\\Baz';",
             '<?php
                 namespace Foo;
                 use Foo\\Bar;
-                echo \\Foo\\Bar\\Baz::class;
-                ',
+                echo \\Foo\\Bar\\Baz::class;',
         ];
 
         yield [
             "<?php
                 use Foo\\Bar\\Thing as Alias;
 
-                echo 'Foo\\Bar\\Thing';
-                ",
+                echo 'Foo\\Bar\\Thing';",
             '<?php
                 use Foo\Bar\Thing as Alias;
 
-                echo Alias::class;
-                ',
+                echo Alias::class;',
         ];
 
         yield [
@@ -93,33 +85,27 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 use Foo\\Bar\\Thing as Alias;
 
                 echo 'Foo\\Bar\\Dummy';
-                echo 'Foo\\Bar\\Thing';
-                ",
+                echo 'Foo\\Bar\\Thing';",
             '<?php
                 use Foo\Bar\Dummy;
                 use Foo\Bar\Thing as Alias;
 
                 echo Dummy::class;
-                echo Alias::class;
-                ',
+                echo Alias::class;',
         ];
 
         yield [
             "<?php
-                echo 'DateTime';
-                ",
+                echo 'DateTime';",
             '<?php
-                echo \DateTime::class;
-                ',
+                echo \DateTime::class;',
         ];
 
         yield [
             "<?php
-                echo 'Thing';
-                ",
+                echo 'Thing';",
             '<?php
-                echo Thing::class;
-                ',
+                echo Thing::class;',
         ];
 
         yield [
@@ -128,15 +114,13 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                     public function amazingFunction() {
                         echo 'Thing';
                     }
-                }
-                ",
+                }",
             '<?php
                 class Foo {
                     public function amazingFunction() {
                         echo Thing::class;
                     }
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -145,15 +129,13 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 
                 use Foo\\Bar;
 
-                echo 'Foo\\Bar';
-                ",
+                echo 'Foo\\Bar';",
             '<?php
                 namespace A\B;
 
                 use Foo\Bar;
 
-                echo Bar::class;
-                ',
+                echo Bar::class;',
         ];
 
         yield [
@@ -180,8 +162,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 namespace C1 {
                     use B\\B\\D;
                     var_dump('B\\B\\D');
-                }
-                ",
+                }",
             '<?php
 
                 namespace A\B {
@@ -205,8 +186,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 namespace C1 {
                     use B\B\D;
                     var_dump(D::class);
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -222,30 +202,25 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                     public function c() {
                         return parent::class;
                     }
-                }
-                ',
+                }',
         ];
 
         yield [
             "<?php
                 namespace Foo;
-                var_dump('Foo\\Bar\\Baz');
-                ",
+                var_dump('Foo\\Bar\\Baz');",
             '<?php
                 namespace Foo;
-                var_dump(Bar\\Baz::class);
-                ',
+                var_dump(Bar\\Baz::class);',
         ];
 
         yield [
             "<?php
                 namespace Foo\\Bar;
-                var_dump('Foo\\Bar\\Baz');
-                ",
+                var_dump('Foo\\Bar\\Baz');",
             '<?php
                 namespace Foo\\Bar;
-                var_dump(Baz::class);
-                ',
+                var_dump(Baz::class);',
         ];
 
         yield [
@@ -255,16 +230,14 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 use const Foo\\Bar\\{ConstA, ConstB, ConstC};
 
                 echo 'Foo\\Bar\\ClassB';
-                echo 'Foo\\Bar\\ClassC';
-                ",
+                echo 'Foo\\Bar\\ClassC';",
             '<?php
                 use Foo\Bar\{ClassA, ClassB, ClassC as C};
                 use function Foo\Bar\{fn_a, fn_b, fn_c};
                 use const Foo\Bar\{ConstA, ConstB, ConstC};
 
                 echo ClassB::class;
-                echo C::class;
-                ',
+                echo C::class;',
             "<?php
                 namespace {
                     var_dump('Foo');
@@ -282,8 +255,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 }
                 namespace {
                     var_dump('Qux\\Quux');
-                }
-                ",
+                }",
             '<?php
                 namespace {
                     var_dump(Foo::class);
@@ -301,8 +273,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 }
                 namespace {
                     var_dump(Qux\\Quux::class);
-                }
-                ',
+                }',
         ];
     }
 
@@ -331,12 +302,10 @@ DateTime:: # a
         $this->doTest(
             "<?php
             echo 'Thing';
-            echo \$thing::class;
-            ",
+            echo \$thing::class;",
             '<?php
             echo Thing::class;
-            echo $thing::class;
-            '
+            echo $thing::class;'
         );
     }
 }

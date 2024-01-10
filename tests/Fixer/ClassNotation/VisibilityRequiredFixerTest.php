@@ -443,8 +443,7 @@ const F=1; }',
                         public const TWO = ONE * 2;
                         public const THREE = ONE + self::TWO;
                         public const SENTENCE = "The value of THREE is ".self::THREE;
-                    }
-                ',
+                    }',
             '<?php
                     class foo
                     {
@@ -452,8 +451,7 @@ const F=1; }',
                         const TWO = ONE * 2;
                         const THREE = ONE + self::TWO;
                         const SENTENCE = "The value of THREE is ".self::THREE;
-                    }
-                ',
+                    }',
             ['elements' => ['const']],
         ];
 
@@ -469,8 +467,7 @@ AB# <- this is the name
 )#
 {#
 }#
-}
-            ',
+}',
             '<?php
 class A
 {# We will have a function below
@@ -482,8 +479,7 @@ AB# <- this is the name
 )#
 {#
 }#
-}
-            ',
+}',
         ];
 
         yield 'anonymous class' => [
@@ -499,8 +495,7 @@ AB# <- this is the name
                     {
                         $a = new class() {public function a() {}};
                     }
-                }
-            ',
+                }',
             '<?php
                 $a = new class() {
                     function a() {
@@ -513,8 +508,7 @@ AB# <- this is the name
                     {
                         $a = new class() {function a() {}};
                     }
-                }
-            ',
+                }',
         ];
 
         yield 'removing newlines between keywords' => [
@@ -574,8 +568,7 @@ AB# <- this is the name
                     abstract protected static function fooF();
                     abstract public static function fooG();
                     abstract public static function fooH();
-                }
-            ',
+                }',
             '<?php
                 abstract class Foo
                 {
@@ -587,8 +580,7 @@ AB# <- this is the name
                     static protected abstract function fooF();
                     abstract static function fooG();
                     static abstract function fooH();
-                }
-            ',
+                }',
         ];
 
         yield [
@@ -682,14 +674,12 @@ AB# <- this is the name
 class Foo
 {
     public readonly string $prop2a;
-}
-            ',
+}',
             '<?php
 class Foo
 {
     readonly public string $prop2a;
-}
-            ',
+}',
         ];
 
         yield [
@@ -698,15 +688,13 @@ class Foo
 {
     public readonly string $prop1;
     public readonly string $prop2;
-}
-            ',
+}',
             '<?php
 class Foo
 {
     readonly string $prop1;
     public readonly string $prop2;
-}
-            ',
+}',
         ];
 
         yield [

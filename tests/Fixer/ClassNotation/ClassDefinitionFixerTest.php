@@ -378,8 +378,7 @@ interface Test extends
 TestInterface3, /**/     TestInterface4   ,
       TestInterface5    ,     '.'
         /**/TestInterface65
-{}
-            ',
+{}',
             '<?php
 interface Test
 extends
@@ -390,8 +389,7 @@ extends
 // Note: PSR does not have a rule for multiple extends
 TestInterface3, /**/     TestInterface4   ,
       TestInterface5    ,     '.'
-        /**/TestInterface65    {}
-            ',
+        /**/TestInterface65    {}',
         ];
 
         yield from self::provideClassyCases('trait');

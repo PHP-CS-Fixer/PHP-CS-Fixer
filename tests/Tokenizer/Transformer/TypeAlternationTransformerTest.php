@@ -307,8 +307,7 @@ class Number
                 f3(CONST_A|CONST_B);
                 function f4(A|B $x, C|D $y, E|F $z) {};
                 f5(CONST_A|CONST_B);
-                $x = ($y|$z);
-            ',
+                $x = ($y|$z);',
             [
                 15 => CT::T_TYPE_ALTERNATION,
                 22 => CT::T_TYPE_ALTERNATION,
@@ -324,8 +323,7 @@ class Number
                 function f1(array|callable $x) {};
                 function f2(callable|array $x) {};
                 function f3(string|callable $x) {};
-                function f4(callable|string $x) {};
-            ',
+                function f4(callable|string $x) {};',
             [
                 7 => CT::T_TYPE_ALTERNATION,
                 22 => CT::T_TYPE_ALTERNATION,
@@ -474,8 +472,7 @@ class Foo
                 f(FOO|BAR&BAZ&$x);
                 fn(FOO&BAR&BAZ&$x) => 0;
                 fn(FOO|BAR|BAZ&$x) => 0; // Alternation found
-                f(FOO&BAR&BAZ&$x);
-            ',
+                f(FOO&BAR&BAZ&$x);',
         ];
     }
 
@@ -576,8 +573,7 @@ class Dnf
         yield 'arrow function with DNF types' => [
             '<?php
                 $f1 = fn (): A|(B&C) => new Foo();
-                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
-            ',
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();',
             [
                 13 => CT::T_TYPE_ALTERNATION,
                 41 => CT::T_TYPE_ALTERNATION,
@@ -613,8 +609,7 @@ class Dnf
             '<?php
                 class Foo {
                     const A|\B|array/**/|(Z&V)|callable | X /* X*/ |D Bar = 1;
-                }
-            ',
+                }',
             [
                 11 => CT::T_TYPE_ALTERNATION,
                 14 => CT::T_TYPE_ALTERNATION,

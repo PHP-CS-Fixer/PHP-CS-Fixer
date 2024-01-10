@@ -248,12 +248,10 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     echo \PHPUnit\Runner\Version::id();
-                    echo \PHPUnit\Runner\Version::id();
-                    ',
+                    echo \PHPUnit\Runner\Version::id();',
             '<?php
                     echo \PHPUnit_Runner_Version::id();
-                    echo \PHPUnit_Runner_Version::id();
-                    ',
+                    echo \PHPUnit_Runner_Version::id();',
         ];
 
         yield [

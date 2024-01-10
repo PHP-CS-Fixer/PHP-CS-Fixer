@@ -528,8 +528,7 @@ class Foo
     readonly string $prop1;
     readonly public string $prop2;
     public readonly string $prop3;
-}
-            ',
+}',
         ];
 
         yield 'final const' => [
@@ -548,8 +547,7 @@ class Foo
 {
     final public const A = "1";
     public final const B = "2";
-}
-            ',
+}',
         ];
 
         yield 'enum final const' => [
@@ -568,8 +566,7 @@ enum Foo
 {
     final public const A = "1";
     public final const B = "2";
-}
-            ',
+}',
         ];
 
         yield 'enum case' => [
@@ -662,8 +659,7 @@ enum Foo: string
             case "x": break;
         }
     }
-}
-            ',
+}',
         ];
     }
 
@@ -1898,15 +1894,13 @@ $b;',
     {
         yield [
             '<?php
-                    array("a" => 1);
-                ',
+                    array("a" => 1);',
             2,
         ];
 
         yield [
             '<?php
-                    ["a" => 2];
-                ',
+                    ["a" => 2];',
             2, false,
         ];
 
@@ -1914,8 +1908,7 @@ $b;',
             '<?php
                     array(
                         "a" => 3
-                    );
-                ',
+                    );',
             2, true,
         ];
 
@@ -1923,8 +1916,7 @@ $b;',
             '<?php
                     [
                         "a" => 4
-                    ];
-                ',
+                    ];',
             2, true,
         ];
 
@@ -1933,8 +1925,7 @@ $b;',
                     array(
                         "a" => array(5, 6, 7),
 8 => new \Exception(\'Hello\')
-                    );
-                ',
+                    );',
             2, true,
         ];
 
@@ -1944,8 +1935,7 @@ $b;',
                     array(
                         "a" => [9, 10, 11],
 12 => new \Exception(\'Hello\')
-                    );
-                ',
+                    );',
             2, true,
         ];
 
@@ -1990,8 +1980,7 @@ $b;',
                     ["a" => $a, "b" => $b] = $array;
                     $c = [$d, $e] = $array[$a];
                     [[$a, $b], [$c, $d]] = $d;
-                    $array = []; $d = array();
-                ',
+                    $array = []; $d = array();',
             [76, 84],
         ];
     }
@@ -2609,8 +2598,7 @@ namespace b { use D\C; }
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-                ',
+use const some\a\{ConstA, ConstB, ConstC};',
         ];
 
         yield [
@@ -2618,8 +2606,7 @@ use const some\a\{ConstA, ConstB, ConstC};
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-                ',
+use const some\a\{ConstA, ConstB, ConstC};',
             true,
         ];
 
@@ -2628,8 +2615,7 @@ use const some\a\{ConstA, ConstB, ConstC};
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA, ConstB, ConstC,};
-                ',
+use const some\a\{ConstA, ConstB, ConstC,};',
         ];
 
         yield [
@@ -2637,8 +2623,7 @@ use const some\a\{ConstA, ConstB, ConstC,};
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA, ConstB, ConstC,};
-                ',
+use const some\a\{ConstA, ConstB, ConstC,};',
             true,
         ];
     }
@@ -2907,8 +2892,7 @@ class MyTestWithAnonymousClass extends TestCase
                 static fn(): int => $x;
 
                 fn($x = 42) => $x;
-                $eq = fn ($x, $y) => $x == $y;
-            ',
+                $eq = fn ($x, $y) => $x == $y;',
         ];
 
         yield 'references, splat and arrow cases' => [
@@ -2926,8 +2910,7 @@ class MyTestWithAnonymousClass extends TestCase
 
                 $fn = fn(&$x) => $x++;
                 $y = &$fn($x);
-                fn($x, &...$rest) => 1;
-            ',
+                fn($x, &...$rest) => 1;',
         ];
 
         yield 'different endings' => [
@@ -2998,8 +2981,7 @@ class MyTestWithAnonymousClass extends TestCase
                 $a = array_map(
                     fn (array $item) => $item[\'callback\']($item[\'value\']),
                     [/* items */]
-                );
-            ',
+                );',
         ];
 
         yield 'arrow function returning array' => [

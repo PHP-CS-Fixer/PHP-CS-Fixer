@@ -80,8 +80,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
                     class A extends B {}
                     interface D {}
-                    trait E {}
-                ',
+                    trait E {}',
         ];
 
         yield 'no fixes II' => [
@@ -100,8 +99,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
                     } finally {
 
-                    }
-                ',
+                    }',
         ];
 
         yield 'no fix namespace block' => [
@@ -111,8 +109,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     namespace A {
                     }
                     namespace A\B {
-                    }
-                ',
+                    }',
         ];
 
         yield 'provideNoFix7Cases' => [
@@ -126,8 +123,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                         public function getBar(): array
                         {
                         }
-                    }
-                ',
+                    }',
         ];
     }
 
@@ -146,8 +142,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         yield 'no fixes, offset access syntax with curly braces' => [
             '<?php
                     echo ${$a};
-                    echo $a{1};
-                ',
+                    echo $a{1};',
         ];
     }
 
@@ -188,8 +183,7 @@ namespace Foo {
         yield [
             '<?php
             namespace Foo7;
-                function Bar(){}
-            ',
+                function Bar(){}',
             '<?php
             namespace Foo7 {
                 function Bar(){}

@@ -1444,22 +1444,19 @@ class Foo {
                      * @param $number - it can be:
                      * '.implode("\n                     * ", range(1, 1000)).'
                      */
-                     function display($number) {}
-                ',
+                     function display($number) {}',
         ];
 
         yield 'return with @inheritDoc in description' => [
             '<?php
                     /**
                      */
-                    function foo(): bool {}
-                ',
+                    function foo(): bool {}',
             '<?php
                     /**
                      * @return bool @inheritDoc
                      */
-                    function foo(): bool {}
-                ',
+                    function foo(): bool {}',
             ['remove_inheritdoc' => true],
         ];
 

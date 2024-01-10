@@ -39,89 +39,75 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
                 {
-                }
-                ',
+                }',
             '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
                 {
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 abstract class TestClass1 EXTENDS Test implements TestInterface
                 {
-                }
-                ',
+                }',
             '<?php
                 abstract class TestClass1 EXTENDS Test implements TestInterface
                 {
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 CLASS TestClass2 extends Test
                 {
-                }
-                ',
+                }',
             '<?php
                 CLASS TestClass2 extends Test
                 {
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 class TestClass3 implements TestInterface1
                 {
-                }
-                ',
+                }',
             '<?php
                 class TestClass3 implements TestInterface1
                 {
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 class TestClass4
                 {
-                }
-                ',
+                }',
             '<?php
                 class TestClass4
                 {
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 interface TestInterface1
                 {
-                }
-                ',
+                }',
             '<?php
                 interface TestInterface1
                 {
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 interface TestExtendingInterface extends TestInterface2, TestInterface3 {
-                }
-                ',
+                }',
             '<?php
                 interface TestExtendingInterface extends TestInterface2, TestInterface3 {
-                };
-                ',
+                };',
         ];
 
         yield [
@@ -129,14 +115,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 namespace Two {
                     $a = 1; {
                     }
-                }
-                ',
+                }',
             '<?php
                 namespace Two {;;
                     $a = 1; {
                     };
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -144,14 +128,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 {
                     '.'
                 }
-                echo 1;
-                ',
+                echo 1;',
             '<?php
                 {
                     ;
                 };
-                echo 1;
-                ',
+                echo 1;',
         ];
 
         yield [
@@ -159,21 +141,18 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 while($time < $a)
                     ;
                 echo "done waiting.";
-                $b = \Test;
-                ',
+                $b = \Test;',
         ];
 
         yield [
             '<?php
                     if($a>1){
 
-                    }
-                ',
+                    }',
             '<?php
                     if($a>1){
 
-                    };
-                ',
+                    };',
         ];
 
         yield [
@@ -182,15 +161,13 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     } else {
 
-                    }
-                ',
+                    }',
             '<?php
                     if($a>1) {
 
                     } else {
 
-                    };
-                ',
+                    };',
         ];
 
         yield [
@@ -199,15 +176,13 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
                     }catch (\Exception $e) {
 
-                    }
-                ',
+                    }',
             '<?php
                     try{
 
                     }catch (\Exception $e) {
 
-                    };
-                ',
+                    };',
         ];
 
         yield [
@@ -220,14 +195,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     function foo()
                     {
                          // a
-                    }
-                ',
+                    }',
             '<?php
                     function foo()
                     {
                         ; // a
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -243,12 +216,10 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     for(;;) {
-                    }
-                ',
+                    }',
             '<?php
                     for(;;) {
-                    };
-                ',
+                    };',
         ];
 
         yield [
@@ -256,14 +227,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     foreach($a as $b) {
                     }
                     foreach($a as $b => $c) {
-                    }
-                ',
+                    }',
             '<?php
                     foreach($a as $b) {
                     };
                     foreach($a as $b => $c) {
-                    };
-                ',
+                    };',
         ];
 
         yield [
@@ -285,24 +254,20 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             '<?php
                     switch($a) {
                         default : {echo 1;}
-                    }
-                ',
+                    }',
             '<?php
                     switch($a) {
                         default : {echo 1;}
-                    };
-                ',
+                    };',
         ];
 
         yield [
             '<?php
                 function test($a, $b) {
-                }
-                ',
+                }',
             '<?php
                 function test($a, $b) {
-                };
-                ',
+                };',
         ];
 
         yield [
@@ -318,8 +283,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         }
                     }
                     return $n->{$o};
-                }
-                ',
+                }',
             '<?php
                 function foo($n)
                 {
@@ -332,8 +296,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         }
                     };
                     return $n->{$o};
-                };
-                ',
+                };',
         ];
 
         yield [
@@ -341,58 +304,48 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 declare(ticks=1) {
                 // entire script here
                 }
-                declare(ticks=1);
-                ',
+                declare(ticks=1);',
             '<?php
                 declare(ticks=1) {
                 // entire script here
                 };
-                declare(ticks=1);
-                ',
+                declare(ticks=1);',
         ];
 
         yield [
             '<?php
                     namespace A\B\C;
-                    use D;
-                ',
+                    use D;',
             '<?php
                     namespace A\B\C;;;;
-                    use D;;;;
-                ',
+                    use D;;;;',
         ];
 
         yield [
             '<?php
                     namespace A\B\C;
-                    use D;
-                ',
+                    use D;',
             '<?php
                     namespace A\B\C;
-                    use D;;;;
-                ',
+                    use D;;;;',
         ];
 
         yield [
             '<?php
-                    namespace A\B\C;use D;
-                ',
+                    namespace A\B\C;use D;',
             '<?php
-                    namespace A\B\C;;use D;
-                ',
+                    namespace A\B\C;;use D;',
         ];
 
         yield [
             '<?php
                     trait TestTrait
                     {
-                    }
-                ',
+                    }',
             '<?php
                     trait TestTrait
                     {
-                    };
-                ',
+                    };',
         ];
 
         yield [
@@ -410,8 +363,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } catch (\Exception $e){
                         //
                     } finally {
-                    }  ;
-                ',
+                    }  ;',
         ];
 
         foreach (['break', 'continue'] as $ops) {
@@ -436,8 +388,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 while(true) {while(true) {break 2;}}
-                while(true) {continue;}
-            ',
+                while(true) {continue;}',
         ];
 
         yield [
@@ -468,39 +419,34 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                         public function log($msg)
                         {
                         }
-                    };
-                    ',
+                    };',
         ];
 
         yield [
             '<?php
                     use function Functional\map;
                     $a = new class extends A {
-                    };
-                    ',
+                    };',
         ];
 
         yield [
             '<?php
                     use function Functional\map;
                     $a = new class implements B {
-                    };
-                    ',
+                    };',
         ];
 
         yield [
             '<?php
                     use function Functional\map;
                     $a = new class extends A implements B {
-                    };
-                    ',
+                    };',
         ];
 
         yield [
             '<?php
                     $a = new class extends \A implements B\C {
-                    };
-                    ',
+                    };',
         ];
 
         yield [
@@ -512,39 +458,33 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             '<?php
                     namespace A\B\C {
 
-                    }
-                ',
+                    }',
             '<?php
                     namespace A\B\C {
 
-                    };
-                ',
+                    };',
         ];
 
         yield [
             '<?php
                     namespace A{
 
-                    }
-                ',
+                    }',
             '<?php
                     namespace A{
 
-                    };
-                ',
+                    };',
         ];
 
         yield [
             '<?php
                     namespace{
 
-                    }
-                ',
+                    }',
             '<?php
                     namespace{
 
-                    };
-                ',
+                    };',
         ];
     }
 
@@ -627,14 +567,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     switch($a){
                         case 8;
                             echo 9;
-                    }
-                ',
+                    }',
             '<?php
                     switch($a){
                         case 8;;
                             echo 9;
-                    }
-                ',
+                    }',
         ];
     }
 

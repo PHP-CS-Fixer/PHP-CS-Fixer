@@ -413,15 +413,13 @@ case $b:
                 case "a":
                     echo __FILE__;
                     break;
-            }
-            ',
+            }',
             '<?php
             switch($a) {
                 case "a":
                     echo __FILE__;
                     continue;
-            }
-            ',
+            }',
             'numeric literal separator' => [
                 '<?php
 switch ($a) {

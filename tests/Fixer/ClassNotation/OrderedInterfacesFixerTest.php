@@ -79,15 +79,13 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                     class B2 implements A\B, Z\X {}
                     class C3 implements A, Z\X {}
                     class D4 implements A\B, B\V, Z\X\V {}
-                    class E5 implements U\B, X\B, Y\V, Z\X\V {}
-                ',
+                    class E5 implements U\B, X\B, Y\V, Z\X\V {}',
             '<?php
                     class A1 implements Z\X\Y, A\B\C {}
                     class B2 implements Z\X, A\B {}
                     class C3 implements Z\X, A {}
                     class D4 implements Z\X\V, B\V, A\B {}
-                    class E5 implements Z\X\V, Y\V, X\B, U\B {}
-                ',
+                    class E5 implements Z\X\V, Y\V, X\B, U\B {}',
         ];
 
         yield 'interface extends' => [
@@ -109,8 +107,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                                 }
                             };
                         }
-                    }
-                ',
+                    }',
             '<?php
                     class T implements C, A, B
                     {
@@ -124,19 +121,16 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                                 }
                             };
                         }
-                    }
-                ',
+                    }',
         ];
 
         yield 'single line after interfaces' => [
             '<?php
                 class Foo implements B, C //, A
-                {}
-            ',
+                {}',
             '<?php
                 class Foo implements C, B //, A
-                {}
-            ',
+                {}',
         ];
 
         yield 'descend single' => [
@@ -180,14 +174,12 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                     class A implements
                          ABCDE,
                          A\B\C\D
-                    { /* */ }
-                ',
+                    { /* */ }',
             '<?php
                     class A implements
                          A\B\C\D,
                          ABCDE
-                    { /* */ }
-                ',
+                    { /* */ }',
             [OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH],
         ];
 
@@ -223,14 +215,12 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                     class A implements
                          A\B\C\D,
                          ABCDE
-                    { /* */ }
-                ',
+                    { /* */ }',
             '<?php
                     class A implements
                          ABCDE,
                          A\B\C\D
-                    { /* */ }
-                ',
+                    { /* */ }',
             [
                 OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
                 OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
@@ -271,16 +261,14 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                          AAa\B\C\D,
                          ABCDE,
                          Aaa\B\C\D
-                    { /* */ }
-                ',
+                    { /* */ }',
             '<?php
                     class A implements
                          Aaa\B\C\D,
                          AAa\B\C\D,
                          ABCDE,
                          A\B\C\D
-                    { /* */ }
-                ',
+                    { /* */ }',
             [
                 OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_ALPHA,
                 'case_sensitive' => true,

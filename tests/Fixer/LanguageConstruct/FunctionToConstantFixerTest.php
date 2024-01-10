@@ -142,8 +142,7 @@ $a =
             '<?php
                     echo phpversion(1);
                     echo php_sapi_name(1,2);
-                    echo pi(1);
-                ',
+                    echo pi(1);',
         ];
 
         yield 'get_class => T_CLASS' => [
@@ -161,8 +160,7 @@ $a =
                     class B
                     {
                         use A;
-                    }
-                ',
+                    }',
             '<?php
                     class A
                     {
@@ -177,8 +175,7 @@ $a =
                     class B
                     {
                         use A;
-                    }
-                ',
+                    }',
         ];
 
         yield 'get_class with leading backslash' => [
@@ -203,8 +200,7 @@ static::class#1
 #5
 #6
 ;#7
-}}
-                ',
+}}',
             '<?php class A { function B(){
 echo#.
 #0
@@ -215,8 +211,7 @@ get_called_class#1
 )#5
 #6
 ;#7
-}}
-                ',
+}}',
             ['functions' => ['get_called_class']],
         ];
 
@@ -259,8 +254,7 @@ get_called_class#1
         yield [
             '<?php
                     class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this->extension)); }}
-                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this() )); }}
-                ',
+                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this() )); }}',
             null,
             ['functions' => ['get_class_this']],
         ];

@@ -46,8 +46,7 @@ final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
                 }
 
                 function C(float $a): array { return [$a];}
-                function D(array $a): array { return [$a];}
-            ',
+                function D(array $a): array { return [$a];}',
             '<?php
                 function A(INT $a): VOID {}
 
@@ -60,8 +59,7 @@ final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
                 }
 
                 function C(FLOAT $a): ARRAY { return [$a];}
-                function D(ARRAY $a): ARRAY { return [$a];}
-            ',
+                function D(ARRAY $a): ARRAY { return [$a];}',
         ];
 
         yield [
@@ -113,17 +111,14 @@ function Foo(/**/ARRAY/**/$bar) {
 
         yield [
             '<?php
-class Bar { function Foo(array $a, callable $b, self $c) {} }
-                ',
+class Bar { function Foo(array $a, callable $b, self $c) {} }',
             '<?php
-class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
-                ',
+class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }',
         ];
 
         yield [
             '<?php
-function Foo(INTEGER $a) {}
-                ',
+function Foo(INTEGER $a) {}',
         ];
 
         yield [
@@ -216,8 +211,7 @@ function Foo(INTEGER $a) {}
                     private $INT = 1;
                     private FOO $bar;
                     private A\INT\B $z;
-                };
-            ',
+                };',
             '<?php
                 class D{}
 
@@ -237,8 +231,7 @@ function Foo(INTEGER $a) {}
                     private $INT = 1;
                     private FOO $bar;
                     private A\INT\B $z;
-                };
-            ',
+                };',
         ];
 
         yield 'var keyword' => [
@@ -425,14 +418,12 @@ function Foo(INTEGER $a) {}
                 class Foo
                 {
                     const int FOO = 6;
-                }
-            ',
+                }',
             '<?php
                 class Foo
                 {
                     const INT FOO = 6;
-                }
-            ',
+                }',
         ];
 
         yield 'single types' => [
@@ -446,8 +437,7 @@ function Foo(INTEGER $a) {}
                     const mixed SOME_MIXED = 1;
                     const null SOME_NULL = NULL;
                     const string SOME_STRING = "X";
-                }
-            ',
+                }',
             '<?php
                 class Foo
                 {
@@ -458,8 +448,7 @@ function Foo(INTEGER $a) {}
                     const MIXED SOME_MIXED = 1;
                     const NULL SOME_NULL = NULL;
                     const STRING SOME_STRING = "X";
-                }
-            ',
+                }',
         ];
 
         yield 'nullables `self`, `parent` and `object`' => [
@@ -476,8 +465,7 @@ function Foo(INTEGER $a) {}
                     const ?\BAR D = null;
                     const ?\INT\B E = null;
                     public const ?INT\A/* x */X=C;
-                }
-            ',
+                }',
             '<?php
                 class Foo extends FooParent
                 {
@@ -491,8 +479,7 @@ function Foo(INTEGER $a) {}
                     const ?\BAR D = null;
                     const ?\INT\B E = null;
                     public const ?INT\A/* x */X=C;
-                }
-            ',
+                }',
         ];
 
         yield 'simple `|`' => [
@@ -521,8 +508,7 @@ function Foo(INTEGER $a) {}
                     protected const \A\B|(Foo & Stringable )|null|\X D = null;
 
                     public const Foo&Stringable G = V::A;
-                }
-            ',
+                }',
             '<?php
                 class Foo extends FooParent
                 {
@@ -530,8 +516,7 @@ function Foo(INTEGER $a) {}
                     protected const \A\B|(Foo & Stringable )|NULL|\X D = null;
 
                     public const Foo&Stringable G = V::A;
-                }
-            ',
+                }',
         ];
 
         yield 'interface, nullable int' => [

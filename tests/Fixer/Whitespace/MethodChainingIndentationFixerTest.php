@@ -162,8 +162,7 @@ $foo
             ->bar (
                 new foo()
             )
-            ->bar();
-            ',
+            ->bar();',
         ];
 
         yield [
@@ -173,8 +172,7 @@ $foo
                 ->Foo([
                     (new Bar())->foo(),
                 ])
-            ]);
-                ',
+            ]);',
         ];
 
         yield [

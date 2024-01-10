@@ -499,14 +499,12 @@ namespace {
                     echo \count([1]);
                     \some_other($a, 3);
                     echo strlen($a);
-                    not_me();
-                ',
+                    not_me();',
             '<?php
                     echo count([1]);
                     some_other($a, 3);
                     echo strlen($a);
-                    not_me();
-                ',
+                    not_me();',
             [
                 'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
                 'exclude' => ['strlen'],
@@ -518,14 +516,12 @@ namespace {
                     echo \count([1]);
                     \some_other($a, 3);
                     echo \strlen($a);
-                    \me_as_well();
-                ',
+                    \me_as_well();',
             '<?php
                     echo count([1]);
                     some_other($a, 3);
                     echo strlen($a);
-                    me_as_well();
-                ',
+                    me_as_well();',
             [
                 'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
@@ -539,8 +535,7 @@ namespace {
                     $b = already_prefixed_function();
                     // fix
                     $c = \get_class($d);
-                    $e = \intval($f);
-                ',
+                    $e = \intval($f);',
             '<?php
                     // do not fix
                     $a = strrev($a);
@@ -548,8 +543,7 @@ namespace {
                     $b = \already_prefixed_function();
                     // fix
                     $c = get_class($d);
-                    $e = intval($f);
-                ',
+                    $e = intval($f);',
             [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
             ],
@@ -559,19 +553,16 @@ namespace {
             '<?php class Foo {
                         public function & strlen($name) {
                         }
-                    }
-                ',
+                    }',
         ];
 
         yield 'scope namespaced and strict enabled' => [
             '<?php
                     $a = not_compiler_optimized_function();
-                    $b = intval($c);
-                ',
+                    $b = intval($c);',
             '<?php
                     $a = \not_compiler_optimized_function();
-                    $b = \intval($c);
-                ',
+                    $b = \intval($c);',
             [
                 'scope' => 'namespaced',
                 'strict' => true,
@@ -581,8 +572,7 @@ namespace {
         yield [
             '<?php
                     use function foo\json_decode;
-                    json_decode($base);
-                ',
+                    json_decode($base);',
             null,
             [
                 'include' => [NativeFunctionInvocationFixer::SET_ALL],
@@ -612,13 +602,11 @@ namespace {
             '<?php
                         $a = not_compiler_optimized_function();
                         $b =  not_compiler_optimized_function();
-                        $c = \intval($d);
-                    ',
+                        $c = \intval($d);',
             '<?php
                         $a = \not_compiler_optimized_function();
                         $b = \ not_compiler_optimized_function();
-                        $c = intval($d);
-                    ',
+                        $c = intval($d);',
             [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                 'strict' => true,
@@ -663,8 +651,7 @@ echo strlen($a);
         yield 'attribute and strict' => [
             '<?php
                 #[\Attribute(\Attribute::TARGET_CLASS)]
-                class Foo {}
-            ',
+                class Foo {}',
             null,
             ['strict' => true],
         ];
@@ -674,8 +661,7 @@ echo strlen($a);
         yield 'multiple function-calls-like in attribute' => [
             '<?php
                 #[Foo(), Bar(), Baz()]
-                class Foo {}
-            ',
+                class Foo {}',
             null,
             ['include' => ['@all']],
         ];

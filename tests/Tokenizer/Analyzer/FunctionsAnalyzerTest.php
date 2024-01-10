@@ -117,24 +117,21 @@ final class FunctionsAnalyzerTest extends TestCase
                 namespace B {
                     use function D;
                     A();
-                }
-            ',
+                }',
             [30],
         ];
 
         yield [
             '<?php
                 function A(){}
-                A();
-            ',
+                A();',
             [10],
         ];
 
         yield [
             '<?php
                 function A(){}
-                a();
-            ',
+                a();',
             [10],
         ];
 
@@ -143,8 +140,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 namespace {
                     function A(){}
                     A();
-                }
-            ',
+                }',
             [14],
         ];
 
@@ -153,8 +149,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 namespace Z {
                     function A(){}
                     A();
-                }
-            ',
+                }',
             [],
         ];
 
@@ -163,16 +158,14 @@ final class FunctionsAnalyzerTest extends TestCase
             namespace Z;
 
             function A(){}
-            A();
-            ',
+            A();',
             [],
         ];
 
         yield 'function signature ref. return, calls itself' => [
             '<?php
                 function & A(){}
-                A();
-            ',
+                A();',
             [12],
         ];
 
@@ -182,8 +175,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 {
                     public function A(){}
                 }
-                A();
-            ',
+                A();',
             [20],
         ];
 
@@ -194,40 +186,35 @@ final class FunctionsAnalyzerTest extends TestCase
                 }
                 namespace B {
                     A();
-                }
-            ',
+                }',
             [24],
         ];
 
         yield [
             '<?php
                 use function X\a;
-                A();
-            ',
+                A();',
             [],
         ];
 
         yield [
             '<?php
                 use A;
-                A();
-            ',
+                A();',
             [7],
         ];
 
         yield [
             '<?php
                 use const A;
-                A();
-            ',
+                A();',
             [9],
         ];
 
         yield [
             '<?php
                 use function A;
-                str_repeat($a, $b);
-            ',
+                str_repeat($a, $b);',
             [9],
         ];
 
@@ -237,8 +224,7 @@ final class FunctionsAnalyzerTest extends TestCase
                     function A(){}
                     A();
                     $b = function(){};
-                }
-            ',
+                }',
             [14],
         ];
 
@@ -255,8 +241,7 @@ $z = new class(
     public function A() {}
 };
 
-A();
-                ',
+A();',
             [46],
         ];
 
@@ -291,8 +276,7 @@ A();
         yield [
             '<?php
                     use function \  str_repeat;
-                    str_repeat($a, $b);
-                ',
+                    str_repeat($a, $b);',
             [11],
         ];
     }
@@ -337,8 +321,7 @@ class Foo {}
         yield [
             '<?php
                 #[Foo(), Bar(), Baz()]
-                class Foo {}
-            ',
+                class Foo {}',
             [],
         ];
     }
@@ -705,8 +688,7 @@ class(){};
                 public function methodOne() {
                     $x = %sotherMethod(1, 2, 3);
                 }
-            }
-        ';
+            }';
 
         yield [
             false,
@@ -786,8 +768,7 @@ class(){};
                     public function methodOne() {
                         $x = $this?->otherMethod(1, 2, 3);
                     }
-                }
-            ',
+                }',
             24,
         ];
     }

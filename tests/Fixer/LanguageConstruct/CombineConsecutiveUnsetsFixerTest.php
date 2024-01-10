@@ -44,8 +44,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($foo/*;*/);
                     unset(/*;*/$bar, $c ); //test
                     unset($foobar  ); /* more comment test*/
-                    unset(  $foobar2);
-                ',
+                    unset(  $foobar2);',
         ];
 
         yield [
@@ -63,8 +62,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
               $config = array();
               if ($config) {
               }
-              unset($config[\'autoescape_service\'], $config[\'autoescape_service_method\']);
-              ',
+              unset($config[\'autoescape_service\'], $config[\'autoescape_service_method\']);',
         ];
 
         yield [
@@ -80,8 +78,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($bar);/*2*/
                     unset($foobar);//3
                     unset($foobar2);/*4*/
-                    /*5*/ unset($foobar3);
-                ',
+                    /*5*/ unset($foobar3);',
         ];
 
         yield [
@@ -99,8 +96,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                         unset($bar);
                 '.'
                 // c2
-                unset($test,$test1);
-                ',
+                unset($test,$test1);',
         ];
 
         yield [
@@ -132,8 +128,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($a["b"]);
                     unset($a->b);
                     unset($a->b->c);
-                    unset($a->b[0]->c[\'a\']);
-                ',
+                    unset($a->b[0]->c[\'a\']);',
         ];
     }
 

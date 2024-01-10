@@ -190,8 +190,7 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
                 /**
                  * @var boolean
                  */
-            ';
-             ",
+            ';",
         ];
 
         yield 'empty DocBlock' => [
