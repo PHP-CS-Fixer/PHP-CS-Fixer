@@ -15,8 +15,10 @@ class() {};
 
 $a = new
 /** @property string $x */
-#[X] #[\Y\Z]
+#[X] #[Y\Z]
 class() {};
+
+class Z {}
 
 --INPUT--
 <?php
@@ -34,5 +36,7 @@ class() {};
 
 $a = new
 /** @property string $x */
-#[X] #[\Y\Z]
+#[X] #[Y\Z]
 class() {};
+
+class Z {}
