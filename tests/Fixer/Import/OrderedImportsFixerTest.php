@@ -215,15 +215,13 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                 <?php use Z ?>
                 <?php echo X::class ?>
                 <?php use E ?>   output
-                <?php use F ?><?php echo E::class; use A; ?>
-            ',
+                <?php use F ?><?php echo E::class; use A; ?>',
             '
                 <?php use Z ?>
                 <?php use X ?>
                 <?php echo X::class ?>
                 <?php use F ?>   output
-                <?php use E ?><?php echo E::class; use A; ?>
-            ',
+                <?php use E ?><?php echo E::class; use A; ?>',
         ];
     }
 

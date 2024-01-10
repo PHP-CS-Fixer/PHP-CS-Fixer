@@ -209,8 +209,7 @@ class Foo extends Bar
 
             function __ISSET($bar){} // do not fix
 
-            $a->__unset($foo); // fix
-            ',
+            $a->__unset($foo); // fix',
             '<?php
             function __TOSTRING(){} // do not fix
 
@@ -255,8 +254,7 @@ class Foo extends Bar
 
             function __ISSET($bar){} // do not fix
 
-            $a->__UnSet($foo); // fix
-            ',
+            $a->__UnSet($foo); // fix',
         ];
 
         yield [

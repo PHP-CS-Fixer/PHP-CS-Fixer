@@ -778,8 +778,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a9 = $o->abc($a);
                 $a10 = $o->abc($a)[1];
                 $a11 = $o->{$bar};
-                $a12 = $o->{$c->d}($e)[1](2){$f}->$c[1]()?>
-            ',
+                $a12 = $o->{$c->d}($e)[1](2){$f}->$c[1]()?>',
             '<?php
                 $ag = (($b)->A::$foo);
 
@@ -794,8 +793,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 $a9 = (($o)->abc($a));
                 $a10 = (($o)->abc($a)[1]);
                 $a11 = (($o)->{$bar});
-                $a12 = (($o)->{$c->d}($e)[1](2){$f}->$c[1]())?>
-            ',
+                $a12 = (($o)->{$c->d}($e)[1](2){$f}->$c[1]())?>',
         ];
 
         yield 'simple unary `!`' => [

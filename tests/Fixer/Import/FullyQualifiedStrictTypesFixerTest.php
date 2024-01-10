@@ -392,8 +392,7 @@ namespace Z\B\C\D
             echo A::class;
             foo(A::B,A::C);
             echo $a[A::class];
-            echo A::class?>
-            ',
+            echo A::class?>',
             '<?php
             use ZXY\A;
             echo \ZXY\A::class;
@@ -401,8 +400,7 @@ namespace Z\B\C\D
             echo \ZXY\A::class;
             foo(\ZXY\A::B,\ZXY\A::C);
             echo $a[\ZXY\A::class];
-            echo \ZXY\A::class?>
-            ',
+            echo \ZXY\A::class?>',
         ];
 
         yield [

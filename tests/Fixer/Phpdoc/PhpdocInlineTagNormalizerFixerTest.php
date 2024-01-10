@@ -172,8 +172,7 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
                  * @Route("/conventions/@{idcc}", name="api_v1_convention_read_by_idcc")
                  *
                  * { @ids }
-                 */
-            ',
+                 */',
         ];
     }
 }

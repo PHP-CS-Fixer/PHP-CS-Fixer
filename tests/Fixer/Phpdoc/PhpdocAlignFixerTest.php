@@ -1128,8 +1128,7 @@ class Foo {}
             '<?php
 /**
  * @ Security("is_granted(\'CANCEL\', giftCard)")
- */
- ',
+ */',
         ];
 
         yield 'invalid PHPDoc 2' => [
@@ -1137,8 +1136,7 @@ class Foo {}
             '<?php
 /**
  * @ Security("is_granted(\'CANCEL\', giftCard)")
- */
- ',
+ */',
         ];
 
         yield 'invalid PHPDoc 3' => [
@@ -1148,8 +1146,7 @@ class Foo {}
  * @ Security("is_granted(\'CANCEL\', giftCard)")
  * @     foo   bar
  *   @ foo
- */
- ',
+ */',
         ];
 
         yield 'types containing callables' => [
@@ -1158,14 +1155,12 @@ class Foo {}
             /**
              * @param callable(Foo): Bar       $x  Description
              * @param callable(FooFoo): BarBar $yy Description
-             */
-            ',
+             */',
             '<?php
             /**
              * @param callable(Foo): Bar $x Description
              * @param callable(FooFoo): BarBar $yy Description
-             */
-            ',
+             */',
         ];
 
         yield 'types containing whitespace' => [
@@ -1178,8 +1173,7 @@ class Foo {}
             /**
              * @param array<int, $this>    $arrayOfIntegers
              * @param array<string, $this> $arrayOfStrings
-             */
-        ', ];
+             */', ];
 
         yield 'closure types containing backslash' => [
             [],
@@ -1217,8 +1211,7 @@ class Foo {}
             /**
              * @param Closure(array<int, bool>): bool $callback1
              * @param \Closure(string): string        $callback2
-             */
-        ', ];
+             */', ];
 
         yield 'types parenthesized' => [
             [],
@@ -1226,14 +1219,12 @@ class Foo {}
             /**
              * @param list<string>                                   $allowedTypes
              * @param null|list<\Closure(mixed): (bool|null|scalar)> $allowedValues
-             */
-            ',
+             */',
             '<?php
             /**
              * @param list<string> $allowedTypes
              * @param null|list<\Closure(mixed): (bool|null|scalar)> $allowedValues
-             */
-            ',
+             */',
         ];
 
         yield 'callable types with ugly code 1' => [
@@ -1246,8 +1237,7 @@ class Foo {}
          * @var Closure(string|object):string $fn4
          * @var \Closure                      $fn5
          * @var \Closure(int, bool): bool     $fn6
-         */
-        ',
+         */',
             '<?php
         /**
          * @var callable $fn
@@ -1256,8 +1246,7 @@ class Foo {}
          * @var Closure(string|object):string $fn4
          * @var \Closure $fn5
          * @var \Closure(int, bool): bool $fn6
-         */
-        ',
+         */',
         ];
 
         yield 'callable types with ugly code 2' => [
@@ -1270,8 +1259,7 @@ class Foo {}
          * @var Closure(string|object):string $fn4
          * @var \Closure                      $fn5
          * @var \Closure(int, bool): bool     $fn6
-         */
-        ',
+         */',
             '<?php
         /**
          * @var          callable           $fn
@@ -1280,8 +1268,7 @@ class Foo {}
          * @var Closure(string|object):string                  $fn4
          * @var      \Closure             $fn5
          * @var            \Closure(int, bool): bool       $fn6
-         */
-        ',
+         */',
         ];
 
         yield 'CUSTOM tags' => [

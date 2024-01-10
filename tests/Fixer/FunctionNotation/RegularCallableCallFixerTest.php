@@ -66,8 +66,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func([$obj, "myCallbackMethod"], 1, 2);
                 call_user_func([$obj, $cb."Method"], 1, 2);
                 call_user_func(array(__NAMESPACE__ ."Foo", "test"), 1, 2);
-                call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`
-            ',
+                call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`',
         ];
 
         yield 'call by variable' => [

@@ -240,14 +240,12 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     while($a > 1){
                     }
                     do {
-                    } while($a>1);  // 1
-                ',
+                    } while($a>1);  // 1',
             '<?php
                     while($a > 1){
                     };
                     do {
-                    } while($a>1); 1; // 1
-                ',
+                    } while($a>1); 1; // 1',
         ];
 
         yield [
@@ -520,12 +518,10 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $foo = 2 ; //
                     '.'
-
-                ',
+',
             '<?php $foo = 2 ; //
                     ;
-
-                ',
+',
         ];
 
         yield [

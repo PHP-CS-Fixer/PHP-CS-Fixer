@@ -38,8 +38,7 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
                     switch($foo):
                         case 3:
                             continue;
-                    endswitch?>
-                ',
+                    endswitch?>',
         ];
 
         yield 'alternative syntax ||' => [

@@ -48,8 +48,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
                      * test
                      */
 
-                     /** *test* */
-                ',
+                     /** *test* */',
             '<?php
                     /**  *//** a *//**  */
 
@@ -70,8 +69,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
                      * test
                      */
 
-                     /** *test* */
-                ',
+                     /** *test* */',
         ];
     }
 }

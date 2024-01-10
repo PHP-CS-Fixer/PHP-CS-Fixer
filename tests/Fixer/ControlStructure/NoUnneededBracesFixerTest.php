@@ -53,16 +53,14 @@ final class NoUnneededBracesFixerTest extends AbstractFixerTestCase
                     switch($a) {
                         case 2: echo 3; break;
                     }
-                    echo 4;  echo 5; //
-                ',
+                    echo 4;  echo 5; //',
             '<?php
                     { { echo 0; } } //
                     {echo 1;}
                     switch($a) {
                         case 2: {echo 3; break;}
                     }
-                    echo 4; { echo 5; }//
-                ',
+                    echo 4; { echo 5; }//',
         ];
 
         yield 'no fixes' => [

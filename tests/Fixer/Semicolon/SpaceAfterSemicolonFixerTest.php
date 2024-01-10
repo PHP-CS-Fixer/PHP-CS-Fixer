@@ -47,8 +47,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     test1();
-                    $a; // test
-                ',
+                    $a; // test',
         ];
 
         yield [
@@ -65,8 +64,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test5();     // test
-                ',
+                    test5();     // test',
         ];
 
         yield [
@@ -284,8 +282,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     test1();
-                    $a; // test
-                ',
+                    $a; // test',
         ];
 
         yield [
@@ -302,8 +299,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test5();     // test
-                ',
+                    test5();     // test',
         ];
 
         yield [

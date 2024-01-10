@@ -187,8 +187,7 @@ function Foo(INTEGER $a) {}',
                     const FLOAT=1.2;
                 }
 
-                const INT = "A"; // outside class; INT is the name of the const, not the type
-            ',
+                const INT = "A"; // outside class; INT is the name of the const, not the type',
         ];
 
         yield 'class properties single type' => [

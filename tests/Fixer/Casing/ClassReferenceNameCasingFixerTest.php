@@ -45,8 +45,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
                 echo \Exception::class;
                 print(Exception::class);
                 // $a = new exception();
-                /** $a = new exception(); */
-            ',
+                /** $a = new exception(); */',
             '<?php
                 $a = new exception;
                 $b = new \exception;
@@ -58,8 +57,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
                 echo \exception::class;
                 print(exception::class);
                 // $a = new exception();
-                /** $a = new exception(); */
-            ',
+                /** $a = new exception(); */',
         ];
 
         yield [

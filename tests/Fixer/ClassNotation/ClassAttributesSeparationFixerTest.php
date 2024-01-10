@@ -2211,8 +2211,7 @@ enum Cards: string
                     //ui
 
                     //j1
-                    //k2
-                ',
+                    //k2',
             6,
         ];
 
@@ -2222,8 +2221,7 @@ enum Cards: string
                     //ui
 
                     //j1
-                    //k2
-                ',
+                    //k2',
             5,
         ];
 
@@ -2233,8 +2231,7 @@ enum Cards: string
                     /**/
 
                     //j1
-                    //k2
-                ',
+                    //k2',
             6,
         ];
 
@@ -2242,16 +2239,14 @@ enum Cards: string
             4,
             '<?php
                     $a;//j
-                    //k
-                ',
+                    //k',
             6,
         ];
 
         yield [
             2,
             '<?php
-                    //a
-                ',
+                    //a',
             2,
         ];
 
@@ -2259,8 +2254,7 @@ enum Cards: string
             2,
             '<?php
                     //b
-                    //c
-                ',
+                    //c',
             2,
         ];
 
@@ -2268,8 +2262,7 @@ enum Cards: string
             2,
             '<?php
                     //d
-                    //e
-                ',
+                    //e',
             4,
         ];
 
@@ -2279,8 +2272,7 @@ enum Cards: string
                     /**/
                     //f
                     //g
-                    //h
-                ',
+                    //h',
             8,
         ];
     }

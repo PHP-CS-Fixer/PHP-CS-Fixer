@@ -285,8 +285,7 @@ else?><?php echo 5;',
                     echo 1789;
                 '.'
 
-                jump:
-            ',
+                jump:',
             '<?php
                 if ($a) {
                     GOTO jump;
@@ -294,8 +293,7 @@ else?><?php echo 5;',
                     echo 1789;
                 }
 
-                jump:
-            ',
+                jump:',
         ];
     }
 
@@ -375,8 +373,7 @@ else?><?php echo 5;',
                     }/**/  /**/
                         /**/
                         //
-                    /**/
-                ',
+                    /**/',
             '<?php
                     if /**/($a) /**/{ //
                         /**/
@@ -385,8 +382,7 @@ else?><?php echo 5;',
                     }/**/ else /**/{
                         /**/
                         //
-                    }/**/
-                ',
+                    }/**/',
         ];
 
         yield [
@@ -403,8 +399,7 @@ else?><?php echo 5;',
                         //
                         return;
                     }  //
-                    //
-                ',
+                    //',
             '<?php
                     if ($a) {
                         if ($b) {
@@ -418,8 +413,7 @@ else?><?php echo 5;',
                         }//
                         return;
                     } else {//
-                    }//
-                ',
+                    }//',
         ];
     }
 
@@ -911,8 +905,7 @@ else?><?php echo 5;',
                     if ($a)
                         die/**/;
                     else
-                        /**/die/**/;#
-                ',
+                        /**/die/**/;#',
         ];
 
         yield [
@@ -925,8 +918,7 @@ else?><?php echo 5;',
                     if ($a)
                         die/**/;
                     else
-                        /**/die/**/?>
-                ',
+                        /**/die/**/?>',
         ];
     }
 

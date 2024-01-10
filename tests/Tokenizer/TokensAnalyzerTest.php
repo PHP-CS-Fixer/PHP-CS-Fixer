@@ -2924,8 +2924,7 @@ class MyTestWithAnonymousClass extends TestCase
                     $list
                 );
 
-                return fn ($y) => $x * $y ?>
-            ',
+                return fn ($y) => $x * $y ?>',
         ];
 
         yield 'nested arrow function' => [

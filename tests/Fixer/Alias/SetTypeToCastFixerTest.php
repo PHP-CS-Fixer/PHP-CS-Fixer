@@ -169,8 +169,7 @@ $foo#5
                     namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
-                    settype($foo + 1, "integer"); // function must be overridden, so do not fix it
-                ',
+                    settype($foo + 1, "integer"); // function must be overridden, so do not fix it',
         ];
 
         yield 'wrong numbers of arguments' => [

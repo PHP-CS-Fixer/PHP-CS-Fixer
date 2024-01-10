@@ -49,8 +49,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
                 //
 
                 //
-        */
-                ',
+        */',
             '<?php
         /*
                 //
@@ -64,8 +63,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
                 //
                 '.'
                 //
-        */
-                ',
+        */',
         ];
 
         yield [

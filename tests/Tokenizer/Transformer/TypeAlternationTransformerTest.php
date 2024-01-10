@@ -90,8 +90,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
                     function foo(){}
                     $a = $b|$c;
                     const A = B|C;
-                    const B = D::X|C ?>
-                ',
+                    const B = D::X|C ?>',
             [
                 6 => '|',
                 15 => '|',
