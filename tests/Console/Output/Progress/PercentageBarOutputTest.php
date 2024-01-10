@@ -60,7 +60,7 @@ final class PercentageBarOutputTest extends TestCase
                 [FixerFileProcessedEvent::STATUS_NO_CHANGES, 100],
             ],
             '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.PHP_EOL.
-            ' 100/100 [████████████████████████████] 100%',
+            ' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
             80,
         ];
     }
