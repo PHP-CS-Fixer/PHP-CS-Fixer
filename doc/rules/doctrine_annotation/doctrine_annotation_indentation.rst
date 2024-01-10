@@ -73,7 +73,10 @@ The rule is part of the following rule set:
 
 - `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationIndentationFixerTest <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -84,8 +84,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const BAR;
                 use const FOO;
                 echo FOO, BAR;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -101,8 +100,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const FOO;
                     echo FOO, BAR;
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test {
@@ -119,8 +117,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const BAR;
                 use const FOO;
                 echo FOO, BAR;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -136,8 +133,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const BAR;
                 use const FOO;
                 echo FOO, BAR;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -153,8 +149,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const \BAR;
                 use const FOO;
                 echo FOO, BAR, BAR;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -172,8 +167,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const Foo;
                 const foO = 1;
                 echo FOO, Foo;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -190,8 +184,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const BAR as BAZ;
                 use const FOO;
                 echo FOO, BAZ;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -209,8 +202,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     const FOO = 1;
                 }
                 echo FOO;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -304,8 +296,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function foo;
                 foo();
                 bar();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -323,8 +314,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     foo();
                     bar();
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test {
@@ -343,8 +333,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function foo;
                 foo();
                 bar();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -362,8 +351,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function foo;
                 foo();
                 Bar();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -382,8 +370,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 Bar();
                 bar();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -402,8 +389,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function foo;
                 foo();
                 baz();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -422,8 +408,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     function foo() {}
                 }
                 foo();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -546,8 +531,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @return Baz<string, foo> */
                 function x() {}
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -569,8 +553,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     new Foo();
                     Bar::baz();
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test {
@@ -588,8 +571,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @throws Throwable */
                 function x() {}
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -608,8 +590,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use Foo;
                 new Foo();
                 Bar::baz();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -627,8 +608,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use Foo;
                 new Foo();
                 bar::baz();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -647,8 +627,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new Foo();
                 new bar();
                 new Bar();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -670,8 +649,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @throws Throwable */
                 function y() {}
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -696,8 +674,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var Baz $bar */
                 $bar = new Baz();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -720,8 +697,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 class Abc {
                     function bar(Foo $a, Bar $b, foo &$c, Baz ...$d) {}
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -740,8 +716,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 class Abc {
                     function bar(?Foo $a): ?Bar {}
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -759,8 +734,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (Exception $e) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -778,8 +752,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* ... */ Exception $e /* ... */) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -811,8 +784,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (Exception) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -830,8 +802,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* non-capturing catch */ Exception /* just because! */) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -869,8 +840,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const FOO;
                 use const BAR;
                 echo \FOO, \BAR, \FOO;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace X;
@@ -888,8 +858,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const BAR;
                 use const Baz;
                 echo FOO, \BAR, BAZ, QUX;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -931,8 +900,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 \foo();
                 \bar();
                 \Foo();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace X;
@@ -953,8 +921,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 \bar();
                 baz();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1012,8 +979,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @return array<string, ?\Bar<int, \foo>>|null
                  */
                 function abc($foo, \Bar $bar = null) {}
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace X;
@@ -1042,8 +1008,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new Foo();
                 new \Bar();
                 new Baz();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1063,8 +1028,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (\Exception $e) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1083,8 +1047,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* ... */ \Exception $e /* ... */) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1154,8 +1117,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (\Exception) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1174,8 +1136,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* non-capturing catch */ \Exception /* just because! */) {
                 }
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1313,8 +1274,7 @@ class Bar
                     function foo() {}
                 }
                 foo();
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;
@@ -1334,8 +1294,7 @@ class Bar
                     const FOO = 1;
                 }
                 echo FOO;
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace Test;

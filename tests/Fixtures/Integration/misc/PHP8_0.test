@@ -30,7 +30,7 @@ $country = $session?->user?->getAddress()?->country;
 // https://wiki.php.net/rfc/shorter_attribute_syntax
 // https://wiki.php.net/rfc/shorter_attribute_syntax_change
 #[MyAttribute]
-#[\MyExample\MyAttribute]
+#[MyExample\MyAttribute]
 #[MyAttribute(1234)]
 #[MyAttribute(value: 1234)]
 #[MyAttribute(MyAttribute::VALUE)]
@@ -96,7 +96,7 @@ class T_Mixed
 
 // https://wiki.php.net/rfc/throw_expression
 if (1) {
-    foo() ?? throw new \Exception();
+    foo() ?? throw new Exception();
     $a = $condition && throw new Exception();
     $callable = static fn () => throw new Exception();
     $value = $falsableValue ?: throw new InvalidArgumentException();

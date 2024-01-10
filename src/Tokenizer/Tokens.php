@@ -213,7 +213,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @return array<self::BLOCK_TYPE_*, array<'end'|'start', array{int, string}|string>>
+     * @return array<self::BLOCK_TYPE_*, array{start: array{int, string}|string, end: array{int, string}|string}>
      */
     public static function getBlockEdgeDefinitions(): array
     {
@@ -306,10 +306,18 @@ class Tokens extends \SplFixedArray
      */
     public function offsetUnset($index): void
     {
-        $this->changed = true;
-        $this->namespaceDeclarations = null;
         if (isset($this[$index])) {
+            if (isset($this->blockStartCache[$index])) {
+                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+            }
+            if (isset($this->blockEndCache[$index])) {
+                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+            }
+
             $this->unregisterFoundToken($this[$index]);
+
+            $this->changed = true;
+            $this->namespaceDeclarations = null;
         }
 
         parent::offsetUnset($index);
@@ -325,16 +333,21 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
-
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
+            if (isset($this[$index])) {
+                if (isset($this->blockStartCache[$index])) {
+                    unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+                }
+                if (isset($this->blockEndCache[$index])) {
+                    unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+                }
+
+                $this->unregisterFoundToken($this[$index]);
+            }
+
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
-            if (isset($this[$index])) {
-                $this->unregisterFoundToken($this[$index]);
-            }
             $this->registerFoundToken($newval);
         }
 
@@ -376,7 +389,14 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // we are moving the tokens, we need to clear the indices Cache
+        // should already be true
+        if (!$this->changed) {
+            // must never happen
+            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
+        }
+
+        // we are moving the tokens, we need to clear the index-based Cache
+        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
@@ -1384,7 +1404,7 @@ class Tokens extends \SplFixedArray
     private function registerFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var non-empty-string */
+        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1401,7 +1421,7 @@ class Tokens extends \SplFixedArray
     private function unregisterFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var non-empty-string */
+        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);

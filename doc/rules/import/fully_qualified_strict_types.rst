@@ -3,9 +3,7 @@ Rule ``fully_qualified_strict_types``
 =====================================
 
 Removes the leading part of fully qualified symbol references if a given symbol
-is imported or belongs to the current namespace. Fixes function arguments,
-exceptions in ``catch`` block, ``extend`` and ``implements`` of classes and
-interfaces.
+is imported or belongs to the current namespace.
 
 Configuration
 -------------
@@ -131,7 +129,7 @@ With configuration: ``['leading_backslash_in_global_namespace' => true]``.
         try {
             foo();
    -    } catch (\Exception|\Foo\A $e) {
-   +    } catch (Exception|A $e) {
+   +    } catch (\Exception|A $e) {
         }
     }
     namespace Foo\Bar {
@@ -192,7 +190,10 @@ The rule is part of the following rule sets:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Import\\FullyQualifiedStrictTypesFixer <./../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\FullyQualifiedStrictTypesFixerTest <./../../../tests/Fixer/Import/FullyQualifiedStrictTypesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

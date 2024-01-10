@@ -54,7 +54,10 @@ The rule is part of the following rule sets:
   ``['style' => 'braces']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../../../src/Fixer/ControlStructure/EmptyLoopBodyFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\EmptyLoopBodyFixer <./../../../src/Fixer/ControlStructure/EmptyLoopBodyFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\EmptyLoopBodyFixerTest <./../../../tests/Fixer/ControlStructure/EmptyLoopBodyFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

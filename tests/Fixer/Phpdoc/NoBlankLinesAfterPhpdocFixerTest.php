@@ -170,44 +170,48 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 
     public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
     {
-        yield [<<<'EOF'
-            <?php
-            /**
-             * This describes what my script does.
-             */
+        yield [
+            <<<'EOF'
+                <?php
+                /**
+                 * This describes what my script does.
+                 */
 
-            include 'vendor/autoload.php';
-            EOF
+                include 'vendor/autoload.php';
+                EOF
         ];
 
-        yield [<<<'EOF'
-            <?php
-            /**
-             * This describes what my script does.
-             */
+        yield [
+            <<<'EOF'
+                <?php
+                /**
+                 * This describes what my script does.
+                 */
 
-            include_once 'vendor/autoload.php';
-            EOF
+                include_once 'vendor/autoload.php';
+                EOF
         ];
 
-        yield [<<<'EOF'
-            <?php
-            /**
-             * This describes what my script does.
-             */
+        yield [
+            <<<'EOF'
+                <?php
+                /**
+                 * This describes what my script does.
+                 */
 
-            require 'vendor/autoload.php';
-            EOF
+                require 'vendor/autoload.php';
+                EOF
         ];
 
-        yield [<<<'EOF'
-            <?php
-            /**
-             * This describes what my script does.
-             */
+        yield [
+            <<<'EOF'
+                <?php
+                /**
+                 * This describes what my script does.
+                 */
 
-            require_once 'vendor/autoload.php';
-            EOF
+                require_once 'vendor/autoload.php';
+                EOF
         ];
     }
 
@@ -377,85 +381,90 @@ class Foo {}'
 
     public static function provideInlineTypehintingDocsBeforeFlowBreakCases(): iterable
     {
-        yield [<<<'EOF'
-            <?php
-            function parseTag($tag)
-            {
-                $tagClass = get_class($tag);
-
-                if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-                    /** @var DocBlock\Tag\VarTag $tag */
-
-                    return $tag->getDescription();
-                }
-            }
-            EOF
-        ];
-
-        yield [<<<'EOF'
-            <?php
-            function parseTag($tag)
-            {
-                $tagClass = get_class($tag);
-
-                if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-                    /** @var DocBlock\Tag\VarTag $tag */
-
-                    throw new Exception($tag->getDescription());
-                }
-            }
-            EOF
-        ];
-
-        yield [<<<'EOF'
-            <?php
-            function parseTag($tag)
-            {
-                $tagClass = get_class($tag);
-
-                if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
-                    /** @var DocBlock\Tag\VarTag $tag */
-
-                    goto FOO;
-                }
-
-            FOO:
-            }
-            EOF
-        ];
-
-        yield [<<<'EOF'
-            <?php
-            function parseTag($tag)
-            {
-                while (true) {
+        yield [
+            <<<'EOF'
+                <?php
+                function parseTag($tag)
+                {
                     $tagClass = get_class($tag);
 
                     if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
                         /** @var DocBlock\Tag\VarTag $tag */
 
-                        continue;
+                        return $tag->getDescription();
                     }
                 }
-            }
-            EOF
+                EOF
         ];
 
-        yield [<<<'EOF'
-            <?php
-            function parseTag($tag)
-            {
-                while (true) {
+        yield [
+            <<<'EOF'
+                <?php
+                function parseTag($tag)
+                {
                     $tagClass = get_class($tag);
 
                     if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
                         /** @var DocBlock\Tag\VarTag $tag */
 
-                        break;
+                        throw new Exception($tag->getDescription());
                     }
                 }
-            }
-            EOF
+                EOF
+        ];
+
+        yield [
+            <<<'EOF'
+                <?php
+                function parseTag($tag)
+                {
+                    $tagClass = get_class($tag);
+
+                    if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                        /** @var DocBlock\Tag\VarTag $tag */
+
+                        goto FOO;
+                    }
+
+                FOO:
+                }
+                EOF
+        ];
+
+        yield [
+            <<<'EOF'
+                <?php
+                function parseTag($tag)
+                {
+                    while (true) {
+                        $tagClass = get_class($tag);
+
+                        if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                            /** @var DocBlock\Tag\VarTag $tag */
+
+                            continue;
+                        }
+                    }
+                }
+                EOF
+        ];
+
+        yield [
+            <<<'EOF'
+                <?php
+                function parseTag($tag)
+                {
+                    while (true) {
+                        $tagClass = get_class($tag);
+
+                        if ('phpDocumentor\Reflection\DocBlock\Tag\VarTag' === $tagClass) {
+                            /** @var DocBlock\Tag\VarTag $tag */
+
+                            break;
+                        }
+                    }
+                }
+                EOF
         ];
     }
 }

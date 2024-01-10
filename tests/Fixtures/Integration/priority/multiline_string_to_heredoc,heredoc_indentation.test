@@ -1,0 +1,30 @@
+--TEST--
+Integration of fixers: multiline_string_to_heredoc,heredoc_indentation.
+--RULESET--
+{
+    "multiline_string_to_heredoc": true,
+    "heredoc_indentation": true
+}
+--EXPECT--
+<?php
+$a = " x ";
+$b = <<<EOD
+     x
+
+    EOD;
+$c = <<<'EOD'
+
+     x
+
+
+    EOD;
+
+--INPUT--
+<?php
+$a = " x ";
+$b = " x
+";
+$c = '
+ x
+
+';

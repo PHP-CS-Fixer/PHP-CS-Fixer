@@ -95,7 +95,10 @@ The rule is part of the following rule sets:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../../../src/Fixer/Alias/RandomApiMigrationFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Alias\\RandomApiMigrationFixer <./../../../src/Fixer/Alias/RandomApiMigrationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\RandomApiMigrationFixerTest <./../../../tests/Fixer/Alias/RandomApiMigrationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

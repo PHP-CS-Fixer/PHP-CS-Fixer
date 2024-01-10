@@ -78,7 +78,10 @@ The rule is part of the following rule sets:
   ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixer <./../../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\NoUnneededControlParenthesesFixerTest <./../../../tests/Fixer/ControlStructure/NoUnneededControlParenthesesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

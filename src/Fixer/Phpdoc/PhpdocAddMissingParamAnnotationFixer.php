@@ -180,7 +180,7 @@ function f9(string $foo, $bar, $baz) {}
             $newLines = [];
 
             foreach ($arguments as $argument) {
-                $type = $argument['type'] ?: 'mixed';
+                $type = '' !== $argument['type'] ? $argument['type'] : 'mixed';
 
                 if (!str_starts_with($type, '?') && 'null' === strtolower($argument['default'])) {
                     $type = 'null|'.$type;

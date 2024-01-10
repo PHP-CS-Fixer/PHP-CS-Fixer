@@ -29,6 +29,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @phpstan-type _CommonTypeInfo array{commonType: string, isNullable: bool}
  */
 abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -74,6 +76,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             (new FixerOptionBuilder('scalar_types', 'Fix also scalar types; may have unexpected behaviour due to PHP bad type coercion system.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
+                ->getOption(),
+            (new FixerOptionBuilder('union_types', 'Fix also union types; turned on by default on PHP >= 8.0.0.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(\PHP_VERSION_ID >= 8_00_00)
                 ->getOption(),
         ]);
     }
@@ -166,7 +172,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     abstract protected function createTokensFromRawType(string $type): Tokens;
 
     /**
-     * @return null|array{string, bool}
+     * @return ?_CommonTypeInfo
      */
     protected function getCommonTypeInfo(TypeExpression $typesExpression, bool $isReturnType): ?array
     {
@@ -201,7 +207,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             return null;
         }
 
-        return [$commonType, $isNullable];
+        return ['commonType' => $commonType, 'isNullable' => $isNullable];
     }
 
     protected function getUnionTypes(TypeExpression $typesExpression, bool $isReturnType): ?string
@@ -211,6 +217,10 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         }
 
         if (!$typesExpression->isUnionType() || '|' !== $typesExpression->getTypesGlue()) {
+            return null;
+        }
+
+        if (false === $this->configuration['union_types']) {
             return null;
         }
 

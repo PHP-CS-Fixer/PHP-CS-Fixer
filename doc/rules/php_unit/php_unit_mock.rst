@@ -111,7 +111,10 @@ The rule is part of the following rule sets:
   ``['target' => '5.5']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../../../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitMockFixer <./../../../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitMockFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitMockFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

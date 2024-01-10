@@ -105,6 +105,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_useless_else' => true,
             'no_useless_return' => true,
+            'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],
             'nullable_type_declaration_for_default_null_value' => false,
             'ordered_class_elements' => true,
             'ordered_types' => true,

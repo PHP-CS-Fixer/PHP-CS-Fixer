@@ -247,6 +247,26 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php if ($var?->exception instanceof Exception) {};',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1

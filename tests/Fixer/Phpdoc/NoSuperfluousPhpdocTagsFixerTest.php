@@ -2456,6 +2456,116 @@ class Foo {
     public function doFoo($bar): Baz {}
 }',
         ];
+
+        yield 'superfluous parameter type for anonymous function' => [
+            '<?php
+/**  */
+function (int $foo) { return 1; };',
+            '<?php
+/** @param int $foo */
+function (int $foo) { return 1; };',
+        ];
+
+        yield 'superfluous return type for anonymous function' => [
+            '<?php
+/**  */
+function ($foo): int { return 1; };',
+            '<?php
+/** @return int */
+function ($foo): int { return 1; };',
+        ];
+
+        yield 'superfluous parameter type for static anonymous function' => [
+            '<?php
+/**  */
+static function (int $foo) { return 1; };',
+            '<?php
+/** @param int $foo */
+static function (int $foo) { return 1; };',
+        ];
+
+        yield 'superfluous return type for static anonymous function' => [
+            '<?php
+/**  */
+static function ($foo): int { return 1; };',
+            '<?php
+/** @return int */
+static function ($foo): int { return 1; };',
+        ];
+
+        yield 'superfluous parameter type for arrow function' => [
+            '<?php
+/**  */
+fn (int $foo) => 1;',
+            '<?php
+/** @param int $foo */
+fn (int $foo) => 1;',
+        ];
+
+        yield 'superfluous return type for arrow function' => [
+            '<?php
+/**  */
+fn ($foo): int => 1;',
+            '<?php
+/** @return int */
+fn ($foo): int => 1;',
+        ];
+
+        yield 'superfluous parameter type for static arrow function' => [
+            '<?php
+/**  */
+static fn (int $foo) => 1;',
+            '<?php
+/** @param int $foo */
+static fn (int $foo) => 1;',
+        ];
+
+        yield 'superfluous return type for static arrow function' => [
+            '<?php
+/**  */
+static fn ($foo): int => 1;',
+            '<?php
+/** @return int */
+static fn ($foo): int => 1;',
+        ];
+
+        yield 'multiline @param must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param string $arg
+                 *                    - foo
+                 *                    - foo2
+                 */
+                function foo(string $arg) {}
+                EOD,
+        ];
+
+        yield 'multiline @return must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @return string
+                 *                - foo
+                 *                - foo2
+                 */
+                function foo(string $arg): string {}
+                EOD,
+        ];
+
+        yield 'multiline @var must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                class Cl {
+                    /**
+                     * @var string
+                     *             - foo
+                     *             - foo2
+                     */
+                    public string $prop;
+                }
+                EOD,
+        ];
     }
 
     /**

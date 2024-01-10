@@ -67,7 +67,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../../../src/Fixer/Casing/ConstantCaseFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Casing\\ConstantCaseFixer <./../../../src/Fixer/Casing/ConstantCaseFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\ConstantCaseFixerTest <./../../../tests/Fixer/Casing/ConstantCaseFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

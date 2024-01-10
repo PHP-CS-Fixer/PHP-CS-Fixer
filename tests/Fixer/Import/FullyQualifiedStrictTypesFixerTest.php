@@ -191,13 +191,13 @@ interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C,
         ];
 
         yield 'interface in global namespace with global extend' => [
-            '<?php interface Foo1 extends ArrayAccess2{}',
             '<?php interface Foo1 extends \ArrayAccess2{}',
+            '<?php interface Foo1 extends ArrayAccess2{}',
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'interface in global namespace with multiple extend' => [
-            '<?php use B\Exception; interface Foo extends ArrayAccess, \Exception, Exception {}',
+            '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, Exception {}',
             '<?php use B\Exception; interface Foo extends \ArrayAccess, \Exception, \B\Exception {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
@@ -277,9 +277,12 @@ class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\
         yield 'catch in multiple namespaces' => [
             '<?php
 namespace {
-    try{ foo(); } catch (Exception $z) {}
-    try{ foo(); } catch (A\X $z) {}
-    try{ foo(); } catch (B\Z $z) {}
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
+    try{ foo(); } catch (\B\Z $z) {}
 }
 namespace A {
     try{ foo(); } catch (\Exception $z) {}
@@ -294,8 +297,11 @@ namespace B {
 ',
             '<?php
 namespace {
+    try{ foo(); } catch (Exception $z) {}
     try{ foo(); } catch (\Exception $z) {}
+    try{ foo(); } catch (A\X $z) {}
     try{ foo(); } catch (\A\X $z) {}
+    try{ foo(); } catch (B\Z $z) {}
     try{ foo(); } catch (\B\Z $z) {}
 }
 namespace A {
@@ -310,6 +316,56 @@ namespace B {
 }
 ',
             ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'new class' => [
+            '<?php use A\B; new B();',
+            '<?php use A\B; new \A\B();',
+        ];
+
+        yield 'new class namespaced' => [
+            '<?php namespace B; new A();',
+            '<?php namespace B; new \B\A();',
+        ];
+
+        yield 'new class not imported' => [
+            '<?php new A\B(); new A\B();',
+            '<?php new \A\B(); new A\B();',
+        ];
+
+        yield 'instanceof' => [
+            '<?php use A\B; $res = $v instanceof B;',
+            '<?php use A\B; $res = $v instanceof \A\B;',
+        ];
+
+        yield 'instanceof namespaced' => [
+            '<?php namespace B; $res = ($v->obj()) instanceof A;',
+            '<?php namespace B; $res = ($v->obj()) instanceof \B\A;',
+        ];
+
+        yield 'use trait simple' => [
+            '<?php use A\B; class Foo { use B; };',
+            '<?php use A\B; class Foo { use \A\B; };',
+        ];
+
+        yield 'use trait complex' => [
+            '<?php use A\B; class Foo { use A\C; use D; use B { B::bar as baz; } };',
+            '<?php use A\B; class Foo { use \A\C; use \D; use \A\B { \A\B::bar as baz; } };',
+        ];
+
+        yield 'typed property in class' => [
+            '<?php use A\B; class Cl { public B $p; var B $p2; }',
+            '<?php use A\B; class Cl { public \A\B $p; var \A\B $p2; }',
+        ];
+
+        yield 'typed property in anonymous class' => [
+            '<?php use A\B; new class() { public B $p; };',
+            '<?php use A\B; new class() { public \A\B $p; };',
+        ];
+
+        yield 'typed nullable property in class' => [
+            '<?php use A\B; class Cl { public ?B $p = null, $r; }',
+            '<?php use A\B; class Cl { public ?\A\B $p = null, $r; }',
         ];
 
         yield 'starts with but not full name extends' => [
@@ -378,8 +434,10 @@ use Other\BaseClass;
 use Other\CaughtThrowable;
 use Other\FunctionArgument;
 use Other\FunctionReturnType;
+use Other\InstanceOfClass;
 use Other\Interface1;
 use Other\Interface2;
+use Other\NewClass;
 use Other\PropertyPhpDoc;
 use Other\StaticFunctionCall;
 
@@ -395,6 +453,10 @@ class Foo extends BaseClass implements Interface1, Interface2
         } catch (CaughtThrowable $e) {}
     }
 }
+
+new NewClass();
+
+if ($a instanceof InstanceOfClass) { return false; }
             ',
             '<?php
 
@@ -412,6 +474,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         } catch (\Other\CaughtThrowable $e) {}
     }
 }
+
+new \Other\NewClass();
+
+if ($a instanceof \Other\InstanceOfClass) { return false; }
             ',
             ['import_symbols' => true],
         ];
@@ -475,6 +541,52 @@ namespace Foo\Baz {
             ['import_symbols' => true],
         ];
 
+        yield 'import new symbols with no existing imports nor namespace /wo declare' => [
+            <<<'EOD'
+                <?php
+
+                use Ns\A;
+                // comment
+
+                foo();
+
+                function foo(A $v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                foo();
+
+                function foo(\Ns\A $v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols with no existing imports nor namespace /w declare' => [
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                declare(strict_types=1);
+                use Ns\A;
+
+                function foo(A $v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                declare(strict_types=1);
+
+                function foo(\Ns\A $v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'import new symbols with custom whitespace config' => [
             '<?php
 
@@ -520,7 +632,7 @@ function foo(A $a, \Other\B $b) {}
 
 use Symfony\Component\Validator\Constraints\Valid;
 /**
- * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+ * {@link Valid} is assumed.
  *
  * @return void
  */
@@ -535,7 +647,7 @@ function validate(): void {}
  */
 function validate(): void {}
 ',
-            ['import_symbols' => true],
+            ['import_symbols' => true, 'phpdoc_tags' => ['link']],
         ];
 
         yield 'import short name only once (ignore consequent same-name, different-namespace symbols)' => [
@@ -573,6 +685,195 @@ class Foo extends \A\A implements \B\A, \C\A
     }
 }',
             ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by class declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                class City
+                {
+                    public \Ns2\City $city;
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by interface declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                interface City
+                {
+                    public function f(\Ns2\City $city);
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by trait declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                trait City
+                {
+                    public \Ns2\City $city;
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in class instantiation' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                new MyCl();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in attribute' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                #[MyCl]
+                class Cl {}
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in phpdoc' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                /** @var MyCl */;
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - global' => [
+            <<<'EOD'
+                <?php
+
+                use Foo\Bar;
+                new Exception();
+                new Exception();
+                new Bar();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new Exception();
+                new Foo\Bar();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - global and leading backslash' => [
+            <<<'EOD'
+                <?php
+
+                use Foo\Bar;
+                new \Exception();
+                new \Exception();
+                new Bar();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new Exception();
+                new Foo\Bar();
+                EOD,
+            ['import_symbols' => true, 'leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - namespaced' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns2\Foo4;
+                use Ns\Foo3\Sub3;
+                use Ns\Foo\Sub2;
+
+                new Foo();
+                new Foo\Sub();
+                new Foo();
+                new Foo2();
+                new Sub2();
+                new Sub3();
+                new \Ns2\Foo();
+                new Foo4();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new Foo();
+                new Foo\Sub();
+                new \Ns\Foo();
+                new \Ns\Foo2();
+                new \Ns\Foo\Sub2();
+                new \Ns\Foo3\Sub3();
+                new \Ns2\Foo();
+                new \Ns2\Foo4();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'fix to longest imported name' => [
+            <<<'EOD'
+                <?php
+
+                use A\B;
+                use A\X as Y;
+                use S as R;
+                use S\T;
+
+                new B();
+                new B\C();
+                new Y();
+                new Y\Z();
+                new T();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use A\B;
+                use A\X as Y;
+                use S as R;
+                use S\T;
+
+                new \A\B();
+                new \A\B\C();
+                new \A\X();
+                new \A\X\Z();
+                new R\T();
+                EOD,
         ];
     }
 
@@ -1000,12 +1301,12 @@ use Ping\Pong\Pyng\Pung;
 class SomeClass
 {
     public function doSomething(
-        \Ping\Something $something,
-        Pung\Pang $other,
-        \Ping\Pong\Pung $other1,
+        Ping\Something $something,
+        Ping\Pong\Pung\Pang $other,
+        Ping\Pong\Pung $other1,
         Pang\Pung $other2,
-        Pyng\Pung\Pong $other3,
-        \Foo\Bar\Baz\Buz $other4
+        Pung\Pong $other3,
+        Bar\Baz\Buz $other4
     ){}
 }',
             '<?php
@@ -1208,6 +1509,17 @@ use Foo\Bar\Bam;
 class SomeClass {}',
         ];
 
+        yield 'Test PHPDoc union' => [
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|\Exception2|int|null $v
+ */
+function foo($v) {}',
+        ];
+
         yield 'Test PHPDoc in interface' => [
             '<?php
 
@@ -1297,6 +1609,15 @@ namespace Foo\Bar;
  * @see \Foo\Bar\Bam
  */
 final class SomeClass {}',
+        ];
+
+        yield 'PHPDoc with generics must not crash' => [
+            '<?php
+
+/**
+ * @param \Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
         ];
 
         yield 'Test multiple PHPDoc blocks' => [
@@ -1470,25 +1791,53 @@ class SomeClass
 }',
         ];
 
-        yield 'Leading backslash in global namespace' => [
+        yield 'Leading backslash in global namespace - standard phpdoc' => [
             '<?php
 
 /**
  * @param \DateTimeInterface $dateTime
+ * @param callable(): (\Closure(): void) $fx
  * @return \DateTimeInterface
  * @see \DateTimeImmutable
  * @throws \Exception
  */
-function foo($dateTime) {}',
+function foo($dateTime, $fx) {}',
             '<?php
 
 /**
  * @param DateTimeInterface $dateTime
+ * @param callable(): (\Closure(): void) $fx
  * @return DateTimeInterface
  * @see DateTimeImmutable
  * @throws Exception
  */
-function foo($dateTime) {}',
+function foo($dateTime, $fx) {}',
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'Leading backslash in global namespace - reserved phpdoc' => [
+            '<?php
+
+/**
+ * @param int $v
+ * @phpstan-param positive-int $v
+ * @param \'GET\'|\'POST\' $method
+ * @param \Closure $fx
+ * @psalm-param Closure(): (callable(): Closure) $fx
+ * @return list<int>
+ */
+function foo($v, $method, $fx) {}',
+            '<?php
+
+/**
+ * @param int $v
+ * @phpstan-param positive-int $v
+ * @param \'GET\'|\'POST\' $method
+ * @param Closure $fx
+ * @psalm-param Closure(): (callable(): Closure) $fx
+ * @return list<int>
+ */
+function foo($v, $method, $fx) {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
 
@@ -1655,6 +2004,59 @@ function foo($a) {}',
             '<?php use A\B; try{ foo(0); } catch (B) {}',
             '<?php use A\B; try{ foo(0); } catch (\A\B) {}',
         ];
+
+        yield 'typed promoted property in class' => [
+            '<?php use A\B; class Cl { public function __construct(private B $p2) {} }',
+            '<?php use A\B; class Cl { public function __construct(private \A\B $p2) {} }',
+        ];
+
+        yield 'import new symbols from attributes' => [
+            '<?php
+
+namespace Foo\Test;
+use Other\ClassAttr;
+use Other\MethodAttr;
+use Other\PromotedAttr;
+use Other\PropertyAttr;
+
+#[ClassAttr]
+#[\AllowDynamicProperties]
+class Foo
+{
+    #[PropertyAttr]
+    public int $prop;
+
+    public function __construct(
+        #[PromotedAttr]
+        public int $arg
+    ) {}
+
+    #[MethodAttr]
+    public function foo(): void {}
+}
+            ',
+            '<?php
+
+namespace Foo\Test;
+
+#[\Other\ClassAttr]
+#[\AllowDynamicProperties]
+class Foo
+{
+    #[\Other\PropertyAttr]
+    public int $prop;
+
+    public function __construct(
+        #[\Other\PromotedAttr]
+        public int $arg
+    ) {}
+
+    #[\Other\MethodAttr]
+    public function foo(): void {}
+}
+            ',
+            ['import_symbols' => true],
+        ];
     }
 
     /**
@@ -1697,7 +2099,7 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(Bar $foo): Foo\Bar\Ba3{}
+    public function doSomething(Bar $foo): Bar\Ba3{}
     public function doSomethingMore(Bar|B $foo): Baz{}
     public function doSomethingElse(Bar&A\Z $foo): Baz{}
 }',
@@ -1711,6 +2113,21 @@ class SomeClass
     public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
     public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
 }',
+        ];
+
+        yield 'import only if not already implicitly used by enum declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                enum City
+                {
+                    public function f(\Ns2\City $city) {}
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
         ];
     }
 

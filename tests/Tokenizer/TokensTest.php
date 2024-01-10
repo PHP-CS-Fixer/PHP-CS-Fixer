@@ -1555,8 +1555,7 @@ $bar;',
 
                 $after = /*foo*/get_class($after);
                 $before = /*foo*/get_class($before);
-                EOF
-            ,
+                EOF,
             [new Token([T_COMMENT, '/*foo*/'])],
         ];
 
@@ -1566,8 +1565,7 @@ $bar;',
 
                 $after = (string) get_class($after);
                 $before = (string) get_class($before);
-                EOF
-            ,
+                EOF,
             [new Token([T_STRING_CAST, '(string)']), new Token([T_WHITESPACE, ' '])],
         ];
 
@@ -1577,8 +1575,7 @@ $bar;',
 
                 $after = !(bool) get_class($after);
                 $before = !(bool) get_class($before);
-                EOF
-            ,
+                EOF,
             [new Token('!'), new Token([T_BOOL_CAST, '(bool)']), new Token([T_WHITESPACE, ' '])],
         ];
     }

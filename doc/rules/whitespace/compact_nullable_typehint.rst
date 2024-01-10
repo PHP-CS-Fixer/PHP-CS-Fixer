@@ -31,7 +31,10 @@ Example #1
    -function sample(? string $str): ? string
    +function sample(?string $str): ?string
     {}
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../../../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../../../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\CompactNullableTypehintFixerTest <./../../../tests/Fixer/Whitespace/CompactNullableTypehintFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

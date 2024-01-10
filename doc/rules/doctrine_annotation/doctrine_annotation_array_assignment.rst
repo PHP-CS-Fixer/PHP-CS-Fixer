@@ -70,7 +70,10 @@ The rule is part of the following rule set:
   ``['operator' => ':']``
 
 
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationArrayAssignmentFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationArrayAssignmentFixer <./../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\DoctrineAnnotation\\DoctrineAnnotationArrayAssignmentFixerTest <./../../../tests/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

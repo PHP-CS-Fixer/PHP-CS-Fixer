@@ -72,6 +72,16 @@ function bar($foo) {}
 ',
                     ['scalar_types' => false]
                 ),
+                new CodeSample(
+                    '<?php
+
+/** @param Foo $foo */
+function foo($foo) {}
+/** @param int|string $foo */
+function bar($foo) {}
+',
+                    ['union_types' => false]
+                ),
             ],
             null,
             'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@param` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented.'
@@ -80,7 +90,7 @@ function bar($foo) {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
     /**
@@ -102,7 +112,7 @@ function bar($foo) {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 continue;
             }
 
@@ -136,7 +146,8 @@ function bar($foo) {}
                 }
 
                 if (null !== $typeInfo) {
-                    [$paramType, $isNullable] = $typeInfo;
+                    $paramType = $typeInfo['commonType'];
+                    $isNullable = $typeInfo['isNullable'];
                 } elseif (null !== $unionTypes) {
                     $paramType = $unionTypes;
                     $isNullable = false;
