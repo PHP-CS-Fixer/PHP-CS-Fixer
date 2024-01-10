@@ -10,7 +10,7 @@ Configuration
 ``override_existing``
 ~~~~~~~~~~~~~~~~~~~~~
 
-Reformat literals already contain underscores.
+Reformat literals already containing underscores.
 
 Allowed types: ``bool``
 
