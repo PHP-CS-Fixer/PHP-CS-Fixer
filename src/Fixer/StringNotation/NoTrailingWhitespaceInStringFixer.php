@@ -63,9 +63,6 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
 
             $isInlineHtml = $token->isGivenKind(T_INLINE_HTML);
             $regex = $isInlineHtml && $last ? '/\h+(?=\R|$)/' : '/\h+(?=\R)/';
-            if ($token->isGivenKind([T_CONSTANT_ENCAPSED_STRING]) && str_contains($token->getContent(), "\n") && !$tokens[$index + 1]->equals('.')) {
-                $regex = '/(?<=[;}])\n\h+(?=[\'"]$)/';
-            }
             $content = Preg::replace($regex, '', $token->getContent());
 
             if ($token->getContent() === $content) {
