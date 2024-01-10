@@ -37,34 +37,49 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    public const STRATEGY_USE_SEPARATOR = 'use_separator';
+    public const STRATEGY_NO_SEPARATOR = 'no_separator';
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Adds separators to numeric literals of any kind.',
             [
-                new CodeSample("<?php\n\$integer = 12345678;\n\$octal = 0123456;\n\$binary = 0b00100100;\n\$hexadecimal = 0x3D458F4F;\n"),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        $integer = 1234_5678;
+                        $octal = 01_234_56;
+                        $binary = 0b00_10_01_00;
+                        $hexadecimal = 0x3D45_8F4F;
+
+                        PHP
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        $integer = 12345678;
+                        $octal = 0123456;
+                        $binary = 0b00100100;
+                        $hexadecimal = 0x3D458F4F;
+
+                        PHP
+                    ,
+                    ['strategy' => self::STRATEGY_USE_SEPARATOR],
+                ),
                 new CodeSample(
                     "<?php \$var = 24_40_21;\n",
                     ['override_existing' => true]
                 ),
-            ],
+            ]
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_DNUMBER, T_LNUMBER]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -72,12 +87,16 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder(
+                'strategy',
+                'Whether numeric literal should be separated by underscores or not.'
+            ))
+                ->setAllowedValues([self::STRATEGY_USE_SEPARATOR, self::STRATEGY_NO_SEPARATOR])
+                ->setDefault(self::STRATEGY_NO_SEPARATOR)
+                ->getOption(),
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
@@ -86,13 +105,6 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
             }
 
             $content = $token->getContent();
-
-            if ($this->configuration['override_existing']) {
-                $content = str_replace('_', '', $content);
-            } elseif (str_contains($content, '_')) {
-                // Keep already underscored literals untouched.
-                continue;
-            }
 
             $newContent = $this->formatValue($content);
 
@@ -110,6 +122,17 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
 
     private function formatValue(string $value): string
     {
+        if (self::STRATEGY_NO_SEPARATOR === $this->configuration['strategy']) {
+            return str_contains($value, '_') ? str_replace('_', '', $value) : $value;
+        }
+
+        if (true === $this->configuration['override_existing']) {
+            $value = str_replace('_', '', $value);
+        } elseif (str_contains($value, '_')) {
+            // Keep already underscored literals untouched.
+            return $value;
+        }
+
         $lowerValue = strtolower($value);
 
         if (str_starts_with($lowerValue, '0b')) {
@@ -134,7 +157,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         // All other types
 
         /** If its a negative value we need an offset */
-        $negativeOffset = fn ($v) => str_contains($v, '-') ? 1 : 0;
+        $negativeOffset = static fn ($v) => str_contains($v, '-') ? 1 : 0;
 
         Preg::matchAll('/([0-9-_]+)((\.)([0-9_]+))?((e)([0-9-_]+))?/i', $value, $result);
 

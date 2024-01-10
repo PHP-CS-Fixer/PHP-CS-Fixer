@@ -16,6 +16,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``strategy``
+~~~~~~~~~~~~
+
+Whether numeric literal should be separated by underscores or not.
+
+Allowed values: ``'no_separator'`` and ``'use_separator'``
+
+Default value: ``'no_separator'``
+
 Examples
 --------
 
@@ -29,16 +38,34 @@ Example #1
    --- Original
    +++ New
     <?php
-   -$integer = 12345678;
-   -$octal = 0123456;
-   -$binary = 0b00100100;
-   -$hexadecimal = 0x3D458F4F;
-   +$integer = 12_345_678;
-   +$octal = 0123_456;
-   +$binary = 0b0010_0100;
-   +$hexadecimal = 0x3D_45_8F_4F;
+   -$integer = 1234_5678;
+   -$octal = 01_234_56;
+   -$binary = 0b00_10_01_00;
+   -$hexadecimal = 0x3D45_8F4F;
+   +$integer = 12345678;
+   +$octal = 0123456;
+   +$binary = 0b00100100;
+   +$hexadecimal = 0x3D458F4F;
 
 Example #2
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'use_separator']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$integer = 12345678;
+   -$octal = 0123456;
+   +$integer = 12_345_678;
+   +$octal = 0123_456;
+    $binary = 0b00100100;
+   -$hexadecimal = 0x3D458F4F;
+   +$hexadecimal = 0x3D_45_8F_4F;
+
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['override_existing' => true]``.
@@ -48,7 +75,7 @@ With configuration: ``['override_existing' => true]``.
    --- Original
    +++ New
    -<?php $var = 24_40_21;
-   +<?php $var = 244_021;
+   +<?php $var = 244021;
 References
 ----------
 

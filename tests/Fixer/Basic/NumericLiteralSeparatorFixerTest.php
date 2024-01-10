@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -43,22 +44,38 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
     {
         yield 'no_override_existing#01' => [
             '<?php echo 0B01010100_01101000;',
+            null,
+            [
+                'override_existing' => false,
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR,
+            ],
         ];
 
         yield 'no_override_existing#02' => [
             '<?php echo 70_10_00;',
+            null,
+            [
+                'override_existing' => false,
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR,
+            ],
         ];
 
         yield 'override_existing#01' => [
             '<?php echo 1_234.5;',
             '<?php echo 123_4.5;',
-            ['override_existing' => true],
+            [
+                'override_existing' => true,
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR,
+            ],
         ];
 
         yield 'override_existing#02' => [
             '<?php echo 701_000;',
             '<?php echo 70_10_00;',
-            ['override_existing' => true],
+            [
+                'override_existing' => true,
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR,
+            ],
         ];
 
         yield from self::yieldCases([
@@ -120,12 +137,20 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
     {
         yield 'no_override_existing#02' => [
             '<?php echo 0o123_45;',
+            null,
+            [
+                'override_existing' => false,
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR,
+            ],
         ];
 
         yield 'override_existing#01' => [
             '<?php echo 1_234.5;',
             '<?php echo 123_4.5;',
-            ['override_existing' => true],
+            [
+                'override_existing' => true,
+                'strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR,
+            ],
         ];
 
         yield from self::yieldCases([
@@ -145,9 +170,18 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
     {
         foreach ($cases as $pairsType => $pairs) {
             foreach ($pairs as $withoutSeparator => $withSeparator) {
-                yield "{$pairsType}#{$withoutSeparator}" => [
+                yield "add separator {$pairsType}#{$withoutSeparator}" => [
                     sprintf('<?php echo %s;', $withSeparator),
                     sprintf('<?php echo %s;', $withoutSeparator),
+                    ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR],
+                ];
+            }
+
+            foreach ($pairs as $withoutSeparator => $withSeparator) {
+                yield "remove separator {$pairsType}#{$withoutSeparator}" => [
+                    sprintf('<?php echo %s;', $withoutSeparator),
+                    sprintf('<?php echo %s;', $withSeparator),
+                    ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_NO_SEPARATOR],
                 ];
             }
         }
