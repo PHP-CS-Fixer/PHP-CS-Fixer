@@ -70,16 +70,8 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
         $inHeredoc = false;
         $complexStringStartIndex = null;
         foreach ($tokens as $index => $token) {
-            if ($inHeredoc) {
-                if ($token->isGivenKind(T_END_HEREDOC)) {
-                    $inHeredoc = false;
-                }
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_START_HEREDOC)) {
-                $inHeredoc = true;
+            if ($token->isGivenKind([T_START_HEREDOC, T_END_HEREDOC])) {
+                $inHeredoc = $token->isGivenKind(T_START_HEREDOC) || !$token->isGivenKind(T_END_HEREDOC);
 
                 continue;
             }
@@ -136,7 +128,8 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
             $closingMarker .= '_';
         }
 
-        $heredocStartToken = new Token([T_START_HEREDOC, '<<<'.($isSingleQuoted ? '\'' : '').$closingMarker.($isSingleQuoted ? '\'' : '')."\n"]);
+        $quoting = $isSingleQuoted ? '\'' : '';
+        $heredocStartToken = new Token([T_START_HEREDOC, '<<<'.$quoting.$closingMarker.$quoting."\n"]);
         $heredocEndToken = new Token([T_END_HEREDOC, $closingMarker]);
 
         if (null !== $constantStringToken) {
