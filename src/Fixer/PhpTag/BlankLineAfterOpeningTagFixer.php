@@ -50,7 +50,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     {
         if ($tokens->isMonolithicPhp()) {
             $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
-            if ($tokens->count() > $openTagIndex && !$tokens[$openTagIndex]->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
+            if (!$tokens[$openTagIndex]->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
                 return true;
             }
         }
