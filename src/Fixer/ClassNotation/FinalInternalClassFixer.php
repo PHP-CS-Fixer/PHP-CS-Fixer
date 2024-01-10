@@ -58,7 +58,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     {
         parent::__construct();
 
-        $this->checkAttributes = \PHP_VERSION_ID >= 80000;
+        $this->checkAttributes = \PHP_VERSION_ID >= 8_00_00;
     }
 
     public function configure(array $configuration): void
