@@ -881,7 +881,7 @@ String Notation
   Convert double quotes to single quotes for simple strings.
 - `string_implicit_backslashes <./string_notation/string_implicit_backslashes.rst>`_
 
-  Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.
+  Handles implicit backslashes in strings and heredocs. Depending on the chosen strategy, it can escape implicit backslashes to ease the understanding of which are special chars interpreted by PHP and which not (``escape``), or it can remove these additional backslashes if you find them superfluous (``unescape``). You can also leave them as-is using ``ignore`` strategy.
 - `string_length_to_empty <./string_notation/string_length_to_empty.rst>`_ *(risky)*
 
   String tests for empty must be done against ``''``, not with ``strlen``.

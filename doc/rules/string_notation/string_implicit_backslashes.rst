@@ -2,8 +2,11 @@
 Rule ``string_implicit_backslashes``
 ====================================
 
-Escape implicit backslashes in strings and heredocs to ease the understanding of
-which are special chars interpreted by PHP and which not.
+Handles implicit backslashes in strings and heredocs. Depending on the chosen
+strategy, it can escape implicit backslashes to ease the understanding of which
+are special chars interpreted by PHP and which not (``escape``), or it can
+remove these additional backslashes if you find them superfluous (``unescape``).
+You can also leave them as-is using ``ignore`` strategy.
 
 Description
 -----------
