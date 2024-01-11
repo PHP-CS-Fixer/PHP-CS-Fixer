@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: escape_implicit_backslashes,single_quote.
 --RULESET--
-{"escape_implicit_backslashes": {"single_quoted": true, "double_quoted": true}, "single_quote": true}
+{"escape_implicit_backslashes": {"double_quoted": true}, "single_quote": true}
 --EXPECT--
 <?php
 $var = 'a\\b';
