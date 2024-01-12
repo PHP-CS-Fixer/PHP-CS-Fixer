@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
@@ -30,6 +31,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -46,6 +48,25 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ConfigurationResolverTest extends TestCase
 {
+    public function testResolveParallelConfig(): void
+    {
+        $parallelConfig = new ParallelConfig();
+        $config = (new Config())->setParallelConfig($parallelConfig);
+        $resolver = $this->createConfigurationResolver([], $config);
+
+        self::assertSame($parallelConfig, $resolver->getParallelConfig());
+    }
+
+    public function testResolveDefaultParallelConfig(): void
+    {
+        $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
+        $defaultParallelConfig = ParallelConfig::detect();
+
+        self::assertSame($parallelConfig->getMaxProcesses(), $defaultParallelConfig->getMaxProcesses());
+        self::assertSame($parallelConfig->getFilesPerProcess(), $defaultParallelConfig->getFilesPerProcess());
+        self::assertSame($parallelConfig->getProcessTimeout(), $defaultParallelConfig->getProcessTimeout());
+    }
+
     public function testSetOptionWithUndefinedOption(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -1378,7 +1399,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     private function createConfigurationResolver(
         array $options,
-        ?Config $config = null,
+        ?ConfigInterface $config = null,
         string $cwdPath = '',
         ?ToolInfoInterface $toolInfo = null
     ): ConfigurationResolver {

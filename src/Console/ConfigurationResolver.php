@@ -35,8 +35,10 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\ParallelRunnerConfigInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\Utils;
@@ -272,6 +274,15 @@ final class ConfigurationResolver
         }
 
         return $this->config;
+    }
+
+    public function getParallelConfig(): ParallelConfig
+    {
+        $config = $this->getConfig();
+
+        return $config instanceof ParallelRunnerConfigInterface
+            ? $config->getParallelConfig()
+            : ParallelConfig::detect();
     }
 
     public function getConfigFile(): ?string
