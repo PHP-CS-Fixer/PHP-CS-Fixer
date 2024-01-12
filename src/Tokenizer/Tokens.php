@@ -468,7 +468,7 @@ class Tokens extends \SplFixedArray
      * @param self::BLOCK_TYPE_* $type        type of block
      * @param int                $searchIndex index of opening brace
      *
-     * @return int index of closing brace
+     * @return int<0, max> index of closing brace
      */
     public function findBlockEnd(int $type, int $searchIndex): int
     {
@@ -479,7 +479,7 @@ class Tokens extends \SplFixedArray
      * @param self::BLOCK_TYPE_* $type        type of block
      * @param int                $searchIndex index of closing brace
      *
-     * @return int index of opening brace
+     * @return int<0, max> index of opening brace
      */
     public function findBlockStart(int $type, int $searchIndex): int
     {
@@ -491,7 +491,7 @@ class Tokens extends \SplFixedArray
      * @param int                     $start        optional offset
      * @param null|int                $end          optional limit
      *
-     * @return ($possibleKind is int ? array<int, Token> : array<int, array<int, Token>>)
+     * @return ($possibleKind is int ? array<int<0, max>, Token> : array<int, array<int<0, max>, Token>>)
      */
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
@@ -752,7 +752,7 @@ class Tokens extends \SplFixedArray
      *                                                                              the ones used in $sequence. If any is missing, the default case-sensitive
      *                                                                              comparison is used
      *
-     * @return null|non-empty-array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
+     * @return null|non-empty-array<int<0, max>, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
     public function findSequence(array $sequence, int $start = 0, ?int $end = null, $caseSensitive = true): ?array
     {
@@ -1256,7 +1256,7 @@ class Tokens extends \SplFixedArray
      * @param int                $searchIndex index of starting brace
      * @param bool               $findEnd     if method should find block's end or start
      *
-     * @return int index of opposite brace
+     * @return int<0, max> index of opposite brace
      */
     private function findOppositeBlockEdge(int $type, int $searchIndex, bool $findEnd): int
     {
