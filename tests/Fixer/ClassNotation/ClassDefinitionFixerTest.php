@@ -375,7 +375,7 @@ interface Test extends
 
 // Note: PSR does not have a rule for multiple extends
 TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,'."     ".'
+      TestInterface5    ,'.'     '.'
         /**/TestInterface65
 {}'."\n            ",
             '<?php
@@ -386,7 +386,7 @@ extends
 
 // Note: PSR does not have a rule for multiple extends
 TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,'."     ".'
+      TestInterface5    ,'.'     '.'
         /**/TestInterface65    {}'."\n            ",
         ];
 
@@ -1100,7 +1100,7 @@ class Test extends TestInterface8 implements      /*a*/      /*b*/
 // test
 TestInterface3, /**/
     TestInterface4,
-      TestInterface5,'."    ".'
+      TestInterface5,'.'    '.'
         /**/TestInterface6c
 {
 }',
@@ -1113,7 +1113,7 @@ extends
 
 // test
 TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,'."    ".'
+      TestInterface5    ,'.'    '.'
         /**/TestInterface6c
 {
 }',

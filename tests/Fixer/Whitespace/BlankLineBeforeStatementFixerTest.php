@@ -1152,7 +1152,7 @@ yield $b;
 }',
             '<?php
 function foo() {
-yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */'."   ".'
+yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */'.'   '.'
 yield $b;
 }',
         ];

@@ -29,7 +29,7 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
         $file = __FILE__;
 
         $diff = '--- '.$file.'
-+++'." ".$file.'
++++'.' '.$file.'
 @@ -2,7 +2,7 @@'."\n ".'
  function baz($options)
  {

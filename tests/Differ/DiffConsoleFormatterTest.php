@@ -72,14 +72,14 @@ final class DiffConsoleFormatterTest extends TestCase
 
         yield [
             '[start]
-|'." ".'
+|'.' '.'
 | @@ -12,51 +12,151 @@
 |  no change
-|'."  ".'
+|'.'  '.'
 | -/**\
 | +/*\
 | +A
-|'." ".'
+|'.' '.'
 [end]',
             false,
             sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),

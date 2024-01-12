@@ -136,8 +136,8 @@ $a = 1; /* after code */
             '<?php
     // one line',
             "<?php
-    /* \t"." "."
- \t   * one line"." ".'
+    /* \t".' '."
+ \t   * one line".' '.'
      *
      */',
         ];

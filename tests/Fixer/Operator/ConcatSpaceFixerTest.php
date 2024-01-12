@@ -104,7 +104,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                             ."dev"/**  */
                             ."baz"      //
                             ."cex"      /**/
-                            ."ewer23"'."           ".'
+                            ."ewer23"'.'           '.'
                             ."dev"      /**  */
                     ;',
         ];

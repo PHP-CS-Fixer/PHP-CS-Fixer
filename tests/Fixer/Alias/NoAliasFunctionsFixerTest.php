@@ -263,20 +263,20 @@ abstract class A
                 $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
                 $cases[] = [
                     '<?php
-    class'." ".ucfirst($alias).'ing
+    class'.' '.ucfirst($alias).'ing
     {
-        const'." ".$alias.' = 1;
+        const'.' '.$alias.' = 1;
 
-        public function'." ".$alias.'($'.$alias.')
+        public function'.' '.$alias.'($'.$alias.')
         {
             if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
-                echo'." ".$alias.';
+                echo'.' '.$alias.';
             }
         }
     }
 
-    class'." ".$alias.' extends '.ucfirst($alias).'ing{
-        const'." ".$alias.' = "'.$alias.'";
+    class'.' '.$alias.' extends '.ucfirst($alias).'ing{
+        const'.' '.$alias.' = "'.$alias.'";
     }'."\n    ",
                 ];
 

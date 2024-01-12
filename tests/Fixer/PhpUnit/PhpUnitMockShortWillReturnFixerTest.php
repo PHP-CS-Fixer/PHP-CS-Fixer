@@ -219,7 +219,7 @@ class FooTest extends TestCase {
                 e
         */        (
                     // f g h i
-                    /* j */'." ".''."\n        ".'
+                    /* j */'.' '.''."\n        ".'
             10
              /* k */
              /* l */);

@@ -351,7 +351,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     } catch (\Exception $e){
                         //
                     } finally {
-                    }'."  ".''."\n                ",
+                    }'.'  '.''."\n                ",
             '<?php
                     try {
                         throw new \Exception("Foo.");

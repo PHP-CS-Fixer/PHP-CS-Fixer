@@ -147,7 +147,7 @@ else?><?php echo 5;',
                             return 1;
                         } elseif($b) {
                             %s
-                        }'."  ".'
+                        }'.'  '.'
                             echo 662;'."\n                        ".'
                     }
                 }'."\n            ";
@@ -256,7 +256,7 @@ else?><?php echo 5;',
                 while(true) {
                     if ($a) {
                         %s
-                    }'."  ".'
+                    }'.'  '.'
                         echo 1;'."\n                    ".'
                 }
             }'."\n        ";
@@ -278,7 +278,7 @@ else?><?php echo 5;',
             '<?php
                 if ($a) {
                     GOTO jump;
-                }'."  ".'
+                }'.'  '.'
                     echo 1789;'."\n                ".'
 
                 jump:'."\n            ",
@@ -308,9 +308,9 @@ else?><?php echo 5;',
                     if ($x) {
                         if ($y) {
                             return 1;
-                        }'."  ".'
+                        }'.'  '.'
                             return 2;'."\n                        ".'
-                    }'."  ".'
+                    }'.'  '.'
                         return 3;'."\n                    ".''."\n                ",
             '<?php
                     if ($x) {

@@ -61,7 +61,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function A(){}
 
                     /**
-                     *'." ".'
+                     *'.' '.'
                      */
                     public function B(){}
 
@@ -69,7 +69,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                      * Descr.
                      *
                      * @param int $c
-                     *'." ".'
+                     *'.' '.'
                      */
                     public function C($c){}
                 }'."\n                ",

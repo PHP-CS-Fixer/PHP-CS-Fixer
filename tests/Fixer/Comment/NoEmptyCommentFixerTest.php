@@ -266,7 +266,7 @@ echo 1;'."\n                ",
                     //
                     //
                     // For that, it could have some empty comment lines inside.
-                    //'."           ",
+                    //'.'           ',
             2,
             11,
             false,
@@ -348,7 +348,7 @@ echo 1;'."\n                ",
             '<?php
 //
 //
-              $a;'."  ",
+              $a;'.'  ',
             1,
             4,
             true,

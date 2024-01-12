@@ -226,7 +226,7 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 $foo = $bar
-                    ?'." ".'
+                    ?'.' '.'
                     : $foo;'."\n            ",
             '<?php
                 $foo = $bar
@@ -279,14 +279,14 @@ EOT;
 <<<EOT
 
 EOT
-?'." ".'
+?'.' '.'
 : $a
 ;
 
 <<<\'EOT\'
 
 EOT
-?'." ".'
+?'.' '.'
 : $a
 ;
 ',

@@ -56,8 +56,8 @@ Files that were not fixed due to errors reported during %s:
             $startWith .= sprintf(
                 '
 '."\n                            ".'
-        [%s]'."  ".'
-        %s (%d)'."    ".''."\n                            ".'
+        [%s]'.'  '.'
+        %s (%d)'.'    '.''."\n                            ".'
 ',
                 \get_class($source),
                 $source->getMessage(),

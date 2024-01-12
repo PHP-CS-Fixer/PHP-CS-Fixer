@@ -704,7 +704,7 @@ abstract class MethodTest3
     {
     }
 
-    abstract protected function method221();'."	".'
+    abstract protected function method221();'.'	'.'
 
     final private function method321a()
     {
@@ -917,7 +917,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */'."           ".'
+     */'.'           '.'
     public function someInterfaceMethod6();
 
     public function someInterfaceMethod7();
@@ -932,7 +932,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */'."           ".'
+     */'.'           '.'
     public function someInterfaceMethod6();
 
 

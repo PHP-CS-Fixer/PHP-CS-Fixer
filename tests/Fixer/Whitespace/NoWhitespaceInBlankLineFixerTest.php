@@ -60,22 +60,22 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
 
-$a = 1;'." ",
+$a = 1;'.' ',
             '<?php'."\n     ".'
-$a = 1;'." ",
+$a = 1;'.' ',
         ];
 
         yield [
             '<?php
-$r = 5 +6;'."                   ".'
+$r = 5 +6;'.'                   '.'
 
-$t = true> 9;'."       ".'
+$t = true> 9;'.'       '.'
 ',
         ];
 
         yield [
             '<?php
-    $a = 1;'."   ",
+    $a = 1;'.'   ',
         ];
 
         yield [

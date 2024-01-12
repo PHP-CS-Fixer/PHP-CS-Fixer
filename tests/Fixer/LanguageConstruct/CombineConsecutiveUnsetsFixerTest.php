@@ -69,7 +69,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     /*2*/
                     //3
                     /*4*/
-                    /*5*/'." ".''."\n                ",
+                    /*5*/'.' '.''."\n                ",
             '<?php //2
                     unset($foo);/*1*/
                     unset($bar);/*2*/

@@ -304,7 +304,7 @@ function B($b0, $b1, $b2)
             '<?php
                     function A()
                     {#1
-#2'."                    ".'
+#2'.'                    '.'
 return #3
 #4
 #5
@@ -322,7 +322,7 @@ return #3
             '<?php
                     function A()
                     {#1
-#2'."                    ".'
+#2'.'                    '.'
 $a#3
 #4
 =#5

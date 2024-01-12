@@ -77,32 +77,32 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
-// space'." ".'
+// space'.' '.'
 $var1 = $a->some_method(
     $var2
 );
 
-// space'." ".'
+// space'.' '.'
 $var2 = some_function(
     $var2
 );
 
-    // space'."     ".'
+    // space'.'     '.'
     $var2a = $z[1](
         $var2a
     );'."\n    ".'
     $var3 = function(  $a, $b  ) { };
 ',
             '<?php
-// space'." ".'
+// space'.' '.'
 $var1 = $a->some_method(
     $var2);
 
-// space'." ".'
+// space'.' '.'
 $var2 = some_function(
     $var2);
 
-    // space'."     ".'
+    // space'.'     '.'
     $var2a = $z[1](
         $var2a
     );'."\n    ".'

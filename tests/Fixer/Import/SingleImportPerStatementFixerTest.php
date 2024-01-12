@@ -192,13 +192,13 @@ use B;
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
-use C  ;'." ",
+use C  ;'.' ',
             '<?php
 use A,B,
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
-C  ;'." ",
+C  ;'.' ',
         ];
 
         yield [
@@ -347,7 +347,7 @@ use D\F;'."\n                ",
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use    function some\b\{fn_a, fn_b, fn_c};
-use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D,'." ".'
+use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D,'.' '.'
 // use.,{}
 ConstC};
 use A\{B};

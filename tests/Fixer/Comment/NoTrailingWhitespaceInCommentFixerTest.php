@@ -71,11 +71,11 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
     // multiline comment.
     //',
             '<?php
-    // This is'." ".'
-    //'." ".'
-    //'."    ".'
-    // multiline comment.'." ".'
-    //'." ",
+    // This is'.' '.'
+    //'.' '.'
+    //'.'    '.'
+    // multiline comment.'.' '.'
+    //'.' ',
         ];
 
         yield [
@@ -87,11 +87,11 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * multiline comment.'.'
      */',
             '<?php
-    /*'." ".'
-     * This is another'." ".'
-     *'." ".'
-     *'." ".'
-     * multiline comment.'." ".'
+    /*'.' '.'
+     * This is another'.' '.'
+     *'.' '.'
+     *'.' '.'
+     * multiline comment.'.' '.'
      */',
         ];
 
@@ -107,14 +107,14 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      *  Foo
      */',
             '<?php
-    /**'." ".'
-     * Summary'." ".'
-     *'." ".'
-     *'." ".'
-     * Description.'." ".'
-     *'." ".'
-     * @annotation'." ".'
-     *  Foo'." ".'
+    /**'.' '.'
+     * Summary'.' '.'
+     *'.' '.'
+     *'.' '.'
+     * Description.'.' '.'
+     *'.' '.'
+     * @annotation'.' '.'
+     *  Foo'.' '.'
      */',
         ];
 
@@ -135,7 +135,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
                 '<?php
     /**
      * Summary
-     *'." ".'
+     *'.' '.'
      * Description
     */'
             ),
@@ -158,7 +158,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
                 '<?php
     /**
      * Summary
-     *'." ".'
+     *'.' '.'
      * Description
     */'
             ),
