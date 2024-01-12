@@ -290,7 +290,7 @@ class Tokens extends \SplFixedArray
     #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
-        if ($this->getSize() !== $size) {
+        if (\count($this) !== $size) {
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
@@ -326,8 +326,6 @@ class Tokens extends \SplFixedArray
 
     /**
      * Set collection item.
-     *
-     * Warning! `$newval` must not be typehinted to be compatible with `ArrayAccess::offsetSet` method.
      *
      * @param int   $index
      * @param Token $newval
@@ -370,7 +368,7 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens(): void
     {
-        $limit = $this->count();
+        $limit = \count($this);
 
         for ($index = 0; $index < $limit; ++$index) {
             if ($this->isEmptyAt($index)) {
@@ -498,7 +496,7 @@ class Tokens extends \SplFixedArray
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
         if (null === $end) {
-            $end = $this->count();
+            $end = \count($this);
         }
 
         $elements = [];
@@ -924,7 +922,7 @@ class Tokens extends \SplFixedArray
             $sliceCount = \count($slice);
 
             for ($i = $previousSliceIndex - 1; $i >= $index; --$i) {
-                parent::offsetSet($i + $itemsCount, parent::offsetGet($i));
+                parent::offsetSet($i + $itemsCount, $this[$i]);
             }
 
             $previousSliceIndex = $index;
@@ -1282,7 +1280,7 @@ class Tokens extends \SplFixedArray
         $startEdge = $blockEdgeDefinitions[$type]['start'];
         $endEdge = $blockEdgeDefinitions[$type]['end'];
         $startIndex = $searchIndex;
-        $endIndex = $this->count() - 1;
+        $endIndex = \count($this) - 1;
         $indexOffset = 1;
 
         if (!$findEnd) {
