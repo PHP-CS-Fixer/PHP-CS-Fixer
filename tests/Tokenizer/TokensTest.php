@@ -1707,6 +1707,34 @@ $bar;',
         ];
     }
 
+    public function testListOnlyOffsetUnsetException(): void
+    {
+        $tokens = Tokens::fromCode('<?php foo();');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Tokens must be a list - only the last index can be unset');
+        unset($tokens[1]);
+    }
+
+    public function testListOnlyOffsetSetException(): void
+    {
+        $tokens = Tokens::fromCode('<?php foo();');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Tokens must be a list - index must be within the existing range');
+        $tokens[10] = new Token(';');
+    }
+
+    public function testListOnlyFromArrayException(): void
+    {
+        $data = [1 => new Token(';')];
+        Tokens::fromArray($data);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Tokens must be a list - saving indices is no longer supported');
+        Tokens::fromArray($data, true);
+    }
+
     public function testBlockEdgeCachingOffsetSet(): void
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
@@ -1795,8 +1823,7 @@ $bar;',
 
         self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
 
-        $tokens->offsetUnset(1);
-        $tokens->offsetUnset(1); // 2nd unset of the same index should not crash anything
+        $tokens->clearAt(1);
         self::assertFalse($tokens->isTokenKindFound(T_VARIABLE));
 
         $tokens[1] = new Token([T_VARIABLE, '$x']);
