@@ -39,135 +39,153 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
         yield 'no changes' => ['<?php /** Summary. */'];
 
         yield 'only Summary and Description' => [
-            '<?php
-                    /**
-                     * Summary.
-                     *
-                     * Description.
-                     *
-                     *
-                     *
-                     */',
-            '<?php
-                    /**
-                     * Summary.
-                     *
-                     *
-                     * Description.
-                     *
-                     *
-                     *
-                     */',
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary.
+                                     *
+                                     * Description.
+                                     *
+                                     *
+                                     *
+                                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary.
+                                     *
+                                     *
+                                     * Description.
+                                     *
+                                     *
+                                     *
+                                     */
+                EOD,
         ];
 
         yield 'basic phpdoc' => [
-            '<?php
-                    /**
-                     * Summary.
-                     *
-                     * Description.
-                     *
-                     * @var int
-                     *
-                     * @return int
-                     *
-                     * foo
-                     *
-                     * bar
-                     *
-                     *
-                     */',
-            '<?php
-                    /**
-                     * Summary.
-                     *
-                     *
-                     * Description.
-                     *
-                     *
-                     * @var int
-                     *
-                     *
-                     *
-                     *
-                     * @return int
-                     *
-                     *
-                     * foo
-                     *
-                     *
-                     * bar
-                     *
-                     *
-                     */',
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary.
+                                     *
+                                     * Description.
+                                     *
+                                     * @var int
+                                     *
+                                     * @return int
+                                     *
+                                     * foo
+                                     *
+                                     * bar
+                                     *
+                                     *
+                                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary.
+                                     *
+                                     *
+                                     * Description.
+                                     *
+                                     *
+                                     * @var int
+                                     *
+                                     *
+                                     *
+                                     *
+                                     * @return int
+                                     *
+                                     *
+                                     * foo
+                                     *
+                                     *
+                                     * bar
+                                     *
+                                     *
+                                     */
+                EOD,
         ];
 
         yield 'extra blank lines in description' => [
-            '<?php
-                    /**
-                     * Summary.
-                     *
-                     * Description has multiple blank lines:
-                     *
-                     *
-                     *
-                     * End.
-                     *
-                     * @var int
-                     */',
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary.
+                                     *
+                                     * Description has multiple blank lines:
+                                     *
+                                     *
+                                     *
+                                     * End.
+                                     *
+                                     * @var int
+                                     */
+                EOD,
         ];
 
         yield 'extra blank lines after annotation' => [
-            '<?php
-                    /**
-                     * Summary without description.
-                     *
-                     * @var int
-                     *
-                     * This is still @var annotation description...
-                     *
-                     * But this is not!
-                     *
-                     * @internal
-                     */',
-            '<?php
-                    /**
-                     * Summary without description.
-                     *
-                     *
-                     * @var int
-                     *
-                     * This is still @var annotation description...
-                     *
-                     *
-                     *
-                     *
-                     * But this is not!
-                     *
-                     *
-                     *
-                     *
-                     *
-                     * @internal
-                     */',
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary without description.
+                                     *
+                                     * @var int
+                                     *
+                                     * This is still @var annotation description...
+                                     *
+                                     * But this is not!
+                                     *
+                                     * @internal
+                                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Summary without description.
+                                     *
+                                     *
+                                     * @var int
+                                     *
+                                     * This is still @var annotation description...
+                                     *
+                                     *
+                                     *
+                                     *
+                                     * But this is not!
+                                     *
+                                     *
+                                     *
+                                     *
+                                     *
+                                     * @internal
+                                     */
+                EOD,
         ];
 
         yield 'extra blank lines between annotations when no Summary no Description' => [
-            '<?php
-                    /**
-                     * @param string $expected
-                     * @param string $input
-                     *
-                     * @dataProvider provideFix56Cases
-                     */',
-            '<?php
-                    /**
-                     * @param string $expected
-                     * @param string $input
-                     *
-                     *
-                     * @dataProvider provideFix56Cases
-                     */',
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @param string $expected
+                                     * @param string $input
+                                     *
+                                     * @dataProvider provideFix56Cases
+                                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @param string $expected
+                                     * @param string $input
+                                     *
+                                     *
+                                     * @dataProvider provideFix56Cases
+                                     */
+                EOD,
         ];
     }
 }

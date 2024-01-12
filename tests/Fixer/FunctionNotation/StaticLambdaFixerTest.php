@@ -84,15 +84,17 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    class B
-                    {
-                        public function C()
-                        {
-                            $a = fn () => var_dump($this);
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class B
+                                    {
+                                        public function C()
+                                        {
+                                            $a = fn () => var_dump($this);
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
@@ -101,156 +103,178 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class Foo {
-                    public function getNames()
-                    {
-                        return \array_map(
-                            static fn ($item) => $item->getName(),
-                            $this->getItems()
-                        );
-                    }
-                }',
-            '<?php class Foo {
-                    public function getNames()
-                    {
-                        return \array_map(
-                            fn ($item) => $item->getName(),
-                            $this->getItems()
-                        );
-                    }
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    public function getNames()
+                                    {
+                                        return \array_map(
+                                            static fn ($item) => $item->getName(),
+                                            $this->getItems()
+                                        );
+                                    }
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                    public function getNames()
+                                    {
+                                        return \array_map(
+                                            fn ($item) => $item->getName(),
+                                            $this->getItems()
+                                        );
+                                    }
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo {
-                    public function getNames()
-                    {
-                        return \array_map(
-                            fn ($item) => $item->getName(1, $this->foo()),
-                            $this->getItems()
-                        );
-                    }
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    public function getNames()
+                                    {
+                                        return \array_map(
+                                            fn ($item) => $item->getName(1, $this->foo()),
+                                            $this->getItems()
+                                        );
+                                    }
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        public function B()
-                        {
-                            $a = function () {
-                                $b = \'this\';
-                                var_dump($$b);
-                            };
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        public function B()
+                                        {
+                                            $a = function () {
+                                                $b = 'this';
+                                                var_dump($$b);
+                                            };
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class B
-                    {
-                        public function C()
-                        {
-                            $a = function () {
-                                var_dump($THIS);
-                            };
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class B
+                                    {
+                                        public function C()
+                                        {
+                                            $a = function () {
+                                                var_dump($THIS);
+                                            };
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class D
-                    {
-                        public function E()
-                        {
-                            $a = function () {
-                                $c = include __DIR__.\'/return_this.php\';
-                                var_dump($c);
-                            };
+            <<<'EOD'
+                <?php
+                                    class D
+                                    {
+                                        public function E()
+                                        {
+                                            $a = function () {
+                                                $c = include __DIR__.'/return_this.php';
+                                                var_dump($c);
+                                            };
 
-                            $a();
-                        }
-                    }'."\n                ",
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class F
-                    {
-                        public function G()
-                        {
-                            $a = function () {
-                                $d = include_once __DIR__.\'/return_this.php\';
-                                var_dump($d);
-                            };
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class F
+                                    {
+                                        public function G()
+                                        {
+                                            $a = function () {
+                                                $d = include_once __DIR__.'/return_this.php';
+                                                var_dump($d);
+                                            };
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class H
-                    {
-                        public function I()
-                        {
-                            $a = function () {
-                                $e = require_once __DIR__.\'/return_this.php\';
-                                var_dump($e);
-                            };
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class H
+                                    {
+                                        public function I()
+                                        {
+                                            $a = function () {
+                                                $e = require_once __DIR__.'/return_this.php';
+                                                var_dump($e);
+                                            };
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class J
-                    {
-                        public function K()
-                        {
-                            $a = function () {
-                                $f = require __DIR__.\'/return_this.php\';
-                                var_dump($f);
-                            };
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class J
+                                    {
+                                        public function K()
+                                        {
+                                            $a = function () {
+                                                $f = require __DIR__.'/return_this.php';
+                                                var_dump($f);
+                                            };
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class L
-                    {
-                        public function M()
-                        {
-                            $a = function () {
-                                $g = \'this\';
-                                $h = ${$g};
-                                var_dump($h);
-                            };
-                            $a();
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class L
+                                    {
+                                        public function M()
+                                        {
+                                            $a = function () {
+                                                $g = 'this';
+                                                $h = ${$g};
+                                                var_dump($h);
+                                            };
+                                            $a();
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class N
-                    {
-                        public function O()
-                        {
-                            $a = function () {
-                                $a = [0 => \'this\'];
-                                var_dump(${$a[0]});
-                            };
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class N
+                                    {
+                                        public function O()
+                                        {
+                                            $a = function () {
+                                                $a = [0 => 'this'];
+                                                var_dump(${$a[0]});
+                                            };
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
@@ -258,63 +282,71 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php abstract class P
+            <<<'EOD'
+                <?php abstract class P
+                                {
+                                    function test0(){}
+                                    public function test1(){}
+                                    protected function test2(){}
+                                    protected abstract function test3();
+                                    private function test4(){}
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                class Q
                 {
-                    function test0(){}
-                    public function test1(){}
-                    protected function test2(){}
-                    protected abstract function test3();
-                    private function test4(){}
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-
-class Q
-{
-    public function abc()
-    {
-        $b = function () {
-            $c = eval(\'return $this;\');
-            var_dump($c);
-        };
-
-        $b();
-    }
-}
-
-$b = new Q();
-$b->abc();
-',
-        ];
-
-        yield [
-            '<?php
-
-                class A {}
-                class B extends A {
-                    public function foo()
+                    public function abc()
                     {
-                        $c = function () {
-                            return parent::foo();
+                        $b = function () {
+                            $c = eval('return $this;');
+                            var_dump($c);
                         };
+
+                        $b();
                     }
-                }',
+                }
+
+                $b = new Q();
+                $b->abc();
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                    class B
-                    {
-                        public function C()
-                        {
-                            return array_map(
-                                fn () => $this,
-                                []
-                            );
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+
+                                class A {}
+                                class B extends A {
+                                    public function foo()
+                                    {
+                                        $c = function () {
+                                            return parent::foo();
+                                        };
+                                    }
+                                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    class B
+                                    {
+                                        public function C()
+                                        {
+                                            return array_map(
+                                                fn () => $this,
+                                                []
+                                            );
+                                        }
+                                    }
+                EOD."\n                ",
         ];
     }
 }

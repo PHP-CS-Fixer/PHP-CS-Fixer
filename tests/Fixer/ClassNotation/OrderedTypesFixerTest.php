@@ -45,103 +45,125 @@ final class OrderedTypesFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'catch with default, no spaces, with both leading slash' => [
-            '<?php
-try {
-    $this->foo();
-} catch (\LogicException|\RuntimeException $e) {
-    // $e
-}
-',
-            '<?php
-try {
-    $this->foo();
-} catch (\RuntimeException|\LogicException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (\LogicException|\RuntimeException $e) {
+                    // $e
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (\RuntimeException|\LogicException $e) {
+                    // $e
+                }
+
+                EOD,
         ];
 
         yield 'catch with default, with spaces, with both leading slash' => [
-            '<?php
-try {
-    $this->foo();
-} catch (\LogicException|\RuntimeException $e) {
-    // $e
-}
-',
-            '<?php
-try {
-    $this->foo();
-} catch (\RuntimeException | \LogicException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (\LogicException|\RuntimeException $e) {
+                    // $e
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (\RuntimeException | \LogicException $e) {
+                    // $e
+                }
+
+                EOD,
         ];
 
         yield 'catch with default, no spaces, with no leading slash' => [
-            '<?php
-try {
-    cache()->save();
-} catch (CacheException|SimpleCacheException $e) {
-    // $e
-}
-',
-            '<?php
-try {
-    cache()->save();
-} catch (SimpleCacheException|CacheException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    cache()->save();
+                } catch (CacheException|SimpleCacheException $e) {
+                    // $e
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                try {
+                    cache()->save();
+                } catch (SimpleCacheException|CacheException $e) {
+                    // $e
+                }
+
+                EOD,
         ];
 
         yield 'catch with default, with spaces, with one leading slash' => [
-            '<?php
-try {
-    cache()->save();
-} catch (CacheException|\RuntimeException $e) {
-    // $e
-}
-',
-            '<?php
-try {
-    cache()->save();
-} catch (\RuntimeException | CacheException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    cache()->save();
+                } catch (CacheException|\RuntimeException $e) {
+                    // $e
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                try {
+                    cache()->save();
+                } catch (\RuntimeException | CacheException $e) {
+                    // $e
+                }
+
+                EOD,
         ];
 
         yield 'catch with no sorting' => [
-            '<?php
-try {
-    $this->foo();
-} catch (\RuntimeException|\LogicException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (\RuntimeException|\LogicException $e) {
+                    // $e
+                }
+
+                EOD,
             null,
             ['sort_algorithm' => 'none'],
         ];
 
         yield 'nothing to fix' => [
-            '<?php
-try {
-    $this->foo();
-} catch (\LogicException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (\LogicException $e) {
+                    // $e
+                }
+
+                EOD,
         ];
 
         yield 'already fixed' => [
-            '<?php
-try {
-    $this->foo();
-} catch (LogicException|RuntimeException $e) {
-    // $e
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    $this->foo();
+                } catch (LogicException|RuntimeException $e) {
+                    // $e
+                }
+
+                EOD,
         ];
     }
 
@@ -278,23 +300,25 @@ try {
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public ?string $foo = null;
-    public /* int|string */ $bar;
-    private null|array $baz = null;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public ?string $foo = null;
+                    public /* int|string */ $bar;
+                    private null|array $baz = null;
 
-    public function baz(): null|string {}
-    protected function bar(string $str, ?array $config = null): callable {}
-}
+                    public function baz(): null|string {}
+                    protected function bar(string $str, ?array $config = null): callable {}
+                }
 
-try {
-    (new Foo)->baz();
-} catch (Exception $e) {
-    return $e;
-}
-',
+                try {
+                    (new Foo)->baz();
+                } catch (Exception $e) {
+                    return $e;
+                }
+
+                EOD,
         ];
 
         yield [
@@ -388,23 +412,25 @@ try {
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public ?string $foo = null;
-    public /* int|string */ $bar;
-    private array|null $baz = null;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public ?string $foo = null;
+                    public /* int|string */ $bar;
+                    private array|null $baz = null;
 
-    public function baz(): string|null {}
-    protected function bar(string $str, ?array $config = null): callable {}
-}
+                    public function baz(): string|null {}
+                    protected function bar(string $str, ?array $config = null): callable {}
+                }
 
-try {
-    (new Foo)->baz();
-} catch (Exception $e) {
-    return $e;
-}
-',
+                try {
+                    (new Foo)->baz();
+                } catch (Exception $e) {
+                    return $e;
+                }
+
+                EOD,
             null,
             ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
         ];
@@ -500,23 +526,25 @@ try {
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public ?string $foo = null;
-    public /* int|string */ $bar;
-    private array|null $baz = null;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public ?string $foo = null;
+                    public /* int|string */ $bar;
+                    private array|null $baz = null;
 
-    public function baz(): null|string {}
-    protected function bar(string $str, ?array $config = null): callable {}
-}
+                    public function baz(): null|string {}
+                    protected function bar(string $str, ?array $config = null): callable {}
+                }
 
-try {
-    (new Foo)->baz();
-} catch (Exception $e) {
-    return $e;
-}
-',
+                try {
+                    (new Foo)->baz();
+                } catch (Exception $e) {
+                    return $e;
+                }
+
+                EOD,
             null,
             ['sort_algorithm' => 'alpha', 'null_adjustment' => 'none'],
         ];

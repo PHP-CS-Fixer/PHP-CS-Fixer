@@ -28,15 +28,21 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 {
     public function testFixWithTrailingSpace(): void
     {
-        $expected = '<?php
-/**
- * Test.
- */';
+        $expected = <<<'EOD'
+            <?php
+            /**
+             * Test.
+             */
+            EOD;
 
-        $input = '<?php
-/**
- * Test'.'         '.'
- */';
+        $input = <<<'EOD'
+            <?php
+            /**
+             * Test
+            EOD.'         '.<<<'EOD'
+
+             */
+            EOD;
         $this->doTest($expected, $input);
     }
 
@@ -393,19 +399,23 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
     public static function provideWithInheritDocCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     * {@inheritdoc}
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@inheritdoc}
+                     */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritDoc
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritDoc
+                     */
+
+                EOD,
         ];
     }
 

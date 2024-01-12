@@ -196,54 +196,60 @@ final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 
     public function testFixWithHeredoc(): void
     {
-        $expected = '
-<?php
-$b = <<<TEXT
-Foo TEXT
-Bar
+        $expected = <<<'EOD'
+
+            <?php
+            $b = <<<TEXT
+            Foo TEXT
+            Bar
 
 
-FooFoo
-TEXT;
-';
+            FooFoo
+            TEXT;
+
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testFixWithNowdoc(): void
     {
-        $expected = '
-<?php
-$b = <<<\'TEXT\'
-Foo TEXT;
-Bar1}
+        $expected = <<<'EOD'
+
+            <?php
+            $b = <<<'TEXT'
+            Foo TEXT;
+            Bar1}
 
 
-FooFoo
-TEXT;
-';
+            FooFoo
+            TEXT;
+
+            EOD;
 
         $this->doTest($expected);
     }
 
     public function testFixWithEncapsulatedNowdoc(): void
     {
-        $expected = '
-<?php
-$b = <<<\'TEXT\'
-Foo TEXT
-Bar
+        $expected = <<<'EOD'
 
-<<<\'TEMPLATE\'
-BarFooBar TEMPLATE
+            <?php
+            $b = <<<'TEXT'
+            Foo TEXT
+            Bar
 
-
-TEMPLATE;
+            <<<'TEMPLATE'
+            BarFooBar TEMPLATE
 
 
-FooFoo
-TEXT;
-';
+            TEMPLATE;
+
+
+            FooFoo
+            TEXT;
+
+            EOD;
 
         $this->doTest($expected);
     }
@@ -332,29 +338,31 @@ TEXT;
 
     public function testFixWithTrailingInlineBlock(): void
     {
-        $expected = "
-<?php
-    echo 'hello';
-?>
+        $expected = <<<'EOD'
 
-\$a = 0;
+            <?php
+                echo 'hello';
+            ?>
 
-
-
-//a
-
-<?php
-
-\$a = 0;
-
-\$b = 1;
-
-//a
-?>
+            $a = 0;
 
 
 
-";
+            //a
+
+            <?php
+
+            $a = 0;
+
+            $b = 1;
+
+            //a
+            ?>
+
+
+
+
+            EOD;
         $this->doTest($expected);
     }
 
@@ -420,20 +428,24 @@ TEXT;
 
     public static function provideFixWithLineBreaksCases(): iterable
     {
-        $input = '<?php //
+        $input = <<<'EOD'
+            <?php //
 
 
-$a = 1;
+            $a = 1;
 
 
-$b = 1;
-';
-        $expected = '<?php //
+            $b = 1;
 
-$a = 1;
+            EOD;
+        $expected = <<<'EOD'
+            <?php //
 
-$b = 1;
-';
+            $a = 1;
+
+            $b = 1;
+
+            EOD;
 
         yield [
             "<?php\r\n//a\r\n\r\n\$a =1;",
@@ -490,68 +502,88 @@ $b = 1;
         yield ['<?php use Y\B;use A\D; return 1;'];
 
         yield [
-            '<?php
-                    use A\B;
-                    use A\C;',
-            '<?php
-                    use A\B;
+            <<<'EOD'
+                <?php
+                                    use A\B;
+                                    use A\C;
+                EOD,
+            <<<'EOD'
+                <?php
+                                    use A\B;
 
-                    use A\C;',
+                                    use A\C;
+                EOD,
         ];
 
         yield [
-            '<?php use A\E;use A\Z;
-                    use C;
-                return 1;'."\n                ",
-            '<?php use A\E;use A\Z;
+            <<<'EOD'
+                <?php use A\E;use A\Z;
+                                    use C;
+                                return 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php use A\E;use A\Z;
 
-                    use C;
-                return 1;'."\n                ",
+                                    use C;
+                                return 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                class Test {
-                    use A;
+            <<<'EOD'
+                <?php
+                                class Test {
+                                    use A;
 
-                    use B;
-                }',
+                                    use B;
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $example = function () use ($message) { var_dump($message); };
+            <<<'EOD'
+                <?php
+                                    $example = function () use ($message) { var_dump($message); };
 
-                    $example = function () use ($message) { var_dump($message); };'."\n                ",
+                                    $example = function () use ($message) { var_dump($message); };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-use function A; use function B;
+            <<<'EOD'
+                <?php
+                use function A; use function B;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA,ConstB,ConstC
-,
-};
-use const some\Z\{ConstX,ConstY,ConstZ,};
-',
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C,};
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\a\{ConstA,ConstB,ConstC
+                ,
+                };
+                use const some\Z\{ConstX,ConstY,ConstZ,};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C,};
 
 
-use function some\a\{fn_a, fn_b, fn_c,};
+                use function some\a\{fn_a, fn_b, fn_c,};
 
-use const some\a\{ConstA,ConstB,ConstC
-,
-};'."\n  ".'
-use const some\Z\{ConstX,ConstY,ConstZ,};
-',
+                use const some\a\{ConstA,ConstB,ConstC
+                ,
+                };
+                EOD."\n  ".<<<'EOD'
+
+                use const some\Z\{ConstX,ConstY,ConstZ,};
+
+                EOD,
         ];
     }
 
@@ -611,18 +643,22 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         ];
 
         yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-',
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
 
-use function some\a\{fn_a, fn_b, fn_c};
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
 
-use const some\a\{ConstA, ConstB, ConstC};
-',
+                use function some\a\{fn_a, fn_b, fn_c};
+
+                use const some\a\{ConstA, ConstB, ConstC};
+
+                EOD,
         ];
     }
 
@@ -639,12 +675,14 @@ use const some\a\{ConstA, ConstB, ConstC};
     public static function provideWithoutUsesCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$c = 1;
+                $c = 1;
 
-$a = new Baz();
-$a = new Qux();',
+                $a = new Baz();
+                $a = new Qux();
+                EOD,
         ];
 
         yield [
@@ -677,97 +715,109 @@ $a = new Qux();',
     public static function provideRemoveBetweenUseTraitsCases(): iterable
     {
         yield [
-            '<?php
-class Foo
-{
-    use Z; // 123
-    use Bar;/* */use Baz;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Z; // 123
+                    use Bar;/* */use Baz;
 
-    public function baz() {}
+                    public function baz() {}
 
-    use Bar1; use Baz1;
+                    use Bar1; use Baz1;
 
-    public function baz1() {}
-}
-',
-            '<?php
-class Foo
-{
-    use Z; // 123
+                    public function baz1() {}
+                }
 
-    use Bar;/* */use Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Z; // 123
 
-    public function baz() {}
+                    use Bar;/* */use Baz;
 
-    use Bar1; use Baz1;
+                    public function baz() {}
 
-    public function baz1() {}
-}
-',
+                    use Bar1; use Baz1;
+
+                    public function baz1() {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    use Bar;use Baz;
-    use Bar1;use Baz1;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar;use Baz;
+                    use Bar1;use Baz1;
 
-    public function baz() {}
-}
-',
-            '<?php
-class Foo
-{
-    use Bar;use Baz;
+                    public function baz() {}
+                }
 
-    use Bar1;use Baz1;
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar;use Baz;
 
-    public function baz() {}
-}
-',
+                    use Bar1;use Baz1;
+
+                    public function baz() {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-            namespace T\A;
-            use V;
+            <<<'EOD'
+                <?php
+                            namespace T\A;
+                            use V;
 
 
-            use W;
+                            use W;
 
-            class Test {
-                use A;
-                use B;
+                            class Test {
+                                use A;
+                                use B;
 
-                private function test($b) {
+                                private function test($b) {
 
-                    $a = function() use ($b) { echo $b;};
+                                    $a = function() use ($b) { echo $b;};
 
-                    $b = function() use ($b) { echo $b;};
+                                    $b = function() use ($b) { echo $b;};
 
-                }
-            }',
-            '<?php
-            namespace T\A;
-            use V;
+                                }
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            namespace T\A;
+                            use V;
 
 
-            use W;
+                            use W;
 
-            class Test {
-                use A;
+                            class Test {
+                                use A;
 
-                use B;
+                                use B;
 
-                private function test($b) {
+                                private function test($b) {
 
-                    $a = function() use ($b) { echo $b;};
+                                    $a = function() use ($b) { echo $b;};
 
-                    $b = function() use ($b) { echo $b;};
+                                    $b = function() use ($b) { echo $b;};
 
-                }
-            }',
+                                }
+                            }
+                EOD,
         ];
     }
 
@@ -840,34 +890,38 @@ class Foo
 
         yield [
             ['tokens' => ['parenthesis_brace_block']],
-            '<?php
-is_int(
-1);
-function test(
-$a,
-$b,
-$c
-)
-{
+            <<<'EOD'
+                <?php
+                is_int(
+                1);
+                function test(
+                $a,
+                $b,
+                $c
+                )
+                {
 
 
-}',
-            '<?php
-is_int(
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                is_int(
 
-1);
-function test(
+                1);
+                function test(
 
-$a,
-$b,
-$c
-
-
-)
-{
+                $a,
+                $b,
+                $c
 
 
-}',
+                )
+                {
+
+
+                }
+                EOD,
         ];
 
         yield [
@@ -878,36 +932,42 @@ $c
 
         yield [
             ['tokens' => ['parenthesis_brace_block']],
-            '<?php
-    function a()
-    {
-        $b->d(e(
-        ));
+            <<<'EOD'
+                <?php
+                    function a()
+                    {
+                        $b->d(e(
+                        ));
 
-        foreach ($a as $x) {
-        }
-    }',
+                        foreach ($a as $x) {
+                        }
+                    }
+                EOD,
         ];
 
         yield [
             ['tokens' => ['return']],
-            '<?php
-class Foo
-{
-    public function bar() {return 1;}
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar() {return 1;}
 
-    public function baz() {return 2;
-    }
-}',
-            '<?php
-class Foo
-{
-    public function bar() {return 1;}
+                    public function baz() {return 2;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar() {return 1;}
 
-    public function baz() {return 2;
+                    public function baz() {return 2;
 
-    }
-}',
+                    }
+                }
+                EOD,
         ];
 
         yield [
@@ -999,60 +1059,68 @@ class Foo
                 'return',
                 'throw',
             ],
-            '<?php
-                    /** a  */
-                    switch ($a) {
-                        case 1:
-                            break;
-                        case 2:
-                            continue;
-                        case 3:
-                            return 1;
-                        case 4:
-                            throw $e;
-                        case 5:
-                            throw new \Exception();
-                        case Token::STRING_TYPE:
-                            echo 123;
+            <<<'EOD'
+                <?php
+                                    /** a  */
+                                    switch ($a) {
+                                        case 1:
+                                            break;
+                                        case 2:
+                                            continue;
+                                        case 3:
+                                            return 1;
+                                        case 4:
+                                            throw $e;
+                                        case 5:
+                                            throw new \Exception();
+                                        case Token::STRING_TYPE:
+                                            echo 123;
 
-                            return new ConstantNode($token->getValue());
-                        case 7:
-                            return new ConstantNode($token->getValue());
-                        case 8:
-                            return 8;
-                        default:
-                            echo 1;
-                    }',
-            '<?php
-                    /** a  */
-                    switch ($a) {
-                        case 1:
-                            break;
+                                            return new ConstantNode($token->getValue());
+                                        case 7:
+                                            return new ConstantNode($token->getValue());
+                                        case 8:
+                                            return 8;
+                                        default:
+                                            echo 1;
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /** a  */
+                                    switch ($a) {
+                                        case 1:
+                                            break;
 
-                        case 2:
-                            continue;
+                                        case 2:
+                                            continue;
 
-                        case 3:
-                            return 1;
+                                        case 3:
+                                            return 1;
 
-                        case 4:
-                            throw $e;
+                                        case 4:
+                                            throw $e;
 
-                        case 5:
-                            throw new \Exception();
+                                        case 5:
+                                            throw new \Exception();
 
-                        case Token::STRING_TYPE:
-                            echo 123;
+                                        case Token::STRING_TYPE:
+                                            echo 123;
 
-                            return new ConstantNode($token->getValue());
+                                            return new ConstantNode($token->getValue());
 
-                        case 7:
-                            return new ConstantNode($token->getValue());'."\n        ".'
-                        case 8:
-                            return 8;'."\n                        ".'
-                        default:
-                            echo 1;
-                    }',
+                                        case 7:
+                                            return new ConstantNode($token->getValue());
+                EOD."\n        ".<<<'EOD'
+
+                                        case 8:
+                                            return 8;
+                EOD."\n                        ".<<<'EOD'
+
+                                        default:
+                                            echo 1;
+                                    }
+                EOD,
         ];
 
         yield [
@@ -1061,24 +1129,28 @@ class Foo
                 'case',
                 'default',
             ],
-            '<?php
-                    switch($a) {
-                        case 0:
-                        case 1:
-                        default:
-                            return 1;
-                    }',
-            '<?php
-                    switch($a) {
+            <<<'EOD'
+                <?php
+                                    switch($a) {
+                                        case 0:
+                                        case 1:
+                                        default:
+                                            return 1;
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    switch($a) {
 
-                        case 0:
+                                        case 0:
 
-                        case 1:
+                                        case 1:
 
-                        default:
+                                        default:
 
-                            return 1;
-                    }',
+                                            return 1;
+                                    }
+                EOD,
         ];
 
         yield [
@@ -1087,32 +1159,40 @@ class Foo
                 'case',
                 'default',
             ],
-            '<?php
-                    switch($a) { case 2: echo 3;
-                    default: return 1;}
+            <<<'EOD'
+                <?php
+                                    switch($a) { case 2: echo 3;
+                                    default: return 1;}
 
 
-                    // above stays empty',
-            '<?php
-                    switch($a) { case 2: echo 3;
+                                    // above stays empty
+                EOD,
+            <<<'EOD'
+                <?php
+                                    switch($a) { case 2: echo 3;
 
-                    default: return 1;}
+                                    default: return 1;}
 
 
-                    // above stays empty',
+                                    // above stays empty
+                EOD,
         ];
     }
 
     public function testRemovingEmptyLinesAfterOpenTag(): void
     {
         $this->doTest(
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo {}',
-            '<?php
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
 
-class Foo {}'
+                class Foo {}
+                EOD
         );
     }
 
@@ -1134,81 +1214,93 @@ class Foo {}'
     {
         yield [
             ['tokens' => ['throw']],
-            '<?php
-                $nullCoalescingOperator1 = $bar ?? throw new \Exception();
+            <<<'EOD'
+                <?php
+                                $nullCoalescingOperator1 = $bar ?? throw new \Exception();
 
-                $nullCoalescingOperator2 = $bar ?? throw new \Exception();
+                                $nullCoalescingOperator2 = $bar ?? throw new \Exception();
 
-                $nullCoalescingOperator3 = $bar ?? throw new \Exception();
+                                $nullCoalescingOperator3 = $bar ?? throw new \Exception();
 
-                $ternaryOperator1 = $bar ? 42 : throw new \Exception();
+                                $ternaryOperator1 = $bar ? 42 : throw new \Exception();
 
-                $ternaryOperator2 = $bar ? 42 : throw new \Exception();
+                                $ternaryOperator2 = $bar ? 42 : throw new \Exception();
 
-                $ternaryOperator3 = $bar ? 42 : throw new \Exception();
+                                $ternaryOperator3 = $bar ? 42 : throw new \Exception();
 
-                $orOperator1 = $bar || throw new \Exception();
+                                $orOperator1 = $bar || throw new \Exception();
 
-                $orOperator2 = $bar || throw new \Exception();
+                                $orOperator2 = $bar || throw new \Exception();
 
-                $orOperator3 = $bar || throw new \Exception();'."\n            ",
+                                $orOperator3 = $bar || throw new \Exception();
+                EOD."\n            ",
         ];
 
         yield [
             ['tokens' => ['throw']],
-            '<?php
-                $a = $bar ?? throw new \Exception();
+            <<<'EOD'
+                <?php
+                                $a = $bar ?? throw new \Exception();
 
-                // Now, we are going to use it!
-                var_dump($a);'."\n            ",
+                                // Now, we are going to use it!
+                                var_dump($a);
+                EOD."\n            ",
         ];
 
         yield [
             ['tokens' => ['attribute']],
-            '<?php
-#[Attr]
-#[AttrFoo1]
-#[AttrFoo2]
-function foo(){}'."\n            ",
-            '<?php
-#[Attr]
+            <<<'EOD'
+                <?php
+                #[Attr]
+                #[AttrFoo1]
+                #[AttrFoo2]
+                function foo(){}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                #[Attr]
 
 
 
-#[AttrFoo1]
+                #[AttrFoo1]
 
 
-#[AttrFoo2]
+                #[AttrFoo2]
 
-function foo(){}'."\n            ",
+                function foo(){}
+                EOD."\n            ",
         ];
 
         yield [
             ['tokens' => ['attribute']],
-            '<?php class Foo
-            {
-                protected function f1(string $x): string { return "r1"; }
+            <<<'EOD'
+                <?php class Foo
+                            {
+                                protected function f1(string $x): string { return "r1"; }
 
-                protected function f2(string $x): string { return "r1"; }
+                                protected function f2(string $x): string { return "r1"; }
 
-                protected function f3(#[Attr] string $x): string { return "r1"; }
+                                protected function f3(#[Attr] string $x): string { return "r1"; }
 
-                protected function f4(string $x): string { return "r1"; }
-            }',
+                                protected function f4(string $x): string { return "r1"; }
+                            }
+                EOD,
         ];
 
         yield [
             ['tokens' => ['attribute']],
-            '<?php abstract class Foo
-            {
-                abstract protected function f1(string $x): string;
+            <<<'EOD'
+                <?php abstract class Foo
+                            {
+                                abstract protected function f1(string $x): string;
 
-                abstract protected function f2(string $x): string;
+                                abstract protected function f2(string $x): string;
 
-                abstract protected function f3(#[Attr] string $x): string;
+                                abstract protected function f3(#[Attr] string $x): string;
 
-                abstract protected function f4(string $x): string;
-            }',
+                                abstract protected function f4(string $x): string;
+                            }
+                EOD,
         ];
     }
 
@@ -1227,47 +1319,53 @@ function foo(){}'."\n            ",
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-enum test
-{
-    case Baz;
+            <<<'EOD'
+                <?php
+                enum test
+                {
+                    case Baz;
 
-    public function foo() {
-        switch (bar()) {
-            case 1: echo 1; break;
-            case 2: echo 2; break;
-        }
-    }
+                    public function foo() {
+                        switch (bar()) {
+                            case 1: echo 1; break;
+                            case 2: echo 2; break;
+                        }
+                    }
 
-    case Bad;
-}
-',
-            '<?php
-enum test
-{
-    case Baz;
+                    case Bad;
+                }
 
-    public function foo() {
-        switch (bar()) {
-            case 1: echo 1; break;
+                EOD,
+            <<<'EOD'
+                <?php
+                enum test
+                {
+                    case Baz;
+
+                    public function foo() {
+                        switch (bar()) {
+                            case 1: echo 1; break;
 
 
-            case 2: echo 2; break;
-        }
-    }
+                            case 2: echo 2; break;
+                        }
+                    }
 
-    case Bad;
-}
-',
+                    case Bad;
+                }
+
+                EOD,
         ];
 
-        $expectedTemplate = '<?php
-enum Foo
-{
-    case CASE_1;
+        $expectedTemplate = <<<'EOD'
+            <?php
+            enum Foo
+            {
+                case CASE_1;
 
-    %s
-}';
+                %s
+            }
+            EOD;
 
         $enumAttributes = [
             'case CASE_2;',

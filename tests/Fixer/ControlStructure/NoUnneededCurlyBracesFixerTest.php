@@ -44,84 +44,98 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                      echo 0;   //
-                    echo 1;
-                    switch($a) {
-                        case 2: echo 3; break;
-                    }
-                    echo 4;  echo 5; //'."\n                ",
-            '<?php
-                    { { echo 0; } } //
-                    {echo 1;}
-                    switch($a) {
-                        case 2: {echo 3; break;}
-                    }
-                    echo 4; { echo 5; }//'."\n                ",
+            <<<'EOD'
+                <?php
+                                      echo 0;   //
+                                    echo 1;
+                                    switch($a) {
+                                        case 2: echo 3; break;
+                                    }
+                                    echo 4;  echo 5; //
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    { { echo 0; } } //
+                                    {echo 1;}
+                                    switch($a) {
+                                        case 2: {echo 3; break;}
+                                    }
+                                    echo 4; { echo 5; }//
+                EOD."\n                ",
         ];
 
         yield 'no fixes' => [
-            '<?php
-                    foreach($a as $b){}
-                    while($a){}
-                    do {} while($a);
+            <<<'EOD'
+                <?php
+                                    foreach($a as $b){}
+                                    while($a){}
+                                    do {} while($a);
 
-                    if ($c){}
-                    if ($c){}else{}
-                    if ($c){}elseif($d){}
-                    if ($c) {}elseif($d)/**  */{ } else/**/{  }
+                                    if ($c){}
+                                    if ($c){}else{}
+                                    if ($c){}elseif($d){}
+                                    if ($c) {}elseif($d)/**  */{ } else/**/{  }
 
-                    try {} catch(\Exception $e) {}
+                                    try {} catch(\Exception $e) {}
 
-                    function test(){}
-                    $a = function() use ($c){};
+                                    function test(){}
+                                    $a = function() use ($c){};
 
-                    class A extends B {}
-                    interface D {}
-                    trait E {}'."\n                ",
+                                    class A extends B {}
+                                    interface D {}
+                                    trait E {}
+                EOD."\n                ",
         ];
 
         yield 'no fixes II' => [
-            '<?php
-                declare(ticks=1) {
-                // entire script here
-                }
-                #',
+            <<<'EOD'
+                <?php
+                                declare(ticks=1) {
+                                // entire script here
+                                }
+                                #
+                EOD,
         ];
 
         yield 'no fix catch/try/finally' => [
-            '<?php
-                    try {
+            <<<'EOD'
+                <?php
+                                    try {
 
-                    } catch(\Exception $e) {
+                                    } catch(\Exception $e) {
 
-                    } finally {
+                                    } finally {
 
-                    }'."\n                ",
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'no fix namespace block' => [
-            '<?php
-                    namespace {
-                    }
-                    namespace A {
-                    }
-                    namespace A\B {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace {
+                                    }
+                                    namespace A {
+                                    }
+                                    namespace A\B {
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'provideNoFix7Cases' => [
-            '<?php
-                    use some\a\{ClassA, ClassB, ClassC as C};
-                    use function some\a\{fn_a, fn_b, fn_c};
-                    use const some\a\{ConstA, ConstB, ConstC};
-                    use some\x\{ClassD, function CC as C, function D, const E, function A\B};
-                    class Foo
-                    {
-                        public function getBar(): array
-                        {
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    use some\a\{ClassA, ClassB, ClassC as C};
+                                    use function some\a\{fn_a, fn_b, fn_c};
+                                    use const some\a\{ConstA, ConstB, ConstC};
+                                    use some\x\{ClassD, function CC as C, function D, const E, function A\B};
+                                    class Foo
+                                    {
+                                        public function getBar(): array
+                                        {
+                                        }
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -138,9 +152,11 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield 'no fixes, offset access syntax with curly braces' => [
-            '<?php
-                    echo ${$a};
-                    echo $a{1};'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo ${$a};
+                                    echo $a{1};
+                EOD."\n                ",
         ];
     }
 
@@ -156,47 +172,61 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
     public static function provideFixNamespaceCases(): iterable
     {
         yield [
-            '<?php
-namespace Foo;
-    function Bar(){}
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                    function Bar(){}
 
-',
-            '<?php
-namespace Foo {
-    function Bar(){}
-}
-',
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo {
+                    function Bar(){}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-            namespace A5 {
-                function AA(){}
-            }
-            namespace B6 {
-                function BB(){}
-            }',
+            <<<'EOD'
+                <?php
+                            namespace A5 {
+                                function AA(){}
+                            }
+                            namespace B6 {
+                                function BB(){}
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-            namespace Foo7;
-                function Bar(){}'."\n            ",
-            '<?php
-            namespace Foo7 {
-                function Bar(){}
-            }',
+            <<<'EOD'
+                <?php
+                            namespace Foo7;
+                                function Bar(){}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            namespace Foo7 {
+                                function Bar(){}
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-            namespace Foo8\\A;
-                function Bar(){}
-             ?>',
-            "<?php
-            namespace Foo8\\A\t \t {
-                function Bar(){}
-            } ?>",
+            <<<'EOD'
+                <?php
+                            namespace Foo8\A;
+                                function Bar(){}
+                             ?>
+                EOD,
+            <<<EOD
+                <?php
+                            namespace Foo8\\A\t \t {
+                                function Bar(){}
+                            } ?>
+                EOD,
         ];
     }
 }

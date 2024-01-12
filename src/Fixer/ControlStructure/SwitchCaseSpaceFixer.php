@@ -35,14 +35,16 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
             'Removes extra spaces between colon and case value.',
             [
                 new CodeSample(
-                    '<?php
-    switch($a) {
-        case 1   :
-            break;
-        default     :
-            return 2;
-    }
-'
+                    <<<'EOD'
+                        <?php
+                            switch($a) {
+                                case 1   :
+                                    break;
+                                default     :
+                                    return 2;
+                            }
+
+                        EOD
                 ),
             ]
         );

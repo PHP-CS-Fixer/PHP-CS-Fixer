@@ -94,28 +94,34 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         yield ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'];
 
         yield [
-            '<?php
-    class Foo
-    {
-        const TRUE = 1;
-        const FALSE = true;
-        const NULL = null;
-    }',
-            '<?php
-    class Foo
-    {
-        const TRUE = 1;
-        const FALSE = TRUE;
-        const NULL = NULL;
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        const TRUE = 1;
+                        const FALSE = true;
+                        const NULL = null;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        const TRUE = 1;
+                        const FALSE = TRUE;
+                        const NULL = NULL;
+                    }
+                EOD,
         ];
 
         yield ['<?php $x = new /**/False?>'];
 
         yield ['<?php Null/**/::test();'];
 
-        yield ['<?php True//
-                                ::test();'];
+        yield [<<<'EOD'
+            <?php True//
+                                            ::test();
+            EOD];
 
         yield ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'];
 
@@ -224,68 +230,80 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'final class const' => [
-            '<?php
-                class Foo
-                {
-                    final const TRUE = 1;
-                    public final const FALSE = true;
-                    final public const NULL = null;
-                }'."\n            ",
-            '<?php
-                class Foo
-                {
-                    final const TRUE = 1;
-                    public final const FALSE = TRUE;
-                    final public const NULL = NULL;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    final const TRUE = 1;
+                                    public final const FALSE = true;
+                                    final public const NULL = null;
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    final const TRUE = 1;
+                                    public final const FALSE = TRUE;
+                                    final public const NULL = NULL;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'enum and switch' => [
-            '<?php
-                enum Foo
-                {
-                    case True;
-                    case False;
-                    case Null;
+            <<<'EOD'
+                <?php
+                                enum Foo
+                                {
+                                    case True;
+                                    case False;
+                                    case Null;
 
-                    public function methodWithSwitch(mixed $value): void
-                    {
-                        switch ($value) {
-                            case true:
-                            case false:
-                            case null:
-                                break;
-                        }
-                    }
-                }'."\n            ",
-            '<?php
-                enum Foo
-                {
-                    case True;
-                    case False;
-                    case Null;
+                                    public function methodWithSwitch(mixed $value): void
+                                    {
+                                        switch ($value) {
+                                            case true:
+                                            case false:
+                                            case null:
+                                                break;
+                                        }
+                                    }
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                enum Foo
+                                {
+                                    case True;
+                                    case False;
+                                    case Null;
 
-                    public function methodWithSwitch(mixed $value): void
-                    {
-                        switch ($value) {
-                            case TRUE:
-                            case FALSE:
-                            case NULL:
-                                break;
-                        }
-                    }
-                }'."\n            ",
+                                    public function methodWithSwitch(mixed $value): void
+                                    {
+                                        switch ($value) {
+                                            case TRUE:
+                                            case FALSE:
+                                            case NULL:
+                                                break;
+                                        }
+                                    }
+                                }
+                EOD."\n            ",
         ];
 
         yield 'enum' => [
-            '<?php
-                $y = false;
-                enum Foo: string { case FALSE = "false"; }
-                $x = true;'."\n            ",
-            '<?php
-                $y = FALSE;
-                enum Foo: string { case FALSE = "false"; }
-                $x = TRUE;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $y = false;
+                                enum Foo: string { case FALSE = "false"; }
+                                $x = true;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $y = FALSE;
+                                enum Foo: string { case FALSE = "false"; }
+                                $x = TRUE;
+                EOD."\n            ",
         ];
     }
 }

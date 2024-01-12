@@ -76,38 +76,58 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-// space'.' '.'
-$var1 = $a->some_method(
-    $var2
-);
+            <<<'EOD'
+                <?php
+                // space
+                EOD.' '.<<<'EOD'
 
-// space'.' '.'
-$var2 = some_function(
-    $var2
-);
+                $var1 = $a->some_method(
+                    $var2
+                );
 
-    // space'.'     '.'
-    $var2a = $z[1](
-        $var2a
-    );'."\n    ".'
-    $var3 = function(  $a, $b  ) { };
-',
-            '<?php
-// space'.' '.'
-$var1 = $a->some_method(
-    $var2);
+                // space
+                EOD.' '.<<<'EOD'
 
-// space'.' '.'
-$var2 = some_function(
-    $var2);
+                $var2 = some_function(
+                    $var2
+                );
 
-    // space'.'     '.'
-    $var2a = $z[1](
-        $var2a
-    );'."\n    ".'
-    $var3 = function(  $a , $b  ) { };
-',
+                    // space
+                EOD.'     '.<<<'EOD'
+
+                    $var2a = $z[1](
+                        $var2a
+                    );
+                EOD."\n    ".<<<'EOD'
+
+                    $var3 = function(  $a, $b  ) { };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                // space
+                EOD.' '.<<<'EOD'
+
+                $var1 = $a->some_method(
+                    $var2);
+
+                // space
+                EOD.' '.<<<'EOD'
+
+                $var2 = some_function(
+                    $var2);
+
+                    // space
+                EOD.'     '.<<<'EOD'
+
+                    $var2a = $z[1](
+                        $var2a
+                    );
+                EOD."\n    ".<<<'EOD'
+
+                    $var3 = function(  $a , $b  ) { };
+
+                EOD,
             [
                 'on_multiline' => 'ensure_fully_multiline',
             ],
@@ -235,18 +255,22 @@ $var2 = some_function(
         ];
 
         yield 'list call with trailing comma multi line' => [
-            '<?php
-list(
-    $a,
-    $b,
-) = foo();
-',
-            '<?php
-list(
-    $a   ,
-    $b  ,
-) = foo();
-',
+            <<<'EOD'
+                <?php
+                list(
+                    $a,
+                    $b,
+                ) = foo();
+
+                EOD,
+            <<<'EOD'
+                <?php
+                list(
+                    $a   ,
+                    $b  ,
+                ) = foo();
+
+                EOD,
         ];
 
         yield 'inline comments with spaces' => [
@@ -261,35 +285,43 @@ list(
         ];
 
         yield 'multi line testing method call' => [
-            '<?php if (1) {
-                xyz(
-                    $a=10,
-                    $b=20,
-                    $c=30
-                );
-                }',
-            '<?php if (1) {
-                xyz(
-                    $a=10 ,
-                    $b=20,
-                    $c=30
-                );
-                }',
+            <<<'EOD'
+                <?php if (1) {
+                                xyz(
+                                    $a=10,
+                                    $b=20,
+                                    $c=30
+                                );
+                                }
+                EOD,
+            <<<'EOD'
+                <?php if (1) {
+                                xyz(
+                                    $a=10 ,
+                                    $b=20,
+                                    $c=30
+                                );
+                                }
+                EOD,
         ];
 
         yield 'multi line anonymous class constructor call' => [
-            '<?php if (1) {
-                new class (
-                    $a=10,
-                    $b=20,
-                    $c=30
-                ) {};
-                }',
-            '<?php if (1) {
-                new class (
-                    $a=10 ,
-                $b=20,$c=30) {};
-                }',
+            <<<'EOD'
+                <?php if (1) {
+                                new class (
+                                    $a=10,
+                                    $b=20,
+                                    $c=30
+                                ) {};
+                                }
+                EOD,
+            <<<'EOD'
+                <?php if (1) {
+                                new class (
+                                    $a=10 ,
+                                $b=20,$c=30) {};
+                                }
+                EOD,
         ];
 
         yield 'skip arrays but replace arg methods' => [
@@ -308,71 +340,85 @@ list(
         ];
 
         yield 'skip multi line array' => [
-            '<?php
-                    array(
-                        10 ,
-                        20,
-                        30
-                    );',
+            <<<'EOD'
+                <?php
+                                    array(
+                                        10 ,
+                                        20,
+                                        30
+                                    );
+                EOD,
         ];
 
         yield 'skip short array' => [
-            '<?php
-    $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
-    $bar = ["a" ,"b" ,"c"];'."\n    ",
+            <<<'EOD'
+                <?php
+                    $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
+                    $bar = ["a" ,"b" ,"c"];
+                EOD."\n    ",
         ];
 
         yield 'don\'t change HEREDOC and NOWDOC' => [
-            "<?php if (1) {
-    \$this->foo(
-        <<<EOTXTa
-    heredoc
-EOTXTa
-        ,
-        <<<'EOTXTb'
-    nowdoc
-EOTXTb
-        ,
-        'foo'
-    );
-}",
+            <<<'EOD'
+                <?php if (1) {
+                    $this->foo(
+                        <<<EOTXTa
+                    heredoc
+                EOTXTa
+                        ,
+                        <<<'EOTXTb'
+                    nowdoc
+                EOTXTb
+                        ,
+                        'foo'
+                    );
+                }
+                EOD,
         ];
 
         yield 'with_random_comments on_multiline:ignore' => [
-            '<?php xyz#
- (#
-""#
-,#
-$a#
-);',
+            <<<'EOD'
+                <?php xyz#
+                 (#
+                ""#
+                ,#
+                $a#
+                );
+                EOD,
             null,
             ['on_multiline' => 'ignore'],
         ];
 
         yield 'with_random_comments on_multiline:ensure_single_line' => [
-            '<?php xyz#
- (#
-""#
-,#
-$a#
-);',
+            <<<'EOD'
+                <?php xyz#
+                 (#
+                ""#
+                ,#
+                $a#
+                );
+                EOD,
             null,
             ['on_multiline' => 'ensure_single_line'],
         ];
 
         yield 'with_random_comments on_multiline:ensure_fully_multiline' => [
-            '<?php xyz#
- (#
-""#
-,#
-$a#
- );',
-            '<?php xyz#
- (#
-""#
-,#
-$a#
-);',
+            <<<'EOD'
+                <?php xyz#
+                 (#
+                ""#
+                ,#
+                $a#
+                 );
+                EOD,
+            <<<'EOD'
+                <?php xyz#
+                 (#
+                ""#
+                ,#
+                $a#
+                );
+                EOD,
             ['on_multiline' => 'ensure_fully_multiline'],
         ];
 
@@ -395,15 +441,19 @@ $a#
         ];
 
         yield 'test wrongly formatted half-multiline function becomes fully-multiline' => [
-            '<?php
-f(
-    1,
-    2,
-    3
-);',
-            '<?php
-f(1,2,
-3);',
+            <<<'EOD'
+                <?php
+                f(
+                    1,
+                    2,
+                    3
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                f(1,2,
+                3);
+                EOD,
         ];
 
         yield 'function calls with here doc cannot be anything but multiline' => [
@@ -894,80 +944,100 @@ f(1,2,
         ];
 
         yield 'fix closing parenthesis (without trailing comma)' => [
-            '<?php
-if (true) {
-    execute(
-        $foo,
-        $bar
-    );
-}',
-            '<?php
-if (true) {
-    execute(
-        $foo,
-        $bar
-        );
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    execute(
+                        $foo,
+                        $bar
+                    );
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    execute(
+                        $foo,
+                        $bar
+                        );
+                }
+                EOD,
             [
                 'on_multiline' => 'ensure_fully_multiline',
             ],
         ];
 
         yield 'test anonymous functions' => [
-            '<?php
-$example = function () use ($message1, $message2) {
-};',
-            '<?php
-$example = function () use ($message1,$message2) {
-};',
+            <<<'EOD'
+                <?php
+                $example = function () use ($message1, $message2) {
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                $example = function () use ($message1,$message2) {
+                };
+                EOD,
         ];
 
         yield 'test first element in same line, space before comma and inconsistent indent' => [
-            '<?php foo(
-    "aaa
-    bbb",
-    $c,
-    $d,
-    $e,
-    $f
-);
-',
-            '<?php foo("aaa
-    bbb",
-    $c, $d ,
-        $e,
-        $f);
-',
+            <<<'EOD'
+                <?php foo(
+                    "aaa
+                    bbb",
+                    $c,
+                    $d,
+                    $e,
+                    $f
+                );
+
+                EOD,
+            <<<'EOD'
+                <?php foo("aaa
+                    bbb",
+                    $c, $d ,
+                        $e,
+                        $f);
+
+                EOD,
         ];
 
         yield 'test first element in same line, space before comma and inconsistent indent with comments' => [
-            '<?php foo(
-    "aaa
-    bbb", // comment1
-    $c, /** comment2 */
-    $d,
-    $e/* comment3 */,
-    $f
-);# comment4
-',
-            '<?php foo("aaa
-    bbb", // comment1
-    $c, /** comment2 */$d ,
-        $e/* comment3 */,
-        $f);# comment4
-',
+            <<<'EOD'
+                <?php foo(
+                    "aaa
+                    bbb", // comment1
+                    $c, /** comment2 */
+                    $d,
+                    $e/* comment3 */,
+                    $f
+                );# comment4
+
+                EOD,
+            <<<'EOD'
+                <?php foo("aaa
+                    bbb", // comment1
+                    $c, /** comment2 */$d ,
+                        $e/* comment3 */,
+                        $f);# comment4
+
+                EOD,
         ];
 
         yield [
-            '<?php
-foo(
-    /* bar */
-    "baz"
-);'."\n            ",
-            '<?php
-foo(
-    /* bar */ "baz"
-);'."\n            ",
+            <<<'EOD'
+                <?php
+                foo(
+                    /* bar */
+                    "baz"
+                );
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                foo(
+                    /* bar */ "baz"
+                );
+                EOD."\n            ",
         ];
     }
 
@@ -1025,17 +1095,21 @@ foo(
         ];
 
         yield [
-            '<?php
-functionCall(
-    1,
-    2,
-    3,
-);',
-            '<?php
-functionCall(
-    1, 2,
-    3,
-);',
+            <<<'EOD'
+                <?php
+                functionCall(
+                    1,
+                    2,
+                    3,
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                functionCall(
+                    1, 2,
+                    3,
+                );
+                EOD,
             [
                 'on_multiline' => 'ensure_fully_multiline',
             ],
@@ -1047,15 +1121,19 @@ functionCall(
         ];
 
         yield [
-            '<?php
-$fn = fn(
-    $test1,
-    $test2
-) => null;',
-            '<?php
-$fn = fn(
-    $test1, $test2
-) => null;',
+            <<<'EOD'
+                <?php
+                $fn = fn(
+                    $test1,
+                    $test2
+                ) => null;
+                EOD,
+            <<<'EOD'
+                <?php
+                $fn = fn(
+                    $test1, $test2
+                ) => null;
+                EOD,
             [
                 'on_multiline' => 'ensure_fully_multiline',
             ],
@@ -1078,35 +1156,41 @@ $fn = fn(
     public static function provideFix80Cases(): iterable
     {
         yield 'multiple attributes' => [
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo]
-        #[Bar]
-        private ?string $name = null,
-    ) {}
-}',
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo] #[Bar] private ?string $name = null,
-    ) {}
-}',
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo]
+                        #[Bar]
+                        private ?string $name = null,
+                    ) {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo] #[Bar] private ?string $name = null,
+                    ) {}
+                }
+                EOD,
         ];
 
         yield 'keep attributes as-is' => [
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo] #[Bar] private ?string $name = null,
-    ) {}
-}',
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo] #[Bar] private ?string $name = null,
+                    ) {}
+                }
+                EOD,
             null,
             [
                 'attribute_placement' => 'ignore',
@@ -1114,103 +1198,123 @@ class MyClass
         ];
 
         yield 'multiple attributes on the same line as argument' => [
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo] #[Bar] private ?string $name = null,
-    ) {}
-}',
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo]
-        #[Bar]
-        private ?string $name = null,
-    ) {}
-}',
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo] #[Bar] private ?string $name = null,
+                    ) {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo]
+                        #[Bar]
+                        private ?string $name = null,
+                    ) {}
+                }
+                EOD,
             [
                 'attribute_placement' => 'same_line',
             ],
         ];
 
         yield 'single attribute markup with comma separated list' => [
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo, Bar]
-        private ?string $name = null,
-    ) {}
-}',
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo, Bar] private ?string $name = null,
-    ) {}
-}',
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo, Bar]
+                        private ?string $name = null,
+                    ) {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo, Bar] private ?string $name = null,
+                    ) {}
+                }
+                EOD,
         ];
 
         yield 'attributes with arguments' => [
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo(value: 1234, otherValue: [1, 2, 3])]
-        #[Bar(Bar::BAZ, array(\'[\',\']\'))]
-        private ?string $name = null,
-    ) {}
-}',
-            '<?php
-class MyClass
-{
-    public function __construct(
-        private string $id,
-        #[Foo(value: 1234, otherValue: [1, 2, 3])] #[Bar(Bar::BAZ, array(\'[\',\']\'))] private ?string $name = null,
-    ) {}
-}',
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo(value: 1234, otherValue: [1, 2, 3])]
+                        #[Bar(Bar::BAZ, array('[',']'))]
+                        private ?string $name = null,
+                    ) {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MyClass
+                {
+                    public function __construct(
+                        private string $id,
+                        #[Foo(value: 1234, otherValue: [1, 2, 3])] #[Bar(Bar::BAZ, array('[',']'))] private ?string $name = null,
+                    ) {}
+                }
+                EOD,
         ];
 
         yield 'fully qualified attributes' => [
-            '<?php
-function foo(
-    #[\Foo\Bar]
-    $bar,
-    #[\Foo\Baz]
-    $baz,
-    #[\Foo\Buzz]
-    $buzz
-) {}',
-            '<?php
-function foo(
-    #[\Foo\Bar] $bar, #[\Foo\Baz] $baz, #[\Foo\Buzz] $buzz
-) {}',
+            <<<'EOD'
+                <?php
+                function foo(
+                    #[\Foo\Bar]
+                    $bar,
+                    #[\Foo\Baz]
+                    $baz,
+                    #[\Foo\Buzz]
+                    $buzz
+                ) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo(
+                    #[\Foo\Bar] $bar, #[\Foo\Baz] $baz, #[\Foo\Buzz] $buzz
+                ) {}
+                EOD,
         ];
 
         yield 'multiline attributes' => [
-            '<?php
-function foo(
-    $foo,
-    #[
-    Foo\Bar,
-    Foo\Baz,
-    Foo\Buzz(a: \'astral\', b: 1234),
-]
-    $bar
-) {}',
-            '<?php
-function foo($foo, #[
-    Foo\Bar,
-    Foo\Baz,
-    Foo\Buzz(a: \'astral\', b: 1234),
-] $bar) {}',
+            <<<'EOD'
+                <?php
+                function foo(
+                    $foo,
+                    #[
+                    Foo\Bar,
+                    Foo\Baz,
+                    Foo\Buzz(a: 'astral', b: 1234),
+                ]
+                    $bar
+                ) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo($foo, #[
+                    Foo\Bar,
+                    Foo\Baz,
+                    Foo\Buzz(a: 'astral', b: 1234),
+                ] $bar) {}
+                EOD,
         ];
     }
 
@@ -1227,13 +1331,17 @@ function foo($foo, #[
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-[Foo::class, \'method\'](
-    ...
-) ?>',
-            '<?php
-[Foo::class, \'method\']( ...
-) ?>',
+            <<<'EOD'
+                <?php
+                [Foo::class, 'method'](
+                    ...
+                ) ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                [Foo::class, 'method']( ...
+                ) ?>
+                EOD,
         ];
     }
 }

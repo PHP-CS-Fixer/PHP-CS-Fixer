@@ -37,115 +37,179 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-        echo ALPHA;',
-            "<?php
-\t\techo ALPHA;",
+            <<<'EOD'
+                <?php
+                        echo ALPHA;
+                EOD,
+            <<<EOD
+                <?php
+                \t\techo ALPHA;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo BRAVO;',
-            "<?php
-\t\techo BRAVO;",
+            <<<'EOD'
+                <?php
+                        echo BRAVO;
+                EOD,
+            <<<EOD
+                <?php
+                \t\techo BRAVO;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo CHARLIE;',
-            "<?php
- \t\techo CHARLIE;",
+            <<<'EOD'
+                <?php
+                        echo CHARLIE;
+                EOD,
+            <<<EOD
+                <?php
+                 \t\techo CHARLIE;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo DELTA;',
-            "<?php
-  \t\techo DELTA;",
+            <<<'EOD'
+                <?php
+                        echo DELTA;
+                EOD,
+            <<<EOD
+                <?php
+                  \t\techo DELTA;
+                EOD,
         ];
 
         yield [
-            "<?php
-        echo 'ECHO';",
-            "<?php
-   \t\techo 'ECHO';",
+            <<<'EOD'
+                <?php
+                        echo 'ECHO';
+                EOD,
+            <<<EOD
+                <?php
+                   \t\techo 'ECHO';
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo FOXTROT;',
-            "<?php
-\t \techo FOXTROT;",
+            <<<'EOD'
+                <?php
+                        echo FOXTROT;
+                EOD,
+            <<<EOD
+                <?php
+                \t \techo FOXTROT;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo GOLF;',
-            "<?php
-\t  \techo GOLF;",
+            <<<'EOD'
+                <?php
+                        echo GOLF;
+                EOD,
+            <<<EOD
+                <?php
+                \t  \techo GOLF;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo HOTEL;',
-            "<?php
-\t   \techo HOTEL;",
+            <<<'EOD'
+                <?php
+                        echo HOTEL;
+                EOD,
+            <<<EOD
+                <?php
+                \t   \techo HOTEL;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo INDIA;',
-            "<?php
-\t    echo INDIA;",
+            <<<'EOD'
+                <?php
+                        echo INDIA;
+                EOD,
+            <<<EOD
+                <?php
+                \t    echo INDIA;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo JULIET;',
-            "<?php
- \t   \techo JULIET;",
+            <<<'EOD'
+                <?php
+                        echo JULIET;
+                EOD,
+            <<<EOD
+                <?php
+                 \t   \techo JULIET;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo KILO;',
-            "<?php
-  \t  \techo KILO;",
+            <<<'EOD'
+                <?php
+                        echo KILO;
+                EOD,
+            <<<EOD
+                <?php
+                  \t  \techo KILO;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo MIKE;',
-            "<?php
-   \t \techo MIKE;",
+            <<<'EOD'
+                <?php
+                        echo MIKE;
+                EOD,
+            <<<EOD
+                <?php
+                   \t \techo MIKE;
+                EOD,
         ];
 
         yield [
-            '<?php
-        echo NOVEMBER;',
-            "<?php
-    \techo NOVEMBER;",
+            <<<'EOD'
+                <?php
+                        echo NOVEMBER;
+                EOD,
+            <<<EOD
+                <?php
+                    \techo NOVEMBER;
+                EOD,
         ];
 
         yield [
-            '<?php
-         echo OSCAR;',
-            "<?php
-\t \t echo OSCAR;",
+            <<<'EOD'
+                <?php
+                         echo OSCAR;
+                EOD,
+            <<<EOD
+                <?php
+                \t \t echo OSCAR;
+                EOD,
         ];
 
         yield [
-            '<?php
-          echo PAPA;',
-            "<?php
-\t \t  echo PAPA;",
+            <<<'EOD'
+                <?php
+                          echo PAPA;
+                EOD,
+            <<<EOD
+                <?php
+                \t \t  echo PAPA;
+                EOD,
         ];
 
         yield [
-            '<?php
-           echo QUEBEC;',
-            "<?php
-\t \t   echo QUEBEC;",
+            <<<'EOD'
+                <?php
+                           echo QUEBEC;
+                EOD,
+            <<<EOD
+                <?php
+                \t \t   echo QUEBEC;
+                EOD,
         ];
 
         yield [
@@ -153,65 +217,85 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            "<?php
-\$x = \"
-\tLike
-\ta
-\tdog\";",
+            <<<EOD
+                <?php
+                \$x = "
+                \tLike
+                \ta
+                \tdog";
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * Test that tabs in docblocks are converted to spaces.
-     *
-     * @test
-     *
-     * @return
-     */',
-            "<?php
-\t/**
-\t * Test that tabs in docblocks are converted to spaces.
-\t *
-\t * @test
-\t *
-\t * @return
-\t */",
+            <<<'EOD'
+                <?php
+                    /**
+                     * Test that tabs in docblocks are converted to spaces.
+                     *
+                     * @test
+                     *
+                     * @return
+                     */
+                EOD,
+            <<<EOD
+                <?php
+                \t/**
+                \t * Test that tabs in docblocks are converted to spaces.
+                \t *
+                \t * @test
+                \t *
+                \t * @return
+                \t */
+                EOD,
         ];
 
         yield [
-            '<?php
-        /**
-         * Test that tabs in docblocks are converted to spaces.
-         */',
-            "<?php
-\t\t/**
-\t\t * Test that tabs in docblocks are converted to spaces.
-\t\t */",
+            <<<'EOD'
+                <?php
+                        /**
+                         * Test that tabs in docblocks are converted to spaces.
+                         */
+                EOD,
+            <<<EOD
+                <?php
+                \t\t/**
+                \t\t * Test that tabs in docblocks are converted to spaces.
+                \t\t */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     | Test that tabs in comments are converted to spaces'.'    '."\t".'.
-     */',
-            "<?php
-\t/*
-\t | Test that tabs in comments are converted to spaces    \t.
-\t */",
+            <<<'EOD'
+                <?php
+                    /*
+                     | Test that tabs in comments are converted to spaces
+                EOD.'    '."\t".<<<'EOD'
+                .
+                     */
+                EOD,
+            <<<EOD
+                <?php
+                \t/*
+                \t | Test that tabs in comments are converted to spaces    \t.
+                \t */
+                EOD,
         ];
 
         yield [
-            "<?php
-    /**
-     * This variable
-     * should not be '\t', really!
-     */",
-            "<?php
-\t/**
-\t * This variable
-\t * should not be '\t', really!
-\t */",
+            <<<EOD
+                <?php
+                    /**
+                     * This variable
+                     * should not be '\t', really!
+                     */
+                EOD,
+            <<<EOD
+                <?php
+                \t/**
+                \t * This variable
+                \t * should not be '\t', really!
+                \t */
+                EOD,
         ];
 
         yield [
@@ -232,60 +316,80 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
-            "<?php
-\t\techo KILO;",
-            '<?php
-        echo KILO;',
+            <<<EOD
+                <?php
+                \t\techo KILO;
+                EOD,
+            <<<'EOD'
+                <?php
+                        echo KILO;
+                EOD,
         ];
 
         yield [
-            "<?php
-\t\t   echo QUEBEC;",
-            '<?php
-           echo QUEBEC;',
+            <<<EOD
+                <?php
+                \t\t   echo QUEBEC;
+                EOD,
+            <<<'EOD'
+                <?php
+                           echo QUEBEC;
+                EOD,
         ];
 
         yield [
-            "<?php
-\t/**
-\t * This variable
-\t * should not be '\t', really!
-\t */",
-            "<?php
-    /**
-     * This variable
-     * should not be '\t', really!
-     */",
+            <<<EOD
+                <?php
+                \t/**
+                \t * This variable
+                \t * should not be '\t', really!
+                \t */
+                EOD,
+            <<<EOD
+                <?php
+                    /**
+                     * This variable
+                     * should not be '\t', really!
+                     */
+                EOD,
         ];
 
         yield 'mix indentation' => [
-            "<?php
-\t\t/*
-\t\t * multiple indentation
-\t\t * shall be handled properly
-\t\t */",
-            "<?php
-\t\t/*
-\t\t * multiple indentation
-    \t * shall be handled properly
-\t     */",
+            <<<EOD
+                <?php
+                \t\t/*
+                \t\t * multiple indentation
+                \t\t * shall be handled properly
+                \t\t */
+                EOD,
+            <<<EOD
+                <?php
+                \t\t/*
+                \t\t * multiple indentation
+                    \t * shall be handled properly
+                \t     */
+                EOD,
         ];
 
         yield [
-            "<?php
-function myFunction() {
-\t\$foo        = 1;
-\t//abc
-\t\$myFunction = 2;
-\t\$middleVar  = 1;
-}",
-            '<?php
-function myFunction() {
-    $foo        = 1;
-    //abc
-    $myFunction = 2;
-    $middleVar  = 1;
-}',
+            <<<EOD
+                <?php
+                function myFunction() {
+                \t\$foo        = 1;
+                \t//abc
+                \t\$myFunction = 2;
+                \t\$middleVar  = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function myFunction() {
+                    $foo        = 1;
+                    //abc
+                    $myFunction = 2;
+                    $middleVar  = 1;
+                }
+                EOD,
         ];
     }
 
@@ -322,48 +426,58 @@ function myFunction() {
 
     public static function provideDoubleSpaceIndentCases(): iterable
     {
-        yield ['<?php
-if (true) {
-  if (true) {
-    (new stdClass())->foo(
-      "text",
-      "text2"
-    );
-  }
-}'];
+        yield [<<<'EOD'
+            <?php
+            if (true) {
+              if (true) {
+                (new stdClass())->foo(
+                  "text",
+                  "text2"
+                );
+              }
+            }
+            EOD];
 
         yield [
-            "<?php
-if (true) {
-  if (true) {
-    (new stdClass())->foo(
-      'text',
-      'text2'
-    );
-  }
-}",
-            "<?php
-if (true) {
-  if (true) {
-\t(new stdClass())->foo(
-\t  'text',
-\t  'text2'
-\t);
-  }
-}",
+            <<<'EOD'
+                <?php
+                if (true) {
+                  if (true) {
+                    (new stdClass())->foo(
+                      'text',
+                      'text2'
+                    );
+                  }
+                }
+                EOD,
+            <<<EOD
+                <?php
+                if (true) {
+                  if (true) {
+                \t(new stdClass())->foo(
+                \t  'text',
+                \t  'text2'
+                \t);
+                  }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     * Foo
-     */
-',
+            <<<'EOD'
+                <?php
+                    /*
+                     * Foo
+                     */
 
-            "<?php
-\t/*
-\t * Foo
-\t */
-", ];
+                EOD,
+
+            <<<EOD
+                <?php
+                \t/*
+                \t * Foo
+                \t */
+
+                EOD, ];
     }
 }

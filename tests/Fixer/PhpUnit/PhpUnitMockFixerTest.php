@@ -41,108 +41,124 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function testFoo()
-        {
-            $this->createMock("Foo");
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function testFoo()
-        {
-            $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->createMock("Foo");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function testFoo()
-        {
-            $this->createMock("Foo");
-            $this->createMock($foo(1, 2));
-            $this->getMock("Foo", ["aaa"]);
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function testFoo()
-        {
-            $this->getMock("Foo");
-            $this->getMock($foo(1, 2));
-            $this->getMock("Foo", ["aaa"]);
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->createMock("Foo");
+                            $this->createMock($foo(1, 2));
+                            $this->getMock("Foo", ["aaa"]);
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->getMock("Foo");
+                            $this->getMock($foo(1, 2));
+                            $this->getMock("Foo", ["aaa"]);
+                        }
+                    }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_5_4],
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function testFoo()
-        {
-            $this->createMock("Foo");
-            $this->createMock($foo(1, 2));
-            $this->createPartialMock("Foo", ["aaa"]);
-            $this->getMock("Foo", ["aaa"], ["argument"]);
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function testFoo()
-        {
-            $this->getMock("Foo");
-            $this->getMock($foo(1, 2));
-            $this->getMock("Foo", ["aaa"]);
-            $this->getMock("Foo", ["aaa"], ["argument"]);
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->createMock("Foo");
+                            $this->createMock($foo(1, 2));
+                            $this->createPartialMock("Foo", ["aaa"]);
+                            $this->getMock("Foo", ["aaa"], ["argument"]);
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->getMock("Foo");
+                            $this->getMock($foo(1, 2));
+                            $this->getMock("Foo", ["aaa"]);
+                            $this->getMock("Foo", ["aaa"], ["argument"]);
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class FooTest extends TestCase
-    {
-        public function testFoo()
-        {
-            $this->createMock("Foo",);
-            $this->createMock("Bar"  ,);
-            $this->createMock("Baz"  ,  );
-            $this->createMock($foo(1, 2), );
-            $this->createMock($foo(3, 4, ));
-            $this->createMock($foo(5, 6, ), );
-            $this->createPartialMock("Foo", ["aaa"], );
-            $this->createPartialMock("Foo", ["bbb", ], );
-            $this->getMock("Foo", ["aaa"], ["argument"], );
-            $this->getMock("Foo", ["bbb", ], ["argument", ], );
-        }
-    }',
-            '<?php
-    class FooTest extends TestCase
-    {
-        public function testFoo()
-        {
-            $this->getMock("Foo",);
-            $this->getMock("Bar"  ,);
-            $this->getMock("Baz"  ,  );
-            $this->getMock($foo(1, 2), );
-            $this->getMock($foo(3, 4, ));
-            $this->getMock($foo(5, 6, ), );
-            $this->getMock("Foo", ["aaa"], );
-            $this->getMock("Foo", ["bbb", ], );
-            $this->getMock("Foo", ["aaa"], ["argument"], );
-            $this->getMock("Foo", ["bbb", ], ["argument", ], );
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class FooTest extends TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->createMock("Foo",);
+                            $this->createMock("Bar"  ,);
+                            $this->createMock("Baz"  ,  );
+                            $this->createMock($foo(1, 2), );
+                            $this->createMock($foo(3, 4, ));
+                            $this->createMock($foo(5, 6, ), );
+                            $this->createPartialMock("Foo", ["aaa"], );
+                            $this->createPartialMock("Foo", ["bbb", ], );
+                            $this->getMock("Foo", ["aaa"], ["argument"], );
+                            $this->getMock("Foo", ["bbb", ], ["argument", ], );
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class FooTest extends TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this->getMock("Foo",);
+                            $this->getMock("Bar"  ,);
+                            $this->getMock("Baz"  ,  );
+                            $this->getMock($foo(1, 2), );
+                            $this->getMock($foo(3, 4, ));
+                            $this->getMock($foo(5, 6, ), );
+                            $this->getMock("Foo", ["aaa"], );
+                            $this->getMock("Foo", ["bbb", ], );
+                            $this->getMock("Foo", ["aaa"], ["argument"], );
+                            $this->getMock("Foo", ["bbb", ], ["argument", ], );
+                        }
+                    }
+                EOD,
         ];
     }
 
@@ -152,22 +168,26 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
     public function testFix80(): void
     {
         $this->doTest(
-            '<?php
-    class FooTest extends TestCase
-    {
-        public function testFoo()
-        {
-            $this?->createMock("Foo");
-        }
-    }',
-            '<?php
-    class FooTest extends TestCase
-    {
-        public function testFoo()
-        {
-            $this?->getMock("Foo");
-        }
-    }'
+            <<<'EOD'
+                <?php
+                    class FooTest extends TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this?->createMock("Foo");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class FooTest extends TestCase
+                    {
+                        public function testFoo()
+                        {
+                            $this?->getMock("Foo");
+                        }
+                    }
+                EOD
         );
     }
 }

@@ -120,14 +120,18 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         ];
 
         yield 'simple, before ) II' => [
-            '<?php
-                if ($a) $a ??= 1;
-                foreach ($d as $i) $a ??= 1;
-                while (foo()) $a ??= 1;'."\n            ",
-            '<?php
-                if ($a) $a = $a ?? 1;
-                foreach ($d as $i) $a = $a ?? 1;
-                while (foo()) $a = $a ?? 1;'."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($a) $a ??= 1;
+                                foreach ($d as $i) $a ??= 1;
+                                while (foo()) $a ??= 1;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($a) $a = $a ?? 1;
+                                foreach ($d as $i) $a = $a ?? 1;
+                                while (foo()) $a = $a ?? 1;
+                EOD."\n            ",
         ];
 
         yield 'simple, end' => [
@@ -141,16 +145,22 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         ];
 
         yield 'simple, multi line' => [
-            '<?php
-            $a
-             ??='."\n              ".''."\n               ".'
-                1;',
-            '<?php
-            $a
-             =
-              $a
-               ??
-                1;',
+            <<<'EOD'
+                <?php
+                            $a
+                             ??=
+                EOD."\n              ".''."\n               ".<<<'EOD'
+
+                                1;
+                EOD,
+            <<<'EOD'
+                <?php
+                            $a
+                             =
+                              $a
+                               ??
+                                1;
+                EOD,
         ];
 
         yield 'dynamic var' => [
@@ -164,15 +174,17 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         ];
 
         yield 'do not fix' => [
-            '<?php
-                $a = 1 + $a ?? $b;
-                $b + $a = $a ?? 1;
-                $b = $a ?? 1;
-                $b = $a ?? $b;
-                $d = $a + $c ; $c ?? $c;
-                $a = ($a ?? $b) && $c; // just to be sure
-                $a = (string) $a ?? 1;
-                $a = 1 ?? $a;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = 1 + $a ?? $b;
+                                $b + $a = $a ?? 1;
+                                $b = $a ?? 1;
+                                $b = $a ?? $b;
+                                $d = $a + $c ; $c ?? $c;
+                                $a = ($a ?? $b) && $c; // just to be sure
+                                $a = (string) $a ?? 1;
+                                $a = 1 ?? $a;
+                EOD."\n            ",
         ];
 
         yield 'do not fix because of precedence 1' => [
@@ -186,26 +198,30 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         yield ['<?php $a[1][0] = $a ?? $a[1][0];'];
 
         yield 'switch case & default' => [
-            '<?php
-switch(foo()) {
-    case 1:
-        $a ??= 1;
-        break;
-    default:
-        $b ??= 1;
-        break;
-}
-',
-            '<?php
-switch(foo()) {
-    case 1:
-        $a = $a ?? 1;
-        break;
-    default:
-        $b = $b ?? 1;
-        break;
-}
-',
+            <<<'EOD'
+                <?php
+                switch(foo()) {
+                    case 1:
+                        $a ??= 1;
+                        break;
+                    default:
+                        $b ??= 1;
+                        break;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                switch(foo()) {
+                    case 1:
+                        $a = $a ?? 1;
+                        break;
+                    default:
+                        $b = $b ?? 1;
+                        break;
+                }
+
+                EOD,
         ];
 
         yield 'operator precedence' => [
@@ -218,28 +234,32 @@ switch(foo()) {
         ];
 
         yield 'assign and return' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    private $test;
+                class Foo
+                {
+                    private $test;
 
-    public function bar($i)
-    {
-        return $this->test ??= $i;
-    }
-}',
-            '<?php
+                    public function bar($i)
+                    {
+                        return $this->test ??= $i;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    private $test;
+                class Foo
+                {
+                    private $test;
 
-    public function bar($i)
-    {
-        return $this->test = $this->test ?? $i;
-    }
-}',
+                    public function bar($i)
+                    {
+                        return $this->test = $this->test ?? $i;
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -259,14 +279,18 @@ class Foo
     public static function provideFixPre80Cases(): iterable
     {
         yield 'mixed array' => [
-            '<?php
-                $a[1] ??= 1;
-                $a{2} ??= 1;
-                $a{2}[$f] ??= 1;'."\n            ",
-            '<?php
-                $a[1] = $a[1] ?? 1;
-                $a{2} = $a{2} ?? 1;
-                $a{2}[$f] = $a{2}[$f] ?? 1;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a[1] ??= 1;
+                                $a{2} ??= 1;
+                                $a{2}[$f] ??= 1;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a[1] = $a[1] ?? 1;
+                                $a{2} = $a{2} ?? 1;
+                                $a{2}[$f] = $a{2}[$f] ?? 1;
+                EOD."\n            ",
         ];
 
         yield 'same II' => [

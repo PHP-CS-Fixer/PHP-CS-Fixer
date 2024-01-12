@@ -77,41 +77,49 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
 
         yield 'Implements AbstractFixerTest' => [
             true,
-            Tokens::fromCode('<?php
-class A extends Foo implements PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest
-{
-}
-'),
+            Tokens::fromCode(<<<'EOD'
+                <?php
+                class A extends Foo implements PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest
+                {
+                }
+
+                EOD),
             1,
         ];
 
         yield 'Extends TestCase implements Foo' => [
             true,
-            Tokens::fromCode('<?php
-class A extends TestCase implements Foo
-{
-}
-'),
+            Tokens::fromCode(<<<'EOD'
+                <?php
+                class A extends TestCase implements Foo
+                {
+                }
+
+                EOD),
             1,
         ];
 
         yield 'Implements TestInterface' => [
             true,
-            Tokens::fromCode('<?php
-class Foo extends A implements SomeTestInterface
-{
-}
-'),
+            Tokens::fromCode(<<<'EOD'
+                <?php
+                class Foo extends A implements SomeTestInterface
+                {
+                }
+
+                EOD),
             1,
         ];
 
         yield 'Implements TestInterface, SomethingElse' => [
             true,
-            Tokens::fromCode('<?php
-class Foo extends A implements TestInterface, SomethingElse
-{
-}
-'),
+            Tokens::fromCode(<<<'EOD'
+                <?php
+                class Foo extends A implements TestInterface, SomethingElse
+                {
+                }
+
+                EOD),
             1,
         ];
 
@@ -186,8 +194,10 @@ class Foo extends A implements TestInterface, SomethingElse
             [
                 [10, 11],
             ],
-            '<?php
-                class MyTest extends Foo {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                class MyTest extends Foo {}
+                EOD."\n            ",
         ];
 
         yield 'two PHPUnit classes' => [
@@ -195,9 +205,11 @@ class Foo extends A implements TestInterface, SomethingElse
                 [21, 34],
                 [10, 11],
             ],
-            '<?php
-                class My1Test extends Foo1 {}
-                class My2Test extends Foo2 { public function A8() {} }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class My1Test extends Foo1 {}
+                                class My2Test extends Foo2 { public function A8() {} }
+                EOD."\n            ",
         ];
 
         yield 'mixed classes' => [
@@ -205,24 +217,28 @@ class Foo extends A implements TestInterface, SomethingElse
                 [71, 84],
                 [29, 42],
             ],
-            '<?php
-                class Foo1 { public function A1() {} }
-                class My1Test extends Foo1 { public function A2() {} }
-                class Foo2 { public function A3() {} }
-                class My2Test extends Foo2 { public function A4() {} }
-                class Foo3 { public function A5() { return function (){}; } }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo1 { public function A1() {} }
+                                class My1Test extends Foo1 { public function A2() {} }
+                                class Foo2 { public function A3() {} }
+                                class My2Test extends Foo2 { public function A4() {} }
+                                class Foo3 { public function A5() { return function (){}; } }
+                EOD."\n            ",
         ];
 
         yield 'class with anonymous class inside' => [
             [],
-            '<?php
-                class Foo
-                {
-                    public function getClass()
-                    {
-                        return new class {};
-                    }
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    public function getClass()
+                                    {
+                                        return new class {};
+                                    }
+                                }
+                EOD."\n            ",
         ];
     }
 }

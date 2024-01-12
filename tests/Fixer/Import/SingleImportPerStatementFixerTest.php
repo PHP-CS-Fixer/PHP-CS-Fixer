@@ -37,11 +37,15 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                    /**/use Foo;
-                    use FooB;'."\n                ",
-            '<?php
-                    /**/use Foo,FooB;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**/use Foo;
+                                    use FooB;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**/use Foo,FooB;
+                EOD."\n                ",
         ];
 
         yield [
@@ -143,154 +147,200 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    use FooA;
-                    use FooB;'."\n                ",
-            '<?php
-                    use FooA, FooB;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    use FooA;
+                                    use FooB;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    use FooA, FooB;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php use FooA;
-use FooB?>',
+            <<<'EOD'
+                <?php use FooA;
+                use FooB?>
+                EOD,
             '<?php use FooA, FooB?>',
         ];
 
         yield [
-            '<?php
-use B;
-use C;
-    use E;
-    use F;
-        use G;
-        use H;
-',
-            '<?php
-use B,C;
-    use E,F;
-        use G,H;
-',
+            <<<'EOD'
+                <?php
+                use B;
+                use C;
+                    use E;
+                    use F;
+                        use G;
+                        use H;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use B,C;
+                    use E,F;
+                        use G,H;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use B;
-/*
-*/use C;
-',
-            '<?php
-use B,
-/*
-*/C;
-',
+            <<<'EOD'
+                <?php
+                use B;
+                /*
+                */use C;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use B,
+                /*
+                */C;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use A;
-use B;
-//,{} use ; :
-#,{} use ; :
-/*,{} use ; :*/
-use C  ;'.' ',
-            '<?php
-use A,B,
-//,{} use ; :
-#,{} use ; :
-/*,{} use ; :*/
-C  ;'.' ',
+            <<<'EOD'
+                <?php
+                use A;
+                use B;
+                //,{} use ; :
+                #,{} use ; :
+                /*,{} use ; :*/
+                use C  ;
+                EOD.' ',
+            <<<'EOD'
+                <?php
+                use A,B,
+                //,{} use ; :
+                #,{} use ; :
+                /*,{} use ; :*/
+                C  ;
+                EOD.' ',
         ];
 
         yield [
-            '<?php use Z ;
-use X ?><?php new X(); // run before white space around semicolon',
+            <<<'EOD'
+                <?php use Z ;
+                use X ?><?php new X(); // run before white space around semicolon
+                EOD,
             '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
         ];
 
         yield [
-            '<?php use FooA#
-;#
-#
-use FooB;',
-            '<?php use FooA#
-,#
-#
-FooB;',
+            <<<'EOD'
+                <?php use FooA#
+                ;#
+                #
+                use FooB;
+                EOD,
+            <<<'EOD'
+                <?php use FooA#
+                ,#
+                #
+                FooB;
+                EOD,
         ];
 
         yield [
-            '<?php use some\b\ClassB;
-use function some\b\CC as C;
-use function some\b\D;
-use const some\b\E;
-use function some\b\A\B;',
+            <<<'EOD'
+                <?php use some\b\ClassB;
+                use function some\b\CC as C;
+                use function some\b\D;
+                use const some\b\E;
+                use function some\b\A\B;
+                EOD,
             '<?php use some\b\{ClassB, function CC as C, function D, const E, function A\B};',
         ];
 
         yield [
-            '<?php
-use Foo\Bar;
-use Foo\Baz;',
-            '<?php
-use Foo\ {
-    Bar, Baz
-};',
+            <<<'EOD'
+                <?php
+                use Foo\Bar;
+                use Foo\Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\ {
+                    Bar, Baz
+                };
+                EOD,
         ];
 
         yield [
-            '<?php
-use Foo\Bar;
-use Foo\Baz;',
-            '<?php
-use Foo\
-{
-    Bar, Baz
-};',
+            <<<'EOD'
+                <?php
+                use Foo\Bar;
+                use Foo\Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\
+                {
+                    Bar, Baz
+                };
+                EOD,
         ];
 
         yield [
-            '<?php
-use function md5;
-use function str_repeat;
-use const true;
-use const false;
-use A;
-use B;
-',
-            '<?php
-use function md5, str_repeat;
-use const true, false;
-use A,B;
-',
+            <<<'EOD'
+                <?php
+                use function md5;
+                use function str_repeat;
+                use const true;
+                use const false;
+                use A;
+                use B;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use function md5, str_repeat;
+                use const true, false;
+                use A,B;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use D\E;
-use D\F;
-use G\H;
-use G\I/*1*//*2*/;
-',
-            '<?php
-use D\{E,F,};
-use G\{H,I/*1*/,/*2*/};
-',
+            <<<'EOD'
+                <?php
+                use D\E;
+                use D\F;
+                use G\H;
+                use G\I/*1*//*2*/;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use D\{E,F,};
+                use G\{H,I/*1*/,/*2*/};
+
+                EOD,
         ];
     }
 
     public function testWithConfig(): void
     {
-        $expected = '<?php
-use Space\Models\TestModelA;
-use Space\Models\TestModelB;
-use Space\Models\TestModel;';
+        $expected = <<<'EOD'
+            <?php
+            use Space\Models\TestModelA;
+            use Space\Models\TestModelB;
+            use Space\Models\TestModel;
+            EOD;
 
-        $input = '<?php
-use Space\Models\ {
-    TestModelA,
-    TestModelB,
-    TestModel,
-};';
+        $input = <<<'EOD'
+            <?php
+            use Space\Models\ {
+                TestModelA,
+                TestModelB,
+                TestModel,
+            };
+            EOD;
 
         $this->doTest($expected, $input);
 
@@ -330,41 +380,51 @@ use Space\Models\ {
     public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
-            '<?php
-use some\a\ClassA;
-use some\a\ClassB;
-use some\a\ClassC as C;
-use function some\b\fn_a;
-use function some\b\fn_b;
-use function some\b\fn_c;
-use const some\c\ConstA/**/as/**/E; /* group comment */
-use const some\c\ConstB as D;
-use const some\c\// use.,{}
-ConstC;
-use A\{B};
-use D\E;
-use D\F;'."\n                ",
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use    function some\b\{fn_a, fn_b, fn_c};
-use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D,'.' '.'
-// use.,{}
-ConstC};
-use A\{B};
-use D\{E,F};'."\n                ",
+            <<<'EOD'
+                <?php
+                use some\a\ClassA;
+                use some\a\ClassB;
+                use some\a\ClassC as C;
+                use function some\b\fn_a;
+                use function some\b\fn_b;
+                use function some\b\fn_c;
+                use const some\c\ConstA/**/as/**/E; /* group comment */
+                use const some\c\ConstB as D;
+                use const some\c\// use.,{}
+                ConstC;
+                use A\{B};
+                use D\E;
+                use D\F;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use    function some\b\{fn_a, fn_b, fn_c};
+                use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D,
+                EOD.' '.<<<'EOD'
+
+                // use.,{}
+                ConstC};
+                use A\{B};
+                use D\{E,F};
+                EOD."\n                ",
         ];
 
         yield 'messy comments' => [
-            '<?php
-use D\/*1*//*2*//*3*/E;
-use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
-',
-            '<?php
-use D\{
-/*1*//*2*//*3*/E,/*4*//*5*//*6*/
-/*7*//*8*//*9*/F/*10*//*11*//*12*/
-};
-',
+            <<<'EOD'
+                <?php
+                use D\/*1*//*2*//*3*/E;
+                use D\/*4*//*5*//*6*//*7*//*8*//*9*/F/*10*//*11*//*12*/;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use D\{
+                /*1*//*2*//*3*/E,/*4*//*5*//*6*/
+                /*7*//*8*//*9*/F/*10*//*11*//*12*/
+                };
+
+                EOD,
         ];
     }
 }

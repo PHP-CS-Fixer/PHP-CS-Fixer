@@ -54,28 +54,32 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-trait SomeTrait
-{
-    /** @return $this */
-    public function someTest(): self
-    {
-        return $this;
-    }
-}
-// class Foo { use Bla; } $a = (new Foo())->someTest();',
-            '<?php
+                trait SomeTrait
+                {
+                    /** @return $this */
+                    public function someTest(): self
+                    {
+                        return $this;
+                    }
+                }
+                // class Foo { use Bla; } $a = (new Foo())->someTest();
+                EOD,
+            <<<'EOD'
+                <?php
 
-trait SomeTrait
-{
-    /** @return this */
-    public function someTest(): self
-    {
-        return $this;
-    }
-}
-// class Foo { use Bla; } $a = (new Foo())->someTest();',
+                trait SomeTrait
+                {
+                    /** @return this */
+                    public function someTest(): self
+                    {
+                        return $this;
+                    }
+                }
+                // class Foo { use Bla; } $a = (new Foo())->someTest();
+                EOD,
         ];
     }
 
@@ -107,41 +111,45 @@ trait SomeTrait
         $config = ['replacements' => [$input => $expected]];
         $this->fixer->configure($config);
 
-        $expected = sprintf('<?php
-/**
- * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
- */
-class F
-{
-    /**
-     * @param %s
-     *
-     * @return %s
-     */
-     public function AB($self)
-     {
-        return $this; // %s
-     }
-}
-', $input, $input, $expected, $input);
+        $expected = sprintf(<<<'EOD'
+            <?php
+            /**
+             * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
+             */
+            class F
+            {
+                /**
+                 * @param %s
+                 *
+                 * @return %s
+                 */
+                 public function AB($self)
+                 {
+                    return $this; // %s
+                 }
+            }
 
-        $input = sprintf('<?php
-/**
- * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
- */
-class F
-{
-    /**
-     * @param %s
-     *
-     * @return %s
-     */
-     public function AB($self)
-     {
-        return $this; // %s
-     }
-}
-', $input, $input, $input, $input);
+            EOD, $input, $input, $expected, $input);
+
+        $input = sprintf(<<<'EOD'
+            <?php
+            /**
+             * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
+             */
+            class F
+            {
+                /**
+                 * @param %s
+                 *
+                 * @return %s
+                 */
+                 public function AB($self)
+                 {
+                    return $this; // %s
+                 }
+            }
+
+            EOD, $input, $input, $input, $input);
 
         $this->doTest($expected, $input);
     }
@@ -192,42 +200,46 @@ class F
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(
-            '<?php
-                $a = new class() {
+            <<<'EOD'
+                <?php
+                                $a = new class() {
 
-                    /** @return $this */
-                    public function a() {
-                    }
-                };
+                                    /** @return $this */
+                                    public function a() {
+                                    }
+                                };
 
-                class C
-                {
-                    public function A()
-                    {
-                        $a = new class() {
-                            /** @return $this */
-                            public function a() {}
-                        };
-                    }
-                }'."\n            ",
-            '<?php
-                $a = new class() {
+                                class C
+                                {
+                                    public function A()
+                                    {
+                                        $a = new class() {
+                                            /** @return $this */
+                                            public function a() {}
+                                        };
+                                    }
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = new class() {
 
-                    /** @return @this */
-                    public function a() {
-                    }
-                };
+                                    /** @return @this */
+                                    public function a() {
+                                    }
+                                };
 
-                class C
-                {
-                    public function A()
-                    {
-                        $a = new class() {
-                            /** @return @this */
-                            public function a() {}
-                        };
-                    }
-                }'."\n            "
+                                class C
+                                {
+                                    public function A()
+                                    {
+                                        $a = new class() {
+                                            /** @return @this */
+                                            public function a() {}
+                                        };
+                                    }
+                                }
+                EOD."\n            "
         );
     }
 
@@ -244,30 +256,34 @@ class F
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-enum Foo {
-    case CAT;
+            <<<'EOD'
+                <?php
+                enum Foo {
+                    case CAT;
 
-    /** @return $this */
-    public function test(): self {
-        return $this;
-    }
-}
+                    /** @return $this */
+                    public function test(): self {
+                        return $this;
+                    }
+                }
 
-var_dump(Foo::CAT->test());
-',
-            '<?php
-enum Foo {
-    case CAT;
+                var_dump(Foo::CAT->test());
 
-    /** @return this */
-    public function test(): self {
-        return $this;
-    }
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Foo {
+                    case CAT;
 
-var_dump(Foo::CAT->test());
-',
+                    /** @return this */
+                    public function test(): self {
+                        return $this;
+                    }
+                }
+
+                var_dump(Foo::CAT->test());
+
+                EOD,
         ];
     }
 }

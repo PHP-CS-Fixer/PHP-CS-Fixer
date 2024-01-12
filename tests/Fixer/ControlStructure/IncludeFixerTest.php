@@ -36,22 +36,26 @@ final class IncludeFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php include # A
-# B
-# C
-"a"# D
-# E
-# F
-;# G
-# H',
-            '<?php include# A
-(# B
-# C
-"a"# D
-# E
-)# F
-;# G
-# H',
+            <<<'EOD'
+                <?php include # A
+                # B
+                # C
+                "a"# D
+                # E
+                # F
+                ;# G
+                # H
+                EOD,
+            <<<'EOD'
+                <?php include# A
+                (# B
+                # C
+                "a"# D
+                # E
+                )# F
+                ;# G
+                # H
+                EOD,
         ];
 
         yield [
@@ -60,35 +64,43 @@ final class IncludeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-require_once "test1.php";
-include_once "test2.php";
-require "test3.php";
-include "test4.php";',
-            '<?php
-require_once("test1.php");
-include_once("test2.php");
-require("test3.php");
-include("test4.php");',
+            <<<'EOD'
+                <?php
+                require_once "test1.php";
+                include_once "test2.php";
+                require "test3.php";
+                include "test4.php";
+                EOD,
+            <<<'EOD'
+                <?php
+                require_once("test1.php");
+                include_once("test2.php");
+                require("test3.php");
+                include("test4.php");
+                EOD,
         ];
 
         yield [
-            '<?php
-require_once #1
-#2
-#3
-"test1.php"#4
-#5
-#6
-;',
-            '<?php
-require_once #1
-(#2
-#3
-"test1.php"#4
-)#5
-#6
-;',
+            <<<'EOD'
+                <?php
+                require_once #1
+                #2
+                #3
+                "test1.php"#4
+                #5
+                #6
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+                require_once #1
+                (#2
+                #3
+                "test1.php"#4
+                )#5
+                #6
+                ;
+                EOD,
         ];
 
         yield [
@@ -110,10 +122,14 @@ require_once #1
             ];
 
             yield [
-                sprintf($template.' /**/"foo.php"// test
-                    ?>', $statement),
-                sprintf($template.'/**/ ("foo.php") // test
-                    ?>', $statement),
+                sprintf($template.<<<'EOD'
+                     /**/"foo.php"// test
+                                        ?>
+                    EOD, $statement),
+                sprintf($template.<<<'EOD'
+                    /**/ ("foo.php") // test
+                                        ?>
+                    EOD, $statement),
             ];
 
             yield [

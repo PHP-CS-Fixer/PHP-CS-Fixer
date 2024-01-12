@@ -39,126 +39,136 @@ final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'It does not change doc blocks if not needed' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * Important
-     */
-    const FOO_BAR = "foobar";
+                class Foo
+                {
+                    /**
+                     * Important
+                     */
+                    const FOO_BAR = "foobar";
 
-    /**
-     * @var bool
-     */
-    public $variable = true;
+                    /**
+                     * @var bool
+                     */
+                    public $variable = true;
 
-    /**
-     * @var bool
-     */
-    private $var = false;
+                    /**
+                     * @var bool
+                     */
+                    private $var = false;
 
 
-    /**
-     * @return void
-     */
-    public function hello() {}
-}
-',
+                    /**
+                     * @return void
+                     */
+                    public function hello() {}
+                }
+
+                EOD,
         ];
 
         yield 'It does change doc blocks to multi by default' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * Important
-     */
-    const FOO_BAR = "foobar";
+                class Foo
+                {
+                    /**
+                     * Important
+                     */
+                    const FOO_BAR = "foobar";
 
-    /**
-     * @var bool
-     */
-    public $variable = true;
+                    /**
+                     * @var bool
+                     */
+                    public $variable = true;
 
-    /**
-     * @var bool
-     */
-    private $var = false;
-
-
-    /**
-     * @return void
-     */
-    public function hello() {}
-}
-',
-            '<?php
-
-class Foo
-{
-    /** Important */
-    const FOO_BAR = "foobar";
-
-    /** @var bool */
-    public $variable = true;
-
-    /** @var bool */
-    private $var = false;
+                    /**
+                     * @var bool
+                     */
+                    private $var = false;
 
 
-    /** @return void */
-    public function hello() {}
-}
-',
+                    /**
+                     * @return void
+                     */
+                    public function hello() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Foo
+                {
+                    /** Important */
+                    const FOO_BAR = "foobar";
+
+                    /** @var bool */
+                    public $variable = true;
+
+                    /** @var bool */
+                    private $var = false;
+
+
+                    /** @return void */
+                    public function hello() {}
+                }
+
+                EOD,
         ];
 
         yield 'It does change doc blocks to single if configured to do so' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** Important */
-    const FOO_BAR = "foobar";
+                class Foo
+                {
+                    /** Important */
+                    const FOO_BAR = "foobar";
 
-    /** @var bool */
-    public $variable = true;
+                    /** @var bool */
+                    public $variable = true;
 
-    /** @var bool */
-    private $var = false;
-
-
-    /** @return void */
-    public function hello() {}
-}
-',
-            '<?php
-
-class Foo
-{
-    /**
-     * Important
-     */
-    const FOO_BAR = "foobar";
-
-    /**
-     * @var bool
-     */
-    public $variable = true;
-
-    /**
-     * @var bool
-     */
-    private $var = false;
+                    /** @var bool */
+                    private $var = false;
 
 
-    /**
-     * @return void
-     */
-    public function hello() {}
-}
-',
+                    /** @return void */
+                    public function hello() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Foo
+                {
+                    /**
+                     * Important
+                     */
+                    const FOO_BAR = "foobar";
+
+                    /**
+                     * @var bool
+                     */
+                    public $variable = true;
+
+                    /**
+                     * @var bool
+                     */
+                    private $var = false;
+
+
+                    /**
+                     * @return void
+                     */
+                    public function hello() {}
+                }
+
+                EOD,
             [
                 'property' => 'single',
                 'const' => 'single',
@@ -167,62 +177,68 @@ class Foo
         ];
 
         yield 'It does change complicated doc blocks to single if configured to do so' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @var bool */
-    public $variable1 = true;
+                class Foo
+                {
+                    /** @var bool */
+                    public $variable1 = true;
 
-    /** @var bool */
-    public $variable2 = true;
+                    /** @var bool */
+                    public $variable2 = true;
 
-    /** @Assert\File(mimeTypes={ "image/jpeg", "image/png" }) */
-    public $imageFileObject;
-}
-',
-            '<?php
+                    /** @Assert\File(mimeTypes={ "image/jpeg", "image/png" }) */
+                    public $imageFileObject;
+                }
 
-class Foo
-{
-    /**
-     * @var bool */
-    public $variable1 = true;
+                EOD,
+            <<<'EOD'
+                <?php
 
-    /** @var bool
-     */
-    public $variable2 = true;
+                class Foo
+                {
+                    /**
+                     * @var bool */
+                    public $variable1 = true;
 
-    /**
-     * @Assert\File(mimeTypes={ "image/jpeg", "image/png" })
-     */
-    public $imageFileObject;
-}
-',
+                    /** @var bool
+                     */
+                    public $variable2 = true;
+
+                    /**
+                     * @Assert\File(mimeTypes={ "image/jpeg", "image/png" })
+                     */
+                    public $imageFileObject;
+                }
+
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It does not changes doc blocks from single if configured to do so' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** Important */
-    const FOO_BAR = "foobar";
+                class Foo
+                {
+                    /** Important */
+                    const FOO_BAR = "foobar";
 
-    /** @var bool */
-    public $variable = true;
+                    /** @var bool */
+                    public $variable = true;
 
-    /** @var bool */
-    private $var = false;
+                    /** @var bool */
+                    private $var = false;
 
 
-    /** @return void */
-    public function hello() {}
-}
-',
+                    /** @return void */
+                    public function hello() {}
+                }
+
+                EOD,
             null,
             [
                 'property' => 'single',
@@ -232,71 +248,77 @@ class Foo
         ];
 
         yield 'It can be configured to change certain elements to single line' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * Important
-     */
-    const FOO_BAR = "foobar";
+                class Foo
+                {
+                    /**
+                     * Important
+                     */
+                    const FOO_BAR = "foobar";
 
-    /** @var bool */
-    public $variable = true;
+                    /** @var bool */
+                    public $variable = true;
 
-    /** @var bool */
-    private $var = false;
-
-
-    /**
-     * @return void
-     */
-    public function hello() {}
-}
-',
-            '<?php
-
-class Foo
-{
-    /**
-     * Important
-     */
-    const FOO_BAR = "foobar";
-
-    /**
-     * @var bool
-     */
-    public $variable = true;
-
-    /**
-     * @var bool
-     */
-    private $var = false;
+                    /** @var bool */
+                    private $var = false;
 
 
-    /**
-     * @return void
-     */
-    public function hello() {}
-}
-',
+                    /**
+                     * @return void
+                     */
+                    public function hello() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Foo
+                {
+                    /**
+                     * Important
+                     */
+                    const FOO_BAR = "foobar";
+
+                    /**
+                     * @var bool
+                     */
+                    public $variable = true;
+
+                    /**
+                     * @var bool
+                     */
+                    private $var = false;
+
+
+                    /**
+                     * @return void
+                     */
+                    public function hello() {}
+                }
+
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It wont change a doc block to single line if it has multiple useful lines' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * Important
-     * Really important
-     */
-    const FOO_BAR = "foobar";
-}
-',
+                class Foo
+                {
+                    /**
+                     * Important
+                     * Really important
+                     */
+                    const FOO_BAR = "foobar";
+                }
+
+                EOD,
             null,
             [
                 'const' => 'single',
@@ -304,147 +326,169 @@ class Foo
         ];
 
         yield 'It updates doc blocks correctly, even with more indentation' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-if (false) {
-    class Foo
-    {
-        /** @var bool */
-        public $var = true;
+                if (false) {
+                    class Foo
+                    {
+                        /** @var bool */
+                        public $var = true;
 
-        /**
-         * @return void
-         */
-        public function hello () {}
-    }
-}
-',
-            '<?php
+                        /**
+                         * @return void
+                         */
+                        public function hello () {}
+                    }
+                }
 
-if (false) {
-    class Foo
-    {
-        /**
-         * @var bool
-         */
-        public $var = true;
+                EOD,
+            <<<'EOD'
+                <?php
 
-        /** @return void */
-        public function hello () {}
-    }
-}
-',
+                if (false) {
+                    class Foo
+                    {
+                        /**
+                         * @var bool
+                         */
+                        public $var = true;
+
+                        /** @return void */
+                        public function hello () {}
+                    }
+                }
+
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It can convert empty doc blocks' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     *
-     */
-    const FOO = "foobar";
+                class Foo
+                {
+                    /**
+                     *
+                     */
+                    const FOO = "foobar";
 
-    /**  */
-    private $foo;
-}',
-            '<?php
+                    /**  */
+                    private $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**  */
-    const FOO = "foobar";
+                class Foo
+                {
+                    /**  */
+                    const FOO = "foobar";
 
-    /**
-     *
-     */
-    private $foo;
-}',
+                    /**
+                     *
+                     */
+                    private $foo;
+                }
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It can update doc blocks of static properties' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Bar
-{
-    /**
-     * Important
-     */
-    public static $variable = "acme";
-}
-',
-            '<?php
+                class Bar
+                {
+                    /**
+                     * Important
+                     */
+                    public static $variable = "acme";
+                }
 
-class Bar
-{
-    /** Important */
-    public static $variable = "acme";
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Bar
+                {
+                    /** Important */
+                    public static $variable = "acme";
+                }
+
+                EOD,
         ];
 
         yield 'It can update doc blocks of properties that use the var keyword instead of public' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Bar
-{
-    /**
-     * Important
-     */
-    var $variable = "acme";
-}
-',
-            '<?php
+                class Bar
+                {
+                    /**
+                     * Important
+                     */
+                    var $variable = "acme";
+                }
 
-class Bar
-{
-    /** Important */
-    var $variable = "acme";
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Bar
+                {
+                    /** Important */
+                    var $variable = "acme";
+                }
+
+                EOD,
         ];
 
         yield 'It can update doc blocks of static that do not declare visibility' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Bar
-{
-    /**
-     * Important
-     */
-    static $variable = "acme";
-}
-',
-            '<?php
+                class Bar
+                {
+                    /**
+                     * Important
+                     */
+                    static $variable = "acme";
+                }
 
-class Bar
-{
-    /** Important */
-    static $variable = "acme";
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Bar
+                {
+                    /** Important */
+                    static $variable = "acme";
+                }
+
+                EOD,
         ];
 
         yield 'It does not change method doc blocks if configured to do so' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @return mixed */
-    public function bar() {}
+                class Foo
+                {
+                    /** @return mixed */
+                    public function bar() {}
 
-    /**
-     * @return void
-     */
-    public function baz() {}
-}',
+                    /**
+                     * @return void
+                     */
+                    public function baz() {}
+                }
+                EOD,
             null,
             [
                 'method' => null,
@@ -452,18 +496,20 @@ class Foo
         ];
 
         yield 'It does not change property doc blocks if configured to do so' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * @var int
-     */
-    public $foo;
+                class Foo
+                {
+                    /**
+                     * @var int
+                     */
+                    public $foo;
 
-    /** @var mixed */
-    public $bar;
-}',
+                    /** @var mixed */
+                    public $bar;
+                }
+                EOD,
             null,
             [
                 'property' => null,
@@ -471,18 +517,20 @@ class Foo
         ];
 
         yield 'It does not change const doc blocks if configured to do so' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * @var int
-     */
-    public const FOO = 1;
+                class Foo
+                {
+                    /**
+                     * @var int
+                     */
+                    public const FOO = 1;
 
-    /** @var mixed */
-    public const BAR = null;
-}',
+                    /** @var mixed */
+                    public const BAR = null;
+                }
+                EOD,
             null,
             [
                 'const' => null,
@@ -490,84 +538,96 @@ class Foo
         ];
 
         yield 'It can handle constants with visibility, does not crash on trait imports' => [
-            '<?php
-trait Bar
-{}
+            <<<'EOD'
+                <?php
+                trait Bar
+                {}
 
-class Foo
-{
-    /** whatever */
-    use Bar;
+                class Foo
+                {
+                    /** whatever */
+                    use Bar;
 
-    /**
-     *
-     */
-    public const FOO = "foobar";
+                    /**
+                     *
+                     */
+                    public const FOO = "foobar";
 
-    /**  */
-    private $foo;
-}',
-            '<?php
-trait Bar
-{}
+                    /**  */
+                    private $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                trait Bar
+                {}
 
-class Foo
-{
-    /** whatever */
-    use Bar;
+                class Foo
+                {
+                    /** whatever */
+                    use Bar;
 
-    /**  */
-    public const FOO = "foobar";
+                    /**  */
+                    public const FOO = "foobar";
 
-    /**
-     *
-     */
-    private $foo;
-}',
+                    /**
+                     *
+                     */
+                    private $foo;
+                }
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It can handle properties with type declaration' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**  */
-    private ?string $foo;
-}',
-            '<?php
+                class Foo
+                {
+                    /**  */
+                    private ?string $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     *
-     */
-    private ?string $foo;
-}',
+                class Foo
+                {
+                    /**
+                     *
+                     */
+                    private ?string $foo;
+                }
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It can handle properties with array type declaration' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @var string[] */
-    private array $foo;
-}',
-            '<?php
+                class Foo
+                {
+                    /** @var string[] */
+                    private array $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * @var string[]
-     */
-    private array $foo;
-}',
+                class Foo
+                {
+                    /**
+                     * @var string[]
+                     */
+                    private array $foo;
+                }
+                EOD,
             [
                 'property' => 'single',
             ],
@@ -590,133 +650,145 @@ class Foo
     public static function provideFix80Cases(): iterable
     {
         yield 'It detects attributes between docblock and token' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @var string[] */
-    #[Attribute1]
-    private array $foo1;
+                class Foo
+                {
+                    /** @var string[] */
+                    #[Attribute1]
+                    private array $foo1;
 
-    /** @var string[] */
-    #[Attribute1]
-    #[Attribute2]
-    private array $foo2;
+                    /** @var string[] */
+                    #[Attribute1]
+                    #[Attribute2]
+                    private array $foo2;
 
-    /** @var string[] */
-    #[Attribute1, Attribute2]
-    public array $foo3;
-}',
-            '<?php
+                    /** @var string[] */
+                    #[Attribute1, Attribute2]
+                    public array $foo3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * @var string[]
-     */
-    #[Attribute1]
-    private array $foo1;
+                class Foo
+                {
+                    /**
+                     * @var string[]
+                     */
+                    #[Attribute1]
+                    private array $foo1;
 
-    /**
-     * @var string[]
-     */
-    #[Attribute1]
-    #[Attribute2]
-    private array $foo2;
+                    /**
+                     * @var string[]
+                     */
+                    #[Attribute1]
+                    #[Attribute2]
+                    private array $foo2;
 
-    /**
-     * @var string[]
-     */
-    #[Attribute1, Attribute2]
-    public array $foo3;
-}',
+                    /**
+                     * @var string[]
+                     */
+                    #[Attribute1, Attribute2]
+                    public array $foo3;
+                }
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It handles class constants correctly' => [
-            '<?php
-class Foo
-{
-    /**
-     * 0
-     */
-    #[Attribute1]
-    const B0 = "0";
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /**
+                     * 0
+                     */
+                    #[Attribute1]
+                    const B0 = "0";
 
-    /**
-     * 1
-     */
-    #[Attribute1]
-    #[Attribute2]
-    public const B1 = "1";
+                    /**
+                     * 1
+                     */
+                    #[Attribute1]
+                    #[Attribute2]
+                    public const B1 = "1";
 
-    /**
-     * 2
-     */
-    #[Attribute1, Attribute2]
-    public const B2 = "2";
-}
-',
-            '<?php
-class Foo
-{
-    /** 0 */
-    #[Attribute1]
-    const B0 = "0";
+                    /**
+                     * 2
+                     */
+                    #[Attribute1, Attribute2]
+                    public const B2 = "2";
+                }
 
-    /** 1 */
-    #[Attribute1]
-    #[Attribute2]
-    public const B1 = "1";
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /** 0 */
+                    #[Attribute1]
+                    const B0 = "0";
 
-    /** 2 */
-    #[Attribute1, Attribute2]
-    public const B2 = "2";
-}
-',
+                    /** 1 */
+                    #[Attribute1]
+                    #[Attribute2]
+                    public const B1 = "1";
+
+                    /** 2 */
+                    #[Attribute1, Attribute2]
+                    public const B2 = "2";
+                }
+
+                EOD,
         ];
 
         yield 'It handles class functions correctly' => [
-            '<?php
-                class Foo
-                {
-                    /**
-                     * @return void
-                     */
-                    #[Attribute1]
-                    public function hello1() {}
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    /**
+                                     * @return void
+                                     */
+                                    #[Attribute1]
+                                    public function hello1() {}
 
-                    /**
-                     * @return void
-                     */
-                    #[Attribute1]
-                    #[Attribute2]
-                    public function hello2() {}
+                                    /**
+                                     * @return void
+                                     */
+                                    #[Attribute1]
+                                    #[Attribute2]
+                                    public function hello2() {}
 
-                    /**
-                     * @return void
-                     */
-                    #[Attribute1, Attribute2]
-                    public function hello3() {}
-                }'."\n            ",
-            '<?php
-                class Foo
-                {
-                    /** @return void */
-                    #[Attribute1]
-                    public function hello1() {}
+                                    /**
+                                     * @return void
+                                     */
+                                    #[Attribute1, Attribute2]
+                                    public function hello3() {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    /** @return void */
+                                    #[Attribute1]
+                                    public function hello1() {}
 
-                    /** @return void */
-                    #[Attribute1]
-                    #[Attribute2]
-                    public function hello2() {}
+                                    /** @return void */
+                                    #[Attribute1]
+                                    #[Attribute2]
+                                    public function hello2() {}
 
-                    /** @return void */
-                    #[Attribute1, Attribute2]
-                    public function hello3() {}
-                }'."\n            ",
+                                    /** @return void */
+                                    #[Attribute1, Attribute2]
+                                    public function hello3() {}
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -736,142 +808,158 @@ class Foo
     public static function provideFix81Cases(): iterable
     {
         yield 'It handles readonly properties correctly' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @var string[] */
-    private readonly array $foo1;
+                class Foo
+                {
+                    /** @var string[] */
+                    private readonly array $foo1;
 
-    /** @var string[] */
-    readonly private array $foo2;
+                    /** @var string[] */
+                    readonly private array $foo2;
 
-    /** @var string[] */
-    readonly array $foo3;
-}',
-            '<?php
+                    /** @var string[] */
+                    readonly array $foo3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /**
-     * @var string[]
-     */
-    private readonly array $foo1;
+                class Foo
+                {
+                    /**
+                     * @var string[]
+                     */
+                    private readonly array $foo1;
 
-    /**
-     * @var string[]
-     */
-    readonly private array $foo2;
+                    /**
+                     * @var string[]
+                     */
+                    readonly private array $foo2;
 
-    /**
-     * @var string[]
-     */
-    readonly array $foo3;
-}',
+                    /**
+                     * @var string[]
+                     */
+                    readonly array $foo3;
+                }
+                EOD,
             [
                 'property' => 'single',
             ],
         ];
 
         yield 'It handles class constant correctly' => [
-            '<?php
-class Foo
-{
-    /**
-     * 0
-     */
-    const B0 = "0";
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /**
+                     * 0
+                     */
+                    const B0 = "0";
 
-    /**
-     * 1
-     */
-    final public const B1 = "1";
+                    /**
+                     * 1
+                     */
+                    final public const B1 = "1";
 
-    /**
-     * 2
-     */
-    public final const B2 = "2";
+                    /**
+                     * 2
+                     */
+                    public final const B2 = "2";
 
-    /**
-     * 3
-     */
-    final const B3 = "3";
-}
-',
-            '<?php
-class Foo
-{
-    /** 0 */
-    const B0 = "0";
+                    /**
+                     * 3
+                     */
+                    final const B3 = "3";
+                }
 
-    /** 1 */
-    final public const B1 = "1";
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /** 0 */
+                    const B0 = "0";
 
-    /** 2 */
-    public final const B2 = "2";
+                    /** 1 */
+                    final public const B1 = "1";
 
-    /** 3 */
-    final const B3 = "3";
-}
-',
+                    /** 2 */
+                    public final const B2 = "2";
+
+                    /** 3 */
+                    final const B3 = "3";
+                }
+
+                EOD,
         ];
 
         yield 'It handles enum functions correctly' => [
-            '<?php
-                enum Foo
-                {
-                    /**
-                     * @return void
-                     */
-                    public function hello() {}
-                }'."\n            ",
-            '<?php
-                enum Foo
-                {
-                    /** @return void */
-                    public function hello() {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                enum Foo
+                                {
+                                    /**
+                                     * @return void
+                                     */
+                                    public function hello() {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                enum Foo
+                                {
+                                    /** @return void */
+                                    public function hello() {}
+                                }
+                EOD."\n            ",
         ];
 
         yield 'It handles enum function with attributes correctly' => [
-            '<?php
-                enum Foo
-                {
-                    /**
-                     * @return void
-                     */
-                    #[Attribute1]
-                    public function hello1() {}
+            <<<'EOD'
+                <?php
+                                enum Foo
+                                {
+                                    /**
+                                     * @return void
+                                     */
+                                    #[Attribute1]
+                                    public function hello1() {}
 
-                    /**
-                     * @return void
-                     */
-                    #[Attribute1]
-                    #[Attribute2]
-                    public function hello2() {}
+                                    /**
+                                     * @return void
+                                     */
+                                    #[Attribute1]
+                                    #[Attribute2]
+                                    public function hello2() {}
 
-                    /**
-                     * @return void
-                     */
-                    #[Attribute1, Attribute2]
-                    public function hello3() {}
-                }'."\n            ",
-            '<?php
-                enum Foo
-                {
-                    /** @return void */
-                    #[Attribute1]
-                    public function hello1() {}
+                                    /**
+                                     * @return void
+                                     */
+                                    #[Attribute1, Attribute2]
+                                    public function hello3() {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                enum Foo
+                                {
+                                    /** @return void */
+                                    #[Attribute1]
+                                    public function hello1() {}
 
-                    /** @return void */
-                    #[Attribute1]
-                    #[Attribute2]
-                    public function hello2() {}
+                                    /** @return void */
+                                    #[Attribute1]
+                                    #[Attribute2]
+                                    public function hello2() {}
 
-                    /** @return void */
-                    #[Attribute1, Attribute2]
-                    public function hello3() {}
-                }'."\n            ",
+                                    /** @return void */
+                                    #[Attribute1, Attribute2]
+                                    public function hello3() {}
+                                }
+                EOD."\n            ",
         ];
     }
 

@@ -110,122 +110,142 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
         yield ["<?php \$x = array(\n<<<'EOT'\noet\nEOT\n);"];
 
         yield [
-            '<?php
-    $foo = array(
-        array(
-        ),
-    );',
-        ];
-
-        yield [
-            '<?php
-    $a = array(
-        1 => array(
-            2 => 3,
-        ),
-    );',
-            '<?php
-    $a = array(
-        1 => array(
-            2 => 3
-        )
-    );',
-        ];
-
-        yield [
-            "<?php
-    \$x = array(
-        'foo',
-        'bar',
-        array(
-            'foo',
-            'bar',
-            array(
-                'foo',
-                'bar',
-                array(
-                    'foo',
-                    ('bar' ? true : !false),
-                    ('bar' ? array(true) : !(false)),
-                    array(
-                        'foo',
-                        'bar',
+            <<<'EOD'
+                <?php
+                    $foo = array(
                         array(
-                            'foo',
-                            ('bar'),
                         ),
-                    ),
-                ),
-            ),
-        ),
-    );",
-            "<?php
-    \$x = array(
-        'foo',
-        'bar',
-        array(
-            'foo',
-            'bar',
-            array(
-                'foo',
-                'bar',
-                array(
-                    'foo',
-                    ('bar' ? true : !false),
-                    ('bar' ? array(true) : !(false)),
-                    array(
+                    );
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    $a = array(
+                        1 => array(
+                            2 => 3,
+                        ),
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    $a = array(
+                        1 => array(
+                            2 => 3
+                        )
+                    );
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    $x = array(
                         'foo',
                         'bar',
                         array(
                             'foo',
-                            ('bar'),
+                            'bar',
+                            array(
+                                'foo',
+                                'bar',
+                                array(
+                                    'foo',
+                                    ('bar' ? true : !false),
+                                    ('bar' ? array(true) : !(false)),
+                                    array(
+                                        'foo',
+                                        'bar',
+                                        array(
+                                            'foo',
+                                            ('bar'),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    $x = array(
+                        'foo',
+                        'bar',
+                        array(
+                            'foo',
+                            'bar',
+                            array(
+                                'foo',
+                                'bar',
+                                array(
+                                    'foo',
+                                    ('bar' ? true : !false),
+                                    ('bar' ? array(true) : !(false)),
+                                    array(
+                                        'foo',
+                                        'bar',
+                                        array(
+                                            'foo',
+                                            ('bar'),
+                                        )
+                                    )
+                                )
+                            )
                         )
-                    )
-                )
-            )
-        )
-    );",
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $a = array("foo" => function ($b) {
-                    return "bar".$b;
-                });',
+                                $a = array("foo" => function ($b) {
+                                    return "bar".$b;
+                                });
+                EOD,
         ];
 
         yield [
-            '<?php
-    return array(
-        "a" => 1,
-        "b" => 2,
-    );',
-            '<?php
-    return array(
-        "a" => 1,
-        "b" => 2
-    );',
+            <<<'EOD'
+                <?php
+                    return array(
+                        "a" => 1,
+                        "b" => 2,
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    return array(
+                        "a" => 1,
+                        "b" => 2
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = array("foo", <<<TWIG
-        foo
-        bar
-        baz
-TWIG
-        , $twig);',
+            <<<'EOD'
+                <?php
+                    $test = array("foo", <<<TWIG
+                        foo
+                        bar
+                        baz
+                TWIG
+                        , $twig);
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-        bar
-        baz
-TWIG
-        , $twig);',
+            <<<'EOD'
+                <?php
+                    $test = array("foo", <<<'TWIG'
+                        foo
+                        bar
+                        baz
+                TWIG
+                        , $twig);
+                EOD,
         ];
 
         // short syntax tests
@@ -250,187 +270,229 @@ TWIG
         yield ["<?php \$x = [\n /* He */ \n];"];
 
         yield [
-            '<?php
-    $foo = [
-        [
-        ],
-    ];',
+            <<<'EOD'
+                <?php
+                    $foo = [
+                        [
+                        ],
+                    ];
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $a = ["foo" => function ($b) {
-                    return "bar".$b;
-                }];',
+                                $a = ["foo" => function ($b) {
+                                    return "bar".$b;
+                                }];
+                EOD,
         ];
 
         yield [
-            '<?php
-    return [
-        "a" => 1,
-        "b" => 2,
-    ];',
-            '<?php
-    return [
-        "a" => 1,
-        "b" => 2
-    ];',
+            <<<'EOD'
+                <?php
+                    return [
+                        "a" => 1,
+                        "b" => 2,
+                    ];
+                EOD,
+            <<<'EOD'
+                <?php
+                    return [
+                        "a" => 1,
+                        "b" => 2
+                    ];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = ["foo", <<<TWIG
-        foo
-        bar
-        baz
-TWIG
-        , $twig];',
+            <<<'EOD'
+                <?php
+                    $test = ["foo", <<<TWIG
+                        foo
+                        bar
+                        baz
+                TWIG
+                        , $twig];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-        bar
-        baz
-TWIG
-        , $twig];',
+            <<<'EOD'
+                <?php
+                    $test = ["foo", <<<'TWIG'
+                        foo
+                        bar
+                        baz
+                TWIG
+                        , $twig];
+                EOD,
         ];
 
         // no array tests
         yield [
-            "<?php
-    throw new BadMethodCallException(
-        sprintf(
-            'Method \"%s\" not implemented',
-            __METHOD__
-        )
-    );",
+            <<<'EOD'
+                <?php
+                    throw new BadMethodCallException(
+                        sprintf(
+                            'Method "%s" not implemented',
+                            __METHOD__
+                        )
+                    );
+                EOD,
         ];
 
         yield [
-            "<?php
-    throw new BadMethodCallException(sprintf(
-        'Method \"%s\" not implemented',
-        __METHOD__
-    ));",
+            <<<'EOD'
+                <?php
+                    throw new BadMethodCallException(sprintf(
+                        'Method "%s" not implemented',
+                        __METHOD__
+                    ));
+                EOD,
         ];
 
         yield [
-            "<?php
+            <<<'EOD'
+                <?php
 
-    namespace FOS\\RestBundle\\Controller;
+                    namespace FOS\RestBundle\Controller;
 
-    class ExceptionController extends ContainerAware
-    {
-        public function showAction(Request \$request, \$exception, DebugLoggerInterface \$logger = null, \$format = 'html')
-        {
-            if (!\$exception instanceof DebugFlattenException && !\$exception instanceof HttpFlattenException) {
-                throw new \\InvalidArgumentException(sprintf(
-                    'ExceptionController::showAction can only accept some exceptions (%s, %s), \"%s\" given',
-                    'Symfony\\Component\\HttpKernel\\Exception\\FlattenException',
-                    'Symfony\\Component\\Debug\\Exception\\FlattenException',
-                    get_class(\$exception)
-                ));
-            }
-        }
-    }",
+                    class ExceptionController extends ContainerAware
+                    {
+                        public function showAction(Request $request, $exception, DebugLoggerInterface $logger = null, $format = 'html')
+                        {
+                            if (!$exception instanceof DebugFlattenException && !$exception instanceof HttpFlattenException) {
+                                throw new \InvalidArgumentException(sprintf(
+                                    'ExceptionController::showAction can only accept some exceptions (%s, %s), "%s" given',
+                                    'Symfony\Component\HttpKernel\Exception\FlattenException',
+                                    'Symfony\Component\Debug\Exception\FlattenException',
+                                    get_class($exception)
+                                ));
+                            }
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    function foo(array $a)
-    {
-        bar(
-            baz(
-                1
+            <<<'EOD'
+                <?php
+                    function foo(array $a)
+                    {
+                        bar(
+                            baz(
+                                1
+                            )
+                        );
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    $var = array(
+                        "string",
+                        //comment
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    $var = array(
+                        "string"
+                        //comment
+                    );
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    $var = array(
+                        "string",
+                        /* foo */);
+                EOD,
+            <<<'EOD'
+                <?php
+                    $var = array(
+                        "string"
+                        /* foo */);
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    $var = [
+                        "string",
+                        /* foo */];
+                EOD,
+            <<<'EOD'
+                <?php
+                    $var = [
+                        "string"
+                        /* foo */];
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield array(
+                        "a" => 1,
+                        "b" => 2,
+                    );
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield array(
+                        "a" => 1,
+                        "b" => 2
+                    );
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield [
+                        "a" => 1,
+                        "b" => 2,
+                    ];
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield [
+                        "a" => 1,
+                        "b" => 2
+                    ];
+                }
+                EOD,
+        ];
+
+        yield [<<<'EOD'
+            <?php
+            while(
+            (
+            (
+            $a
             )
-        );
-    }',
-        ];
-
-        yield [
-            '<?php
-    $var = array(
-        "string",
-        //comment
-    );',
-            '<?php
-    $var = array(
-        "string"
-        //comment
-    );',
-        ];
-
-        yield [
-            '<?php
-    $var = array(
-        "string",
-        /* foo */);',
-            '<?php
-    $var = array(
-        "string"
-        /* foo */);',
-        ];
-
-        yield [
-            '<?php
-    $var = [
-        "string",
-        /* foo */];',
-            '<?php
-    $var = [
-        "string"
-        /* foo */];',
-        ];
-
-        yield [
-            '<?php
-function a()
-{
-    yield array(
-        "a" => 1,
-        "b" => 2,
-    );
-}',
-            '<?php
-function a()
-{
-    yield array(
-        "a" => 1,
-        "b" => 2
-    );
-}',
-        ];
-
-        yield [
-            '<?php
-function a()
-{
-    yield [
-        "a" => 1,
-        "b" => 2,
-    ];
-}',
-            '<?php
-function a()
-{
-    yield [
-        "a" => 1,
-        "b" => 2
-    ];
-}',
-        ];
-
-        yield ['<?php
-while(
-(
-(
-$a
-)
-)
-) {}',
+            )
+            ) {}
+            EOD,
         ];
 
         yield [
@@ -446,10 +508,12 @@ $a
         ];
 
         yield [
-            '<?php foo(1, 2, [
-                    ARRAY_ELEMENT_1,
-                    ARRAY_ELEMENT_2
-                    ], 3, 4);',
+            <<<'EOD'
+                <?php foo(1, 2, [
+                                    ARRAY_ELEMENT_1,
+                                    ARRAY_ELEMENT_2
+                                    ], 3, 4);
+                EOD,
             null,
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
@@ -515,58 +579,68 @@ $a
         ];
 
         yield [
-            '<?php
-                    $obj->method(
-                        1,
-                        2,
-                    );'."\n                ",
-            '<?php
-                    $obj->method(
-                        1,
-                        2
-                    );'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $obj->method(
+                                        1,
+                                        2,
+                                    );
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $obj->method(
+                                        1,
+                                        2
+                                    );
+                EOD."\n                ",
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
         yield [
-            '<?php
-                    array(
-                        1,
-                        2,
-                    );
-                    [
-                        3,
-                        4,
-                    ];
-                    foo(
-                        5,
-                        6,
-                    );'."\n                ",
-            '<?php
-                    array(
-                        1,
-                        2
-                    );
-                    [
-                        3,
-                        4
-                    ];
-                    foo(
-                        5,
-                        6
-                    );'."\n                ",
+            <<<'EOD'
+                <?php
+                                    array(
+                                        1,
+                                        2,
+                                    );
+                                    [
+                                        3,
+                                        4,
+                                    ];
+                                    foo(
+                                        5,
+                                        6,
+                                    );
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    array(
+                                        1,
+                                        2
+                                    );
+                                    [
+                                        3,
+                                        4
+                                    ];
+                                    foo(
+                                        5,
+                                        6
+                                    );
+                EOD."\n                ",
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
         yield [
-            '<?php
-while(
-(
-(
-$a
-)
-)
-) {}',
+            <<<'EOD'
+                <?php
+                while(
+                (
+                (
+                $a
+                )
+                )
+                ) {}
+                EOD,
             null,
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
@@ -592,14 +666,18 @@ $a
         ];
 
         yield [
-            '<?php $a = new class() {function A() { return new static(
-1,
-2,
-); }};',
-            '<?php $a = new class() {function A() { return new static(
-1,
-2
-); }};',
+            <<<'EOD'
+                <?php $a = new class() {function A() { return new static(
+                1,
+                2,
+                ); }};
+                EOD,
+            <<<'EOD'
+                <?php $a = new class() {function A() { return new static(
+                1,
+                2
+                ); }};
+                EOD,
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
     }
@@ -626,88 +704,108 @@ $a
         ];
 
         yield [
-            '<?php function foo(
-                    $x,
-                    $y
-                ) {}',
+            <<<'EOD'
+                <?php function foo(
+                                    $x,
+                                    $y
+                                ) {}
+                EOD,
             null, // do not fix if not configured
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
         yield [
-            '<?php function foo(
-                    $x,
-                    $y,
-                ) {}',
-            '<?php function foo(
-                    $x,
-                    $y
-                ) {}',
+            <<<'EOD'
+                <?php function foo(
+                                    $x,
+                                    $y,
+                                ) {}
+                EOD,
+            <<<'EOD'
+                <?php function foo(
+                                    $x,
+                                    $y
+                                ) {}
+                EOD,
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
 
         yield [
-            '<?php $x = function(
-                    $x,
-                    $y,
-                ) {};',
-            '<?php $x = function(
-                    $x,
-                    $y
-                ) {};',
+            <<<'EOD'
+                <?php $x = function(
+                                    $x,
+                                    $y,
+                                ) {};
+                EOD,
+            <<<'EOD'
+                <?php $x = function(
+                                    $x,
+                                    $y
+                                ) {};
+                EOD,
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
 
         yield [
-            '<?php $x = fn(
-                    $x,
-                    $y,
-                ) => $x + $y;',
-            '<?php $x = fn(
-                    $x,
-                    $y
-                ) => $x + $y;',
+            <<<'EOD'
+                <?php $x = fn(
+                                    $x,
+                                    $y,
+                                ) => $x + $y;
+                EOD,
+            <<<'EOD'
+                <?php $x = fn(
+                                    $x,
+                                    $y
+                                ) => $x + $y;
+                EOD,
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
 
         yield 'match' => [
-            '<?php
-$m = match ($a) {
-    200, 300 => null,
-    400 => 1,
-    500 => function() {return 2;},
-    600 => static function() {return 4;},
-    default => 3,
-};
+            <<<'EOD'
+                <?php
+                $m = match ($a) {
+                    200, 300 => null,
+                    400 => 1,
+                    500 => function() {return 2;},
+                    600 => static function() {return 4;},
+                    default => 3,
+                };
 
-$z = match ($a) {
-    1 => 0,
-    2 => 1,
-};
+                $z = match ($a) {
+                    1 => 0,
+                    2 => 1,
+                };
 
-$b = match($c) {19 => 28, default => 333};'."\n            ",
-            '<?php
-$m = match ($a) {
-    200, 300 => null,
-    400 => 1,
-    500 => function() {return 2;},
-    600 => static function() {return 4;},
-    default => 3
-};
+                $b = match($c) {19 => 28, default => 333};
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                $m = match ($a) {
+                    200, 300 => null,
+                    400 => 1,
+                    500 => function() {return 2;},
+                    600 => static function() {return 4;},
+                    default => 3
+                };
 
-$z = match ($a) {
-    1 => 0,
-    2 => 1
-};
+                $z = match ($a) {
+                    1 => 0,
+                    2 => 1
+                };
 
-$b = match($c) {19 => 28, default => 333};'."\n            ",
+                $b = match($c) {19 => 28, default => 333};
+                EOD."\n            ",
             ['elements' => ['match']],
         ];
 
         yield 'match with last comma in the same line as closing brace' => [
-            '<?php
-$x = match ($a) { 1 => 0,
-                  2 => 1 };'."\n            ",
+            <<<'EOD'
+                <?php
+                $x = match ($a) { 1 => 0,
+                                  2 => 1 };
+                EOD."\n            ",
             null,
             ['elements' => ['match']],
         ];

@@ -34,9 +34,11 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
             'In function arguments there must not be arguments with default values before non-default ones.',
             [
                 new CodeSample(
-                    '<?php
-function example($foo = "two words", $bar) {}
-'
+                    <<<'EOD'
+                        <?php
+                        function example($foo = "two words", $bar) {}
+
+                        EOD
                 ),
             ],
             null,

@@ -34,96 +34,130 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                namespace Bar {
-                    function STRLEN($str) {
-                        return "overridden" . \strlen($str);
-                    }
-                }
+            <<<'EOD'
+                <?php
+                                namespace Bar {
+                                    function STRLEN($str) {
+                                        return "overridden" . \strlen($str);
+                                    }
+                                }
 
-                namespace {
-                    echo \Bar\STRLEN("xxx");
-                }',
+                                namespace {
+                                    echo \Bar\STRLEN("xxx");
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    echo strtolower("hello 1");'."\n                ",
-            '<?php
-                    echo STRTOLOWER("hello 1");'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo strtolower("hello 1");
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo STRTOLOWER("hello 1");
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo strtolower //a
-                        ("hello 2");'."\n                ",
-            '<?php
-                    echo STRTOLOWER //a
-                        ("hello 2");'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo strtolower //a
+                                        ("hello 2");
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo STRTOLOWER //a
+                                        ("hello 2");
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo strtolower /**/   ("hello 3");'."\n                ",
-            '<?php
-                    echo STRTOLOWER /**/   ("hello 3");'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo strtolower /**/   ("hello 3");
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo STRTOLOWER /**/   ("hello 3");
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo \sqrt(4);'."\n                ",
-            '<?php
-                    echo \sQrT(4);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo \sqrt(4);
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo \sQrT(4);
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo "1".\sqrt("hello 5");'."\n                ",
-            '<?php
-                    echo "1".\SQRT("hello 5");'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo "1".\sqrt("hello 5");
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo "1".\SQRT("hello 5");
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class Test{
-                        public function gettypE()
-                        {
-                            return 1;
-                        }
+            <<<'EOD'
+                <?php
+                                    class Test{
+                                        public function gettypE()
+                                        {
+                                            return 1;
+                                        }
 
-                        function sqrT($a)
-                        {
-                        }
+                                        function sqrT($a)
+                                        {
+                                        }
 
-                        function &END($a)
-                        {
-                        }
-                    }'."\n                ",
+                                        function &END($a)
+                                        {
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    new STRTOLOWER();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    new STRTOLOWER();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    new \STRTOLOWER();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    new \STRTOLOWER();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    new \A\B\STRTOLOWER();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    new \A\B\STRTOLOWER();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    a::STRTOLOWER();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    a::STRTOLOWER();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a->STRTOLOWER();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a->STRTOLOWER();
+                EOD."\n                ",
         ];
 
         yield [
@@ -131,44 +165,58 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    namespace Foo {
-                        function &Next() {
-                            return prev(-1);
-                        }
-                    }',
+            <<<'EOD'
+                <?php
+                                    namespace Foo {
+                                        function &Next() {
+                                            return prev(-1);
+                                        }
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $next1 = & next($array1);
-                    $next2 = & \next($array2);'."\n                ",
-            '<?php
-                    $next1 = & Next($array1);
-                    $next2 = & \Next($array2);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $next1 = & next($array1);
+                                    $next2 = & \next($array2);
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $next1 = & Next($array1);
+                                    $next2 = & \Next($array2);
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    namespace Foo;
-                    use function MyStuff\StrToLower;
-                    class Bar {
-                        public function getName() {
-                            return StrToLower($this->name);
-                        }
-                    }',
+            <<<'EOD'
+                <?php
+                                    namespace Foo;
+                                    use function MyStuff\StrToLower;
+                                    class Bar {
+                                        public function getName() {
+                                            return StrToLower($this->name);
+                                        }
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    echo \sqrt(4 , );'."\n                ",
-            '<?php
-                    echo \sQrT(4 , );'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo \sqrt(4 , );
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo \sQrT(4 , );
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a->STRTOLOWER(1,);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a->STRTOLOWER(1,);
+                EOD."\n                ",
         ];
     }
 
@@ -187,12 +235,14 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
         yield ['<?php $a?->STRTOLOWER(1,);'];
 
         yield [
-            '<?php
-                    final class SomeClass
-            {
-                #[File(mimeTypes: ["application/pdf", "image/*"])]
-                public FileBlob $attachment;
-            }'."\n            ",
+            <<<'EOD'
+                <?php
+                                    final class SomeClass
+                            {
+                                #[File(mimeTypes: ["application/pdf", "image/*"])]
+                                public FileBlob $attachment;
+                            }
+                EOD."\n            ",
         ];
     }
 }

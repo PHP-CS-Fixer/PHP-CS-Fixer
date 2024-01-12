@@ -61,48 +61,68 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /* header comment */ $foo = true;
-                /** @var string $bar */
-                $bar = "baz";'."\n                ",
-            '<?php /* header comment */ $foo = true;
-                /*** @var string $bar */
-                $bar = "baz";'."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                /** @var string $bar */
+                                $bar = "baz";
+                EOD."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                /*** @var string $bar */
+                                $bar = "baz";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php /* header comment */ $foo = true;
-                /** @var string $bar */
-                $bar = "baz";'."\n                ",
-            '<?php /* header comment */ $foo = true;
-                // @var string $bar
-                $bar = "baz";'."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                /** @var string $bar */
+                                $bar = "baz";
+                EOD."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                // @var string $bar
+                                $bar = "baz";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php /* header comment */ $foo = true;
-                /** @var string $bar */
-                $bar = "baz";'."\n                ",
-            '<?php /* header comment */ $foo = true;
-                //@var string $bar
-                $bar = "baz";'."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                /** @var string $bar */
+                                $bar = "baz";
+                EOD."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                //@var string $bar
+                                $bar = "baz";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php /* header comment */ $foo = true;
-                /** @var string $bar */
-                $bar = "baz";'."\n                ",
-            '<?php /* header comment */ $foo = true;
-                # @var string $bar
-                $bar = "baz";'."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                /** @var string $bar */
+                                $bar = "baz";
+                EOD."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                # @var string $bar
+                                $bar = "baz";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php /* header comment */ $foo = true;
-                /** @var string $bar */
-                $bar = "baz";'."\n                ",
-            '<?php /* header comment */ $foo = true;
-                #@var string $bar
-                $bar = "baz";'."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                /** @var string $bar */
+                                $bar = "baz";
+                EOD."\n                ",
+            <<<'EOD'
+                <?php /* header comment */ $foo = true;
+                                #@var string $bar
+                                $bar = "baz";
+                EOD."\n                ",
         ];
 
         yield [
@@ -304,29 +324,37 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php // header
-                /** /@foo */
-                namespace Foo\Bar;
-',
-            '<?php // header
-                ///@foo
-                namespace Foo\Bar;
-',
+            <<<'EOD'
+                <?php // header
+                                /** /@foo */
+                                namespace Foo\Bar;
+
+                EOD,
+            <<<'EOD'
+                <?php // header
+                                ///@foo
+                                namespace Foo\Bar;
+
+                EOD,
         ];
 
         yield [
-            '<?php // header
-                /**
-                 * / @foo
-                 * / @bar
-                 */
-                namespace Foo\Bar;
-',
-            '<?php // header
-                /// @foo
-                /// @bar
-                namespace Foo\Bar;
-',
+            <<<'EOD'
+                <?php // header
+                                /**
+                                 * / @foo
+                                 * / @bar
+                                 */
+                                namespace Foo\Bar;
+
+                EOD,
+            <<<'EOD'
+                <?php // header
+                                /// @foo
+                                /// @bar
+                                namespace Foo\Bar;
+
+                EOD,
         ];
 
         yield [

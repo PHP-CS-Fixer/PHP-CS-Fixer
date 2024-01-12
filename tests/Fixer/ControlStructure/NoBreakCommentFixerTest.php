@@ -48,1044 +48,1208 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-    case 2:
-        bar();
-        // no break
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-    case 2:
-        bar();
-    default:
-        baz();
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                    case 2:
+                        bar();
+                        // no break
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                    case 2:
+                        bar();
+                    default:
+                        baz();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
 
-        foo();
+                        foo();
 
-        // no break
-    case 2:
+                        // no break
+                    case 2:
 
-        bar();
+                        bar();
 
-        // no break
-    default:
+                        // no break
+                    default:
 
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
 
-        foo();
+                        foo();
 
-    case 2:
+                    case 2:
 
-        bar();
+                        bar();
 
-    default:
+                    default:
 
-        baz();
-}',
+                        baz();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-    case 2:
-        bar();
-        // no break
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo(); // no break
-    case 2:
-        bar(); // no break
-    default:
-        baz();
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                    case 2:
+                        bar();
+                        // no break
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo(); // no break
+                    case 2:
+                        bar(); // no break
+                    default:
+                        baz();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        foo();
-        // no break
-    case 2;
-        bar();
-        // no break
-    default;
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        foo();
-    case 2;
-        bar();
-    default;
-        baz();
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        foo();
+                        // no break
+                    case 2;
+                        bar();
+                        // no break
+                    default;
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        foo();
+                    case 2;
+                        bar();
+                    default;
+                        baz();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // foo
-        // no break
-    case 2:
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // foo
-    case 2:
-        bar();
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // foo
+                        // no break
+                    case 2:
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // foo
+                    case 2:
+                        bar();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) { case 1: foo();
-// no break
-case 2: bar(); }',
-            '<?php
-switch ($foo) { case 1: foo(); case 2: bar(); }',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) { case 1: foo();
-// no break
-case 2: bar(); }',
-            '<?php
-switch ($foo) { case 1: foo();case 2: bar(); }',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        for ($i = 0; $i < 1; ++$i) {
-            break;
-        }
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        for ($i = 0; $i < 1; ++$i) {
-            break;
-        }
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        if ($foo) {
-            break;
-        }
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        if ($foo) {
-            break;
-        }
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        do {
-            break;
-        } while ($bar);
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        do {
-            break;
-        } while ($bar);
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        $foo = function ($bar) {
-            foreach ($bar as $baz) {
-                break;
-            }
-        };
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        $foo = function ($bar) {
-            foreach ($bar as $baz) {
-                break;
-            }
-        };
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        switch ($bar) {
-            case 1:
-                foo();
+            <<<'EOD'
+                <?php
+                switch ($foo) { case 1: foo();
                 // no break
-            case 2:
-                bar();
-        }
-        break;
-    case 2:
-        switch ($bar) {
-            case 1:
-                bar();
+                case 2: bar(); }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) { case 1: foo(); case 2: bar(); }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) { case 1: foo();
                 // no break
-            case 2:
-                foo();
-        }
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        switch ($bar) {
-            case 1:
-                foo();
-            case 2:
-                bar();
-        }
-        break;
-    case 2:
-        switch ($bar) {
-            case 1:
-                bar();
-            case 2:
-                foo();
-        }
-}',
+                case 2: bar(); }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) { case 1: foo();case 2: bar(); }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        switch ($bar):
-            case 1:
-                foo();
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        foreach ($bar as $baz) {
+                            break;
+                        }
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        foreach ($bar as $baz) {
+                            break;
+                        }
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        for ($i = 0; $i < 1; ++$i) {
+                            break;
+                        }
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        for ($i = 0; $i < 1; ++$i) {
+                            break;
+                        }
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        foreach ($bar as $baz) {
+                            break;
+                        }
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        foreach ($bar as $baz) {
+                            break;
+                        }
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        if ($foo) {
+                            break;
+                        }
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        if ($foo) {
+                            break;
+                        }
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        do {
+                            break;
+                        } while ($bar);
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        do {
+                            break;
+                        } while ($bar);
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = function ($bar) {
+                            foreach ($bar as $baz) {
+                                break;
+                            }
+                        };
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = function ($bar) {
+                            foreach ($bar as $baz) {
+                                break;
+                            }
+                        };
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        switch ($bar) {
+                            case 1:
+                                foo();
+                                // no break
+                            case 2:
+                                bar();
+                        }
+                        break;
+                    case 2:
+                        switch ($bar) {
+                            case 1:
+                                bar();
+                                // no break
+                            case 2:
+                                foo();
+                        }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        switch ($bar) {
+                            case 1:
+                                foo();
+                            case 2:
+                                bar();
+                        }
+                        break;
+                    case 2:
+                        switch ($bar) {
+                            case 1:
+                                bar();
+                            case 2:
+                                foo();
+                        }
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        switch ($bar):
+                            case 1:
+                                foo();
+                                // no break
+                            case 2:
+                                bar();
+                        endswitch;
+                        break;
+                    case 2:
+                        switch ($bar):
+                            case 1:
+                                bar();
+                                // no break
+                            case 2:
+                                foo();
+                        endswitch;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        switch ($bar):
+                            case 1:
+                                foo();
+                            case 2:
+                                bar();
+                        endswitch;
+                        break;
+                    case 2:
+                        switch ($bar):
+                            case 1:
+                                bar();
+                            case 2:
+                                foo();
+                        endswitch;
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        continue;
+                    case 2:
+                        bar();
+                        continue;
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                        continue;
+                    case 2:
+                        bar();
+                        // no break
+                        continue;
+                    default:
+                        baz();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+
+                        return foo();
+
+
+                    case 2:
+
+                        return bar();
+
+
+                    default:
+
+                        return baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+
+                        return foo();
+
+                        // no break
+
+                    case 2:
+
+                        return bar();
+
+                        // no break
+
+                    default:
+
+                        return baz();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        return foo();
+                    case 2:
+                        return bar();
+                    default:
+                        return baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        // no break
+                        return foo();
+                    case 2:
+                        // no break
+                        return bar();
+                    default:
+                        return baz();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        break;
+                    case 2:
+                        bar();
+                        break;
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                        break;
+                    case 2:
+                        bar();
+                        // no break
+                        break;
+                    default:
+                        baz();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        break;
+                    case 2:
+                        bar();
+                        break;
+                    case 21:
+                        bar();
+                        break;
+                    case 22:
+                        bar();
+                        break;
+                    case 23:
+                        bar();
+                        break;
+                    case 24:
+                        bar();
+                        break;
+                    case 3:
+                        baz();
+                        break;
+                    default:
+                        qux();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        # no break
+                        break;
+                    case 2:
+                        bar();
+                        /* no break */
+                        break;
+                    case 21:
+                        bar();
+                        /*no break*/
+                        break;
+                    case 22:
+                        bar();
+                        /*     no break    */
+                        break;
+                    case 23:
+                        bar();
+                        /*no break    */
+                        break;
+                    case 24:
+                        bar();
+                        /*  no break*/
+                        break;
+                    case 3:
+                        baz();
+                        /** no break */
+                        break;
+                    default:
+                        qux();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                    case 2:
+                        bar();
+                        break;
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        // no break
+                    case 2:
+                        bar();
+                        // no break
+                        break;
+                    default:
+                        baz();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    default:
+                        foo();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    default:
+                        foo();
+                        // no break
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1;
                 // no break
-            case 2:
-                bar();
-        endswitch;
-        break;
-    case 2:
-        switch ($bar):
-            case 1:
-                bar();
+                case 2: $foo = 2; }
                 // no break
-            case 2:
-                foo();
-        endswitch;
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        switch ($bar):
-            case 1:
-                foo();
-            case 2:
-                bar();
-        endswitch;
-        break;
-    case 2:
-        switch ($bar):
-            case 1:
-                bar();
-            case 2:
-                foo();
-        endswitch;
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        continue;
-    case 2:
-        bar();
-        continue;
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-        continue;
-    case 2:
-        bar();
-        // no break
-        continue;
-    default:
-        baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-
-        return foo();
-
-
-    case 2:
-
-        return bar();
-
-
-    default:
-
-        return baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-
-        return foo();
-
-        // no break
-
-    case 2:
-
-        return bar();
-
-        // no break
-
-    default:
-
-        return baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        return foo();
-    case 2:
-        return bar();
-    default:
-        return baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        // no break
-        return foo();
-    case 2:
-        // no break
-        return bar();
-    default:
-        return baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        break;
-    case 2:
-        bar();
-        break;
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-        break;
-    case 2:
-        bar();
-        // no break
-        break;
-    default:
-        baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        break;
-    case 2:
-        bar();
-        break;
-    case 21:
-        bar();
-        break;
-    case 22:
-        bar();
-        break;
-    case 23:
-        bar();
-        break;
-    case 24:
-        bar();
-        break;
-    case 3:
-        baz();
-        break;
-    default:
-        qux();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        # no break
-        break;
-    case 2:
-        bar();
-        /* no break */
-        break;
-    case 21:
-        bar();
-        /*no break*/
-        break;
-    case 22:
-        bar();
-        /*     no break    */
-        break;
-    case 23:
-        bar();
-        /*no break    */
-        break;
-    case 24:
-        bar();
-        /*  no break*/
-        break;
-    case 3:
-        baz();
-        /** no break */
-        break;
-    default:
-        qux();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-    case 2:
-        bar();
-        break;
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        // no break
-    case 2:
-        bar();
-        // no break
-        break;
-    default:
-        baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    default:
-        foo();
-}',
-            '<?php
-switch ($foo) {
-    default:
-        foo();
-        // no break
-}',
-        ];
-
-        yield [
-            '<?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1;
-// no break
-case 2: $foo = 2; }
-// no break
-case 2: switch ($baz) { case 1: $foo = 3;
-// no break
-case 2: $foo = 4; } }
-// no break
-case 2: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 5;
-// no break
-case 2: $foo = 6; }
-// no break
-case 2: switch ($baz) { case 1: $foo = 7;
-// no break
-case 2: $foo = 8; } } }',
+                case 2: switch ($baz) { case 1: $foo = 3;
+                // no break
+                case 2: $foo = 4; } }
+                // no break
+                case 2: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 5;
+                // no break
+                case 2: $foo = 6; }
+                // no break
+                case 2: switch ($baz) { case 1: $foo = 7;
+                // no break
+                case 2: $foo = 8; } } }
+                EOD,
             '<?php switch ($foo) { case 1: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 1; case 2: $foo = 2; } case 2: switch ($baz) { case 1: $foo = 3; case 2: $foo = 4; } } case 2: switch ($bar) { case 1: switch ($baz) { case 1: $foo = 5; case 2: $foo = 6; } case 2: switch ($baz) { case 1: $foo = 7; case 2: $foo = 8; } } }',
         ];
 
         yield [
-            '<?php
-switch ($foo):
-    case 1:
-        foo();
-        // no break
-    case 2:
-        bar();
-endswitch;',
-            '<?php
-switch ($foo):
-    case 1:
-        foo();
-    case 2:
-        bar();
-        // no break
-endswitch;',
+            <<<'EOD'
+                <?php
+                switch ($foo):
+                    case 1:
+                        foo();
+                        // no break
+                    case 2:
+                        bar();
+                endswitch;
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo):
+                    case 1:
+                        foo();
+                    case 2:
+                        bar();
+                        // no break
+                endswitch;
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        ?>foo<?php
-        // no break
-    case 2:
-        ?>bar<?php
-        break;
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        ?>foo<?php
-    case 2:
-        ?>bar<?php
-        // no break
-        break;
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        ?>foo<?php
-
-        // no break
-    case 2:
-        ?>bar<?php
-
-        break;
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        ?>foo<?php
-
-    case 2:
-        ?>bar<?php
-
-        // no break
-        break;
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        ?>foo<?php // foo
-        // no break
-    case 2:
-        ?>bar<?php // bar
-        break;
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        ?>foo<?php // foo
-    case 2:
-        ?>bar<?php // bar
-        // no break
-        break;
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-    case 2:
-        bar();
-        // no break
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        // no break
-        foo();
-    case 2:
-        // no break
-        bar();
-    default:
-        baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        die;
-    case 2:
-        exit;
-    default:
-        die;
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        // no break
-        die;
-    case 2:
-        // no break
-        exit;
-    default:
-        die;
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1: {
-        throw new \Exception();
-    }
-    case 2:
-        ?>
-        <?php
-        throw new \Exception();
-    default:
-        throw new \Exception();
-}',
-            '<?php
-switch ($foo) {
-    case 1: {
-        // no break
-        throw new \Exception();
-    }
-    case 2:
-        ?>
-        <?php
-        // no break
-        throw new \Exception();
-    default:
-        throw new \Exception();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        goto a;
-    case 2:
-        goto a;
-    default:
-        goto a;
-}
-
-a:
-echo \'foo\';',
-            '<?php
-switch ($foo) {
-    case 1:
-        // no break
-        goto a;
-    case 2:
-        // no break
-        goto a;
-    default:
-        goto a;
-}
-
-a:
-echo \'foo\';',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case "bar":
-        if (1) {
-        } else {
-        }
-
-        $aaa = new Bar();
-        break;
-    default:
-        $aaa = new Baz();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-?>
-<?php
-// no break
-    default:
-?>
-<?php
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-?>
-<?php
-    default:
-?>
-<?php
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-?>
-<?php
-// no break
-default:
-?>
-<?php }',
-            '<?php
-switch ($foo) {
-    case 1:
-?>
-<?php default:
-?>
-<?php }',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-    case 2:
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // No break
-    case 2:
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($a) {
-    case 1:
-        throw new \Exception("");
-    case 2;
-        throw new \Exception("");
-    case 3:
-        throw new \Exception("");
-    case 4;
-        throw new \Exception("");
-    case 5:
-        throw new \Exception("");
-    case 6;
-        throw new \Exception("");
-}'."\n                ",
-        ];
-
-        yield [
-            '<?php
-switch ($f) {
-    case 1:
-        if ($a) {
-            return "";
-        }
-
-        throw new $f();
-    case Z:
-        break;
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        $foo = new class {
-            public function foo($bar)
-            {
-                foreach ($bar as $baz) {
-                    break;
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        ?>foo<?php
+                        // no break
+                    case 2:
+                        ?>bar<?php
+                        break;
                 }
-            }
-        };
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        $foo = new class {
-            public function foo($bar)
-            {
-                foreach ($bar as $baz) {
-                    break;
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        ?>foo<?php
+                    case 2:
+                        ?>bar<?php
+                        // no break
+                        break;
                 }
-            }
-        };
-    case 2;
-        bar();
-}',
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        $foo = new class(1) {
-            public function foo($bar)
-            {
-                foreach ($bar as $baz) {
-                    break;
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        ?>foo<?php
+
+                        // no break
+                    case 2:
+                        ?>bar<?php
+
+                        break;
                 }
-            }
-        };
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        $foo = new class(1) {
-            public function foo($bar)
-            {
-                foreach ($bar as $baz) {
-                    break;
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        ?>foo<?php
+
+                    case 2:
+                        ?>bar<?php
+
+                        // no break
+                        break;
                 }
-            }
-        };
-    case 2;
-        bar();
-}',
+                EOD,
         ];
 
         yield [
-            '<?php
-switch($a) {
-    case 1:
-        $a = function () { throw new \Exception(""); };
-        // no break
-    case 2:
-        $a = new class(){
-            public function foo () { throw new \Exception(""); }
-        };
-        // no break
-    case 3:
-        echo 5;
-        // no break
-    default:
-        echo 1;
-}'."\n                ",
-            '<?php
-switch($a) {
-    case 1:
-        $a = function () { throw new \Exception(""); };
-    case 2:
-        $a = new class(){
-            public function foo () { throw new \Exception(""); }
-        };
-    case 3:
-        echo 5;
-    default:
-        echo 1;
-}'."\n                ",
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        ?>foo<?php // foo
+                        // no break
+                    case 2:
+                        ?>bar<?php // bar
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        ?>foo<?php // foo
+                    case 2:
+                        ?>bar<?php // bar
+                        // no break
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 10:
-        echo 1;
-        /* no break because of some more details stated here */
-    case 22:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                    case 2:
+                        bar();
+                        // no break
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        // no break
+                        foo();
+                    case 2:
+                        // no break
+                        bar();
+                    default:
+                        baz();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 10:
-        echo 1;
-        # no break because of some more details stated here */
-    case 22:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        die;
+                    case 2:
+                        exit;
+                    default:
+                        die;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        // no break
+                        die;
+                    case 2:
+                        // no break
+                        exit;
+                    default:
+                        die;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case 100:
-        echo 10;
-        /* no breaking windows please */
-        // no break
-    case 220:
-        break;
-}',
-            '<?php
-switch ($foo) {
-    case 100:
-        echo 10;
-        /* no breaking windows please */
-    case 220:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1: {
+                        throw new \Exception();
+                    }
+                    case 2:
+                        ?>
+                        <?php
+                        throw new \Exception();
+                    default:
+                        throw new \Exception();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1: {
+                        // no break
+                        throw new \Exception();
+                    }
+                    case 2:
+                        ?>
+                        <?php
+                        // no break
+                        throw new \Exception();
+                    default:
+                        throw new \Exception();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        goto a;
+                    case 2:
+                        goto a;
+                    default:
+                        goto a;
+                }
+
+                a:
+                echo 'foo';
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        // no break
+                        goto a;
+                    case 2:
+                        // no break
+                        goto a;
+                    default:
+                        goto a;
+                }
+
+                a:
+                echo 'foo';
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case "bar":
+                        if (1) {
+                        } else {
+                        }
+
+                        $aaa = new Bar();
+                        break;
+                    default:
+                        $aaa = new Baz();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                ?>
+                <?php
+                // no break
+                    default:
+                ?>
+                <?php
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                ?>
+                <?php
+                    default:
+                ?>
+                <?php
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                ?>
+                <?php
+                // no break
+                default:
+                ?>
+                <?php }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                ?>
+                <?php default:
+                ?>
+                <?php }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                    case 2:
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // No break
+                    case 2:
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 1:
+                        throw new \Exception("");
+                    case 2;
+                        throw new \Exception("");
+                    case 3:
+                        throw new \Exception("");
+                    case 4;
+                        throw new \Exception("");
+                    case 5:
+                        throw new \Exception("");
+                    case 6;
+                        throw new \Exception("");
+                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($f) {
+                    case 1:
+                        if ($a) {
+                            return "";
+                        }
+
+                        throw new $f();
+                    case Z:
+                        break;
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = new class {
+                            public function foo($bar)
+                            {
+                                foreach ($bar as $baz) {
+                                    break;
+                                }
+                            }
+                        };
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = new class {
+                            public function foo($bar)
+                            {
+                                foreach ($bar as $baz) {
+                                    break;
+                                }
+                            }
+                        };
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = new class(1) {
+                            public function foo($bar)
+                            {
+                                foreach ($bar as $baz) {
+                                    break;
+                                }
+                            }
+                        };
+                        // no break
+                    case 2;
+                        bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = new class(1) {
+                            public function foo($bar)
+                            {
+                                foreach ($bar as $baz) {
+                                    break;
+                                }
+                            }
+                        };
+                    case 2;
+                        bar();
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch($a) {
+                    case 1:
+                        $a = function () { throw new \Exception(""); };
+                        // no break
+                    case 2:
+                        $a = new class(){
+                            public function foo () { throw new \Exception(""); }
+                        };
+                        // no break
+                    case 3:
+                        echo 5;
+                        // no break
+                    default:
+                        echo 1;
+                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                switch($a) {
+                    case 1:
+                        $a = function () { throw new \Exception(""); };
+                    case 2:
+                        $a = new class(){
+                            public function foo () { throw new \Exception(""); }
+                        };
+                    case 3:
+                        echo 5;
+                    default:
+                        echo 1;
+                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 10:
+                        echo 1;
+                        /* no break because of some more details stated here */
+                    case 22:
+                        break;
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 10:
+                        echo 1;
+                        # no break because of some more details stated here */
+                    case 22:
+                        break;
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 100:
+                        echo 10;
+                        /* no breaking windows please */
+                        // no break
+                    case 220:
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 100:
+                        echo 10;
+                        /* no breaking windows please */
+                    case 220:
+                        break;
+                }
+                EOD,
         ];
     }
 
@@ -1120,30 +1284,34 @@ switch ($foo) {
         }
 
         yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-        // fall-through case!
-    case 2:
-        bar();
-        // no break
-        // fall-through case!
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-    case 2:
-        bar();
-        // no break
-    default:
-        baz();
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                        // fall-through case!
+                    case 2:
+                        bar();
+                        // no break
+                        // fall-through case!
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                    case 2:
+                        bar();
+                        // no break
+                    default:
+                        baz();
+                }
+                EOD,
         ];
     }
 
@@ -1176,27 +1344,31 @@ switch ($foo) {
         ]);
 
         $this->doTest(
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // ~***(//[No break here.]\\\\)***~
-    case 2:
-        bar();
-        // ~***(//[No break here.]\\\\)***~
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // ~***(//[No break here.]\\\\)***~
-    case 2:
-        bar();
-    default:
-        baz();
-}'
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // ~***(//[No break here.]\\)***~
+                    case 2:
+                        bar();
+                        // ~***(//[No break here.]\\)***~
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // ~***(//[No break here.]\\)***~
+                    case 2:
+                        bar();
+                    default:
+                        baz();
+                }
+                EOD
         );
     }
 
@@ -1207,21 +1379,25 @@ switch ($foo) {
         ]);
 
         $this->doTest(
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-        // no break
-    default:
-        baz();
-}',
-            '<?php
-switch ($foo) {
-    case 1:
-        foo();
-    default:
-        baz();
-}'
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                        // no break
+                    default:
+                        baz();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        foo();
+                    default:
+                        baz();
+                }
+                EOD
         );
     }
 
@@ -1268,84 +1444,96 @@ switch ($foo) {
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo() ?? throw new \Exception();
-                        // no break
-                    case 2:
-                        $a = $condition and throw new Exception();
-                        // no break
-                    case 3:
-                        $callable = fn() => throw new Exception();
-                        // no break
-                    case 4:
-                        $value = $falsableValue ?: throw new InvalidArgumentException();
-                        // no break
-                    default:
-                        echo "PHP8";
-                }'."\n            ",
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo() ?? throw new \Exception();
-                    case 2:
-                        $a = $condition and throw new Exception();
-                    case 3:
-                        $callable = fn() => throw new Exception();
-                    case 4:
-                        $value = $falsableValue ?: throw new InvalidArgumentException();
-                    default:
-                        echo "PHP8";
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                    case 1:
+                                        foo() ?? throw new \Exception();
+                                        // no break
+                                    case 2:
+                                        $a = $condition and throw new Exception();
+                                        // no break
+                                    case 3:
+                                        $callable = fn() => throw new Exception();
+                                        // no break
+                                    case 4:
+                                        $value = $falsableValue ?: throw new InvalidArgumentException();
+                                        // no break
+                                    default:
+                                        echo "PHP8";
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                    case 1:
+                                        foo() ?? throw new \Exception();
+                                    case 2:
+                                        $a = $condition and throw new Exception();
+                                    case 3:
+                                        $callable = fn() => throw new Exception();
+                                    case 4:
+                                        $value = $falsableValue ?: throw new InvalidArgumentException();
+                                    default:
+                                        echo "PHP8";
+                                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                match ($foo) {
-                    1 => "a",
-                    default => "b"
-                };
-                match ($bar) {
-                    2 => "c",
-                    default => "d"
-                };
-                match ($baz) {
-                    3 => "e",
-                    default => "f"
-                };'."\n            ",
+            <<<'EOD'
+                <?php
+                                match ($foo) {
+                                    1 => "a",
+                                    default => "b"
+                                };
+                                match ($bar) {
+                                    2 => "c",
+                                    default => "d"
+                                };
+                                match ($baz) {
+                                    3 => "e",
+                                    default => "f"
+                                };
+                EOD."\n            ",
         ];
 
         yield 'switch with break and nested match' => [
-            '<?php switch ($value) {
-                case 1:
-                    $x = match (true) {
-                        default => 2
-                    };
-                    break;
-                default:
-                    $x = 3;
-            }',
+            <<<'EOD'
+                <?php switch ($value) {
+                                case 1:
+                                    $x = match (true) {
+                                        default => 2
+                                    };
+                                    break;
+                                default:
+                                    $x = 3;
+                            }
+                EOD,
         ];
 
         yield 'switch without break and nested match' => [
-            '<?php switch ($value) {
-                case 1:
-                    $x = match (true) {
-                        default => 2
-                    };
-                    // no break
-                default:
-                    $x = 3;
-            }',
-            '<?php switch ($value) {
-                case 1:
-                    $x = match (true) {
-                        default => 2
-                    };
-                default:
-                    $x = 3;
-            }',
+            <<<'EOD'
+                <?php switch ($value) {
+                                case 1:
+                                    $x = match (true) {
+                                        default => 2
+                                    };
+                                    // no break
+                                default:
+                                    $x = 3;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php switch ($value) {
+                                case 1:
+                                    $x = match (true) {
+                                        default => 2
+                                    };
+                                default:
+                                    $x = 3;
+                            }
+                EOD,
         ];
     }
 
@@ -1362,27 +1550,29 @@ switch ($foo) {
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
-            '<?php
-enum Suit {
-    case Hearts;
-    case Diamonds;
-    case Clubs;
-    case Spades;
-}
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts;
+                    case Diamonds;
+                    case Clubs;
+                    case Spades;
+                }
 
-enum UserStatus: string {
-  case Pending = \'P\';
-  case Active = \'A\';
-  case Suspended = \'S\';
-  case CanceledByUser = \'C\';
-}
+                enum UserStatus: string {
+                  case Pending = 'P';
+                  case Active = 'A';
+                  case Suspended = 'S';
+                  case CanceledByUser = 'C';
+                }
 
-switch($a) { // pass the `is candidate` check
-    case 1:
-        echo 1;
-        break;
-}
-',
+                switch($a) { // pass the `is candidate` check
+                    case 1:
+                        echo 1;
+                        break;
+                }
+
+                EOD,
         ];
     }
 }

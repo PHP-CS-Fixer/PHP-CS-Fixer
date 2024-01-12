@@ -56,52 +56,60 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'namespace === type name' => [
-            '<?php
-namespace Foo\Bar;
-function test(\Foo\Bar $x) {}',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                function test(\Foo\Bar $x) {}
+                EOD,
         ];
 
         yield 'reserved type' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-function test(int $x): void {}',
+                function test(int $x): void {}
+                EOD,
         ];
 
         yield 'namespace cases' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace A\B\C\D
-{
-    class Foo {}
-}
+                namespace A\B\C\D
+                {
+                    class Foo {}
+                }
 
-namespace A\B\C\D\E
-{
-    class Bar {}
-}
+                namespace A\B\C\D\E
+                {
+                    class Bar {}
+                }
 
-namespace A\B\C\D
-{
-    function A(Foo $fix, \X\B\C\D\E\Bar $doNotFix) {}
-}
-',
-            '<?php
+                namespace A\B\C\D
+                {
+                    function A(Foo $fix, \X\B\C\D\E\Bar $doNotFix) {}
+                }
 
-namespace A\B\C\D
-{
-    class Foo {}
-}
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace A\B\C\D\E
-{
-    class Bar {}
-}
+                namespace A\B\C\D
+                {
+                    class Foo {}
+                }
 
-namespace A\B\C\D
-{
-    function A(\A\B\C\D\Foo $fix, \X\B\C\D\E\Bar $doNotFix) {}
-}
-',
+                namespace A\B\C\D\E
+                {
+                    class Bar {}
+                }
+
+                namespace A\B\C\D
+                {
+                    function A(\A\B\C\D\Foo $fix, \X\B\C\D\E\Bar $doNotFix) {}
+                }
+
+                EOD,
         ];
 
         yield 'simple use' => [
@@ -153,41 +161,49 @@ namespace A\B\C\D
         ];
 
         yield 'issue #7025 - non-empty namespace, import and FQCN in argument' => [
-            '<?php namespace foo\bar\baz;
+            <<<'EOD'
+                <?php namespace foo\bar\baz;
 
-use foo\baz\buzz;
+                use foo\baz\buzz;
 
-class A {
-    public function b(buzz $buzz): void {
-    }
-}',
-            '<?php namespace foo\bar\baz;
+                class A {
+                    public function b(buzz $buzz): void {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php namespace foo\bar\baz;
 
-use foo\baz\buzz;
+                use foo\baz\buzz;
 
-class A {
-    public function b(\foo\baz\buzz $buzz): void {
-    }
-}',
+                class A {
+                    public function b(\foo\baz\buzz $buzz): void {
+                    }
+                }
+                EOD,
         ];
 
         yield 'interface multiple extends' => [
-            '<?php
-namespace Foo\Bar;
-use D\E;
-use IIII\G;
-use Foo\Bar\C;
-interface NakanoInterface extends IzumiInterface, A, E, \C, EZ
-{
-}',
-            '<?php
-namespace Foo\Bar;
-use D\E;
-use IIII\G;
-use Foo\Bar\C;
-interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C, EZ
-{
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                use D\E;
+                use IIII\G;
+                use Foo\Bar\C;
+                interface NakanoInterface extends IzumiInterface, A, E, \C, EZ
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                use D\E;
+                use IIII\G;
+                use Foo\Bar\C;
+                interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C, EZ
+                {
+                }
+                EOD,
         ];
 
         yield 'interface in global namespace with global extend' => [
@@ -203,60 +219,80 @@ interface NakanoInterface extends \Foo\Bar\IzumiInterface, \Foo\Bar\A, \D\E, \C,
         ];
 
         yield 'class implements' => [
-            '<?php
-namespace Foo\Bar;
-class SomeClass implements Izumi
-{
-}',
-            '<?php
-namespace Foo\Bar;
-class SomeClass implements \Foo\Bar\Izumi
-{
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                class SomeClass implements Izumi
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                class SomeClass implements \Foo\Bar\Izumi
+                {
+                }
+                EOD,
         ];
 
         yield 'anonymous class implements, shorten to namespace' => [
-            '<?php
-namespace Foo\Bar;
-$a = new class implements Izumi {};',
-            '<?php
-namespace Foo\Bar;
-$a = new class implements \Foo\Bar\Izumi {};',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                $a = new class implements Izumi {};
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                $a = new class implements \Foo\Bar\Izumi {};
+                EOD,
         ];
 
         yield 'anonymous class implements, shorten to imported name' => [
-            '<?php
-use Foo\Bar\Izumi;
-$a = new class implements Izumi {};',
-            '<?php
-use Foo\Bar\Izumi;
-$a = new class implements \Foo\Bar\Izumi {};',
+            <<<'EOD'
+                <?php
+                use Foo\Bar\Izumi;
+                $a = new class implements Izumi {};
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\Bar\Izumi;
+                $a = new class implements \Foo\Bar\Izumi {};
+                EOD,
         ];
 
         yield 'class extends and implements' => [
-            '<?php
-namespace Foo\Bar;
-class SomeClass extends A implements Izumi
-{
-}',
-            '<?php
-namespace Foo\Bar;
-class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi
-{
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                class SomeClass extends A implements Izumi
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi
+                {
+                }
+                EOD,
         ];
 
         yield 'class extends and implements multiple' => [
-            '<?php
-namespace Foo\Bar;
-class SomeClass extends A implements Izumi, A, \A\B, C
-{
-}',
-            '<?php
-namespace Foo\Bar;
-class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\C
-{
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                class SomeClass extends A implements Izumi, A, \A\B, C
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar;
+                class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\C
+                {
+                }
+                EOD,
         ];
 
         yield 'single caught exception' => [
@@ -275,46 +311,50 @@ class SomeClass extends \Foo\Bar\A implements \Foo\Bar\Izumi, A, \A\B, \Foo\Bar\
         ];
 
         yield 'catch in multiple namespaces' => [
-            '<?php
-namespace {
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (\A\X $z) {}
-    try{ foo(); } catch (\A\X $z) {}
-    try{ foo(); } catch (\B\Z $z) {}
-    try{ foo(); } catch (\B\Z $z) {}
-}
-namespace A {
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (X $z) {}
-    try{ foo(); } catch (\B\Z $z) {}
-}
-namespace B {
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (\A\X $z) {}
-    try{ foo(); } catch (Z $z) {}
-}
-',
-            '<?php
-namespace {
-    try{ foo(); } catch (Exception $z) {}
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (A\X $z) {}
-    try{ foo(); } catch (\A\X $z) {}
-    try{ foo(); } catch (B\Z $z) {}
-    try{ foo(); } catch (\B\Z $z) {}
-}
-namespace A {
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (\A\X $z) {}
-    try{ foo(); } catch (\B\Z $z) {}
-}
-namespace B {
-    try{ foo(); } catch (\Exception $z) {}
-    try{ foo(); } catch (\A\X $z) {}
-    try{ foo(); } catch (\B\Z $z) {}
-}
-',
+            <<<'EOD'
+                <?php
+                namespace {
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (\A\X $z) {}
+                    try{ foo(); } catch (\A\X $z) {}
+                    try{ foo(); } catch (\B\Z $z) {}
+                    try{ foo(); } catch (\B\Z $z) {}
+                }
+                namespace A {
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (X $z) {}
+                    try{ foo(); } catch (\B\Z $z) {}
+                }
+                namespace B {
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (\A\X $z) {}
+                    try{ foo(); } catch (Z $z) {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace {
+                    try{ foo(); } catch (Exception $z) {}
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (A\X $z) {}
+                    try{ foo(); } catch (\A\X $z) {}
+                    try{ foo(); } catch (B\Z $z) {}
+                    try{ foo(); } catch (\B\Z $z) {}
+                }
+                namespace A {
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (\A\X $z) {}
+                    try{ foo(); } catch (\B\Z $z) {}
+                }
+                namespace B {
+                    try{ foo(); } catch (\Exception $z) {}
+                    try{ foo(); } catch (\A\X $z) {}
+                    try{ foo(); } catch (\B\Z $z) {}
+                }
+
+                EOD,
             ['leading_backslash_in_global_namespace' => true],
         ];
 
@@ -369,169 +409,193 @@ namespace B {
         ];
 
         yield 'starts with but not full name extends' => [
-            '<?php namespace a\abcd;
-class Foo extends \a\abcdTest { }',
+            <<<'EOD'
+                <?php namespace a\abcd;
+                class Foo extends \a\abcdTest { }
+                EOD,
             null,
         ];
 
         yield 'starts with but not full name function arg' => [
-            '<?php
-namespace Z\B\C\D
-{
-    function A(\Z\B\C\DE\Foo $fix) {}
-}
-',
+            <<<'EOD'
+                <?php
+                namespace Z\B\C\D
+                {
+                    function A(\Z\B\C\DE\Foo $fix) {}
+                }
+
+                EOD,
             null,
         ];
 
         yield 'static class reference' => [
-            '<?php
-            use ZXY\A;
-            echo A::class;
-            echo A::B();
-            echo A::class;
-            foo(A::B,A::C);
-            echo $a[A::class];
-            echo A::class?>'."\n            ",
-            '<?php
-            use ZXY\A;
-            echo \ZXY\A::class;
-            echo \ZXY\A::B();
-            echo \ZXY\A::class;
-            foo(\ZXY\A::B,\ZXY\A::C);
-            echo $a[\ZXY\A::class];
-            echo \ZXY\A::class?>'."\n            ",
+            <<<'EOD'
+                <?php
+                            use ZXY\A;
+                            echo A::class;
+                            echo A::B();
+                            echo A::class;
+                            foo(A::B,A::C);
+                            echo $a[A::class];
+                            echo A::class?>
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            use ZXY\A;
+                            echo \ZXY\A::class;
+                            echo \ZXY\A::B();
+                            echo \ZXY\A::class;
+                            foo(\ZXY\A::B,\ZXY\A::C);
+                            echo $a[\ZXY\A::class];
+                            echo \ZXY\A::class?>
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-            namespace Foo\Test;
-            $this->assertSame($names, \Foo\TestMyThing::zxy(1,2));'."\n            ",
+            <<<'EOD'
+                <?php
+                            namespace Foo\Test;
+                            $this->assertSame($names, \Foo\TestMyThing::zxy(1,2));
+                EOD."\n            ",
             null,
         ];
 
         yield [
-            '<?php
-            use ZXY\A;
-            use D;
-            echo $D::CONST_VALUE;
-            echo parent::CONST_VALUE;
-            echo self::$abc;
-            echo Z::F;
-            echo X\Z::F;'."\n            ",
+            <<<'EOD'
+                <?php
+                            use ZXY\A;
+                            use D;
+                            echo $D::CONST_VALUE;
+                            echo parent::CONST_VALUE;
+                            echo self::$abc;
+                            echo Z::F;
+                            echo X\Z::F;
+                EOD."\n            ",
             null,
         ];
 
         yield 'import new symbols from all supported places' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
-use Other\BaseClass;
-use Other\CaughtThrowable;
-use Other\FunctionArgument;
-use Other\FunctionReturnType;
-use Other\InstanceOfClass;
-use Other\Interface1;
-use Other\Interface2;
-use Other\NewClass;
-use Other\PropertyPhpDoc;
-use Other\StaticFunctionCall;
+                namespace Foo\Test;
+                use Other\BaseClass;
+                use Other\CaughtThrowable;
+                use Other\FunctionArgument;
+                use Other\FunctionReturnType;
+                use Other\InstanceOfClass;
+                use Other\Interface1;
+                use Other\Interface2;
+                use Other\NewClass;
+                use Other\PropertyPhpDoc;
+                use Other\StaticFunctionCall;
 
-class Foo extends BaseClass implements Interface1, Interface2
-{
-    /** @var PropertyPhpDoc */
-    private $array;
-    public function __construct(FunctionArgument $arg) {}
-    public function foo(): FunctionReturnType
-    {
-        try {
-            StaticFunctionCall::bar();
-        } catch (CaughtThrowable $e) {}
-    }
-}
+                class Foo extends BaseClass implements Interface1, Interface2
+                {
+                    /** @var PropertyPhpDoc */
+                    private $array;
+                    public function __construct(FunctionArgument $arg) {}
+                    public function foo(): FunctionReturnType
+                    {
+                        try {
+                            StaticFunctionCall::bar();
+                        } catch (CaughtThrowable $e) {}
+                    }
+                }
 
-new NewClass();
+                new NewClass();
 
-if ($a instanceof InstanceOfClass) { return false; }'."\n            ",
-            '<?php
+                if ($a instanceof InstanceOfClass) { return false; }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
+                namespace Foo\Test;
 
-class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
-{
-    /** @var \Other\PropertyPhpDoc */
-    private $array;
-    public function __construct(\Other\FunctionArgument $arg) {}
-    public function foo(): \Other\FunctionReturnType
-    {
-        try {
-            \Other\StaticFunctionCall::bar();
-        } catch (\Other\CaughtThrowable $e) {}
-    }
-}
+                class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
+                {
+                    /** @var \Other\PropertyPhpDoc */
+                    private $array;
+                    public function __construct(\Other\FunctionArgument $arg) {}
+                    public function foo(): \Other\FunctionReturnType
+                    {
+                        try {
+                            \Other\StaticFunctionCall::bar();
+                        } catch (\Other\CaughtThrowable $e) {}
+                    }
+                }
 
-new \Other\NewClass();
+                new \Other\NewClass();
 
-if ($a instanceof \Other\InstanceOfClass) { return false; }'."\n            ",
+                if ($a instanceof \Other\InstanceOfClass) { return false; }
+                EOD."\n            ",
             ['import_symbols' => true],
         ];
 
         yield 'import new symbols under already existing imports' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
+                namespace Foo\Test;
 
-use Other\A;
-use Other\B;
-use Other\C;
-use Other\D;
-use Other\E;
+                use Other\A;
+                use Other\B;
+                use Other\C;
+                use Other\D;
+                use Other\E;
 
-function foo(A $a, B $b) {}
-function bar(C $c, D $d): E {}
-',
-            '<?php
+                function foo(A $a, B $b) {}
+                function bar(C $c, D $d): E {}
 
-namespace Foo\Test;
+                EOD,
+            <<<'EOD'
+                <?php
 
-use Other\A;
-use Other\B;
+                namespace Foo\Test;
 
-function foo(A $a, B $b) {}
-function bar(\Other\C $c, \Other\D $d): \Other\E {}
-',
+                use Other\A;
+                use Other\B;
+
+                function foo(A $a, B $b) {}
+                function bar(\Other\C $c, \Other\D $d): \Other\E {}
+
+                EOD,
             ['import_symbols' => true],
         ];
 
         yield 'import new symbols within multiple namespaces' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar {
-    use Other\A;
-use Other\B;
+                namespace Foo\Bar {
+                    use Other\A;
+                use Other\B;
 
-    function foo(A $a, B $b) {}
-}
-namespace Foo\Baz {
-    use Other\A;
-use Other\C;
+                    function foo(A $a, B $b) {}
+                }
+                namespace Foo\Baz {
+                    use Other\A;
+                use Other\C;
 
-    function foo(A $a, C $c) {}
-}
-',
-            '<?php
+                    function foo(A $a, C $c) {}
+                }
 
-namespace Foo\Bar {
-    use Other\A;
+                EOD,
+            <<<'EOD'
+                <?php
 
-    function foo(A $a, \Other\B $b) {}
-}
-namespace Foo\Baz {
-    use Other\A;
+                namespace Foo\Bar {
+                    use Other\A;
 
-    function foo(A $a, \Other\C $c) {}
-}
-',
+                    function foo(A $a, \Other\B $b) {}
+                }
+                namespace Foo\Baz {
+                    use Other\A;
+
+                    function foo(A $a, \Other\C $c) {}
+                }
+
+                EOD,
             ['import_symbols' => true],
         ];
 
@@ -582,23 +646,27 @@ namespace Foo\Baz {
         ];
 
         yield 'import new symbols with custom whitespace config' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Other\A;
-use Other\B;
+                use Other\A;
+                use Other\B;
 
-function foo(A $a, B $b) {}
-',
-            '<?php
+                function foo(A $a, B $b) {}
 
-namespace Foo\Bar;
+                EOD,
+            <<<'EOD'
+                <?php
 
-use Other\A;
+                namespace Foo\Bar;
 
-function foo(A $a, \Other\B $b) {}
-',
+                use Other\A;
+
+                function foo(A $a, \Other\B $b) {}
+
+                EOD,
             ['import_symbols' => true],
             new WhitespacesFixerConfig("\t", "\r\n"),
         ];
@@ -622,62 +690,70 @@ function foo(A $a, \Other\B $b) {}
         ];
 
         yield '@link shall not crash fixer' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Symfony\Component\Validator\Constraints\Valid;
-/**
- * {@link Valid} is assumed.
- *
- * @return void
- */
-function validate(): void {}
-',
-            '<?php
+                use Symfony\Component\Validator\Constraints\Valid;
+                /**
+                 * {@link Valid} is assumed.
+                 *
+                 * @return void
+                 */
+                function validate(): void {}
 
-/**
- * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
- *
- * @return void
- */
-function validate(): void {}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /**
+                 * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
+                 *
+                 * @return void
+                 */
+                function validate(): void {}
+
+                EOD,
             ['import_symbols' => true, 'phpdoc_tags' => ['link']],
         ];
 
         yield 'import short name only once (ignore consequent same-name, different-namespace symbols)' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Test;
-use A\A;
+                namespace Test;
+                use A\A;
 
-class Foo extends A implements \B\A, \C\A
-{
-    /** @var \D\A */
-    private $array;
-    public function __construct(\E\A $arg) {}
-    public function foo(): \F\A
-    {
-        try {
-            \G\A::bar();
-        } catch (\H\A $e) {}
-    }
-}',
-            '<?php
+                class Foo extends A implements \B\A, \C\A
+                {
+                    /** @var \D\A */
+                    private $array;
+                    public function __construct(\E\A $arg) {}
+                    public function foo(): \F\A
+                    {
+                        try {
+                            \G\A::bar();
+                        } catch (\H\A $e) {}
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Test;
+                namespace Test;
 
-class Foo extends \A\A implements \B\A, \C\A
-{
-    /** @var \D\A */
-    private $array;
-    public function __construct(\E\A $arg) {}
-    public function foo(): \F\A
-    {
-        try {
-            \G\A::bar();
-        } catch (\H\A $e) {}
-    }
-}',
+                class Foo extends \A\A implements \B\A, \C\A
+                {
+                    /** @var \D\A */
+                    private $array;
+                    public function __construct(\E\A $arg) {}
+                    public function foo(): \F\A
+                    {
+                        try {
+                            \G\A::bar();
+                        } catch (\H\A $e) {}
+                    }
+                }
+                EOD,
             ['import_symbols' => true],
         ];
 
@@ -886,204 +962,234 @@ class Foo extends \A\A implements \B\A, \C\A
     public static function provideCodeWithReturnTypesCases(): iterable
     {
         yield 'Import common strict types' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Foo\Bar;
-use Foo\Bar\Baz;
+                use Foo\Bar;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(Bar $foo): Baz
-    {
-    }
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(Bar $foo): Baz
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-use Foo\Bar;
-use Foo\Bar\Baz;
+                use Foo\Bar;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
-    {
-    }
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Baz
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test namespace fixes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar6): Baz
-    {
-    }
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar6): Baz
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar6): \Foo\Bar\Baz
-    {
-    }
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar6): \Foo\Bar\Baz
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Partial class name looks like FQCN' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace One;
+                namespace One;
 
-use Two\Three;
+                use Two\Three;
 
-class Two
-{
-    /**
-     * Note that for this example, the following classes exist:
-     *
-     * - One\Two
-     * - One\Two\Three
-     * - Two\Three\Four
-     */
-    public function three(Three\Four $four): Two\Three
-    {
-    }
-}',
+                class Two
+                {
+                    /**
+                     * Note that for this example, the following classes exist:
+                     *
+                     * - One\Two
+                     * - One\Two\Three
+                     * - Two\Three\Four
+                     */
+                    public function three(Three\Four $four): Two\Three
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test multi namespace fixes' => [
-            '<?php
-namespace Foo\Other {
-}
+            <<<'EOD'
+                <?php
+                namespace Foo\Other {
+                }
 
-namespace Foo\Bar {
-    use Foo\Bar\Baz;
+                namespace Foo\Bar {
+                    use Foo\Bar\Baz;
 
-    class SomeClass
-    {
-        public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar5): Baz
-        {
-        }
-    }
-}',
-            '<?php
-namespace Foo\Other {
-}
+                    class SomeClass
+                    {
+                        public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar5): Baz
+                        {
+                        }
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Other {
+                }
 
-namespace Foo\Bar {
-    use Foo\Bar\Baz;
+                namespace Foo\Bar {
+                    use Foo\Bar\Baz;
 
-    class SomeClass
-    {
-        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar5): Baz
-        {
-        }
-    }
-}',
+                    class SomeClass
+                    {
+                        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar5): Baz
+                        {
+                        }
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test fixes in interface' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-interface SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar4): Baz;
-}',
-            '<?php
+                interface SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar4): Baz;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-interface SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar4): \Foo\Bar\Baz;
-}',
+                interface SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar4): \Foo\Bar\Baz;
+                }
+                EOD,
         ];
 
         yield 'Test fixes in trait' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-trait SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar3): Baz
-    {
-    }
-}',
-            '<?php
+                trait SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar3): Baz
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-trait SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar3): \Foo\Bar\Baz
-    {
-    }
-}',
+                trait SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar3): \Foo\Bar\Baz
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test fixes in regular functions' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar2): Baz
-{
-}',
-            '<?php
+                function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar2): Baz
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar2): \Foo\Bar\Baz
-{
-}',
+                function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar2): \Foo\Bar\Baz
+                {
+                }
+                EOD,
         ];
 
         yield 'Import common strict types with reserved' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Foo\Bar;
-use Foo\Bar\Baz;
+                use Foo\Bar;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(Bar $foo, array $bar): Baz
-    {
-    }
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(Bar $foo, array $bar): Baz
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-use Foo\Bar;
-use Foo\Bar\Baz;
+                use Foo\Bar;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar $foo, array $bar): \Foo\Bar\Baz
-    {
-    }
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar $foo, array $bar): \Foo\Bar\Baz
+                    {
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -1104,258 +1210,300 @@ class SomeClass
     public static function provideCodeWithoutReturnTypesCases(): iterable
     {
         yield 'import from namespace and global' => [
-            '<?php
-use App\DateTime;
+            <<<'EOD'
+                <?php
+                use App\DateTime;
 
-class TestBar
-{
-    public function bar(\DateTime $dateTime)
-    {
-    }
-}
-',
+                class TestBar
+                {
+                    public function bar(\DateTime $dateTime)
+                    {
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'Import common strict types' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Foo\Bar;
+                use Foo\Bar;
 
-class SomeClass
-{
-    public function doSomething(Bar $foo)
-    {
-    }
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(Bar $foo)
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-use Foo\Bar;
+                use Foo\Bar;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar $foo)
-    {
-    }
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar $foo)
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test namespace fixes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-class SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar1)
-    {
-    }
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar1)
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar1)
-    {
-    }
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar1)
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Partial class name looks like FQCN' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace One;
+                namespace One;
 
-use Two\Three;
+                use Two\Three;
 
-class Two
-{
-    /**
-     * Note that for this example, the following classes exist:
-     *
-     * - One\Two
-     * - One\Two\Three
-     * - Two\Three
-     */
-    public function three(Two\Three $three, Three $other)
-    {
-    }
-}',
+                class Two
+                {
+                    /**
+                     * Note that for this example, the following classes exist:
+                     *
+                     * - One\Two
+                     * - One\Two\Three
+                     * - Two\Three
+                     */
+                    public function three(Two\Three $three, Three $other)
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test multi namespace fixes' => [
-            '<?php
-namespace Foo\Other {
-}
+            <<<'EOD'
+                <?php
+                namespace Foo\Other {
+                }
 
-namespace Foo\Bar {
-    class SomeClass
-    {
-        public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
-        {
-        }
-    }
-}',
-            '<?php
-namespace Foo\Other {
-}
+                namespace Foo\Bar {
+                    class SomeClass
+                    {
+                        public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+                        {
+                        }
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Other {
+                }
 
-namespace Foo\Bar {
-    class SomeClass
-    {
-        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
-        {
-        }
-    }
-}',
+                namespace Foo\Bar {
+                    class SomeClass
+                    {
+                        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+                        {
+                        }
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test fixes in interface' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-interface SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz);
-}',
-            '<?php
+                interface SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz);
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-interface SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz);
-}',
+                interface SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz);
+                }
+                EOD,
         ];
 
         yield 'Test fixes in trait' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-trait SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
-    {
-    }
-}',
-            '<?php
+                trait SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-trait SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
-    {
-    }
-}',
+                trait SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Test fixes in regular functions' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
-{
-}',
-            '<?php
+                function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
-{
-}',
+                function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+                {
+                }
+                EOD,
         ];
 
         yield 'Test partial namespace and use imports' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Ping\Pong;
+                namespace Ping\Pong;
 
-use Foo\Bar;
-use Ping;
-use Ping\Pong\Pang;
-use Ping\Pong\Pyng\Pung;
+                use Foo\Bar;
+                use Ping;
+                use Ping\Pong\Pang;
+                use Ping\Pong\Pyng\Pung;
 
-class SomeClass
-{
-    public function doSomething(
-        Ping\Something $something,
-        Ping\Pong\Pung\Pang $other,
-        Ping\Pong\Pung $other1,
-        Pang\Pung $other2,
-        Pung\Pong $other3,
-        Bar\Baz\Buz $other4
-    ){}
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(
+                        Ping\Something $something,
+                        Ping\Pong\Pung\Pang $other,
+                        Ping\Pong\Pung $other1,
+                        Pang\Pung $other2,
+                        Pung\Pong $other3,
+                        Bar\Baz\Buz $other4
+                    ){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Ping\Pong;
+                namespace Ping\Pong;
 
-use Foo\Bar;
-use Ping;
-use Ping\Pong\Pang;
-use Ping\Pong\Pyng\Pung;
+                use Foo\Bar;
+                use Ping;
+                use Ping\Pong\Pang;
+                use Ping\Pong\Pyng\Pung;
 
-class SomeClass
-{
-    public function doSomething(
-        \Ping\Something $something,
-        \Ping\Pong\Pung\Pang $other,
-        \Ping\Pong\Pung $other1,
-        \Ping\Pong\Pang\Pung $other2,
-        \Ping\Pong\Pyng\Pung\Pong $other3,
-        \Foo\Bar\Baz\Buz $other4
-    ){}
-}',
+                class SomeClass
+                {
+                    public function doSomething(
+                        \Ping\Something $something,
+                        \Ping\Pong\Pung\Pang $other,
+                        \Ping\Pong\Pung $other1,
+                        \Ping\Pong\Pang\Pung $other2,
+                        \Ping\Pong\Pyng\Pung\Pong $other3,
+                        \Foo\Bar\Baz\Buz $other4
+                    ){}
+                }
+                EOD,
         ];
 
         yield 'Test reference' => [
-            '<?php
-function withReference(Exception &$e) {}',
-            '<?php
-function withReference(\Exception &$e) {}',
+            <<<'EOD'
+                <?php
+                function withReference(Exception &$e) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                function withReference(\Exception &$e) {}
+                EOD,
         ];
 
         yield 'Test reference with use' => [
-            '<?php
-use A\exception;
-function withReference(\Exception &$e) {}',
+            <<<'EOD'
+                <?php
+                use A\exception;
+                function withReference(\Exception &$e) {}
+                EOD,
         ];
 
         yield 'Test reference with use different casing' => [
-            '<?php
-namespace {
-    use A\EXCEPTION;
-    function withReference(\Exception &$e) {}
-    }
-',
+            <<<'EOD'
+                <?php
+                namespace {
+                    use A\EXCEPTION;
+                    function withReference(\Exception &$e) {}
+                    }
+
+                EOD,
         ];
 
         yield 'Test FQCN is not removed when class with the same name, but different namespace, is imported' => [
-            '<?php namespace Foo;
-                use Bar\TheClass;
-                class Test
-                {
-                    public function __construct(
-                        \Foo\TheClass $x
-                    ) {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php namespace Foo;
+                                use Bar\TheClass;
+                                class Test
+                                {
+                                    public function __construct(
+                                        \Foo\TheClass $x
+                                    ) {}
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -1365,52 +1513,58 @@ namespace {
     public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
     {
         yield 'Test namespace fixes with nullable types' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(SomeClass $foo, Buz $buz, ?Zoof\Buz $barbuz): ?Baz
-    {
-    }
-}',
-            '<?php
+                class SomeClass
+                {
+                    public function doSomething(SomeClass $foo, Buz $buz, ?Zoof\Buz $barbuz): ?Baz
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, ?\Foo\Bar\Zoof\Buz $barbuz): ?\Foo\Bar\Baz
-    {
-    }
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, ?\Foo\Bar\Zoof\Buz $barbuz): ?\Foo\Bar\Baz
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield 'Partial class name looks like FQCN' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace One;
+                namespace One;
 
-use Two\Three;
+                use Two\Three;
 
-class Two
-{
-    /**
-     * Note that for this example, the following classes exist:
-     *
-     * - One\Two
-     * - One\Two\Three
-     * - Two\Three\Four
-     */
-    public function three(Three\Four $four): ?Two\Three
-    {
-    }
-}',
+                class Two
+                {
+                    /**
+                     * Note that for this example, the following classes exist:
+                     *
+                     * - One\Two
+                     * - One\Two\Three
+                     * - Two\Three\Four
+                     */
+                    public function three(Three\Four $four): ?Two\Three
+                    {
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -1431,519 +1585,573 @@ class Two
     public static function provideCodeWithPhpDocCases(): iterable
     {
         yield 'Test class PHPDoc fixes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
-use Foo\Bar\Bam;
+                use Foo\Bar\Baz;
+                use Foo\Bar\Bam;
 
-/**
- * @see Baz
- * @see Bam
- */
-class SomeClass
-{
-    /**
-     * @var Baz
-     */
-    public $baz;
+                /**
+                 * @see Baz
+                 * @see Bam
+                 */
+                class SomeClass
+                {
+                    /**
+                     * @var Baz
+                     */
+                    public $baz;
 
-    /** @var Bam */
-    public $bam;
-}',
-            '<?php
+                    /** @var Bam */
+                    public $bam;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
-use Foo\Bar\Bam;
+                use Foo\Bar\Baz;
+                use Foo\Bar\Bam;
 
-/**
- * @see \Foo\Bar\Baz
- * @see \Foo\Bar\Bam
- */
-class SomeClass
-{
-    /**
-     * @var \Foo\Bar\Baz
-     */
-    public $baz;
+                /**
+                 * @see \Foo\Bar\Baz
+                 * @see \Foo\Bar\Bam
+                 */
+                class SomeClass
+                {
+                    /**
+                     * @var \Foo\Bar\Baz
+                     */
+                    public $baz;
 
-    /** @var \Foo\Bar\Bam */
-    public $bam;
-}',
+                    /** @var \Foo\Bar\Bam */
+                    public $bam;
+                }
+                EOD,
         ];
 
         yield 'Test PHPDoc nullable fixes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
-use Foo\Bar\Bam;
+                use Foo\Bar\Baz;
+                use Foo\Bar\Bam;
 
-/**
- * @see Baz|null
- * @see Bam|null
- */
-class SomeClass {}',
-            '<?php
+                /**
+                 * @see Baz|null
+                 * @see Bam|null
+                 */
+                class SomeClass {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
-use Foo\Bar\Bam;
+                use Foo\Bar\Baz;
+                use Foo\Bar\Bam;
 
-/**
- * @see \Foo\Bar\Baz|null
- * @see \Foo\Bar\Bam|null
- */
-class SomeClass {}',
+                /**
+                 * @see \Foo\Bar\Baz|null
+                 * @see \Foo\Bar\Bam|null
+                 */
+                class SomeClass {}
+                EOD,
         ];
 
         yield 'Test PHPDoc union' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Ns;
+                namespace Ns;
 
-/**
- * @param \Exception|\Exception2|int|null $v
- */
-function foo($v) {}',
+                /**
+                 * @param \Exception|\Exception2|int|null $v
+                 */
+                function foo($v) {}
+                EOD,
         ];
 
         yield 'Test PHPDoc in interface' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-interface SomeClass
-{
-   /**
-    * @param SomeClass $foo
-    * @param Buz $buz
-    * @param Zoof\Buz $barbuz
-    *
-    * @return Baz
-    */
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
-}',
-            '<?php
+                interface SomeClass
+                {
+                   /**
+                    * @param SomeClass $foo
+                    * @param Buz $buz
+                    * @param Zoof\Buz $barbuz
+                    *
+                    * @return Baz
+                    */
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz;
+                use Foo\Bar\Baz;
 
-interface SomeClass
-{
-   /**
-    * @param \Foo\Bar\SomeClass $foo
-    * @param \Foo\Bar\Buz $buz
-    * @param \Foo\Bar\Zoof\Buz $barbuz
-    *
-    * @return \Foo\Bar\Baz
-    */
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
-}',
+                interface SomeClass
+                {
+                   /**
+                    * @param \Foo\Bar\SomeClass $foo
+                    * @param \Foo\Bar\Buz $buz
+                    * @param \Foo\Bar\Zoof\Buz $barbuz
+                    *
+                    * @return \Foo\Bar\Baz
+                    */
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+                }
+                EOD,
         ];
 
         yield 'Test PHPDoc in interface with no imports' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-interface SomeClass
-{
-   /**
-    * @param SomeClass $foo
-    * @param Buz $buz
-    * @param Zoof\Buz $barbuz
-    *
-    * @return Baz
-    */
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
-}',
-            '<?php
+                interface SomeClass
+                {
+                   /**
+                    * @param SomeClass $foo
+                    * @param Buz $buz
+                    * @param Zoof\Buz $barbuz
+                    *
+                    * @return Baz
+                    */
+                    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-interface SomeClass
-{
-   /**
-    * @param \Foo\Bar\SomeClass $foo
-    * @param \Foo\Bar\Buz $buz
-    * @param \Foo\Bar\Zoof\Buz $barbuz
-    *
-    * @return \Foo\Bar\Baz
-    */
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
-}',
+                interface SomeClass
+                {
+                   /**
+                    * @param \Foo\Bar\SomeClass $foo
+                    * @param \Foo\Bar\Buz $buz
+                    * @param \Foo\Bar\Zoof\Buz $barbuz
+                    *
+                    * @return \Foo\Bar\Baz
+                    */
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+                }
+                EOD,
         ];
 
         yield 'Test not imported PHPDoc fixes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-/**
- * @see Baz
- * @see Bam
- */
-final class SomeClass {}',
-            '<?php
+                /**
+                 * @see Baz
+                 * @see Bam
+                 */
+                final class SomeClass {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-/**
- * @see \Foo\Bar\Baz
- * @see \Foo\Bar\Bam
- */
-final class SomeClass {}',
+                /**
+                 * @see \Foo\Bar\Baz
+                 * @see \Foo\Bar\Bam
+                 */
+                final class SomeClass {}
+                EOD,
         ];
 
         yield 'PHPDoc with generics must not crash' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @param \Iterator<mixed, \SplFileInfo> $iter
- */
-function foo($iter) {}',
+                /**
+                 * @param \Iterator<mixed, \SplFileInfo> $iter
+                 */
+                function foo($iter) {}
+                EOD,
         ];
 
         yield 'Test multiple PHPDoc blocks' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Buz;
-use Foo\Bar\Baz;
-use Foo\Bar\SomeClass;
+                use Foo\Bar\Buz;
+                use Foo\Bar\Baz;
+                use Foo\Bar\SomeClass;
 
-/**
- * @see Baz
- * @see Bam
- *
- * @property SomeClass $foo
- * @property-read Buz $buz
- * @property-write Baz $baz
- * @phpstan-property SomeClass $foo
- * @phpstan-property-read Buz $buz
- * @phpstan-property-write Baz $baz
- * @psalm-property SomeClass $foo
- * @psalm-property-read Buz $buz
- * @psalm-property-write Baz $baz
- */
-interface SomeClass
-{
-    /**
-    * @param SomeClass $foo
-    * @phpstan-param Buz $buz
-    *
-    * @psalm-return Baz
-    */
-    public function doSomething(SomeClass $foo, Buz $buz): Baz;
-}',
-            '<?php
+                /**
+                 * @see Baz
+                 * @see Bam
+                 *
+                 * @property SomeClass $foo
+                 * @property-read Buz $buz
+                 * @property-write Baz $baz
+                 * @phpstan-property SomeClass $foo
+                 * @phpstan-property-read Buz $buz
+                 * @phpstan-property-write Baz $baz
+                 * @psalm-property SomeClass $foo
+                 * @psalm-property-read Buz $buz
+                 * @psalm-property-write Baz $baz
+                 */
+                interface SomeClass
+                {
+                    /**
+                    * @param SomeClass $foo
+                    * @phpstan-param Buz $buz
+                    *
+                    * @psalm-return Baz
+                    */
+                    public function doSomething(SomeClass $foo, Buz $buz): Baz;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Buz;
-use Foo\Bar\Baz;
-use Foo\Bar\SomeClass;
+                use Foo\Bar\Buz;
+                use Foo\Bar\Baz;
+                use Foo\Bar\SomeClass;
 
-/**
- * @see \Foo\Bar\Baz
- * @see \Foo\Bar\Bam
- *
- * @property \Foo\Bar\SomeClass $foo
- * @property-read \Foo\Bar\Buz $buz
- * @property-write \Foo\Bar\Baz $baz
- * @phpstan-property \Foo\Bar\SomeClass $foo
- * @phpstan-property-read \Foo\Bar\Buz $buz
- * @phpstan-property-write \Foo\Bar\Baz $baz
- * @psalm-property \Foo\Bar\SomeClass $foo
- * @psalm-property-read \Foo\Bar\Buz $buz
- * @psalm-property-write \Foo\Bar\Baz $baz
- */
-interface SomeClass
-{
-    /**
-    * @param \Foo\Bar\SomeClass $foo
-    * @phpstan-param \Foo\Bar\Buz $buz
-    *
-    * @psalm-return \Foo\Bar\Baz
-    */
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz): \Foo\Bar\Baz;
-}',
+                /**
+                 * @see \Foo\Bar\Baz
+                 * @see \Foo\Bar\Bam
+                 *
+                 * @property \Foo\Bar\SomeClass $foo
+                 * @property-read \Foo\Bar\Buz $buz
+                 * @property-write \Foo\Bar\Baz $baz
+                 * @phpstan-property \Foo\Bar\SomeClass $foo
+                 * @phpstan-property-read \Foo\Bar\Buz $buz
+                 * @phpstan-property-write \Foo\Bar\Baz $baz
+                 * @psalm-property \Foo\Bar\SomeClass $foo
+                 * @psalm-property-read \Foo\Bar\Buz $buz
+                 * @psalm-property-write \Foo\Bar\Baz $baz
+                 */
+                interface SomeClass
+                {
+                    /**
+                    * @param \Foo\Bar\SomeClass $foo
+                    * @phpstan-param \Foo\Bar\Buz $buz
+                    *
+                    * @psalm-return \Foo\Bar\Baz
+                    */
+                    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz): \Foo\Bar\Baz;
+                }
+                EOD,
         ];
 
         yield 'Skip @covers in tests (they require FQCN)' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Tests\Foo\Bar;
+                namespace Tests\Foo\Bar;
 
-use Foo\Bar\SomeClass;
+                use Foo\Bar\SomeClass;
 
-/**
- * @covers \Foo\Bar\SomeClass
- */
-class SomeClassTest {}',
+                /**
+                 * @covers \Foo\Bar\SomeClass
+                 */
+                class SomeClassTest {}
+                EOD,
         ];
 
         yield 'Imports with aliases' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz as Buzz;
-use Foo\Bar\Bam as Boom;
+                use Foo\Bar\Baz as Buzz;
+                use Foo\Bar\Bam as Boom;
 
-/**
- * @see Buzz
- * @see Boom
- */
-class SomeClass
-{
-    /**
-     * @var Buzz
-     */
-    public $baz;
+                /**
+                 * @see Buzz
+                 * @see Boom
+                 */
+                class SomeClass
+                {
+                    /**
+                     * @var Buzz
+                     */
+                    public $baz;
 
-    /** @var Boom */
-    public $bam;
+                    /** @var Boom */
+                    public $bam;
 
-    /**
-     * @param Buzz $baz
-     * @param Boom $bam
-     */
-    public function __construct($baz, $bam) {
-        $this->baz = $baz;
-        $this->bam = $bam;
-    }
+                    /**
+                     * @param Buzz $baz
+                     * @param Boom $bam
+                     */
+                    public function __construct($baz, $bam) {
+                        $this->baz = $baz;
+                        $this->bam = $bam;
+                    }
 
-    /**
-     * @return Buzz
-     */
-    public function getBaz() {
-        return $this->baz;
-    }
+                    /**
+                     * @return Buzz
+                     */
+                    public function getBaz() {
+                        return $this->baz;
+                    }
 
-    /**
-     * @return Boom
-     */
-    public function getBam() {
-        return $this->bam;
-    }
-}',
-            '<?php
+                    /**
+                     * @return Boom
+                     */
+                    public function getBam() {
+                        return $this->bam;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Baz as Buzz;
-use Foo\Bar\Bam as Boom;
+                use Foo\Bar\Baz as Buzz;
+                use Foo\Bar\Bam as Boom;
 
-/**
- * @see \Foo\Bar\Baz
- * @see \Foo\Bar\Bam
- */
-class SomeClass
-{
-    /**
-     * @var \Foo\Bar\Baz
-     */
-    public $baz;
+                /**
+                 * @see \Foo\Bar\Baz
+                 * @see \Foo\Bar\Bam
+                 */
+                class SomeClass
+                {
+                    /**
+                     * @var \Foo\Bar\Baz
+                     */
+                    public $baz;
 
-    /** @var \Foo\Bar\Bam */
-    public $bam;
+                    /** @var \Foo\Bar\Bam */
+                    public $bam;
 
-    /**
-     * @param \Foo\Bar\Baz $baz
-     * @param \Foo\Bar\Bam $bam
-     */
-    public function __construct($baz, $bam) {
-        $this->baz = $baz;
-        $this->bam = $bam;
-    }
+                    /**
+                     * @param \Foo\Bar\Baz $baz
+                     * @param \Foo\Bar\Bam $bam
+                     */
+                    public function __construct($baz, $bam) {
+                        $this->baz = $baz;
+                        $this->bam = $bam;
+                    }
 
-    /**
-     * @return \Foo\Bar\Baz
-     */
-    public function getBaz() {
-        return $this->baz;
-    }
+                    /**
+                     * @return \Foo\Bar\Baz
+                     */
+                    public function getBaz() {
+                        return $this->baz;
+                    }
 
-    /**
-     * @return \Foo\Bar\Bam
-     */
-    public function getBam() {
-        return $this->bam;
-    }
-}',
+                    /**
+                     * @return \Foo\Bar\Bam
+                     */
+                    public function getBam() {
+                        return $this->bam;
+                    }
+                }
+                EOD,
         ];
 
         yield 'Leading backslash in global namespace - standard phpdoc' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @param \DateTimeInterface $dateTime
- * @param callable(): (\Closure(): void) $fx
- * @return \DateTimeInterface
- * @see \DateTimeImmutable
- * @throws \Exception
- */
-function foo($dateTime, $fx) {}',
-            '<?php
+                /**
+                 * @param \DateTimeInterface $dateTime
+                 * @param callable(): (\Closure(): void) $fx
+                 * @return \DateTimeInterface
+                 * @see \DateTimeImmutable
+                 * @throws \Exception
+                 */
+                function foo($dateTime, $fx) {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * @param DateTimeInterface $dateTime
- * @param callable(): (\Closure(): void) $fx
- * @return DateTimeInterface
- * @see DateTimeImmutable
- * @throws Exception
- */
-function foo($dateTime, $fx) {}',
+                /**
+                 * @param DateTimeInterface $dateTime
+                 * @param callable(): (\Closure(): void) $fx
+                 * @return DateTimeInterface
+                 * @see DateTimeImmutable
+                 * @throws Exception
+                 */
+                function foo($dateTime, $fx) {}
+                EOD,
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'Leading backslash in global namespace - reserved phpdoc' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @param int $v
- * @phpstan-param positive-int $v
- * @param \'GET\'|\'POST\' $method
- * @param \Closure $fx
- * @psalm-param Closure(): (callable(): Closure) $fx
- * @return list<int>
- */
-function foo($v, $method, $fx) {}',
-            '<?php
+                /**
+                 * @param int $v
+                 * @phpstan-param positive-int $v
+                 * @param 'GET'|'POST' $method
+                 * @param \Closure $fx
+                 * @psalm-param Closure(): (callable(): Closure) $fx
+                 * @return list<int>
+                 */
+                function foo($v, $method, $fx) {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * @param int $v
- * @phpstan-param positive-int $v
- * @param \'GET\'|\'POST\' $method
- * @param Closure $fx
- * @psalm-param Closure(): (callable(): Closure) $fx
- * @return list<int>
- */
-function foo($v, $method, $fx) {}',
+                /**
+                 * @param int $v
+                 * @phpstan-param positive-int $v
+                 * @param 'GET'|'POST' $method
+                 * @param Closure $fx
+                 * @psalm-param Closure(): (callable(): Closure) $fx
+                 * @return list<int>
+                 */
+                function foo($v, $method, $fx) {}
+                EOD,
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'Do not touch PHPDoc if configured with empty collection' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Bar\Buz;
-use Foo\Bar\Baz;
-use Foo\Bar\SomeClass;
+                use Foo\Bar\Buz;
+                use Foo\Bar\Baz;
+                use Foo\Bar\SomeClass;
 
-/**
- * @see \Foo\Bar\Baz
- * @see \Foo\Bar\Bam
- *
- * @property \Foo\Bar\SomeClass $foo
- * @property-read \Foo\Bar\Buz $buz
- * @property-write \Foo\Bar\Baz $baz
- */
-interface SomeClass
-{
-    /**
-    * @param \Foo\Bar\SomeClass $foo
-    * @phpstan-param \Foo\Bar\Buz $buz
-    *
-    * @psalm-return \Foo\Bar\Baz
-    */
-    public function doSomething($foo, $buz);
-}',
+                /**
+                 * @see \Foo\Bar\Baz
+                 * @see \Foo\Bar\Bam
+                 *
+                 * @property \Foo\Bar\SomeClass $foo
+                 * @property-read \Foo\Bar\Buz $buz
+                 * @property-write \Foo\Bar\Baz $baz
+                 */
+                interface SomeClass
+                {
+                    /**
+                    * @param \Foo\Bar\SomeClass $foo
+                    * @phpstan-param \Foo\Bar\Buz $buz
+                    *
+                    * @psalm-return \Foo\Bar\Baz
+                    */
+                    public function doSomething($foo, $buz);
+                }
+                EOD,
             null,
             ['phpdoc_tags' => []],
         ];
 
         yield 'Process only specified PHPDoc annotation' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Baz\Buzz;
+                use Foo\Baz\Buzz;
 
-/**
- * @see \Foo\Baz\Buzz
- *
- * @property \Foo\Baz\Buzz $buzz1
- * @property-read Buzz $buzz2
- */
-interface SomeClass
-{
-    /**
-    * @param \Foo\Baz\Buzz $a
-    * @phpstan-param Buzz $b
-    *
-    * @psalm-return \Foo\Baz\Buzz
-    */
-    public function doSomething($a, $b): void;
-}',
-            '<?php
+                /**
+                 * @see \Foo\Baz\Buzz
+                 *
+                 * @property \Foo\Baz\Buzz $buzz1
+                 * @property-read Buzz $buzz2
+                 */
+                interface SomeClass
+                {
+                    /**
+                    * @param \Foo\Baz\Buzz $a
+                    * @phpstan-param Buzz $b
+                    *
+                    * @psalm-return \Foo\Baz\Buzz
+                    */
+                    public function doSomething($a, $b): void;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Bar;
+                namespace Foo\Bar;
 
-use Foo\Baz\Buzz;
+                use Foo\Baz\Buzz;
 
-/**
- * @see \Foo\Baz\Buzz
- *
- * @property \Foo\Baz\Buzz $buzz1
- * @property-read \Foo\Baz\Buzz $buzz2
- */
-interface SomeClass
-{
-    /**
-    * @param \Foo\Baz\Buzz $a
-    * @phpstan-param \Foo\Baz\Buzz $b
-    *
-    * @psalm-return \Foo\Baz\Buzz
-    */
-    public function doSomething($a, $b): void;
-}',
+                /**
+                 * @see \Foo\Baz\Buzz
+                 *
+                 * @property \Foo\Baz\Buzz $buzz1
+                 * @property-read \Foo\Baz\Buzz $buzz2
+                 */
+                interface SomeClass
+                {
+                    /**
+                    * @param \Foo\Baz\Buzz $a
+                    * @phpstan-param \Foo\Baz\Buzz $b
+                    *
+                    * @psalm-return \Foo\Baz\Buzz
+                    */
+                    public function doSomething($a, $b): void;
+                }
+                EOD,
             ['phpdoc_tags' => ['property-read', 'phpstan-param']],
         ];
 
         yield 'ignore @see with URL' => [
-            '<?php
-/**
- * @see     http://example.com
- */
-define(\'FOO_BAR\', true);',
+            <<<'EOD'
+                <?php
+                /**
+                 * @see     http://example.com
+                 */
+                define('FOO_BAR', true);
+                EOD,
         ];
 
         yield 'Respect whitespace between phpDoc annotation and value' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
+                namespace Foo\Test;
 
-use Foo\Bar;
+                use Foo\Bar;
 
-/**
- * @param Bar $a
- * @see   Bar
- */
-function foo($a) {}',
-            '<?php
+                /**
+                 * @param Bar $a
+                 * @see   Bar
+                 */
+                function foo($a) {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
+                namespace Foo\Test;
 
-use Foo\Bar;
+                use Foo\Bar;
 
-/**
- * @param \Foo\Bar $a
- * @see   \Foo\Bar
- */
-function foo($a) {}',
+                /**
+                 * @param \Foo\Bar $a
+                 * @see   \Foo\Bar
+                 */
+                function foo($a) {}
+                EOD,
         ];
     }
 
@@ -2004,48 +2212,52 @@ function foo($a) {}',
         ];
 
         yield 'import new symbols from attributes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
-use Other\ClassAttr;
-use Other\MethodAttr;
-use Other\PromotedAttr;
-use Other\PropertyAttr;
+                namespace Foo\Test;
+                use Other\ClassAttr;
+                use Other\MethodAttr;
+                use Other\PromotedAttr;
+                use Other\PropertyAttr;
 
-#[ClassAttr]
-#[\AllowDynamicProperties]
-class Foo
-{
-    #[PropertyAttr]
-    public int $prop;
+                #[ClassAttr]
+                #[\AllowDynamicProperties]
+                class Foo
+                {
+                    #[PropertyAttr]
+                    public int $prop;
 
-    public function __construct(
-        #[PromotedAttr]
-        public int $arg
-    ) {}
+                    public function __construct(
+                        #[PromotedAttr]
+                        public int $arg
+                    ) {}
 
-    #[MethodAttr]
-    public function foo(): void {}
-}'."\n            ",
-            '<?php
+                    #[MethodAttr]
+                    public function foo(): void {}
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-namespace Foo\Test;
+                namespace Foo\Test;
 
-#[\Other\ClassAttr]
-#[\AllowDynamicProperties]
-class Foo
-{
-    #[\Other\PropertyAttr]
-    public int $prop;
+                #[\Other\ClassAttr]
+                #[\AllowDynamicProperties]
+                class Foo
+                {
+                    #[\Other\PropertyAttr]
+                    public int $prop;
 
-    public function __construct(
-        #[\Other\PromotedAttr]
-        public int $arg
-    ) {}
+                    public function __construct(
+                        #[\Other\PromotedAttr]
+                        public int $arg
+                    ) {}
 
-    #[\Other\MethodAttr]
-    public function foo(): void {}
-}'."\n            ",
+                    #[\Other\MethodAttr]
+                    public function foo(): void {}
+                }
+                EOD."\n            ",
             ['import_symbols' => true],
         ];
     }
@@ -2074,36 +2286,44 @@ class Foo
         ];
 
         yield 'union/intersect param in global namespace without use' => [
-            '<?php
-function foo(\X|\Y $a, \X&\Y $b) {}
-function bar(\X|\Y $a, \X&\Y $b) {}',
-            '<?php
-function foo(\X|\Y $a, \X&\Y $b) {}
-function bar(X|Y $a, X&Y $b) {}',
+            <<<'EOD'
+                <?php
+                function foo(\X|\Y $a, \X&\Y $b) {}
+                function bar(\X|\Y $a, \X&\Y $b) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo(\X|\Y $a, \X&\Y $b) {}
+                function bar(X|Y $a, X&Y $b) {}
+                EOD,
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield [
-            '<?php
-use Foo\Bar;
-use Foo\Bar\Baz;
+            <<<'EOD'
+                <?php
+                use Foo\Bar;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(Bar $foo): Bar\Ba3{}
-    public function doSomethingMore(Bar|B $foo): Baz{}
-    public function doSomethingElse(Bar&A\Z $foo): Baz{}
-}',
-            '<?php
-use Foo\Bar;
-use Foo\Bar\Baz;
+                class SomeClass
+                {
+                    public function doSomething(Bar $foo): Bar\Ba3{}
+                    public function doSomethingMore(Bar|B $foo): Baz{}
+                    public function doSomethingElse(Bar&A\Z $foo): Baz{}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\Bar;
+                use Foo\Bar\Baz;
 
-class SomeClass
-{
-    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Ba3{}
-    public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
-    public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
-}',
+                class SomeClass
+                {
+                    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Ba3{}
+                    public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
+                    public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
+                }
+                EOD,
         ];
 
         yield 'import only if not already implicitly used by enum declaration' => [
@@ -2141,24 +2361,32 @@ class SomeClass
     public static function provideFix82Cases(): iterable
     {
         yield 'simple param in global namespace without use' => [
-            '<?php
-function foo(\X $x, \Y $y, int $z) {}
-function bar(\X $x, \Y $y, true $z) {}',
-            '<?php
-function foo(\X $x, \Y $y, int $z) {}
-function bar(X $x, Y $y, true $z) {}',
+            <<<'EOD'
+                <?php
+                function foo(\X $x, \Y $y, int $z) {}
+                function bar(\X $x, \Y $y, true $z) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo(\X $x, \Y $y, int $z) {}
+                function bar(X $x, Y $y, true $z) {}
+                EOD,
             ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'simple return in global namespace without use' => [
-            '<?php
-function foo(): \X {}
-function bar(): \Y {}
-function x(): never {}',
-            '<?php
-function foo(): \X {}
-function bar(): Y {}
-function x(): never {}',
+            <<<'EOD'
+                <?php
+                function foo(): \X {}
+                function bar(): \Y {}
+                function x(): never {}
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo(): \X {}
+                function bar(): Y {}
+                function x(): never {}
+                EOD,
             ['leading_backslash_in_global_namespace' => true],
         ];
 

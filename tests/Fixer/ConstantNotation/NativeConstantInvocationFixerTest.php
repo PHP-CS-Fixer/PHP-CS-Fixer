@@ -202,18 +202,22 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         yield ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'];
 
         yield [
-            '<?php
-try {
-    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|JOB_QUEUE_PRIORITY_HIGH);
-} catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
-}
-',
-            '<?php
-try {
-    foo(\JSON_ERROR_DEPTH|JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
-} catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
-}
-',
+            <<<'EOD'
+                <?php
+                try {
+                    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|JOB_QUEUE_PRIORITY_HIGH);
+                } catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                try {
+                    foo(\JSON_ERROR_DEPTH|JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
+                } catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
+                }
+
+                EOD,
         ];
     }
 
@@ -480,14 +484,18 @@ try {
     {
         $this->fixer->configure(['strict' => true]);
         $this->doTest(
-            '<?php
-                echo \PHP_VERSION . \PHP_EOL; // built-in constants to have backslash
-                echo MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
-                echo \Dont\Touch\Namespaced\CONSTANT;'."\n            ",
-            '<?php
-                echo \PHP_VERSION . PHP_EOL; // built-in constants to have backslash
-                echo \MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
-                echo \Dont\Touch\Namespaced\CONSTANT;'."\n            "
+            <<<'EOD'
+                <?php
+                                echo \PHP_VERSION . \PHP_EOL; // built-in constants to have backslash
+                                echo MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
+                                echo \Dont\Touch\Namespaced\CONSTANT;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                echo \PHP_VERSION . PHP_EOL; // built-in constants to have backslash
+                                echo \MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
+                                echo \Dont\Touch\Namespaced\CONSTANT;
+                EOD."\n            "
         );
     }
 
@@ -497,22 +505,26 @@ try {
     public function testFixPrePHP80(): void
     {
         $this->doTest(
-            '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
-#
-M_PI;
-echo \\M_PI;
-',
-            '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
-#
-M_PI;
-echo M_PI;
-'
+            <<<'EOD'
+                <?php
+                echo \/**/M_PI;
+                echo \ M_PI;
+                echo \#
+                #
+                M_PI;
+                echo \M_PI;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                echo \/**/M_PI;
+                echo \ M_PI;
+                echo \#
+                #
+                M_PI;
+                echo M_PI;
+
+                EOD
         );
     }
 
@@ -530,10 +542,12 @@ echo M_PI;
     public static function provideFixPhp80Cases(): iterable
     {
         yield [
-            '<?php
-            try {
-            } catch (\Exception) {
-            }',
+            <<<'EOD'
+                <?php
+                            try {
+                            } catch (\Exception) {
+                            }
+                EOD,
         ];
 
         yield ['<?php try { foo(); } catch(\InvalidArgumentException|\LogicException $e) {}'];

@@ -34,26 +34,28 @@ final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'comment list' => [
-            '<?php
-                // following:
-                //     1 :
-                //     2 :
+            <<<'EOD'
+                <?php
+                                // following:
+                                //     1 :
+                                //     2 :
 
-                # Test:
-                #   - abc
-                #   - fgh
+                                # Test:
+                                #   - abc
+                                #   - fgh
 
-                # Title:
-                #   | abc1
-                #   | xyz
+                                # Title:
+                                #   | abc1
+                                #   | xyz
 
-                // Point:
-                //  * first point
-                //  * some other point
+                                // Point:
+                                //  * first point
+                                //  * some other point
 
-                // Matrix:
-                //   [1,2]
-                //   [3,4]'."\n            ",
+                                // Matrix:
+                                //   [1,2]
+                                //   [3,4]
+                EOD."\n            ",
         ];
 
         yield [
@@ -77,34 +79,40 @@ final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            "<?php
-// a
-# b
-/* ABC */
+            <<<EOD
+                <?php
+                // a
+                # b
+                /* ABC */
 
-//     \t d
-#\te
-/* f */
-",
-            "<?php
-//a
-#b
-/*ABC*/
+                //     \t d
+                #\te
+                /* f */
 
-//     \t d
-#\te
-/* f     */
-",
+                EOD,
+            <<<EOD
+                <?php
+                //a
+                #b
+                /*ABC*/
+
+                //     \t d
+                #\te
+                /* f     */
+
+                EOD,
         ];
 
         yield 'do not fix multi line comments' => [
-            '<?php
-/*
-*/
+            <<<'EOD'
+                <?php
+                /*
+                */
 
-/*A
-B*/
-',
+                /*A
+                B*/
+
+                EOD,
         ];
 
         yield 'empty double slash' => [
@@ -132,12 +140,14 @@ B*/
         ];
 
         yield 'do not fix annotation' => [
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-new
-#[Foo]
-class extends stdClass {};
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                new
+                #[Foo]
+                class extends stdClass {};
+
+                EOD,
         ];
     }
 }

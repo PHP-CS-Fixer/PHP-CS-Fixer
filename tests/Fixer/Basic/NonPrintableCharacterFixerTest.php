@@ -61,34 +61,46 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-// echo
-echo "Hello World !";',
-            '<?php
-// ec'.pack('H*', 'e2808b').'ho
-echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
+            <<<'EOD'
+                <?php
+                // echo
+                echo "Hello World !";
+                EOD,
+            <<<'EOD'
+                <?php
+                // ec
+                EOD.pack('H*', 'e2808b').<<<'EOD'
+                ho
+                echo "Hello
+                EOD.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
             ['use_escape_sequences_in_strings' => false],
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                /**
-                 * @param string $p Param
-                 */
-                function f(string $p)
-                {
-                    echo $p;
-                }',
-            '<?php
+                                /**
+                                 * @param string $p Param
+                                 */
+                                function f(string $p)
+                                {
+                                    echo $p;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-                /**
-                 * @param'.' '.pack('H*', 'e2808b').'string $p Param
-                 */
-                function f(string $p)
-                {
-                    echo $p;
-                }',
+                                /**
+                                 * @param
+                EOD.' '.pack('H*', 'e2808b').<<<'EOD'
+                string $p Param
+                                 */
+                                function f(string $p)
+                                {
+                                    echo $p;
+                                }
+                EOD,
             ['use_escape_sequences_in_strings' => false],
         ];
 
@@ -135,24 +147,30 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                /**
-                 * @param string $p Param
-                 */
-                function f(string $p)
-                {
-                    echo $p;
-                }',
-            '<?php
+                                /**
+                                 * @param string $p Param
+                                 */
+                                function f(string $p)
+                                {
+                                    echo $p;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-                /**
-                 * @param'.' '.pack('H*', 'e2808b').'string $p Param
-                 */
-                function f(string $p)
-                {
-                    echo $p;
-                }',
+                                /**
+                                 * @param
+                EOD.' '.pack('H*', 'e2808b').<<<'EOD'
+                string $p Param
+                                 */
+                                function f(string $p)
+                                {
+                                    echo $p;
+                                }
+                EOD,
             ['use_escape_sequences_in_strings' => true],
         ];
 
@@ -181,47 +199,67 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
         ];
 
         yield [
-            '<?php echo <<<\'TXT\'
-FooBar\
-TXT;
-',
+            <<<'EOD'
+                <?php echo <<<'TXT'
+                FooBar\
+                TXT;
+
+                EOD,
             null,
             ['use_escape_sequences_in_strings' => true],
         ];
 
         yield [
-            '<?php echo <<<TXT
-Foo\u{200b}Bar
-TXT;
-',
-            '<?php echo <<<TXT
-Foo'.pack('H*', 'e2808b').'Bar
-TXT;
-',
+            <<<'EOD'
+                <?php echo <<<TXT
+                Foo\u{200b}Bar
+                TXT;
+
+                EOD,
+            <<<'EOD'
+                <?php echo <<<TXT
+                Foo
+                EOD.pack('H*', 'e2808b').<<<'EOD'
+                Bar
+                TXT;
+
+                EOD,
             ['use_escape_sequences_in_strings' => true],
         ];
 
         yield [
-            '<?php echo <<<TXT
-Foo\u{200b}Bar
-TXT;
-',
-            '<?php echo <<<\'TXT\'
-Foo'.pack('H*', 'e2808b').'Bar
-TXT;
-',
+            <<<'EOD'
+                <?php echo <<<TXT
+                Foo\u{200b}Bar
+                TXT;
+
+                EOD,
+            <<<'EOD'
+                <?php echo <<<'TXT'
+                Foo
+                EOD.pack('H*', 'e2808b').<<<'EOD'
+                Bar
+                TXT;
+
+                EOD,
             ['use_escape_sequences_in_strings' => true],
         ];
 
         yield [
-            '<?php echo <<<TXT
-Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape
-TXT;
-',
-            '<?php echo <<<\'TXT\'
-Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape
-TXT;
-',
+            <<<'EOD'
+                <?php echo <<<TXT
+                Foo\u{200b} Bar \\n \\ \$variableToEscape
+                TXT;
+
+                EOD,
+            <<<'EOD'
+                <?php echo <<<'TXT'
+                Foo
+                EOD.pack('H*', 'e2808b').<<<'EOD'
+                 Bar \n \ $variableToEscape
+                TXT;
+
+                EOD,
             ['use_escape_sequences_in_strings' => true],
         ];
 

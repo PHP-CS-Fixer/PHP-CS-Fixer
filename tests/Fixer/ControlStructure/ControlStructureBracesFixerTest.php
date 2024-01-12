@@ -39,30 +39,42 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'else' => [
-            '<?php
-                if ($foo) { foo(); }
-                else { bar(); }',
-            '<?php
-                if ($foo) { foo(); }
-                else bar();',
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                else { bar(); }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                else bar();
+                EOD,
         ];
 
         yield 'elseif' => [
-            '<?php
-                if ($foo) { foo(); }
-                elseif ($bar) { bar(); }',
-            '<?php
-                if ($foo) { foo(); }
-                elseif ($bar) bar();',
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                elseif ($bar) { bar(); }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                elseif ($bar) bar();
+                EOD,
         ];
 
         yield 'else if' => [
-            '<?php
-                if ($foo) { foo(); }
-                else if ($bar) { bar(); }',
-            '<?php
-                if ($foo) { foo(); }
-                else if ($bar) bar();',
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                else if ($bar) { bar(); }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                else if ($bar) bar();
+                EOD,
         ];
 
         yield 'for' => [
@@ -81,12 +93,16 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'do while' => [
-            '<?php
-                do { foo(); }
-                while ($foo);',
-            '<?php
-                do foo();
-                while ($foo);',
+            <<<'EOD'
+                <?php
+                                do { foo(); }
+                                while ($foo);
+                EOD,
+            <<<'EOD'
+                <?php
+                                do foo();
+                                while ($foo);
+                EOD,
         ];
 
         yield 'empty if' => [
@@ -94,21 +110,27 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'empty else' => [
-            '<?php
-                if ($foo) { foo(); }
-                else;',
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                else;
+                EOD,
         ];
 
         yield 'empty elseif' => [
-            '<?php
-                if ($foo) { foo(); }
-                elseif ($bar);',
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                elseif ($bar);
+                EOD,
         ];
 
         yield 'empty else if' => [
-            '<?php
-                if ($foo) { foo(); }
-                else if ($bar);',
+            <<<'EOD'
+                <?php
+                                if ($foo) { foo(); }
+                                else if ($bar);
+                EOD,
         ];
 
         yield 'empty for' => [

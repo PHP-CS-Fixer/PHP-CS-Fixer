@@ -35,26 +35,30 @@ final class PhpUnitDataProviderReturnTypeFixer extends AbstractPhpUnitFixer
             'The return type of PHPUnit data provider must be `iterable`.',
             [
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideSomethingCases
-     */
-    public function testSomething($expected, $actual) {}
-    public function provideSomethingCases(): array {}
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider provideSomethingCases
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function provideSomethingCases(): array {}
+                        }
+
+                        EOD,
                 ),
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideSomethingCases
-     */
-    public function testSomething($expected, $actual) {}
-    public function provideSomethingCases() {}
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider provideSomethingCases
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function provideSomethingCases() {}
+                        }
+
+                        EOD,
                 ),
             ],
             'Data provider must return `iterable`, either an array of arrays or an object that implements the `Traversable` interface.',

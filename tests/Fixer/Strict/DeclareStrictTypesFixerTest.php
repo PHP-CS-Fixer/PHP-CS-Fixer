@@ -35,14 +35,16 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-declare(ticks=1);
-//
-declare(strict_types=1);
+            <<<'EOD'
+                <?php
+                declare(ticks=1);
+                //
+                declare(strict_types=1);
 
-namespace A\B\C;
-class A {
-}',
+                namespace A\B\C;
+                class A {
+                }
+                EOD,
         ];
 
         yield [
@@ -59,69 +61,95 @@ class A {
         ];
 
         yield [
-            '<?php
-                /**/
-                declare(strict_types=1);',
+            <<<'EOD'
+                <?php
+                                /**/
+                                declare(strict_types=1);
+                EOD,
         ];
 
         yield [
-            '<?php declare(strict_types=1);
+            <<<'EOD'
+                <?php declare(strict_types=1);
 
-                phpinfo();',
-            '<?php
+                                phpinfo();
+                EOD,
+            <<<'EOD'
+                <?php
 
-                phpinfo();',
+                                phpinfo();
+                EOD,
         ];
 
         yield [
-            '<?php declare(strict_types=1);
+            <<<'EOD'
+                <?php declare(strict_types=1);
 
-/**
- * Foo
- */
-phpinfo();',
-            '<?php
+                /**
+                 * Foo
+                 */
+                phpinfo();
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * Foo
- */
-phpinfo();',
+                /**
+                 * Foo
+                 */
+                phpinfo();
+                EOD,
         ];
 
         yield [
-            '<?php declare(strict_types=1);
+            <<<'EOD'
+                <?php declare(strict_types=1);
 
-// comment after empty line',
-            '<?php
+                // comment after empty line
+                EOD,
+            <<<'EOD'
+                <?php
 
-// comment after empty line',
+                // comment after empty line
+                EOD,
         ];
 
         yield [
-            '<?php declare(strict_types=1);
-// comment without empty line before',
-            '<?php
-// comment without empty line before',
+            <<<'EOD'
+                <?php declare(strict_types=1);
+                // comment without empty line before
+                EOD,
+            <<<'EOD'
+                <?php
+                // comment without empty line before
+                EOD,
         ];
 
         yield [
-            '<?php declare(strict_types=1);
-phpinfo();',
+            <<<'EOD'
+                <?php declare(strict_types=1);
+                phpinfo();
+                EOD,
             '<?php phpinfo();',
         ];
 
         yield [
-            '<?php declare(strict_types=1);
-$a = 456;
-',
-            '<?php
-$a = 456;
-',
+            <<<'EOD'
+                <?php declare(strict_types=1);
+                $a = 456;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 456;
+
+                EOD,
         ];
 
         yield [
-            '<?php declare(strict_types=1);
-/**/',
+            <<<'EOD'
+                <?php declare(strict_types=1);
+                /**/
+                EOD,
             '<?php /**/',
         ];
 

@@ -49,35 +49,41 @@ final class DataProviderAnalyzerTest extends TestCase
     {
         yield 'single data provider' => [
             [new DataProviderAnalysis('provider', 28, [11])],
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider provider
-                 */
-                public function testFoo() {}
-                public function provider() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider provider
+                                 */
+                                public function testFoo() {}
+                                public function provider() {}
+                            }
+                EOD,
         ];
 
         yield 'single data provider with different casing' => [
             [new DataProviderAnalysis('dataProvider', 28, [11])],
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider dataPROVIDER
-                 */
-                public function testFoo() {}
-                public function dataProvider() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider dataPROVIDER
+                                 */
+                                public function testFoo() {}
+                                public function dataProvider() {}
+                            }
+                EOD,
         ];
 
         yield 'single static data provider' => [
             [new DataProviderAnalysis('provider', 30, [11])],
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider provider
-                 */
-                public function testFoo() {}
-                public static function provider() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider provider
+                                 */
+                                public function testFoo() {}
+                                public static function provider() {}
+                            }
+                EOD,
         ];
 
         yield 'multiple data provider' => [
@@ -86,17 +92,19 @@ final class DataProviderAnalyzerTest extends TestCase
                 new DataProviderAnalysis('provider2', 39, [11]),
                 new DataProviderAnalysis('provider3', 50, [11]),
             ],
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider provider1
-                 * @dataProvider provider2
-                 * @dataProvider provider3
-                 */
-                public function testFoo() {}
-                public function provider1() {}
-                public function provider2() {}
-                public function provider3() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider provider1
+                                 * @dataProvider provider2
+                                 * @dataProvider provider3
+                                 */
+                                public function testFoo() {}
+                                public function provider1() {}
+                                public function provider2() {}
+                                public function provider3() {}
+                            }
+                EOD,
         ];
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
@@ -106,64 +114,72 @@ final class DataProviderAnalyzerTest extends TestCase
                     new DataProviderAnalysis('provider2', 65, [11]),
                     new DataProviderAnalysis('provider3', 76, [24]),
                 ],
-                sprintf('<?php class FooTest extends TestCase {
-                    /** @dataProvider provider2 */
-                    public function testFoo1() {}
-                    /** @dataProvider provider3 */
-                    %s function testFoo2() {}
-                    /** @dataProvider provider1 */
-                    public function testFoo3() {}
-                    public function provider1() {}
-                    public function provider2() {}
-                    public function provider3() {}
-                }', $modifier),
+                sprintf(<<<'EOD'
+                    <?php class FooTest extends TestCase {
+                                        /** @dataProvider provider2 */
+                                        public function testFoo1() {}
+                                        /** @dataProvider provider3 */
+                                        %s function testFoo2() {}
+                                        /** @dataProvider provider1 */
+                                        public function testFoo3() {}
+                                        public function provider1() {}
+                                        public function provider2() {}
+                                        public function provider3() {}
+                                    }
+                    EOD, $modifier),
             ];
         }
 
         yield 'not existing data provider used' => [
             [],
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider provider
-                 */
-                public function testFoo() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider provider
+                                 */
+                                public function testFoo() {}
+                            }
+                EOD,
         ];
 
         yield 'data provider being constant' => [
             [],
-            '<?php class FooTest extends TestCase {
-                private const provider = [];
-                /**
-                 * @dataProvider provider
-                 */
-                public function testFoo() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                private const provider = [];
+                                /**
+                                 * @dataProvider provider
+                                 */
+                                public function testFoo() {}
+                            }
+                EOD,
         ];
 
         yield 'ignore anonymous function' => [
             [
                 new DataProviderAnalysis('provider2', 93, [65]),
             ],
-            '<?php class FooTest extends TestCase {
-                public function testFoo0() {}
-                /**
-                 * @dataProvider provider0
-                 */
-                public function testFoo1()
-                {
-                    /**
-                     * @dataProvider provider1
-                     */
-                     $f = function ($x, $y) { return $x + $y; };
-                }
-                    /**
-                     * @dataProvider provider2
-                     */
-                public function testFoo2() {}
-                public function provider1() {}
-                public function provider2() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                public function testFoo0() {}
+                                /**
+                                 * @dataProvider provider0
+                                 */
+                                public function testFoo1()
+                                {
+                                    /**
+                                     * @dataProvider provider1
+                                     */
+                                     $f = function ($x, $y) { return $x + $y; };
+                                }
+                                    /**
+                                     * @dataProvider provider2
+                                     */
+                                public function testFoo2() {}
+                                public function provider1() {}
+                                public function provider2() {}
+                            }
+                EOD,
         ];
     }
 }

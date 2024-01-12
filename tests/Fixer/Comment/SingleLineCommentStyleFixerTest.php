@@ -46,30 +46,42 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
     public static function provideAsteriskCases(): iterable
     {
         yield [
-            '<?php
-// lonely line
-',
-            '<?php
-/* lonely line */
-',
+            <<<'EOD'
+                <?php
+                // lonely line
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /* lonely line */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-   // indented line
-',
-            '<?php
-   /* indented line */
-',
+            <<<'EOD'
+                <?php
+                   // indented line
+
+                EOD,
+            <<<'EOD'
+                <?php
+                   /* indented line */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-   // weird-spaced line
-',
-            '<?php
-   /*   weird-spaced line*/
-',
+            <<<'EOD'
+                <?php
+                   // weird-spaced line
+
+                EOD,
+            <<<'EOD'
+                <?php
+                   /*   weird-spaced line*/
+
+                EOD,
         ];
 
         yield [
@@ -88,139 +100,193 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-$a = 1; // after code
-',
-            '<?php
-$a = 1; /* after code */
-',
+            <<<'EOD'
+                <?php
+                $a = 1; // after code
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1; /* after code */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-   /* first */ // second
-',
-            '<?php
-   /* first */ /* second */
-',
+            <<<'EOD'
+                <?php
+                   /* first */ // second
+
+                EOD,
+            <<<'EOD'
+                <?php
+                   /* first */ /* second */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-   /* first */// second',
-            '<?php
-   /* first *//*
-   second
-   */',
+            <<<'EOD'
+                <?php
+                   /* first */// second
+                EOD,
+            <<<'EOD'
+                <?php
+                   /* first *//*
+                   second
+                   */
+                EOD,
         ];
 
         yield [
-            '<?php
-    // one line',
-            '<?php
-    /*one line
+            <<<'EOD'
+                <?php
+                    // one line
+                EOD,
+            <<<'EOD'
+                <?php
+                    /*one line
 
-     */',
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    // one line',
-            '<?php
-    /*
+            <<<'EOD'
+                <?php
+                    // one line
+                EOD,
+            <<<'EOD'
+                <?php
+                    /*
 
-    one line*/',
+                    one line*/
+                EOD,
         ];
 
         yield [
-            '<?php
-    // one line',
-            "<?php
-    /* \t".' '."
- \t   * one line".' '.'
-     *
-     */',
+            <<<'EOD'
+                <?php
+                    // one line
+                EOD,
+            <<<EOD
+                <?php
+                    /* \t
+                EOD.' '.<<<EOD
+
+                 \t   * one line
+                EOD.' '.<<<'EOD'
+
+                     *
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-//',
-            '<?php
-/***
- *
- */',
+            <<<'EOD'
+                <?php
+                //
+                EOD,
+            <<<'EOD'
+                <?php
+                /***
+                 *
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-    // s',
-            '<?php
+                    // s
+                EOD,
+            <<<'EOD'
+                <?php
 
-    /***
-s    *
-     */',
+                    /***
+                s    *
+                     */
+                EOD,
         ];
 
         yield 'empty comment' => [
-            '<?php
-//
-',
-            '<?php
-/**/
-',
+            <<<'EOD'
+                <?php
+                //
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /**/
+
+                EOD,
         ];
 
         // Untouched cases
         yield [
-            '<?php
-$a = 1; /* in code */ $b = 2;
-',
+            <<<'EOD'
+                <?php
+                $a = 1; /* in code */ $b = 2;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     * in code 2
-     */ $a = 1;
-',
+            <<<'EOD'
+                <?php
+                    /*
+                     * in code 2
+                     */ $a = 1;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/***
- *
- */ $a = 1;',
+            <<<'EOD'
+                <?php
+                /***
+                 *
+                 */ $a = 1;
+                EOD,
         ];
 
         yield [
-            '<?php
-    /***
-s    *
-     */ $a = 1;',
+            <<<'EOD'
+                <?php
+                    /***
+                s    *
+                     */ $a = 1;
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     * first line
-     * second line
-     */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * first line
+                     * second line
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     * first line
-     *
-     * second line
-     */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * first line
+                     *
+                     * second line
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*first line
-second line*/',
+            <<<'EOD'
+                <?php
+                    /*first line
+                second line*/
+                EOD,
         ];
 
         yield [
@@ -228,10 +294,12 @@ second line*/',
         ];
 
         yield [
-            '<?php
-    /**
-     * Doc comment
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Doc comment
+                     */
+                EOD,
         ];
 
         yield [
@@ -256,23 +324,31 @@ second line*/',
         ];
 
         yield [
-            '<?php
-                    // test'."\n                ",
-            '<?php
-                    # test'."\n                ",
+            <<<'EOD'
+                <?php
+                                    // test
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    # test
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    // test1
-                    //test2
-                    // test3
-                    // test 4'."\n                ",
-            '<?php
-                    # test1
-                    #test2
-                    # test3
-                    # test 4'."\n                ",
+            <<<'EOD'
+                <?php
+                                    // test1
+                                    //test2
+                                    // test3
+                                    // test 4
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    # test1
+                                    #test2
+                                    # test3
+                                    # test 4
+                EOD."\n                ",
         ];
 
         yield [
@@ -282,15 +358,19 @@ second line*/',
 
         // Untouched cases
         yield [
-            '<?php
-                    //#test'."\n                ",
+            <<<'EOD'
+                <?php
+                                    //#test
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    /*
-                        #test
-                    */'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /*
+                                        #test
+                                    */
+                EOD."\n                ",
         ];
 
         yield [
@@ -303,9 +383,11 @@ second line*/',
         ];
 
         yield [
-            '<?php function foo(
-    #[MyAttr([1, 2])] Type $myParam,
-) {} // foo',
+            <<<'EOD'
+                <?php function foo(
+                    #[MyAttr([1, 2])] Type $myParam,
+                ) {} // foo
+                EOD,
         ];
     }
 
@@ -320,40 +402,46 @@ second line*/',
     public static function provideAllCases(): iterable
     {
         yield [
-            '<?php
-    // 1
-    // 2
-    /*
-     * 3.a
-     * 3.b
-     */
-    /**
-     * 4
-     */
-    // 5
-',
-            '<?php
-    /* 1 */
-    /*
-     * 2
-     */
-    /*
-     * 3.a
-     * 3.b
-     */
-    /**
-     * 4
-     */
-    # 5
-',
+            <<<'EOD'
+                <?php
+                    // 1
+                    // 2
+                    /*
+                     * 3.a
+                     * 3.b
+                     */
+                    /**
+                     * 4
+                     */
+                    // 5
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    /* 1 */
+                    /*
+                     * 2
+                     */
+                    /*
+                     * 3.a
+                     * 3.b
+                     */
+                    /**
+                     * 4
+                     */
+                    # 5
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                function foo() {
-                    /* ?> */
-                    return "bar";
-                }',
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    /* ?> */
+                                    return "bar";
+                                }
+                EOD,
         ];
     }
 }

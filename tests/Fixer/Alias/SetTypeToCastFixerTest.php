@@ -39,32 +39,36 @@ final class SetTypeToCastFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'null cast comments' => [
-            '<?php
-# 0
-$foo = null# 1
-# 2
-# 3
-# 4
-# 5
-# 6
-# 7
-# 8
-# 9
-# 10
-;',
-            '<?php
-# 0
-settype# 1
-# 2
-(# 3
-# 4
-$foo# 5
-# 6
-,# 7
-# 8
-"null"# 9
-)# 10
-;',
+            <<<'EOD'
+                <?php
+                # 0
+                $foo = null# 1
+                # 2
+                # 3
+                # 4
+                # 5
+                # 6
+                # 7
+                # 8
+                # 9
+                # 10
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+                # 0
+                settype# 1
+                # 2
+                (# 3
+                # 4
+                $foo# 5
+                # 6
+                ,# 7
+                # 8
+                "null"# 9
+                )# 10
+                ;
+                EOD,
         ];
 
         yield 'array + spacing' => [
@@ -133,43 +137,51 @@ $foo# 5
         ];
 
         yield 'comments with line breaks' => [
-            '<?php #0
-#1
-$foo = (int) $foo#2
-#3
-#4
-#5
-#6
-#7
-#8
-;#9',
-            '<?php #0
-#1
-settype#2
-#3
-(#4
-$foo#5
-,#6
-"integer"#7
-)#8
-;#9',
+            <<<'EOD'
+                <?php #0
+                #1
+                $foo = (int) $foo#2
+                #3
+                #4
+                #5
+                #6
+                #7
+                #8
+                ;#9
+                EOD,
+            <<<'EOD'
+                <?php #0
+                #1
+                settype#2
+                #3
+                (#4
+                $foo#5
+                ,#6
+                "integer"#7
+                )#8
+                ;#9
+                EOD,
         ];
 
         // do not fix cases
         yield 'first argument is not a variable' => [
-            '<?php
-                    namespace A\B;             // comment
-                    function settype($a, $b){} // "
+            <<<'EOD'
+                <?php
+                                    namespace A\B;             // comment
+                                    function settype($a, $b){} // "
 
-                    settype(1, "double");'."\n                ",
+                                    settype(1, "double");
+                EOD."\n                ",
         ];
 
         yield 'first argument is variable followed by operation' => [
-            '<?php
-                    namespace A\B;                // comment
-                    function settype($a, $b){}    // "
+            <<<'EOD'
+                <?php
+                                    namespace A\B;                // comment
+                                    function settype($a, $b){}    // "
 
-                    settype($foo + 1, "integer"); // function must be overridden, so do not fix it'."\n                ",
+                                    settype($foo + 1, "integer"); // function must be overridden, so do not fix it
+                EOD."\n                ",
         ];
 
         yield 'wrong numbers of arguments' => [
@@ -217,28 +229,34 @@ $foo#5
         ];
 
         yield 'wrapped statements, fixable after removing the useless parenthesis brace' => [
-            '<?php
-                    settype(/*1*//*2*/($a), \'int\');
-                    settype($b, (\'int\'));
-                    settype(($c), (\'int\'));
-                    settype((($d)), ((\'int\')));'."\n                ",
+            <<<'EOD'
+                <?php
+                                    settype(/*1*//*2*/($a), 'int');
+                                    settype($b, ('int'));
+                                    settype(($c), ('int'));
+                                    settype((($d)), (('int')));
+                EOD."\n                ",
         ];
 
         yield 'wrapped statements, not-fixable, even after removing the useless parenthesis brace' => [
-            '<?php
-                    namespace A\B;                // comment
-                    function settype($a, $b){}    // "
+            <<<'EOD'
+                <?php
+                                    namespace A\B;                // comment
+                                    function settype($a, $b){}    // "
 
-                    settype($foo1, (("integer")."1"));
-                    settype($foo2, ("1".("integer")));
-                    settype($foo3, ((("integer")."1")));
-                    settype((($foo)+1), "integer");'."\n                ",
+                                    settype($foo1, (("integer")."1"));
+                                    settype($foo2, ("1".("integer")));
+                                    settype($foo3, ((("integer")."1")));
+                                    settype((($foo)+1), "integer");
+                EOD."\n                ",
         ];
 
         yield 'nested is not an issue for this fixer, as these non may be fixed' => [
-            '<?php
-                    settype($foo, settype($foo, "double"));
-                    settype(settype($foo, "double"), "double");'."\n                ",
+            <<<'EOD'
+                <?php
+                                    settype($foo, settype($foo, "double"));
+                                    settype(settype($foo, "double"), "double");
+                EOD."\n                ",
         ];
 
         yield 'unknown type II' => [
@@ -251,28 +269,32 @@ $foo#5
         ];
 
         yield 'comments with line breaks II' => [
-            '<?php #0
-#1
-$foo = (int) $foo#2
-#3
-#4
-#5
-#6
-#7
-#8
-#9
-;#10',
-            '<?php #0
-#1
-settype#2
-#3
-(#4
-$foo#5
-,#6
-"integer"#7
-,#8
-)#9
-;#10',
+            <<<'EOD'
+                <?php #0
+                #1
+                $foo = (int) $foo#2
+                #3
+                #4
+                #5
+                #6
+                #7
+                #8
+                #9
+                ;#10
+                EOD,
+            <<<'EOD'
+                <?php #0
+                #1
+                settype#2
+                #3
+                (#4
+                $foo#5
+                ,#6
+                "integer"#7
+                ,#8
+                )#9
+                ;#10
+                EOD,
         ];
     }
 }

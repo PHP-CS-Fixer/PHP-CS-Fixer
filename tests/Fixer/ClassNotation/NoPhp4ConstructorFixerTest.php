@@ -44,21 +44,23 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = new Foo() <=> 1;
-                    $a = new Foo <=> 1;
-                    $a = new class() {};
-                    $a = new class() implements Foo{};
-                    $a = new class() /**/ extends Bar1{};
-                    $a = new class()  extends Bar2 implements Foo{};
-                    $a = new class()    extends Bar3 implements Foo, Foo2{};
-                    $a = new class() {};
-                    $a = new class {};
-                    $a = new class implements Foo{};
-                    $a = new class /**/ extends Bar1{};
-                    $a = new class  extends Bar2 implements Foo{};
-                    $a = new class    extends Bar3 implements Foo, Foo2{};
-                    $a = new class {}?>'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() <=> 1;
+                                    $a = new Foo <=> 1;
+                                    $a = new class() {};
+                                    $a = new class() implements Foo{};
+                                    $a = new class() /**/ extends Bar1{};
+                                    $a = new class()  extends Bar2 implements Foo{};
+                                    $a = new class()    extends Bar3 implements Foo, Foo2{};
+                                    $a = new class() {};
+                                    $a = new class {};
+                                    $a = new class implements Foo{};
+                                    $a = new class /**/ extends Bar1{};
+                                    $a = new class  extends Bar2 implements Foo{};
+                                    $a = new class    extends Bar3 implements Foo, Foo2{};
+                                    $a = new class {}?>
+                EOD."\n                ",
         ];
 
         yield 'simple class 1' => [
@@ -1041,93 +1043,109 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function __construct()
-    {
-    }
-}',
-            '<?php
-class Foo
-{
-    public function Foo()
-    {
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function __construct()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function Foo()
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function __construct()
-    {
-        $this?->__construct();
-    }
-}',
-            '<?php
-class Foo
-{
-    public function Foo()
-    {
-        $this?->__construct();
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function __construct()
+                    {
+                        $this?->__construct();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function Foo()
+                    {
+                        $this?->__construct();
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo extends Bar
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-}',
-            '<?php
-class Foo extends Bar
-{
-    public function Foo()
-    {
-        $this?->Bar();
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo extends Bar
+                {
+                    public function __construct()
+                    {
+                        parent::__construct();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo extends Bar
+                {
+                    public function Foo()
+                    {
+                        $this?->Bar();
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct($bar = 1, $baz = null)
-    {
-        var_dump(1);
-    }
-}
-',
-            '<?php
-class Foo
-{
-    /**
-     * Constructor
-     */
-    public function __construct($bar = 1, $baz = null)
-    {
-        var_dump(1);
-    }
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /**
+                     * Constructor
+                     */
+                    public function __construct($bar = 1, $baz = null)
+                    {
+                        var_dump(1);
+                    }
+                }
 
-    /**
-     * PHP-4 Constructor
-     */
-    function Foo($bar = 1, $baz = null)
-    {
-        $this?->__construct($bar, $baz);
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /**
+                     * Constructor
+                     */
+                    public function __construct($bar = 1, $baz = null)
+                    {
+                        var_dump(1);
+                    }
+
+                    /**
+                     * PHP-4 Constructor
+                     */
+                    function Foo($bar = 1, $baz = null)
+                    {
+                        $this?->__construct($bar, $baz);
+                    }
+                }
+
+                EOD,
         ];
     }
 }

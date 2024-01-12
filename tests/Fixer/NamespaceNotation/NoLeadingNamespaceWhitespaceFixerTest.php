@@ -63,50 +63,68 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 
         // multiple namespaces with newline
         yield [
-            '<?php
-namespace Test6a;
-namespace Test6b;',
+            <<<'EOD'
+                <?php
+                namespace Test6a;
+                namespace Test6b;
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Test7a;
-/* abc */
-namespace Test7b;',
-            '<?php
-namespace Test7a;
-/* abc */namespace Test7b;',
+            <<<'EOD'
+                <?php
+                namespace Test7a;
+                /* abc */
+                namespace Test7b;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Test7a;
+                /* abc */namespace Test7b;
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Test8a;
-namespace Test8b;',
-            '<?php
- namespace Test8a;
-    namespace Test8b;',
+            <<<'EOD'
+                <?php
+                namespace Test8a;
+                namespace Test8b;
+                EOD,
+            <<<'EOD'
+                <?php
+                 namespace Test8a;
+                    namespace Test8b;
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Test9a;
-class Test {}
-namespace Test9b;',
-            '<?php
- namespace Test9a;
-class Test {}
-   namespace Test9b;',
+            <<<'EOD'
+                <?php
+                namespace Test9a;
+                class Test {}
+                namespace Test9b;
+                EOD,
+            <<<'EOD'
+                <?php
+                 namespace Test9a;
+                class Test {}
+                   namespace Test9b;
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Test10a;
-use Exception;
-namespace Test10b;',
-            '<?php
- namespace Test10a;
-use Exception;
-   namespace Test10b;',
+            <<<'EOD'
+                <?php
+                namespace Test10a;
+                use Exception;
+                namespace Test10b;
+                EOD,
+            <<<'EOD'
+                <?php
+                 namespace Test10a;
+                use Exception;
+                   namespace Test10b;
+                EOD,
         ];
 
         // multiple namespaces without newline
@@ -122,35 +140,51 @@ use Exception;
 
         // namespaces without spaces in between
         yield [
-            '<?php
-namespace Test14a{}
-namespace Test14b{}',
-            '<?php
-     namespace Test14a{}namespace Test14b{}',
+            <<<'EOD'
+                <?php
+                namespace Test14a{}
+                namespace Test14b{}
+                EOD,
+            <<<'EOD'
+                <?php
+                     namespace Test14a{}namespace Test14b{}
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Test15a;
-namespace Test15b;',
-            '<?php
-namespace Test15a;namespace Test15b;',
+            <<<'EOD'
+                <?php
+                namespace Test15a;
+                namespace Test15b;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Test15a;namespace Test15b;
+                EOD,
         ];
 
         yield [
-            '<?php
-'.implode("\n", $manySpaces),
-            '<?php
-'.implode('', $manySpaces),
+            <<<'EOD'
+                <?php
+
+                EOD.implode("\n", $manySpaces),
+            <<<'EOD'
+                <?php
+
+                EOD.implode('', $manySpaces),
         ];
 
         yield [
-            '<?php
-#
-namespace TestComment;',
-            '<?php
-#
-  namespace TestComment;',
+            <<<'EOD'
+                <?php
+                #
+                namespace TestComment;
+                EOD,
+            <<<'EOD'
+                <?php
+                #
+                  namespace TestComment;
+                EOD,
         ];
     }
 

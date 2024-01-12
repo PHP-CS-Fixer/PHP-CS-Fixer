@@ -34,492 +34,542 @@ final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use Some\Cloz;
-use Aaa\Bbb;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use Some\Cloz;
+                use Aaa\Bbb;
 
-use const some\a\{ConstD};
-use const some\a\{ConstA};
-use const some\a\{ConstB, ConstC as CC};
-use const some\b\{ConstE};
+                use const some\a\{ConstD};
+                use const some\a\{ConstA};
+                use const some\a\{ConstB, ConstC as CC};
+                use const some\b\{ConstE};
 
-use function some\f\{fn_g, fn_h, fn_i};
-use function some\c\{fn_f};
-use function some\a\{fn_x};
-use function some\b\{fn_c, fn_d, fn_e};
-use function some\a\{fn_a, fn_b};
-',
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use Some\Cloz;
-use Aaa\Bbb;
-use const some\a\{ConstD};
-use const some\a\{ConstA};
-use const some\a\{ConstB, ConstC as CC};
-use const some\b\{ConstE};
-use function some\f\{fn_g, fn_h, fn_i};
-use function some\c\{fn_f};
-use function some\a\{fn_x};
-use function some\b\{fn_c, fn_d, fn_e};
-use function some\a\{fn_a, fn_b};
-',
+                use function some\f\{fn_g, fn_h, fn_i};
+                use function some\c\{fn_f};
+                use function some\a\{fn_x};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use Some\Cloz;
+                use Aaa\Bbb;
+                use const some\a\{ConstD};
+                use const some\a\{ConstA};
+                use const some\a\{ConstB, ConstC as CC};
+                use const some\b\{ConstE};
+                use function some\f\{fn_g, fn_h, fn_i};
+                use function some\c\{fn_f};
+                use function some\a\{fn_x};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
 
-use function some\f\{fn_g, fn_h, fn_i};
+                use function some\f\{fn_g, fn_h, fn_i};
 
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
 
-use function some\c\{fn_f};
+                use function some\c\{fn_f};
 
-use some\b\{
-    ClassF,
-    ClassG
-};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
 
-use const some\a\{ConstD};
+                use const some\a\{ConstD};
 
-use Some\Cloz;
+                use Some\Cloz;
 
-use function some\a\{fn_x};
+                use function some\a\{fn_x};
 
-use const some\a\{ConstA};
+                use const some\a\{ConstA};
 
-use function some\b\{fn_c, fn_d, fn_e};
+                use function some\b\{fn_c, fn_d, fn_e};
 
-use const some\a\{ConstB, ConstC as CC};
+                use const some\a\{ConstB, ConstC as CC};
 
-use Aaa\Bbb;
+                use Aaa\Bbb;
 
-use const some\b\{ConstE};
+                use const some\b\{ConstE};
 
-use function some\a\{fn_a, fn_b};
-',
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use function some\c\{fn_f};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstD};
-use Some\Cloz;
-use function some\a\{fn_x};
-use const some\a\{ConstA};
-use function some\b\{fn_c, fn_d, fn_e};
-use const some\a\{ConstB, ConstC as CC};
-use Aaa\Bbb;
-use const some\b\{ConstE};
-use function some\a\{fn_a, fn_b};
-',
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use function some\c\{fn_f};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstD};
+                use Some\Cloz;
+                use function some\a\{fn_x};
+                use const some\a\{ConstA};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use const some\a\{ConstB, ConstC as CC};
+                use Aaa\Bbb;
+                use const some\b\{ConstE};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-#use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                #use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
 
-use function some\c\{fn_f};
+                use function some\c\{fn_f};
 
-use some\b\{
-    ClassF,
-    ClassG
-};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
 
-use const some\a\{ConstD};
+                use const some\a\{ConstD};
 
-use Some\Cloz;
+                use Some\Cloz;
 
-use function some\a\{fn_x};
+                use function some\a\{fn_x};
 
-/** Import ConstA to do some nice magic */
-use const some\a\{ConstA};
+                /** Import ConstA to do some nice magic */
+                use const some\a\{ConstA};
 
-use function some\b\{fn_c, fn_d, fn_e};
+                use function some\b\{fn_c, fn_d, fn_e};
 
-use const some\a\{ConstB, ConstC as CC};
+                use const some\a\{ConstB, ConstC as CC};
 
-use Aaa\Bbb;
+                use Aaa\Bbb;
 
-use const some\b\{ConstE};
+                use const some\b\{ConstE};
 
-use function some\a\{fn_a, fn_b};
-',
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-#use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use function some\c\{fn_f};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstD};
-use Some\Cloz;
-use function some\a\{fn_x};
-/** Import ConstA to do some nice magic */
-use const some\a\{ConstA};
-use function some\b\{fn_c, fn_d, fn_e};
-use const some\a\{ConstB, ConstC as CC};
-use Aaa\Bbb;
-use const some\b\{ConstE};
-use function some\a\{fn_a, fn_b};
-',
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                #use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use function some\c\{fn_f};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstD};
+                use Some\Cloz;
+                use function some\a\{fn_x};
+                /** Import ConstA to do some nice magic */
+                use const some\a\{ConstA};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use const some\a\{ConstB, ConstC as CC};
+                use Aaa\Bbb;
+                use const some\b\{ConstE};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
-use Aaa\Ccc;
-use Foo\Zar\Baz;
- */
-use function some\f\{fn_g, fn_h, fn_i};
+            <<<'EOD'
+                <?php
+                /**
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                 */
+                use function some\f\{fn_g, fn_h, fn_i};
 
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
 
-use function some\c\{fn_f};
+                use function some\c\{fn_f};
 
-use some\b\{
-    ClassF,
-    ClassG
-};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
 
-use const some\a\{ConstD};
+                use const some\a\{ConstD};
 
-use Some\Cloz;
+                use Some\Cloz;
 
-// Ignore the following content
-// use function some\a\{fn_x};
-// use const some\a\{ConstA};
+                // Ignore the following content
+                // use function some\a\{fn_x};
+                // use const some\a\{ConstA};
 
-use function some\b\{fn_c, fn_d, fn_e};
+                use function some\b\{fn_c, fn_d, fn_e};
 
-use const some\a\{ConstB, ConstC as CC};
+                use const some\a\{ConstB, ConstC as CC};
 
-use Aaa\Bbb;
+                use Aaa\Bbb;
 
-use const some\b\{ConstE};
+                use const some\b\{ConstE};
 
-use function some\a\{fn_a, fn_b};
-',
-            '<?php
-/**
-use Aaa\Ccc;
-use Foo\Zar\Baz;
- */
-use function some\f\{fn_g, fn_h, fn_i};
+                use function some\a\{fn_a, fn_b};
 
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                 */
+                use function some\f\{fn_g, fn_h, fn_i};
 
-use function some\c\{fn_f};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
 
-use some\b\{
-    ClassF,
-    ClassG
-};
+                use function some\c\{fn_f};
 
-use const some\a\{ConstD};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
 
-use Some\Cloz;
-// Ignore the following content
-// use function some\a\{fn_x};
-// use const some\a\{ConstA};
+                use const some\a\{ConstD};
 
-use function some\b\{fn_c, fn_d, fn_e};
+                use Some\Cloz;
+                // Ignore the following content
+                // use function some\a\{fn_x};
+                // use const some\a\{ConstA};
 
-use const some\a\{ConstB, ConstC as CC};
+                use function some\b\{fn_c, fn_d, fn_e};
 
-use Aaa\Bbb;
+                use const some\a\{ConstB, ConstC as CC};
 
-use const some\b\{ConstE};
+                use Aaa\Bbb;
 
-use function some\a\{fn_a, fn_b};
-',
+                use const some\b\{ConstE};
+
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Aaa\Ccc;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
-/*use Foo\Zar\Baz;
-use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use function some\c\{fn_f};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstD};
-use Some\Cloz;
-use function some\a\{fn_x};
-use const some\a\{ConstA};
-use function some\b\{fn_c, fn_d, fn_e};
-use const some\a\{ConstB, ConstC as CC};
-use Aaa\Bbb;
-use const some\b\{ConstE};
-*/
-use function some\a\{fn_a, fn_b};
-',
-            '<?php
-use Aaa\Ccc;
-/*use Foo\Zar\Baz;
-use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use function some\c\{fn_f};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstD};
-use Some\Cloz;
-use function some\a\{fn_x};
-use const some\a\{ConstA};
-use function some\b\{fn_c, fn_d, fn_e};
-use const some\a\{ConstB, ConstC as CC};
-use Aaa\Bbb;
-use const some\b\{ConstE};
-*/
-use function some\a\{fn_a, fn_b};
-',
+                /*use Foo\Zar\Baz;
+                use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use function some\c\{fn_f};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstD};
+                use Some\Cloz;
+                use function some\a\{fn_x};
+                use const some\a\{ConstA};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use const some\a\{ConstB, ConstC as CC};
+                use Aaa\Bbb;
+                use const some\b\{ConstE};
+                */
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                /*use Foo\Zar\Baz;
+                use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use function some\c\{fn_f};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstD};
+                use Some\Cloz;
+                use function some\a\{fn_x};
+                use const some\a\{ConstA};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use const some\a\{ConstB, ConstC as CC};
+                use Aaa\Bbb;
+                use const some\b\{ConstE};
+                */
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Aaa\Ccc;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
-use function some\a\{fn_a, fn_b};
-use function some\b\{
-    fn_c,
-    fn_d
-};
-',
-            '<?php
-use Aaa\Ccc;
+                use function some\a\{fn_a, fn_b};
+                use function some\b\{
+                    fn_c,
+                    fn_d
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
 
 
-use function some\a\{fn_a, fn_b};
-use function some\b\{
-    fn_c,
-    fn_d
-};
-',
+                use function some\a\{fn_a, fn_b};
+                use function some\b\{
+                    fn_c,
+                    fn_d
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Aaa\Ccc;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
-use function some\a\{fn_a, fn_b}; // Do this because of reasons
-use function some\b\{
-    fn_c,
-    fn_d
-};
-',
-            '<?php
-use Aaa\Ccc;
+                use function some\a\{fn_a, fn_b}; // Do this because of reasons
+                use function some\b\{
+                    fn_c,
+                    fn_d
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
 
 
-use function some\a\{fn_a, fn_b}; // Do this because of reasons
-use function some\b\{
-    fn_c,
-    fn_d
-};
-',
+                use function some\a\{fn_a, fn_b}; // Do this because of reasons
+                use function some\b\{
+                    fn_c,
+                    fn_d
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Aaa\Ccc;
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
-/** Beginning of line comment as well */use function some\a\{fn_a, fn_b};
-use function some\b\{
-    fn_c,
-    fn_d
-};
-',
-            '<?php
-use Aaa\Ccc;
+                /** Beginning of line comment as well */use function some\a\{fn_a, fn_b};
+                use function some\b\{
+                    fn_c,
+                    fn_d
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
 
 
 
-/** Beginning of line comment as well */use function some\a\{fn_a, fn_b};
-use function some\b\{
-    fn_c,
-    fn_d
-};
-',
+                /** Beginning of line comment as well */use function some\a\{fn_a, fn_b};
+                use function some\b\{
+                    fn_c,
+                    fn_d
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use /* x */ function /* x */ Psl\Str\trim;
+                use /* x */ function /* x */ Psl\Str\trim;
 
-use /* x */ Psl\Str /* x */;
+                use /* x */ Psl\Str /* x */;
 
-use /* x */ const /* x */ Psl\Str\OTHER_ALPHABET;
-use /* x */ const /* x */ Psl\Str\ALPHABET;
+                use /* x */ const /* x */ Psl\Str\OTHER_ALPHABET;
+                use /* x */ const /* x */ Psl\Str\ALPHABET;
 
-use /* x */ function /* x */ Psl\Str\ /* x */ {
-    /* x */ trim_left /* x */,
-    /* x */ trim_right /* x */,
-};
-',
-            '<?php
+                use /* x */ function /* x */ Psl\Str\ /* x */ {
+                    /* x */ trim_left /* x */,
+                    /* x */ trim_right /* x */,
+                };
 
-use /* x */ function /* x */ Psl\Str\trim;
-use /* x */ Psl\Str /* x */;
-use /* x */ const /* x */ Psl\Str\OTHER_ALPHABET;
-use /* x */ const /* x */ Psl\Str\ALPHABET;
-use /* x */ function /* x */ Psl\Str\ /* x */ {
-    /* x */ trim_left /* x */,
-    /* x */ trim_right /* x */,
-};
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use /* x */ function /* x */ Psl\Str\trim;
+                use /* x */ Psl\Str /* x */;
+                use /* x */ const /* x */ Psl\Str\OTHER_ALPHABET;
+                use /* x */ const /* x */ Psl\Str\ALPHABET;
+                use /* x */ function /* x */ Psl\Str\ /* x */ {
+                    /* x */ trim_left /* x */,
+                    /* x */ trim_right /* x */,
+                };
+
+                EOD,
         ];
 
         yield 'lots of inserts in same namespace' => [
-            '<?php
-namespace A\B6 {
-    use C1\B1;
+            <<<'EOD'
+                <?php
+                namespace A\B6 {
+                    use C1\B1;
 
-    use const C6\Z1;
+                    use const C6\Z1;
 
-    use C2\B2;
+                    use C2\B2;
 
-    use const C7\Z2;
+                    use const C7\Z2;
 
-    use C3\B3;
+                    use C3\B3;
 
-    use const C8\Z3;
+                    use const C8\Z3;
 
-    use C4\B4;
+                    use C4\B4;
 
-    use const C9\Z4;
+                    use const C9\Z4;
 
-    use C5\B5;
+                    use C5\B5;
 
-    use const C0\Z5;
-}'."\n            ",
-            '<?php
-namespace A\B6 {
-    use C1\B1;use const C6\Z1;
-    use C2\B2;use const C7\Z2;
-    use C3\B3;use const C8\Z3;
-    use C4\B4;use const C9\Z4;
-    use C5\B5;use const C0\Z5;
-}'."\n            ",
+                    use const C0\Z5;
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                namespace A\B6 {
+                    use C1\B1;use const C6\Z1;
+                    use C2\B2;use const C7\Z2;
+                    use C3\B3;use const C8\Z3;
+                    use C4\B4;use const C9\Z4;
+                    use C5\B5;use const C0\Z5;
+                }
+                EOD."\n            ",
         ];
 
         yield 'lots of inserts in multiple namespaces' => [
-            '<?php
-namespace A\B1 {
-    use C\B;
+            <<<'EOD'
+                <?php
+                namespace A\B1 {
+                    use C\B;
 
-    use const C\Z;
-}
-namespace A\B2 {
-    use C\B;
+                    use const C\Z;
+                }
+                namespace A\B2 {
+                    use C\B;
 
-    use const C\Z;
-}
-namespace A\B3 {
-    use C\B;
+                    use const C\Z;
+                }
+                namespace A\B3 {
+                    use C\B;
 
-    use const C\Z;
-}
-namespace A\B4 {
-    use C\B;
+                    use const C\Z;
+                }
+                namespace A\B4 {
+                    use C\B;
 
-    use const C\Z;
-}
-namespace A\B5 {
-    use C\B;
+                    use const C\Z;
+                }
+                namespace A\B5 {
+                    use C\B;
 
-    use const C\Z;
-}'."\n            ",
-            '<?php
-namespace A\B1 {
-    use C\B;use const C\Z;
-}
-namespace A\B2 {
-    use C\B;use const C\Z;
-}
-namespace A\B3 {
-    use C\B;use const C\Z;
-}
-namespace A\B4 {
-    use C\B;use const C\Z;
-}
-namespace A\B5 {
-    use C\B;use const C\Z;
-}'."\n            ",
+                    use const C\Z;
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                namespace A\B1 {
+                    use C\B;use const C\Z;
+                }
+                namespace A\B2 {
+                    use C\B;use const C\Z;
+                }
+                namespace A\B3 {
+                    use C\B;use const C\Z;
+                }
+                namespace A\B4 {
+                    use C\B;use const C\Z;
+                }
+                namespace A\B5 {
+                    use C\B;use const C\Z;
+                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php use A\B;    /*1*/
+            <<<'EOD'
+                <?php use A\B;    /*1*/
 
-use const C\D;',
+                use const C\D;
+                EOD,
             '<?php use A\B;    /*1*/      use const C\D;',
         ];
 
         yield [
-            '<?php
-namespace Foo;
-use A\B; /* foo */  /* A */ /* B */  # X
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use A\B; /* foo */  /* A */ /* B */  # X
 
-use const C\D; // bar
-',
-            '<?php
-namespace Foo;
-use A\B; /* foo */  /* A */ /* B */  # X
-use const C\D; // bar
-',
+                use const C\D; // bar
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use A\B; /* foo */  /* A */ /* B */  # X
+                use const C\D; // bar
+
+                EOD,
         ];
     }
 
@@ -536,17 +586,21 @@ use const C\D; // bar
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Some\/**Namespace*/Weird\Be/**ha*/;
+                use Some\/**Namespace*/Weird\Be/**ha*/;
 
-use function Other\/**Namespace*/Weird\/**Comments*/have;
-',
-            '<?php
+                use function Other\/**Namespace*/Weird\/**Comments*/have;
 
-use Some\/**Namespace*/Weird\Be/**ha*/;
-use function Other\/**Namespace*/Weird\/**Comments*/have;
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use Some\/**Namespace*/Weird\Be/**ha*/;
+                use function Other\/**Namespace*/Weird\/**Comments*/have;
+
+                EOD,
         ];
     }
 }

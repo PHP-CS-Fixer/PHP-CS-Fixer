@@ -61,10 +61,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = 1 ? "aaa" : "bbb";
-                    $b = 1 ? fnc() : [];
-                    $c = 1 ?: [];'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = 1 ? "aaa" : "bbb";
+                                    $b = 1 ? fnc() : [];
+                                    $c = 1 ?: [];
+                EOD."\n                ",
         ];
 
         yield [
@@ -146,24 +148,28 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                 29 => CT::T_NULLABLE_TYPE,
                 41 => CT::T_NULLABLE_TYPE,
             ],
-            '<?php
-                class Foo
-                {
-                    public function __construct(
-                        private ?string $foo = null,
-                        protected ?string $bar = null,
-                        public ?string $xyz = null,
-                    ) {
-                    }
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    public function __construct(
+                                        private ?string $foo = null,
+                                        protected ?string $bar = null,
+                                        public ?string $xyz = null,
+                                    ) {
+                                    }
+                                }
+                EOD."\n            ",
         ];
 
         yield [
             [
                 10 => CT::T_NULLABLE_TYPE,
             ],
-            '<?php
-                function test(#[TestAttribute] ?User $user) {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                function test(#[TestAttribute] ?User $user) {}
+                EOD."\n            ",
         ];
     }
 
@@ -193,16 +199,18 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                 33 => CT::T_NULLABLE_TYPE,
                 47 => CT::T_NULLABLE_TYPE,
             ],
-            '<?php
-                class Foo
-                {
-                    public function __construct(
-                        private readonly ?string $foo = null,
-                        protected readonly ?string $bar = null,
-                        public readonly ?string $xyz = null,
-                    ) {
-                    }
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    public function __construct(
+                                        private readonly ?string $foo = null,
+                                        protected readonly ?string $bar = null,
+                                        public readonly ?string $xyz = null,
+                                    ) {
+                                    }
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -230,11 +238,13 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             [
                 12 => CT::T_NULLABLE_TYPE,
             ],
-            '<?php
-                class Foo
-                {
-                    public const ?string FOO = null;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    public const ?string FOO = null;
+                                }
+                EOD."\n            ",
         ];
     }
 }

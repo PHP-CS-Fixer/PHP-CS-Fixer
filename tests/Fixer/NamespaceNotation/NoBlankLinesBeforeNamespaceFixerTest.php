@@ -54,25 +54,37 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
         yield ["<?php\n\nnamespace\\Sub\\Foo::bar();"];
 
         yield [
-            '<?php
-    // Foo
-    namespace Foo;
-',
-            '<?php
-    // Foo'."\n    ".'
-    namespace Foo;
-',
+            <<<'EOD'
+                <?php
+                    // Foo
+                    namespace Foo;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    // Foo
+                EOD."\n    ".<<<'EOD'
+
+                    namespace Foo;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-// Foo
-namespace Foo;
-',
-            '<?php
-// Foo'."\n    ".'
-namespace Foo;
-',
+            <<<'EOD'
+                <?php
+                // Foo
+                namespace Foo;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                // Foo
+                EOD."\n    ".<<<'EOD'
+
+                namespace Foo;
+
+                EOD,
         ];
     }
 

@@ -158,9 +158,11 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                a($d) ? $d : 1;
-                $d ? a($d) : 1;'."\n            ",
+            <<<'EOD'
+                <?php
+                                a($d) ? $d : 1;
+                                $d ? a($d) : 1;
+                EOD."\n            ",
         ];
 
         yield [
@@ -189,18 +191,22 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                $bar1[0][1] = $bar[0][1] ? $bar[0][1] + 1 : $bar[0][1];
-                $bar2[0] = $bar[0] ? $bar[0] + 1 : $bar[0];
+            <<<'EOD'
+                <?php
+                                $bar1[0][1] = $bar[0][1] ? $bar[0][1] + 1 : $bar[0][1];
+                                $bar2[0] = $bar[0] ? $bar[0] + 1 : $bar[0];
 
-                $bar3[0][1] = $bar[0][1] ? ++$bar[0][1] : $bar[0][1];
-                $bar4[0] = $bar[0] ? --$bar[0] : $bar[0];'."\n            ",
+                                $bar3[0][1] = $bar[0][1] ? ++$bar[0][1] : $bar[0][1];
+                                $bar4[0] = $bar[0] ? --$bar[0] : $bar[0];
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                $foo77 = $foo ? "$foo" : $foo;
-                $foo77 = $foo ? \'$foo\' : $foo;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo77 = $foo ? "$foo" : $foo;
+                                $foo77 = $foo ? '$foo' : $foo;
+                EOD."\n            ",
         ];
 
         yield 'comments 1' => [
@@ -224,25 +230,35 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                $foo = $bar
-                    ?'.' '.'
-                    : $foo;'."\n            ",
-            '<?php
-                $foo = $bar
-                    ? $bar
-                    : $foo;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = $bar
+                                    ?
+                EOD.' '.<<<'EOD'
+
+                                    : $foo;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = $bar
+                                    ? $bar
+                                    : $foo;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                $foo = $bar # 1
-                    ?  # 2
-                    : $foo; # 3'."\n            ",
-            '<?php
-                $foo = $bar # 1
-                    ? $bar # 2
-                    : $foo; # 3'."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = $bar # 1
+                                    ?  # 2
+                                    : $foo; # 3
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = $bar # 1
+                                    ? $bar # 2
+                                    : $foo; # 3
+                EOD."\n            ",
         ];
 
         yield [
@@ -266,58 +282,66 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$a ?  : <<<EOT
+                $a ?  : <<<EOT
 
-EOT;
+                EOT;
 
-$a ?  : <<<\'EOT\'
+                $a ?  : <<<'EOT'
 
-EOT;
+                EOT;
 
-<<<EOT
+                <<<EOT
 
-EOT
-?'.' '.'
-: $a
-;
+                EOT
+                ?
+                EOD.' '.<<<'EOD'
 
-<<<\'EOT\'
+                : $a
+                ;
 
-EOT
-?'.' '.'
-: $a
-;
-',
-            '<?php
+                <<<'EOT'
 
-$a ? $a : <<<EOT
+                EOT
+                ?
+                EOD.' '.<<<'EOD'
 
-EOT;
+                : $a
+                ;
 
-$a ? $a : <<<\'EOT\'
+                EOD,
+            <<<'EOD'
+                <?php
 
-EOT;
+                $a ? $a : <<<EOT
 
-<<<EOT
+                EOT;
 
-EOT
-? <<<EOT
+                $a ? $a : <<<'EOT'
 
-EOT
-: $a
-;
+                EOT;
 
-<<<\'EOT\'
+                <<<EOT
 
-EOT
-? <<<\'EOT\'
+                EOT
+                ? <<<EOT
 
-EOT
-: $a
-;
-',
+                EOT
+                : $a
+                ;
+
+                <<<'EOT'
+
+                EOT
+                ? <<<'EOT'
+
+                EOT
+                : $a
+                ;
+
+                EOD,
         ];
 
         yield [
@@ -326,16 +350,20 @@ EOT
         ];
 
         yield [
-            '<?php
-                $f = !foo() ?  : 1;
-                $f = !$a ?  : 1;
-                $f = $a[1][!$a][@foo()] ?  : 1;
-                $f = !foo() ?  : 1;'."\n            ",
-            '<?php
-                $f = !foo() ? !foo() : 1;
-                $f = !$a ? !$a : 1;
-                $f = $a[1][!$a][@foo()] ? $a[1][!$a][@foo()] : 1;
-                $f = !foo() ? !foo() : 1;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $f = !foo() ?  : 1;
+                                $f = !$a ?  : 1;
+                                $f = $a[1][!$a][@foo()] ?  : 1;
+                                $f = !foo() ?  : 1;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $f = !foo() ? !foo() : 1;
+                                $f = !$a ? !$a : 1;
+                                $f = $a[1][!$a][@foo()] ? $a[1][!$a][@foo()] : 1;
+                                $f = !foo() ? !foo() : 1;
+                EOD."\n            ",
         ];
 
         yield [
@@ -387,21 +415,25 @@ EOT
         ];
 
         yield [
-            '<?php
-                $c = ++$a ? ++$a : $b;
-                $c = (++$a) ? (++$a) : $b;
-                $c = ($a++) ? ($a++) : $b;
-                $c = fooBar(++$a) ? fooBar(++$a) : $b;
-                $c = [++$a] ? [++$a] : $b;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $c = ++$a ? ++$a : $b;
+                                $c = (++$a) ? (++$a) : $b;
+                                $c = ($a++) ? ($a++) : $b;
+                                $c = fooBar(++$a) ? fooBar(++$a) : $b;
+                                $c = [++$a] ? [++$a] : $b;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                $c = --$a ? --$a : $b;
-                $c = (--$a) ? (--$a) : $b;
-                $c = ($a--) ? ($a--) : $b;
-                $c = fooBar(--$a) ? fooBar(--$a) : $b;
-                $c = [--$a] ? [--$a] : $b;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $c = --$a ? --$a : $b;
+                                $c = (--$a) ? (--$a) : $b;
+                                $c = ($a--) ? ($a--) : $b;
+                                $c = fooBar(--$a) ? fooBar(--$a) : $b;
+                                $c = [--$a] ? [--$a] : $b;
+                EOD."\n            ",
         ];
 
         yield [
@@ -493,14 +525,18 @@ EOT
 
     public static function provideFix80Cases(): iterable
     {
-        yield ['<?php
+        yield [<<<'EOD'
+            <?php
 
-function test(#[TestAttribute] ?User $user) {}
-'];
+            function test(#[TestAttribute] ?User $user) {}
 
-        yield ['<?php
+            EOD];
 
-function test(#[TestAttribute] ?User $user = null) {}
-'];
+        yield [<<<'EOD'
+            <?php
+
+            function test(#[TestAttribute] ?User $user = null) {}
+
+            EOD];
     }
 }

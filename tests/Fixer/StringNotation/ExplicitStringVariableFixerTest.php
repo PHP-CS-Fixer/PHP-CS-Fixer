@@ -58,14 +58,18 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a = <<<EOF
-My name is {$name}!
-EOF;
-',
-            '<?php $a = <<<EOF
-My name is $name!
-EOF;
-',
+            <<<'EOD'
+                <?php $a = <<<EOF
+                My name is {$name}!
+                EOF;
+
+                EOD,
+            <<<'EOD'
+                <?php $a = <<<EOF
+                My name is $name!
+                EOF;
+
+                EOD,
         ];
 
         yield [
@@ -84,14 +88,18 @@ EOF;
         ];
 
         yield [
-            '<?php $a = <<<EOF
-{$b}
-EOF;
-',
-            '<?php $a = <<<EOF
-$b
-EOF;
-',
+            <<<'EOD'
+                <?php $a = <<<EOF
+                {$b}
+                EOF;
+
+                EOD,
+            <<<'EOD'
+                <?php $a = <<<EOF
+                $b
+                EOF;
+
+                EOD,
         ];
 
         yield ['<?php $a = \'My name is $name!\';'];
@@ -101,26 +109,32 @@ EOF;
         yield ['<?php $a = "My name is {$name}!";'];
 
         yield [
-            '<?php $a = <<<EOF
-My name is {$name}!
-EOF;
-',
+            <<<'EOD'
+                <?php $a = <<<EOF
+                My name is {$name}!
+                EOF;
+
+                EOD,
         ];
 
         yield ['<?php $a = "My name is {$user->name}";'];
 
         yield [
-            '<?php $a = <<<EOF
-My name is {$user->name}
-EOF;
-',
+            <<<'EOD'
+                <?php $a = <<<EOF
+                My name is {$user->name}
+                EOF;
+
+                EOD,
         ];
 
         yield [
-            '<?php $a = <<<\'EOF\'
-$b
-EOF;
-',
+            <<<'EOD'
+                <?php $a = <<<'EOF'
+                $b
+                EOF;
+
+                EOD,
         ];
 
         yield [

@@ -54,317 +54,367 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
+                                class A
+                                {
+                                    /** */
+                                    public function A(){}
+
+                                    /**
+                                     *
+                EOD.' '.<<<'EOD'
+
+                                     */
+                                    public function B(){}
+
+                                    /**
+                                     * Descr.
+                                     *
+                                     * @param int $c
+                                     *
+                EOD.' '.<<<'EOD'
+
+                                     */
+                                    public function C($c){}
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class A
+                                {
+                                    /** @inheritdoc */
+                                    public function A(){}
+
+                                    /**
+                                     * @inheritdoc
+                                     */
+                                    public function B(){}
+
+                                    /**
+                                     * Descr.
+                                     *
+                                     * @param int $c
+                                     * @inheritdoc
+                                     */
+                                    public function C($c){}
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                class B
+                                {
+                                    /** */
+                                    public function B(){}
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class B
+                                {
+                                    /** {@INHERITDOC} */
+                                    public function B(){}
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                /** D C */
+                                class C
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /** D {    @INHERITDOC   } C */
+                                class C
+                                {
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                /** E */
+                                class E
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**     {{@Inheritdoc}}   E */
+                                class E
+                                {
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                /** F */
+                                class F
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /** F    @inheritdoc      */
+                                class F
+                                {
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    /** */
+                                    class G1{}
+                                    /** */
+                                    class G2{}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @inheritdoc */
+                                    class G1{}
+                                    /** @inheritdoc */
+                                    class G2{}
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                class H
+                                {
+                                    /* @inheritdoc comment, not PHPDoc */
+                                    public function H(){}
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                class J extends Z
+                                {
+                                    /** @inheritdoc */
+                                    public function H(){}
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                interface K extends Z
+                                {
+                                    /** @inheritdoc */
+                                    public function H();
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                /** */
+                                interface K
+                                {
+                                    /** */
+                                    public function H();
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /** @{inheritdoc} */
+                                interface K
+                                {
+                                    /** {@Inheritdoc} */
+                                    public function H();
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                trait T
+                                {
+                                    /** @inheritdoc */
+                                    public function T()
+                                    {
+                                    }
+                                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                class B
+                                {
+                                    /** */
+                                    public function falseImportFromTrait()
+                                    {
+                                    }
+                                }
+
+                                /** */
+                                class A
+                                {
+                                    use T;
+
+                                    /** @inheritdoc */
+                                    public function importFromTrait()
+                                    {
+                                    }
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class B
+                                {
+                                    /** @inheritdoc */
+                                    public function falseImportFromTrait()
+                                    {
+                                    }
+                                }
+
+                                /** @inheritdoc */
+                                class A
+                                {
+                                    use T;
+
+                                    /** @inheritdoc */
+                                    public function importFromTrait()
+                                    {
+                                    }
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class B
+                                {
+                                    /** @inheritDoc */
+                                    public function falseImportFromTrait()
+                                    {
+                                    }
+                                }
+
+                                /** @inheritDoc */
+                                class A
+                                {
+                                    use T;
+
+                                    /** @inheritDoc */
+                                    public function importFromTrait()
+                                    {
+                                    }
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                /** delete 1 */
                 class A
                 {
-                    /** */
-                    public function A(){}
-
-                    /**
-                     *'.' '.'
-                     */
-                    public function B(){}
-
-                    /**
-                     * Descr.
-                     *
-                     * @param int $c
-                     *'.' '.'
-                     */
-                    public function C($c){}
-                }'."\n                ",
-            '<?php
-                class A
-                {
-                    /** @inheritdoc */
-                    public function A(){}
-
-                    /**
-                     * @inheritdoc
-                     */
-                    public function B(){}
-
-                    /**
-                     * Descr.
-                     *
-                     * @param int $c
-                     * @inheritdoc
-                     */
-                    public function C($c){}
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                class B
-                {
-                    /** */
-                    public function B(){}
-                }'."\n                ",
-            '<?php
-                class B
-                {
-                    /** {@INHERITDOC} */
-                    public function B(){}
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                /** D C */
-                class C
-                {
-                }'."\n                ",
-            '<?php
-                /** D {    @INHERITDOC   } C */
-                class C
-                {
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                /** E */
-                class E
-                {
-                }'."\n                ",
-            '<?php
-                /**     {{@Inheritdoc}}   E */
-                class E
-                {
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                /** F */
-                class F
-                {
-                }'."\n                ",
-            '<?php
-                /** F    @inheritdoc      */
-                class F
-                {
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                    /** */
-                    class G1{}
-                    /** */
-                    class G2{}'."\n                ",
-            '<?php
-                    /** @inheritdoc */
-                    class G1{}
-                    /** @inheritdoc */
-                    class G2{}'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                class H
-                {
-                    /* @inheritdoc comment, not PHPDoc */
-                    public function H(){}
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                class J extends Z
-                {
-                    /** @inheritdoc */
-                    public function H(){}
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                interface K extends Z
-                {
-                    /** @inheritdoc */
-                    public function H();
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                /** */
-                interface K
-                {
-                    /** */
-                    public function H();
-                }'."\n                ",
-            '<?php
-                /** @{inheritdoc} */
-                interface K
-                {
-                    /** {@Inheritdoc} */
-                    public function H();
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                trait T
-                {
-                    /** @inheritdoc */
-                    public function T()
+                    /** delete 2 */
+                    public function B()
                     {
-                    }
-                }',
-        ];
+                        $a = new class implements I {
 
-        yield [
-            '<?php
-                class B
-                {
-                    /** */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** */
-                class A
-                {
-                    use T;
-
-                    /** @inheritdoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }'."\n                ",
-            '<?php
-                class B
-                {
-                    /** @inheritdoc */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** @inheritdoc */
-                class A
-                {
-                    use T;
-
-                    /** @inheritdoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }'."\n                ",
-            '<?php
-                class B
-                {
-                    /** @inheritDoc */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** @inheritDoc */
-                class A
-                {
-                    use T;
-
-                    /** @inheritDoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-
-/** delete 1 */
-class A
-{
-    /** delete 2 */
-    public function B()
-    {
-        $a = new class implements I {
-
-            /** @inheritdoc keep */
-            public function A()
-            {
-                $b = new class extends D {
-
-                    /** @inheritdoc keep */
-                    public function C()
-                    {
-                        $d = new class() {
-
-                            /** delete 3 */
-                            public function D()
+                            /** @inheritdoc keep */
+                            public function A()
                             {
+                                $b = new class extends D {
+
+                                    /** @inheritdoc keep */
+                                    public function C()
+                                    {
+                                        $d = new class() {
+
+                                            /** delete 3 */
+                                            public function D()
+                                            {
+                                            }
+                                        };
+                                    }
+                                };
                             }
                         };
                     }
-                };
-            }
-        };
-    }
 
-    /** delete 4 */
-    public function B1()
-    {
-        $a1 = new class(){ };
-    }
-
-    /** delete 5 */
-    public function B2()
-    {
-        //$a1 = new class(){ use D; };
-    }
-}
-',
-            '<?php
-
-/** @inheritdoc delete 1 */
-class A
-{
-    /** @inheritdoc delete 2 */
-    public function B()
-    {
-        $a = new class implements I {
-
-            /** @inheritdoc keep */
-            public function A()
-            {
-                $b = new class extends D {
-
-                    /** @inheritdoc keep */
-                    public function C()
+                    /** delete 4 */
+                    public function B1()
                     {
-                        $d = new class() {
+                        $a1 = new class(){ };
+                    }
 
-                            /** @inheritdoc delete 3 */
-                            public function D()
+                    /** delete 5 */
+                    public function B2()
+                    {
+                        //$a1 = new class(){ use D; };
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /** @inheritdoc delete 1 */
+                class A
+                {
+                    /** @inheritdoc delete 2 */
+                    public function B()
+                    {
+                        $a = new class implements I {
+
+                            /** @inheritdoc keep */
+                            public function A()
                             {
+                                $b = new class extends D {
+
+                                    /** @inheritdoc keep */
+                                    public function C()
+                                    {
+                                        $d = new class() {
+
+                                            /** @inheritdoc delete 3 */
+                                            public function D()
+                                            {
+                                            }
+                                        };
+                                    }
+                                };
                             }
                         };
                     }
-                };
-            }
-        };
-    }
 
-    /** @inheritdoc delete 4 */
-    public function B1()
-    {
-        $a1 = new class(){ };
-    }
+                    /** @inheritdoc delete 4 */
+                    public function B1()
+                    {
+                        $a1 = new class(){ };
+                    }
 
-    /** @inheritdoc delete 5 */
-    public function B2()
-    {
-        //$a1 = new class(){ use D; };
-    }
-}
-',
+                    /** @inheritdoc delete 5 */
+                    public function B2()
+                    {
+                        //$a1 = new class(){ use D; };
+                    }
+                }
+
+                EOD,
         ];
     }
 }

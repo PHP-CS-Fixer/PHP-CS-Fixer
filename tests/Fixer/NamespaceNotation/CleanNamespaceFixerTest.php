@@ -46,14 +46,18 @@ final class CleanNamespaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php namespace AT\B # foo 3
-;',
-            '<?php namespace AT # foo 1
-\ /**
-2
-*/
-B # foo 3
-;',
+            <<<'EOD'
+                <?php namespace AT\B # foo 3
+                ;
+                EOD,
+            <<<'EOD'
+                <?php namespace AT # foo 1
+                \ /**
+                2
+                */
+                B # foo 3
+                ;
+                EOD,
         ];
 
         yield [
@@ -97,72 +101,84 @@ B # foo 3
         ];
 
         yield [
-            '<?php
-                namespace A\B\C\D\E /* 5.1 */{ }
-                namespace B\B\C\D\E /* 5.2 */{ }
-                namespace C\B\C\D\E /* 5.3 */{ }
-                namespace D\B\C\D\E /* 5.4 */{ }
-                namespace E\B\C\D\E /* 5.5 */{ }'."\n            ",
-            '<?php
-                namespace A /* 1 */ \ B \   /** 2 */ C \ /* 3 */ D   /* 4 */ \ E /* 5.1 */{ }
-                namespace B /* 1 */ \ B \      /* 2 */ C \ /** 3 */ D /* 4 */ \ E /* 5.2 */{ }
-                namespace C /* 1 */ \ B \  /* 2 */ C \ /* 3 */ D /** 4 */ \ E /* 5.3 */{ }
-                namespace D /* 1 */ \ B \ /* 2 */ C \    /* 3 */ D /* 4 */ \ E /* 5.4 */{ }
-                namespace E /* 1 */ \ B \ /* 2 */ C \ /* 3 */ D /* 4 */ \ E /* 5.5 */{ }'."\n            ",
+            <<<'EOD'
+                <?php
+                                namespace A\B\C\D\E /* 5.1 */{ }
+                                namespace B\B\C\D\E /* 5.2 */{ }
+                                namespace C\B\C\D\E /* 5.3 */{ }
+                                namespace D\B\C\D\E /* 5.4 */{ }
+                                namespace E\B\C\D\E /* 5.5 */{ }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                namespace A /* 1 */ \ B \   /** 2 */ C \ /* 3 */ D   /* 4 */ \ E /* 5.1 */{ }
+                                namespace B /* 1 */ \ B \      /* 2 */ C \ /** 3 */ D /* 4 */ \ E /* 5.2 */{ }
+                                namespace C /* 1 */ \ B \  /* 2 */ C \ /* 3 */ D /** 4 */ \ E /* 5.3 */{ }
+                                namespace D /* 1 */ \ B \ /* 2 */ C \    /* 3 */ D /* 4 */ \ E /* 5.4 */{ }
+                                namespace E /* 1 */ \ B \ /* 2 */ C \ /* 3 */ D /* 4 */ \ E /* 5.5 */{ }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-try {
-    foo();
-} catch ( \ParseError\A\B      $e) {
-}
+                try {
+                    foo();
+                } catch ( \ParseError\A\B      $e) {
+                }
 
-if (
-    !a instanceof \EventDispatcher\EventDispatcherInterface
-) {
-    foo();
-}'."\n            ",
-            '<?php
-namespace A \ B;
+                if (
+                    !a instanceof \EventDispatcher\EventDispatcherInterface
+                ) {
+                    foo();
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                namespace A \ B;
 
-try {
-    foo();
-} catch ( \ ParseError\ A \ B      $e) {
-}
+                try {
+                    foo();
+                } catch ( \ ParseError\ A \ B      $e) {
+                }
 
-if (
-    !a instanceof \EventDispatcher\/* 1 */EventDispatcherInterface
-) {
-    foo();
-}'."\n            ",
+                if (
+                    !a instanceof \EventDispatcher\/* 1 */EventDispatcherInterface
+                ) {
+                    foo();
+                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php use function Foo\iter\ { range, map, filter, apply, reduce, foo\operator };
-class Foo
-{
-    private function foo1(): \Exception\A /** 2 */   // trailing comment
-    {
-    }
+            <<<'EOD'
+                <?php use function Foo\iter\ { range, map, filter, apply, reduce, foo\operator };
+                class Foo
+                {
+                    private function foo1(): \Exception\A /** 2 */   // trailing comment
+                    {
+                    }
 
-    private function foo2(): \Exception // trailing comment
-    {
-    }
-}',
-            '<?php use function Foo \ iter /* A */ \ { range, map, filter, apply, reduce, foo \ operator };
-class Foo
-{
-    private function foo1(): \Exception   \ /* 1 */  A /** 2 */   // trailing comment
-    {
-    }
+                    private function foo2(): \Exception // trailing comment
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php use function Foo \ iter /* A */ \ { range, map, filter, apply, reduce, foo \ operator };
+                class Foo
+                {
+                    private function foo1(): \Exception   \ /* 1 */  A /** 2 */   // trailing comment
+                    {
+                    }
 
-    private function foo2(): \Exception // trailing comment
-    {
-    }
-}',
+                    private function foo2(): \Exception // trailing comment
+                    {
+                    }
+                }
+                EOD,
         ];
     }
 }

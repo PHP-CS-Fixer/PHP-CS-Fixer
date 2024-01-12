@@ -147,14 +147,16 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = function () {
-                        STATIC $B = false;
-                        if ($B) {
-                            echo 1;
-                        }
-                        $B = true;
-                    };'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = function () {
+                                        STATIC $B = false;
+                                        if ($B) {
+                                            echo 1;
+                                        }
+                                        $B = true;
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
@@ -216,35 +218,41 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class Foo {
-                private STATIC int $baz1;
-                private STATIC ?int $baz2;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                private STATIC int $baz1;
+                                private STATIC ?int $baz2;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-                class Foo { public function bar() {} }
-                class FooChild extends Foo
-                {
-                    public function bar()
-                    {
-                        switch (true) {
-                            case parent::bar():
-                        }
-                    }
-                }',
-            '<?php
-                class Foo { public function bar() {} }
-                class FooChild extends Foo
-                {
-                    public function bar()
-                    {
-                        switch (true) {
-                            case PARENT::bar():
-                        }
-                    }
-                }',
+            <<<'EOD'
+                <?php
+                                class Foo { public function bar() {} }
+                                class FooChild extends Foo
+                                {
+                                    public function bar()
+                                    {
+                                        switch (true) {
+                                            case parent::bar():
+                                        }
+                                    }
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo { public function bar() {} }
+                                class FooChild extends Foo
+                                {
+                                    public function bar()
+                                    {
+                                        switch (true) {
+                                            case PARENT::bar():
+                                        }
+                                    }
+                                }
+                EOD,
         ];
     }
 
@@ -263,46 +271,58 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
         yield ['<?php $foo?->Self();'];
 
         yield [
-            '<?php class Foo extends A {
-                public function baz1() : int|parent {}
-                public function baz2() : parent|int {}
-                public function baz3() : ?parent {}
-            }',
-            '<?php class Foo extends A {
-                public function baz1() : int|Parent {}
-                public function baz2() : Parent|int {}
-                public function baz3() : ?Parent {}
-            }',
+            <<<'EOD'
+                <?php class Foo extends A {
+                                public function baz1() : int|parent {}
+                                public function baz2() : parent|int {}
+                                public function baz3() : ?parent {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo extends A {
+                                public function baz1() : int|Parent {}
+                                public function baz2() : Parent|int {}
+                                public function baz3() : ?Parent {}
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo extends A {
-                public function baz1() : int|static {}
-                public function baz2() : static|int {}
-                public function baz3() : ?static {}
-            }',
-            '<?php class Foo extends A {
-                public function baz1() : int|STATIC {}
-                public function baz2() : STATIC|int {}
-                public function baz3() : ?STATIC {}
-            }',
+            <<<'EOD'
+                <?php class Foo extends A {
+                                public function baz1() : int|static {}
+                                public function baz2() : static|int {}
+                                public function baz3() : ?static {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo extends A {
+                                public function baz1() : int|STATIC {}
+                                public function baz2() : STATIC|int {}
+                                public function baz3() : ?STATIC {}
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    private int|self $prop1, $prop2;
-    private self|int $prop3, $prop4;
-}
-',
-            '<?php
-class Foo
-{
-    private int|SELF $prop1, $prop2;
-    private SELF|int $prop3, $prop4;
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private int|self $prop1, $prop2;
+                    private self|int $prop3, $prop4;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private int|SELF $prop1, $prop2;
+                    private SELF|int $prop3, $prop4;
+                }
+
+                EOD,
         ];
     }
 

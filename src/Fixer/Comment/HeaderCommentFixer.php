@@ -50,25 +50,29 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
             'Add, replace or remove header comment.',
             [
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'EOD'
+                        <?php
+                        declare(strict_types=1);
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        EOD,
                     [
                         'header' => 'Made with love.',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'EOD'
+                        <?php
+                        declare(strict_types=1);
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        EOD,
                     [
                         'header' => 'Made with love.',
                         'comment_type' => 'PHPDoc',
@@ -77,13 +81,15 @@ echo 1;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'EOD'
+                        <?php
+                        declare(strict_types=1);
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        EOD,
                     [
                         'header' => 'Made with love.',
                         'comment_type' => 'comment',
@@ -91,17 +97,19 @@ echo 1;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'EOD'
+                        <?php
+                        declare(strict_types=1);
 
-/*
- * Comment is not wanted here.
- */
+                        /*
+                         * Comment is not wanted here.
+                         */
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        EOD,
                     [
                         'header' => '',
                     ]

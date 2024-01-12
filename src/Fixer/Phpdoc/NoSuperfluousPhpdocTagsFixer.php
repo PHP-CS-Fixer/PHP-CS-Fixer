@@ -59,44 +59,52 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Removes `@param`, `@return` and `@var` tags that don\'t provide any useful information.',
             [
-                new CodeSample('<?php
-class Foo {
-    /**
-     * @param Bar $bar
-     * @param mixed $baz
-     *
-     * @return Baz
-     */
-    public function doFoo(Bar $bar, $baz): Baz {}
-}
-'),
-                new CodeSample('<?php
-class Foo {
-    /**
-     * @param Bar $bar
-     * @param mixed $baz
-     */
-    public function doFoo(Bar $bar, $baz) {}
-}
-', ['allow_mixed' => true]),
-                new CodeSample('<?php
-class Foo {
-    /**
-     * @inheritDoc
-     */
-    public function doFoo(Bar $bar, $baz) {}
-}
-', ['remove_inheritdoc' => true]),
-                new CodeSample('<?php
-class Foo {
-    /**
-     * @param Bar $bar
-     * @param mixed $baz
-     * @param string|int|null $qux
-     */
-    public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
-}
-', ['allow_unused_params' => true]),
+                new CodeSample(<<<'EOD'
+                    <?php
+                    class Foo {
+                        /**
+                         * @param Bar $bar
+                         * @param mixed $baz
+                         *
+                         * @return Baz
+                         */
+                        public function doFoo(Bar $bar, $baz): Baz {}
+                    }
+
+                    EOD),
+                new CodeSample(<<<'EOD'
+                    <?php
+                    class Foo {
+                        /**
+                         * @param Bar $bar
+                         * @param mixed $baz
+                         */
+                        public function doFoo(Bar $bar, $baz) {}
+                    }
+
+                    EOD, ['allow_mixed' => true]),
+                new CodeSample(<<<'EOD'
+                    <?php
+                    class Foo {
+                        /**
+                         * @inheritDoc
+                         */
+                        public function doFoo(Bar $bar, $baz) {}
+                    }
+
+                    EOD, ['remove_inheritdoc' => true]),
+                new CodeSample(<<<'EOD'
+                    <?php
+                    class Foo {
+                        /**
+                         * @param Bar $bar
+                         * @param mixed $baz
+                         * @param string|int|null $qux
+                         */
+                        public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
+                    }
+
+                    EOD, ['allow_unused_params' => true]),
             ]
         );
     }
@@ -617,53 +625,55 @@ class Foo {
 
     private function removeSuperfluousInheritDoc(string $docComment): string
     {
-        return Preg::replace('~
-            # $1: before @inheritDoc tag
-            (
-                # beginning of comment or a PHPDoc tag
-                (?:
-                    ^/\*\*
-                    (?:
-                        \R
-                        [ \t]*(?:\*[ \t]*)?
-                    )*?
-                    |
-                    @\N+
-                )
+        return Preg::replace(<<<'EOD'
+            ~
+                        # $1: before @inheritDoc tag
+                        (
+                            # beginning of comment or a PHPDoc tag
+                            (?:
+                                ^/\*\*
+                                (?:
+                                    \R
+                                    [ \t]*(?:\*[ \t]*)?
+                                )*?
+                                |
+                                @\N+
+                            )
 
-                # empty comment lines
-                (?:
-                    \R
-                    [ \t]*(?:\*[ \t]*?)?
-                )*
-            )
+                            # empty comment lines
+                            (?:
+                                \R
+                                [ \t]*(?:\*[ \t]*?)?
+                            )*
+                        )
 
-            # spaces before @inheritDoc tag
-            [ \t]*
+                        # spaces before @inheritDoc tag
+                        [ \t]*
 
-            # @inheritDoc tag
-            (?:@inheritDocs?|\{@inheritDocs?\})
+                        # @inheritDoc tag
+                        (?:@inheritDocs?|\{@inheritDocs?\})
 
-            # $2: after @inheritDoc tag
-            (
-                # empty comment lines
-                (?:
-                    \R
-                    [ \t]*(?:\*[ \t]*)?
-                )*
+                        # $2: after @inheritDoc tag
+                        (
+                            # empty comment lines
+                            (?:
+                                \R
+                                [ \t]*(?:\*[ \t]*)?
+                            )*
 
-                # a PHPDoc tag or end of comment
-                (?:
-                    @\N+
-                    |
-                    (?:
-                        \R
-                        [ \t]*(?:\*[ \t]*)?
-                    )*
-                    [ \t]*\*/$
-                )
-            )
-        ~ix', '$1$2', $docComment);
+                            # a PHPDoc tag or end of comment
+                            (?:
+                                @\N+
+                                |
+                                (?:
+                                    \R
+                                    [ \t]*(?:\*[ \t]*)?
+                                )*
+                                [ \t]*\*/$
+                            )
+                        )
+                    ~ix
+            EOD, '$1$2', $docComment);
     }
 
     /**

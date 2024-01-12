@@ -45,9 +45,11 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                    test1();
-                    $a; // test'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test1();
+                                    $a; // test
+                EOD."\n                ",
         ];
 
         yield [
@@ -63,8 +65,10 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    test5();     // test'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test5();     // test
+                EOD."\n                ",
         ];
 
         yield [
@@ -82,182 +86,258 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    test8(); $a = 4;'."\n                ",
-            '<?php
-                    test8();     $a = 4;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test8(); $a = 4;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    test8();     $a = 4;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    test9(); $b = 7;'."\n                ",
-            '<?php
-                    test9();$b = 7;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test9(); $b = 7;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    test9();$b = 7;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; ;) {
-                    }'."\n                ",
-            '<?php
-                    for (;;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; ;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; ; ++$u1) {
-                    }'."\n                ",
-            '<?php
-                    for (;;++$u1) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; ; ++$u1) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;;++$u1) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u2 < 0;) {
-                    }'."\n                ",
-            '<?php
-                    for (;$u2 < 0;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u2 < 0;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;$u2 < 0;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u3 < 3; ++$u3) {
-                    }'."\n                ",
-            '<?php
-                    for (;$u3 < 3;++$u3) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u3 < 3; ++$u3) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;$u3 < 3;++$u3) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u4 = 0; ;) {
-                    }'."\n                ",
-            '<?php
-                    for ($u4 = 0;;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u4 = 0; ;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u4 = 0;;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u5 = 0; ; ++$u5) {
-                    }'."\n                ",
-            '<?php
-                    for ($u5 = 0;;++$u5) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0; ; ++$u5) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0;;++$u5) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u6 = 0; $u6 < 6;) {
-                    }'."\n                ",
-            '<?php
-                    for ($u6 = 0;$u6 < 6;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0; $u6 < 6;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0;$u6 < 6;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }'."\n                ",
-            '<?php
-                    for ($u7 = 0;$u7 < 7;++$u7) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0; $u7 < 7; ++$u7) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0;$u7 < 7;++$u7) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; ;    ) {
-                    }'."\n                ",
-            '<?php
-                    for (;    ;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; ;    ) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    ;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; ; ++$u1) {
-                    }'."\n                ",
-            '<?php
-                    for (;    ;    ++$u1) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; ; ++$u1) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    ;    ++$u1) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u2 < 0;    ) {
-                    }'."\n                ",
-            '<?php
-                    for (;    $u2 < 0;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u2 < 0;    ) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    $u2 < 0;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u3 < 3; ++$u3) {
-                    }'."\n                ",
-            '<?php
-                    for (;    $u3 < 3;    ++$u3) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u3 < 3; ++$u3) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    $u3 < 3;    ++$u3) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($ui4 = 0; ;    ) {
-                    }'."\n                ",
-            '<?php
-                    for ($ui4 = 0;    ;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($ui4 = 0; ;    ) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($ui4 = 0;    ;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u5 = 0; ; ++$u5) {
-                    }'."\n                ",
-            '<?php
-                    for ($u5 = 0;    ;    ++$u5) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0; ; ++$u5) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0;    ;    ++$u5) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u6 = 0; $u6 < 6;    ) {
-                    }'."\n                ",
-            '<?php
-                    for ($u6 = 0;    $u6 < 6;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0; $u6 < 6;    ) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0;    $u6 < 6;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }'."\n                ",
-            '<?php
-                    for ($u7 = 0;    $u7 < 7;    ++$u7) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0; $u7 < 7; ++$u7) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0;    $u7 < 7;    ++$u7) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php if ($a):?>
-                    1
-                <?php endif; ?>
-                <?php if ($b):?>
-                    2
-                <?php endif; ?>
-                <?php if ($c):?>
-                    3
-                <?php endif; ?>',
-            '<?php if ($a):?>
-                    1
-                <?php endif;?>
-                <?php if ($b):?>
-                    2
-                <?php endif;?>
-                <?php if ($c):?>
-                    3
-                <?php endif;?>',
+            <<<'EOD'
+                <?php if ($a):?>
+                                    1
+                                <?php endif; ?>
+                                <?php if ($b):?>
+                                    2
+                                <?php endif; ?>
+                                <?php if ($c):?>
+                                    3
+                                <?php endif; ?>
+                EOD,
+            <<<'EOD'
+                <?php if ($a):?>
+                                    1
+                                <?php endif;?>
+                                <?php if ($b):?>
+                                    2
+                                <?php endif;?>
+                                <?php if ($c):?>
+                                    3
+                                <?php endif;?>
+                EOD,
         ];
 
         yield [
@@ -280,9 +360,11 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
     public static function provideFixWithoutSpacesInEmptyForExpressionsCases(): iterable
     {
         yield [
-            '<?php
-                    test1();
-                    $a; // test'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test1();
+                                    $a; // test
+                EOD."\n                ",
         ];
 
         yield [
@@ -298,8 +380,10 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    test5();     // test'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test5();     // test
+                EOD."\n                ",
         ];
 
         yield [
@@ -317,171 +401,245 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    test8(); $a = 4;'."\n                ",
-            '<?php
-                    test8();     $a = 4;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test8(); $a = 4;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    test8();     $a = 4;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    test9(); $b = 7;'."\n                ",
-            '<?php
-                    test9();$b = 7;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    test9(); $b = 7;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    test9();$b = 7;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (;;) {
-                    }'."\n                ",
-            '<?php
-                    for (; ;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; ;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (;; ++$u1) {
-                    }'."\n                ",
-            '<?php
-                    for (;;++$u1) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;; ++$u1) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;;++$u1) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u2 < 0;) {
-                    }'."\n                ",
-            '<?php
-                    for (;$u2 < 0;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u2 < 0;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;$u2 < 0;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u3 < 3; ++$u3) {
-                    }'."\n                ",
-            '<?php
-                    for (;$u3 < 3;++$u3) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u3 < 3; ++$u3) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;$u3 < 3;++$u3) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u4 = 0;;) {
-                    }'."\n                ",
-            '<?php
-                    for ($u4 = 0; ;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u4 = 0;;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u4 = 0; ;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u5 = 0;; ++$u5) {
-                    }'."\n                ",
-            '<?php
-                    for ($u5 = 0;;++$u5) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0;; ++$u5) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0;;++$u5) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u6 = 0; $u6 < 6;) {
-                    }'."\n                ",
-            '<?php
-                    for ($u6 = 0;$u6 < 6;) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0; $u6 < 6;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0;$u6 < 6;) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }'."\n                ",
-            '<?php
-                    for ($u7 = 0;$u7 < 7;++$u7) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0; $u7 < 7; ++$u7) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0;$u7 < 7;++$u7) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (;;) {
-                    }'."\n                ",
-            '<?php
-                    for (;    ;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    ;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (;; ++$u1) {
-                    }'."\n                ",
-            '<?php
-                    for (;    ;    ++$u1) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;; ++$u1) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    ;    ++$u1) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u2 < 0;) {
-                    }'."\n                ",
-            '<?php
-                    for (;    $u2 < 0;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u2 < 0;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    $u2 < 0;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (; $u3 < 3; ++$u3) {
-                    }'."\n                ",
-            '<?php
-                    for (;    $u3 < 3;    ++$u3) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (; $u3 < 3; ++$u3) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (;    $u3 < 3;    ++$u3) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($ui4 = 0;;) {
-                    }'."\n                ",
-            '<?php
-                    for ($ui4 = 0;    ;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($ui4 = 0;;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($ui4 = 0;    ;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u5 = 0;; ++$u5) {
-                    }'."\n                ",
-            '<?php
-                    for ($u5 = 0;    ;    ++$u5) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0;; ++$u5) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u5 = 0;    ;    ++$u5) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u6 = 0; $u6 < 6;) {
-                    }'."\n                ",
-            '<?php
-                    for ($u6 = 0;    $u6 < 6;    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0; $u6 < 6;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u6 = 0;    $u6 < 6;    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }'."\n                ",
-            '<?php
-                    for ($u7 = 0;    $u7 < 7;    ++$u7) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0; $u7 < 7; ++$u7) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for ($u7 = 0;    $u7 < 7;    ++$u7) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    for (
-                        $u7 = 0;
-                        ;
-                        ++$u7
-                    ) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    for (
+                                        $u7 = 0;
+                                        ;
+                                        ++$u7
+                                    ) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
@@ -491,7 +649,9 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
     public function testHaltCompiler(): void
     {
-        $this->doTest('<?php
-            __HALT_COMPILER();'."\n        ");
+        $this->doTest(<<<'EOD'
+            <?php
+                        __HALT_COMPILER();
+            EOD."\n        ");
     }
 }

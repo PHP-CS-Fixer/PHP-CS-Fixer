@@ -276,12 +276,16 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
 
         yield [
-            '<?php $foo = function(array $a = null,
-                    array $b = null, array     $c = null, array
-                    $d = null) {};',
-            '<?php $foo = function(array|null $a = null,
-                    array | null $b = null, array | NULL     $c = null, NULL|array
-                    $d = null) {};',
+            <<<'EOD'
+                <?php $foo = function(array $a = null,
+                                    array $b = null, array     $c = null, array
+                                    $d = null) {};
+                EOD,
+            <<<'EOD'
+                <?php $foo = function(array|null $a = null,
+                                    array | null $b = null, array | NULL     $c = null, NULL|array
+                                    $d = null) {};
+                EOD,
             ['use_nullable_type_declaration' => false],
         ];
     }
@@ -303,9 +307,11 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public static function provideFixPre81Cases(): iterable
     {
         yield 'do not fix pre PHP 8.1' => [
-            '<?php
-                function foo1(&/*comment*/$param = null) {}
-                function foo2(?string &/*comment*/$param2 = null) {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo1(&/*comment*/$param = null) {}
+                                function foo2(?string &/*comment*/$param2 = null) {}
+                EOD."\n            ",
         ];
 
         yield [
@@ -337,25 +343,29 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-class Foo
-{
-    public function __construct(
-        protected readonly ?bool $nullable = null,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function __construct(
+                        protected readonly ?bool $nullable = null,
+                    ) {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            class Foo {
-                public function __construct(
-                   public readonly ?string $readonlyString = null,
-                   readonly public ?int $readonlyInt = null,
-                ) {}
-            }',
+                            class Foo {
+                                public function __construct(
+                                   public readonly ?string $readonlyString = null,
+                                   readonly public ?int $readonlyInt = null,
+                                ) {}
+                            }
+                EOD,
             ['use_nullable_type_declaration' => false],
         ];
     }
@@ -595,12 +605,16 @@ class Foo
         ];
 
         yield [
-            '<?php $foo = function(?array $a = null,
-                    ?array $b = null, ?array     $c = null, ?array
-                    $d = null) {};',
-            '<?php $foo = function(array $a = null,
-                    array $b = null, array     $c = null, array
-                    $d = null) {};',
+            <<<'EOD'
+                <?php $foo = function(?array $a = null,
+                                    ?array $b = null, ?array     $c = null, ?array
+                                    $d = null) {};
+                EOD,
+            <<<'EOD'
+                <?php $foo = function(array $a = null,
+                                    array $b = null, array     $c = null, array
+                                    $d = null) {};
+                EOD,
         ];
 
         yield [
@@ -634,12 +648,16 @@ class Foo
         ];
 
         yield [
-            '<?php $foo = fn(?array $a = null,
-                    ?array $b = null, ?array     $c = null, ?array
-                    $d = null) => null;',
-            '<?php $foo = fn(array $a = null,
-                    array $b = null, array     $c = null, array
-                    $d = null) => null;',
+            <<<'EOD'
+                <?php $foo = fn(?array $a = null,
+                                    ?array $b = null, ?array     $c = null, ?array
+                                    $d = null) => null;
+                EOD,
+            <<<'EOD'
+                <?php $foo = fn(array $a = null,
+                                    array $b = null, array     $c = null, array
+                                    $d = null) => null;
+                EOD,
         ];
     }
 
@@ -686,24 +704,28 @@ class Foo
         ];
 
         yield 'property promotion' => [
-            '<?php class Foo {
-                public function __construct(
-                    public ?string $paramA = null,
-                    protected ?string $paramB = null,
-                    private ?string $paramC = null,
-                    ?string $paramD = null,
-                    $a = []
-                ) {}
-            }',
-            '<?php class Foo {
-                public function __construct(
-                    public ?string $paramA = null,
-                    protected ?string $paramB = null,
-                    private ?string $paramC = null,
-                    string $paramD = null,
-                    $a = []
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public ?string $paramA = null,
+                                    protected ?string $paramB = null,
+                                    private ?string $paramC = null,
+                                    ?string $paramD = null,
+                                    $a = []
+                                ) {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public ?string $paramA = null,
+                                    protected ?string $paramB = null,
+                                    private ?string $paramC = null,
+                                    string $paramD = null,
+                                    $a = []
+                                ) {}
+                            }
+                EOD,
         ];
 
         yield 'attribute' => [
@@ -712,16 +734,20 @@ class Foo
         ];
 
         yield 'attributes' => [
-            '<?php function foo(
-                #[AnAttribute] ?string $a = null,
-                #[AnAttribute] ?string $b = null,
-                #[AnAttribute] ?string $c = null
-            ) {}',
-            '<?php function foo(
-                #[AnAttribute] string $a = null,
-                #[AnAttribute] string $b = null,
-                #[AnAttribute] string $c = null
-            ) {}',
+            <<<'EOD'
+                <?php function foo(
+                                #[AnAttribute] ?string $a = null,
+                                #[AnAttribute] ?string $b = null,
+                                #[AnAttribute] ?string $c = null
+                            ) {}
+                EOD,
+            <<<'EOD'
+                <?php function foo(
+                                #[AnAttribute] string $a = null,
+                                #[AnAttribute] string $b = null,
+                                #[AnAttribute] string $c = null
+                            ) {}
+                EOD,
         ];
     }
 

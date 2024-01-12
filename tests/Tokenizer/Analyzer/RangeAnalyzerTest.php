@@ -49,10 +49,12 @@ final class RangeAnalyzerTest extends TestCase
         foreach ($ranges as $i => [$range1, $range2]) {
             yield 'extra "()" and space #'.$i => [
                 true,
-                '<?php
-                    $a = 1;
-                    ($a = 1);
-                    (($a = 1 ));'."\n                ",
+                <<<'EOD'
+                    <?php
+                                        $a = 1;
+                                        ($a = 1);
+                                        (($a = 1 ));
+                    EOD."\n                ",
                 $range1,
                 $range2,
             ];
@@ -67,9 +69,11 @@ final class RangeAnalyzerTest extends TestCase
 
         yield 'comment + space' => [
             true,
-            '<?php
-                foo(1);
-                /* */ foo/* */(1) /* */ ;'."\n            ",
+            <<<'EOD'
+                <?php
+                                foo(1);
+                                /* */ foo/* */(1) /* */ ;
+                EOD."\n            ",
             ['start' => 1, 'end' => 5],
             ['start' => 9, 'end' => 17],
         ];
@@ -80,10 +84,12 @@ final class RangeAnalyzerTest extends TestCase
      */
     public function testFixPrePHP80(): void
     {
-        $code = '<?php
-            $a = [1,2,3];
-            echo $a[1];
-            echo $a{1};'."\n        ";
+        $code = <<<'EOD'
+            <?php
+                        $a = [1,2,3];
+                        echo $a[1];
+                        echo $a{1};
+            EOD."\n        ";
 
         $tokens = Tokens::fromCode($code);
 

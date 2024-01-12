@@ -61,271 +61,321 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixAllCases(): iterable
     {
         yield from self::createTestCases([
-            ['
-/**
- * @Foo
- */'],
-            ['
-/**
- * @Foo()
- */'],
-            ['
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo(foo="foo", bar="bar")
- */', '
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo ( foo = "foo" ,bar = "bar" )
- */'],
-            ['
-/**
- * @Foo(
- *     foo="foo",
- *     bar="bar"
- * )
- */', '
-/**
- * @Foo (
- *     foo = "foo" ,
- *     bar = "bar"
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar("foo", "bar"),
- *     @Baz
- * )
- */', '
-/**
- * @Foo(
- *     @Bar ( "foo" ,"bar") ,
- *     @Baz
- * )
- */'],
-            ['
-/**
- * @Foo({"bar", "baz"})
- */', '
-/**
- * @Foo( {"bar" ,"baz"} )
- */'],
-            ['
-/**
- * @Foo(foo="=foo", bar={"foo" : "=foo", "bar" = "=bar"})
- */', '
-/**
- * @Foo(foo = "=foo" ,bar = {"foo" : "=foo", "bar"="=bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo(foo="foo", bar="bar")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo ( foo = "foo" ,bar = "bar" )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     foo="foo",
+                 *     bar="bar"
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo (
+                 *     foo = "foo" ,
+                 *     bar = "bar"
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar("foo", "bar"),
+                 *     @Baz
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar ( "foo" ,"bar") ,
+                 *     @Baz
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo({"bar", "baz"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo( {"bar" ,"baz"} )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="=foo", bar={"foo" : "=foo", "bar" = "=bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "=foo" ,bar = {"foo" : "=foo", "bar"="=bar"})
+                 */
+                EOD],
             [
                 '/** @Foo(foo="foo", bar={"foo" : "foo", "bar" = "bar"}) */',
                 '/** @Foo ( foo = "foo" ,bar = {"foo" : "foo", "bar"="bar"} ) */',
             ],
-            ['
-/**
- * @Foo(
- *     foo="foo",
- *     bar={
- *         "foo" : "foo",
- *         "bar" = "bar"
- *     }
- * )
- */', '
-/**
- * @Foo(
- *     foo = "foo"
- *     ,
- *     bar = {
- *         "foo":"foo",
- *         "bar"="bar"
- *     }
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     foo="foo",
- *     bar={
- *         "foo" : "foo",
- *         "bar" = "bar"
- *     }
- * )
- */', '
-/**
- * @Foo
- * (
- *     foo
- *     =
- *     "foo",
- *     bar
- *     =
- *     {
- *         "foo"
- *         :
- *         "foo",
- *         "bar"
- *         =
- *         "bar"
- *     }
- * )
- */'],
-            ['
-/**
- * @Foo(foo="foo", "bar"=@Bar\Baz({"foo" : true, "bar" = false}))
- */', '
-/**
- * @Foo   (   foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false})   )
- */'],
-            ['
-/**
- * @Foo(foo = "foo" ,bar="bar"
- */'],
-            ['
-/**
- * Comment , with a comma.
- */'],
-            ['
-/**
- * Description with a single " character.
- *
- * @Foo(foo="string "" with inner quote", bar="string "" with inner quote")
- *
- * @param mixed description with a single " character.
- */', '
-/**
- * Description with a single " character.
- *
- * @Foo( foo="string "" with inner quote" ,bar="string "" with inner quote" )
- *
- * @param mixed description with a single " character.
- */'],
-            ['
-/**
- * // PHPDocumentor 1
- * @abstract ( foo,bar  =  "baz" )
- * @access ( foo,bar  =  "baz" )
- * @code ( foo,bar  =  "baz" )
- * @deprec ( foo,bar  =  "baz" )
- * @encode ( foo,bar  =  "baz" )
- * @exception ( foo,bar  =  "baz" )
- * @final ( foo,bar  =  "baz" )
- * @ingroup ( foo,bar  =  "baz" )
- * @inheritdoc ( foo,bar  =  "baz" )
- * @inheritDoc ( foo,bar  =  "baz" )
- * @magic ( foo,bar  =  "baz" )
- * @name ( foo,bar  =  "baz" )
- * @toc ( foo,bar  =  "baz" )
- * @tutorial ( foo,bar  =  "baz" )
- * @private ( foo,bar  =  "baz" )
- * @static ( foo,bar  =  "baz" )
- * @staticvar ( foo,bar  =  "baz" )
- * @staticVar ( foo,bar  =  "baz" )
- * @throw ( foo,bar  =  "baz" )
- *
- * // PHPDocumentor 2
- * @api ( foo,bar  =  "baz" )
- * @author ( foo,bar  =  "baz" )
- * @category ( foo,bar  =  "baz" )
- * @copyright ( foo,bar  =  "baz" )
- * @deprecated ( foo,bar  =  "baz" )
- * @example ( foo,bar  =  "baz" )
- * @filesource ( foo,bar  =  "baz" )
- * @global ( foo,bar  =  "baz" )
- * @ignore ( foo,bar  =  "baz" )
- * @internal ( foo,bar  =  "baz" )
- * @license ( foo,bar  =  "baz" )
- * @link ( foo,bar  =  "baz" )
- * @method ( foo,bar  =  "baz" )
- * @package ( foo,bar  =  "baz" )
- * @param ( foo,bar  =  "baz" )
- * @property ( foo,bar  =  "baz" )
- * @property-read ( foo,bar  =  "baz" )
- * @property-write ( foo,bar  =  "baz" )
- * @return ( foo,bar  =  "baz" )
- * @see ( foo,bar  =  "baz" )
- * @since ( foo,bar  =  "baz" )
- * @source ( foo,bar  =  "baz" )
- * @subpackage ( foo,bar  =  "baz" )
- * @throws ( foo,bar  =  "baz" )
- * @todo ( foo,bar  =  "baz" )
- * @TODO ( foo,bar  =  "baz" )
- * @usedBy ( foo,bar  =  "baz" )
- * @uses ( foo,bar  =  "baz" )
- * @var ( foo,bar  =  "baz" )
- * @version ( foo,bar  =  "baz" )
- *
- * // PHPUnit
- * @after ( foo,bar  =  "baz" )
- * @afterClass ( foo,bar  =  "baz" )
- * @backupGlobals ( foo,bar  =  "baz" )
- * @backupStaticAttributes ( foo,bar  =  "baz" )
- * @before ( foo,bar  =  "baz" )
- * @beforeClass ( foo,bar  =  "baz" )
- * @codeCoverageIgnore ( foo,bar  =  "baz" )
- * @codeCoverageIgnoreStart ( foo,bar  =  "baz" )
- * @codeCoverageIgnoreEnd ( foo,bar  =  "baz" )
- * @covers ( foo,bar  =  "baz" )
- * @coversDefaultClass ( foo,bar  =  "baz" )
- * @coversNothing ( foo,bar  =  "baz" )
- * @dataProvider ( foo,bar  =  "baz" )
- * @depends ( foo,bar  =  "baz" )
- * @expectedException ( foo,bar  =  "baz" )
- * @expectedExceptionCode ( foo,bar  =  "baz" )
- * @expectedExceptionMessage ( foo,bar  =  "baz" )
- * @expectedExceptionMessageRegExp ( foo,bar  =  "baz" )
- * @group ( foo,bar  =  "baz" )
- * @large ( foo,bar  =  "baz" )
- * @medium ( foo,bar  =  "baz" )
- * @preserveGlobalState ( foo,bar  =  "baz" )
- * @requires ( foo,bar  =  "baz" )
- * @runTestsInSeparateProcesses ( foo,bar  =  "baz" )
- * @runInSeparateProcess ( foo,bar  =  "baz" )
- * @small ( foo,bar  =  "baz" )
- * @test ( foo,bar  =  "baz" )
- * @testdox ( foo,bar  =  "baz" )
- * @ticket ( foo,bar  =  "baz" )
- * @uses ( foo,bar  =  "baz" )
- *
- * // PHPCheckStyle
- * @SuppressWarnings ( foo,bar  =  "baz" )
- *
- * // PHPStorm
- * @noinspection ( foo,bar  =  "baz" )
- *
- * // PEAR
- * @package_version ( foo,bar  =  "baz" )
- *
- * // PlantUML
- * @enduml ( foo,bar  =  "baz" )
- * @startuml ( foo,bar  =  "baz" )
- *
- * // other
- * @fix ( foo,bar  =  "baz" )
- * @FIXME ( foo,bar  =  "baz" )
- * @fixme ( foo,bar  =  "baz" )
- * @override
- */'],
-            ['
-/**
- * @Transform /^(\d+)$/
+            [<<<'EOD'
 
- */'],
+                /**
+                 * @Foo(
+                 *     foo="foo",
+                 *     bar={
+                 *         "foo" : "foo",
+                 *         "bar" = "bar"
+                 *     }
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     foo = "foo"
+                 *     ,
+                 *     bar = {
+                 *         "foo":"foo",
+                 *         "bar"="bar"
+                 *     }
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     foo="foo",
+                 *     bar={
+                 *         "foo" : "foo",
+                 *         "bar" = "bar"
+                 *     }
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo
+                 * (
+                 *     foo
+                 *     =
+                 *     "foo",
+                 *     bar
+                 *     =
+                 *     {
+                 *         "foo"
+                 *         :
+                 *         "foo",
+                 *         "bar"
+                 *         =
+                 *         "bar"
+                 *     }
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", "bar"=@Bar\Baz({"foo" : true, "bar" = false}))
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo   (   foo = "foo", "bar" = @Bar\Baz({"foo":true, "bar"=false})   )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo" ,bar="bar"
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Comment , with a comma.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo(foo="string "" with inner quote", bar="string "" with inner quote")
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo( foo="string "" with inner quote" ,bar="string "" with inner quote" )
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * // PHPDocumentor 1
+                 * @abstract ( foo,bar  =  "baz" )
+                 * @access ( foo,bar  =  "baz" )
+                 * @code ( foo,bar  =  "baz" )
+                 * @deprec ( foo,bar  =  "baz" )
+                 * @encode ( foo,bar  =  "baz" )
+                 * @exception ( foo,bar  =  "baz" )
+                 * @final ( foo,bar  =  "baz" )
+                 * @ingroup ( foo,bar  =  "baz" )
+                 * @inheritdoc ( foo,bar  =  "baz" )
+                 * @inheritDoc ( foo,bar  =  "baz" )
+                 * @magic ( foo,bar  =  "baz" )
+                 * @name ( foo,bar  =  "baz" )
+                 * @toc ( foo,bar  =  "baz" )
+                 * @tutorial ( foo,bar  =  "baz" )
+                 * @private ( foo,bar  =  "baz" )
+                 * @static ( foo,bar  =  "baz" )
+                 * @staticvar ( foo,bar  =  "baz" )
+                 * @staticVar ( foo,bar  =  "baz" )
+                 * @throw ( foo,bar  =  "baz" )
+                 *
+                 * // PHPDocumentor 2
+                 * @api ( foo,bar  =  "baz" )
+                 * @author ( foo,bar  =  "baz" )
+                 * @category ( foo,bar  =  "baz" )
+                 * @copyright ( foo,bar  =  "baz" )
+                 * @deprecated ( foo,bar  =  "baz" )
+                 * @example ( foo,bar  =  "baz" )
+                 * @filesource ( foo,bar  =  "baz" )
+                 * @global ( foo,bar  =  "baz" )
+                 * @ignore ( foo,bar  =  "baz" )
+                 * @internal ( foo,bar  =  "baz" )
+                 * @license ( foo,bar  =  "baz" )
+                 * @link ( foo,bar  =  "baz" )
+                 * @method ( foo,bar  =  "baz" )
+                 * @package ( foo,bar  =  "baz" )
+                 * @param ( foo,bar  =  "baz" )
+                 * @property ( foo,bar  =  "baz" )
+                 * @property-read ( foo,bar  =  "baz" )
+                 * @property-write ( foo,bar  =  "baz" )
+                 * @return ( foo,bar  =  "baz" )
+                 * @see ( foo,bar  =  "baz" )
+                 * @since ( foo,bar  =  "baz" )
+                 * @source ( foo,bar  =  "baz" )
+                 * @subpackage ( foo,bar  =  "baz" )
+                 * @throws ( foo,bar  =  "baz" )
+                 * @todo ( foo,bar  =  "baz" )
+                 * @TODO ( foo,bar  =  "baz" )
+                 * @usedBy ( foo,bar  =  "baz" )
+                 * @uses ( foo,bar  =  "baz" )
+                 * @var ( foo,bar  =  "baz" )
+                 * @version ( foo,bar  =  "baz" )
+                 *
+                 * // PHPUnit
+                 * @after ( foo,bar  =  "baz" )
+                 * @afterClass ( foo,bar  =  "baz" )
+                 * @backupGlobals ( foo,bar  =  "baz" )
+                 * @backupStaticAttributes ( foo,bar  =  "baz" )
+                 * @before ( foo,bar  =  "baz" )
+                 * @beforeClass ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnore ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnoreStart ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnoreEnd ( foo,bar  =  "baz" )
+                 * @covers ( foo,bar  =  "baz" )
+                 * @coversDefaultClass ( foo,bar  =  "baz" )
+                 * @coversNothing ( foo,bar  =  "baz" )
+                 * @dataProvider ( foo,bar  =  "baz" )
+                 * @depends ( foo,bar  =  "baz" )
+                 * @expectedException ( foo,bar  =  "baz" )
+                 * @expectedExceptionCode ( foo,bar  =  "baz" )
+                 * @expectedExceptionMessage ( foo,bar  =  "baz" )
+                 * @expectedExceptionMessageRegExp ( foo,bar  =  "baz" )
+                 * @group ( foo,bar  =  "baz" )
+                 * @large ( foo,bar  =  "baz" )
+                 * @medium ( foo,bar  =  "baz" )
+                 * @preserveGlobalState ( foo,bar  =  "baz" )
+                 * @requires ( foo,bar  =  "baz" )
+                 * @runTestsInSeparateProcesses ( foo,bar  =  "baz" )
+                 * @runInSeparateProcess ( foo,bar  =  "baz" )
+                 * @small ( foo,bar  =  "baz" )
+                 * @test ( foo,bar  =  "baz" )
+                 * @testdox ( foo,bar  =  "baz" )
+                 * @ticket ( foo,bar  =  "baz" )
+                 * @uses ( foo,bar  =  "baz" )
+                 *
+                 * // PHPCheckStyle
+                 * @SuppressWarnings ( foo,bar  =  "baz" )
+                 *
+                 * // PHPStorm
+                 * @noinspection ( foo,bar  =  "baz" )
+                 *
+                 * // PEAR
+                 * @package_version ( foo,bar  =  "baz" )
+                 *
+                 * // PlantUML
+                 * @enduml ( foo,bar  =  "baz" )
+                 * @startuml ( foo,bar  =  "baz" )
+                 *
+                 * // other
+                 * @fix ( foo,bar  =  "baz" )
+                 * @FIXME ( foo,bar  =  "baz" )
+                 * @fixme ( foo,bar  =  "baz" )
+                 * @override
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Transform /^(\d+)$/
+
+                 */
+                EOD],
         ]);
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @see \User getId()
- */
-',
+                /**
+                 * @see \User getId()
+                 */
+
+                EOD,
         ];
     }
 
@@ -374,212 +424,252 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixAroundParenthesesOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo
- */'],
-            ['
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo()
- */', '
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo ( )
- */'],
-            ['
-/**
- * @Foo("bar")
- */', '
-/**
- * @Foo( "bar" )
- */'],
-            ['
-/**
- * @Foo("bar", "baz")
- */', '
-/**
- * @Foo( "bar", "baz" )
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo()
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo ( )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("bar")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo( "bar" )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("bar", "baz")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo( "bar", "baz" )
+                 */
+                EOD],
             [
                 '/** @Foo("bar", "baz") */',
                 '/** @Foo( "bar", "baz" ) */',
             ],
-            ['
-/**
- * @Foo("bar", "baz")
- */', '
-/**
- * @Foo(     "bar", "baz"     )
- */'],
-            ['
-/**
- * @Foo("bar", "baz")
- */', '
-/**
- * @Foo    (     "bar", "baz"     )
- */'],
-            ['
-/**
- * @Foo(
- *     "bar",
- *     "baz"
- * )
- */', '
-/**
- * @Foo
- * (
- *     "bar",
- *     "baz"
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar("baz")
- * )
- */', '
-/**
- * @Foo
- * (
- *     @Bar ( "baz" )
- * )
- */'],
-            ['
-/**
- * @Foo ( @Bar ( "bar" )
- */'],
-            ['
-/**
- * Foo ( Bar Baz )
- */'],
-            ['
-/**
- * Description with a single " character.
- *
- * @Foo("string "" with inner quote")
- *
- * @param mixed description with a single " character.
- */', '
-/**
- * Description with a single " character.
- *
- * @Foo ( "string "" with inner quote" )
- *
- * @param mixed description with a single " character.
- */'],
-            ['
-/**
- * // PHPDocumentor 1
- * @abstract ( foo,bar  =  "baz" )
- * @access ( foo,bar  =  "baz" )
- * @code ( foo,bar  =  "baz" )
- * @deprec ( foo,bar  =  "baz" )
- * @encode ( foo,bar  =  "baz" )
- * @exception ( foo,bar  =  "baz" )
- * @final ( foo,bar  =  "baz" )
- * @ingroup ( foo,bar  =  "baz" )
- * @inheritdoc ( foo,bar  =  "baz" )
- * @inheritDoc ( foo,bar  =  "baz" )
- * @magic ( foo,bar  =  "baz" )
- * @name ( foo,bar  =  "baz" )
- * @toc ( foo,bar  =  "baz" )
- * @tutorial ( foo,bar  =  "baz" )
- * @private ( foo,bar  =  "baz" )
- * @static ( foo,bar  =  "baz" )
- * @staticvar ( foo,bar  =  "baz" )
- * @staticVar ( foo,bar  =  "baz" )
- * @throw ( foo,bar  =  "baz" )
- *
- * // PHPDocumentor 2
- * @api ( foo,bar  =  "baz" )
- * @author ( foo,bar  =  "baz" )
- * @category ( foo,bar  =  "baz" )
- * @copyright ( foo,bar  =  "baz" )
- * @deprecated ( foo,bar  =  "baz" )
- * @example ( foo,bar  =  "baz" )
- * @filesource ( foo,bar  =  "baz" )
- * @global ( foo,bar  =  "baz" )
- * @ignore ( foo,bar  =  "baz" )
- * @internal ( foo,bar  =  "baz" )
- * @license ( foo,bar  =  "baz" )
- * @link ( foo,bar  =  "baz" )
- * @method ( foo,bar  =  "baz" )
- * @package ( foo,bar  =  "baz" )
- * @param ( foo,bar  =  "baz" )
- * @property ( foo,bar  =  "baz" )
- * @property-read ( foo,bar  =  "baz" )
- * @property-write ( foo,bar  =  "baz" )
- * @return ( foo,bar  =  "baz" )
- * @see ( foo,bar  =  "baz" )
- * @since ( foo,bar  =  "baz" )
- * @source ( foo,bar  =  "baz" )
- * @subpackage ( foo,bar  =  "baz" )
- * @throws ( foo,bar  =  "baz" )
- * @todo ( foo,bar  =  "baz" )
- * @TODO ( foo,bar  =  "baz" )
- * @usedBy ( foo,bar  =  "baz" )
- * @uses ( foo,bar  =  "baz" )
- * @var ( foo,bar  =  "baz" )
- * @version ( foo,bar  =  "baz" )
- *
- * // PHPUnit
- * @after ( foo,bar  =  "baz" )
- * @afterClass ( foo,bar  =  "baz" )
- * @backupGlobals ( foo,bar  =  "baz" )
- * @backupStaticAttributes ( foo,bar  =  "baz" )
- * @before ( foo,bar  =  "baz" )
- * @beforeClass ( foo,bar  =  "baz" )
- * @codeCoverageIgnore ( foo,bar  =  "baz" )
- * @codeCoverageIgnoreStart ( foo,bar  =  "baz" )
- * @codeCoverageIgnoreEnd ( foo,bar  =  "baz" )
- * @covers ( foo,bar  =  "baz" )
- * @coversDefaultClass ( foo,bar  =  "baz" )
- * @coversNothing ( foo,bar  =  "baz" )
- * @dataProvider ( foo,bar  =  "baz" )
- * @depends ( foo,bar  =  "baz" )
- * @expectedException ( foo,bar  =  "baz" )
- * @expectedExceptionCode ( foo,bar  =  "baz" )
- * @expectedExceptionMessage ( foo,bar  =  "baz" )
- * @expectedExceptionMessageRegExp ( foo,bar  =  "baz" )
- * @group ( foo,bar  =  "baz" )
- * @large ( foo,bar  =  "baz" )
- * @medium ( foo,bar  =  "baz" )
- * @preserveGlobalState ( foo,bar  =  "baz" )
- * @requires ( foo,bar  =  "baz" )
- * @runTestsInSeparateProcesses ( foo,bar  =  "baz" )
- * @runInSeparateProcess ( foo,bar  =  "baz" )
- * @small ( foo,bar  =  "baz" )
- * @test ( foo,bar  =  "baz" )
- * @testdox ( foo,bar  =  "baz" )
- * @ticket ( foo,bar  =  "baz" )
- * @uses ( foo,bar  =  "baz" )
- *
- * // PHPCheckStyle
- * @SuppressWarnings ( foo,bar  =  "baz" )
- *
- * // PHPStorm
- * @noinspection ( foo,bar  =  "baz" )
- *
- * // PEAR
- * @package_version ( foo,bar  =  "baz" )
- *
- * // PlantUML
- * @enduml ( foo,bar  =  "baz" )
- * @startuml ( foo,bar  =  "baz" )
- *
- * // other
- * @fix ( foo,bar  =  "baz" )
- * @FIXME ( foo,bar  =  "baz" )
- * @fixme ( foo,bar  =  "baz" )
- * @override
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("bar", "baz")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(     "bar", "baz"     )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("bar", "baz")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo    (     "bar", "baz"     )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     "bar",
+                 *     "baz"
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo
+                 * (
+                 *     "bar",
+                 *     "baz"
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar("baz")
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo
+                 * (
+                 *     @Bar ( "baz" )
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo ( @Bar ( "bar" )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Foo ( Bar Baz )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo("string "" with inner quote")
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo ( "string "" with inner quote" )
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * // PHPDocumentor 1
+                 * @abstract ( foo,bar  =  "baz" )
+                 * @access ( foo,bar  =  "baz" )
+                 * @code ( foo,bar  =  "baz" )
+                 * @deprec ( foo,bar  =  "baz" )
+                 * @encode ( foo,bar  =  "baz" )
+                 * @exception ( foo,bar  =  "baz" )
+                 * @final ( foo,bar  =  "baz" )
+                 * @ingroup ( foo,bar  =  "baz" )
+                 * @inheritdoc ( foo,bar  =  "baz" )
+                 * @inheritDoc ( foo,bar  =  "baz" )
+                 * @magic ( foo,bar  =  "baz" )
+                 * @name ( foo,bar  =  "baz" )
+                 * @toc ( foo,bar  =  "baz" )
+                 * @tutorial ( foo,bar  =  "baz" )
+                 * @private ( foo,bar  =  "baz" )
+                 * @static ( foo,bar  =  "baz" )
+                 * @staticvar ( foo,bar  =  "baz" )
+                 * @staticVar ( foo,bar  =  "baz" )
+                 * @throw ( foo,bar  =  "baz" )
+                 *
+                 * // PHPDocumentor 2
+                 * @api ( foo,bar  =  "baz" )
+                 * @author ( foo,bar  =  "baz" )
+                 * @category ( foo,bar  =  "baz" )
+                 * @copyright ( foo,bar  =  "baz" )
+                 * @deprecated ( foo,bar  =  "baz" )
+                 * @example ( foo,bar  =  "baz" )
+                 * @filesource ( foo,bar  =  "baz" )
+                 * @global ( foo,bar  =  "baz" )
+                 * @ignore ( foo,bar  =  "baz" )
+                 * @internal ( foo,bar  =  "baz" )
+                 * @license ( foo,bar  =  "baz" )
+                 * @link ( foo,bar  =  "baz" )
+                 * @method ( foo,bar  =  "baz" )
+                 * @package ( foo,bar  =  "baz" )
+                 * @param ( foo,bar  =  "baz" )
+                 * @property ( foo,bar  =  "baz" )
+                 * @property-read ( foo,bar  =  "baz" )
+                 * @property-write ( foo,bar  =  "baz" )
+                 * @return ( foo,bar  =  "baz" )
+                 * @see ( foo,bar  =  "baz" )
+                 * @since ( foo,bar  =  "baz" )
+                 * @source ( foo,bar  =  "baz" )
+                 * @subpackage ( foo,bar  =  "baz" )
+                 * @throws ( foo,bar  =  "baz" )
+                 * @todo ( foo,bar  =  "baz" )
+                 * @TODO ( foo,bar  =  "baz" )
+                 * @usedBy ( foo,bar  =  "baz" )
+                 * @uses ( foo,bar  =  "baz" )
+                 * @var ( foo,bar  =  "baz" )
+                 * @version ( foo,bar  =  "baz" )
+                 *
+                 * // PHPUnit
+                 * @after ( foo,bar  =  "baz" )
+                 * @afterClass ( foo,bar  =  "baz" )
+                 * @backupGlobals ( foo,bar  =  "baz" )
+                 * @backupStaticAttributes ( foo,bar  =  "baz" )
+                 * @before ( foo,bar  =  "baz" )
+                 * @beforeClass ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnore ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnoreStart ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnoreEnd ( foo,bar  =  "baz" )
+                 * @covers ( foo,bar  =  "baz" )
+                 * @coversDefaultClass ( foo,bar  =  "baz" )
+                 * @coversNothing ( foo,bar  =  "baz" )
+                 * @dataProvider ( foo,bar  =  "baz" )
+                 * @depends ( foo,bar  =  "baz" )
+                 * @expectedException ( foo,bar  =  "baz" )
+                 * @expectedExceptionCode ( foo,bar  =  "baz" )
+                 * @expectedExceptionMessage ( foo,bar  =  "baz" )
+                 * @expectedExceptionMessageRegExp ( foo,bar  =  "baz" )
+                 * @group ( foo,bar  =  "baz" )
+                 * @large ( foo,bar  =  "baz" )
+                 * @medium ( foo,bar  =  "baz" )
+                 * @preserveGlobalState ( foo,bar  =  "baz" )
+                 * @requires ( foo,bar  =  "baz" )
+                 * @runTestsInSeparateProcesses ( foo,bar  =  "baz" )
+                 * @runInSeparateProcess ( foo,bar  =  "baz" )
+                 * @small ( foo,bar  =  "baz" )
+                 * @test ( foo,bar  =  "baz" )
+                 * @testdox ( foo,bar  =  "baz" )
+                 * @ticket ( foo,bar  =  "baz" )
+                 * @uses ( foo,bar  =  "baz" )
+                 *
+                 * // PHPCheckStyle
+                 * @SuppressWarnings ( foo,bar  =  "baz" )
+                 *
+                 * // PHPStorm
+                 * @noinspection ( foo,bar  =  "baz" )
+                 *
+                 * // PEAR
+                 * @package_version ( foo,bar  =  "baz" )
+                 *
+                 * // PlantUML
+                 * @enduml ( foo,bar  =  "baz" )
+                 * @startuml ( foo,bar  =  "baz" )
+                 *
+                 * // other
+                 * @fix ( foo,bar  =  "baz" )
+                 * @FIXME ( foo,bar  =  "baz" )
+                 * @fixme ( foo,bar  =  "baz" )
+                 * @override
+                 */
+                EOD],
         ]);
     }
 
@@ -628,235 +718,283 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixAroundCommasOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo
- */'],
-            ['
-/**
- * @Foo()
- */'],
-            ['
-/**
- * @Foo ()
- */'],
-            ['
-/**
- * @Foo( "bar" )
- */'],
-            ['
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo( "bar", "baz")
- */', '
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo( "bar" ,"baz")
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo ()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo( "bar" )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo( "bar", "baz")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo( "bar" ,"baz")
+                 */
+                EOD],
             [
                 '/** @Foo( "bar", "baz") */',
                 '/** @Foo( "bar" ,"baz") */',
             ],
-            ['
-/**
- * @Foo( "bar", "baz")
- */', '
-/**
- * @Foo( "bar" , "baz")
- */'],
-            ['
-/**
- * @Foo(
- *     "bar",
- *     "baz"
- * )
- */', '
-/**
- * @Foo(
- *     "bar" ,
- *     "baz"
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     "bar",
- *     "baz"
- * )
- */', '
-/**
- * @Foo(
- *     "bar"
- *     ,
- *     "baz"
- * )
- */'],
-            ['
-/**
- * @Foo("bar ,", "baz,")
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar ( "foo", "bar"),
- *     @Baz
- * )
- */', '
-/**
- * @Foo(
- *     @Bar ( "foo" ,"bar") ,
- *     @Baz
- * )
- */'],
-            ['
-/**
- * @Foo({"bar", "baz"})
- */', '
-/**
- * @Foo({"bar" ,"baz"})
- */'],
-            ['
-/**
- * @Foo(foo="foo", bar="bar")
- */', '
-/**
- * @Foo(foo="foo" ,bar="bar")
- */'],
-            ['
-/**
- * @Foo(foo="foo" ,bar="bar"
- */'],
-            ['
-/**
- * Comment , with a comma.
- */'],
-            ['
-/**
- * Description with a single " character.
- *
- * @Foo(foo="string "" with inner quote", bar="string "" with inner quote")
- *
- * @param mixed description with a single " character.
- */', '
-/**
- * Description with a single " character.
- *
- * @Foo(foo="string "" with inner quote" ,bar="string "" with inner quote")
- *
- * @param mixed description with a single " character.
- */'],
-            ['
-/**
- * // PHPDocumentor 1
- * @abstract ( foo,bar  =  "baz" )
- * @access ( foo,bar  =  "baz" )
- * @code ( foo,bar  =  "baz" )
- * @deprec ( foo,bar  =  "baz" )
- * @encode ( foo,bar  =  "baz" )
- * @exception ( foo,bar  =  "baz" )
- * @final ( foo,bar  =  "baz" )
- * @ingroup ( foo,bar  =  "baz" )
- * @inheritdoc ( foo,bar  =  "baz" )
- * @inheritDoc ( foo,bar  =  "baz" )
- * @magic ( foo,bar  =  "baz" )
- * @name ( foo,bar  =  "baz" )
- * @toc ( foo,bar  =  "baz" )
- * @tutorial ( foo,bar  =  "baz" )
- * @private ( foo,bar  =  "baz" )
- * @static ( foo,bar  =  "baz" )
- * @staticvar ( foo,bar  =  "baz" )
- * @staticVar ( foo,bar  =  "baz" )
- * @throw ( foo,bar  =  "baz" )
- *
- * // PHPDocumentor 2
- * @api ( foo,bar  =  "baz" )
- * @author ( foo,bar  =  "baz" )
- * @category ( foo,bar  =  "baz" )
- * @copyright ( foo,bar  =  "baz" )
- * @deprecated ( foo,bar  =  "baz" )
- * @example ( foo,bar  =  "baz" )
- * @filesource ( foo,bar  =  "baz" )
- * @global ( foo,bar  =  "baz" )
- * @ignore ( foo,bar  =  "baz" )
- * @internal ( foo,bar  =  "baz" )
- * @license ( foo,bar  =  "baz" )
- * @link ( foo,bar  =  "baz" )
- * @method ( foo,bar  =  "baz" )
- * @package ( foo,bar  =  "baz" )
- * @param ( foo,bar  =  "baz" )
- * @property ( foo,bar  =  "baz" )
- * @property-read ( foo,bar  =  "baz" )
- * @property-write ( foo,bar  =  "baz" )
- * @return ( foo,bar  =  "baz" )
- * @see ( foo,bar  =  "baz" )
- * @since ( foo,bar  =  "baz" )
- * @source ( foo,bar  =  "baz" )
- * @subpackage ( foo,bar  =  "baz" )
- * @throws ( foo,bar  =  "baz" )
- * @todo ( foo,bar  =  "baz" )
- * @TODO ( foo,bar  =  "baz" )
- * @usedBy ( foo,bar  =  "baz" )
- * @uses ( foo,bar  =  "baz" )
- * @var ( foo,bar  =  "baz" )
- * @version ( foo,bar  =  "baz" )
- *
- * // PHPUnit
- * @after ( foo,bar  =  "baz" )
- * @afterClass ( foo,bar  =  "baz" )
- * @backupGlobals ( foo,bar  =  "baz" )
- * @backupStaticAttributes ( foo,bar  =  "baz" )
- * @before ( foo,bar  =  "baz" )
- * @beforeClass ( foo,bar  =  "baz" )
- * @codeCoverageIgnore ( foo,bar  =  "baz" )
- * @codeCoverageIgnoreStart ( foo,bar  =  "baz" )
- * @codeCoverageIgnoreEnd ( foo,bar  =  "baz" )
- * @covers ( foo,bar  =  "baz" )
- * @coversDefaultClass ( foo,bar  =  "baz" )
- * @coversNothing ( foo,bar  =  "baz" )
- * @dataProvider ( foo,bar  =  "baz" )
- * @depends ( foo,bar  =  "baz" )
- * @expectedException ( foo,bar  =  "baz" )
- * @expectedExceptionCode ( foo,bar  =  "baz" )
- * @expectedExceptionMessage ( foo,bar  =  "baz" )
- * @expectedExceptionMessageRegExp ( foo,bar  =  "baz" )
- * @group ( foo,bar  =  "baz" )
- * @large ( foo,bar  =  "baz" )
- * @medium ( foo,bar  =  "baz" )
- * @preserveGlobalState ( foo,bar  =  "baz" )
- * @requires ( foo,bar  =  "baz" )
- * @runTestsInSeparateProcesses ( foo,bar  =  "baz" )
- * @runInSeparateProcess ( foo,bar  =  "baz" )
- * @small ( foo,bar  =  "baz" )
- * @test ( foo,bar  =  "baz" )
- * @testdox ( foo,bar  =  "baz" )
- * @ticket ( foo,bar  =  "baz" )
- * @uses ( foo,bar  =  "baz" )
- *
- * // PHPCheckStyle
- * @SuppressWarnings ( foo,bar  =  "baz" )
- *
- * // PHPStorm
- * @noinspection ( foo,bar  =  "baz" )
- *
- * // PEAR
- * @package_version ( foo,bar  =  "baz" )
- *
- * // PlantUML
- * @enduml ( foo,bar  =  "baz" )
- * @startuml ( foo,bar  =  "baz" )
- *
- * // other
- * @fix ( foo,bar  =  "baz" )
- * @FIXME ( foo,bar  =  "baz" )
- * @fixme ( foo,bar  =  "baz" )
- * @override
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo( "bar", "baz")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo( "bar" , "baz")
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     "bar",
+                 *     "baz"
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     "bar" ,
+                 *     "baz"
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     "bar",
+                 *     "baz"
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     "bar"
+                 *     ,
+                 *     "baz"
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("bar ,", "baz,")
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar ( "foo", "bar"),
+                 *     @Baz
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar ( "foo" ,"bar") ,
+                 *     @Baz
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo({"bar", "baz"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo({"bar" ,"baz"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar="bar")
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo" ,bar="bar")
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo" ,bar="bar"
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Comment , with a comma.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo(foo="string "" with inner quote", bar="string "" with inner quote")
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo(foo="string "" with inner quote" ,bar="string "" with inner quote")
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * // PHPDocumentor 1
+                 * @abstract ( foo,bar  =  "baz" )
+                 * @access ( foo,bar  =  "baz" )
+                 * @code ( foo,bar  =  "baz" )
+                 * @deprec ( foo,bar  =  "baz" )
+                 * @encode ( foo,bar  =  "baz" )
+                 * @exception ( foo,bar  =  "baz" )
+                 * @final ( foo,bar  =  "baz" )
+                 * @ingroup ( foo,bar  =  "baz" )
+                 * @inheritdoc ( foo,bar  =  "baz" )
+                 * @inheritDoc ( foo,bar  =  "baz" )
+                 * @magic ( foo,bar  =  "baz" )
+                 * @name ( foo,bar  =  "baz" )
+                 * @toc ( foo,bar  =  "baz" )
+                 * @tutorial ( foo,bar  =  "baz" )
+                 * @private ( foo,bar  =  "baz" )
+                 * @static ( foo,bar  =  "baz" )
+                 * @staticvar ( foo,bar  =  "baz" )
+                 * @staticVar ( foo,bar  =  "baz" )
+                 * @throw ( foo,bar  =  "baz" )
+                 *
+                 * // PHPDocumentor 2
+                 * @api ( foo,bar  =  "baz" )
+                 * @author ( foo,bar  =  "baz" )
+                 * @category ( foo,bar  =  "baz" )
+                 * @copyright ( foo,bar  =  "baz" )
+                 * @deprecated ( foo,bar  =  "baz" )
+                 * @example ( foo,bar  =  "baz" )
+                 * @filesource ( foo,bar  =  "baz" )
+                 * @global ( foo,bar  =  "baz" )
+                 * @ignore ( foo,bar  =  "baz" )
+                 * @internal ( foo,bar  =  "baz" )
+                 * @license ( foo,bar  =  "baz" )
+                 * @link ( foo,bar  =  "baz" )
+                 * @method ( foo,bar  =  "baz" )
+                 * @package ( foo,bar  =  "baz" )
+                 * @param ( foo,bar  =  "baz" )
+                 * @property ( foo,bar  =  "baz" )
+                 * @property-read ( foo,bar  =  "baz" )
+                 * @property-write ( foo,bar  =  "baz" )
+                 * @return ( foo,bar  =  "baz" )
+                 * @see ( foo,bar  =  "baz" )
+                 * @since ( foo,bar  =  "baz" )
+                 * @source ( foo,bar  =  "baz" )
+                 * @subpackage ( foo,bar  =  "baz" )
+                 * @throws ( foo,bar  =  "baz" )
+                 * @todo ( foo,bar  =  "baz" )
+                 * @TODO ( foo,bar  =  "baz" )
+                 * @usedBy ( foo,bar  =  "baz" )
+                 * @uses ( foo,bar  =  "baz" )
+                 * @var ( foo,bar  =  "baz" )
+                 * @version ( foo,bar  =  "baz" )
+                 *
+                 * // PHPUnit
+                 * @after ( foo,bar  =  "baz" )
+                 * @afterClass ( foo,bar  =  "baz" )
+                 * @backupGlobals ( foo,bar  =  "baz" )
+                 * @backupStaticAttributes ( foo,bar  =  "baz" )
+                 * @before ( foo,bar  =  "baz" )
+                 * @beforeClass ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnore ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnoreStart ( foo,bar  =  "baz" )
+                 * @codeCoverageIgnoreEnd ( foo,bar  =  "baz" )
+                 * @covers ( foo,bar  =  "baz" )
+                 * @coversDefaultClass ( foo,bar  =  "baz" )
+                 * @coversNothing ( foo,bar  =  "baz" )
+                 * @dataProvider ( foo,bar  =  "baz" )
+                 * @depends ( foo,bar  =  "baz" )
+                 * @expectedException ( foo,bar  =  "baz" )
+                 * @expectedExceptionCode ( foo,bar  =  "baz" )
+                 * @expectedExceptionMessage ( foo,bar  =  "baz" )
+                 * @expectedExceptionMessageRegExp ( foo,bar  =  "baz" )
+                 * @group ( foo,bar  =  "baz" )
+                 * @large ( foo,bar  =  "baz" )
+                 * @medium ( foo,bar  =  "baz" )
+                 * @preserveGlobalState ( foo,bar  =  "baz" )
+                 * @requires ( foo,bar  =  "baz" )
+                 * @runTestsInSeparateProcesses ( foo,bar  =  "baz" )
+                 * @runInSeparateProcess ( foo,bar  =  "baz" )
+                 * @small ( foo,bar  =  "baz" )
+                 * @test ( foo,bar  =  "baz" )
+                 * @testdox ( foo,bar  =  "baz" )
+                 * @ticket ( foo,bar  =  "baz" )
+                 * @uses ( foo,bar  =  "baz" )
+                 *
+                 * // PHPCheckStyle
+                 * @SuppressWarnings ( foo,bar  =  "baz" )
+                 *
+                 * // PHPStorm
+                 * @noinspection ( foo,bar  =  "baz" )
+                 *
+                 * // PEAR
+                 * @package_version ( foo,bar  =  "baz" )
+                 *
+                 * // PlantUML
+                 * @enduml ( foo,bar  =  "baz" )
+                 * @startuml ( foo,bar  =  "baz" )
+                 *
+                 * // other
+                 * @fix ( foo,bar  =  "baz" )
+                 * @FIXME ( foo,bar  =  "baz" )
+                 * @fixme ( foo,bar  =  "baz" )
+                 * @override
+                 */
+                EOD],
         ]);
     }
 
@@ -894,17 +1032,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo ="foo", bar ={"foo":"foo", "bar"="bar"})
- */', '
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo ="foo", bar ={"foo":"foo", "bar"="bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -942,17 +1086,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo= "foo", bar= {"foo" : "foo", "bar" = "bar"})
- */', '
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo= "foo", bar= {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -990,17 +1140,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo= "foo", bar= {"foo":"foo", "bar"="bar"})
- */', '
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo= "foo", bar= {"foo":"foo", "bar"="bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1038,17 +1194,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo ="foo", bar ={"foo" : "foo", "bar" = "bar"})
- */', '
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo ="foo", bar ={"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1086,17 +1248,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar" ="bar"})
- */', '
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar" ="bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1134,17 +1302,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"= "bar"})
- */', '
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar"= "bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1182,17 +1356,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"= "bar"})
- */', '
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"= "bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1230,17 +1410,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" ="bar"})
- */', '
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" ="bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1278,17 +1464,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo" :"foo", "bar"="bar"})
- */', '
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo" :"foo", "bar"="bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1326,17 +1518,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo": "foo", "bar" = "bar"})
- */', '
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo": "foo", "bar" = "bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1374,17 +1572,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo": "foo", "bar"="bar"})
- */', '
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo": "foo", "bar"="bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1422,17 +1626,23 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
         return self::createTestCases([
-            ['
-/**
- * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
- */'],
-            ['
-/**
- * @Foo(foo = "foo", bar = {"foo" :"foo", "bar" = "bar"})
- */', '
-/**
- * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" :"foo", "bar" = "bar"})
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(foo = "foo", bar = {"foo" : "foo", "bar" = "bar"})
+                 */
+                EOD],
         ]);
     }
 
@@ -1442,22 +1652,26 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public function testElementDiscovering(string $element): void
     {
         $this->doTest(
-            sprintf('<?php
-                class Foo
-                {
-                    /**
-                     * @Foo(foo="foo")
-                     */
-                    %s
-                }'."\n            ", $element),
-            sprintf('<?php
-                class Foo
-                {
-                    /**
-                     * @Foo(foo = "foo")
-                     */
-                    %s
-                }'."\n            ", $element)
+            sprintf(<<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    /**
+                                     * @Foo(foo="foo")
+                                     */
+                                    %s
+                                }
+                EOD."\n            ", $element),
+            sprintf(<<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    /**
+                                     * @Foo(foo = "foo")
+                                     */
+                                    %s
+                                }
+                EOD."\n            ", $element)
         );
     }
 

@@ -691,11 +691,15 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'close_tag_1' => [
-            '<?php
-?>inline content<?php ?>',
-            '<?php
-     use A\AA;
-     use B\C?>inline content<?php use A\D; use E\F ?>',
+            <<<'EOD'
+                <?php
+                ?>inline content<?php ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                     use A\AA;
+                     use B\C?>inline content<?php use A\D; use E\F ?>
+                EOD,
         ];
 
         yield 'close_tag_2' => [
@@ -709,39 +713,45 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'case_mismatch_typo' => [
-            '<?php
-use Foo\exception; // must be kept by non-risky fixer
+            <<<'EOD'
+                <?php
+                use Foo\exception; // must be kept by non-risky fixer
 
-try {
-    x();
-} catch (Exception $e) {
-    echo \'Foo\Exception caught\';
-} catch (\Exception $e) {
-    echo \'Exception caught\';
-}
-',
+                try {
+                    x();
+                } catch (Exception $e) {
+                    echo 'Foo\Exception caught';
+                } catch (\Exception $e) {
+                    echo 'Exception caught';
+                }
+
+                EOD,
         ];
 
         yield 'with_matches_in_comments' => [
-            '<?php
-use Foo;
-use Bar;
-use Baz;
+            <<<'EOD'
+                <?php
+                use Foo;
+                use Bar;
+                use Baz;
 
-//Foo
-#Bar
-/*Baz*/',
+                //Foo
+                #Bar
+                /*Baz*/
+                EOD,
         ];
 
         yield 'with_case_insensitive_matches_in_comments' => [
-            '<?php
-use Foo;
-use Bar;
-use Baz;
+            <<<'EOD'
+                <?php
+                use Foo;
+                use Bar;
+                use Baz;
 
-//foo
-#bar
-/*baz*/',
+                //foo
+                #bar
+                /*baz*/
+                EOD,
         ];
 
         yield 'with_same_namespace_import_and_unused_import' => [
@@ -844,45 +854,57 @@ use Baz;
         ];
 
         yield 'imported_class_is_used_for_constants_1' => [
-            '<?php
-use A\ABC;
-$a = 5-ABC::Test;
-$a = 5-ABC::Test-5;
-$a = ABC::Test-5;
-',
+            <<<'EOD'
+                <?php
+                use A\ABC;
+                $a = 5-ABC::Test;
+                $a = 5-ABC::Test-5;
+                $a = ABC::Test-5;
+
+                EOD,
         ];
 
         yield 'imported_class_is_used_for_constants_2' => [
-            '<?php
-use A\ABC;
-$a = 5-ABC::Test;
-$a = 5-ABC::Test-5;
-',
+            <<<'EOD'
+                <?php
+                use A\ABC;
+                $a = 5-ABC::Test;
+                $a = 5-ABC::Test-5;
+
+                EOD,
         ];
 
         yield 'imported_class_is_used_for_constants_3' => [
-            '<?php
-use A\ABC;
-$a = 5-ABC::Test;
-',
+            <<<'EOD'
+                <?php
+                use A\ABC;
+                $a = 5-ABC::Test;
+
+                EOD,
         ];
 
-        yield 'imported_class_is_used_for_constants_4' => ['<?php
-use A\ABC;
-$a = ABC::Test-5;
-',
+        yield 'imported_class_is_used_for_constants_4' => [<<<'EOD'
+            <?php
+            use A\ABC;
+            $a = ABC::Test-5;
+
+            EOD,
         ];
 
-        yield 'imported_class_is_used_for_constants_5' => ['<?php
-use A\ABC;
-$a = 5-ABC::Test-5;
-',
+        yield 'imported_class_is_used_for_constants_5' => [<<<'EOD'
+            <?php
+            use A\ABC;
+            $a = 5-ABC::Test-5;
+
+            EOD,
         ];
 
-        yield 'imported_class_is_used_for_constants_6' => ['<?php
-use A\ABC;
-$b = $a-->ABC::Test;
-',
+        yield 'imported_class_is_used_for_constants_6' => [<<<'EOD'
+            <?php
+            use A\ABC;
+            $b = $a-->ABC::Test;
+
+            EOD,
         ];
 
         yield 'imported_class_name_is_prefix_with_dash_of_constant' => [
@@ -1090,232 +1112,300 @@ $b = $a-->ABC::Test;
         ];
 
         yield [
-            '<?php
-use App\Http\Requests\StoreRequest;
+            <<<'EOD'
+                <?php
+                use App\Http\Requests\StoreRequest;
 
-class StoreController
-{
-    /**
-     * @param \App\Http\Requests\StoreRequest $request
-     */
-    public function __invoke(StoreRequest $request)
-    {}
-}',
-            '<?php
-use App\Http\Requests\StoreRequest;
-use Illuminate\Http\Request;
+                class StoreController
+                {
+                    /**
+                     * @param \App\Http\Requests\StoreRequest $request
+                     */
+                    public function __invoke(StoreRequest $request)
+                    {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                use App\Http\Requests\StoreRequest;
+                use Illuminate\Http\Request;
 
-class StoreController
-{
-    /**
-     * @param \App\Http\Requests\StoreRequest $request
-     */
-    public function __invoke(StoreRequest $request)
-    {}
-}',
+                class StoreController
+                {
+                    /**
+                     * @param \App\Http\Requests\StoreRequest $request
+                     */
+                    public function __invoke(StoreRequest $request)
+                    {}
+                }
+                EOD,
         ];
 
         yield 'unused import matching function call' => [
-            '<?php
-namespace Foo;
-bar();',
-            '<?php
-namespace Foo;
-use Bar;
-bar();',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                bar();
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar;
+                bar();
+                EOD,
         ];
 
         yield 'unused import matching function declaration' => [
-            '<?php
-namespace Foo;
-function bar () {}',
-            '<?php
-namespace Foo;
-use Bar;
-function bar () {}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                function bar () {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar;
+                function bar () {}
+                EOD,
         ];
 
         yield 'unused import matching method declaration' => [
-            '<?php
-namespace Foo;
-class Foo {
-    public function bar () {}
-}',
-            '<?php
-namespace Foo;
-use Bar;
-class Foo {
-    public function bar () {}
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Foo {
+                    public function bar () {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar;
+                class Foo {
+                    public function bar () {}
+                }
+                EOD,
         ];
 
         yield 'unused import matching constant usage' => [
-            '<?php
-namespace Foo;
-echo BAR;',
-            '<?php
-namespace Foo;
-use Bar;
-echo BAR;',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                echo BAR;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar;
+                echo BAR;
+                EOD,
         ];
 
         yield 'unused import matching class constant' => [
-            '<?php
-namespace Foo;
-class Foo {
-    const BAR = 1;
-}',
-            '<?php
-namespace Foo;
-use Bar;
-class Foo {
-    const BAR = 1;
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Foo {
+                    const BAR = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar;
+                class Foo {
+                    const BAR = 1;
+                }
+                EOD,
         ];
 
         yield 'unused function import matching class usage' => [
-            '<?php
-namespace Foo;
-new Bar();
-Baz::method();',
-            '<?php
-namespace Foo;
-use function bar;
-use function baz;
-new Bar();
-Baz::method();',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                new Bar();
+                Baz::method();
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use function bar;
+                use function baz;
+                new Bar();
+                Baz::method();
+                EOD,
         ];
 
         yield 'unused function import matching method call' => [
-            '<?php
-namespace Foo;
-Foo::bar();',
-            '<?php
-namespace Foo;
-use function bar;
-Foo::bar();',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                Foo::bar();
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use function bar;
+                Foo::bar();
+                EOD,
         ];
 
         yield 'unused function import matching method declaration' => [
-            '<?php
-namespace Foo;
-class Foo {
-    public function bar () {}
-}',
-            '<?php
-namespace Foo;
-use function bar;
-class Foo {
-    public function bar () {}
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Foo {
+                    public function bar () {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use function bar;
+                class Foo {
+                    public function bar () {}
+                }
+                EOD,
         ];
 
         yield 'unused function import matching constant usage' => [
-            '<?php
-namespace Foo;
-echo BAR;',
-            '<?php
-namespace Foo;
-use function bar;
-echo BAR;',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                echo BAR;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use function bar;
+                echo BAR;
+                EOD,
         ];
 
         yield 'unused function import matching class constant' => [
-            '<?php
-namespace Foo;
-class Foo {
-    const BAR = 1;
-}',
-            '<?php
-namespace Foo;
-use function bar;
-class Foo {
-    const BAR = 1;
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Foo {
+                    const BAR = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use function bar;
+                class Foo {
+                    const BAR = 1;
+                }
+                EOD,
         ];
 
         yield 'unused constant import matching function call' => [
-            '<?php
-namespace Foo;
-bar();',
-            '<?php
-namespace Foo;
-use const BAR;
-bar();',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                bar();
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use const BAR;
+                bar();
+                EOD,
         ];
 
         yield 'unused constant import matching function declaration' => [
-            '<?php
-namespace Foo;
-function bar () {}',
-            '<?php
-namespace Foo;
-use const BAR;
-function bar () {}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                function bar () {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use const BAR;
+                function bar () {}
+                EOD,
         ];
 
         yield 'unused constant import matching method declaration' => [
-            '<?php
-namespace Foo;
-class Foo {
-    public function bar () {}
-}',
-            '<?php
-namespace Foo;
-use const BAR;
-class Foo {
-    public function bar () {}
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Foo {
+                    public function bar () {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use const BAR;
+                class Foo {
+                    public function bar () {}
+                }
+                EOD,
         ];
 
         yield 'unused constant import matching class constant' => [
-            '<?php
-namespace Foo;
-class Foo {
-    const BAR = 1;
-}',
-            '<?php
-namespace Foo;
-use const BAR;
-class Foo {
-    const BAR = 1;
-}',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Foo {
+                    const BAR = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use const BAR;
+                class Foo {
+                    const BAR = 1;
+                }
+                EOD,
         ];
 
         yield 'attribute without braces' => [
-            '<?php
-use Foo;
-class Controller
-{
-    #[Foo]
-    public function foo() {}
-}',
+            <<<'EOD'
+                <?php
+                use Foo;
+                class Controller
+                {
+                    #[Foo]
+                    public function foo() {}
+                }
+                EOD,
         ];
 
         yield 'attribute with braces' => [
-            '<?php
-use Foo;
-class Controller
-{
-    #[Foo()]
-    public function foo() {}
-}',
+            <<<'EOD'
+                <?php
+                use Foo;
+                class Controller
+                {
+                    #[Foo()]
+                    public function foo() {}
+                }
+                EOD,
         ];
 
         yield 'go to' => [
-            '<?php
-Bar1:
-Bar2:
-Bar3:
-',
-            '<?php
-use Bar1;
-use const Bar2;
-use function Bar3;
-Bar1:
-Bar2:
-Bar3:
-',
+            <<<'EOD'
+                <?php
+                Bar1:
+                Bar2:
+                Bar3:
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Bar1;
+                use const Bar2;
+                use function Bar3;
+                Bar1:
+                Bar2:
+                Bar3:
+
+                EOD,
         ];
 
         yield [
@@ -1332,29 +1422,33 @@ Bar3:
         ];
 
         yield [ // TODO test shows lot of cases where imports are not removed while could be
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
+            <<<'EOD'
+                <?php use A\{B,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\Z\{ConstAA,ConstBB,ConstCC,};
+                use const some\X\{ConstA,ConstB,ConstC,ConstF};
+                use C\{D,E,};
 
-    echo ConstA.ConstB.ConstC,ConstF;
-    echo ConstBB.ConstCC;
-    fn_a(ClassA::test, new C());
-',
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
-use Z;
+                    echo ConstA.ConstB.ConstC,ConstF;
+                    echo ConstBB.ConstCC;
+                    fn_a(ClassA::test, new C());
 
-    echo ConstA.ConstB.ConstC,ConstF;
-    echo ConstBB.ConstCC;
-    fn_a(ClassA::test, new C());
-',
+                EOD,
+            <<<'EOD'
+                <?php use A\{B,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\Z\{ConstAA,ConstBB,ConstCC,};
+                use const some\X\{ConstA,ConstB,ConstC,ConstF};
+                use C\{D,E,};
+                use Z;
+
+                    echo ConstA.ConstB.ConstC,ConstF;
+                    echo ConstBB.ConstCC;
+                    fn_a(ClassA::test, new C());
+
+                EOD,
         ];
     }
 
@@ -1364,30 +1458,34 @@ use Z;
     public function testFixPre80(): void
     {
         $this->doTest(
-            '<?php
-# 1
-# 2
-# 3
-# 4
-  use /**/A\B/**/;
-  echo 1;
-  new B();
-',
-            '<?php
-use# 1
-\# 2
-Exception# 3
-# 4
+            <<<'EOD'
+                <?php
+                # 1
+                # 2
+                # 3
+                # 4
+                  use /**/A\B/**/;
+                  echo 1;
+                  new B();
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use# 1
+                \# 2
+                Exception# 3
+                # 4
 
 
 
 
 
-  ;
-use /**/A\B/**/;
-  echo 1;
-  new B();
-'
+                  ;
+                use /**/A\B/**/;
+                  echo 1;
+                  new B();
+
+                EOD
         );
     }
 
@@ -1404,62 +1502,74 @@ use /**/A\B/**/;
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
 
-$x = $foo?->bar;
-$y = foo?->bar();
-',
-            '<?php
+                $x = $foo?->bar;
+                $y = foo?->bar();
 
-use Foo\Bar;
+                EOD,
+            <<<'EOD'
+                <?php
 
-$x = $foo?->bar;
-$y = foo?->bar();
-',
+                use Foo\Bar;
+
+                $x = $foo?->bar;
+                $y = foo?->bar();
+
+                EOD,
         ];
 
         yield 'with union type in non-capturing catch' => [
-            '<?php
-use Foo;
-use Bar;
-try {} catch (Foo | Bar) {}',
+            <<<'EOD'
+                <?php
+                use Foo;
+                use Bar;
+                try {} catch (Foo | Bar) {}
+                EOD,
         ];
 
         yield 'union return' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Foo;
-use Bar;
+                use Foo;
+                use Bar;
 
-abstract class Baz
-{
-    abstract public function test(): Foo|Bar;
-}
-',
+                abstract class Baz
+                {
+                    abstract public function test(): Foo|Bar;
+                }
+
+                EOD,
         ];
 
         yield 'attribute' => [
-            "<?php
-use Acme\\JsonSchemaValidationBundle\\Annotation\\JsonSchema;
-use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\IsGranted;
-use Symfony\\Component\\Routing\\Annotation\\Route;
+            <<<'EOD'
+                <?php
+                use Acme\JsonSchemaValidationBundle\Annotation\JsonSchema;
+                use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+                use Symfony\Component\Routing\Annotation\Route;
 
-#[
-  Route('/basket/{uuid}/item', name: 'addBasketItem', requirements: ['uuid' => '%regex.uuid%'], methods: ['POST']),
-  IsGranted('ROLE_USER'),
-  JsonSchema('Public/Basket/addItem.json'),
-]
-class Foo {}
-",
+                #[
+                  Route('/basket/{uuid}/item', name: 'addBasketItem', requirements: ['uuid' => '%regex.uuid%'], methods: ['POST']),
+                  IsGranted('ROLE_USER'),
+                  JsonSchema('Public/Basket/addItem.json'),
+                ]
+                class Foo {}
+
+                EOD,
         ];
 
         yield 'attribute 2' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Psr\Log\LoggerInterface;
-function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
-',
+                use Psr\Log\LoggerInterface;
+                function f( #[Target('xxx')] LoggerInterface|null $logger) {}
+
+                EOD,
         ];
     }
 
@@ -1476,95 +1586,111 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     public static function provideFix81Cases(): iterable
     {
         yield 'final const' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final public const B1 = "2";
-}
-',
-            '<?php
-use A\B1;
+                class Foo
+                {
+                    final public const B1 = "2";
+                }
 
-class Foo
-{
-    final public const B1 = "2";
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                use A\B1;
+
+                class Foo
+                {
+                    final public const B1 = "2";
+                }
+
+                EOD,
         ];
 
         yield 'first callable class' => [
-            '<?php
-use Foo;
-Foo::method(...);',
-            '<?php
-use Foo;
-use Bar;
-Foo::method(...);',
+            <<<'EOD'
+                <?php
+                use Foo;
+                Foo::method(...);
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo;
+                use Bar;
+                Foo::method(...);
+                EOD,
         ];
 
         yield 'New in initializers' => [
-            '<?php
-namespace A\B\C;
+            <<<'EOD'
+                <?php
+                namespace A\B\C;
 
-use Foo1;
-use Foo2;
-use Foo3;
-use Foo4;
-use Foo5;
-use Foo6;
-use Foo7;
+                use Foo1;
+                use Foo2;
+                use Foo3;
+                use Foo4;
+                use Foo5;
+                use Foo6;
+                use Foo7;
 
-class Test {
-    public function __construct(
-        public $prop = (new Foo1),
-    ) {}
-}
+                class Test {
+                    public function __construct(
+                        public $prop = (new Foo1),
+                    ) {}
+                }
 
-function test(
-    $foo = (new Foo2),
-    $baz = (new Foo3(x: 2)),
-) {
-}
+                function test(
+                    $foo = (new Foo2),
+                    $baz = (new Foo3(x: 2)),
+                ) {
+                }
 
-static $x = new Foo4();
+                static $x = new Foo4();
 
-const C = (new Foo5);
+                const C = (new Foo5);
 
-function test2($param = (new Foo6)) {}
+                function test2($param = (new Foo6)) {}
 
-const D = new Foo7(1,2);
-',
+                const D = new Foo7(1,2);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                enum Foo: string
-                {
-                    use Bar;
+            <<<'EOD'
+                <?php
+                                enum Foo: string
+                                {
+                                    use Bar;
 
-                    case Test1 = "a";
-                }'."\n            ",
+                                    case Test1 = "a";
+                                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                use Foo\Class1;
-                use Foo\Class2;
-                class C
-                {
-                   public function t(Class1 | Class2 $fields) {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                use Foo\Class1;
+                                use Foo\Class2;
+                                class C
+                                {
+                                   public function t(Class1 | Class2 $fields) {}
+                                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                use Foo\Class1;
-                use Foo\Class2;
-                class C
-                {
-                   public function t(Class1 | Class2 ...$fields) {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                use Foo\Class1;
+                                use Foo\Class2;
+                                class C
+                                {
+                                   public function t(Class1 | Class2 ...$fields) {}
+                                }
+                EOD."\n            ",
         ];
     }
 }

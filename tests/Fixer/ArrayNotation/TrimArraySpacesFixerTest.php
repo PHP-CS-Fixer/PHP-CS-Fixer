@@ -266,95 +266,123 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    someFunc(array(
-        /* empty array */
-    ));',
+            <<<'EOD'
+                <?php
+                    someFunc(array(
+                        /* empty array */
+                    ));
+                EOD,
         ];
 
         yield [
-            '<?php
-    someFunc([
-        /* empty array */
-    ]);',
+            <<<'EOD'
+                <?php
+                    someFunc([
+                        /* empty array */
+                    ]);
+                EOD,
         ];
 
         yield [
-            '<?php
-    someFunc(array(
-        /* empty
-        array */));',
-            '<?php
-    someFunc(array(
-        /* empty
-        array */ ));',
+            <<<'EOD'
+                <?php
+                    someFunc(array(
+                        /* empty
+                        array */));
+                EOD,
+            <<<'EOD'
+                <?php
+                    someFunc(array(
+                        /* empty
+                        array */ ));
+                EOD,
         ];
 
         yield [
-            '<?php
-    someFunc([
-        /* empty
-        array */]);',
-            '<?php
-    someFunc([
-        /* empty
-        array */ ]);',
+            <<<'EOD'
+                <?php
+                    someFunc([
+                        /* empty
+                        array */]);
+                EOD,
+            <<<'EOD'
+                <?php
+                    someFunc([
+                        /* empty
+                        array */ ]);
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = array( // My array of:
-        1,      // - first item
-        2,      // - second item
-    );',
+            <<<'EOD'
+                <?php
+                    $a = array( // My array of:
+                        1,      // - first item
+                        2,      // - second item
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = [  // My array of:
-        1,  // - first item
-        2,  // - second item
-    ];',
+            <<<'EOD'
+                <?php
+                    $a = [  // My array of:
+                        1,  // - first item
+                        2,  // - second item
+                    ];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = array(
-            // My array of:
-        1,  // - first item
-        2,  // - second item
-    );',
+            <<<'EOD'
+                <?php
+                    $a = array(
+                            // My array of:
+                        1,  // - first item
+                        2,  // - second item
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = [
-            // My array of:
-        1,  // - first item
-        2,  // - second item
-    ];',
+            <<<'EOD'
+                <?php
+                    $a = [
+                            // My array of:
+                        1,  // - first item
+                        2,  // - second item
+                    ];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo = array(/* comment */
-        1
-    );',
-            '<?php
-    $foo = array( /* comment */
-        1
-    );',
+            <<<'EOD'
+                <?php
+                    $foo = array(/* comment */
+                        1
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = array( /* comment */
+                        1
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo = [/* comment */
-        1
-    ];',
-            '<?php
-    $foo = [ /* comment */
-        1
-    ];',
+            <<<'EOD'
+                <?php
+                    $foo = [/* comment */
+                        1
+                    ];
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = [ /* comment */
+                        1
+                    ];
+                EOD,
         ];
 
         // don't fix array syntax within comments
@@ -430,37 +458,47 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    $foo = array(
-        1 => 2, // comment
-    );
-',
+            <<<'EOD'
+                <?php
+                    $foo = array(
+                        1 => 2, // comment
+                    );
+
+                EOD,
         ];
 
         yield [
-            '<?php
-function a()
-{
-    yield array("a" => 1, "b" => 2);
-}',
-            '<?php
-function a()
-{
-    yield array( "a" => 1, "b" => 2 );
-}',
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield array("a" => 1, "b" => 2);
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield array( "a" => 1, "b" => 2 );
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function a()
-{
-    yield ["a" => 1, "b" => 2];
-}',
-            '<?php
-function a()
-{
-    yield [ "a" => 1, "b" => 2 ];
-}',
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield ["a" => 1, "b" => 2];
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function a()
+                {
+                    yield [ "a" => 1, "b" => 2 ];
+                }
+                EOD,
         ];
 
         yield 'array destructuring' => [
@@ -474,12 +512,14 @@ function a()
         ];
 
         yield 'multiline array destructuring' => [
-            '<?php
-    [
-        \'url\' => $url,
-        \'token\' => $token,
-    ] = $data;
-',
+            <<<'EOD'
+                <?php
+                    [
+                        'url' => $url,
+                        'token' => $token,
+                    ] = $data;
+
+                EOD,
         ];
     }
 }

@@ -45,20 +45,30 @@ final class ErrorOutputTest extends TestCase
         $displayed = $this->readFullStreamOutput($output);
 
         $startWith = sprintf(
-            '
-Files that were not fixed due to errors reported during %s:
-   1) %s',
+            <<<'EOD'
+
+                Files that were not fixed due to errors reported during %s:
+                   1) %s
+                EOD,
             $process,
             __FILE__
         );
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
             $startWith .= sprintf(
-                '
-'."\n                            ".'
-        [%s]'.'  '.'
-        %s (%d)'.'    '.''."\n                            ".'
-',
+                <<<'EOD'
+
+
+                    EOD."\n                            ".<<<'EOD'
+
+                            [%s]
+                    EOD.'  '.<<<'EOD'
+
+                            %s (%d)
+                    EOD.'    '.''."\n                            ".<<<'EOD'
+
+
+                    EOD,
                 \get_class($source),
                 $source->getMessage(),
                 $source->getCode()
@@ -67,11 +77,13 @@ Files that were not fixed due to errors reported during %s:
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
             $startWith .= sprintf(
-                '
-      PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
-        in %s at line %d
-      PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
-',
+                <<<'EOD'
+
+                          PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
+                            in %s at line %d
+                          PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
+
+                    EOD,
                 __FILE__,
                 $lineNumber
             );

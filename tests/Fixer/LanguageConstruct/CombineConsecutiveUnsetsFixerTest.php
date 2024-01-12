@@ -34,15 +34,19 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php //1
-                    unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,  $foobar2);
-                     //test
-                     /* more comment test*/'."\n                    ".''."\n                ",
-            '<?php //1
-                    unset($foo/*;*/);
-                    unset(/*;*/$bar, $c ); //test
-                    unset($foobar  ); /* more comment test*/
-                    unset(  $foobar2);'."\n                ",
+            <<<'EOD'
+                <?php //1
+                                    unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,  $foobar2);
+                                     //test
+                                     /* more comment test*/
+                EOD."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php //1
+                                    unset($foo/*;*/);
+                                    unset(/*;*/$bar, $c ); //test
+                                    unset($foobar  ); /* more comment test*/
+                                    unset(  $foobar2);
+                EOD."\n                ",
         ];
 
         yield [
@@ -56,39 +60,53 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-              $config = array();
-              if ($config) {
-              }
-              unset($config[\'autoescape_service\'], $config[\'autoescape_service_method\']);'."\n              ",
+            <<<'EOD'
+                <?php
+                              $config = array();
+                              if ($config) {
+                              }
+                              unset($config['autoescape_service'], $config['autoescape_service_method']);
+                EOD."\n              ",
         ];
 
         yield [
-            '<?php //2
-                    unset($foo, $bar, $foobar, $foobar2, $foobar3);/*1*/
-                    /*2*/
-                    //3
-                    /*4*/
-                    /*5*/'.' '.''."\n                ",
-            '<?php //2
-                    unset($foo);/*1*/
-                    unset($bar);/*2*/
-                    unset($foobar);//3
-                    unset($foobar2);/*4*/
-                    /*5*/ unset($foobar3);'."\n                ",
+            <<<'EOD'
+                <?php //2
+                                    unset($foo, $bar, $foobar, $foobar2, $foobar3);/*1*/
+                                    /*2*/
+                                    //3
+                                    /*4*/
+                                    /*5*/
+                EOD.' '.''."\n                ",
+            <<<'EOD'
+                <?php //2
+                                    unset($foo);/*1*/
+                                    unset($bar);/*2*/
+                                    unset($foobar);//3
+                                    unset($foobar2);/*4*/
+                                    /*5*/ unset($foobar3);
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    unset($foo3, $bar, $test,$test1);
-                        /* c1 */'."\n                        ".''."\n                ".'
-                // c2'."\n                ".''."\n                ",
-            '<?php
-                    unset($foo3);
-                        /* c1 */
-                        unset($bar);'."\n                ".'
-                // c2
-                unset($test,$test1);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    unset($foo3, $bar, $test,$test1);
+                                        /* c1 */
+                EOD."\n                        ".''."\n                ".<<<'EOD'
+
+                                // c2
+                EOD."\n                ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    unset($foo3);
+                                        /* c1 */
+                                        unset($bar);
+                EOD."\n                ".<<<'EOD'
+
+                                // c2
+                                unset($test,$test1);
+                EOD."\n                ",
         ];
 
         yield [
@@ -106,15 +124,19 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    unset($a[0], $a[\'a\'], $a["b"], $a->b, $a->b->c, $a->b[0]->c[\'a\']);'."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                ",
-            '<?php
-                    unset($a[0]);
-                    unset($a[\'a\']);
-                    unset($a["b"]);
-                    unset($a->b);
-                    unset($a->b->c);
-                    unset($a->b[0]->c[\'a\']);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    unset($a[0], $a['a'], $a["b"], $a->b, $a->b->c, $a->b[0]->c['a']);
+                EOD."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    unset($a[0]);
+                                    unset($a['a']);
+                                    unset($a["b"]);
+                                    unset($a->b);
+                                    unset($a->b->c);
+                                    unset($a->b[0]->c['a']);
+                EOD."\n                ",
         ];
     }
 

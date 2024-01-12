@@ -77,20 +77,22 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'do not fix cases' => [
-            '<?php
-                    echo 2 | 4;
-                    echo "aaa" | "bbb";
-                    echo F_OK | F_ERR;
-                    echo foo(F_OK | F_ERR);
-                    foo($A||$b);
-                    foo($A|$b);
-                    // try {} catch (ExceptionType1 | ExceptionType2) {}
-                    $a = function(){};
-                    $x = ($y|$z);
-                    function foo(){}
-                    $a = $b|$c;
-                    const A = B|C;
-                    const B = D::X|C ?>'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 2 | 4;
+                                    echo "aaa" | "bbb";
+                                    echo F_OK | F_ERR;
+                                    echo foo(F_OK | F_ERR);
+                                    foo($A||$b);
+                                    foo($A|$b);
+                                    // try {} catch (ExceptionType1 | ExceptionType2) {}
+                                    $a = function(){};
+                                    $x = ($y|$z);
+                                    function foo(){}
+                                    $a = $b|$c;
+                                    const A = B|C;
+                                    const B = D::X|C ?>
+                EOD."\n                ",
             [
                 6 => '|',
                 15 => '|',
@@ -143,9 +145,11 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
             ],
         ];
 
-        yield 'static function' => ['<?php
-$a = static function (A|B|int $a):int|null {};
-',
+        yield 'static function' => [<<<'EOD'
+            <?php
+            $a = static function (A|B|int $a):int|null {};
+
+            EOD,
             [
                 11 => CT::T_TYPE_ALTERNATION,
                 13 => CT::T_TYPE_ALTERNATION,
@@ -153,32 +157,38 @@ $a = static function (A|B|int $a):int|null {};
             ],
         ];
 
-        yield 'static function with use' => ['<?php
-$a = static function () use ($a) : int|null {};
-',
+        yield 'static function with use' => [<<<'EOD'
+            <?php
+            $a = static function () use ($a) : int|null {};
+
+            EOD,
             [
                 21 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 
-        yield 'function variable unions' => ['<?php
-function Bar1(A|B|int $a) {
-}
-',
+        yield 'function variable unions' => [<<<'EOD'
+            <?php
+            function Bar1(A|B|int $a) {
+            }
+
+            EOD,
             [
                 6 => CT::T_TYPE_ALTERNATION,
                 8 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 
-        yield 'class method variable unions' => ['<?php
-class Foo
-{
-    public function Bar1(A|B|int $a) {}
-    public function Bar2(A\B|\A\Z $a) {}
-    public function Bar3(int $a) {}
-}
-',
+        yield 'class method variable unions' => [<<<'EOD'
+            <?php
+            class Foo
+            {
+                public function Bar1(A|B|int $a) {}
+                public function Bar2(A\B|\A\Z $a) {}
+                public function Bar3(int $a) {}
+            }
+
+            EOD,
             [
                 // Bar1
                 14 => CT::T_TYPE_ALTERNATION,
@@ -188,52 +198,58 @@ class Foo
             ],
         ];
 
-        yield 'class method return unions' => ['<?php
-class Foo
-{
-    public function Bar(): A|B|int {}
-}
-',
+        yield 'class method return unions' => [<<<'EOD'
+            <?php
+            class Foo
+            {
+                public function Bar(): A|B|int {}
+            }
+
+            EOD,
             [
                 17 => CT::T_TYPE_ALTERNATION,
                 19 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 
-        yield 'class attribute var + union' => ['<?php
-class Number
-{
-    var int|float|null $number;
-}
-',
+        yield 'class attribute var + union' => [<<<'EOD'
+            <?php
+            class Number
+            {
+                var int|float|null $number;
+            }
+
+            EOD,
             [
                 10 => CT::T_TYPE_ALTERNATION,
                 12 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 
-        yield 'class attributes visibility + unions' => ['<?php
-class Number
-{
-    public array $numbers;
+        yield 'class attributes visibility + unions' => [<<<'EOD'
+            <?php
+            class Number
+            {
+                public array $numbers;
 
-    /**  */
-    public int|float $number1;
+                /**  */
+                public int|float $number1;
 
-    // 2
-    protected int|float|null $number2;
+                // 2
+                protected int|float|null $number2;
 
-    # - foo 3
-    private int|float|string|null $number3;
+                # - foo 3
+                private int|float|string|null $number3;
 
-    /* foo 4 */
-    private \Foo\Bar\A|null $number4;
+                /* foo 4 */
+                private \Foo\Bar\A|null $number4;
 
-    private \Foo|Bar $number5;
+                private \Foo|Bar $number5;
 
-    private ?Bar $number6; // ? cannot be part of a union in PHP8
-}
-',
+                private ?Bar $number6; // ? cannot be part of a union in PHP8
+            }
+
+            EOD,
             [
                 // number 1
                 19 => CT::T_TYPE_ALTERNATION,
@@ -252,12 +268,14 @@ class Number
         ];
 
         yield 'typed static properties' => [
-            '<?php
-            class Foo {
-                private static int | null $bar;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private static int | null $bar;
 
-                private static int | float | string | null $baz;
-            }',
+                                private static int | float | string | null $baz;
+                            }
+                EOD,
             [
                 14 => CT::T_TYPE_ALTERNATION,
                 27 => CT::T_TYPE_ALTERNATION,
@@ -300,13 +318,15 @@ class Number
         ];
 
         yield 'function calls and function definitions' => [
-            '<?php
-                f1(CONST_A|CONST_B);
-                function f2(A|B $x, C|D $y, E|F $z) {};
-                f3(CONST_A|CONST_B);
-                function f4(A|B $x, C|D $y, E|F $z) {};
-                f5(CONST_A|CONST_B);
-                $x = ($y|$z);'."\n            ",
+            <<<'EOD'
+                <?php
+                                f1(CONST_A|CONST_B);
+                                function f2(A|B $x, C|D $y, E|F $z) {};
+                                f3(CONST_A|CONST_B);
+                                function f4(A|B $x, C|D $y, E|F $z) {};
+                                f5(CONST_A|CONST_B);
+                                $x = ($y|$z);
+                EOD."\n            ",
             [
                 15 => CT::T_TYPE_ALTERNATION,
                 22 => CT::T_TYPE_ALTERNATION,
@@ -318,11 +338,13 @@ class Number
         ];
 
         yield 'callable type' => [
-            '<?php
-                function f1(array|callable $x) {};
-                function f2(callable|array $x) {};
-                function f3(string|callable $x) {};
-                function f4(callable|string $x) {};'."\n            ",
+            <<<'EOD'
+                <?php
+                                function f1(array|callable $x) {};
+                                function f2(callable|array $x) {};
+                                function f3(string|callable $x) {};
+                                function f4(callable|string $x) {};
+                EOD."\n            ",
             [
                 7 => CT::T_TYPE_ALTERNATION,
                 22 => CT::T_TYPE_ALTERNATION,
@@ -332,13 +354,15 @@ class Number
         ];
 
         yield 'promoted properties' => [
-            '<?php class Foo {
-                public function __construct(
-                    public int|string $a,
-                    protected int|string $b,
-                    private int|string $c
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public int|string $a,
+                                    protected int|string $b,
+                                    private int|string $c
+                                ) {}
+                            }
+                EOD,
             [
                 17 => CT::T_TYPE_ALTERNATION,
                 26 => CT::T_TYPE_ALTERNATION,
@@ -347,34 +371,40 @@ class Number
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Psr\Log\LoggerInterface;
-function f( #[Target(\'xxx\')] LoggerInterface|A $logger) {}
+                use Psr\Log\LoggerInterface;
+                function f( #[Target('xxx')] LoggerInterface|A $logger) {}
 
-',
+
+                EOD,
             [
                 24 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Psr\Log\LoggerInterface;
-function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] LoggerInterface|X $logger) {}
+                use Psr\Log\LoggerInterface;
+                function f( #[Target('a')] #[Target('b')] #[Target('c')] #[Target('d')] LoggerInterface|X $logger) {}
 
-',
+
+                EOD,
             [
                 45 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 
         yield 'self as type' => [
-            '<?php class Foo {
-                function f1(bool|self|int $x): void {}
-                function f2(): self|\stdClass {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function f1(bool|self|int $x): void {}
+                                function f2(): self|\stdClass {}
+                            }
+                EOD,
             [
                 12 => CT::T_TYPE_ALTERNATION,
                 14 => CT::T_TYPE_ALTERNATION,
@@ -383,11 +413,13 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'static as type' => [
-            '<?php class Foo {
-                function f1(): static|TypeA {}
-                function f2(): TypeA|static|TypeB {}
-                function f3(): TypeA|static {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function f1(): static|TypeA {}
+                                function f2(): TypeA|static|TypeB {}
+                                function f3(): TypeA|static {}
+                            }
+                EOD,
             [
                 15 => CT::T_TYPE_ALTERNATION,
                 29 => CT::T_TYPE_ALTERNATION,
@@ -397,10 +429,12 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'splat operator' => [
-            '<?php class Foo {
-                function f1(bool|int ... $x) {}
-                function f2(bool|int $x, TypeA|\Bar\Baz|TypeB ...$y) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function f1(bool|int ... $x) {}
+                                function f2(bool|int $x, TypeA|\Bar\Baz|TypeB ...$y) {}
+                            }
+                EOD,
             [
                 12 => CT::T_TYPE_ALTERNATION,
                 28 => CT::T_TYPE_ALTERNATION,
@@ -434,11 +468,13 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
             [
                 12 => CT::T_TYPE_ALTERNATION,
             ],
-            '<?php
-class Foo
-{
-    public readonly string|int $c;
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public readonly string|int $c;
+                }
+                EOD,
         ];
 
         yield 'promoted properties' => [
@@ -447,13 +483,15 @@ class Foo
                 30 => CT::T_TYPE_ALTERNATION,
                 41 => CT::T_TYPE_ALTERNATION,
             ],
-            '<?php class Foo {
-                public function __construct(
-                    public readonly int|string $a,
-                    protected readonly int|string $b,
-                    private readonly int|string $c
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public readonly int|string $a,
+                                    protected readonly int|string $b,
+                                    private readonly int|string $c
+                                ) {}
+                            }
+                EOD,
         ];
 
         yield 'parameters by reference' => [
@@ -463,15 +501,17 @@ class Foo
                 91 => CT::T_TYPE_ALTERNATION,
                 93 => CT::T_TYPE_ALTERNATION,
             ],
-            '<?php
-                f(FOO|BAR|BAZ&$x);
-                function f1(FOO|BAR|BAZ&$x) {} // Alternation found
-                function f2(FOO&BAR&BAZ&$x) {}
-                f(FOO&BAR|BAZ&$x);
-                f(FOO|BAR&BAZ&$x);
-                fn(FOO&BAR&BAZ&$x) => 0;
-                fn(FOO|BAR|BAZ&$x) => 0; // Alternation found
-                f(FOO&BAR&BAZ&$x);'."\n            ",
+            <<<'EOD'
+                <?php
+                                f(FOO|BAR|BAZ&$x);
+                                function f1(FOO|BAR|BAZ&$x) {} // Alternation found
+                                function f2(FOO&BAR&BAZ&$x) {}
+                                f(FOO&BAR|BAZ&$x);
+                                f(FOO|BAR&BAZ&$x);
+                                fn(FOO&BAR&BAZ&$x) => 0;
+                                fn(FOO|BAR|BAZ&$x) => 0; // Alternation found
+                                f(FOO&BAR&BAZ&$x);
+                EOD."\n            ",
         ];
     }
 
@@ -526,11 +566,13 @@ class Foo
         ];
 
         yield 'disjunctive normal form types parameters' => [
-            '<?php function foo(
-                (A&B)|C|D $x,
-                A|(B&C)|D $y,
-                A|B|(C&D) $z,
-            ): void {}',
+            <<<'EOD'
+                <?php function foo(
+                                (A&B)|C|D $x,
+                                A|(B&C)|D $y,
+                                A|B|(C&D) $z,
+                            ): void {}
+                EOD,
             [
                 11 => CT::T_TYPE_ALTERNATION,
                 13 => CT::T_TYPE_ALTERNATION,
@@ -542,23 +584,25 @@ class Foo
         ];
 
         yield 'bigger set of multiple DNF properties' => [
-            '<?php
-class Dnf
-{
-    public A|(C&D) $a;
-    protected (C&D)|B $b;
-    private (C&D)|(E&F)|(G&H) $c;
-    static (C&D)|Z $d;
-    public /* */ (C&D)|X $e;
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public A|(C&D) $a;
+                    protected (C&D)|B $b;
+                    private (C&D)|(E&F)|(G&H) $c;
+                    static (C&D)|Z $d;
+                    public /* */ (C&D)|X $e;
 
-    public function foo($a, $b) {
-        return
-            $z|($A&$B)|(A::z&B\A::x)
-            || A::b|($A&$B)
-        ;
-    }
-}
-',
+                    public function foo($a, $b) {
+                        return
+                            $z|($A&$B)|(A::z&B\A::x)
+                            || A::b|($A&$B)
+                        ;
+                    }
+                }
+
+                EOD,
             [
                 10 => CT::T_TYPE_ALTERNATION,
                 27 => CT::T_TYPE_ALTERNATION,
@@ -570,9 +614,11 @@ class Dnf
         ];
 
         yield 'arrow function with DNF types' => [
-            '<?php
-                $f1 = fn (): A|(B&C) => new Foo();
-                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $f1 = fn (): A|(B&C) => new Foo();
+                                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+                EOD."\n            ",
             [
                 13 => CT::T_TYPE_ALTERNATION,
                 41 => CT::T_TYPE_ALTERNATION,
@@ -605,10 +651,12 @@ class Dnf
         ];
 
         yield 'typed const mixed types' => [
-            '<?php
-                class Foo {
-                    const A|\B|array/**/|(Z&V)|callable | X /* X*/ |D Bar = 1;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo {
+                                    const A|\B|array/**/|(Z&V)|callable | X /* X*/ |D Bar = 1;
+                                }
+                EOD."\n            ",
             [
                 11 => CT::T_TYPE_ALTERNATION,
                 14 => CT::T_TYPE_ALTERNATION,

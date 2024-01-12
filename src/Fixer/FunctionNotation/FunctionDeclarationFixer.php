@@ -58,32 +58,38 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
             'Spaces should be properly placed in a function declaration.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-class Foo
-{
-    public static function  bar   ( $baz , $foo )
-    {
-        return false;
-    }
-}
+                        class Foo
+                        {
+                            public static function  bar   ( $baz , $foo )
+                            {
+                                return false;
+                            }
+                        }
 
-function  foo  ($bar, $baz)
-{
-    return false;
-}
-'
+                        function  foo  ($bar, $baz)
+                        {
+                            return false;
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-$f = function () {};
-',
+                    <<<'EOD'
+                        <?php
+                        $f = function () {};
+
+                        EOD,
                     ['closure_function_spacing' => self::SPACING_NONE]
                 ),
                 new CodeSample(
-                    '<?php
-$f = fn () => null;
-',
+                    <<<'EOD'
+                        <?php
+                        $f = fn () => null;
+
+                        EOD,
                     ['closure_fn_spacing' => self::SPACING_NONE]
                 ),
             ]

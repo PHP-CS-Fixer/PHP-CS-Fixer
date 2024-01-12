@@ -69,45 +69,53 @@ final class EmptyLoopBodyFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'empty "while" after "if"' => [
-            '<?php
-if ($foo) {
-    echo $bar;
-} while(foo());
-',
-            '<?php
-if ($foo) {
-    echo $bar;
-} while(foo()){}
-',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    echo $bar;
+                } while(foo());
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    echo $bar;
+                } while(foo()){}
+
+                EOD,
         ];
 
         yield 'nested and mixed loops' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-do {
-    while($foo()) {
-        while(B()); // fix
-        for($i = 0;foo();++$i); // fix
+                do {
+                    while($foo()) {
+                        while(B()); // fix
+                        for($i = 0;foo();++$i); // fix
 
-        for($i = 0;foo();++$i) {
-            foreach (Foo() as $f); // fix
-        }
-    }
-} while(foo());
-',
-            '<?php
+                        for($i = 0;foo();++$i) {
+                            foreach (Foo() as $f); // fix
+                        }
+                    }
+                } while(foo());
 
-do {
-    while($foo()) {
-        while(B()){} // fix
-        for($i = 0;foo();++$i){} // fix
+                EOD,
+            <<<'EOD'
+                <?php
 
-        for($i = 0;foo();++$i) {
-            foreach (Foo() as $f){} // fix
-        }
-    }
-} while(foo());
-',
+                do {
+                    while($foo()) {
+                        while(B()){} // fix
+                        for($i = 0;foo();++$i){} // fix
+
+                        for($i = 0;foo();++$i) {
+                            foreach (Foo() as $f){} // fix
+                        }
+                    }
+                } while(foo());
+
+                EOD,
         ];
 
         yield 'not empty "while"' => [
@@ -123,27 +131,33 @@ do {
         ];
 
         yield 'test with lot of space' => [
-            '<?php while (foo1())
-;
+            <<<'EOD'
+                <?php while (foo1())
+                ;
 
 
 
-echo 1;
-',
-            '<?php while (foo1())
-{
+                echo 1;
 
-}
+                EOD,
+            <<<'EOD'
+                <?php while (foo1())
+                {
 
-echo 1;
-',
+                }
+
+                echo 1;
+
+                EOD,
             ['style' => 'semicolon'],
         ];
 
         yield 'empty "foreach" with comment' => [
-            '<?php foreach (Foo() as $f) {
-    // $this->add($f);
-}',
+            <<<'EOD'
+                <?php foreach (Foo() as $f) {
+                    // $this->add($f);
+                }
+                EOD,
         ];
     }
 }

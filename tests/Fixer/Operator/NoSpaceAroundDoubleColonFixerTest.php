@@ -44,77 +44,85 @@ final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                echo F\B::class;
-                echo A\B::     /**/ c;
-                echo C\B/**/::c;'."\n            ",
-            '<?php
-                echo F\B::    class;
-                echo A\B   ::     /**/ c;
-                echo C\B/**/::   c;'."\n            ",
+            <<<'EOD'
+                <?php
+                                echo F\B::class;
+                                echo A\B::     /**/ c;
+                                echo C\B/**/::c;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                echo F\B::    class;
+                                echo A\B   ::     /**/ c;
+                                echo C\B/**/::   c;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-namespace {
-    class Foo { public const a = 1; }
+            <<<'EOD'
+                <?php
+                namespace {
+                    class Foo { public const a = 1; }
 
-    echo Foo::a; // Fix
-    echo "\n".Place\Bar::$a."\n"; // Fix
-}
+                    echo Foo::a; // Fix
+                    echo "\n".Place\Bar::$a."\n"; // Fix
+                }
 
-namespace Somewhere\Over\The\Rainbow {
-    class Bar {
-        public static $a = "BAR-A:: ";
+                namespace Somewhere\Over\The\Rainbow {
+                    class Bar {
+                        public static $a = "BAR-A:: ";
 
-        public function v(?string $z = "zzz"): void
-        {
-            echo "\n".self::$a.$z; // Fix
-            echo "\n".static::class; // Fix
-            echo "\n".static # do ...
-              :: # ... not ...
-            $a.$z; // ... fix
-        }
-    }
+                        public function v(?string $z = "zzz"): void
+                        {
+                            echo "\n".self::$a.$z; // Fix
+                            echo "\n".static::class; // Fix
+                            echo "\n".static # do ...
+                              :: # ... not ...
+                            $a.$z; // ... fix
+                        }
+                    }
 
-    $bar = new Bar();
-    $bar->v();
-}
+                    $bar = new Bar();
+                    $bar->v();
+                }
 
- # ; echo A :: B;
-// ; echo A :: B;
-/* ; echo A :: B; */
-',
-            '<?php
-namespace {
-    class Foo { public const a = 1; }
+                 # ; echo A :: B;
+                // ; echo A :: B;
+                /* ; echo A :: B; */
 
-    echo Foo:: a; // Fix
-    echo "\n".Place\Bar  ::   $a."\n"; // Fix
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace {
+                    class Foo { public const a = 1; }
 
-namespace Somewhere\Over\The\Rainbow {
-    class Bar {
-        public static $a = "BAR-A:: ";
+                    echo Foo:: a; // Fix
+                    echo "\n".Place\Bar  ::   $a."\n"; // Fix
+                }
 
-        public function v(?string $z = "zzz"): void
-        {
-            echo "\n".self  ::  $a.$z; // Fix
-            echo "\n".static  ::  class; // Fix
-            echo "\n".static # do ...
-              :: # ... not ...
-            $a.$z; // ... fix
-        }
-    }
+                namespace Somewhere\Over\The\Rainbow {
+                    class Bar {
+                        public static $a = "BAR-A:: ";
 
-    $bar = new Bar();
-    $bar->v();
-}
+                        public function v(?string $z = "zzz"): void
+                        {
+                            echo "\n".self  ::  $a.$z; // Fix
+                            echo "\n".static  ::  class; // Fix
+                            echo "\n".static # do ...
+                              :: # ... not ...
+                            $a.$z; // ... fix
+                        }
+                    }
 
- # ; echo A :: B;
-// ; echo A :: B;
-/* ; echo A :: B; */
-',
+                    $bar = new Bar();
+                    $bar->v();
+                }
+
+                 # ; echo A :: B;
+                // ; echo A :: B;
+                /* ; echo A :: B; */
+
+                EOD,
         ];
     }
 }

@@ -93,8 +93,10 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php function foo() {}',
-            '<?php function
-foo () {}',
+            <<<'EOD'
+                <?php function
+                foo () {}
+                EOD,
         ];
 
         yield [
@@ -118,8 +120,10 @@ foo () {}',
         ];
 
         yield [
-            '<?php function foo($a)
-{}',
+            <<<'EOD'
+                <?php function foo($a)
+                {}
+                EOD,
         ];
 
         yield [
@@ -148,19 +152,25 @@ foo () {}',
         ];
 
         yield [
-            '<?php function foo($a)
-	{}',
-            '<?php function foo( $a)
-	{}',
+            <<<'EOD'
+                <?php function foo($a)
+                	{}
+                EOD,
+            <<<'EOD'
+                <?php function foo( $a)
+                	{}
+                EOD,
         ];
 
         yield [
-            '<?php
-    function foo(
-        $a,
-        $b,
-        $c
-    ) {}',
+            <<<'EOD'
+                <?php
+                    function foo(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                EOD,
         ];
 
         yield [
@@ -193,26 +203,32 @@ foo () {}',
         ];
 
         yield [
-            '<?php
-    interface Foo
-    {
-        public function setConfig(ConfigInterface $config);
-    }',
+            <<<'EOD'
+                <?php
+                    interface Foo
+                    {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
         ];
 
         // do not remove multiline space before { when end of previous line is a comment
         yield [
-            '<?php
-function foo() // bar
-{              // baz
-}',
+            <<<'EOD'
+                <?php
+                function foo() // bar
+                {              // baz
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() /* bar */
-{              /* baz */
-}',
+            <<<'EOD'
+                <?php
+                function foo() /* bar */
+                {              /* baz */
+                }
+                EOD,
         ];
 
         yield [
@@ -242,8 +258,10 @@ function foo() /* bar */
 
         yield [
             '<?php function foo() {}',
-            '<?php function
-foo () {}',
+            <<<'EOD'
+                <?php function
+                foo () {}
+                EOD,
             self::$configurationClosureSpacingNone,
         ];
 
@@ -272,8 +290,10 @@ foo () {}',
         ];
 
         yield [
-            '<?php function foo($a)
-{}',
+            <<<'EOD'
+                <?php function foo($a)
+                {}
+                EOD,
             null,
             self::$configurationClosureSpacingNone,
         ];
@@ -309,20 +329,26 @@ foo () {}',
         ];
 
         yield [
-            '<?php function foo($a)
-	{}',
-            '<?php function foo( $a)
-	{}',
+            <<<'EOD'
+                <?php function foo($a)
+                	{}
+                EOD,
+            <<<'EOD'
+                <?php function foo( $a)
+                	{}
+                EOD,
             self::$configurationClosureSpacingNone,
         ];
 
         yield [
-            '<?php
-    function foo(
-        $a,
-        $b,
-        $c
-    ) {}',
+            <<<'EOD'
+                <?php
+                    function foo(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                EOD,
             null,
             self::$configurationClosureSpacingNone,
         ];
@@ -364,63 +390,79 @@ foo () {}',
         ];
 
         yield [
-            '<?php
-    interface Foo
-    {
-        public function setConfig(ConfigInterface $config);
-    }',
+            <<<'EOD'
+                <?php
+                    interface Foo
+                    {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
             null,
             self::$configurationClosureSpacingNone,
         ];
 
         // do not remove multiline space before { when end of previous line is a comment
         yield [
-            '<?php
-function foo() // bar
-{              // baz
-}',
+            <<<'EOD'
+                <?php
+                function foo() // bar
+                {              // baz
+                }
+                EOD,
             null,
             self::$configurationClosureSpacingNone,
         ];
 
         yield [
-            '<?php
-function foo() /* bar */
-{              /* baz */
-}',
+            <<<'EOD'
+                <?php
+                function foo() /* bar */
+                {              /* baz */
+                }
+                EOD,
             null,
             self::$configurationClosureSpacingNone,
         ];
 
         yield [
-            '<?php function #
-foo#
- (#
- ) #
-{#
-}#',
+            <<<'EOD'
+                <?php function #
+                foo#
+                 (#
+                 ) #
+                {#
+                }#
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $b = static function ($a) {
-                        echo $a;
-                    };'."\n                ",
-            '<?php
-                    $b = static     function( $a )   {
-                        echo $a;
-                    };'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $b = static function ($a) {
+                                        echo $a;
+                                    };
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $b = static     function( $a )   {
+                                        echo $a;
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $b = static function($a) {
-                        echo $a;
-                    };'."\n                ",
-            '<?php
-                    $b = static     function ( $a )   {
-                        echo $a;
-                    };'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $b = static function($a) {
+                                        echo $a;
+                                    };
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $b = static     function ( $a )   {
+                                        echo $a;
+                                    };
+                EOD."\n                ",
             self::$configurationClosureSpacingNone,
         ];
 
@@ -525,40 +567,52 @@ foo#
         ];
 
         yield [
-            '<?php function (
-                $a,
-                $b,
-                $c,
-            ) {};',
-            '<?php function(
-                $a,
-                $b,
-                $c,
-            ) {};',
+            <<<'EOD'
+                <?php function (
+                                $a,
+                                $b,
+                                $c,
+                            ) {};
+                EOD,
+            <<<'EOD'
+                <?php function(
+                                $a,
+                                $b,
+                                $c,
+                            ) {};
+                EOD,
         ];
 
         yield [
-            '<?php function foo(
-                $a,
-                $b,
-                $c,
-            ) {}',
-            '<?php function foo    (
-                $a,
-                $b,
-                $c,
-            ){}',
+            <<<'EOD'
+                <?php function foo(
+                                $a,
+                                $b,
+                                $c,
+                            ) {}
+                EOD,
+            <<<'EOD'
+                <?php function foo    (
+                                $a,
+                                $b,
+                                $c,
+                            ){}
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $b = static function ($a,$b) {
-                        echo $a;
-                    };'."\n                ",
-            '<?php
-                    $b = static     function(  $a,$b,   )   {
-                        echo $a;
-                    };'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $b = static function ($a,$b) {
+                                        echo $a;
+                                    };
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $b = static     function(  $a,$b,   )   {
+                                        echo $a;
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
@@ -568,18 +622,22 @@ foo#
         ];
 
         yield [
-            '<?php
-                function ($a) use ($b) {};
-                function ($y) use (
-                    $b,
-                    $c,
-                ) {};'."\n            ",
-            '<?php
-                function ($a) use ($b  ,  )     {};
-                function ($y) use (
-                    $b,
-                    $c,
-                ) {};'."\n            ",
+            <<<'EOD'
+                <?php
+                                function ($a) use ($b) {};
+                                function ($y) use (
+                                    $b,
+                                    $c,
+                                ) {};
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function ($a) use ($b  ,  )     {};
+                                function ($y) use (
+                                    $b,
+                                    $c,
+                                ) {};
+                EOD."\n            ",
         ];
 
         yield [

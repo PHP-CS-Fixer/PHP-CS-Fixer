@@ -39,184 +39,214 @@ final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'An Annotation gets removed' => [
-            '<?php
-/**
- * @internal
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
-            '<?php
-/**
- * @internal
- * @param string $name
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
+            <<<'EOD'
+                <?php
+                /**
+                 * @internal
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @internal
+                 * @param string $name
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
             ['annotations' => ['param']],
         ];
 
         yield 'It removes multiple annotations' => [
-            '<?php
-/**
- * @author me
- * @internal
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
-            '<?php
-/**
- * @author me
- * @internal
- * @param string $name
- * @return string
- * @throws \Exception
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
+            <<<'EOD'
+                <?php
+                /**
+                 * @author me
+                 * @internal
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @author me
+                 * @internal
+                 * @param string $name
+                 * @return string
+                 * @throws \Exception
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
             ['annotations' => ['param', 'return', 'throws']],
         ];
 
         yield 'It does nothing if no configuration is given' => [
-            '<?php
-/**
- * @author me
- * @internal
- * @param string $name
- * @return string
- * @throws \Exception
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
+            <<<'EOD'
+                <?php
+                /**
+                 * @author me
+                 * @internal
+                 * @param string $name
+                 * @return string
+                 * @throws \Exception
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
         ];
 
         yield 'It works on multiple functions' => [
-            '<?php
-/**
- * @param string $name
- * @throws \Exception
- */
-function hello($name)
-{
-    return "hello " . $name;
-}
-/**
- */
-function goodBye()
-{
-    return 0;
-}
-function noComment()
-{
-    callOtherFunction();
-}',
-            '<?php
-/**
- * @author me
- * @internal
- * @param string $name
- * @return string
- * @throws \Exception
- */
-function hello($name)
-{
-    return "hello " . $name;
-}
-/**
- * @internal
- * @author Piet-Henk
- * @return int
- */
-function goodBye()
-{
-    return 0;
-}
-function noComment()
-{
-    callOtherFunction();
-}',
+            <<<'EOD'
+                <?php
+                /**
+                 * @param string $name
+                 * @throws \Exception
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                /**
+                 */
+                function goodBye()
+                {
+                    return 0;
+                }
+                function noComment()
+                {
+                    callOtherFunction();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @author me
+                 * @internal
+                 * @param string $name
+                 * @return string
+                 * @throws \Exception
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                /**
+                 * @internal
+                 * @author Piet-Henk
+                 * @return int
+                 */
+                function goodBye()
+                {
+                    return 0;
+                }
+                function noComment()
+                {
+                    callOtherFunction();
+                }
+                EOD,
             ['annotations' => ['author', 'return', 'internal']],
         ];
 
         yield 'Nothing happens to non doc-block comments' => [
-            '<?php
-/*
- * @internal
- * @param string $name
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
+            <<<'EOD'
+                <?php
+                /*
+                 * @internal
+                 * @param string $name
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
             null,
             ['annotations' => ['internal', 'param', 'return']],
         ];
 
         yield 'Nothing happens if to be deleted annotations are not present' => [
-            '<?php
-/**
- * @internal
- * @param string $name
- */
-function hello($name)
-{
-    return "hello " . $name;
-}',
+            <<<'EOD'
+                <?php
+                /**
+                 * @internal
+                 * @param string $name
+                 */
+                function hello($name)
+                {
+                    return "hello " . $name;
+                }
+                EOD,
             null,
             ['annotations' => ['author', 'test', 'return', 'deprecated']],
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-while ($something = myFunction($foo)) {}
-',
-            '<?php
-/** @noinspection PhpAssignmentInConditionInspection */
-while ($something = myFunction($foo)) {}
-',
+                while ($something = myFunction($foo)) {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @noinspection PhpAssignmentInConditionInspection */
+                while ($something = myFunction($foo)) {}
+
+                EOD,
             ['annotations' => ['noinspection']],
         ];
 
         yield [
-            '<?php
-/**
-* @internal
-* @AuThOr Jane Doe
-*/
-function foo() {}',
-            '<?php
-/**
-* @internal
-* @author John Doe
-* @AuThOr Jane Doe
-*/
-function foo() {}',
+            <<<'EOD'
+                <?php
+                /**
+                * @internal
+                * @AuThOr Jane Doe
+                */
+                function foo() {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                * @internal
+                * @author John Doe
+                * @AuThOr Jane Doe
+                */
+                function foo() {}
+                EOD,
             ['annotations' => ['author'], 'case_sensitive' => true],
         ];
 
         yield [
-            '<?php
-/**
-* @internal
-*/
-function foo() {}',
-            '<?php
-/**
-* @internal
-* @author John Doe
-* @AuThOr Jane Doe
-*/
-function foo() {}',
+            <<<'EOD'
+                <?php
+                /**
+                * @internal
+                */
+                function foo() {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                * @internal
+                * @author John Doe
+                * @AuThOr Jane Doe
+                */
+                function foo() {}
+                EOD,
             ['annotations' => ['author'], 'case_sensitive' => false],
         ];
     }

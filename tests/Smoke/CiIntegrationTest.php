@@ -147,21 +147,31 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             $steps[4],
         ]);
 
-        $optionalDeprecatedVersionWarning = 'You are running PHP CS Fixer v3, which is not maintained anymore. Please update to v4.
-You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v4.0.0/UPGRADE-v4.md .
-';
+        $optionalDeprecatedVersionWarning = <<<'EOD'
+            You are running PHP CS Fixer v3, which is not maintained anymore. Please update to v4.
+            You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v4.0.0/UPGRADE-v4.md .
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
-Current PHP version:'.' '.PHP_VERSION.'.
-Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
-';
+            EOD;
 
-        $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
-';
+        $optionalIncompatibilityWarning = <<<'EOD'
+            PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
+            Current PHP version:
+            EOD.' '.PHP_VERSION.<<<'EOD'
+            .
+            Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 
-        $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!
+            EOD;
 
-';
+        $optionalXdebugWarning = <<<'EOD'
+            You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
+
+            EOD;
+
+        $optionalWarningsHelp = <<<'EOD'
+            If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!
+
+
+            EOD;
 
         $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
         $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);

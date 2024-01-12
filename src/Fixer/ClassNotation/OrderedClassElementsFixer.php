@@ -165,82 +165,96 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             'Orders the elements of classes/interfaces/traits/enums.',
             [
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public $pubProp1;
-    protected $protProp;
-    var $pubProp2;
-    private static $privStatProp;
-    private $privProp;
-    public static $pubStatProp2;
-    public $pubProp3;
-    protected function __construct() {}
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    public function __toString() {}
-    protected function protFunc() {}
-    function pubFunc2() {}
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static function pubStatFunc3() {}
-    protected static function protStatFunc() {}
-    public function __destruct() {}
-}
-'
+                    <<<'EOD'
+                        <?php
+                        final class Example
+                        {
+                            use BarTrait;
+                            use BazTrait;
+                            const C1 = 1;
+                            const C2 = 2;
+                            protected static $protStatProp;
+                            public static $pubStatProp1;
+                            public $pubProp1;
+                            protected $protProp;
+                            var $pubProp2;
+                            private static $privStatProp;
+                            private $privProp;
+                            public static $pubStatProp2;
+                            public $pubProp3;
+                            protected function __construct() {}
+                            private static function privStatFunc() {}
+                            public function pubFunc1() {}
+                            public function __toString() {}
+                            protected function protFunc() {}
+                            function pubFunc2() {}
+                            public static function pubStatFunc1() {}
+                            public function pubFunc3() {}
+                            static function pubStatFunc2() {}
+                            private function privFunc() {}
+                            public static function pubStatFunc3() {}
+                            protected static function protStatFunc() {}
+                            public function __destruct() {}
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-class Example
-{
-    public function A(){}
-    private function B(){}
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Example
+                        {
+                            public function A(){}
+                            private function B(){}
+                        }
+
+                        EOD,
                     ['order' => ['method_private', 'method_public']]
                 ),
                 new CodeSample(
-                    '<?php
-class Example
-{
-    public function D(){}
-    public function B(){}
-    public function A(){}
-    public function C(){}
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Example
+                        {
+                            public function D(){}
+                            public function B(){}
+                            public function A(){}
+                            public function C(){}
+                        }
+
+                        EOD,
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
                 new CodeSample(
-                    '<?php
-class Example
-{
-    public function Aa(){}
-    public function AA(){}
-    public function AwS(){}
-    public function AWs(){}
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Example
+                        {
+                            public function Aa(){}
+                            public function AA(){}
+                            public function AwS(){}
+                            public function AWs(){}
+                        }
+
+                        EOD,
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
                 ),
             ],
-            'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
+            <<<'EOD'
+                Accepts a subset of pre-defined element types, special element groups, and custom patterns.
 
-Element types: `[\''.implode('\', \'', array_keys(self::$typeHierarchy)).'\']`
+                Element types: `['
+                EOD.implode('\', \'', array_keys(self::$typeHierarchy)).<<<'EOD'
+                ']`
 
-Special element types: `[\''.implode('\', \'', array_keys(self::$specialTypes)).'\']`
+                Special element types: `['
+                EOD.implode('\', \'', array_keys(self::$specialTypes)).<<<'EOD'
+                ']`
 
-Custom values:
+                Custom values:
 
-- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.'
+                - `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.
+                EOD
         );
     }
 

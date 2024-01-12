@@ -144,25 +144,29 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             'Removes unneeded parentheses around control statements.',
             [
                 new CodeSample(
-                    '<?php
-while ($x) { while ($y) { break (2); } }
-clone($a);
-while ($y) { continue (2); }
-echo("foo");
-print("foo");
-return (1 + 2);
-switch ($a) { case($x); }
-yield(2);
-'
+                    <<<'EOD'
+                        <?php
+                        while ($x) { while ($y) { break (2); } }
+                        clone($a);
+                        while ($y) { continue (2); }
+                        echo("foo");
+                        print("foo");
+                        return (1 + 2);
+                        switch ($a) { case($x); }
+                        yield(2);
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-while ($x) { while ($y) { break (2); } }
+                    <<<'EOD'
+                        <?php
+                        while ($x) { while ($y) { break (2); } }
 
-clone($a);
+                        clone($a);
 
-while ($y) { continue (2); }
-',
+                        while ($y) { continue (2); }
+
+                        EOD,
                     ['statements' => ['break', 'continue']]
                 ),
             ]

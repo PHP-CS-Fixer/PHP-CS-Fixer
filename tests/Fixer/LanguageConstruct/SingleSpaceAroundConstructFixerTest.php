@@ -85,9 +85,11 @@ final class SingleSpaceAroundConstructFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php abstract class Foo {};',
-            '<?php abstract
+            <<<'EOD'
+                <?php abstract
 
-class Foo {};',
+                class Foo {};
+                EOD,
         ];
 
         yield [
@@ -101,65 +103,81 @@ class Foo {};',
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract function bar();
-}',
-            '<?php
+                abstract class Foo
+                {
+                    abstract function bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract  function bar();
-}',
+                abstract class Foo
+                {
+                    abstract  function bar();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract function bar();
-}',
-            '<?php
+                abstract class Foo
+                {
+                    abstract function bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract
+                abstract class Foo
+                {
+                    abstract
 
-function bar();
-}',
+                function bar();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract /* foo */function bar();
-}',
-            '<?php
+                abstract class Foo
+                {
+                    abstract /* foo */function bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract  /* foo */function bar();
-}',
+                abstract class Foo
+                {
+                    abstract  /* foo */function bar();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract /* foo */function bar();
-}',
-            '<?php
+                abstract class Foo
+                {
+                    abstract /* foo */function bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-abstract class Foo
-{
-    abstract/* foo */function bar();
-}',
+                abstract class Foo
+                {
+                    abstract/* foo */function bar();
+                }
+                EOD,
         ];
     }
 
@@ -200,9 +218,11 @@ abstract class Foo
 
         yield [
             '<?php while (true) { break 1; }',
-            '<?php while (true) { break
+            <<<'EOD'
+                <?php while (true) { break
 
-1; }',
+                1; }
+                EOD,
         ];
 
         yield [
@@ -259,9 +279,11 @@ abstract class Foo
 
         yield [
             '<?php foreach ($foo as $bar) {}',
-            '<?php foreach ($foo as
+            <<<'EOD'
+                <?php foreach ($foo as
 
-$bar) {}',
+                $bar) {}
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => [],
                 'constructs_followed_by_a_single_space' => ['as'],
@@ -270,8 +292,10 @@ $bar) {}',
 
         yield [
             '<?php foreach ($foo as $bar) {}',
-            '<?php foreach ($foo
-as $bar) {}',
+            <<<'EOD'
+                <?php foreach ($foo
+                as $bar) {}
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -343,8 +367,10 @@ as $bar) {}',
 
         yield [
             '<?php foreach ([1, 2, 3, 4] as $int) {}',
-            '<?php foreach ([1, 2, 3, 4]
-                as $int) {}',
+            <<<'EOD'
+                <?php foreach ([1, 2, 3, 4]
+                                as $int) {}
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -352,22 +378,26 @@ as $bar) {}',
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as bar;
-    }
-}',
-            '<?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as bar;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as  bar;
-    }
-}',
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as  bar;
+                    }
+                }
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => [],
                 'constructs_followed_by_a_single_space' => ['as'],
@@ -375,24 +405,28 @@ class Foo
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as bar;
-    }
-}',
-            '<?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as bar;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as
 
-bar;
-    }
-}',
+                bar;
+                    }
+                }
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => [],
                 'constructs_followed_by_a_single_space' => ['as'],
@@ -400,22 +434,26 @@ bar;
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as /* foo */bar;
-    }
-}',
-            '<?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as /* foo */bar;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as/* foo */bar;
-    }
-}',
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as/* foo */bar;
+                    }
+                }
+                EOD,
 
             [
                 'constructs_preceded_by_a_single_space' => [],
@@ -424,22 +462,26 @@ class Foo
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as /* foo */bar;
-    }
-}',
-            '<?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as /* foo */bar;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    use Bar {
-        Bar::baz as  /* foo */bar;
-    }
-}',
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as  /* foo */bar;
+                    }
+                }
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => [],
                 'constructs_followed_by_a_single_space' => ['as'],
@@ -447,20 +489,24 @@ class Foo
         ];
 
         yield [
-            '<?php
-namespace Foo;
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-use Bar as Baz;
+                use Bar as Baz;
 
-final class Qux extends Baz {}
-',
-            '<?php
-namespace Foo;
+                final class Qux extends Baz {}
 
-use Bar    as Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-final class Qux extends Baz {}
-',
+                use Bar    as Baz;
+
+                final class Qux extends Baz {}
+
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -468,21 +514,25 @@ final class Qux extends Baz {}
         ];
 
         yield [
-            '<?php
-namespace Foo;
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-use Bar as Baz;
+                use Bar as Baz;
 
-final class Qux extends Baz {}
-',
-            '<?php
-namespace Foo;
+                final class Qux extends Baz {}
 
-use Bar
-    as Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-final class Qux extends Baz {}
-',
+                use Bar
+                    as Baz;
+
+                final class Qux extends Baz {}
+
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -490,20 +540,24 @@ final class Qux extends Baz {}
         ];
 
         yield [
-            '<?php
-namespace Foo;
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-use Bar /** foo */ as Baz;
+                use Bar /** foo */ as Baz;
 
-final class Qux extends Baz {}
-',
-            '<?php
-namespace Foo;
+                final class Qux extends Baz {}
 
-use Bar /** foo */as Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-final class Qux extends Baz {}
-',
+                use Bar /** foo */as Baz;
+
+                final class Qux extends Baz {}
+
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -511,22 +565,26 @@ final class Qux extends Baz {}
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    use Bar {
-        Bar::baz as bar;
-    }
-}
-',
-            '<?php
-class Foo
-{
-    use Bar {
-        Bar::baz    as bar;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as bar;
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz    as bar;
+                    }
+                }
+
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -534,23 +592,27 @@ class Foo
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    use Bar {
-        Bar::baz as bar;
-    }
-}
-',
-            '<?php
-class Foo
-{
-    use Bar {
-        Bar::baz
-as bar;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz as bar;
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz
+                as bar;
+                    }
+                }
+
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -558,22 +620,26 @@ as bar;
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    use Bar {
-        Bar::baz/** foo */ as bar;
-    }
-}
-',
-            '<?php
-class Foo
-{
-    use Bar {
-        Bar::baz/** foo */as bar;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz/** foo */ as bar;
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar {
+                        Bar::baz/** foo */as bar;
+                    }
+                }
+
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => ['as'],
                 'constructs_followed_by_a_single_space' => [],
@@ -598,57 +664,73 @@ class Foo
     public static function provideFixWithCaseCases(): iterable
     {
         yield [
-            '<?php
-switch ($i) {
-    case $j:
-        break;
-}',
-            '<?php
-switch ($i) {
-    case$j:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case $j:
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case$j:
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($i) {
-    case 0:
-        break;
-}',
-            '<?php
-switch ($i) {
-    case  0:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case 0:
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case  0:
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($i) {
-    case 0:
-        break;
-}',
-            '<?php
-switch ($i) {
-    case
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case 0:
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case
 
-0:
-        break;
-}',
+                0:
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($i) {
-    case /* foo */0:
-        break;
-}',
-            '<?php
-switch ($i) {
-    case/* foo */0:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case /* foo */0:
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($i) {
+                    case/* foo */0:
+                        break;
+                }
+                EOD,
         ];
     }
 
@@ -680,9 +762,11 @@ switch ($i) {
 
         yield [
             '<?php try {} catch (\Exception $exception) {}',
-            '<?php try {} catch
+            <<<'EOD'
+                <?php try {} catch
 
-(\Exception $exception) {}',
+                (\Exception $exception) {}
+                EOD,
         ];
 
         yield [
@@ -719,9 +803,11 @@ switch ($i) {
 
         yield [
             '<?php class Foo {}',
-            '<?php class
+            <<<'EOD'
+                <?php class
 
-Foo {}',
+                Foo {}
+                EOD,
         ];
 
         yield [
@@ -769,10 +855,12 @@ Foo {}',
         ];
 
         yield [
-            '<?php return
-                    $a ? new class(){ public function foo() { echo 1; }}
-                    : 1
-                ;',
+            <<<'EOD'
+                <?php return
+                                    $a ? new class(){ public function foo() { echo 1; }}
+                                    : 1
+                                ;
+                EOD,
             null,
             ['constructs_followed_by_a_single_space' => ['return']],
         ];
@@ -815,9 +903,11 @@ Foo {}',
 
         yield [
             '<?php while (true) { continue 1; }',
-            '<?php while (true) { continue
+            <<<'EOD'
+                <?php while (true) { continue
 
-1; }',
+                1; }
+                EOD,
         ];
 
         yield [
@@ -849,9 +939,11 @@ Foo {}',
 
         yield [
             '<?php class Foo { const FOO = 9000; }',
-            '<?php class Foo { const
+            <<<'EOD'
+                <?php class Foo { const
 
-FOO = 9000; }',
+                FOO = 9000; }
+                EOD,
         ];
 
         yield [
@@ -864,52 +956,64 @@ FOO = 9000; }',
             '<?php class Foo { const  /* foo */FOO = 9000; }',
         ];
 
-        yield ['<?php class Foo {
-    const
-        FOO = 9000,
-        BAR = 10000;
-}',
+        yield [<<<'EOD'
+            <?php class Foo {
+                const
+                    FOO = 9000,
+                    BAR = 10000;
+            }
+            EOD,
         ];
 
         yield [
-            '<?php
-const
-    A = 3,
-    B = 3
-?>',
+            <<<'EOD'
+                <?php
+                const
+                    A = 3,
+                    B = 3
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-const A = 3 ?>
+            <<<'EOD'
+                <?php
+                const A = 3 ?>
 
-<?php
-[ ,
-,
-,$z
-] = foo()  ;',
-            '<?php
-const     A = 3 ?>
+                <?php
+                [ ,
+                ,
+                ,$z
+                ] = foo()  ;
+                EOD,
+            <<<'EOD'
+                <?php
+                const     A = 3 ?>
 
-<?php
-[ ,
-,
-,$z
-] = foo()  ;',
+                <?php
+                [ ,
+                ,
+                ,$z
+                ] = foo()  ;
+                EOD,
         ];
 
         yield [
-            '<?php
-    const A
-    =
-    1;
-',
-            '<?php
-    const
-    A
-    =
-    1;
-',
+            <<<'EOD'
+                <?php
+                    const A
+                    =
+                    1;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    const
+                    A
+                    =
+                    1;
+
+                EOD,
         ];
     }
 
@@ -936,9 +1040,11 @@ const     A = 3 ?>
 
         yield [
             '<?php use const FOO\BAR;',
-            '<?php use const
+            <<<'EOD'
+                <?php use const
 
-FOO\BAR;',
+                FOO\BAR;
+                EOD,
         ];
 
         yield [
@@ -980,9 +1086,11 @@ FOO\BAR;',
 
         yield [
             '<?php clone $foo;',
-            '<?php clone
+            <<<'EOD'
+                <?php clone
 
-$foo;',
+                $foo;
+                EOD,
         ];
 
         yield [
@@ -1024,9 +1132,11 @@ $foo;',
 
         yield [
             '<?php do {} while (true);',
-            '<?php do
+            <<<'EOD'
+                <?php do
 
-{} while (true);',
+                {} while (true);
+                EOD,
         ];
 
         yield [
@@ -1068,9 +1178,11 @@ $foo;',
 
         yield [
             '<?php echo 9000;',
-            '<?php echo
+            <<<'EOD'
+                <?php echo
 
-9000;',
+                9000;
+                EOD,
         ];
 
         yield [
@@ -1107,9 +1219,11 @@ $foo;',
 
         yield [
             '<?php if (true) {} else {}',
-            '<?php if (true) {} else
+            <<<'EOD'
+                <?php if (true) {} else
 
-{}',
+                {}
+                EOD,
         ];
 
         yield [
@@ -1146,9 +1260,11 @@ $foo;',
 
         yield [
             '<?php if (true) {} elseif (false) {}',
-            '<?php if (true) {} elseif
+            <<<'EOD'
+                <?php if (true) {} elseif
 
-(false) {}',
+                (false) {}
+                EOD,
         ];
 
         yield [
@@ -1180,9 +1296,11 @@ $foo;',
 
         yield [
             '<?php class Foo extends \InvalidArgumentException {}',
-            '<?php class Foo extends
+            <<<'EOD'
+                <?php class Foo extends
 
-\InvalidArgumentException {}',
+                \InvalidArgumentException {}
+                EOD,
         ];
 
         yield [
@@ -1202,9 +1320,11 @@ $foo;',
 
         yield [
             '<?php interface Foo extends Bar2 {}',
-            '<?php interface Foo extends
+            <<<'EOD'
+                <?php interface Foo extends
 
-Bar2 {}',
+                Bar2 {}
+                EOD,
         ];
 
         yield [
@@ -1224,9 +1344,11 @@ Bar2 {}',
 
         yield [
             '<?php interface Foo extends Bar6, Baz, Qux {}',
-            '<?php interface Foo extends
+            <<<'EOD'
+                <?php interface Foo extends
 
-Bar6, Baz, Qux {}',
+                Bar6, Baz, Qux {}
+                EOD,
         ];
 
         yield [
@@ -1240,11 +1362,13 @@ Bar6, Baz, Qux {}',
         ];
 
         yield [
-            '<?php interface Foo extends
-    Bar9,
-    Baz,
-    Qux
-{}',
+            <<<'EOD'
+                <?php interface Foo extends
+                    Bar9,
+                    Baz,
+                    Qux
+                {}
+                EOD,
         ];
 
         yield [
@@ -1254,9 +1378,11 @@ Bar6, Baz, Qux {}',
 
         yield [
             '<?php $foo = new class extends \InvalidArgumentException {};',
-            '<?php $foo = new class extends
+            <<<'EOD'
+                <?php $foo = new class extends
 
-\InvalidArgumentException {};',
+                \InvalidArgumentException {};
+                EOD,
         ];
 
         yield [
@@ -1293,9 +1419,11 @@ Bar6, Baz, Qux {}',
 
         yield [
             '<?php final class Foo {}',
-            '<?php final
+            <<<'EOD'
+                <?php final
 
-class Foo {}',
+                class Foo {}
+                EOD,
         ];
 
         yield [
@@ -1309,65 +1437,81 @@ class Foo {}',
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final function bar() {}
-}',
-            '<?php
+                class Foo
+                {
+                    final function bar() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final  function bar() {}
-}',
+                class Foo
+                {
+                    final  function bar() {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final function bar() {}
-}',
-            '<?php
+                class Foo
+                {
+                    final function bar() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final
+                class Foo
+                {
+                    final
 
-function bar() {}
-}',
+                function bar() {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final /* foo */function bar() {}
-}',
-            '<?php
+                class Foo
+                {
+                    final /* foo */function bar() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final/* foo */function bar() {}
-}',
+                class Foo
+                {
+                    final/* foo */function bar() {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final /* foo */function bar() {}
-}',
-            '<?php
+                class Foo
+                {
+                    final /* foo */function bar() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    final  /* foo */function bar() {}
-}',
+                class Foo
+                {
+                    final  /* foo */function bar() {}
+                }
+                EOD,
         ];
     }
 
@@ -1399,9 +1543,11 @@ class Foo
 
         yield [
             '<?php try {} finally {}',
-            '<?php try {} finally
+            <<<'EOD'
+                <?php try {} finally
 
-{}',
+                {}
+                EOD,
         ];
 
         yield [
@@ -1443,9 +1589,11 @@ class Foo
 
         yield [
             '<?php for ($i = 0; $i < 3; ++$i) {}',
-            '<?php for
+            <<<'EOD'
+                <?php for
 
-($i = 0; $i < 3; ++$i) {}',
+                ($i = 0; $i < 3; ++$i) {}
+                EOD,
         ];
 
         yield [
@@ -1487,9 +1635,11 @@ class Foo
 
         yield [
             '<?php foreach ($foo as $bar) {}',
-            '<?php foreach
+            <<<'EOD'
+                <?php foreach
 
-($foo as $bar) {}',
+                ($foo as $bar) {}
+                EOD,
         ];
 
         yield [
@@ -1526,9 +1676,11 @@ class Foo
 
         yield [
             '<?php function foo() {}',
-            '<?php function
+            <<<'EOD'
+                <?php function
 
-foo() {}',
+                foo() {}
+                EOD,
         ];
 
         yield [
@@ -1542,65 +1694,81 @@ foo() {}',
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    function bar() {}
-}
-',
-            '<?php
-class Foo
-{
-    function  bar() {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function bar() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function  bar() {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    function bar() {}
-}
-',
-            '<?php
-class Foo
-{
-    function
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function bar() {}
+                }
 
-bar() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function
+
+                bar() {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    function /* foo */bar() {}
-}
-',
-            '<?php
-class Foo
-{
-    function/* foo */bar() {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function /* foo */bar() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function/* foo */bar() {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    function /* foo */bar() {}
-}
-',
-            '<?php
-class Foo
-{
-    function  /* foo */bar() {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function /* foo */bar() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function  /* foo */bar() {}
+                }
+
+                EOD,
         ];
     }
 
@@ -1627,9 +1795,11 @@ class Foo
 
         yield [
             '<?php use function Foo\bar;',
-            '<?php use function
+            <<<'EOD'
+                <?php use function
 
-Foo\bar;',
+                Foo\bar;
+                EOD,
         ];
 
         yield [
@@ -1671,9 +1841,11 @@ Foo\bar;',
 
         yield [
             '<?php function foo() { global $bar; }',
-            '<?php function foo() { global
+            <<<'EOD'
+                <?php function foo() { global
 
-$bar; }',
+                $bar; }
+                EOD,
         ];
 
         yield [
@@ -1710,9 +1882,11 @@ $bar; }',
 
         yield [
             '<?php goto foo; foo: echo "Bar";',
-            '<?php goto
+            <<<'EOD'
+                <?php goto
 
-foo; foo: echo "Bar";',
+                foo; foo: echo "Bar";
+                EOD,
         ];
 
         yield [
@@ -1749,9 +1923,11 @@ foo; foo: echo "Bar";',
 
         yield [
             '<?php if ($foo === $bar) {}',
-            '<?php if
+            <<<'EOD'
+                <?php if
 
-($foo === $bar) {}',
+                ($foo === $bar) {}
+                EOD,
         ];
 
         yield [
@@ -1783,9 +1959,11 @@ foo; foo: echo "Bar";',
 
         yield [
             '<?php class Foo implements \Countable {}',
-            '<?php class Foo implements
+            <<<'EOD'
+                <?php class Foo implements
 
-\Countable {}',
+                \Countable {}
+                EOD,
         ];
 
         yield [
@@ -1799,11 +1977,13 @@ foo; foo: echo "Bar";',
         ];
 
         yield [
-            '<?php class Foo implements
-                    \Countable,
-                    Bar,
-                    Baz
-                {}',
+            <<<'EOD'
+                <?php class Foo implements
+                                    \Countable,
+                                    Bar,
+                                    Baz
+                                {}
+                EOD,
         ];
 
         yield [
@@ -1813,9 +1993,11 @@ foo; foo: echo "Bar";',
 
         yield [
             '<?php $foo = new class implements \Countable {};',
-            '<?php $foo = new class implements
+            <<<'EOD'
+                <?php $foo = new class implements
 
-\Countable {};',
+                \Countable {};
+                EOD,
         ];
 
         yield [
@@ -1857,9 +2039,11 @@ foo; foo: echo "Bar";',
 
         yield [
             '<?php include "vendor/autoload.php";',
-            '<?php include
+            <<<'EOD'
+                <?php include
 
-"vendor/autoload.php";',
+                "vendor/autoload.php";
+                EOD,
         ];
 
         yield [
@@ -1896,9 +2080,11 @@ foo; foo: echo "Bar";',
 
         yield [
             '<?php include_once "vendor/autoload.php";',
-            '<?php include_once
+            <<<'EOD'
+                <?php include_once
 
-"vendor/autoload.php";',
+                "vendor/autoload.php";
+                EOD,
         ];
 
         yield [
@@ -1930,9 +2116,11 @@ foo; foo: echo "Bar";',
 
         yield [
             '<?php $foo instanceof \stdClass;',
-            '<?php $foo instanceof
+            <<<'EOD'
+                <?php $foo instanceof
 
-\stdClass;',
+                \stdClass;
+                EOD,
         ];
 
         yield [
@@ -1968,81 +2156,97 @@ foo; foo: echo "Bar";',
     public static function provideFixWithInsteadofCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof A;
-        A::bigTalk insteadof B;
-    }
-}',
-            '<?php
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof  A;
-        A::bigTalk insteadof B;
-    }
-}',
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof  A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof A;
-        A::bigTalk insteadof B;
-    }
-}',
-            '<?php
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof
 
-A;
-        A::bigTalk insteadof B;
-    }
-}',
+                A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof /* foo */A;
-        A::bigTalk insteadof B;
-    }
-}',
-            '<?php
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof /* foo */A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof/* foo */A;
-        A::bigTalk insteadof B;
-    }
-}',
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof/* foo */A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof /* foo */A;
-        A::bigTalk insteadof B;
-    }
-}',
-            '<?php
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof /* foo */A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Talker {
-    use A, B {
-        B::smallTalk insteadof  /* foo */A;
-        A::bigTalk insteadof B;
-    }
-}',
+                class Talker {
+                    use A, B {
+                        B::smallTalk insteadof  /* foo */A;
+                        A::bigTalk insteadof B;
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -2069,9 +2273,11 @@ class Talker {
 
         yield [
             '<?php interface Foo {}',
-            '<?php interface
+            <<<'EOD'
+                <?php interface
 
-Foo {}',
+                Foo {}
+                EOD,
         ];
 
         yield [
@@ -2113,9 +2319,11 @@ Foo {}',
 
         yield [
             '<?php new Bar();',
-            '<?php new
+            <<<'EOD'
+                <?php new
 
-Bar();',
+                Bar();
+                EOD,
         ];
 
         yield [
@@ -2152,9 +2360,11 @@ Bar();',
 
         yield [
             '<?= $foo ?>',
-            '<?=
+            <<<'EOD'
+                <?=
 
-$foo ?>',
+                $foo ?>
+                EOD,
         ];
 
         yield [
@@ -2196,9 +2406,11 @@ $foo ?>',
 
         yield [
             '<?php print 9000;',
-            '<?php print
+            <<<'EOD'
+                <?php print
 
-9000;',
+                9000;
+                EOD,
         ];
 
         yield [
@@ -2235,9 +2447,11 @@ $foo ?>',
 
         yield [
             '<?php class Foo { private $bar; }',
-            '<?php class Foo { private
+            <<<'EOD'
+                <?php class Foo { private
 
-$bar; }',
+                $bar; }
+                EOD,
         ];
 
         yield [
@@ -2257,9 +2471,11 @@ $bar; }',
 
         yield [
             '<?php class Foo { private function bar() {} }',
-            '<?php class Foo { private
+            <<<'EOD'
+                <?php class Foo { private
 
-function bar() {} }',
+                function bar() {} }
+                EOD,
         ];
 
         yield [
@@ -2279,9 +2495,11 @@ function bar() {} }',
 
         yield [
             '<?php class Foo { private CONST BAR = 9000; }',
-            '<?php class Foo { private
+            <<<'EOD'
+                <?php class Foo { private
 
-CONST BAR = 9000; }',
+                CONST BAR = 9000; }
+                EOD,
         ];
 
         yield [
@@ -2323,9 +2541,11 @@ CONST BAR = 9000; }',
 
         yield [
             '<?php class Foo { protected $bar; }',
-            '<?php class Foo { protected
+            <<<'EOD'
+                <?php class Foo { protected
 
-$bar; }',
+                $bar; }
+                EOD,
         ];
 
         yield [
@@ -2345,9 +2565,11 @@ $bar; }',
 
         yield [
             '<?php class Foo { protected function bar() {} }',
-            '<?php class Foo { protected
+            <<<'EOD'
+                <?php class Foo { protected
 
-function bar() {} }',
+                function bar() {} }
+                EOD,
         ];
 
         yield [
@@ -2367,9 +2589,11 @@ function bar() {} }',
 
         yield [
             '<?php class Foo { protected CONST BAR = 9000; }',
-            '<?php class Foo { protected
+            <<<'EOD'
+                <?php class Foo { protected
 
-CONST BAR = 9000; }',
+                CONST BAR = 9000; }
+                EOD,
         ];
 
         yield [
@@ -2411,9 +2635,11 @@ CONST BAR = 9000; }',
 
         yield [
             '<?php class Foo { public $bar; }',
-            '<?php class Foo { public
+            <<<'EOD'
+                <?php class Foo { public
 
-$bar; }',
+                $bar; }
+                EOD,
         ];
 
         yield [
@@ -2433,9 +2659,11 @@ $bar; }',
 
         yield [
             '<?php class Foo { public function bar() {} }',
-            '<?php class Foo { public
+            <<<'EOD'
+                <?php class Foo { public
 
-function bar() {} }',
+                function bar() {} }
+                EOD,
         ];
 
         yield [
@@ -2455,9 +2683,11 @@ function bar() {} }',
 
         yield [
             '<?php class Foo { public CONST BAR = 9000; }',
-            '<?php class Foo { public
+            <<<'EOD'
+                <?php class Foo { public
 
-CONST BAR = 9000; }',
+                CONST BAR = 9000; }
+                EOD,
         ];
 
         yield [
@@ -2499,9 +2729,11 @@ CONST BAR = 9000; }',
 
         yield [
             '<?php require "vendor/autoload.php";',
-            '<?php require
+            <<<'EOD'
+                <?php require
 
-"vendor/autoload.php";',
+                "vendor/autoload.php";
+                EOD,
         ];
 
         yield [
@@ -2538,9 +2770,11 @@ CONST BAR = 9000; }',
 
         yield [
             '<?php require_once "vendor/autoload.php";',
-            '<?php require_once
+            <<<'EOD'
+                <?php require_once
 
-"vendor/autoload.php";',
+                "vendor/autoload.php";
+                EOD,
         ];
 
         yield [
@@ -2591,20 +2825,24 @@ CONST BAR = 9000; }',
 
         yield [
             '<?php return 9000;',
-            '<?php return
+            <<<'EOD'
+                <?php return
 
-9000;',
+                9000;
+                EOD,
         ];
 
         yield [
             '<?php return /* */ 9000 + 1 /* foo */       ?>',
-            '<?php return
+            <<<'EOD'
+                <?php return
 
 
 
 
 
-/* */ 9000 + 1 /* foo */       ?>',
+                /* */ 9000 + 1 /* foo */       ?>
+                EOD,
         ];
 
         yield [
@@ -2614,87 +2852,107 @@ CONST BAR = 9000; }',
 
         yield [
             '<?php return $foo && $bar || $baz;',
-            '<?php return
+            <<<'EOD'
+                <?php return
 
-$foo && $bar || $baz;',
+                $foo && $bar || $baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo
-    && $bar
-    || $baz;',
+                return
+                    $foo
+                    && $bar
+                    || $baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo &&
-    $bar ||
-    $baz;',
+                return
+                    $foo &&
+                    $bar ||
+                    $baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo
-    + $bar
-    - $baz;',
+                return
+                    $foo
+                    + $bar
+                    - $baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo +
-    $bar -
-    $baz;',
+                return
+                    $foo +
+                    $bar -
+                    $baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo ?
-    $bar :
-    $baz;',
+                return
+                    $foo ?
+                    $bar :
+                    $baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo
-    ? $bar
-    : baz;',
+                return
+                    $foo
+                    ? $bar
+                    : baz;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo ?:
-    $bar;',
+                return
+                    $foo ?:
+                    $bar;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo
-    ?: $bar;',
+                return
+                    $foo
+                    ?: $bar;
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-return
-    $foo
-    ?: $bar?>',
+                return
+                    $foo
+                    ?: $bar?>
+                EOD,
         ];
     }
 
@@ -2726,9 +2984,11 @@ return
 
         yield [
             '<?php function foo() { static $bar; }',
-            '<?php function foo() { static
+            <<<'EOD'
+                <?php function foo() { static
 
-$bar; }',
+                $bar; }
+                EOD,
         ];
 
         yield [
@@ -2748,9 +3008,11 @@ $bar; }',
 
         yield [
             '<?php class Foo { static function bar() {} }',
-            '<?php class Foo { static
+            <<<'EOD'
+                <?php class Foo { static
 
-function bar() {} }',
+                function bar() {} }
+                EOD,
         ];
 
         yield [
@@ -2785,8 +3047,10 @@ function bar() {} }',
 
         yield [
             '<?php class Foo { public static array $c; }',
-            '<?php class Foo { public static
-array $c; }',
+            <<<'EOD'
+                <?php class Foo { public static
+                array $c; }
+                EOD,
         ];
 
         yield [
@@ -2831,9 +3095,11 @@ array $c; }',
 
         yield [
             '<?php throw new Exception();',
-            '<?php throw
+            <<<'EOD'
+                <?php throw
 
-new Exception();',
+                new Exception();
+                EOD,
         ];
 
         yield [
@@ -2865,9 +3131,11 @@ new Exception();',
 
         yield [
             '<?php trait Foo {}',
-            '<?php trait
+            <<<'EOD'
+                <?php trait
 
-Foo {}',
+                Foo {}
+                EOD,
         ];
 
         yield [
@@ -2909,9 +3177,11 @@ Foo {}',
 
         yield [
             '<?php try {} catch (\Exception $exception) {}',
-            '<?php try
+            <<<'EOD'
+                <?php try
 
-{} catch (\Exception $exception) {}',
+                {} catch (\Exception $exception) {}
+                EOD,
         ];
 
         yield [
@@ -2948,9 +3218,11 @@ Foo {}',
 
         yield [
             '<?php use Foo\Bar;',
-            '<?php use
+            <<<'EOD'
+                <?php use
 
-Foo\Bar;',
+                Foo\Bar;
+                EOD,
         ];
 
         yield [
@@ -2970,9 +3242,11 @@ Foo\Bar;',
 
         yield [
             '<?php use const Foo\BAR;',
-            '<?php use
+            <<<'EOD'
+                <?php use
 
-const Foo\BAR;',
+                const Foo\BAR;
+                EOD,
         ];
 
         yield [
@@ -2992,9 +3266,11 @@ const Foo\BAR;',
 
         yield [
             '<?php use function Foo\bar;',
-            '<?php use
+            <<<'EOD'
+                <?php use
 
-function Foo\bar;',
+                function Foo\bar;
+                EOD,
         ];
 
         yield [
@@ -3060,9 +3336,11 @@ function Foo\bar;',
 
         yield [
             '<?php $foo = function () use ($bar) {};',
-            '<?php $foo = function () use
+            <<<'EOD'
+                <?php $foo = function () use
 
-($bar) {};',
+                ($bar) {};
+                EOD,
             [
                 'constructs_preceded_by_a_single_space' => [],
                 'constructs_followed_by_a_single_space' => ['use_lambda'],
@@ -3111,9 +3389,11 @@ function Foo\bar;',
 
         yield [
             '<?php class Foo { use Bar; }',
-            '<?php class Foo { use
+            <<<'EOD'
+                <?php class Foo { use
 
-Bar; }',
+                Bar; }
+                EOD,
         ];
 
         yield [
@@ -3155,9 +3435,11 @@ Bar; }',
 
         yield [
             '<?php class Foo { var $bar; }',
-            '<?php class Foo { var
+            <<<'EOD'
+                <?php class Foo { var
 
-$bar; }',
+                $bar; }
+                EOD,
         ];
 
         yield [
@@ -3199,9 +3481,11 @@ $bar; }',
 
         yield [
             '<?php do {} while (true);',
-            '<?php do {} while
+            <<<'EOD'
+                <?php do {} while
 
-(true);',
+                (true);
+                EOD,
         ];
 
         yield [
@@ -3243,9 +3527,11 @@ $bar; }',
 
         yield [
             '<?php function foo() { yield "Foo"; }',
-            '<?php function foo() { yield
+            <<<'EOD'
+                <?php function foo() { yield
 
-"Foo"; }',
+                "Foo"; }
+                EOD,
         ];
 
         yield [
@@ -3311,9 +3597,11 @@ $bar; }',
 
         yield [
             '<?php function foo() { yield from baz(); }',
-            '<?php function foo() { yield from
+            <<<'EOD'
+                <?php function foo() { yield from
 
-baz(); }',
+                baz(); }
+                EOD,
             $configFollowed,
         ];
 
@@ -3331,9 +3619,11 @@ baz(); }',
 
         yield [
             '<?php function foo() { yield from /* foo */baz(); }',
-            '<?php function foo() { yield from
+            <<<'EOD'
+                <?php function foo() { yield from
 
-/* foo */baz(); }',
+                /* foo */baz(); }
+                EOD,
             $configFollowed,
         ];
 
@@ -3363,19 +3653,23 @@ baz(); }',
 
         yield [
             '<?php function foo() { yield from baz(); }',
-            '<?php function foo() { yield
+            <<<'EOD'
+                <?php function foo() { yield
 
-from baz(); }',
+                from baz(); }
+                EOD,
             $configContain,
         ];
 
         yield [
             '<?php function foo() { yield from baz(); }',
-            '<?php function foo() { yield
+            <<<'EOD'
+                <?php function foo() { yield
 
-from
+                from
 
-baz(); }',
+                baz(); }
+                EOD,
             $configAll,
         ];
     }
@@ -3444,39 +3738,47 @@ baz(); }',
     public static function provideCommentsCases(): iterable
     {
         yield [
-            '<?php
-$a /* 1 */ = /**/ 1;
-$a /** 1 */ = /** 2 */ 1;
+            <<<'EOD'
+                <?php
+                $a /* 1 */ = /**/ 1;
+                $a /** 1 */ = /** 2 */ 1;
 
-$a = 3; # 3
-$a = 4; /** 4 */
-echo 1;
-',
-            '<?php
-$a /* 1 */= /**/1;
-$a /** 1 */= /** 2 */1;
+                $a = 3; # 3
+                $a = 4; /** 4 */
+                echo 1;
 
-$a = 3; # 3
-$a = 4; /** 4 */
-echo 1;
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                $a /* 1 */= /**/1;
+                $a /** 1 */= /** 2 */1;
+
+                $a = 3; # 3
+                $a = 4; /** 4 */
+                echo 1;
+
+                EOD,
         ];
 
         yield 'exceptions' => [
-            '<?php
-new Dummy(/* a */);
-new Dummy(/** b */);
-foo(/* c */);
-foo($a /* d */, $b);
-$arr = [/* empty */];
-',
+            <<<'EOD'
+                <?php
+                new Dummy(/* a */);
+                new Dummy(/** b */);
+                foo(/* c */);
+                foo($a /* d */, $b);
+                $arr = [/* empty */];
+
+                EOD,
         ];
 
         yield 'before_destructuring_square_brace_close' => [
-            '<?php
-foreach ($fields as [$field/** @var string*/]) {
-}
-',
+            <<<'EOD'
+                <?php
+                foreach ($fields as [$field/** @var string*/]) {
+                }
+
+                EOD,
         ];
     }
 
@@ -3497,56 +3799,78 @@ foreach ($fields as [$field/** @var string*/]) {
     public static function provideWithNamespaceCases(): iterable
     {
         yield 'simple' => [
-            '<?php
-namespace Foo;
-namespace Bar;',
-            '<?php
-namespace    Foo;
-namespace    Bar;',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                namespace Bar;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace    Foo;
+                namespace    Bar;
+                EOD,
         ];
 
         yield 'simple with newlines' => [
-            '<?php
-namespace Foo;
-namespace Bar;',
-            '<?php
-namespace
-Foo;
-namespace
-Bar;',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                namespace Bar;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace
+                Foo;
+                namespace
+                Bar;
+                EOD,
         ];
 
         yield 'braces' => [
-            '<?php
-namespace Foo {}
-namespace Bar {}',
-            '<?php
-namespace    Foo {}
-namespace    Bar {}',
+            <<<'EOD'
+                <?php
+                namespace Foo {}
+                namespace Bar {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace    Foo {}
+                namespace    Bar {}
+                EOD,
         ];
 
         yield 'braces with newlines' => [
-            '<?php
-namespace Foo {}
-namespace Bar {}',
-            '<?php
-namespace
-Foo {}
-namespace
-Bar {}',
+            <<<'EOD'
+                <?php
+                namespace Foo {}
+                namespace Bar {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace
+                Foo {}
+                namespace
+                Bar {}
+                EOD,
         ];
 
         yield 'with // comment' => [
-            '<?php
-namespace // comment
-Foo;',
+            <<<'EOD'
+                <?php
+                namespace // comment
+                Foo;
+                EOD,
         ];
 
         yield 'with /* comment */' => [
-            '<?php
-namespace /* comment */ Foo;',
-            '<?php
-namespace/* comment */ Foo;',
+            <<<'EOD'
+                <?php
+                namespace /* comment */ Foo;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace/* comment */ Foo;
+                EOD,
         ];
     }
 
@@ -3563,59 +3887,75 @@ namespace/* comment */ Foo;',
     public static function provideFix80Cases(): iterable
     {
         yield 'match 1' => [
-            '<?php echo match ($x) {
-    1, 2 => "Same for 1 and 2",
-};',
-            '<?php      echo              match     ($x) {
-    1, 2 => "Same for 1 and 2",
-};',
+            <<<'EOD'
+                <?php echo match ($x) {
+                    1, 2 => "Same for 1 and 2",
+                };
+                EOD,
+            <<<'EOD'
+                <?php      echo              match     ($x) {
+                    1, 2 => "Same for 1 and 2",
+                };
+                EOD,
         ];
 
         yield 'match 2' => [
-            '<?php echo match ($x) {
-    1, 2 => "Same for 1 and 2",
-};',
-            '<?php echo match($x) {
-    1, 2 => "Same for 1 and 2",
-};',
+            <<<'EOD'
+                <?php echo match ($x) {
+                    1, 2 => "Same for 1 and 2",
+                };
+                EOD,
+            <<<'EOD'
+                <?php echo match($x) {
+                    1, 2 => "Same for 1 and 2",
+                };
+                EOD,
         ];
 
         yield 'constructor property promotion' => [
-            '<?php
-class Point {
-    public function __construct(
-        public float $x = 0.0,
-        protected float $y = 0.0,
-        private float $z = 0.0,
-    ) {}
-}
-',
-            "<?php
-class Point {
-    public function __construct(
-        public       float \$x = 0.0,
-        protected\tfloat \$y = 0.0,
-        private\nfloat \$z = 0.0,
-    ) {}
-}
-",
+            <<<'EOD'
+                <?php
+                class Point {
+                    public function __construct(
+                        public float $x = 0.0,
+                        protected float $y = 0.0,
+                        private float $z = 0.0,
+                    ) {}
+                }
+
+                EOD,
+            <<<EOD
+                <?php
+                class Point {
+                    public function __construct(
+                        public       float \$x = 0.0,
+                        protected\tfloat \$y = 0.0,
+                        private\nfloat \$z = 0.0,
+                    ) {}
+                }
+
+                EOD,
         ];
 
         yield 'attribute' => [
-            '<?php class Foo {
-    #[Required] // foo
-    public $bar1;
+            <<<'EOD'
+                <?php class Foo {
+                    #[Required] // foo
+                    public $bar1;
 
-    #[Required]
-    public $bar2;
-}',
-            '<?php class Foo {
-    #[Required]// foo
-    public $bar1;
+                    #[Required]
+                    public $bar2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                    #[Required]// foo
+                    public $bar1;
 
-    #[Required]
-    public $bar2;
-}',
+                    #[Required]
+                    public $bar2;
+                }
+                EOD,
         ];
 
         yield 'named argument' => [
@@ -3637,78 +3977,98 @@ class Point {
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
-            '<?php
-final class Foo
-{
-    public readonly string $prop;
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public readonly string $prop;
 
-    public function __construct(
-        public readonly float $x = 0.0,
-    ) {}
-}'."\n            ",
-            '<?php
-final class Foo
-{
-    public readonly  string $prop;
+                    public function __construct(
+                        public readonly float $x = 0.0,
+                    ) {}
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public readonly  string $prop;
 
-    public function __construct(
-        public    readonly   float $x = 0.0,
-    ) {}
-}'."\n            ",
+                    public function __construct(
+                        public    readonly   float $x = 0.0,
+                    ) {}
+                }
+                EOD."\n            ",
         ];
 
         yield 'enum' => [
-            '<?php
-enum Suit {
-    case Hearts;
-}
-',
-            '<?php
-enum     Suit {
-    case Hearts;
-}
-',
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                enum     Suit {
+                    case Hearts;
+                }
+
+                EOD,
         ];
 
         yield 'enum full caps' => [
-            '<?php
-ENUM Suit {
-    case Hearts;
-}
-',
-            '<?php
-ENUM     Suit {
-    case     Hearts;
-}
-',
+            <<<'EOD'
+                <?php
+                ENUM Suit {
+                    case Hearts;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                ENUM     Suit {
+                    case     Hearts;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php class Foo
-{
-    final public const X = "foo";
-}',
-            '<?php class Foo
-{
-    final   public   const    X = "foo";
-}',
+            <<<'EOD'
+                <?php class Foo
+                {
+                    final public const X = "foo";
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo
+                {
+                    final   public   const    X = "foo";
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Test {
-    public function __construct(
-        public $prop = new Foo,
-    ) {}
-}
-',
-            '<?php
-class    Test {
-    public     function    __construct(
-        public    $prop = new     Foo,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Test {
+                    public function __construct(
+                        public $prop = new Foo,
+                    ) {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class    Test {
+                    public     function    __construct(
+                        public    $prop = new     Foo,
+                    ) {}
+                }
+
+                EOD,
         ];
     }
 
@@ -3729,12 +4089,16 @@ class    Test {
     public static function provideFixWithSwitchCases(): iterable
     {
         yield [
-            '<?php
-                switch ($a){ case 1: echo 123; }
-                switch ($b){ case 1: echo 123; }'."\n            ",
-            '<?php
-                switch($a){ case 1: echo 123; }
-                switch  ($b){ case 1: echo 123; }'."\n            ",
+            <<<'EOD'
+                <?php
+                                switch ($a){ case 1: echo 123; }
+                                switch ($b){ case 1: echo 123; }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                switch($a){ case 1: echo 123; }
+                                switch  ($b){ case 1: echo 123; }
+                EOD."\n            ",
         ];
     }
 

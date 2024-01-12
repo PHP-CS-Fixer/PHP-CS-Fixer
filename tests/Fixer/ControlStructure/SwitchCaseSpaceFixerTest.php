@@ -36,287 +36,345 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    switch (1) {
-        case (1 #
-)#
- :
-         echo 1;
-    }
-?>
-',
-        ];
-
-        yield [
-            '<?php
-    switch (1) {
-        case 1 #
-            : echo 1;
-    }
-?>
-',
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case 42:
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case false:
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case false:
-                        break;
-                    default:
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case "prod":
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case "prod" :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case "prod":
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case "prod"       :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case 42:
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case 42 :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case false:
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case false :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case false:
-                        break;
-                    default:
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case false :
-                        break;
-                    default :
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case 42:
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case 42    :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d":
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d" :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d": break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d" : break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                switch ($a) {
-                    case $b ?: $c:
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case $b ?: $c :
-                        break;
-                }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                $a = 5.1;
-                $b = 1.0;
-                switch($a) {
-                    case (int) $a < 1: {
-                        echo "leave alone";
-                        break;
+            <<<'EOD'
+                <?php
+                    switch (1) {
+                        case (1 #
+                )#
+                 :
+                         echo 1;
                     }
-                    case ($a < 2)/* test */ : {
-                        echo "fix 1";
-                        break;
+                ?>
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    switch (1) {
+                        case 1 #
+                            : echo 1;
                     }
-                    case (3): {
-                        echo "fix 2";
-                        break;
-                    }
-                    case /**/(/**/ // test
-                        4
-                        /**/)//
-                        /**/ : {
-                        echo "fix 3";
-                        break;
-                    }
-                    case (((int)$b) + 4.1): {
-                        echo "fix 4";
-                        break;
-                    }
-                    case ($b + 1) * 2: {
-                        echo "leave alone";
-                        break;
-                    }
-                }'."\n                ",
-            '<?php
-                $a = 5.1;
-                $b = 1.0;
-                switch($a) {
-                    case (int) $a < 1 : {
-                        echo "leave alone";
-                        break;
-                    }
-                    case ($a < 2)/* test */ : {
-                        echo "fix 1";
-                        break;
-                    }
-                    case (3) : {
-                        echo "fix 2";
-                        break;
-                    }
-                    case /**/(/**/ // test
-                        4
-                        /**/)//
-                        /**/ : {
-                        echo "fix 3";
-                        break;
-                    }
-                    case (((int)$b) + 4.1) : {
-                        echo "fix 4";
-                        break;
-                    }
-                    case ($b + 1) * 2 : {
-                        echo "leave alone";
-                        break;
-                    }
-                }'."\n                ",
+                ?>
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42:
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case false:
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case false:
+                                        break;
+                                    default:
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case "prod":
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case "prod" :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case "prod":
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case "prod"       :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42:
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42 :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case false:
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case false :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case false:
+                                        break;
+                                    default:
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case false :
+                                        break;
+                                    default :
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42:
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42    :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d":
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d" :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d": break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d" : break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ?: $c:
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ?: $c :
+                                        break;
+                                }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                $a = 5.1;
+                                $b = 1.0;
+                                switch($a) {
+                                    case (int) $a < 1: {
+                                        echo "leave alone";
+                                        break;
+                                    }
+                                    case ($a < 2)/* test */ : {
+                                        echo "fix 1";
+                                        break;
+                                    }
+                                    case (3): {
+                                        echo "fix 2";
+                                        break;
+                                    }
+                                    case /**/(/**/ // test
+                                        4
+                                        /**/)//
+                                        /**/ : {
+                                        echo "fix 3";
+                                        break;
+                                    }
+                                    case (((int)$b) + 4.1): {
+                                        echo "fix 4";
+                                        break;
+                                    }
+                                    case ($b + 1) * 2: {
+                                        echo "leave alone";
+                                        break;
+                                    }
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                $a = 5.1;
+                                $b = 1.0;
+                                switch($a) {
+                                    case (int) $a < 1 : {
+                                        echo "leave alone";
+                                        break;
+                                    }
+                                    case ($a < 2)/* test */ : {
+                                        echo "fix 1";
+                                        break;
+                                    }
+                                    case (3) : {
+                                        echo "fix 2";
+                                        break;
+                                    }
+                                    case /**/(/**/ // test
+                                        4
+                                        /**/)//
+                                        /**/ : {
+                                        echo "fix 3";
+                                        break;
+                                    }
+                                    case (((int)$b) + 4.1) : {
+                                        echo "fix 4";
+                                        break;
+                                    }
+                                    case ($b + 1) * 2 : {
+                                        echo "leave alone";
+                                        break;
+                                    }
+                                }
+                EOD."\n                ",
             [
-                '<?php
-                    switch ($a) {
-                        case 42:
-                            break;
-                        case 1:
-                            switch ($a) {
-                                case 42:
-                                    break;
-                                default:
-                                    echo 1   ;
-                            }
-                    }'."\n                    ",
-                '<?php
-                    switch ($a) {
-                        case 42   :
-                            break;
-                        case 1    :
-                            switch ($a) {
-                                case 42   :
-                                    break;
-                                default :
-                                    echo 1   ;
-                            }
-                    }'."\n                    ",
+                <<<'EOD'
+                    <?php
+                                        switch ($a) {
+                                            case 42:
+                                                break;
+                                            case 1:
+                                                switch ($a) {
+                                                    case 42:
+                                                        break;
+                                                    default:
+                                                        echo 1   ;
+                                                }
+                                        }
+                    EOD."\n                    ",
+                <<<'EOD'
+                    <?php
+                                        switch ($a) {
+                                            case 42   :
+                                                break;
+                                            case 1    :
+                                                switch ($a) {
+                                                    case 42   :
+                                                        break;
+                                                    default :
+                                                        echo 1   ;
+                                                }
+                                        }
+                    EOD."\n                    ",
             ],
         ];
 
         yield [
-            '<?php
-                    switch($foo) {
-                        case 4:  ; ;
-                        case 31 + test(";");  ; ; ;;
-                        case 1 + test(";"); // ;
-                        case (1+2/*;*/);
-                        case 1;
-                        case 2;
-                            return 1;
-                        default;
-                            return 2;
-                }',
-            '<?php
-                    switch($foo) {
-                        case 4  :  ; ;
-                        case 31 + test(";") ;  ; ; ;;
-                        case 1 + test(";") ; // ;
-                        case (1+2/*;*/) ;
-                        case 1  ;
-                        case 2 ;
-                            return 1;
-                        default ;
-                            return 2;
-                }',
+            <<<'EOD'
+                <?php
+                                    switch($foo) {
+                                        case 4:  ; ;
+                                        case 31 + test(";");  ; ; ;;
+                                        case 1 + test(";"); // ;
+                                        case (1+2/*;*/);
+                                        case 1;
+                                        case 2;
+                                            return 1;
+                                        default;
+                                            return 2;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    switch($foo) {
+                                        case 4  :  ; ;
+                                        case 31 + test(";") ;  ; ; ;;
+                                        case 1 + test(";") ; // ;
+                                        case (1+2/*;*/) ;
+                                        case 1  ;
+                                        case 2 ;
+                                            return 1;
+                                        default ;
+                                            return 2;
+                                }
+                EOD,
         ];
     }
 
@@ -333,16 +391,20 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield [
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }'."\n                ",
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly" :
-                        break;
-                }'."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "this" ? "is" : "ugly":
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "this" ? "is" : "ugly" :
+                                        break;
+                                }
+                EOD."\n                ",
         ];
     }
 
@@ -359,29 +421,33 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
-                match ($foo) {
-                    1 => "a",
-                    default => "b"
-                };
-                match ($bar) {
-                    2 => "c",
-                    default=> "d"
-                };
-                match ($baz) {
-                    3 => "e",
-                    default   => "f"
-                };'."\n            ",
+            <<<'EOD'
+                <?php
+                                match ($foo) {
+                                    1 => "a",
+                                    default => "b"
+                                };
+                                match ($bar) {
+                                    2 => "c",
+                                    default=> "d"
+                                };
+                                match ($baz) {
+                                    3 => "e",
+                                    default   => "f"
+                                };
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-$a = function (): ?string {
-    return $rank ? match (true) {
-      $rank <= 1000 => \'bronze\',
-      default => null,
-  } : null;
-};',
+            <<<'EOD'
+                <?php
+                $a = function (): ?string {
+                    return $rank ? match (true) {
+                      $rank <= 1000 => 'bronze',
+                      default => null,
+                  } : null;
+                };
+                EOD,
         ];
     }
 
@@ -398,26 +464,28 @@ $a = function (): ?string {
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
-            '<?php
-enum Suit {
-    case Hearts;
-    case Diamonds  ;
-    case Clubs ;
-    case Spades   ;
-}
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts;
+                    case Diamonds  ;
+                    case Clubs ;
+                    case Spades   ;
+                }
 
-enum UserStatus: string {
-  case    Pending = \'P\';
-  case  Active = \'A\';
-  case   Suspended = \'S\';
-  case CanceledByUser = \'C\'  ;
-}
+                enum UserStatus: string {
+                  case    Pending = 'P';
+                  case  Active = 'A';
+                  case   Suspended = 'S';
+                  case CanceledByUser = 'C'  ;
+                }
 
-switch ($a) {
-    default:
-        echo 1;
-}
-',
+                switch ($a) {
+                    default:
+                        echo 1;
+                }
+
+                EOD,
         ];
     }
 }

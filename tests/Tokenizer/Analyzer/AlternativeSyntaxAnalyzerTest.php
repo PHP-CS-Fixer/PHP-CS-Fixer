@@ -77,11 +77,13 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
 
         yield 'multiple expressions' => [
             [7, 15, 51],
-            '<?php
-                if ($condition1): echo 1; else: echo 2; endif;
-                somelabel: echo 3;
-                echo $condition2 ? 4 : 5;
-                if ($condition3): echo 6; endif;'."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($condition1): echo 1; else: echo 2; endif;
+                                somelabel: echo 3;
+                                echo $condition2 ? 4 : 5;
+                                if ($condition3): echo 6; endif;
+                EOD."\n            ",
         ];
     }
 

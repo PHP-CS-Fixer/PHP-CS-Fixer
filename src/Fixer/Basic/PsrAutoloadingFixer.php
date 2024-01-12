@@ -44,17 +44,21 @@ final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFix
             'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
             [
                 new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
+                    <<<'EOD'
+                        <?php
+                        namespace PhpCsFixer\FIXER\Basic;
+                        class InvalidName {}
+
+                        EOD,
                     new \SplFileInfo(__FILE__)
                 ),
                 new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
+                    <<<'EOD'
+                        <?php
+                        namespace PhpCsFixer\FIXER\Basic;
+                        class InvalidName {}
+
+                        EOD,
                     new \SplFileInfo(__FILE__),
                     ['dir' => './src']
                 ),

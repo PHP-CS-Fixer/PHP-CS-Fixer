@@ -38,56 +38,66 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
             'Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-class  Foo  extends  Bar  implements  Baz,  BarBaz
-{
-}
+                        class  Foo  extends  Bar  implements  Baz,  BarBaz
+                        {
+                        }
 
-final  class  Foo  extends  Bar  implements  Baz,  BarBaz
-{
-}
+                        final  class  Foo  extends  Bar  implements  Baz,  BarBaz
+                        {
+                        }
 
-trait  Foo
-{
-}
+                        trait  Foo
+                        {
+                        }
 
-$foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
-'
+                        $foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-class Foo
-extends Bar
-implements Baz, BarBaz
-{}
-',
+                        class Foo
+                        extends Bar
+                        implements Baz, BarBaz
+                        {}
+
+                        EOD,
                     ['single_line' => true]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-class Foo
-extends Bar
-implements Baz
-{}
-',
+                        class Foo
+                        extends Bar
+                        implements Baz
+                        {}
+
+                        EOD,
                     ['single_item_single_line' => true]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-interface Bar extends
-    Bar, BarBaz, FooBarBaz
-{}
-',
+                        interface Bar extends
+                            Bar, BarBaz, FooBarBaz
+                        {}
+
+                        EOD,
                     ['multi_line_extends_each_single_line' => true]
                 ),
                 new CodeSample(
-                    '<?php
-$foo = new class(){};
-',
+                    <<<'EOD'
+                        <?php
+                        $foo = new class(){};
+
+                        EOD,
                     ['space_before_parenthesis' => true]
                 ),
                 new CodeSample(

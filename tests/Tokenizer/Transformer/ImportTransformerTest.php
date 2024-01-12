@@ -118,14 +118,16 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php use Foo\ {
-                    function F1,
-                    const Constants\C1,
-                    function Functions\F2,
-                    const C2,
-                    function F3,
-                    const C3,
-                };',
+            <<<'EOD'
+                <?php use Foo\ {
+                                    function F1,
+                                    const Constants\C1,
+                                    function Functions\F2,
+                                    const C2,
+                                    function F3,
+                                    const C3,
+                                };
+                EOD,
             [
                 8 => CT::T_FUNCTION_IMPORT,
                 13 => CT::T_CONST_IMPORT,

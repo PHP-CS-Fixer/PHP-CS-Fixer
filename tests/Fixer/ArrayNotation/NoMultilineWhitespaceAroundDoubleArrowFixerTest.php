@@ -38,104 +38,126 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    $arr = array(
-        $a => array(1),
-        $a => array(0 => array())
-    );',
-            '<?php
-    $arr = array(
-        $a =>
-            array(1),
-        $a =>
-            array(0 =>
-            array())
-    );',
+            <<<'EOD'
+                <?php
+                    $arr = array(
+                        $a => array(1),
+                        $a => array(0 => array())
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    $arr = array(
+                        $a =>
+                            array(1),
+                        $a =>
+                            array(0 =>
+                            array())
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = array(
-        "aaaaaa"    =>    "b",
-        "c" => "d",
-        "eeeeee" =>    array(),
-        "ggg" => array(),
-        "hh"      => [],
-    );',
-            '<?php
-    $a = array(
-        "aaaaaa"    =>    "b",
-        "c"
-            =>
-                "d",
-        "eeeeee" =>    array(),
-        "ggg" =>
-            array(),
-        "hh"      =>
-            [],
-    );',
-        ];
-
-        yield [
-            '<?php
-    $hello = array(
-        "foo" =>
-        // hello there
-        "value",
-        "hi"  =>
-        /*
-         * Description.
-         */1,
-        "ha"  =>
-        /**
-         * Description.
-         */
-        array()
-    );',
-        ];
-
-        yield [
-            '<?php
-                    $fn = fn() => null;',
-            '<?php
-                    $fn = fn()
-                        =>
-                            null;',
-        ];
-
-        yield [
-            '<?php
-                    $foo = [
-                        1 /* foo */ => $one,
-                        2 => $two
-                    ];',
-            '<?php
-                    $foo = [
-                        1 /* foo */
+            <<<'EOD'
+                <?php
+                    $a = array(
+                        "aaaaaa"    =>    "b",
+                        "c" => "d",
+                        "eeeeee" =>    array(),
+                        "ggg" => array(),
+                        "hh"      => [],
+                    );
+                EOD,
+            <<<'EOD'
+                <?php
+                    $a = array(
+                        "aaaaaa"    =>    "b",
+                        "c"
                             =>
-                                $one,
-                        2
-                            =>
-                                $two
-                    ];',
+                                "d",
+                        "eeeeee" =>    array(),
+                        "ggg" =>
+                            array(),
+                        "hh"      =>
+                            [],
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $foo = [
-                        1 // foo
-                            => $one,
-                        2 => $two,
-                    ];',
-            '<?php
-                    $foo = [
-                        1 // foo
-                            =>
-                                $one,
-                        2
-                            =>
-                                $two,
-                    ];',
+            <<<'EOD'
+                <?php
+                    $hello = array(
+                        "foo" =>
+                        // hello there
+                        "value",
+                        "hi"  =>
+                        /*
+                         * Description.
+                         */1,
+                        "ha"  =>
+                        /**
+                         * Description.
+                         */
+                        array()
+                    );
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    $fn = fn() => null;
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $fn = fn()
+                                        =>
+                                            null;
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    $foo = [
+                                        1 /* foo */ => $one,
+                                        2 => $two
+                                    ];
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $foo = [
+                                        1 /* foo */
+                                            =>
+                                                $one,
+                                        2
+                                            =>
+                                                $two
+                                    ];
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    $foo = [
+                                        1 // foo
+                                            => $one,
+                                        2 => $two,
+                                    ];
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $foo = [
+                                        1 // foo
+                                            =>
+                                                $one,
+                                        2
+                                            =>
+                                                $two,
+                                    ];
+                EOD,
         ];
     }
 }

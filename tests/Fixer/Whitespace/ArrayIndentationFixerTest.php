@@ -674,11 +674,13 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     INPUT,
             ],
             [
-                '<?php'."\n    ".'
-$foo = [
-    "foo",
-    "bar",
-];',
+                '<?php'."\n    ".<<<'EOD'
+
+                    $foo = [
+                        "foo",
+                        "bar",
+                    ];
+                    EOD,
             ],
             [
                 <<<'EXPECTED'
@@ -929,36 +931,40 @@ $foo = [
     public static function provideFix80Cases(): iterable
     {
         yield 'attribute' => [
-            '<?php
-class Foo {
- #[SimpleAttribute]
-#[ComplexAttribute(
- foo: true,
-    bar: [
-        1,
-        2,
-        3,
-    ]
- )]
-  public function bar()
-     {
-     }
-}',
-            '<?php
-class Foo {
- #[SimpleAttribute]
-#[ComplexAttribute(
- foo: true,
-    bar: [
-                1,
-                    2,
-              3,
-     ]
- )]
-  public function bar()
-     {
-     }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                 #[SimpleAttribute]
+                #[ComplexAttribute(
+                 foo: true,
+                    bar: [
+                        1,
+                        2,
+                        3,
+                    ]
+                 )]
+                  public function bar()
+                     {
+                     }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                 #[SimpleAttribute]
+                #[ComplexAttribute(
+                 foo: true,
+                    bar: [
+                                1,
+                                    2,
+                              3,
+                     ]
+                 )]
+                  public function bar()
+                     {
+                     }
+                }
+                EOD,
         ];
     }
 

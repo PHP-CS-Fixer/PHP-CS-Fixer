@@ -73,14 +73,18 @@ final class NoUselessConcatOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-$string = "foobar";
-echo "char @ -4 \"[$string[-2]]\"!";
-',
-            '<?php
-$string = "foobar";
-echo "char @ -4 \"[$string[-2]"."]\"!";
-',
+            <<<'EOD'
+                <?php
+                $string = "foobar";
+                echo "char @ -4 \"[$string[-2]]\"!";
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $string = "foobar";
+                echo "char @ -4 \"[$string[-2]"."]\"!";
+
+                EOD,
         ];
 
         yield 'double quote concat double quote + comment' => [
@@ -99,65 +103,83 @@ echo "char @ -4 \"[$string[-2]"."]\"!";
         ];
 
         yield 'linebreak with indent inside' => [
-            '<?php
-$text1 = "intro:   |   |"."
-               line 2 indent";',
-            '<?php
-$text1 = "intro:   |"."   |"."
-               line 2 indent"."";',
+            <<<'EOD'
+                <?php
+                $text1 = "intro:   |   |"."
+                               line 2 indent";
+                EOD,
+            <<<'EOD'
+                <?php
+                $text1 = "intro:   |"."   |"."
+                               line 2 indent"."";
+                EOD,
         ];
 
         yield 'linebreak with indent inside + comment' => [
-            '<?php
-$text2 = "intro:      "." #a
-               line 2 indent";',
-            '<?php
-$text2 = "intro:   "."   "." #a
-               line 2 indent"."";',
+            <<<'EOD'
+                <?php
+                $text2 = "intro:      "." #a
+                               line 2 indent";
+                EOD,
+            <<<'EOD'
+                <?php
+                $text2 = "intro:   "."   "." #a
+                               line 2 indent"."";
+                EOD,
         ];
 
         yield 'do not fix' => [
-            '<?php
-                $a0x = $b . "c";
-                $a1x = "c" . $b;
-                $b2x = foo() . "X";
-                $b3x = foo() . \'Y\';
-                $b4x = "Z" . foo();
-                $b5x = \'b\' . foo();
-                $b6x = \'X  \n \' . "\n\t";
-                $b7x = "\n\t" . \'X $a\';
-                $b7x = "abc". 1;
-                $b7x = "def". 1.2;
-                // bin string
-                $f202 = b"a"."b";
-                $f201 = b"a".b"b";
-                $f203 = "a".B"b";
-                echo b"He drank some juice made of {$fruit}s.".b" Sliced the {$fruit}s.";'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a0x = $b . "c";
+                                $a1x = "c" . $b;
+                                $b2x = foo() . "X";
+                                $b3x = foo() . 'Y';
+                                $b4x = "Z" . foo();
+                                $b5x = 'b' . foo();
+                                $b6x = 'X  \n ' . "\n\t";
+                                $b7x = "\n\t" . 'X $a';
+                                $b7x = "abc". 1;
+                                $b7x = "def". 1.2;
+                                // bin string
+                                $f202 = b"a"."b";
+                                $f201 = b"a".b"b";
+                                $f203 = "a".B"b";
+                                echo b"He drank some juice made of {$fruit}s.".b" Sliced the {$fruit}s.";
+                EOD."\n            ",
         ];
 
         yield 'single quote concat single quote but with line break after' => [
-            "<?php \$fh = 'x'. // some comment
-'y';",
+            <<<'EOD'
+                <?php $fh = 'x'. // some comment
+                'y';
+                EOD,
         ];
 
         yield 'single quote concat single quote but with line break before' => [
-            "<?php \$ff = 'x' // some comment
-.'y';",
+            <<<'EOD'
+                <?php $ff = 'x' // some comment
+                .'y';
+                EOD,
         ];
 
         yield 'linebreak without indent inside' => [
-            '<?php
-$text3 = "intro:"."
-line 2 indent" ?>',
+            <<<'EOD'
+                <?php
+                $text3 = "intro:"."
+                line 2 indent" ?>
+                EOD,
         ];
 
         yield 'linebreak before concat + comment' => [
-            "<?php
-\$a = 'The first line of some block.'
-.'The second line' // some comment about this line
-.'3rd line'
-;
-",
+            <<<'EOD'
+                <?php
+                $a = 'The first line of some block.'
+                .'The second line' // some comment about this line
+                .'3rd line'
+                ;
+
+                EOD,
         ];
     }
 

@@ -69,27 +69,31 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'excluded class methods' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    class Foo
-                    {
-                        /** @return Bar */
-                        function __construct() {}
-                        /** @return Bar */
-                        function __destruct() {}
-                        /** @return Bar */
-                        function __clone() {}
-                    }'."\n                ",
+                                    class Foo
+                                    {
+                                        /** @return Bar */
+                                        function __construct() {}
+                                        /** @return Bar */
+                                        function __destruct() {}
+                                        /** @return Bar */
+                                        function __clone() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'multiple returns' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * @return Bar
-                     * @return Baz
-                     */
-                    function xyz() {}'."\n                ",
+                                    /**
+                                     * @return Bar
+                                     * @return Baz
+                                     */
+                                    function xyz() {}
+                EOD."\n                ",
         ];
 
         yield 'non-root class' => [
@@ -185,25 +189,33 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'self accessor' => [
-            '<?php
-                    class Foo {
-                        /** @return self */ function my_foo(): self {}
-                    }'."\n                ",
-            '<?php
-                    class Foo {
-                        /** @return self */ function my_foo() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @return self */ function my_foo(): self {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @return self */ function my_foo() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'nullable self accessor' => [
-            '<?php
-                    class Foo {
-                        /** @return self|null */ function my_foo(): ?self {}
-                    }'."\n                ",
-            '<?php
-                    class Foo {
-                        /** @return self|null */ function my_foo() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @return self|null */ function my_foo(): ?self {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @return self|null */ function my_foo() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'skip resource special type' => [
@@ -255,22 +267,26 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'comments' => [
-            '<?php
-                    class A
-                    {
-                        // comment 0
-                        /** @return Foo */ # comment 1
-                        final/**/public/**/static/**/function/**/bar/**/(/**/$var/**/=/**/1/**/): Foo/**/{# comment 2
-                        } // comment 3
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        // comment 0
-                        /** @return Foo */ # comment 1
-                        final/**/public/**/static/**/function/**/bar/**/(/**/$var/**/=/**/1/**/)/**/{# comment 2
-                        } // comment 3
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        // comment 0
+                                        /** @return Foo */ # comment 1
+                                        final/**/public/**/static/**/function/**/bar/**/(/**/$var/**/=/**/1/**/): Foo/**/{# comment 2
+                                        } // comment 3
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        // comment 0
+                                        /** @return Foo */ # comment 1
+                                        final/**/public/**/static/**/function/**/bar/**/(/**/$var/**/=/**/1/**/)/**/{# comment 2
+                                        } // comment 3
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'array and traversable' => [
@@ -284,42 +300,54 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'array and traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     /** @return array|Traversable */
-                     function my_foo() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     /** @return array|Traversable */
+                                     function my_foo() {}
+                EOD."\n                ",
         ];
 
         yield 'array and traversable with leading slash in a namespace' => [
-            '<?php
-                     namespace App;
-                     /** @return array|\Traversable */
-                     function my_foo(): iterable {}'."\n                ",
-            '<?php
-                     namespace App;
-                     /** @return array|\Traversable */
-                     function my_foo() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     /** @return array|\Traversable */
+                                     function my_foo(): iterable {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     /** @return array|\Traversable */
+                                     function my_foo() {}
+                EOD."\n                ",
         ];
 
         yield 'array and imported traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     use Traversable;
-                     /** @return array|Traversable */
-                     function my_foo(): iterable {}'."\n                ",
-            '<?php
-                     namespace App;
-                     use Traversable;
-                     /** @return array|Traversable */
-                     function my_foo() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Traversable;
+                                     /** @return array|Traversable */
+                                     function my_foo(): iterable {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Traversable;
+                                     /** @return array|Traversable */
+                                     function my_foo() {}
+                EOD."\n                ",
         ];
 
         yield 'array and object aliased as traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     use Foo as Traversable;
-                     /** @return array|Traversable */
-                     function my_foo() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Foo as Traversable;
+                                     /** @return array|Traversable */
+                                     function my_foo() {}
+                EOD."\n                ",
         ];
 
         yield 'array of object and traversable' => [
@@ -338,21 +366,27 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'intersection types' => [
-            '<?php
-                    /** @return Bar&Baz */
-                    function bar() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @return Bar&Baz */
+                                    function bar() {}
+                EOD."\n                ",
         ];
 
         yield 'very long class name before ampersand' => [
-            '<?php
-                    /** @return Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */
-                    function bar() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @return Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */
+                                    function bar() {}
+                EOD."\n                ",
         ];
 
         yield 'very long class name after ampersand' => [
-            '<?php
-                    /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
-                    function bar() {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
+                                    function bar() {}
+                EOD."\n                ",
         ];
 
         yield 'arrow function' => [
@@ -366,24 +400,28 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'arrow function (as argument ended with ,)' => [
-            '<?php
-            Utils::stableSort(
-                $elements,
-                /**
-                 * @return array
-                 */
-                static fn($a): array => [$a],
-                fn($a, $b) => 1,
-            );',
-            '<?php
-            Utils::stableSort(
-                $elements,
-                /**
-                 * @return array
-                 */
-                static fn($a) => [$a],
-                fn($a, $b) => 1,
-            );',
+            <<<'EOD'
+                <?php
+                            Utils::stableSort(
+                                $elements,
+                                /**
+                                 * @return array
+                                 */
+                                static fn($a): array => [$a],
+                                fn($a, $b) => 1,
+                            );
+                EOD,
+            <<<'EOD'
+                <?php
+                            Utils::stableSort(
+                                $elements,
+                                /**
+                                 * @return array
+                                 */
+                                static fn($a) => [$a],
+                                fn($a, $b) => 1,
+                            );
+                EOD,
         ];
     }
 
@@ -400,14 +438,18 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield 'report static as self' => [
-            '<?php
-                class Foo {
-                    /** @return static */ function my_foo(): self {}
-                }'."\n            ",
-            '<?php
-                class Foo {
-                    /** @return static */ function my_foo() {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo {
+                                    /** @return static */ function my_foo(): self {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo {
+                                    /** @return static */ function my_foo() {}
+                                }
+                EOD."\n            ",
         ];
 
         yield 'skip mixed special type' => [
@@ -444,42 +486,54 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'static' => [
-            '<?php
-                final class Foo {
-                    /** @return static */
-                    public function something(): static {}
-                }'."\n            ",
-            '<?php
-                final class Foo {
-                    /** @return static */
-                    public function something() {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo {
+                                    /** @return static */
+                                    public function something(): static {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo {
+                                    /** @return static */
+                                    public function something() {}
+                                }
+                EOD."\n            ",
         ];
 
         yield 'nullable static' => [
-            '<?php
-                final class Foo {
-                    /** @return null|static */
-                    public function something(): ?static {}
-                }'."\n            ",
-            '<?php
-                final class Foo {
-                    /** @return null|static */
-                    public function something() {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo {
+                                    /** @return null|static */
+                                    public function something(): ?static {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo {
+                                    /** @return null|static */
+                                    public function something() {}
+                                }
+                EOD."\n            ",
         ];
 
         yield 'mixed' => [
-            '<?php
-                final class Foo {
-                    /** @return mixed */
-                    public function something(): mixed {}
-                }'."\n            ",
-            '<?php
-                final class Foo {
-                    /** @return mixed */
-                    public function something() {}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo {
+                                    /** @return mixed */
+                                    public function something(): mixed {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo {
+                                    /** @return mixed */
+                                    public function something() {}
+                                }
+                EOD."\n            ",
         ];
 
         yield 'union types' => [

@@ -41,10 +41,12 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         yield ['<?php return [fn() => [1, 2, 3]];'];
 
         yield [
-            '<?php
-                function foo(): iterable { return $z; }
+            <<<'EOD'
+                <?php
+                                function foo(): iterable { return $z; }
 
-                return [1,2] ?>  X  <?php { echo 2; }',
+                                return [1,2] ?>  X  <?php { echo 2; }
+                EOD,
         ];
 
         yield ['<?php function foo() { return [1, 2, 3]; }'];
@@ -55,11 +57,13 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
 
         yield ['<?php function foo(): ?iterable { return [1, 2, 3]; }'];
 
-        yield ['<?php
-            abstract class Foo {
-                abstract public function bar(): iterable;
-                public function baz(): array { return []; }
-            }'."\n        "];
+        yield [<<<'EOD'
+            <?php
+                        abstract class Foo {
+                            abstract public function bar(): iterable;
+                            public function baz(): array { return []; }
+                        }
+            EOD."\n        "];
 
         yield [
             '<?php return [function(): iterable { yield from [1, 2, 3]; }];',
@@ -67,12 +71,16 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class Foo {
-                function bar(): iterable { yield from [1, 2, 3]; }
-            }',
-            '<?php class Foo {
-                function bar(): iterable { return [1, 2, 3]; }
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function bar(): iterable { yield from [1, 2, 3]; }
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                function bar(): iterable { return [1, 2, 3]; }
+                            }
+                EOD,
         ];
 
         yield [
@@ -106,14 +114,18 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                function foo(): array { return [3, 4]; }
-                function bar(): iterable { yield from [1, 2]; }
-                function baz(): int { return 5; }'."\n            ",
-            '<?php
-                function foo(): array { return [3, 4]; }
-                function bar(): iterable { return [1, 2]; }
-                function baz(): int { return 5; }'."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(): array { return [3, 4]; }
+                                function bar(): iterable { yield from [1, 2]; }
+                                function baz(): int { return 5; }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(): array { return [3, 4]; }
+                                function bar(): iterable { return [1, 2]; }
+                                function baz(): int { return 5; }
+                EOD."\n            ",
         ];
     }
 

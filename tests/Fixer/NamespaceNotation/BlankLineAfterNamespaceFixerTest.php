@@ -37,9 +37,11 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php namespace A\B?>
-                <?php
-                    for($i=0; $i<10; ++$i) {echo $i;}',
+            <<<'EOD'
+                <?php namespace A\B?>
+                                <?php
+                                    for($i=0; $i<10; ++$i) {echo $i;}
+                EOD,
         ];
 
         yield [
@@ -47,189 +49,245 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-class C {}
-',
-            '<?php
-namespace A\B;
+                class C {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
 
 
-class C {}
-',
+                class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-class C {}
-',
-            '<?php
-namespace A\B;
-class C {}
-',
+                class C {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-class C {}
-',
-            '<?php
-namespace A\B;  class C {}
-',
+                class C {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;  class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-class C {}
-',
-            '<?php
-namespace A\B;class C {}
-',
+                class C {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B {
-    class C {
-        public $foo;
-        private $bar;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                namespace A\B {
+                    class C {
+                        public $foo;
+                        private $bar;
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
-            "<?php\rnamespace A\\B;
+            <<<EOD
+                <?php\rnamespace A\\B;
 
-class C {}\r",
+                class C {}\r
+                EOD,
             "<?php\rnamespace A\\B;\r\r\r\r\r\rclass C {}\r",
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-namespace\C\func();
-foo();
-',
+                namespace\C\func();
+                foo();
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Foo;
-',
-            '<?php
-namespace Foo;
+            <<<'EOD'
+                <?php
+                namespace Foo;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
 
 
-',
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Foo;
-',
-            '<?php
-namespace Foo;',
+            <<<'EOD'
+                <?php
+                namespace Foo;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Foo;
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-?>',
-            '<?php
-namespace Foo;
+                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
 
 
-?>',
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace Foo;
+            <<<'EOD'
+                <?php
+                    namespace Foo;
 
-    class Bar {}',
+                    class Bar {}
+                EOD,
         ];
 
         yield [
-            '<?php
-  namespace Foo;
+            <<<'EOD'
+                <?php
+                  namespace Foo;
 
-      class Bar {}',
-            '<?php
-  namespace Foo;
-      class Bar {}',
+                      class Bar {}
+                EOD,
+            <<<'EOD'
+                <?php
+                  namespace Foo;
+                      class Bar {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace My\NS;
+            <<<'EOD'
+                <?php
+                    namespace My\NS;
 
-    class X extends Y {}',
+                    class X extends Y {}
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace My\NS; // comment
+            <<<'EOD'
+                <?php
+                namespace My\NS; // comment
 
-class X extends Y {}',
+                class X extends Y {}
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace My\NS; /* comment */
+            <<<'EOD'
+                <?php
+                namespace My\NS; /* comment */
 
-class X extends Y {}',
+                class X extends Y {}
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace My\NS; /*
-comment 1
-comment 2
-*/
+            <<<'EOD'
+                <?php
+                namespace My\NS; /*
+                comment 1
+                comment 2
+                */
 
-class X extends Y {}',
-            '<?php
-namespace My\NS; /*
-comment 1
-comment 2
-*/
-class X extends Y {}',
+                class X extends Y {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace My\NS; /*
+                comment 1
+                comment 2
+                */
+                class X extends Y {}
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace My\NS; /** comment */
+            <<<'EOD'
+                <?php
+                namespace My\NS; /** comment */
 
-class X extends Y {}',
+                class X extends Y {}
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace My\NS; /**
-comment 1
-comment 2
-*/
+            <<<'EOD'
+                <?php
+                namespace My\NS; /**
+                comment 1
+                comment 2
+                */
 
-class X extends Y {}',
-            '<?php
-namespace My\NS; /**
-comment 1
-comment 2
-*/
-class X extends Y {}',
+                class X extends Y {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace My\NS; /**
+                comment 1
+                comment 2
+                */
+                class X extends Y {}
+                EOD,
         ];
     }
 

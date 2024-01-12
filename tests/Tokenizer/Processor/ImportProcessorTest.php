@@ -90,16 +90,20 @@ final class ImportProcessorTest extends TestCase
     public static function provideInsertImportsCases(): iterable
     {
         yield 'class import in single namespace' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo;
-use Other\A;
-use Other\B;
-',
-            '<?php
+                namespace Foo;
+                use Other\A;
+                use Other\B;
 
-namespace Foo;
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Foo;
+
+                EOD,
             [
                 'class' => ['Other\\A', 'Other\\B'],
             ],
@@ -107,18 +111,22 @@ namespace Foo;
         ];
 
         yield 'class import in single {} namespace' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace Foo {
-use Other\A;
-use Other\B;
-}
-',
-            '<?php
+                namespace Foo {
+                use Other\A;
+                use Other\B;
+                }
 
-namespace Foo {
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Foo {
+                }
+
+                EOD,
             [
                 'class' => ['Other\\A', 'Other\\B'],
             ],

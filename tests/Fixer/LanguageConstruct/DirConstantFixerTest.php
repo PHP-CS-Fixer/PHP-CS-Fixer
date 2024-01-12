@@ -119,19 +119,23 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function dirname($a);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function dirname($a);
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function &dirname($a);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function &dirname($a);
+                                }
+                EOD,
         ];
 
         yield [
@@ -151,16 +155,22 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php $x = __DIR__;',
-            '<?php $x = \dirname(
-                    __FILE__'.'                     '.'
-                );',
+            <<<'EOD'
+                <?php $x = \dirname(
+                                    __FILE__
+                EOD.'                     '.<<<'EOD'
+
+                                );
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $x = dirname(dirname("a".__FILE__));
-                    $x = dirname(dirname(__FILE__."a"));
-                    $x = dirname(dirname("a".__FILE__."a"));'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $x = dirname(dirname("a".__FILE__));
+                                    $x = dirname(dirname(__FILE__."a"));
+                                    $x = dirname(dirname("a".__FILE__."a"));
+                EOD."\n                ",
         ];
 
         yield [
@@ -175,9 +185,13 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php $x = __DIR__;',
-            '<?php $x = \dirname(
-                    __FILE__   ,'.'                     '.'
-                );',
+            <<<'EOD'
+                <?php $x = \dirname(
+                                    __FILE__   ,
+                EOD.'                     '.<<<'EOD'
+
+                                );
+                EOD,
         ];
     }
 
@@ -187,23 +201,27 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
     public function testFixPre80(): void
     {
         $this->doTest(
-            '<?php $x =# A
-# A1
-# B
-# C
-__DIR__# D
-# E
-;# F
-',
-            '<?php $x =# A
-\
-# A1
-dirname# B
-(# C
-__FILE__# D
-)# E
-;# F
-'
+            <<<'EOD'
+                <?php $x =# A
+                # A1
+                # B
+                # C
+                __DIR__# D
+                # E
+                ;# F
+
+                EOD,
+            <<<'EOD'
+                <?php $x =# A
+                \
+                # A1
+                dirname# B
+                (# C
+                __FILE__# D
+                )# E
+                ;# F
+
+                EOD
         );
     }
 }

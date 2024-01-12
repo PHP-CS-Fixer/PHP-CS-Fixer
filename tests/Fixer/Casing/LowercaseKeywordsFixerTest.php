@@ -64,37 +64,45 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
-echo match (1) {
-    1 => 9,
-    2 => 7,
-};',
-            '<?php
-echo MATCH (1) {
-    1 => 9,
-    2 => 7,
-};',
+            <<<'EOD'
+                <?php
+                echo match (1) {
+                    1 => 9,
+                    2 => 7,
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                echo MATCH (1) {
+                    1 => 9,
+                    2 => 7,
+                };
+                EOD,
         ];
 
         yield [
-            '<?php
-class Point {
-    public function __construct(
-        public float $x = 0.0,
-        protected float $y = 0.0,
-        private float $z = 0.0,
-    ) {}
-}
-',
-            '<?php
-class Point {
-    public function __construct(
-        PUBLIC float $x = 0.0,
-        Protected float $y = 0.0,
-        privatE float $z = 0.0,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Point {
+                    public function __construct(
+                        public float $x = 0.0,
+                        protected float $y = 0.0,
+                        private float $z = 0.0,
+                    ) {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Point {
+                    public function __construct(
+                        PUBLIC float $x = 0.0,
+                        Protected float $y = 0.0,
+                        privatE float $z = 0.0,
+                    ) {}
+                }
+
+                EOD,
         ];
     }
 
@@ -111,50 +119,62 @@ class Point {
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-final class Foo
-{
-    public readonly string $prop;
-}'."\n            ",
-            '<?php
-final class Foo
-{
-    public READONLY string $prop;
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public readonly string $prop;
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public READONLY string $prop;
+                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-class Point {
-    public function __construct(
-        public readonly float $x = 0.0,
-        readonly protected float $y = 0.0,
-        private readonly float $z = 0.0,
-    ) {}
-}
-',
-            '<?php
-class Point {
-    public function __construct(
-        PUBLIC rEADONLY float $x = 0.0,
-        READonly Protected float $y = 0.0,
-        privatE READONLY float $z = 0.0,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Point {
+                    public function __construct(
+                        public readonly float $x = 0.0,
+                        readonly protected float $y = 0.0,
+                        private readonly float $z = 0.0,
+                    ) {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Point {
+                    public function __construct(
+                        PUBLIC rEADONLY float $x = 0.0,
+                        READonly Protected float $y = 0.0,
+                        privatE READONLY float $z = 0.0,
+                    ) {}
+                }
+
+                EOD,
         ];
 
         yield 'enum full caps' => [
-            '<?php
-enum Suit {
-    case Hearts;
-}
-',
-            '<?php
-ENUM Suit {
-    case Hearts;
-}
-',
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                ENUM Suit {
+                    case Hearts;
+                }
+
+                EOD,
         ];
     }
 }

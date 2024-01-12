@@ -100,11 +100,13 @@ final class RuleSetsTest extends TestCase
         self::assertFileExists(sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
         self::assertFileExists(sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
 
-        $template = '--TEST--
-Integration of %s.
---RULESET--
-{"%s": true}
-';
+        $template = <<<'EOD'
+            --TEST--
+            Integration of %s.
+            --RULESET--
+            {"%s": true}
+
+            EOD;
         self::assertStringStartsWith(
             sprintf($template, $setDefinitionName, $setDefinitionName),
             file_get_contents($file)

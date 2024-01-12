@@ -42,15 +42,19 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
     {
         yield [
             ['header' => ''],
-            '<?php
+            <<<'EOD'
+                <?php
 
-$a;',
-            '<?php
+                $a;
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * new
- */
-$a;',
+                /**
+                 * new
+                 */
+                $a;
+                EOD,
         ];
 
         yield [
@@ -58,20 +62,24 @@ $a;',
                 'header' => 'tmp',
                 'location' => 'after_declare_strict',
             ],
-            '<?php
-declare(strict_types=1);
+            <<<'EOD'
+                <?php
+                declare(strict_types=1);
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-namespace A\B;
+                namespace A\B;
 
-echo 1;',
-            '<?php
-declare(strict_types=1);namespace A\B;
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                declare(strict_types=1);namespace A\B;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
@@ -81,21 +89,25 @@ echo 1;',
                 'separate' => 'bottom',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
-declare(strict_types=1);
-/**
- * tmp
- */
+            <<<'EOD'
+                <?php
+                declare(strict_types=1);
+                /**
+                 * tmp
+                 */
 
-namespace A\B;
+                namespace A\B;
 
-echo 1;',
-            '<?php
-declare(strict_types=1);
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                declare(strict_types=1);
 
-namespace A\B;
+                namespace A\B;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
@@ -103,23 +115,27 @@ echo 1;',
                 'header' => 'tmp',
                 'location' => 'after_open',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-namespace A\B;
+                namespace A\B;
 
-echo 1;',
-            '<?php
-declare(strict_types=1);
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                declare(strict_types=1);
 
-namespace A\B;
+                namespace A\B;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
@@ -127,13 +143,17 @@ echo 1;',
                 'header' => 'new',
                 'comment_type' => HeaderCommentFixer::HEADER_COMMENT,
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * new
- */'."\n                ",
-            '<?php
-                    /** test */'."\n                ",
+                /*
+                 * new
+                 */
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** test */
+                EOD."\n                ",
         ];
 
         yield [
@@ -141,13 +161,17 @@ echo 1;',
                 'header' => 'new',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * new
- */'."\n                ",
-            '<?php
-                    /* test */'."\n                ",
+                /**
+                 * new
+                 */
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /* test */
+                EOD."\n                ",
         ];
 
         yield [
@@ -155,27 +179,35 @@ echo 1;',
                 'header' => 'def',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * def
- */
-',
-            '<?php
-',
+                /**
+                 * def
+                 */
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                EOD,
         ];
 
         yield [
             ['header' => 'xyz'],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * xyz
- */
+                /*
+                 * xyz
+                 */
 
-    $b;',
-            '<?php
-    $b;',
+                    $b;
+                EOD,
+            <<<'EOD'
+                <?php
+                    $b;
+                EOD,
         ];
 
         yield [
@@ -183,13 +215,17 @@ echo 1;',
                 'header' => 'xyz123',
                 'separate' => 'none',
             ],
-            '<?php
-/*
- * xyz123
- */
-    $a;',
-            '<?php
-    $a;',
+            <<<'EOD'
+                <?php
+                /*
+                 * xyz123
+                 */
+                    $a;
+                EOD,
+            <<<'EOD'
+                <?php
+                    $a;
+                EOD,
         ];
 
         yield [
@@ -197,15 +233,19 @@ echo 1;',
                 'header' => 'abc',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * abc
- */
+                /**
+                 * abc
+                 */
 
-$c;',
-            '<?php
-$c;',
+                $c;
+                EOD,
+            <<<'EOD'
+                <?php
+                $c;
+                EOD,
         ];
 
         yield [
@@ -213,15 +253,19 @@ $c;',
                 'header' => 'ghi',
                 'separate' => 'both',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * ghi
- */
+                /*
+                 * ghi
+                 */
 
-$d;',
-            '<?php
-$d;',
+                $d;
+                EOD,
+            <<<'EOD'
+                <?php
+                $d;
+                EOD,
         ];
 
         yield [
@@ -229,14 +273,18 @@ $d;',
                 'header' => 'ghi',
                 'separate' => 'top',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * ghi
- */
-$d;',
-            '<?php
-$d;',
+                /*
+                 * ghi
+                 */
+                $d;
+                EOD,
+            <<<'EOD'
+                <?php
+                $d;
+                EOD,
         ];
 
         yield [
@@ -244,72 +292,86 @@ $d;',
                 'header' => 'tmp',
                 'location' => 'after_declare_strict',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-declare(ticks=1);
+                declare(ticks=1);
 
-echo 1;',
-            '<?php
-declare(ticks=1);
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                declare(ticks=1);
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
             ['header' => 'Foo'],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * Foo
- */
+                /*
+                 * Foo
+                 */
 
-echo \'bar\';',
+                echo 'bar';
+                EOD,
             '<?php echo \'bar\';',
         ];
 
         yield [
             ['header' => 'x'],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * x
- */
+                /*
+                 * x
+                 */
 
-echo \'a\';',
-            '<?php
+                echo 'a';
+                EOD,
+            <<<'EOD'
+                <?php
 
-/*
- * y
- * z
- */
+                /*
+                 * y
+                 * z
+                 */
 
-echo \'a\';',
+                echo 'a';
+                EOD,
         ];
 
         yield [
             ['header' => "a\na"],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * a
- * a
- */
+                /*
+                 * a
+                 * a
+                 */
 
-echo \'x\';',
-            '<?php
-
-
-/*
- * b
- * c
- */
+                echo 'x';
+                EOD,
+            <<<'EOD'
+                <?php
 
 
-echo \'x\';',
+                /*
+                 * b
+                 * c
+                 */
+
+
+                echo 'x';
+                EOD,
         ];
 
         yield [
@@ -319,26 +381,30 @@ echo \'x\';',
                 'separate' => 'bottom',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
-/**
- * foo
- */
+            <<<'EOD'
+                <?php
+                /**
+                 * foo
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-namespace A;
+                namespace A;
 
-echo 1;',
-            '<?php
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
 
-declare(strict_types=1);
-/**
- * foo
- */
+                declare(strict_types=1);
+                /**
+                 * foo
+                 */
 
-namespace A;
+                namespace A;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
@@ -348,29 +414,33 @@ echo 1;',
                 'separate' => 'bottom',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
-/**
- * foo
- */
+            <<<'EOD'
+                <?php
+                /**
+                 * foo
+                 */
 
-declare(strict_types=1);
-/**
- * bar
- */
+                declare(strict_types=1);
+                /**
+                 * bar
+                 */
 
-namespace A;
+                namespace A;
 
-echo 1;',
-            '<?php
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
 
-declare(strict_types=1);
-/**
- * bar
- */
+                declare(strict_types=1);
+                /**
+                 * bar
+                 */
 
-namespace A;
+                namespace A;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
@@ -378,66 +448,78 @@ echo 1;',
                 'header' => 'Foo',
                 'separate' => 'none',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-declare(strict_types=1);
-/*
- * Foo
- */
-namespace SebastianBergmann\Foo;
+                declare(strict_types=1);
+                /*
+                 * Foo
+                 */
+                namespace SebastianBergmann\Foo;
 
-class Bar
-{
-}',
-            '<?php
-/*
- * Foo
- */
+                class Bar
+                {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                /*
+                 * Foo
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-namespace SebastianBergmann\Foo;
+                namespace SebastianBergmann\Foo;
 
-class Bar
-{
-}',
+                class Bar
+                {
+                }
+                EOD,
         ];
 
         yield [
             ['header' => 'tmp'],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-/**
- * Foo class doc.
- */
-class Foo {}',
-            '<?php
+                /**
+                 * Foo class doc.
+                 */
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * Foo class doc.
- */
-class Foo {}',
+                /**
+                 * Foo class doc.
+                 */
+                class Foo {}
+                EOD,
         ];
 
         yield [
             ['header' => 'tmp'],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-class Foo {}',
-            '<?php
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/*
- * Foo class doc.
- */
-class Foo {}',
+                /*
+                 * Foo class doc.
+                 */
+                class Foo {}
+                EOD,
         ];
 
         yield [
@@ -445,22 +527,26 @@ class Foo {}',
                 'header' => 'tmp',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * tmp
- */
+                /**
+                 * tmp
+                 */
 
-/**
- * Foo class doc.
- */
-class Foo {}',
-            '<?php
+                /**
+                 * Foo class doc.
+                 */
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * Foo class doc.
- */
-class Foo {}',
+                /**
+                 * Foo class doc.
+                 */
+                class Foo {}
+                EOD,
         ];
 
         yield [
@@ -468,19 +554,23 @@ class Foo {}',
                 'header' => 'tmp',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * tmp
- */
+                /**
+                 * tmp
+                 */
 
-class Foo {}',
-            '<?php
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * tmp
- */
-class Foo {}',
+                /**
+                 * tmp
+                 */
+                class Foo {}
+                EOD,
         ];
 
         yield [
@@ -488,17 +578,21 @@ class Foo {}',
                 'header' => 'tmp',
                 'separate' => 'top',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
-class Foo {}',
-            '<?php
-/**
- * Foo class doc.
- */
-class Foo {}',
+                /*
+                 * tmp
+                 */
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * Foo class doc.
+                 */
+                class Foo {}
+                EOD,
         ];
 
         yield [
@@ -506,26 +600,30 @@ class Foo {}',
                 'header' => 'bar',
                 'location' => 'after_open',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * bar
- */
+                /*
+                 * bar
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-// foo
-foo();',
-            '<?php
+                // foo
+                foo();
+                EOD,
+            <<<'EOD'
+                <?php
 
-/*
- * foo
- */
+                /*
+                 * foo
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-// foo
-foo();',
+                // foo
+                foo();
+                EOD,
         ];
 
         yield [
@@ -533,26 +631,30 @@ foo();',
                 'header' => 'bar',
                 'location' => 'after_open',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * bar
- */
+                /*
+                 * bar
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-/* foo */
-foo();',
-            '<?php
+                /* foo */
+                foo();
+                EOD,
+            <<<'EOD'
+                <?php
 
-/*
- * foo
- */
+                /*
+                 * foo
+                 */
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-/* foo */
-foo();',
+                /* foo */
+                foo();
+                EOD,
         ];
 
         yield [
@@ -560,15 +662,19 @@ foo();',
                 'header' => 'tmp',
                 'location' => 'after_declare_strict',
             ],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-declare(strict_types=1) ?>',
-            '<?php
-declare(strict_types=1) ?>',
+                declare(strict_types=1) ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                declare(strict_types=1) ?>
+                EOD,
         ];
 
         yield [
@@ -576,22 +682,26 @@ declare(strict_types=1) ?>',
                 'header' => 'tmp',
                 'location' => 'after_declare_strict',
             ],
-            '#!/usr/bin/env php
-<?php
-declare(strict_types=1);
+            <<<'EOD'
+                #!/usr/bin/env php
+                <?php
+                declare(strict_types=1);
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-namespace A\B;
+                namespace A\B;
 
-echo 1;',
-            '#!/usr/bin/env php
-<?php
-declare(strict_types=1);namespace A\B;
+                echo 1;
+                EOD,
+            <<<'EOD'
+                #!/usr/bin/env php
+                <?php
+                declare(strict_types=1);namespace A\B;
 
-echo 1;',
+                echo 1;
+                EOD,
         ];
 
         yield [
@@ -599,8 +709,10 @@ echo 1;',
                 'header' => 'tmp',
                 'location' => 'after_open',
             ],
-            'Short mixed file A
-Hello<?php echo "World!"; ?>',
+            <<<'EOD'
+                Short mixed file A
+                Hello<?php echo "World!"; ?>
+                EOD,
         ];
 
         yield [
@@ -608,8 +720,10 @@ Hello<?php echo "World!"; ?>',
                 'header' => 'tmp',
                 'location' => 'after_open',
             ],
-            'Short mixed file B
-<?php echo "Hello"; ?>World!',
+            <<<'EOD'
+                Short mixed file B
+                <?php echo "Hello"; ?>World!
+                EOD,
         ];
 
         yield [
@@ -617,11 +731,13 @@ Hello<?php echo "World!"; ?>',
                 'header' => 'tmp',
                 'location' => 'after_open',
             ],
-            'File with anything at the beginning and with multiple opening tags are not supported
-<?php
-echo 1;
-?>Hello World!<?php
-script_continues_here();',
+            <<<'EOD'
+                File with anything at the beginning and with multiple opening tags are not supported
+                <?php
+                echo 1;
+                ?>Hello World!<?php
+                script_continues_here();
+                EOD,
         ];
     }
 
@@ -629,15 +745,19 @@ script_continues_here();',
     {
         $this->fixer->configure(['header' => 'a']);
         $this->doTest(
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * a
- */
+                /*
+                 * a
+                 */
 
-echo 1;',
-            '<?php
-echo 1;'
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                echo 1;
+                EOD
         );
     }
 
@@ -706,30 +826,40 @@ echo 1;'
             'comment_type' => $type,
         ]);
         $this->doTest(
-            '<?php
+            <<<'EOD'
+                <?php
 
-'.$expected.'
 
-echo 1;',
-            '<?php
-echo 1;'
+                EOD.$expected.<<<'EOD'
+
+
+                echo 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                echo 1;
+                EOD
         );
     }
 
     public static function provideHeaderGenerationCases(): iterable
     {
         yield [
-            '/*
- * a
- */',
+            <<<'EOD'
+                /*
+                 * a
+                 */
+                EOD,
             'a',
             HeaderCommentFixer::HEADER_COMMENT,
         ];
 
         yield [
-            '/**
- * a
- */',
+            <<<'EOD'
+                /**
+                 * a
+                 */
+                EOD,
             'a',
             HeaderCommentFixer::HEADER_PHPDOC,
         ];
@@ -856,22 +986,26 @@ echo 1;'
     {
         yield [
             ['header' => 'tmp'],
-            '<?php
+            <<<'EOD'
+                <?php
 
-/*
- * tmp
- */
+                /*
+                 * tmp
+                 */
 
-/**
- * Foo class doc.
- */
-enum Foo {}',
-            '<?php
+                /**
+                 * Foo class doc.
+                 */
+                enum Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * Foo class doc.
- */
-enum Foo {}',
+                /**
+                 * Foo class doc.
+                 */
+                enum Foo {}
+                EOD,
         ];
     }
 }

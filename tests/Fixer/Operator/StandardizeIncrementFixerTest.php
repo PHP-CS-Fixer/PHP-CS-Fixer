@@ -613,24 +613,28 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php #1
-#2
-++$i#3
-#4
-#5
-#6
-#7
-;#8
-#9',
-            '<?php #1
-#2
-$i#3
-#4
-+=#5
-#6
-1#7
-;#8
-#9',
+            <<<'EOD'
+                <?php #1
+                #2
+                ++$i#3
+                #4
+                #5
+                #6
+                #7
+                ;#8
+                #9
+                EOD,
+            <<<'EOD'
+                <?php #1
+                #2
+                $i#3
+                #4
+                +=#5
+                #6
+                1#7
+                ;#8
+                #9
+                EOD,
         ];
 
         yield [
@@ -674,18 +678,22 @@ $i#3
         ];
 
         yield [
-            '<?php class Foo {
-                    public static function bar() {
-                        ++self::$v1;
-                        ++static::$v2;
-                    }
-                }',
-            '<?php class Foo {
-                    public static function bar() {
-                        self::$v1 += 1;
-                        static::$v2 += 1;
-                    }
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    public static function bar() {
+                                        ++self::$v1;
+                                        ++static::$v2;
+                                    }
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                    public static function bar() {
+                                        self::$v1 += 1;
+                                        static::$v2 += 1;
+                                    }
+                                }
+                EOD,
         ];
 
         yield [

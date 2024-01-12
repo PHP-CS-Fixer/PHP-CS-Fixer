@@ -138,32 +138,38 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                namespace Foo\Foo2;
-                interface Bar {
-                    public function baz00(Foo2\Bar $bar);
-                    public function baz10(\Foo2\Bar $bar);
-                    public function baz20(Foo\Foo2\Bar $bar);
-                    public function baz21(self $bar);
-                    public function baz30(Test\Foo\Foo2\Bar $bar);
-                    public function baz31(\Test\Foo\Foo2\Bar $bar);
-                }',
-            '<?php
-                namespace Foo\Foo2;
-                interface Bar {
-                    public function baz00(Foo2\Bar $bar);
-                    public function baz10(\Foo2\Bar $bar);
-                    public function baz20(Foo\Foo2\Bar $bar);
-                    public function baz21(\Foo\Foo2\Bar $bar);
-                    public function baz30(Test\Foo\Foo2\Bar $bar);
-                    public function baz31(\Test\Foo\Foo2\Bar $bar);
-                }',
+            <<<'EOD'
+                <?php
+                                namespace Foo\Foo2;
+                                interface Bar {
+                                    public function baz00(Foo2\Bar $bar);
+                                    public function baz10(\Foo2\Bar $bar);
+                                    public function baz20(Foo\Foo2\Bar $bar);
+                                    public function baz21(self $bar);
+                                    public function baz30(Test\Foo\Foo2\Bar $bar);
+                                    public function baz31(\Test\Foo\Foo2\Bar $bar);
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                namespace Foo\Foo2;
+                                interface Bar {
+                                    public function baz00(Foo2\Bar $bar);
+                                    public function baz10(\Foo2\Bar $bar);
+                                    public function baz20(Foo\Foo2\Bar $bar);
+                                    public function baz21(\Foo\Foo2\Bar $bar);
+                                    public function baz30(Test\Foo\Foo2\Bar $bar);
+                                    public function baz31(\Test\Foo\Foo2\Bar $bar);
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo { function bar() {
-                    new class() { function baz() { new Foo(); } };
-                } }',
+            <<<'EOD'
+                <?php class Foo { function bar() {
+                                    new class() { function baz() { new Foo(); } };
+                                } }
+                EOD,
         ];
 
         yield [
@@ -191,30 +197,34 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'do not replace in lambda' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-final class A
-{
-    public static function Z(): void
-    {
-        (function () {
-            var_dump(self::class, A::class);
-        })->bindTo(null, B::class)();
-    }
-}',
+                final class A
+                {
+                    public static function Z(): void
+                    {
+                        (function () {
+                            var_dump(self::class, A::class);
+                        })->bindTo(null, B::class)();
+                    }
+                }
+                EOD,
         ];
 
         yield 'do not replace in arrow function' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-final class A
-{
-    public function Z($b): void
-    {
-        $a = fn($b) => self::class. A::class . $b;
-        echo $a;
-    }
-}',
+                final class A
+                {
+                    public function Z($b): void
+                    {
+                        $a = fn($b) => self::class. A::class . $b;
+                        echo $a;
+                    }
+                }
+                EOD,
         ];
     }
 

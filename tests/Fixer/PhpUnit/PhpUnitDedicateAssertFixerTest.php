@@ -39,120 +39,156 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            self::generateTest('
-                    $this->assertNan($a);
-                    $this->assertNan($a);
-                    $this->assertTrue(test\is_nan($a));
-                    $this->assertTrue(test\a\is_nan($a));'."\n                "),
-            self::generateTest('
-                    $this->assertTrue(is_nan($a));
-                    $this->assertTrue(\is_nan($a));
-                    $this->assertTrue(test\is_nan($a));
-                    $this->assertTrue(test\a\is_nan($a));'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertNan($a);
+                                    $this->assertNan($a);
+                                    $this->assertTrue(test\is_nan($a));
+                                    $this->assertTrue(test\a\is_nan($a));
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertTrue(is_nan($a));
+                                    $this->assertTrue(\is_nan($a));
+                                    $this->assertTrue(test\is_nan($a));
+                                    $this->assertTrue(test\a\is_nan($a));
+                EOD."\n                "),
         ];
 
         yield [
-            self::generateTest('
-                    $this->assertFileExists($a);
-                    $this->assertFileNotExists($a);
-                    $this->assertFileExists($a);
-                    $this->assertFileNotExists($a);'."\n                "),
-            self::generateTest('
-                    $this->assertTrue(file_exists($a));
-                    $this->assertFalse(file_exists($a));
-                    $this->assertTrue(\file_exists($a));
-                    $this->assertFalse(\file_exists($a));'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertFileExists($a);
+                                    $this->assertFileNotExists($a);
+                                    $this->assertFileExists($a);
+                                    $this->assertFileNotExists($a);
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertTrue(file_exists($a));
+                                    $this->assertFalse(file_exists($a));
+                                    $this->assertTrue(\file_exists($a));
+                                    $this->assertFalse(\file_exists($a));
+                EOD."\n                "),
         ];
 
         yield [
-            self::generateTest('
-                    $this->assertNull($a);
-                    $this->assertNotNull($a);
-                    $this->assertNull($a);
-                    $this->assertNotNull($a, "my message");'."\n                "),
-            self::generateTest('
-                    $this->assertTrue(is_null($a));
-                    $this->assertFalse(is_null($a));
-                    $this->assertTrue(\is_null($a));
-                    $this->assertFalse(\is_null($a), "my message");'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertNull($a);
+                                    $this->assertNotNull($a);
+                                    $this->assertNull($a);
+                                    $this->assertNotNull($a, "my message");
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertTrue(is_null($a));
+                                    $this->assertFalse(is_null($a));
+                                    $this->assertTrue(\is_null($a));
+                                    $this->assertFalse(\is_null($a), "my message");
+                EOD."\n                "),
         ];
 
         yield [
-            self::generateTest('
-                    $this->assertEmpty($a);
-                    $this->assertNotEmpty($a);'."\n                "),
-            self::generateTest('
-                    $this->assertTrue(empty($a));
-                    $this->ASSERTFALSE(empty($a));'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertEmpty($a);
+                                    $this->assertNotEmpty($a);
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertTrue(empty($a));
+                                    $this->ASSERTFALSE(empty($a));
+                EOD."\n                "),
         ];
 
         yield [
-            self::generateTest('
-                    $this->assertInfinite($a);
-                    $this->assertFinite($a, "my message");
-                    $this->assertInfinite($a);
-                    $this->assertFinite($a, b"my message");'."\n                "),
-            self::generateTest('
-                    $this->assertTrue(is_infinite($a));
-                    $this->assertFalse(is_infinite($a), "my message");
-                    $this->assertTrue(\is_infinite($a));
-                    $this->assertFalse(\is_infinite($a), b"my message");'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertInfinite($a);
+                                    $this->assertFinite($a, "my message");
+                                    $this->assertInfinite($a);
+                                    $this->assertFinite($a, b"my message");
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertTrue(is_infinite($a));
+                                    $this->assertFalse(is_infinite($a), "my message");
+                                    $this->assertTrue(\is_infinite($a));
+                                    $this->assertFalse(\is_infinite($a), b"my message");
+                EOD."\n                "),
         ];
 
         yield [
-            self::generateTest('
-                    $this->assertArrayHasKey("test", $a);
-                    $this->assertArrayNotHasKey($b, $a, $c);'."\n                "),
-            self::generateTest('
-                    $this->assertTrue(\array_key_exists("test", $a));
-                    $this->ASSERTFALSE(array_key_exists($b, $a), $c);'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertArrayHasKey("test", $a);
+                                    $this->assertArrayNotHasKey($b, $a, $c);
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertTrue(\array_key_exists("test", $a));
+                                    $this->ASSERTFALSE(array_key_exists($b, $a), $c);
+                EOD."\n                "),
         ];
 
         yield [
-            self::generateTest('
-$this->assertTrue(is_dir($a));
-$this->assertTrue(is_writable($a));
-$this->assertTrue(is_readable($a));
-'),
+            self::generateTest(<<<'EOD'
+
+                $this->assertTrue(is_dir($a));
+                $this->assertTrue(is_writable($a));
+                $this->assertTrue(is_readable($a));
+
+                EOD),
             null,
             ['target' => PhpUnitTargetVersion::VERSION_5_0],
         ];
 
         yield [
-            self::generateTest('
-$this->assertTrue(is_dir($a));
-$this->assertTrue(is_writable($a));
-$this->assertTrue(is_readable($a));
-'),
+            self::generateTest(<<<'EOD'
+
+                $this->assertTrue(is_dir($a));
+                $this->assertTrue(is_writable($a));
+                $this->assertTrue(is_readable($a));
+
+                EOD),
             null,
             ['target' => PhpUnitTargetVersion::VERSION_3_0],
         ];
 
         yield [
-            self::generateTest('
-$this->assertDirectoryNotExists($a);
-$this->assertNotIsWritable($a);
-$this->assertNotIsReadable($a);
-'),
-            self::generateTest('
-$this->assertFalse(is_dir($a));
-$this->assertFalse(is_writable($a));
-$this->assertFalse(is_readable($a));
-'),
+            self::generateTest(<<<'EOD'
+
+                $this->assertDirectoryNotExists($a);
+                $this->assertNotIsWritable($a);
+                $this->assertNotIsReadable($a);
+
+                EOD),
+            self::generateTest(<<<'EOD'
+
+                $this->assertFalse(is_dir($a));
+                $this->assertFalse(is_writable($a));
+                $this->assertFalse(is_readable($a));
+
+                EOD),
             ['target' => PhpUnitTargetVersion::VERSION_5_6],
         ];
 
         yield [
-            self::generateTest('
-$this->assertDirectoryExists($a);
-$this->assertIsWritable($a);
-$this->assertIsReadable($a);
-'),
-            self::generateTest('
-$this->assertTrue(is_dir($a));
-$this->assertTrue(is_writable($a));
-$this->assertTrue(is_readable($a));
-'),
+            self::generateTest(<<<'EOD'
+
+                $this->assertDirectoryExists($a);
+                $this->assertIsWritable($a);
+                $this->assertIsReadable($a);
+
+                EOD),
+            self::generateTest(<<<'EOD'
+
+                $this->assertTrue(is_dir($a));
+                $this->assertTrue(is_writable($a));
+                $this->assertTrue(is_readable($a));
+
+                EOD),
             ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
         ];
 
@@ -179,20 +215,24 @@ $this->assertTrue(is_readable($a));
         ];
 
         yield [
-            self::generateTest('$this->assertInternalType(#
-\'float\'#
-, #
-$a#
-#
-)#
-;'),
-            self::generateTest('$this->assertTrue(#
-\IS_FLOAT#
-(#
-$a#
-)#
-)#
-;'),
+            self::generateTest(<<<'EOD'
+                $this->assertInternalType(#
+                'float'#
+                , #
+                $a#
+                #
+                )#
+                ;
+                EOD),
+            self::generateTest(<<<'EOD'
+                $this->assertTrue(#
+                \IS_FLOAT#
+                (#
+                $a#
+                )#
+                )#
+                ;
+                EOD),
         ];
 
         yield [
@@ -243,16 +283,20 @@ $a#
         ];
 
         yield [
-            self::generateTest('self::assertStringStartsNotWith(  #3
-            $needle#4
-            , #1
-            $haystack#2
-            );'),
-            self::generateTest('self::assertFalse(str_starts_with(  #1
-            $haystack#2
-            ,#3
-            $needle#4
-            ));'),
+            self::generateTest(<<<'EOD'
+                self::assertStringStartsNotWith(  #3
+                            $needle#4
+                            , #1
+                            $haystack#2
+                            );
+                EOD),
+            self::generateTest(<<<'EOD'
+                self::assertFalse(str_starts_with(  #1
+                            $haystack#2
+                            ,#3
+                            $needle#4
+                            ));
+                EOD),
         ];
 
         yield [
@@ -266,43 +310,61 @@ $a#
         ];
 
         yield '$a instanceof class' => [
-            self::generateTest('
-                $this->assertInstanceOf(SomeClass::class, $x);
-                $this->assertInstanceOf(SomeClass::class, $y, $message);'."\n            "),
-            self::generateTest('
-                $this->assertTrue($x instanceof SomeClass);
-                $this->assertTrue($y instanceof SomeClass, $message);'."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertInstanceOf(SomeClass::class, $x);
+                                $this->assertInstanceOf(SomeClass::class, $y, $message);
+                EOD."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertTrue($x instanceof SomeClass);
+                                $this->assertTrue($y instanceof SomeClass, $message);
+                EOD."\n            "),
         ];
 
         yield '$a instanceof class\a\b' => [
-            self::generateTest('
-                $this->assertInstanceOf(\PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer::class, $ii);'."\n            "),
-            self::generateTest('
-                $this->assertTrue($ii instanceof \PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer);'."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertInstanceOf(\PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer::class, $ii);
+                EOD."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertTrue($ii instanceof \PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer);
+                EOD."\n            "),
         ];
 
         yield '$a instanceof $b' => [
-            self::generateTest('
-                $this->assertInstanceOf($tty, $abc/* 1 *//* 2 */);
-                $this->assertInstanceOf($oo, $def, $message);'."\n            "),
-            self::generateTest('
-                $this->assertTrue($abc instanceof /* 1 */$tty /* 2 */);
-                $this->assertTrue($def instanceof $oo, $message);'."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertInstanceOf($tty, $abc/* 1 *//* 2 */);
+                                $this->assertInstanceOf($oo, $def, $message);
+                EOD."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertTrue($abc instanceof /* 1 */$tty /* 2 */);
+                                $this->assertTrue($def instanceof $oo, $message);
+                EOD."\n            "),
         ];
 
         yield 'do not fix instance of' => [
-            self::generateTest('
-                $this->assertTrue($gg instanceof $ijl . "X", $something);
-                $this->assertTrue($ff instanceof $klh . $b(1,2,$message), $noMsg);'."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertTrue($gg instanceof $ijl . "X", $something);
+                                $this->assertTrue($ff instanceof $klh . $b(1,2,$message), $noMsg);
+                EOD."\n            "),
         ];
 
         yield '!$a instanceof class' => [
-            self::generateTest('
-                $this->assertNotInstanceOf(SomeClass::class, $x);
-                $this->assertNotInstanceOf(SomeClass::class, $y, $message);'."\n            "),
-            self::generateTest('
-                $this->assertTrue(!$x instanceof SomeClass);
-                $this->assertTrue(!$y instanceof SomeClass, $message);'."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertNotInstanceOf(SomeClass::class, $x);
+                                $this->assertNotInstanceOf(SomeClass::class, $y, $message);
+                EOD."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertTrue(!$x instanceof SomeClass);
+                                $this->assertTrue(!$y instanceof SomeClass, $message);
+                EOD."\n            "),
         ];
     }
 
@@ -330,14 +392,16 @@ $a#
         ];
 
         yield [
-            self::generateTest('
-                $this->assertTrue(is_null);
-                $this->assertTrue(is_int($a) && $b);
-                $this->assertFalse(is_nan($a));
-                $this->assertTrue(is_int($a) || \is_bool($b));
-                $this->assertTrue($a&&is_int($a));
-                static::assertTrue(is_null);
-                self::assertTrue(is_null);'."\n            "),
+            self::generateTest(<<<'EOD'
+
+                                $this->assertTrue(is_null);
+                                $this->assertTrue(is_int($a) && $b);
+                                $this->assertFalse(is_nan($a));
+                                $this->assertTrue(is_int($a) || \is_bool($b));
+                                $this->assertTrue($a&&is_int($a));
+                                static::assertTrue(is_null);
+                                self::assertTrue(is_null);
+                EOD."\n            "),
         ];
 
         yield 'not in class' => [
@@ -424,59 +488,75 @@ $a#
         ];
 
         yield 'lot of spacing' => [
-            self::generateTest('$this->assertCount(
-                1
-                ,'."\n                ".''."\n                ".'
-                $a'."\n                ".'
-                )
-                ;'),
-            self::generateTest('$this->assertSame(
-                1
-                ,
-                %s
-                (
-                $a
-                )
-                )
-                ;'),
+            self::generateTest(<<<'EOD'
+                $this->assertCount(
+                                1
+                                ,
+                EOD."\n                ".''."\n                ".<<<'EOD'
+
+                                $a
+                EOD."\n                ".<<<'EOD'
+
+                                )
+                                ;
+                EOD),
+            self::generateTest(<<<'EOD'
+                $this->assertSame(
+                                1
+                                ,
+                                %s
+                                (
+                                $a
+                                )
+                                )
+                                ;
+                EOD),
         ];
 
         yield 'lot of fix cases' => [
-            self::generateTest('
-                    $this->assertCount(1, $a);
-                    $this->assertCount(2, $a);
-                    $this->assertCount(3, $a);
-                    $this->assertNotCount(4, $a);
-                    $this->assertCount(5, $a, "abc");
-                    $this->assertCount(6, $a, "def");'."\n                "),
-            self::generateTest('
-                    $this->assertSame(1, %1$s($a));
-                    $this->assertSame(2, %1$s($a));
-                    $this->assertEquals(3, %1$s($a));
-                    $this->assertNotSame(4, %1$s($a));
-                    $this->assertEquals(5, %1$s($a), "abc");
-                    $this->assertSame(6, \%1$s($a), "def");'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertCount(1, $a);
+                                    $this->assertCount(2, $a);
+                                    $this->assertCount(3, $a);
+                                    $this->assertNotCount(4, $a);
+                                    $this->assertCount(5, $a, "abc");
+                                    $this->assertCount(6, $a, "def");
+                EOD."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    $this->assertSame(1, %1$s($a));
+                                    $this->assertSame(2, %1$s($a));
+                                    $this->assertEquals(3, %1$s($a));
+                                    $this->assertNotSame(4, %1$s($a));
+                                    $this->assertEquals(5, %1$s($a), "abc");
+                                    $this->assertSame(6, \%1$s($a), "def");
+                EOD."\n                "),
         ];
 
         yield 'comment handling' => [
-            self::generateTest('$this->assertCount(# 0
-1# 1
-,# 2
-# 3
-# 4
-$a# 5
-# 6
-)# 7
-;# 8'),
-            self::generateTest('$this->assertSame(# 0
-1# 1
-,# 2
-%s# 3
-(# 4
-$a# 5
-)# 6
-)# 7
-;# 8'),
+            self::generateTest(<<<'EOD'
+                $this->assertCount(# 0
+                1# 1
+                ,# 2
+                # 3
+                # 4
+                $a# 5
+                # 6
+                )# 7
+                ;# 8
+                EOD),
+            self::generateTest(<<<'EOD'
+                $this->assertSame(# 0
+                1# 1
+                ,# 2
+                %s# 3
+                (# 4
+                $a# 5
+                )# 6
+                )# 7
+                ;# 8
+                EOD),
         ];
 
         yield [
@@ -513,10 +593,12 @@ $a# 5
         ];
 
         yield 'do not fix 8' => [
-            self::generateTest('
-                    Foo::assertSame(1, sizeof($a));
-                    $this->assertSame(1, sizeof2(2));
-                    $this->assertSame(1, sizeof::foo);'."\n                "),
+            self::generateTest(<<<'EOD'
+
+                                    Foo::assertSame(1, sizeof($a));
+                                    $this->assertSame(1, sizeof2(2));
+                                    $this->assertSame(1, sizeof::foo);
+                EOD."\n                "),
         ];
     }
 

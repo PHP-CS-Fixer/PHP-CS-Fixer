@@ -55,14 +55,16 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'multiple returns' => [
-            '<?php
-                    class Foo {
-                        /**
-                         * @var Bar
-                         * @var Baz
-                         */
-                        private $foo;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /**
+                                         * @var Bar
+                                         * @var Baz
+                                         */
+                                        private $foo;
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'non-root class' => [
@@ -208,20 +210,24 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'comments' => [
-            '<?php
-                    class Foo
-                    {
-                        // comment 0
-                        /** @var Foo */ # comment 1
-                        public/**/Foo $foo/**/;# comment 2
-                    }'."\n                ",
-            '<?php
-                    class Foo
-                    {
-                        // comment 0
-                        /** @var Foo */ # comment 1
-                        public/**/$foo/**/;# comment 2
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        // comment 0
+                                        /** @var Foo */ # comment 1
+                                        public/**/Foo $foo/**/;# comment 2
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        // comment 0
+                                        /** @var Foo */ # comment 1
+                                        public/**/$foo/**/;# comment 2
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'array and traversable' => [
@@ -235,54 +241,66 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'array and traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     class Foo {
-                         /** @var array|Traversable */
-                         private $foo;
-                     }'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     class Foo {
+                                         /** @var array|Traversable */
+                                         private $foo;
+                                     }
+                EOD."\n                ",
         ];
 
         yield 'array and traversable with leading slash in a namespace' => [
-            '<?php
-                     namespace App;
-                     class Foo {
-                         /** @var array|\Traversable */
-                         private iterable $foo;
-                     }'."\n                ",
-            '<?php
-                     namespace App;
-                     class Foo {
-                         /** @var array|\Traversable */
-                         private $foo;
-                     }'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     class Foo {
+                                         /** @var array|\Traversable */
+                                         private iterable $foo;
+                                     }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     class Foo {
+                                         /** @var array|\Traversable */
+                                         private $foo;
+                                     }
+                EOD."\n                ",
         ];
 
         yield 'array and imported traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     use Traversable;
-                     class Foo {
-                         /** @var array|Traversable */
-                         private iterable $foo;
-                     }'."\n                ",
-            '<?php
-                     namespace App;
-                     use Traversable;
-                     class Foo {
-                         /** @var array|Traversable */
-                         private $foo;
-                     }'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Traversable;
+                                     class Foo {
+                                         /** @var array|Traversable */
+                                         private iterable $foo;
+                                     }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Traversable;
+                                     class Foo {
+                                         /** @var array|Traversable */
+                                         private $foo;
+                                     }
+                EOD."\n                ",
         ];
 
         yield 'array and object aliased as traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     use Bar as Traversable;
-                     class Foo {
-                         /** @var array|Traversable */
-                         private $foo;
-                     }'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Bar as Traversable;
+                                     class Foo {
+                                         /** @var array|Traversable */
+                                         private $foo;
+                                     }
+                EOD."\n                ",
             null,
         ];
 
@@ -327,168 +345,194 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'multiple properties of the same type' => [
-            '<?php class Foo {
-                    /**
-                     * @var int $foo
-                     * @var int $bar
-                     */
-                    public int $foo, $bar;
-                }',
-            '<?php class Foo {
-                    /**
-                     * @var int $foo
-                     * @var int $bar
-                     */
-                    public $foo, $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int $foo
+                                     * @var int $bar
+                                     */
+                                    public int $foo, $bar;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int $foo
+                                     * @var int $bar
+                                     */
+                                    public $foo, $bar;
+                                }
+                EOD,
         ];
 
         yield 'multiple properties of different types' => [
-            '<?php class Foo {
-                    /**
-                     * @var int    $foo
-                     * @var string $bar
-                     */
-                    public $foo, $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int    $foo
+                                     * @var string $bar
+                                     */
+                                    public $foo, $bar;
+                                }
+                EOD,
         ];
 
         yield 'single property with different annotations' => [
-            '<?php class Foo {
-                    /**
-                     * @var int    $foo
-                     * @var string $foo
-                     */
-                    public $foo;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int    $foo
+                                     * @var string $foo
+                                     */
+                                    public $foo;
+                                }
+                EOD,
         ];
 
         yield 'multiple properties with missing annotation' => [
-            '<?php class Foo {
-                    /**
-                     * @var int $foo
-                     */
-                    public $foo, $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int $foo
+                                     */
+                                    public $foo, $bar;
+                                }
+                EOD,
         ];
 
         yield 'multiple properties with annotation without name' => [
-            '<?php class Foo {
-                    /**
-                     * @var int
-                     * @var int $bar
-                     */
-                    public $foo, $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int
+                                     * @var int $bar
+                                     */
+                                    public $foo, $bar;
+                                }
+                EOD,
         ];
 
         yield 'multiple properties with annotation without name reverse order' => [
-            '<?php class Foo {
-                    /**
-                     * @var int $foo
-                     * @var int
-                     */
-                    public $foo, $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var int $foo
+                                     * @var int
+                                     */
+                                    public $foo, $bar;
+                                }
+                EOD,
         ];
 
         yield 'multiple properties with extra annotations' => [
-            '<?php class Foo {
-                    /**
-                     * @var string
-                     * @var int $foo
-                     * @var int $bar
-                     * @var int
-                     */
-                    public int $foo, $bar;
-                }',
-            '<?php class Foo {
-                    /**
-                     * @var string
-                     * @var int $foo
-                     * @var int $bar
-                     * @var int
-                     */
-                    public $foo, $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var string
+                                     * @var int $foo
+                                     * @var int $bar
+                                     * @var int
+                                     */
+                                    public int $foo, $bar;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                    /**
+                                     * @var string
+                                     * @var int $foo
+                                     * @var int $bar
+                                     * @var int
+                                     */
+                                    public $foo, $bar;
+                                }
+                EOD,
         ];
 
         yield 'abstract method' => [
-            '<?php abstract class Foo {
-                    /** @var Bar */ private Bar $foo;
+            <<<'EOD'
+                <?php abstract class Foo {
+                                    /** @var Bar */ private Bar $foo;
 
-                    public abstract function getFoo();
-                }',
-            '<?php abstract class Foo {
-                    /** @var Bar */ private $foo;
+                                    public abstract function getFoo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php abstract class Foo {
+                                    /** @var Bar */ private $foo;
 
-                    public abstract function getFoo();
-                }',
+                                    public abstract function getFoo();
+                                }
+                EOD,
         ];
 
         yield 'great number of properties' => [
-            '<?php class Foo {
-                    /** @var string */
-                    private string $foo1;
+            <<<'EOD'
+                <?php class Foo {
+                                    /** @var string */
+                                    private string $foo1;
 
-                    /** @var string */
-                    private string $foo2;
+                                    /** @var string */
+                                    private string $foo2;
 
-                    /** @var int */
-                    private int $foo3;
+                                    /** @var int */
+                                    private int $foo3;
 
-                    /** @var string */
-                    private string $foo4;
+                                    /** @var string */
+                                    private string $foo4;
 
-                    /** @var string */
-                    private string $foo5;
+                                    /** @var string */
+                                    private string $foo5;
 
-                    /** @var string */
-                    private string $foo6;
+                                    /** @var string */
+                                    private string $foo6;
 
-                    /** @var string */
-                    private string $foo7;
+                                    /** @var string */
+                                    private string $foo7;
 
-                    /** @var int */
-                    private int $foo8;
+                                    /** @var int */
+                                    private int $foo8;
 
-                    /** @var string */
-                    private string $foo9;
+                                    /** @var string */
+                                    private string $foo9;
 
-                    /** @var int|null */
-                    private ?int $foo10;
-                }',
-            '<?php class Foo {
-                    /** @var string */
-                    private $foo1;
+                                    /** @var int|null */
+                                    private ?int $foo10;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                    /** @var string */
+                                    private $foo1;
 
-                    /** @var string */
-                    private $foo2;
+                                    /** @var string */
+                                    private $foo2;
 
-                    /** @var int */
-                    private $foo3;
+                                    /** @var int */
+                                    private $foo3;
 
-                    /** @var string */
-                    private $foo4;
+                                    /** @var string */
+                                    private $foo4;
 
-                    /** @var string */
-                    private $foo5;
+                                    /** @var string */
+                                    private $foo5;
 
-                    /** @var string */
-                    private $foo6;
+                                    /** @var string */
+                                    private $foo6;
 
-                    /** @var string */
-                    private $foo7;
+                                    /** @var string */
+                                    private $foo7;
 
-                    /** @var int */
-                    private $foo8;
+                                    /** @var int */
+                                    private $foo8;
 
-                    /** @var string */
-                    private $foo9;
+                                    /** @var string */
+                                    private $foo9;
 
-                    /** @var int|null */
-                    private $foo10;
-                }',
+                                    /** @var int|null */
+                                    private $foo10;
+                                }
+                EOD,
         ];
 
         yield 'anonymous class' => [

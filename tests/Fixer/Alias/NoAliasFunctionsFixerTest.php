@@ -78,126 +78,156 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-interface JoinInterface
-{
-    public function &join();
-}
+            <<<'EOD'
+                <?php
+                interface JoinInterface
+                {
+                    public function &join();
+                }
 
-abstract class A
-{
-    abstract public function join($a);
+                abstract class A
+                {
+                    abstract public function join($a);
 
-    public function is_integer($a)
-    {
-        $fputs = "is_double(\$a);\n"; // key_exists($b, $c);
-        echo $fputs."\$is_writable";
-        \B::close();
-        Scope\is_long();
-        namespace\is_long();
-        $a->pos();
-        new join();
-        new \join();
-        new ScopeB\join(mt_rand(0, 100));
-    }
-}',
+                    public function is_integer($a)
+                    {
+                        $fputs = "is_double(\$a);\n"; // key_exists($b, $c);
+                        echo $fputs."\$is_writable";
+                        \B::close();
+                        Scope\is_long();
+                        namespace\is_long();
+                        $a->pos();
+                        new join();
+                        new \join();
+                        new ScopeB\join(mt_rand(0, 100));
+                    }
+                }
+                EOD,
         ];
 
         yield '@internal' => [
-            '<?php
-                $a = rtrim($b);
-                $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();'."\n            ",
-            '<?php
-                $a = chop($b);
-                $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = rtrim($b);
+                                $a = imap_header($imap_stream, 1);
+                                mbereg_search_getregs();
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_header($imap_stream, 1);
+                                mbereg_search_getregs();
+                EOD."\n            ",
             ['sets' => ['@internal']],
         ];
 
         yield '@IMAP' => [
-            '<?php
-                $a = chop($b);
-                $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();'."\n            ",
-            '<?php
-                $a = chop($b);
-                $a = imap_header($imap_stream, 1);
-                mb_ereg_search_getregs();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_headerinfo($imap_stream, 1);
+                                mb_ereg_search_getregs();
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_header($imap_stream, 1);
+                                mb_ereg_search_getregs();
+                EOD."\n            ",
             ['sets' => ['@IMAP']],
         ];
 
         yield '@mbreg' => [
-            '<?php
-                $a = chop($b);
-                $a = imap_header($imap_stream, 1);
-                mb_ereg_search_getregs();
-                mktime();'."\n            ",
-            '<?php
-                $a = chop($b);
-                $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-                mktime();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_header($imap_stream, 1);
+                                mb_ereg_search_getregs();
+                                mktime();
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_header($imap_stream, 1);
+                                mbereg_search_getregs();
+                                mktime();
+                EOD."\n            ",
             ['sets' => ['@mbreg']],
         ];
 
         yield '@all' => [
-            '<?php
-                $a = rtrim($b);
-                $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();
-                time();
-                time();
-                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+            <<<'EOD'
+                <?php
+                                $a = rtrim($b);
+                                $a = imap_headerinfo($imap_stream, 1);
+                                mb_ereg_search_getregs();
+                                time();
+                                time();
+                                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
-                mktime($a);
-                echo gmmktime(1, 2, 3, 4, 5, 6);'."\n            ",
-            '<?php
-                $a = chop($b);
-                $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-                mktime();
-                gmmktime();
-                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+                                mktime($a);
+                                echo gmmktime(1, 2, 3, 4, 5, 6);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_header($imap_stream, 1);
+                                mbereg_search_getregs();
+                                mktime();
+                                gmmktime();
+                                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
-                mktime($a);
-                echo gmmktime(1, 2, 3, 4, 5, 6);'."\n            ",
+                                mktime($a);
+                                echo gmmktime(1, 2, 3, 4, 5, 6);
+                EOD."\n            ",
             ['sets' => ['@all']],
         ];
 
         yield '@IMAP, @mbreg' => [
-            '<?php
-                $a = chop($b);
-                $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();'."\n            ",
-            '<?php
-                $a = chop($b);
-                $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_headerinfo($imap_stream, 1);
+                                mb_ereg_search_getregs();
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = chop($b);
+                                $a = imap_header($imap_stream, 1);
+                                mbereg_search_getregs();
+                EOD."\n            ",
             ['sets' => ['@IMAP', '@mbreg']],
         ];
 
         yield '@time' => [
-            '<?php
-                time();
-                time();
+            <<<'EOD'
+                <?php
+                                time();
+                                time();
 
-                MKTIME($A);
-                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);'."\n            ",
-            '<?php
-                MKTIME();
-                GMMKTIME();
+                                MKTIME($A);
+                                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                MKTIME();
+                                GMMKTIME();
 
-                MKTIME($A);
-                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);'."\n            ",
+                                MKTIME($A);
+                                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
+                EOD."\n            ",
             ['sets' => ['@time']],
         ];
 
         yield '@exif' => [
-            '<?php
-                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);'."\n            ",
-            '<?php
-                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);'."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+                EOD."\n            ",
             ['sets' => ['@exif']],
         ];
 
@@ -262,22 +292,38 @@ abstract class A
                 $cases[] = ["<?php 'test'.'{$alias}' . 'in concatenation';"];
                 $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
                 $cases[] = [
-                    '<?php
-    class'.' '.ucfirst($alias).'ing
-    {
-        const'.' '.$alias.' = 1;
+                    <<<'EOD'
+                        <?php
+                            class
+                        EOD.' '.ucfirst($alias).<<<'EOD'
+                        ing
+                            {
+                                const
+                        EOD.' '.$alias.<<<'EOD'
+                         = 1;
 
-        public function'.' '.$alias.'($'.$alias.')
-        {
-            if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
-                echo'.' '.$alias.';
-            }
-        }
-    }
+                                public function
+                        EOD.' '.$alias.'($'.$alias.<<<'EOD'
+                        )
+                                {
+                                    if (defined("
+                        EOD.$alias.'") || $'.$alias.' instanceof '.$alias.<<<'EOD'
+                        ) {
+                                        echo
+                        EOD.' '.$alias.<<<'EOD'
+                        ;
+                                    }
+                                }
+                            }
 
-    class'.' '.$alias.' extends '.ucfirst($alias).'ing{
-        const'.' '.$alias.' = "'.$alias.'";
-    }'."\n    ",
+                            class
+                        EOD.' '.$alias.' extends '.ucfirst($alias).<<<'EOD'
+                        ing{
+                                const
+                        EOD.' '.$alias.' = "'.$alias.<<<'EOD'
+                        ";
+                            }
+                        EOD."\n    ",
                 ];
 
                 // cases to be fixed
@@ -292,10 +338,14 @@ abstract class A
                 ];
 
                 $cases[] = [
-                    "<?php {$master}
-                                (\$a);",
-                    "<?php {$alias}
-                                (\$a);",
+                    <<<EOD
+                        <?php {$master}
+                                                        (\$a);
+                        EOD,
+                    <<<EOD
+                        <?php {$alias}
+                                                        (\$a);
+                        EOD,
                 ];
 
                 $cases[] = [

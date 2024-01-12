@@ -37,422 +37,524 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-use D;
-use E;
-use DP;   /**/
-use EZ; //
-use DAZ;
-use EGGGG; /**/
-use A\B;
+            <<<'EOD'
+                <?php
+                use D;
+                use E;
+                use DP;   /**/
+                use EZ; //
+                use DAZ;
+                use EGGGG; /**/
+                use A\B;
 
-use C\DE;
-
-
-use E\F;
+                use C\DE;
 
 
-
-use G\H;
-
-',
-            '<?php
-use D;         use E;
-use DP;   /**/      use EZ; //
-use DAZ;         use EGGGG; /**/
-use A\B;
-
-use C\DE;
-
-
-use E\F;
+                use E\F;
 
 
 
-use G\H;
-',
+                use G\H;
+
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use D;         use E;
+                use DP;   /**/      use EZ; //
+                use DAZ;         use EGGGG; /**/
+                use A\B;
+
+                use C\DE;
+
+
+                use E\F;
+
+
+
+                use G\H;
+
+                EOD,
         ];
 
         yield [
-            '<?php use \Exception;
+            <<<'EOD'
+                <?php use \Exception;
 
-?>
-<?php
-$a = new Exception();
-',
-            '<?php use \Exception?>
-<?php
-$a = new Exception();
-',
+                ?>
+                <?php
+                $a = new Exception();
+
+                EOD,
+            <<<'EOD'
+                <?php use \Exception?>
+                <?php
+                $a = new Exception();
+
+                EOD,
         ];
 
         yield [
-            '<?php use \stdClass;
-use \DateTime;
+            <<<'EOD'
+                <?php use \stdClass;
+                use \DateTime;
 
-?>
-<?php
-$a = new DateTime();
-',
-            '<?php use \stdClass; use \DateTime?>
-<?php
-$a = new DateTime();
-',
+                ?>
+                <?php
+                $a = new DateTime();
+
+                EOD,
+            <<<'EOD'
+                <?php use \stdClass; use \DateTime?>
+                <?php
+                $a = new DateTime();
+
+                EOD,
         ];
 
         yield [
-            '<?php namespace Foo;'."\n              ".'
-use Bar\Baz;
+            '<?php namespace Foo;'."\n              ".<<<'EOD'
 
-/**
- * Foo.
- */',
-            '<?php namespace Foo;'."\n              ".'
-use Bar\Baz;
-/**
- * Foo.
- */',
+                use Bar\Baz;
+
+                /**
+                 * Foo.
+                 */
+                EOD,
+            '<?php namespace Foo;'."\n              ".<<<'EOD'
+
+                use Bar\Baz;
+                /**
+                 * Foo.
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-use D;
+                use D;
 
-class C {}
-',
-            '<?php
-namespace A\B;
+                class C {}
 
-use D;
-class C {}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+
+                use D;
+                class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace A\B;
+            <<<'EOD'
+                <?php
+                    namespace A\B;
 
-    use D;
+                    use D;
 
-    class C {}
-',
-            '<?php
-    namespace A\B;
+                    class C {}
 
-    use D;
-    class C {}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    namespace A\B;
+
+                    use D;
+                    class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-use D;
-use E;
+                use D;
+                use E;
 
-class C {}
-',
-            '<?php
-namespace A\B;
+                class C {}
 
-use D;
-use E;
-class C {}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+
+                use D;
+                use E;
+                class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
+            <<<'EOD'
+                <?php
+                namespace A\B;
 
-use D;
+                use D;
 
-class C {}
-',
-            '<?php
-namespace A\B;
+                class C {}
 
-use D; class C {}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+
+                use D; class C {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
-use D;
-use E;
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                use D;
+                use E;
 
-{
-    class C {}
-}',
-            '<?php
-namespace A\B;
-use D; use E; {
-    class C {}
-}',
+                {
+                    class C {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                use D; use E; {
+                    class C {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
-use D;
-use E;
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                use D;
+                use E;
 
-{
-    class C {}
-}',
-            '<?php
-namespace A\B;
-use D;
-use E; {
-    class C {}
-}',
+                {
+                    class C {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                use D;
+                use E; {
+                    class C {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B {
-    use D;
-    use E;
+            <<<'EOD'
+                <?php
+                namespace A\B {
+                    use D;
+                    use E;
 
-    class C {}
-}',
-            '<?php
-namespace A\B {
-    use D; use E; class C {}
-}',
+                    class C {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B {
+                    use D; use E; class C {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
-class C {
-    use SomeTrait;
-}',
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                class C {
+                    use SomeTrait;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$lambda = function () use (
-    $arg
-){
-    return true;
-};',
+            <<<'EOD'
+                <?php
+                $lambda = function () use (
+                    $arg
+                ){
+                    return true;
+                };
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A\B;
-use D, E;
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                use D, E;
 
-class C {
+                class C {
 
-}',
-            '<?php
-namespace A\B;
-use D, E;
-class C {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace A\B;
+                use D, E;
+                class C {
 
-}',
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace A1;
-    use B1; // need to import this !
-    use B2;
+            <<<'EOD'
+                <?php
+                    namespace A1;
+                    use B1; // need to import this !
+                    use B2;
 
-    class C1 {}
-',
+                    class C1 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace A2;
-    use B2;// need to import this !
-    use B3;
+            <<<'EOD'
+                <?php
+                    namespace A2;
+                    use B2;// need to import this !
+                    use B3;
 
-    class C4 {}
-',
+                    class C4 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A1;
-use B1; // need to import this !
-use B2;
+            <<<'EOD'
+                <?php
+                namespace A1;
+                use B1; // need to import this !
+                use B2;
 
-class C1 {}
-',
+                class C1 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A1;
-use B1;// need to import this !
-use B2;
+            <<<'EOD'
+                <?php
+                namespace A1;
+                use B1;// need to import this !
+                use B2;
 
-class C1 {}
-',
+                class C1 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A1;
-use B1; /** need to import this !*/
-use B2;
+            <<<'EOD'
+                <?php
+                namespace A1;
+                use B1; /** need to import this !*/
+                use B2;
 
-class C1 {}
-',
+                class C1 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace A1;
-use B1;# need to import this !
-use B2;
+            <<<'EOD'
+                <?php
+                namespace A1;
+                use B1;# need to import this !
+                use B2;
 
-class C1 {}
-',
+                class C1 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Foo;
+            <<<'EOD'
+                <?php
+                namespace Foo;
 
-use Bar;
-use Baz;
+                use Bar;
+                use Baz;
 
-class Hello {}
-',
-            '<?php
-namespace Foo;
+                class Hello {}
 
-use Bar;
-use Baz;
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+
+                use Bar;
+                use Baz;
 
 
-class Hello {}
-',
+                class Hello {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class HelloTrait {
-    use SomeTrait;
+            <<<'EOD'
+                <?php
+                class HelloTrait {
+                    use SomeTrait;
 
-    use Another;// ensure use statements for traits are not touched
-}
-',
+                    use Another;// ensure use statements for traits are not touched
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Foo {}
-namespace Bar {
-    class Baz
-    {
-        use Aaa;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                namespace Foo {}
+                namespace Bar {
+                    class Baz
+                    {
+                        use Aaa;
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php use A\B;
+            <<<'EOD'
+                <?php use A\B;
 
-?>',
+                ?>
+                EOD,
             '<?php use A\B?>',
         ];
 
         yield [
-            '<?php use A\B;
+            <<<'EOD'
+                <?php use A\B;
 
-',
+
+                EOD,
             '<?php use A\B;',
         ];
 
         yield [
-            str_replace("\n", "\r\n", '<?php
-use Foo;
-use Bar;
+            str_replace("\n", "\r\n", <<<'EOD'
+                <?php
+                use Foo;
+                use Bar;
 
-class Baz {}
-'),
+                class Baz {}
+
+                EOD),
         ];
 
         yield [
-            '<?php
-use some\test\{ClassA, ClassB, ClassC as C};
+            <<<'EOD'
+                <?php
+                use some\test\{ClassA, ClassB, ClassC as C};
 
-?>
-test 123
-',
-            '<?php
-use some\test\{ClassA, ClassB, ClassC as C}         ?>
-test 123
-',
+                ?>
+                test 123
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\test\{ClassA, ClassB, ClassC as C}         ?>
+                test 123
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use some\test\{CA, Cl, ClassC as C};
+            <<<'EOD'
+                <?php
+                use some\test\{CA, Cl, ClassC as C};
 
-class Test {}
-',
-            '<?php
-use some\test\{CA, Cl, ClassC as C};
-class Test {}
-',
+                class Test {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\test\{CA, Cl, ClassC as C};
+                class Test {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use function some\test\{fn_g, fn_f, fn_e};
+            <<<'EOD'
+                <?php
+                use function some\test\{fn_g, fn_f, fn_e};
 
-fn_a();',
-            '<?php
-use function some\test\{fn_g, fn_f, fn_e};
-fn_a();',
+                fn_a();
+                EOD,
+            <<<'EOD'
+                <?php
+                use function some\test\{fn_g, fn_f, fn_e};
+                fn_a();
+                EOD,
         ];
 
         yield [
-            '<?php
-use const some\test\{ConstA, ConstB, ConstD};
+            <<<'EOD'
+                <?php
+                use const some\test\{ConstA, ConstB, ConstD};
 
-',
-            '<?php
-use const some\test\{ConstA, ConstB, ConstD};
-',
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use const some\test\{ConstA, ConstB, ConstD};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Z\B;
-use const some\test\{ConstA, ConstB, ConstC};
-use A\B\C;
+            <<<'EOD'
+                <?php
+                namespace Z\B;
+                use const some\test\{ConstA, ConstB, ConstC};
+                use A\B\C;
 
-',
-            '<?php
-namespace Z\B;
-use const some\test\{ConstA, ConstB, ConstC};
-use A\B\C;
-',
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Z\B;
+                use const some\test\{ConstA, ConstB, ConstC};
+                use A\B\C;
+
+                EOD,
         ];
 
         yield [
-            ' <?php
-use some\a\ClassA;
-use function some\a\fn_a;
-use const some\c;
+            <<<'EOD'
+                 <?php
+                use some\a\ClassA;
+                use function some\a\fn_a;
+                use const some\c;
 
-',
-            ' <?php
-use some\a\ClassA; use function some\a\fn_a; use const some\c;
-',
+
+                EOD,
+            <<<'EOD'
+                 <?php
+                use some\a\ClassA; use function some\a\fn_a; use const some\c;
+
+                EOD,
         ];
 
         yield [

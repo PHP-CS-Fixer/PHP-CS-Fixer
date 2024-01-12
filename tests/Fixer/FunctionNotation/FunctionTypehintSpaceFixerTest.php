@@ -180,25 +180,33 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = function(array $a,
-                    array $b, array $c, array $d) {};',
-            '<?php $foo = function(array $a,
-                    array$b, array     $c, array
-                    $d) {};',
+            <<<'EOD'
+                <?php $foo = function(array $a,
+                                    array $b, array $c, array $d) {};
+                EOD,
+            <<<'EOD'
+                <?php $foo = function(array $a,
+                                    array$b, array     $c, array
+                                    $d) {};
+                EOD,
         ];
 
         yield [
-            '<?php $foo = function(
-                    array $a,
-                    $b
-                ) {};',
+            <<<'EOD'
+                <?php $foo = function(
+                                    array $a,
+                                    $b
+                                ) {};
+                EOD,
         ];
 
         yield [
-            '<?php $foo = function(
-                    $a,
-                    array $b
-                ) {};',
+            <<<'EOD'
+                <?php $foo = function(
+                                    $a,
+                                    array $b
+                                ) {};
+                EOD,
         ];
 
         yield [
@@ -254,25 +262,33 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = fn(array $a,
-                    array $b, array $c, array $d) => null;',
-            '<?php $foo = fn(array $a,
-                    array$b, array     $c, array
-                    $d) => null;',
+            <<<'EOD'
+                <?php $foo = fn(array $a,
+                                    array $b, array $c, array $d) => null;
+                EOD,
+            <<<'EOD'
+                <?php $foo = fn(array $a,
+                                    array$b, array     $c, array
+                                    $d) => null;
+                EOD,
         ];
 
         yield [
-            '<?php $foo = fn(
-                    array $a,
-                    $b
-                ) => null;',
+            <<<'EOD'
+                <?php $foo = fn(
+                                    array $a,
+                                    $b
+                                ) => null;
+                EOD,
         ];
 
         yield [
-            '<?php $foo = fn(
-                    $a,
-                    array $b
-                ) => null;',
+            <<<'EOD'
+                <?php $foo = fn(
+                                    $a,
+                                    array $b
+                                ) => null;
+                EOD,
         ];
     }
 

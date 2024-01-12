@@ -444,8 +444,10 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                 CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                 CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
-            '<?php $a = (new #[Foo]
-                class{}) ?>',
+            <<<'EOD'
+                <?php $a = (new #[Foo]
+                                class{}) ?>
+                EOD,
         ];
     }
 
@@ -483,25 +485,27 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                 CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
                 CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
             ],
-            '<?php
-class Test {
-    public function __construct(
-        public $prop = (new Foo),
-    ) {}
-}
+            <<<'EOD'
+                <?php
+                class Test {
+                    public function __construct(
+                        public $prop = (new Foo),
+                    ) {}
+                }
 
-function test(
-    $foo = (new A),
-    $baz = (new C(x: 2)),
-) {
-}
+                function test(
+                    $foo = (new A),
+                    $baz = (new C(x: 2)),
+                ) {
+                }
 
-static $x = new (Foo);
+                static $x = new (Foo);
 
-const C = new (Foo);
+                const C = new (Foo);
 
-function test2($param = (new Foo)) {}
-',
+                function test2($param = (new Foo)) {}
+
+                EOD,
         ];
     }
 }

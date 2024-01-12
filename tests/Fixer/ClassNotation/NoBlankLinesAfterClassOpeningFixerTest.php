@@ -37,136 +37,166 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-class Good
-{
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
-            '<?php
-class Good
-{
+            <<<'EOD'
+                <?php
+                class Good
+                {
+                    public function firstMethod()
+                    {
+                        //code here
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Good
+                {
 
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
+                    public function firstMethod()
+                    {
+                        //code here
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Good
-{
-    /**
-     * Also no blank line before DocBlock
-     */
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
-            '<?php
-class Good
-{
+            <<<'EOD'
+                <?php
+                class Good
+                {
+                    /**
+                     * Also no blank line before DocBlock
+                     */
+                    public function firstMethod()
+                    {
+                        //code here
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Good
+                {
 
-    /**
-     * Also no blank line before DocBlock
-     */
-    public function firstMethod()
-    {
-        //code here
-    }
-}',
+                    /**
+                     * Also no blank line before DocBlock
+                     */
+                    public function firstMethod()
+                    {
+                        //code here
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-interface Good
-{
-    /**
-     * Also no blank line before DocBlock
-     */
-    public function firstMethod();
-}',
-            '<?php
-interface Good
-{
+            <<<'EOD'
+                <?php
+                interface Good
+                {
+                    /**
+                     * Also no blank line before DocBlock
+                     */
+                    public function firstMethod();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                interface Good
+                {
 
-    /**
-     * Also no blank line before DocBlock
-     */
-    public function firstMethod();
-}',
+                    /**
+                     * Also no blank line before DocBlock
+                     */
+                    public function firstMethod();
+                }
+                EOD,
         ];
 
         // check if some fancy whitespaces aren't modified
         yield [
-            '<?php
-class Good
-{public
+            <<<'EOD'
+                <?php
+                class Good
+                {public
 
 
 
-    function firstMethod()
-    {
-        //code here
-    }
-}',
+                    function firstMethod()
+                    {
+                        //code here
+                    }
+                }
+                EOD,
         ];
 
         // check if line with spaces is removed when next token is indented
         yield [
-            '<?php
-class Foo
-{
-    function bar() {}
-}
-',
-            '<?php
-class Foo
-{'."\n    ".'
-    function bar() {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    function bar() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                EOD."\n    ".<<<'EOD'
+
+                    function bar() {}
+                }
+
+                EOD,
         ];
 
         // check if line with spaces is removed when next token is not indented
         yield [
-            '<?php
-class Foo
-{
-function bar() {}
-}
-',
-            '<?php
-class Foo
-{'."\n    ".'
-function bar() {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                function bar() {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                EOD."\n    ".<<<'EOD'
+
+                function bar() {}
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-trait Good
-{
-    /**
-     * Also no blank line before DocBlock
-     */
-    public function firstMethod() {}
-}',
-            '<?php
-trait Good
-{
+            <<<'EOD'
+                <?php
+                trait Good
+                {
+                    /**
+                     * Also no blank line before DocBlock
+                     */
+                    public function firstMethod() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                trait Good
+                {
 
-    /**
-     * Also no blank line before DocBlock
-     */
-    public function firstMethod() {}
-}',
+                    /**
+                     * Also no blank line before DocBlock
+                     */
+                    public function firstMethod() {}
+                }
+                EOD,
         ];
     }
 
@@ -206,19 +236,23 @@ trait Good
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-enum Good
-{
-    public function firstMethod()
-    {}
-}',
-            '<?php
-enum Good
-{
+            <<<'EOD'
+                <?php
+                enum Good
+                {
+                    public function firstMethod()
+                    {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Good
+                {
 
-    public function firstMethod()
-    {}
-}',
+                    public function firstMethod()
+                    {}
+                }
+                EOD,
         ];
     }
 }

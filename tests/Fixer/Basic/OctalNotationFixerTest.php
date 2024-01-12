@@ -38,19 +38,21 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                $a = 0;
-                $b = \'0\';
-                $foo = 0b01;
-                $foo = 0x01;
-                $foo = 0B01;
-                $foo = 0X01;
-                $foo = 0b0;
-                $foo = 0x0;
-                $foo = 0B0;
-                $foo = 0X0;
-                $foo = 1;
-                $foo = 10;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = 0;
+                                $b = '0';
+                                $foo = 0b01;
+                                $foo = 0x01;
+                                $foo = 0B01;
+                                $foo = 0X01;
+                                $foo = 0b0;
+                                $foo = 0x0;
+                                $foo = 0B0;
+                                $foo = 0X0;
+                                $foo = 1;
+                                $foo = 10;
+                EOD."\n            ",
         ];
 
         yield [
@@ -59,12 +61,16 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                $foo = 0o123;
-                $foo = 0o1;'."\n            ",
-            '<?php
-                $foo = 0123;
-                $foo = 01;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = 0o123;
+                                $foo = 0o1;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $foo = 0123;
+                                $foo = 01;
+                EOD."\n            ",
         ];
 
         yield [

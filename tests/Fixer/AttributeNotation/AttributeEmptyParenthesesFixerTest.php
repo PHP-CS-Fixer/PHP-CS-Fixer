@@ -42,417 +42,425 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'Without parentheses on various declarations' => [
-            '<?php
-            namespace Test;
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[\A\B\Foo]
-            #[\Bar      ]
-            #[Baz]
-            #[\Bar, Baz]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo,
-                \Bar      ,
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            class X
-            {
-                #[\A\B\Foo]
-                #[\Bar      ]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo,
-                    \Bar      ,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                const Y = 1;
+                            #[\A\B\Foo]
+                            #[\Bar      ]
+                            #[Baz]
+                            #[\Bar, Baz]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo,
+                                \Bar      ,
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            class X
+                            {
+                                #[\A\B\Foo]
+                                #[\Bar      ]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo,
+                                    \Bar      ,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                const Y = 1;
 
-                #[\A\B\Foo]
-                #[\Bar      ]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo,
-                    \Bar      ,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public $y;
+                                #[\A\B\Foo]
+                                #[\Bar      ]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo,
+                                    \Bar      ,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public $y;
 
-                #[\A\B\Foo]
-                #[\Bar      ]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo,
-                    \Bar      ,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public function y() {}
-            }
+                                #[\A\B\Foo]
+                                #[\Bar      ]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo,
+                                    \Bar      ,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public function y() {}
+                            }
 
-            #[\A\B\Foo]
-            #[\Bar      ]
-            #[Baz]
-            #[\Bar, Baz]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo,
-                \Bar      ,
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            function f(
-                #[\A\B\Foo]
-                #[\Bar      ]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo,
-                    \Bar      ,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                string $param,
-            ) {}
+                            #[\A\B\Foo]
+                            #[\Bar      ]
+                            #[Baz]
+                            #[\Bar, Baz]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo,
+                                \Bar      ,
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            function f(
+                                #[\A\B\Foo]
+                                #[\Bar      ]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo,
+                                    \Bar      ,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                string $param,
+                            ) {}
 
-            $anon = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;'."\n            ",
-            '<?php
-            namespace Test;
+                            $anon = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] function () {};
+                            $short = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] fn () => null;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[\A\B\Foo()]
-            #[\Bar(      )]
-            #[Baz]
-            #[\Bar(), Baz()]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo(),
-                \Bar(      ),
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            class X
-            {
-                #[\A\B\Foo()]
-                #[\Bar(      )]
-                #[Baz]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(      ),
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                const Y = 1;
+                            #[\A\B\Foo()]
+                            #[\Bar(      )]
+                            #[Baz]
+                            #[\Bar(), Baz()]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo(),
+                                \Bar(      ),
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            class X
+                            {
+                                #[\A\B\Foo()]
+                                #[\Bar(      )]
+                                #[Baz]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(      ),
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                const Y = 1;
 
-                #[\A\B\Foo()]
-                #[\Bar(      )]
-                #[Baz]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(      ),
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public $y;
+                                #[\A\B\Foo()]
+                                #[\Bar(      )]
+                                #[Baz]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(      ),
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public $y;
 
-                #[\A\B\Foo()]
-                #[\Bar(      )]
-                #[Baz]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(      ),
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public function y() {}
-            }
+                                #[\A\B\Foo()]
+                                #[\Bar(      )]
+                                #[Baz]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(      ),
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public function y() {}
+                            }
 
-            #[\A\B\Foo()]
-            #[\Bar(      )]
-            #[Baz]
-            #[\Bar(), Baz()]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo(),
-                \Bar(      ),
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            function f(
-                #[\A\B\Foo()]
-                #[\Bar(      )]
-                #[Baz]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(      ),
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                string $param,
-            ) {}
+                            #[\A\B\Foo()]
+                            #[\Bar(      )]
+                            #[Baz]
+                            #[\Bar(), Baz()]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo(),
+                                \Bar(      ),
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            function f(
+                                #[\A\B\Foo()]
+                                #[\Bar(      )]
+                                #[Baz]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(      ),
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                string $param,
+                            ) {}
 
-            $anon = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;'."\n            ",
+                            $anon = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] function () {};
+                            $short = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] fn () => null;
+                EOD."\n            ",
         ];
 
         yield 'With parentheses on various declarations' => [
-            '<?php
-            namespace Test;
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[\A\B\Foo()]
-            #[\Bar()]
-            #[Baz()]
-            #[\Bar(), Baz()]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo(),
-                \Bar(),
-                Baz(),
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            class X
-            {
-                #[\A\B\Foo()]
-                #[\Bar()]
-                #[Baz()]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(),
-                    Baz(),
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                const Y = 1;
+                            #[\A\B\Foo()]
+                            #[\Bar()]
+                            #[Baz()]
+                            #[\Bar(), Baz()]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo(),
+                                \Bar(),
+                                Baz(),
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            class X
+                            {
+                                #[\A\B\Foo()]
+                                #[\Bar()]
+                                #[Baz()]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(),
+                                    Baz(),
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                const Y = 1;
 
-                #[\A\B\Foo()]
-                #[\Bar()]
-                #[Baz()]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(),
-                    Baz(),
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public $y;
+                                #[\A\B\Foo()]
+                                #[\Bar()]
+                                #[Baz()]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(),
+                                    Baz(),
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public $y;
 
-                #[\A\B\Foo()]
-                #[\Bar()]
-                #[Baz()]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(),
-                    Baz(),
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public function y() {}
-            }
+                                #[\A\B\Foo()]
+                                #[\Bar()]
+                                #[Baz()]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(),
+                                    Baz(),
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public function y() {}
+                            }
 
-            #[\A\B\Foo()]
-            #[\Bar()]
-            #[Baz()]
-            #[\Bar(), Baz()]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo(),
-                \Bar(),
-                Baz(),
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            function f(
-                #[\A\B\Foo()]
-                #[\Bar()]
-                #[Baz()]
-                #[\Bar(), Baz()]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar(),
-                    Baz(),
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                string $param,
-            ) {}
+                            #[\A\B\Foo()]
+                            #[\Bar()]
+                            #[Baz()]
+                            #[\Bar(), Baz()]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo(),
+                                \Bar(),
+                                Baz(),
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            function f(
+                                #[\A\B\Foo()]
+                                #[\Bar()]
+                                #[Baz()]
+                                #[\Bar(), Baz()]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar(),
+                                    Baz(),
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                string $param,
+                            ) {}
 
-            $anon = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;'."\n            ",
-            '<?php
-            namespace Test;
+                            $anon = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] function () {};
+                            $short = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] fn () => null;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[\A\B\Foo()]
-            #[\Bar]
-            #[Baz]
-            #[\Bar, Baz]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo(),
-                \Bar,
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            class X
-            {
-                #[\A\B\Foo()]
-                #[\Bar]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                const Y = 1;
+                            #[\A\B\Foo()]
+                            #[\Bar]
+                            #[Baz]
+                            #[\Bar, Baz]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo(),
+                                \Bar,
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            class X
+                            {
+                                #[\A\B\Foo()]
+                                #[\Bar]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                const Y = 1;
 
-                #[\A\B\Foo()]
-                #[\Bar]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public $y;
+                                #[\A\B\Foo()]
+                                #[\Bar]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public $y;
 
-                #[\A\B\Foo()]
-                #[\Bar]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                public function y() {}
-            }
+                                #[\A\B\Foo()]
+                                #[\Bar]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                public function y() {}
+                            }
 
-            #[\A\B\Foo()]
-            #[\Bar]
-            #[Baz]
-            #[\Bar, Baz]
-            #[Corge(4, \'baz qux\')]
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-            #[
-                \A\B\Foo(),
-                \Bar,
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-            ]
-            function f(
-                #[\A\B\Foo()]
-                #[\Bar]
-                #[Baz]
-                #[\Bar, Baz]
-                #[Corge(4, \'baz qux\')]
-                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
-                #[
-                    \A\B\Foo(),
-                    \Bar,
-                    Baz,
-                    Corge(4, \'baz qux\'),
-                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
-                ]
-                string $param,
-            ) {}
+                            #[\A\B\Foo()]
+                            #[\Bar]
+                            #[Baz]
+                            #[\Bar, Baz]
+                            #[Corge(4, 'baz qux')]
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                            #[
+                                \A\B\Foo(),
+                                \Bar,
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                            ]
+                            function f(
+                                #[\A\B\Foo()]
+                                #[\Bar]
+                                #[Baz]
+                                #[\Bar, Baz]
+                                #[Corge(4, 'baz qux')]
+                                #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')]
+                                #[
+                                    \A\B\Foo(),
+                                    \Bar,
+                                    Baz,
+                                    Corge(4, 'baz qux'),
+                                    A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar'),
+                                ]
+                                string $param,
+                            ) {}
 
-            $anon = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;'."\n            ",
+                            $anon = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] function () {};
+                            $short = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, 'baz qux')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar')] fn () => null;
+                EOD."\n            ",
             ['use_parentheses' => true],
         ];
     }
@@ -474,65 +482,73 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'Without parentheses' => [
-            '<?php
-            namespace Test;
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[\A\B\Foo, \Bar      , Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[
-                \A\B\Foo,
-                \Bar      ,
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
-            ]
-            class X
-            {}'."\n            ",
-            '<?php
-            namespace Test;
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[\A\B\Foo, \Bar      , Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[
+                                \A\B\Foo,
+                                \Bar      ,
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R()),
+                            ]
+                            class X
+                            {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[
-                \A\B\Foo(),
-                \Bar(      ),
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
-            ]
-            class X
-            {}'."\n            ",
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[\A\B\Foo(), \Bar(      ), Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[
+                                \A\B\Foo(),
+                                \Bar(      ),
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R()),
+                            ]
+                            class X
+                            {}
+                EOD."\n            ",
         ];
 
         yield 'With parentheses' => [
-            '<?php
-            namespace Test;
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[\A\B\Foo(), \Bar(), Baz(), Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[
-                \A\B\Foo(),
-                \Bar(),
-                Baz(),
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
-            ]
-            class X
-            {}'."\n            ",
-            '<?php
-            namespace Test;
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[\A\B\Foo(), \Bar(), Baz(), Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[
+                                \A\B\Foo(),
+                                \Bar(),
+                                Baz(),
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R()),
+                            ]
+                            class X
+                            {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            namespace Test;
 
-            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[\A\B\Foo(), \Bar, Baz, Corge(4, \'baz qux\'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R())]
-            #[
-                \A\B\Foo(),
-                \Bar,
-                Baz,
-                Corge(4, \'baz qux\'),
-                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
-            ]
-            class X
-            {}'."\n            ",
+                            #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[\A\B\Foo(), \Bar, Baz, Corge(4, 'baz qux'), A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R())]
+                            #[
+                                \A\B\Foo(),
+                                \Bar,
+                                Baz,
+                                Corge(4, 'baz qux'),
+                                A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: 'foo bar', prop4: new P\R()),
+                            ]
+                            class X
+                            {}
+                EOD."\n            ",
             ['use_parentheses' => true],
         ];
     }

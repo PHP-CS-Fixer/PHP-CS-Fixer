@@ -29,10 +29,12 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 {
     public function testFix(): void
     {
-        $this->doTest('<?php
-/** @param EngineInterface $templating
-*@return void
-*/');
+        $this->doTest(<<<'EOD'
+            <?php
+            /** @param EngineInterface $templating
+            *@return void
+            */
+            EOD);
 
         $expected = <<<'EOF'
             <?php
@@ -539,39 +541,47 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
     public static function provideInheritDocCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $expected
-     * @param string $input
-     */
-',
-            '<?php
-    /**
-     * {@inheritdoc}
-     * @param string $expected
-     * @param string $input
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@inheritdoc}
+                     *
+                     * @param string $expected
+                     * @param string $input
+                     */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@inheritdoc}
+                     * @param string $expected
+                     * @param string $input
+                     */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * {@inheritDoc}
-     *
-     * @param string $expected
-     * @param string $input
-     */
-',
-            '<?php
-    /**
-     * {@inheritDoc}
-     * @param string $expected
-     * @param string $input
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@inheritDoc}
+                     *
+                     * @param string $expected
+                     * @param string $input
+                     */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@inheritDoc}
+                     * @param string $expected
+                     * @param string $input
+                     */
+
+                EOD,
         ];
     }
 
@@ -626,27 +636,35 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 
     public function testWithSpacing(): void
     {
-        $expected = '<?php
-    /**
-     * Foo
-     *
-     * @bar 123
-     *
-     * {@inheritdoc}'.'       '.'
-     *
-     *   @param string $expected
-     * @param string $input
-     */';
+        $expected = <<<'EOD'
+            <?php
+                /**
+                 * Foo
+                 *
+                 * @bar 123
+                 *
+                 * {@inheritdoc}
+            EOD.'       '.<<<'EOD'
 
-        $input = '<?php
-    /**
-     * Foo
-     * @bar 123
-     *
-     * {@inheritdoc}'.'       '.'
-     *   @param string $expected
-     * @param string $input
-     */';
+                 *
+                 *   @param string $expected
+                 * @param string $input
+                 */
+            EOD;
+
+        $input = <<<'EOD'
+            <?php
+                /**
+                 * Foo
+                 * @bar 123
+                 *
+                 * {@inheritdoc}
+            EOD.'       '.<<<'EOD'
+
+                 *   @param string $expected
+                 * @param string $input
+                 */
+            EOD;
 
         $this->doTest($expected, $input);
     }

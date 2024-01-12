@@ -38,50 +38,66 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-    $a = 0;
-    echo 1;',
-            '<?php
-    $a = 0;
-    echo 1;',
-        ];
-
-        yield [
-            '<?php
-
-    $b = 2;
-    echo 3;',
-            '<?php     $b = 2;
-    echo 3;',
-        ];
-
-        yield [
-            '<?php'."\n    ".'
-    $c = 4;
-    echo 5;',
-        ];
-
-        yield [
-            '<?php
-
-$a = function(){
+                    $a = 0;
                     echo 1;
-                };',
-            '<?php $a = function(){
+                EOD,
+            <<<'EOD'
+                <?php
+                    $a = 0;
                     echo 1;
-                };',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
- class SomeClass
- {
-     const VERSION = "1.1.1";
-     const FOO = "bar";
- }
-',
+                    $b = 2;
+                    echo 3;
+                EOD,
+            <<<'EOD'
+                <?php     $b = 2;
+                    echo 3;
+                EOD,
+        ];
+
+        yield [
+            '<?php'."\n    ".<<<'EOD'
+
+                    $c = 4;
+                    echo 5;
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                $a = function(){
+                                    echo 1;
+                                };
+                EOD,
+            <<<'EOD'
+                <?php $a = function(){
+                                    echo 1;
+                                };
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                 class SomeClass
+                 {
+                     const VERSION = "1.1.1";
+                     const FOO = "bar";
+                 }
+
+                EOD,
         ];
 
         yield [
@@ -89,53 +105,69 @@ $a = function(){
         ];
 
         yield [
-            '<?php $foo = true; ?>
-',
+            <<<'EOD'
+                <?php $foo = true; ?>
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$foo = true;
-?>',
-            '<?php
-$foo = true;
-?>',
+                $foo = true;
+                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = true;
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$foo = true;
-$bar = false;
-',
-            '<?php $foo = true;
-$bar = false;
-',
+                $foo = true;
+                $bar = false;
+
+                EOD,
+            <<<'EOD'
+                <?php $foo = true;
+                $bar = false;
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$foo = true;
-?>
-Html here
-<?php $bar = false;',
+                $foo = true;
+                ?>
+                Html here
+                <?php $bar = false;
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = true;
-?>
-Html here
-<?php $bar = false;
-',
+            <<<'EOD'
+                <?php
+                $foo = true;
+                ?>
+                Html here
+                <?php $bar = false;
+
+                EOD,
         ];
 
         yield [
-            '<?= $bar;
-$foo = $bar;
-?>',
+            <<<'EOD'
+                <?= $bar;
+                $foo = $bar;
+                ?>
+                EOD,
         ];
     }
 

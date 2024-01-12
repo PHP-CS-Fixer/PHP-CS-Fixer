@@ -36,31 +36,37 @@ final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    list($a, $b) = foo();
-    list($a, , $c, $d) = foo();
-    list($a, , $c) = foo();
-    list($a) = foo();
-    list($a , $b) = foo();
-    list($a, /* $b */, $c) = foo();
-',
-            '<?php
-    list($a, $b) = foo();
-    list($a, , $c, $d, ) = foo();
-    list($a, , $c, , ) = foo();
-    list($a, , , , , ) = foo();
-    list($a , $b , ) = foo();
-    list($a, /* $b */, $c, ) = foo();
-',
+            <<<'EOD'
+                <?php
+                    list($a, $b) = foo();
+                    list($a, , $c, $d) = foo();
+                    list($a, , $c) = foo();
+                    list($a) = foo();
+                    list($a , $b) = foo();
+                    list($a, /* $b */, $c) = foo();
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    list($a, $b) = foo();
+                    list($a, , $c, $d, ) = foo();
+                    list($a, , $c, , ) = foo();
+                    list($a, , , , , ) = foo();
+                    list($a , $b , ) = foo();
+                    list($a, /* $b */, $c, ) = foo();
+
+                EOD,
         ];
 
         yield [
-            '<?php
-list(
-$a#
-,#
-#
-) = $a;',
+            <<<'EOD'
+                <?php
+                list(
+                $a#
+                ,#
+                #
+                ) = $a;
+                EOD,
         ];
     }
 }

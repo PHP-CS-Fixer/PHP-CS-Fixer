@@ -64,31 +64,39 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                 '$this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
             ],
             [
-                '
-    $this->assertTrue(
-        $a,
-        "foo" . $bar
-    );',
-                '
-    $this->assertSame(
-        true,
-        $a,
-        "foo" . $bar
-    );',
+                <<<'EOD'
+
+                        $this->assertTrue(
+                            $a,
+                            "foo" . $bar
+                        );
+                    EOD,
+                <<<'EOD'
+
+                        $this->assertSame(
+                            true,
+                            $a,
+                            "foo" . $bar
+                        );
+                    EOD,
             ],
             [
-                '
-    $this->assertTrue(#
-        #
-        $a,#
-        "foo" . $bar#
-    );',
-                '
-    $this->assertSame(#
-        true,#
-        $a,#
-        "foo" . $bar#
-    );',
+                <<<'EOD'
+
+                        $this->assertTrue(#
+                            #
+                            $a,#
+                            "foo" . $bar#
+                        );
+                    EOD,
+                <<<'EOD'
+
+                        $this->assertSame(#
+                            true,#
+                            $a,#
+                            "foo" . $bar#
+                        );
+                    EOD,
             ],
             [
                 '$this->assertSame("a", $a); $this->assertTrue($b);',
@@ -129,14 +137,18 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                 'not in a class' => ['<?php $this->assertEquals(NULL, $foo);'],
                 'not phpunit class' => ['<?php class Foo { public function testFoo(){ $this->assertEquals(NULL, $foo); }}'],
                 'multiple candidates in multiple classes ' => [
-                    '<?php
-                        class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
-                        class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
-                        class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}'."\n                    ",
-                    '<?php
-                        class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
-                        class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
-                        class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}'."\n                    ",
+                    <<<'EOD'
+                        <?php
+                                                class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                                                class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                                                class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                        EOD."\n                    ",
+                    <<<'EOD'
+                        <?php
+                                                class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                                                class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                                                class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                        EOD."\n                    ",
                 ],
             ],
             self::generateCases('$this->assert%s%s($a); //%s %s', '$this->assert%s(%s, $a); //%s %s'),

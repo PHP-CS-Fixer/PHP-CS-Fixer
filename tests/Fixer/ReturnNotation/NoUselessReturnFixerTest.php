@@ -34,139 +34,167 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                    function bar($baz)
-                    {
-                        if ($baz)
-                            return $this->baz();
-                        else
+            <<<'EOD'
+                <?php
+                                    function bar($baz)
+                                    {
+                                        if ($baz)
+                                            return $this->baz();
+                                        else
+                                            return;
+                                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    function bar($baz)
+                                    {
+                                        if ($baz)
+                                            return $this->baz();
+                                        elseif($a)
+                                            return;
+                                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    function bar($baz)
+                                    {
+                                        if ($baz)
+                                            return $this->baz();
+                                        else if($a)
+                                            return;
+                                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    function bar($baz)
+                                    {
+                                        if ($baz)
+                                            return;
+                                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    function b($b) {
+                        if ($b) {
                             return;
-                    }',
-        ];
-
-        yield [
-            '<?php
-                    function bar($baz)
-                    {
-                        if ($baz)
-                            return $this->baz();
-                        elseif($a)
+                        }
+                         /**/
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function b($b) {
+                        if ($b) {
                             return;
-                    }',
+                        }
+                        return /**/;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    function bar($baz)
+            <<<'EOD'
+                <?php
+                    class Test2
                     {
-                        if ($baz)
-                            return $this->baz();
-                        else if($a)
-                            return;
-                    }',
-        ];
+                        private static function a($a)
+                        {
+                            if ($a) {
+                                return;
+                            }
 
-        yield [
-            '<?php
-                    function bar($baz)
+                            $c1 = function() use ($a) {
+                                if ($a)
+                                    return;
+                                if ($a > 1) return;
+                                echo $a;
+                EOD."\n                ".<<<'EOD'
+
+                            };
+                            $c1();
+                EOD."\n            ".''."\n            ".<<<'EOD'
+
+                        }
+
+                        private function test()
+                        {
+                            $d = function(){
+                                echo 123;
+                EOD."\n                ".<<<'EOD'
+
+                            };
+
+                            $d();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Test2
                     {
-                        if ($baz)
+                        private static function a($a)
+                        {
+                            if ($a) {
+                                return;
+                            }
+
+                            $c1 = function() use ($a) {
+                                if ($a)
+                                    return;
+                                if ($a > 1) return;
+                                echo $a;
+                                return;
+                            };
+                            $c1();
+                            return
+                            ;
+                        }
+
+                        private function test()
+                        {
+                            $d = function(){
+                                echo 123;
+                                return;
+                            };
+
+                            $d();
+                        }
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    function aT($a) {
+                        if ($a) {
                             return;
-                    }',
-        ];
+                        }
+                EOD."\n                   ".<<<'EOD'
 
-        yield [
-            '<?php
-    function b($b) {
-        if ($b) {
-            return;
-        }
-         /**/
-    }',
-            '<?php
-    function b($b) {
-        if ($b) {
-            return;
-        }
-        return /**/;
-    }',
-        ];
-
-        yield [
-            '<?php
-    class Test2
-    {
-        private static function a($a)
-        {
-            if ($a) {
-                return;
-            }
-
-            $c1 = function() use ($a) {
-                if ($a)
-                    return;
-                if ($a > 1) return;
-                echo $a;'."\n                ".'
-            };
-            $c1();'."\n            ".''."\n            ".'
-        }
-
-        private function test()
-        {
-            $d = function(){
-                echo 123;'."\n                ".'
-            };
-
-            $d();
-        }
-    }',
-            '<?php
-    class Test2
-    {
-        private static function a($a)
-        {
-            if ($a) {
-                return;
-            }
-
-            $c1 = function() use ($a) {
-                if ($a)
-                    return;
-                if ($a > 1) return;
-                echo $a;
-                return;
-            };
-            $c1();
-            return
-            ;
-        }
-
-        private function test()
-        {
-            $d = function(){
-                echo 123;
-                return;
-            };
-
-            $d();
-        }
-    }',
-        ];
-
-        yield [
-            '<?php
-    function aT($a) {
-        if ($a) {
-            return;
-        }'."\n                   ".'
-    }',
-            '<?php
-    function aT($a) {
-        if ($a) {
-            return;
-        }
-        return           ;
-    }',
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function aT($a) {
+                        if ($a) {
+                            return;
+                        }
+                        return           ;
+                    }
+                EOD,
         ];
 
         yield [
@@ -174,82 +202,106 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    function c($c) {
-        if ($c) {
-            return;
-        }
-        //'.'
-    }',
-            '<?php
-    function c($c) {
-        if ($c) {
-            return;
-        }
-        return;//
-    }',
+            <<<'EOD'
+                <?php
+                    function c($c) {
+                        if ($c) {
+                            return;
+                        }
+                        //
+                EOD.<<<'EOD'
+
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function c($c) {
+                        if ($c) {
+                            return;
+                        }
+                        return;//
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Test {
+            <<<'EOD'
+                <?php
+                    class Test {
 
-        private static function d($d) {
-            if ($d) {
-                return;
-            }
-            }
-    }',
-            '<?php
-    class Test {
+                        private static function d($d) {
+                            if ($d) {
+                                return;
+                            }
+                            }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Test {
 
-        private static function d($d) {
-            if ($d) {
-                return;
-            }
-            return;}
-    }',
+                        private static function d($d) {
+                            if ($d) {
+                                return;
+                            }
+                            return;}
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    interface FooInterface
-    {
-        public function fnc();
-    }',
+            <<<'EOD'
+                <?php
+                    interface FooInterface
+                    {
+                        public function fnc();
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    abstract class AbstractFoo
-    {
-        abstract public function fnc();
-        abstract public function fnc1();
-        static private function fn2(){}
-        public function fnc3() {
-            echo 1 . self::fn2();//{}
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    abstract class AbstractFoo
+                    {
+                        abstract public function fnc();
+                        abstract public function fnc1();
+                        static private function fn2(){}
+                        public function fnc3() {
+                            echo 1 . self::fn2();//{}
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    function foo () { }',
+            <<<'EOD'
+                <?php
+                    function foo () { }
+                EOD,
         ];
 
         yield [
-            '<?php
-                $a = function() {
-                       /**/'."\n                     ".'
-           /* a */   //'."\n                    ".'
-                };'."\n                ",
-            '<?php
-                $a = function() {
-                    return  ; /**/
-                    return ;
-           /* a */  return; //
-                    return;
-                };'."\n                ",
+            <<<'EOD'
+                <?php
+                                $a = function() {
+                                       /**/
+                EOD."\n                     ".<<<'EOD'
+
+                           /* a */   //
+                EOD."\n                    ".<<<'EOD'
+
+                                };
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                $a = function() {
+                                    return  ; /**/
+                                    return ;
+                           /* a */  return; //
+                                    return;
+                                };
+                EOD."\n                ",
         ];
     }
 }

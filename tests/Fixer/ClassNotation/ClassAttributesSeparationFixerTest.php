@@ -40,22 +40,26 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-class Sample
-{
-private $a; // foo
+            <<<'EOD'
+                <?php
+                class Sample
+                {
+                private $a; // foo
 
-    /** second in a hour */
-    private $b;
-}
-',
-            '<?php
-class Sample
-{private $a; // foo
-    /** second in a hour */
-    private $b;
-}
-',
+                    /** second in a hour */
+                    private $b;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Sample
+                {private $a; // foo
+                    /** second in a hour */
+                    private $b;
+                }
+
+                EOD,
         ];
 
         yield 'empty class' => [
@@ -63,134 +67,176 @@ class Sample
         ];
 
         yield 'simple top class' => [
-            '<?php class A {
-public function Foo(){}
-}',
+            <<<'EOD'
+                <?php class A {
+                public function Foo(){}
+                }
+                EOD,
             '<?php class A {public function Foo(){}}',
         ];
 
         yield 'comment' => [
-            '<?php class A {
-/* function comment */
-public function Bar(){}
-}',
-            '<?php class A {/* function comment */public function Bar(){}
-}',
+            <<<'EOD'
+                <?php class A {
+                /* function comment */
+                public function Bar(){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A {/* function comment */public function Bar(){}
+                }
+                EOD,
         ];
 
         yield 'comment, multiple lines' => [
-            '<?php class A {
-/* some comment */
+            <<<'EOD'
+                <?php class A {
+                /* some comment */
 
-public function Bar(){}
-}',
-            '<?php class A {
-/* some comment */
+                public function Bar(){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A {
+                /* some comment */
 
 
 
-public function Bar(){}
-}',
+                public function Bar(){}
+                }
+                EOD,
         ];
 
         yield 'simple PHPDoc case' => [
-            '<?php class Foo
-{
-/** Doc 1 */
-public function A(){}
+            <<<'EOD'
+                <?php class Foo
+                {
+                /** Doc 1 */
+                public function A(){}
 
-    /** Doc 2 */
-    public function B(){}
-}',
-            '<?php class Foo
-{/** Doc 1 */public function A(){}
+                    /** Doc 2 */
+                    public function B(){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo
+                {/** Doc 1 */public function A(){}
 
-    /** Doc 2 */
+                    /** Doc 2 */
 
-    public function B(){}
-}',
+                    public function B(){}
+                }
+                EOD,
         ];
 
         yield 'add a newline at the end of a class with trait group' => [
-            '<?php class A
-{
-    use Bar {
-        __construct as barConstruct;
-        baz as barBaz;
-    }
-}',
-            '<?php class A
-{
-    use Bar {
-        __construct as barConstruct;
-        baz as barBaz;
-    }}',
+            <<<'EOD'
+                <?php class A
+                {
+                    use Bar {
+                        __construct as barConstruct;
+                        baz as barBaz;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A
+                {
+                    use Bar {
+                        __construct as barConstruct;
+                        baz as barBaz;
+                    }}
+                EOD,
         ];
 
         yield 'add a newline at the end of a class with trait' => [
-            '<?php class A
-{
-    use A\B\C;
-}',
-            '<?php class A
-{
-    use A\B\C;}',
+            <<<'EOD'
+                <?php class A
+                {
+                    use A\B\C;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A
+                {
+                    use A\B\C;}
+                EOD,
         ];
 
         yield 'removes extra lines at the end of an interface' => [
-            '<?php interface F
-{
-    public function A();
-}',
-            '<?php interface F
-{
-    public function A();
+            <<<'EOD'
+                <?php interface F
+                {
+                    public function A();
+                }
+                EOD,
+            <<<'EOD'
+                <?php interface F
+                {
+                    public function A();
 
 
-}',
+                }
+                EOD,
         ];
 
         yield 'removes extra lines at the end of an abstract class' => [
-            '<?php abstract class F
-{
-    public abstract function A();
-}',
-            '<?php abstract class F
-{
-    public abstract function A();
+            <<<'EOD'
+                <?php abstract class F
+                {
+                    public abstract function A();
+                }
+                EOD,
+            <<<'EOD'
+                <?php abstract class F
+                {
+                    public abstract function A();
 
 
-}',
+                }
+                EOD,
         ];
 
         yield 'add a newline at the end of a class' => [
-            '<?php class A
-{
-    public function A(){}
-}',
-            '<?php class A
-{
-    public function A(){}}',
+            <<<'EOD'
+                <?php class A
+                {
+                    public function A(){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A
+                {
+                    public function A(){}}
+                EOD,
         ];
 
         yield 'add a newline at the end of a class: with comments' => [
-            '<?php class A
-{
-    public const A = 1; /* foo */ /* bar */
-}',
-            '<?php class A
-{
-    public const A = 1; /* foo */ /* bar */}',
+            <<<'EOD'
+                <?php class A
+                {
+                    public const A = 1; /* foo */ /* bar */
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A
+                {
+                    public const A = 1; /* foo */ /* bar */}
+                EOD,
         ];
 
         yield 'add a newline at the end of a class: with comments with trailing space' => [
-            '<?php class A
-{
-    public const A = 1; /* foo */ /* bar */
-   }',
-            '<?php class A
-{
-    public const A = 1; /* foo */ /* bar */   }',
+            <<<'EOD'
+                <?php class A
+                {
+                    public const A = 1; /* foo */ /* bar */
+                   }
+                EOD,
+            <<<'EOD'
+                <?php class A
+                {
+                    public const A = 1; /* foo */ /* bar */   }
+                EOD,
         ];
 
         $to = $from = '<?php ';
@@ -203,1503 +249,1713 @@ public function A(){}
         yield [$to, $from];
 
         yield [
-            '<?php $a = new class {
-                public function H(){}
+            <<<'EOD'
+                <?php $a = new class {
+                                public function H(){}
 
-                public function B7(){}
+                                public function B7(){}
 
-                private function C(){}
-                };',
-            '<?php $a = new class {
-                public function H(){}
-                public function B7(){}
-                private function C(){}
-                };',
+                                private function C(){}
+                                };
+                EOD,
+            <<<'EOD'
+                <?php $a = new class {
+                                public function H(){}
+                                public function B7(){}
+                                private function C(){}
+                                };
+                EOD,
         ];
 
         yield [
-            '<?php
-                    class A
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                public function getFilter()
+                                        {
+                                            return new class () implements FilterInterface {
+                private $d = 123;
+
+                                                public function pass($a, $b) {
+                                                    echo $a;
+                                                }
+
+                                                public $e = 5;
+                };}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {public function getFilter()
+                                        {
+                                            return new class () implements FilterInterface {private $d = 123;
+                                                public function pass($a, $b) {
+                                                    echo $a;
+                                                }
+                                                public $e = 5;};}
+
+
+
+                                    }
+                EOD."\n                ",
+        ];
+
+        yield [<<<'EOD'
+            <?php
+            class SomeClass1
+            {
+                // This comment
+                // is multiline.
+                public function echoA()
+                {
+                    echo "a";
+                }
+            }
+
+            EOD];
+
+        yield [
+            <<<'EOD'
+                <?php
+                class SomeClass2
+                {
+                    // This comment
+                    /* is multiline. */
+                public function echoA()
                     {
-public function getFilter()
-                        {
-                            return new class () implements FilterInterface {
-private $d = 123;
-
-                                public function pass($a, $b) {
-                                    echo $a;
-                                }
-
-                                public $e = 5;
-};}
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {public function getFilter()
-                        {
-                            return new class () implements FilterInterface {private $d = 123;
-                                public function pass($a, $b) {
-                                    echo $a;
-                                }
-                                public $e = 5;};}
-
-
-
-                    }'."\n                ",
-        ];
-
-        yield ['<?php
-class SomeClass1
-{
-    // This comment
-    // is multiline.
-    public function echoA()
-    {
-        echo "a";
-    }
-}
-'];
-
-        yield [
-            '<?php
-class SomeClass2
-{
-    // This comment
-    /* is multiline. */
-public function echoA()
-    {
-        echo "a";
-    }
-}'."\n            ",
-            '<?php
-class SomeClass2
-{
-    // This comment
-    /* is multiline. */public function echoA()
-    {
-        echo "a";
-    }
-}'."\n            ",
-        ];
-
-        yield [
-            '<?php
-class SomeClass3
-{
-    // This comment
-    // is multiline.
-
-    public function echoA()
-    {
-        echo "a";
-    }
-}
-', ];
-
-        yield [
-            '<?php
-class SomeClass1
-{
-    private $a; //
-
-    public function methodA()
-    {
-    }
-
-    private $b;
-
-    //
-    public function methodB()
-    {
-    }
-
-    // C
-    public function methodC()
-    {
-    }
-
-    // D
-
-    public function methodD()
-    {
-    }
-
-    /* E */
-
-    public function methodE()
-    {
-    }
-
-    /* F */
-    public function methodF()
-    {
-    }
-}
-',
-            '<?php
-class SomeClass1
-{
-    private $a; //
-    public function methodA()
-    {
-    }
-
-    private $b;
-    //
-    public function methodB()
-    {
-    }
-    // C
-    public function methodC()
-    {
-    }
-
-    // D
-
-    public function methodD()
-    {
-    }
-
-    /* E */
-
-    public function methodE()
-    {
-    }
-
-    /* F */
-    public function methodF()
-    {
-    }
-}
-', ];
-
-        yield ['<?php
-class SomeClass
-{
-    // comment
-    public function echoA()
-    {
-        echo "a";
-    }
-}
-'];
-
-        yield ['<?php
-class SomeClass
-{
-    // This comment
-    // is multiline.
-    public function echoA()
-    {
-        echo "a";
-    }
-}
-'];
-
-        yield [
-            '<?php
-class SomeClass
-{
-    // comment
-
-    public function echoA()
-    {
-        echo "a";
-    }
-}
-',
-            '<?php
-class SomeClass
-{
-    // comment
-
-
-    public function echoA()
-    {
-        echo "a";
-    }
-}
-',
-        ];
-
-        yield [
-            '<?php
-class SomeClass
-{
-    /* comment */
-public function echoB()
-    {
-        echo "a";
-    }
-}
-',
-            '<?php
-class SomeClass
-{
-    /* comment */public function echoB()
-    {
-        echo "a";
-    }
-}
-',
-        ];
-
-        yield [
-            '<?php
-class SomeClass
-{
-    /* comment */
- public function echoC()
-    {
-        echo "a";
-    }
-}
-',
-            '<?php
-class SomeClass
-{
-    /* comment */ public function echoC()
-    {
-        echo "a";
-    }
-}
-',
-        ];
-
-        yield [
-            '<?php
-abstract class MethodTest2
-{
-    public function method045()
-    {
-        $files = null;
-            if (!empty($files)) {
-            $this->filter(
-                function (\SplFileInfo $file) use ($files) {
-                    return !in_array($file->getRelativePathname(), $files, true);
+                        echo "a";
+                    }
                 }
-            );
-        }
-    }
-
-     private $a;
-
-     public static function method145()
-     {
-     }
-
-       abstract protected function method245();
-    // comment
-
-    final private function method345()
-    {
-    }
-}
-function some1(){ echo 1;}
-function some2(){ echo 2;}',
-            '<?php
-abstract class MethodTest2
-{
-    public function method045()
-    {
-        $files = null;
-            if (!empty($files)) {
-            $this->filter(
-                function (\SplFileInfo $file) use ($files) {
-                    return !in_array($file->getRelativePathname(), $files, true);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                class SomeClass2
+                {
+                    // This comment
+                    /* is multiline. */public function echoA()
+                    {
+                        echo "a";
+                    }
                 }
-            );
-        }
-    }
-     private $a;
-
-     public static function method145()
-     {
-     }
-       abstract protected function method245();
-    // comment
-
-    final private function method345()
-    {
-    }
-}
-function some1(){ echo 1;}
-function some2(){ echo 2;}',
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
+                class SomeClass3
+                {
+                    // This comment
+                    // is multiline.
 
-/*
- * This file is part of the PHP CS utility.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+                    public function echoA()
+                    {
+                        echo "a";
+                    }
+                }
 
-namespace PhpCsFixer\Linter;
+                EOD, ];
 
-/**
- * Dummy linter. No linting is performed. No error is raised.
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
- */
-final class NullLinter implements LinterInterface
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function lintFile($path)
-    {
-        unset($path);
-    }
+        yield [
+            <<<'EOD'
+                <?php
+                class SomeClass1
+                {
+                    private $a; //
 
-    /**
-     * {@inheritdoc}
-     */
-    public function lintSource($source)
-    {
-        unset($source);
-    }
-}
-',
+                    public function methodA()
+                    {
+                    }
+
+                    private $b;
+
+                    //
+                    public function methodB()
+                    {
+                    }
+
+                    // C
+                    public function methodC()
+                    {
+                    }
+
+                    // D
+
+                    public function methodD()
+                    {
+                    }
+
+                    /* E */
+
+                    public function methodE()
+                    {
+                    }
+
+                    /* F */
+                    public function methodF()
+                    {
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class SomeClass1
+                {
+                    private $a; //
+                    public function methodA()
+                    {
+                    }
+
+                    private $b;
+                    //
+                    public function methodB()
+                    {
+                    }
+                    // C
+                    public function methodC()
+                    {
+                    }
+
+                    // D
+
+                    public function methodD()
+                    {
+                    }
+
+                    /* E */
+
+                    public function methodE()
+                    {
+                    }
+
+                    /* F */
+                    public function methodF()
+                    {
+                    }
+                }
+
+                EOD, ];
+
+        yield [<<<'EOD'
+            <?php
+            class SomeClass
+            {
+                // comment
+                public function echoA()
+                {
+                    echo "a";
+                }
+            }
+
+            EOD];
+
+        yield [<<<'EOD'
+            <?php
+            class SomeClass
+            {
+                // This comment
+                // is multiline.
+                public function echoA()
+                {
+                    echo "a";
+                }
+            }
+
+            EOD];
+
+        yield [
+            <<<'EOD'
+                <?php
+                class SomeClass
+                {
+                    // comment
+
+                    public function echoA()
+                    {
+                        echo "a";
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class SomeClass
+                {
+                    // comment
+
+
+                    public function echoA()
+                    {
+                        echo "a";
+                    }
+                }
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                class SomeClass
+                {
+                    /* comment */
+                public function echoB()
+                    {
+                        echo "a";
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class SomeClass
+                {
+                    /* comment */public function echoB()
+                    {
+                        echo "a";
+                    }
+                }
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                class SomeClass
+                {
+                    /* comment */
+                 public function echoC()
+                    {
+                        echo "a";
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class SomeClass
+                {
+                    /* comment */ public function echoC()
+                    {
+                        echo "a";
+                    }
+                }
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                abstract class MethodTest2
+                {
+                    public function method045()
+                    {
+                        $files = null;
+                            if (!empty($files)) {
+                            $this->filter(
+                                function (\SplFileInfo $file) use ($files) {
+                                    return !in_array($file->getRelativePathname(), $files, true);
+                                }
+                            );
+                        }
+                    }
+
+                     private $a;
+
+                     public static function method145()
+                     {
+                     }
+
+                       abstract protected function method245();
+                    // comment
+
+                    final private function method345()
+                    {
+                    }
+                }
+                function some1(){ echo 1;}
+                function some2(){ echo 2;}
+                EOD,
+            <<<'EOD'
+                <?php
+                abstract class MethodTest2
+                {
+                    public function method045()
+                    {
+                        $files = null;
+                            if (!empty($files)) {
+                            $this->filter(
+                                function (\SplFileInfo $file) use ($files) {
+                                    return !in_array($file->getRelativePathname(), $files, true);
+                                }
+                            );
+                        }
+                    }
+                     private $a;
+
+                     public static function method145()
+                     {
+                     }
+                       abstract protected function method245();
+                    // comment
+
+                    final private function method345()
+                    {
+                    }
+                }
+                function some1(){ echo 1;}
+                function some2(){ echo 2;}
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                /*
+                 * This file is part of the PHP CS utility.
+                 *
+                 * (c) Fabien Potencier <fabien@symfony.com>
+                 *
+                 * This source file is subject to the MIT license that is bundled
+                 * with this source code in the file LICENSE.
+                 */
+
+                namespace PhpCsFixer\Linter;
+
+                /**
+                 * Dummy linter. No linting is performed. No error is raised.
+                 *
+                 * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+                 *
+                 * @internal
+                 */
+                final class NullLinter implements LinterInterface
+                {
+                    /**
+                     * {@inheritdoc}
+                     */
+                    public function lintFile($path)
+                    {
+                        unset($path);
+                    }
+
+                    /**
+                     * {@inheritdoc}
+                     */
+                    public function lintSource($source)
+                    {
+                        unset($source);
+                    }
+                }
+
+                EOD,
         ];
 
         // do not touch anonymous functions (since PHP doesn't allow
         // for class attributes being functions :(, we only have to test
         // those used within methods)
         yield [
-            '<?php
-class MethodTestAnonymous
-{
-    public function method444a()
-    {
-        $text = "hello";
-        $example = function ($arg) use ($message) {
-            var_dump($arg . " " . $message);
-        };
-        $example($text);
-        $example = function($arg) use ($message) {
-            var_dump($arg . " " . $message);
-        };
-        $example = function /*test*/ ($arg) use ($message) {
-            var_dump($arg . " " . $message);
-        };
-    }
-}',
+            <<<'EOD'
+                <?php
+                class MethodTestAnonymous
+                {
+                    public function method444a()
+                    {
+                        $text = "hello";
+                        $example = function ($arg) use ($message) {
+                            var_dump($arg . " " . $message);
+                        };
+                        $example($text);
+                        $example = function($arg) use ($message) {
+                            var_dump($arg . " " . $message);
+                        };
+                        $example = function /*test*/ ($arg) use ($message) {
+                            var_dump($arg . " " . $message);
+                        };
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class MethodTest1
-{
-    private $c; //
+            <<<'EOD'
+                <?php
+                class MethodTest1
+                {
+                    private $c; //
 
-    public function method444a()
-    {
-    }
+                    public function method444a()
+                    {
+                    }
 
-    /**
-     *
-     */
-    public function method444b()
-    {
-    }
+                    /**
+                     *
+                     */
+                    public function method444b()
+                    {
+                    }
 
-    //
+                    //
 
-    public function method444c()
-    {
-    }
+                    public function method444c()
+                    {
+                    }
 
-    private $a;
+                    private $a;
 
-    public function method444d()
-    {
-    }
+                    public function method444d()
+                    {
+                    }
 
-    private $b;
+                    private $b;
 
-    //
-    public function method444e()
-    {
-    }
+                    //
+                    public function method444e()
+                    {
+                    }
 
-    public function method444f()
-    {
-    }
+                    public function method444f()
+                    {
+                    }
 
-    private $d; //
+                    private $d; //
 
-    public function method444f1()
-    {
-    }
+                    public function method444f1()
+                    {
+                    }
 
-    /**/
-    public function method444g()
-    {
-    }
-}',
-            '<?php
-class MethodTest1
-{
-    private $c; //
-    public function method444a()
-    {
-    }
-    /**
-     *
-     */
-    public function method444b()
-    {
-    }
+                    /**/
+                    public function method444g()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MethodTest1
+                {
+                    private $c; //
+                    public function method444a()
+                    {
+                    }
+                    /**
+                     *
+                     */
+                    public function method444b()
+                    {
+                    }
 
-    //
+                    //
 
 
-    public function method444c()
-    {
-    }
+                    public function method444c()
+                    {
+                    }
 
-    private $a;
-    public function method444d()
-    {
-    }
-    private $b;
-    //
-    public function method444e()
-    {
-    }
+                    private $a;
+                    public function method444d()
+                    {
+                    }
+                    private $b;
+                    //
+                    public function method444e()
+                    {
+                    }
 
-    public function method444f()
-    {
-    }
+                    public function method444f()
+                    {
+                    }
 
-    private $d; //
-    public function method444f1()
-    {
-    }
+                    private $d; //
+                    public function method444f1()
+                    {
+                    }
 
-    /**/
-    public function method444g()
-    {
-    }
-}',
+                    /**/
+                    public function method444g()
+                    {
+                    }
+                }
+                EOD,
         ];
 
         // spaces between methods
         yield [
-            '<?php
-abstract class MethodTest3
-{
-    public function method021()
-    {
-    }
+            <<<'EOD'
+                <?php
+                abstract class MethodTest3
+                {
+                    public function method021()
+                    {
+                    }
 
-    public static function method121()
-    {
-    }
+                    public static function method121()
+                    {
+                    }
 
-    abstract protected function method221();'.'	'.'
-
-    final private function method321a()
-    {
-    }
-}',
-            '<?php
-abstract class MethodTest3
-{
-    public function method021()
-    {
-    }
-
-    public static function method121()
-    {
-    }
+                    abstract protected function method221();
+                EOD.'	'.<<<'EOD'
 
 
-    abstract protected function method221();
+                    final private function method321a()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                abstract class MethodTest3
+                {
+                    public function method021()
+                    {
+                    }
+
+                    public static function method121()
+                    {
+                    }
 
 
-'."\n	".'
+                    abstract protected function method221();
+
+
+
+                EOD."\n	".<<<'EOD'
 
 
 
 
-    final private function method321a()
-    {
-    }
-}', ];
+
+                    final private function method321a()
+                    {
+                    }
+                }
+                EOD, ];
 
         // don't change correct code
         yield [
-            '<?php
-class SmallHelperException extends \Exception
-{
-    public function getId111()
-    {
-        return 1;
-    }
+            <<<'EOD'
+                <?php
+                class SmallHelperException extends \Exception
+                {
+                    public function getId111()
+                    {
+                        return 1;
+                    }
 
-    public function getMessage111()
-    {
-        return \'message\';
-    }
-}
+                    public function getMessage111()
+                    {
+                        return 'message';
+                    }
+                }
 
-class MethodTest123124124
-{
-    public function method111a(){}
+                class MethodTest123124124
+                {
+                    public function method111a(){}
 
-    public function method211a(){}
-}',
+                    public function method211a(){}
+                }
+                EOD,
         ];
 
         // do not touch function out of class scope
         yield [
-            '<?php
-function some0() {
+            <<<'EOD'
+                <?php
+                function some0() {
 
-}
-class MethodTest4
-{
-    public function method122b()
-    {
-    }
-
-    public function method222b()
-    {
-    }
-}
-function some() {
-
-}
-function some2() {
-
-}
-',
-        ];
-
-        yield [
-            '<?php interface A {
-public function B1(); // allowed comment
-
-                public function C(); // allowed comment
-            }',
-            '<?php interface A {public function B1(); // allowed comment
-                public function C(); // allowed comment
-            }',
-        ];
-
-        yield [
-            '<?php class Foo {
-                var $a;
-
-                var $b;
-            }',
-            '<?php class Foo {
-                var $a;
-                var $b;
-            }',
-        ];
-
-        yield [
-            '<?php
-                class A
+                }
+                class MethodTest4
                 {
-                    /**  1 */
-                    function A2() {}
+                    public function method122b()
+                    {
+                    }
 
-                    /**  2 */
-                    function B2() {}
-                }'."\n            ",
-            '<?php
-                class A
-                {
+                    public function method222b()
+                    {
+                    }
+                }
+                function some() {
 
-                    /**  1 */
-                    function A2() {}
-                    /**  2 */
-                    function B2() {}
-                }'."\n            ",
+                }
+                function some2() {
+
+                }
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php interface A {
+                public function B1(); // allowed comment
+
+                                public function C(); // allowed comment
+                            }
+                EOD,
+            <<<'EOD'
+                <?php interface A {public function B1(); // allowed comment
+                                public function C(); // allowed comment
+                            }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php class Foo {
+                                var $a;
+
+                                var $b;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                var $a;
+                                var $b;
+                            }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                class A
+                                {
+                                    /**  1 */
+                                    function A2() {}
+
+                                    /**  2 */
+                                    function B2() {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class A
+                                {
+
+                                    /**  1 */
+                                    function A2() {}
+                                    /**  2 */
+                                    function B2() {}
+                                }
+                EOD."\n            ",
         ];
 
         // do not touch well formatted traits
         yield [
-            '<?php
-trait OkTrait
-{
-    function getReturnTypeOk()
-    {
-    }
+            <<<'EOD'
+                <?php
+                trait OkTrait
+                {
+                    function getReturnTypeOk()
+                    {
+                    }
 
-    /**
-     *
-     */
-    function getReturnDescriptionOk()
-    {
-    }
-}',
+                    /**
+                     *
+                     */
+                    function getReturnDescriptionOk()
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-trait ezcReflectionReturnInfo {
-    public $x = 1;
+            <<<'EOD'
+                <?php
+                trait ezcReflectionReturnInfo {
+                    public $x = 1;
 
-    protected function getA(){echo 1;}
+                    protected function getA(){echo 1;}
 
-function getB(){echo 2;}
+                function getB(){echo 2;}
 
-    protected function getC(){echo 3;}
+                    protected function getC(){echo 3;}
 
-/** Description */
-function getD(){echo 4;}
+                /** Description */
+                function getD(){echo 4;}
 
-    protected function getE(){echo 3;}
+                    protected function getE(){echo 3;}
 
-private $a;
+                private $a;
 
-function getF(){echo 4;}
-}',
-            '<?php
-trait ezcReflectionReturnInfo {
-    public $x = 1;
-    protected function getA(){echo 1;}function getB(){echo 2;}
-    protected function getC(){echo 3;}/** Description */function getD(){echo 4;}
-    protected function getE(){echo 3;}private $a;function getF(){echo 4;}
-}',
+                function getF(){echo 4;}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                trait ezcReflectionReturnInfo {
+                    public $x = 1;
+                    protected function getA(){echo 1;}function getB(){echo 2;}
+                    protected function getC(){echo 3;}/** Description */function getD(){echo 4;}
+                    protected function getE(){echo 3;}private $a;function getF(){echo 4;}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-trait SomeReturnInfo {
-    function getReturnType()
-    {
-    }
+            <<<'EOD'
+                <?php
+                trait SomeReturnInfo {
+                    function getReturnType()
+                    {
+                    }
 
-    function getReturnDescription()
-    {
-    }
+                    function getReturnDescription()
+                    {
+                    }
 
- function getReturnDescription2()
-    {
-    }
+                 function getReturnDescription2()
+                    {
+                    }
 
-    abstract public function getWorld();
-}',
-            '<?php
-trait SomeReturnInfo {
-    function getReturnType()
-    {
-    }
-    function getReturnDescription()
-    {
-    } function getReturnDescription2()
-    {
-    }
+                    abstract public function getWorld();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                trait SomeReturnInfo {
+                    function getReturnType()
+                    {
+                    }
+                    function getReturnDescription()
+                    {
+                    } function getReturnDescription2()
+                    {
+                    }
 
-    abstract public function getWorld();
-}',
+                    abstract public function getWorld();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-interface TestInterface
-{
-    public function someInterfaceMethod4();
+            <<<'EOD'
+                <?php
+                interface TestInterface
+                {
+                    public function someInterfaceMethod4();
 
-    public function someInterfaceMethod5();
+                    public function someInterfaceMethod5();
 
-    /**
-     * {@link}
-     */'.'           '.'
-    public function someInterfaceMethod6();
+                    /**
+                     * {@link}
+                     */
+                EOD.'           '.<<<'EOD'
 
-    public function someInterfaceMethod7();
+                    public function someInterfaceMethod6();
 
- public function someInterfaceMethod8();
-}',
-            '<?php
-interface TestInterface
-{    public function someInterfaceMethod4();
-    public function someInterfaceMethod5();
+                    public function someInterfaceMethod7();
 
-
-    /**
-     * {@link}
-     */'.'           '.'
-    public function someInterfaceMethod6();
+                 public function someInterfaceMethod8();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                interface TestInterface
+                {    public function someInterfaceMethod4();
+                    public function someInterfaceMethod5();
 
 
-    public function someInterfaceMethod7(); public function someInterfaceMethod8();
-}',
+                    /**
+                     * {@link}
+                     */
+                EOD.'           '.<<<'EOD'
+
+                    public function someInterfaceMethod6();
+
+
+                    public function someInterfaceMethod7(); public function someInterfaceMethod8();
+                }
+                EOD,
         ];
 
         // do not touch well formatted interfaces
         yield [
-            '<?php
-interface TestInterfaceOK
-{
-    public function someMethod1();
+            <<<'EOD'
+                <?php
+                interface TestInterfaceOK
+                {
+                    public function someMethod1();
 
-    public function someMethod2();
-}',
+                    public function someMethod2();
+                }
+                EOD,
         ];
 
         // method after trait use
         yield [
-            '<?php
-trait ezcReflectionReturnInfo {
-    function getReturnDescription() {}
-}
-class ezcReflectionMethod extends ReflectionMethod {
-    use ezcReflectionReturnInfo;
+            <<<'EOD'
+                <?php
+                trait ezcReflectionReturnInfo {
+                    function getReturnDescription() {}
+                }
+                class ezcReflectionMethod extends ReflectionMethod {
+                    use ezcReflectionReturnInfo;
 
-function afterUseTrait(){}
+                function afterUseTrait(){}
 
-function afterUseTrait2(){}
-}',
-            '<?php
-trait ezcReflectionReturnInfo {
-    function getReturnDescription() {}
-}
-class ezcReflectionMethod extends ReflectionMethod {
-    use ezcReflectionReturnInfo;function afterUseTrait(){}function afterUseTrait2(){}
+                function afterUseTrait2(){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                trait ezcReflectionReturnInfo {
+                    function getReturnDescription() {}
+                }
+                class ezcReflectionMethod extends ReflectionMethod {
+                    use ezcReflectionReturnInfo;function afterUseTrait(){}function afterUseTrait2(){}
 
 
 
-}',
+                }
+                EOD,
         ];
 
         yield 'multi line property' => [
-            '<?php class Foo
-{
-     private $prop = [
-         1 => true,
-         2 => false,
-     ];
+            <<<'EOD'
+                <?php class Foo
+                {
+                     private $prop = [
+                         1 => true,
+                         2 => false,
+                     ];
 
- // comment2
-     private $bar = 1;
-}',
-            '<?php class Foo
-{
-     private $prop = [
-         1 => true,
-         2 => false,
-     ]; // comment2
-     private $bar = 1;
-}',
+                 // comment2
+                     private $bar = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo
+                {
+                     private $prop = [
+                         1 => true,
+                         2 => false,
+                     ]; // comment2
+                     private $bar = 1;
+                }
+                EOD,
             ['elements' => ['property' => 'one']],
         ];
 
         yield 'trait group import none' => [
-            '<?php class Foo
-{
-    use Ao;
-    use B0 { X0 as Y0;} // test
-    use A;
-    use B { X as Y;} // test
-    use Char;
-    use Bar {
-        __construct as barConstruct;
-        baz as barBaz;
-    }
-    use Dua;
-}',
-            '<?php class Foo
-{
-    use Ao;
+            <<<'EOD'
+                <?php class Foo
+                {
+                    use Ao;
+                    use B0 { X0 as Y0;} // test
+                    use A;
+                    use B { X as Y;} // test
+                    use Char;
+                    use Bar {
+                        __construct as barConstruct;
+                        baz as barBaz;
+                    }
+                    use Dua;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo
+                {
+                    use Ao;
 
-    use B0 { X0 as Y0;} // test
+                    use B0 { X0 as Y0;} // test
 
 
-    use A;
-    use B { X as Y;} // test
-    use Char;
+                    use A;
+                    use B { X as Y;} // test
+                    use Char;
 
-    use Bar {
-        __construct as barConstruct;
-        baz as barBaz;
-    }
-    use Dua;
-}',
+                    use Bar {
+                        __construct as barConstruct;
+                        baz as barBaz;
+                    }
+                    use Dua;
+                }
+                EOD,
             ['elements' => ['trait_import' => 'none']],
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    /** A */
-    private $email;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /** A */
+                    private $email;
 
-    private $foo0; #0 /* test */
-    private $foo1; #1
-    private $foo2; /* @2 */
-}',
-            '<?php
-class Foo
-{
-    /** A */
+                    private $foo0; #0 /* test */
+                    private $foo1; #1
+                    private $foo2; /* @2 */
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /** A */
 
-    private $email;
+                    private $email;
 
-    private $foo0; #0 /* test */
+                    private $foo0; #0 /* test */
 
-    private $foo1; #1
+                    private $foo1; #1
 
-    private $foo2; /* @2 */
-}',
+                    private $foo2; /* @2 */
+                }
+                EOD,
             ['elements' => ['property' => 'none']],
         ];
 
         yield [
-            '<?php
- class Sample
-{
-    /** @var int */
-    const FOO = 1;
+            <<<'EOD'
+                <?php
+                 class Sample
+                {
+                    /** @var int */
+                    const FOO = 1;
 
-    /** @var int */
-    const BAR = 2;
+                    /** @var int */
+                    const BAR = 2;
 
-    const BAZ = 3;
-    const OTHER = 4;
-    const OTHER2 = 5;
-}',
-            '<?php
- class Sample
-{
-    /** @var int */
-    const FOO = 1;
+                    const BAZ = 3;
+                    const OTHER = 4;
+                    const OTHER2 = 5;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                 class Sample
+                {
+                    /** @var int */
+                    const FOO = 1;
 
-    /** @var int */
-    const BAR = 2;
+                    /** @var int */
+                    const BAR = 2;
 
 
-    const BAZ = 3;
-    const OTHER = 4;
+                    const BAZ = 3;
+                    const OTHER = 4;
 
-    const OTHER2 = 5;
-}',
+                    const OTHER2 = 5;
+                }
+                EOD,
             ['elements' => ['const' => 'none']],
         ];
 
         yield 'multiple trait import 5954' => [
-            '<?php
-class Foo
-{
-    use Bar, Baz;
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar, Baz;
+                }
+                EOD,
             null,
             ['elements' => ['method' => 'one']],
         ];
 
         yield 'multiple trait import with method 5954' => [
-            '<?php
-class Foo
-{
-    use Bar, Baz;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar, Baz;
 
-    public function f() {}
-}',
-            '<?php
-class Foo
-{
-    use Bar, Baz;
+                    public function f() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use Bar, Baz;
 
 
-    public function f() {}
-}',
+                    public function f() {}
+                }
+                EOD,
             ['elements' => ['method' => 'one']],
         ];
 
         yield 'trait group import 5843' => [
-            '<?php
-            class Foo
-{
-    use Ao;
+            <<<'EOD'
+                <?php
+                            class Foo
+                {
+                    use Ao;
 
-    use B0 { X0 as Y0;} // test
+                    use B0 { X0 as Y0;} // test
 
-    use A;
+                    use A;
 
-    use B { X as Y;} // test
+                    use B { X as Y;} // test
 
-    use Char;
+                    use Char;
 
-    use Bar {
-        __construct as barConstruct;
-        baz as barBaz;
-    }
+                    use Bar {
+                        __construct as barConstruct;
+                        baz as barBaz;
+                    }
 
-    use Dua;
+                    use Dua;
 
-    public function aaa()
-    {
-    }
-}',
-            '<?php
-            class Foo
-{
-    use Ao;
-    use B0 { X0 as Y0;} // test
-    use A;
-    use B { X as Y;} // test
+                    public function aaa()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo
+                {
+                    use Ao;
+                    use B0 { X0 as Y0;} // test
+                    use A;
+                    use B { X as Y;} // test
 
 
-    use Char;
-    use Bar {
-        __construct as barConstruct;
-        baz as barBaz;
-    }
-    use Dua;
-    public function aaa()
-    {
-    }
-}',
+                    use Char;
+                    use Bar {
+                        __construct as barConstruct;
+                        baz as barBaz;
+                    }
+                    use Dua;
+                    public function aaa()
+                    {
+                    }
+                }
+                EOD,
             ['elements' => ['method' => 'one', 'trait_import' => 'one']],
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    use SomeTrait1;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use SomeTrait1;
 
-    use SomeTrait2;
+                    use SomeTrait2;
 
-    public function Bar(){}
-}
-',
-            '<?php
-class Foo
-{
-    use SomeTrait1;
-    use SomeTrait2;
-    public function Bar(){}
-}
-',
+                    public function Bar(){}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use SomeTrait1;
+                    use SomeTrait2;
+                    public function Bar(){}
+                }
+
+                EOD,
             ['elements' => ['method' => 'one', 'trait_import' => 'one']],
         ];
 
         yield 'trait group import 5852' => [
-            '<?php
-class Foo
-{
-    use A;
-    use B;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use A;
+                    use B;
 
-    /**
-     *
-     */
-     public function A(){}
-}',
-            '<?php
-class Foo
-{
-    use A;
+                    /**
+                     *
+                     */
+                     public function A(){}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use A;
 
-    use B;
+                    use B;
 
-    /**
-     *
-     */
+                    /**
+                     *
+                     */
 
-     public function A(){}
-}',
+                     public function A(){}
+                }
+                EOD,
             ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']],
         ];
 
         yield [
-            '<?php
-abstract class Example
-{
-    use SomeTrait;
-    use AnotherTrait;
+            <<<'EOD'
+                <?php
+                abstract class Example
+                {
+                    use SomeTrait;
+                    use AnotherTrait;
 
-    public $property;
+                    public $property;
 
-    abstract public function method(): void;
-}',
-            '<?php
-abstract class Example
-{
-    use SomeTrait;
-    use AnotherTrait;
-    public $property;
-    abstract public function method(): void;
-}',
+                    abstract public function method(): void;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                abstract class Example
+                {
+                    use SomeTrait;
+                    use AnotherTrait;
+                    public $property;
+                    abstract public function method(): void;
+                }
+                EOD,
             ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        private $a = null;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        private $a = null;
 
-                        public $b = 1;
-
-
-
-                        function A() {}
-                     }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        private $a = null;
-                        public $b = 1;
+                                        public $b = 1;
 
 
 
-                        function A() {}
-                     }'."\n                ",
+                                        function A() {}
+                                     }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        private $a = null;
+                                        public $b = 1;
+
+
+
+                                        function A() {}
+                                     }
+                EOD."\n                ",
             ['elements' => ['property' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        private $a = null;
-                        public $b = 1;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        private $a = null;
+                                        public $b = 1;
 
-                        function A() {}
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        private $a = null;
+                                        function A() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        private $a = null;
 
-                        public $b = 1;
+                                        public $b = 1;
 
-                        function A() {}
-                    }'."\n                ",
+                                        function A() {}
+                                    }
+                EOD."\n                ",
             ['elements' => ['property' => 'none']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        const A = 1;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const A = 1;
 
-                        const THREE = ONE + self::TWO; /* test */ # test
+                                        const THREE = ONE + self::TWO; /* test */ # test
 
-                        const B = 2;
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
+                                        const B = 2;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
 
-                        const A = 1;
-                        const THREE = ONE + self::TWO; /* test */ # test
-                        const B = 2;
-                    }'."\n                ",
+                                        const A = 1;
+                                        const THREE = ONE + self::TWO; /* test */ # test
+                                        const B = 2;
+                                    }
+                EOD."\n                ",
             ['elements' => ['const' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        const A = 1;
-                        const THREE = ONE + self::TWO;
-                        const B = 2;
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        const A = 1;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const A = 1;
+                                        const THREE = ONE + self::TWO;
+                                        const B = 2;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const A = 1;
 
-                        const THREE = ONE + self::TWO;
+                                        const THREE = ONE + self::TWO;
 
-                        const B = 2;
-                    }'."\n                ",
+                                        const B = 2;
+                                    }
+                EOD."\n                ",
             ['elements' => ['const' => 'none']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        function D() {}
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        function D() {}
 
-                        function B4() {}
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        function D() {}
-                        function B4() {}
-                    }'."\n                ",
+                                        function B4() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        function D() {}
+                                        function B4() {}
+                                    }
+                EOD."\n                ",
             ['elements' => ['method' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        function A() {}
-                        function B() {}
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        function A() {}
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        function A() {}
+                                        function B() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        function A() {}
 
-                        function B() {}
-                    }'."\n                ",
+                                        function B() {}
+                                    }
+                EOD."\n                ",
             ['elements' => ['method' => 'none']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        private $x;
-                        private $y;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        private $x;
+                                        private $y;
 
-                        final function f1() {}
+                                        final function f1() {}
 
-                        final function f2() {}
-                     }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        private $x;
-                        private $y;
-                        final function f1() {}
-                        final function f2() {}
-                     }'."\n                ",
+                                        final function f2() {}
+                                     }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        private $x;
+                                        private $y;
+                                        final function f1() {}
+                                        final function f2() {}
+                                     }
+                EOD."\n                ",
             ['elements' => ['property' => 'none', 'method' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        const FOO = 1;
-                        const BAR = 2;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const FOO = 1;
+                                        const BAR = 2;
 
-                        function f1() {}
+                                        function f1() {}
 
-                        function f2() {}
-                     }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        const FOO = 1;
-                        const BAR = 2;
-                        function f1() {}
-                        function f2() {}
-                     }'."\n                ",
+                                        function f2() {}
+                                     }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const FOO = 1;
+                                        const BAR = 2;
+                                        function f1() {}
+                                        function f2() {}
+                                     }
+                EOD."\n                ",
             ['elements' => ['const' => 'none', 'method' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        const FOO = 1;
-                        const BAR = 2;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const FOO = 1;
+                                        const BAR = 2;
 
-                        public function f1() {}
+                                        public function f1() {}
 
-                        public function f2() {}
-                     }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        const FOO = 1;
-                        const BAR = 2;
-                        public function f1() {}
-                        public function f2() {}
-                     }'."\n                ",
+                                        public function f2() {}
+                                     }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const FOO = 1;
+                                        const BAR = 2;
+                                        public function f1() {}
+                                        public function f2() {}
+                                     }
+                EOD."\n                ",
             ['elements' => ['const' => 'none', 'method' => 'one']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        const B = 2;
-                        const FOO = 1;
-                        const BAR = 2;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const B = 2;
+                                        const FOO = 1;
+                                        const BAR = 2;
 
-                        /** @var int */
-                        const BAZ = 3;
+                                        /** @var int */
+                                        const BAZ = 3;
 
-                        /** @var int */
-                        const NEW = 4;
+                                        /** @var int */
+                                        const NEW = 4;
 
-                        /** @var int */
-                        const A = 5;
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        const B = 2;
-                        const FOO = 1;
+                                        /** @var int */
+                                        const A = 5;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        const B = 2;
+                                        const FOO = 1;
 
-                        const BAR = 2;
+                                        const BAR = 2;
 
-                        /** @var int */
-                        const BAZ = 3;
-                        /** @var int */
-                        const NEW = 4;
-                        /** @var int */
-                        const A = 5;
-                    }'."\n                ",
+                                        /** @var int */
+                                        const BAZ = 3;
+                                        /** @var int */
+                                        const NEW = 4;
+                                        /** @var int */
+                                        const A = 5;
+                                    }
+                EOD."\n                ",
             ['elements' => ['const' => 'only_if_meta']],
         ];
 
         yield [
-            '<?php
-                    class B
-                    {
-                        public $foo;
+            <<<'EOD'
+                <?php
+                                    class B
+                                    {
+                                        public $foo;
 
-                        /** @var string */
-                        public $bar;
-                        public $baz;
-                    }'."\n                ",
-            '<?php
-                    class B
-                    {
-                        public $foo;
-                        /** @var string */
-                        public $bar;
+                                        /** @var string */
+                                        public $bar;
+                                        public $baz;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class B
+                                    {
+                                        public $foo;
+                                        /** @var string */
+                                        public $bar;
 
-                        public $baz;
-                    }'."\n                ",
+                                        public $baz;
+                                    }
+                EOD."\n                ",
             ['elements' => ['property' => 'only_if_meta']],
         ];
 
         yield [
-            '<?php
-                    class C
-                    {
-                        public function f1() {}
-                        public function f2() {}
-                        public function f3() {}
+            <<<'EOD'
+                <?php
+                                    class C
+                                    {
+                                        public function f1() {}
+                                        public function f2() {}
+                                        public function f3() {}
 
-                        /** @return string */
-                        public function f4() {}
-                    }'."\n                ",
-            '<?php
-                    class C
-                    {
-                        public function f1() {}
+                                        /** @return string */
+                                        public function f4() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class C
+                                    {
+                                        public function f1() {}
 
-                        public function f2() {}
+                                        public function f2() {}
 
-                        public function f3() {}
-                        /** @return string */
-                        public function f4() {}
-                    }'."\n                ",
+                                        public function f3() {}
+                                        /** @return string */
+                                        public function f4() {}
+                                    }
+                EOD."\n                ",
             ['elements' => ['method' => 'only_if_meta']],
         ];
 
         yield [
-            '<?php
-                class Sample
-                {
-                    /** @var int */
-                    const ART = 1;
-                    const SCIENCE = 2;
+            <<<'EOD'
+                <?php
+                                class Sample
+                                {
+                                    /** @var int */
+                                    const ART = 1;
+                                    const SCIENCE = 2;
 
-                    /** @var string */
-                    public $a;
+                                    /** @var string */
+                                    public $a;
 
-                    /** @var int */
-                    public $b;
-                    public $c;
+                                    /** @var int */
+                                    public $b;
+                                    public $c;
 
-                    /**
-                     * @param string $a
-                     * @param int $b
-                     * @param int $c
-                     */
-                    public function __construct($a, $b, $c) {}
-                    public function __destruct() {}
-                }'."\n                ",
-            '<?php
-                class Sample
-                {
-                    /** @var int */
-                    const ART = 1;
+                                    /**
+                                     * @param string $a
+                                     * @param int $b
+                                     * @param int $c
+                                     */
+                                    public function __construct($a, $b, $c) {}
+                                    public function __destruct() {}
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class Sample
+                                {
+                                    /** @var int */
+                                    const ART = 1;
 
-                    const SCIENCE = 2;
-                    /** @var string */
-                    public $a;
-                    /** @var int */
-                    public $b;
+                                    const SCIENCE = 2;
+                                    /** @var string */
+                                    public $a;
+                                    /** @var int */
+                                    public $b;
 
-                    public $c;
+                                    public $c;
 
-                    /**
-                     * @param string $a
-                     * @param int $b
-                     * @param int $c
-                     */
-                    public function __construct($a, $b, $c) {}
+                                    /**
+                                     * @param string $a
+                                     * @param int $b
+                                     * @param int $c
+                                     */
+                                    public function __construct($a, $b, $c) {}
 
-                    public function __destruct() {}
-                }'."\n                ",
+                                    public function __destruct() {}
+                                }
+                EOD."\n                ",
             ['elements' => ['const' => 'only_if_meta', 'property' => 'only_if_meta', 'method' => 'only_if_meta']],
         ];
 
         yield [
-            '<?php
-                    class A
-                    {
-                        use A;
-                        use B;
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        use A;
+                                        use B;
 
-                        private $a = null;
-                        public $b = 1;
-                    }'."\n                ",
-            '<?php
-                    class A
-                    {
-                        use A;
+                                        private $a = null;
+                                        public $b = 1;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        use A;
 
-                        use B;
+                                        use B;
 
-                        private $a = null;
+                                        private $a = null;
 
-                        public $b = 1;
-                    }'."\n                ",
+                                        public $b = 1;
+                                    }
+                EOD."\n                ",
             ['elements' => ['property' => 'none', 'trait_import' => 'none']],
         ];
 
         yield [
-            '<?php
-                class Foo {
-    public function H1(){}
+            <<<'EOD'
+                <?php
+                                class Foo {
+                    public function H1(){}
 
-    /**  */
-    public const BAR = 123;
+                    /**  */
+                    public const BAR = 123;
 
-    /**  */
-    private const BAZ = "a";
-                }',
-            '<?php
-                class Foo {
-
-
-
-    public function H1(){}
-
-
-    /**  */
-    public const BAR = 123;
-    /**  */
-    private const BAZ = "a";
+                    /**  */
+                    private const BAZ = "a";
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo {
 
 
-                }',
+
+                    public function H1(){}
+
+
+                    /**  */
+                    public const BAR = 123;
+                    /**  */
+                    private const BAZ = "a";
+
+
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-            class Foo {
-                private ?int $foo;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private ?int $foo;
 
-                protected string $bar;
+                                protected string $bar;
 
-                public iterable $baz;
+                                public iterable $baz;
 
-                var ? Foo\Bar $qux;
-            }',
-            '<?php
-            class Foo {
-                private ?int $foo;
-                protected string $bar;
-                public iterable $baz;
-                var ? Foo\Bar $qux;
-            }',
+                                var ? Foo\Bar $qux;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private ?int $foo;
+                                protected string $bar;
+                                public iterable $baz;
+                                var ? Foo\Bar $qux;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-            class Foo {
-                private array $foo;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private array $foo;
 
-                private array $bar;
-            }',
-            '<?php
-            class Foo {
-                private array $foo;
-                private array $bar;
-            }',
+                                private array $bar;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private array $foo;
+                                private array $bar;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-            class Entity
-            {
-                /**
-                 * @ORM\Column(name="one", type="text")
-                 */
-                private string $one;
+            <<<'EOD'
+                <?php
+                            class Entity
+                            {
+                                /**
+                                 * @ORM\Column(name="one", type="text")
+                                 */
+                                private string $one;
 
-                /**
-                 * @ORM\Column(name="two", type="text")
-                 */
-                private string $two;
-                private string $three;
-                private string $four;
-                private string $five;
-            }',
-            '<?php
-            class Entity
-            {
-                /**
-                 * @ORM\Column(name="one", type="text")
-                 */
-                private string $one;
-                /**
-                 * @ORM\Column(name="two", type="text")
-                 */
-                private string $two;
+                                /**
+                                 * @ORM\Column(name="two", type="text")
+                                 */
+                                private string $two;
+                                private string $three;
+                                private string $four;
+                                private string $five;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Entity
+                            {
+                                /**
+                                 * @ORM\Column(name="one", type="text")
+                                 */
+                                private string $one;
+                                /**
+                                 * @ORM\Column(name="two", type="text")
+                                 */
+                                private string $two;
 
-                private string $three;
+                                private string $three;
 
-                private string $four;
+                                private string $four;
 
-                private string $five;
-            }',
+                                private string $five;
+                            }
+                EOD,
             ['elements' => ['property' => 'only_if_meta']],
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    use SomeTrait1;
-    use SomeTrait2;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use SomeTrait1;
+                    use SomeTrait2;
 
-    public function Bar(){}
-}
-',
-            '<?php
-class Foo
-{
-    use SomeTrait1;
+                    public function Bar(){}
+                }
 
-    use SomeTrait2;
-    public function Bar(){}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    use SomeTrait1;
+
+                    use SomeTrait2;
+                    public function Bar(){}
+                }
+
+                EOD,
         ];
     }
 
@@ -1720,214 +1976,246 @@ class Foo
     public static function provideFix80Cases(): iterable
     {
         yield 'attributes' => [
-            '<?php
-class User1
-{
-    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
-    private $id;
+            <<<'EOD'
+                <?php
+                class User1
+                {
+                    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+                    private $id;
 
-    #[ORM\Column("string", ORM\Column::UNIQUE)]
-    #[Assert\String()]
-    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
-    private $email;
+                    #[ORM\Column("string", ORM\Column::UNIQUE)]
+                    #[Assert\String()]
+                    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+                    private $email;
 
-    #[Assert\String()]
-    private $name;
-}',
-            '<?php
-class User1
-{
+                    #[Assert\String()]
+                    private $name;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class User1
+                {
 
-    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
-
-
-    private $id;
-    #[ORM\Column("string", ORM\Column::UNIQUE)]
-    #[Assert\String()]
-    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
-    private $email;
+                    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
 
 
-    #[Assert\String()]
+                    private $id;
+                    #[ORM\Column("string", ORM\Column::UNIQUE)]
+                    #[Assert\String()]
+                    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+                    private $email;
 
 
-    private $name;
+                    #[Assert\String()]
+
+
+                    private $name;
 
 
 
-}',
+                }
+                EOD,
         ];
 
         yield 'attributes minimal' => [
-            '<?php
-class User2{
-#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
- private $id;
-}',
-            '<?php
-class User2{#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue] private $id;}',
+            <<<'EOD'
+                <?php
+                class User2{
+                #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+                 private $id;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class User2{#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue] private $id;}
+                EOD,
         ];
 
         yield 'attribute block' => [
-            '<?php
-class User3
-{
-    private $id;
+            <<<'EOD'
+                <?php
+                class User3
+                {
+                    private $id;
 
-    #[ORM\Column("string")]
-    #[Assert\Email(["message" => "Foo"])]
- private $email;
-}',
+                    #[ORM\Column("string")]
+                    #[Assert\Email(["message" => "Foo"])]
+                 private $email;
+                }
+                EOD,
 
-            '<?php
-class User3
-{
-    private $id;
-    #[ORM\Column("string")]
-    #[Assert\Email(["message" => "Foo"])] private $email;
-}',
+            <<<'EOD'
+                <?php
+                class User3
+                {
+                    private $id;
+                    #[ORM\Column("string")]
+                    #[Assert\Email(["message" => "Foo"])] private $email;
+                }
+                EOD,
         ];
 
         yield 'constructor property promotion' => [
-            '<?php
-            class Foo {
-                private array $foo;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private array $foo;
 
-                private array $bar;
+                                private array $bar;
 
-                public function __construct(
-                    public float $x = 0.0,
-                    protected float $y = 0.0,
-                    private float $z = 0.0,
-                ) {}
-            }',
-            '<?php
-            class Foo {
-                private array $foo;
-                private array $bar;
-                public function __construct(
-                    public float $x = 0.0,
-                    protected float $y = 0.0,
-                    private float $z = 0.0,
-                ) {}
-            }',
+                                public function __construct(
+                                    public float $x = 0.0,
+                                    protected float $y = 0.0,
+                                    private float $z = 0.0,
+                                ) {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private array $foo;
+                                private array $bar;
+                                public function __construct(
+                                    public float $x = 0.0,
+                                    protected float $y = 0.0,
+                                    private float $z = 0.0,
+                                ) {}
+                            }
+                EOD,
         ];
 
         yield 'typed properties' => [
-            '<?php
-            class Foo {
-                private static int | float | null $a;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private static int | float | null $a;
 
-                private static int | float | null $b;
+                                private static int | float | null $b;
 
-                private int | float | null $c;
+                                private int | float | null $c;
 
-                private int | float | null $d;
-            }',
-            '<?php
-            class Foo {
-                private static int | float | null $a;
-                private static int | float | null $b;
-                private int | float | null $c;
-                private int | float | null $d;
-            }',
+                                private int | float | null $d;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private static int | float | null $a;
+                                private static int | float | null $b;
+                                private int | float | null $c;
+                                private int | float | null $d;
+                            }
+                EOD,
         ];
 
         yield 'attributes with conditional spacing' => [
-            '<?php
-class User
-{
-    private $id;
+            <<<'EOD'
+                <?php
+                class User
+                {
+                    private $id;
 
-    #[Assert\String()]
-    private $name;
-    private $email;
-}
-',
-            '<?php
-class User
-{
+                    #[Assert\String()]
+                    private $name;
+                    private $email;
+                }
 
-    private $id;
-    #[Assert\String()]
-    private $name;
+                EOD,
+            <<<'EOD'
+                <?php
+                class User
+                {
 
-    private $email;
-}
-',
+                    private $id;
+                    #[Assert\String()]
+                    private $name;
+
+                    private $email;
+                }
+
+                EOD,
             ['elements' => ['property' => 'only_if_meta']],
         ];
 
         yield 'mixed attributes and phpdoc with conditional spacing' => [
-            '<?php
-class User
-{
-    private $id;
+            <<<'EOD'
+                <?php
+                class User
+                {
+                    private $id;
 
-    /** @var string */
-    #[Assert\Email(["message" => "Foo"])]
-    private $email;
+                    /** @var string */
+                    #[Assert\Email(["message" => "Foo"])]
+                    private $email;
 
-    #[Assert\String()]
-    #[ORM\Column()]
-    private $place;
+                    #[Assert\String()]
+                    #[ORM\Column()]
+                    private $place;
 
-    #[ORM\Column()]
-    /** @var string */
-    private $hash;
+                    #[ORM\Column()]
+                    /** @var string */
+                    private $hash;
 
-    /** @var string **/
-    #[ORM\Column()]
-    /** @internal */
-    private $updatedAt;
-}
-',
-            '<?php
-class User
-{
+                    /** @var string **/
+                    #[ORM\Column()]
+                    /** @internal */
+                    private $updatedAt;
+                }
 
-    private $id;
-    /** @var string */
-    #[Assert\Email(["message" => "Foo"])]
-    private $email;
-    #[Assert\String()]
-    #[ORM\Column()]
-    private $place;
-    #[ORM\Column()]
-    /** @var string */
-    private $hash;
+                EOD,
+            <<<'EOD'
+                <?php
+                class User
+                {
+
+                    private $id;
+                    /** @var string */
+                    #[Assert\Email(["message" => "Foo"])]
+                    private $email;
+                    #[Assert\String()]
+                    #[ORM\Column()]
+                    private $place;
+                    #[ORM\Column()]
+                    /** @var string */
+                    private $hash;
 
 
-    /** @var string **/
-    #[ORM\Column()]
-    /** @internal */
-    private $updatedAt;
-}
-',
+                    /** @var string **/
+                    #[ORM\Column()]
+                    /** @internal */
+                    private $updatedAt;
+                }
+
+                EOD,
             ['elements' => ['property' => 'only_if_meta']],
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    #[Assert\Email(["message" => "Foo"])]
-    private $email;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    #[Assert\Email(["message" => "Foo"])]
+                    private $email;
 
-    private $foo1; #1
-    private $foo2; /* @2 */
-}',
-            '<?php
-class Foo
-{
-    #[Assert\Email(["message" => "Foo"])]
+                    private $foo1; #1
+                    private $foo2; /* @2 */
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    #[Assert\Email(["message" => "Foo"])]
 
-    private $email;
+                    private $email;
 
-    private $foo1; #1
+                    private $foo1; #1
 
-    private $foo2; /* @2 */
-}',
+                    private $foo2; /* @2 */
+                }
+                EOD,
             ['elements' => ['property' => 'none']],
         ];
     }
@@ -1949,126 +2237,142 @@ class Foo
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php class A {
-    public int $a0;
+            <<<'EOD'
+                <?php class A {
+                    public int $a0;
 
-    public readonly int $a1;
+                    public readonly int $a1;
 
-    readonly public int $a2;
+                    readonly public int $a2;
 
-    readonly int $a3;
+                    readonly int $a3;
 
-    public int $a4;
-}',
-            '<?php class A {
-    public int $a0;
-    public readonly int $a1;
-    readonly public int $a2;
-    readonly int $a3;
-    public int $a4;
-}',
+                    public int $a4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A {
+                    public int $a0;
+                    public readonly int $a1;
+                    readonly public int $a2;
+                    readonly int $a3;
+                    public int $a4;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    final public const B1 = "1";
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final public const B1 = "1";
 
-    public final const B2 = "2";
+                    public final const B2 = "2";
 
-    final const B3 = "3";
-}
-',
-            '<?php
-class Foo
-{
-    final public const B1 = "1";
-    public final const B2 = "2";
+                    final const B3 = "3";
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final public const B1 = "1";
+                    public final const B2 = "2";
 
 
-    final const B3 = "3";
+                    final const B3 = "3";
 
 
-}
-',
+                }
+
+                EOD,
         ];
 
         yield 'intersection properties' => [
-            '<?php
-            class Foo {
-                private static Bar & Something & Baz $a;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private static Bar & Something & Baz $a;
 
-                private static Bar & Something & Baz $b;
+                                private static Bar & Something & Baz $b;
 
-                private Bar & Something & Baz $c;
+                                private Bar & Something & Baz $c;
 
-                private Bar & Something & Baz $d;
-            }',
-            '<?php
-            class Foo {
-                private static Bar & Something & Baz $a;
-                private static Bar & Something & Baz $b;
-                private Bar & Something & Baz $c;
-                private Bar & Something & Baz $d;
-            }',
+                                private Bar & Something & Baz $d;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private static Bar & Something & Baz $a;
+                                private static Bar & Something & Baz $b;
+                                private Bar & Something & Baz $c;
+                                private Bar & Something & Baz $d;
+                            }
+                EOD,
         ];
 
-        $input = '<?php
-enum Cards: string
-{
-    protected const Deck = "d.d";
+        $input = <<<'EOD'
+            <?php
+            enum Cards: string
+            {
+                protected const Deck = "d.d";
 
 
 
-    protected const Pack = "p.p";
+                protected const Pack = "p.p";
 
-    case Hearts = "H";
-
-
-    case Spades = "S";
+                case Hearts = "H";
 
 
+                case Spades = "S";
 
 
-    case Diamonds = "D";
 
 
-    case Clubs = "C";
-    protected function test() {
-        echo 1;
-    }
+                case Diamonds = "D";
 
 
-    protected function test2() {
-        echo 2;
-    }
-}'."\n            ";
+                case Clubs = "C";
+                protected function test() {
+                    echo 1;
+                }
+
+
+                protected function test2() {
+                    echo 2;
+                }
+            }
+            EOD."\n            ";
 
         yield [
-            '<?php
-enum Cards: string
-{
-    protected const Deck = "d.d";
+            <<<'EOD'
+                <?php
+                enum Cards: string
+                {
+                    protected const Deck = "d.d";
 
-    protected const Pack = "p.p";
+                    protected const Pack = "p.p";
 
-    case Hearts = "H";
+                    case Hearts = "H";
 
-    case Spades = "S";
+                    case Spades = "S";
 
-    case Diamonds = "D";
+                    case Diamonds = "D";
 
-    case Clubs = "C";
+                    case Clubs = "C";
 
-    protected function test() {
-        echo 1;
-    }
+                    protected function test() {
+                        echo 1;
+                    }
 
-    protected function test2() {
-        echo 2;
-    }
-}'."\n            ",
+                    protected function test2() {
+                        echo 2;
+                    }
+                }
+                EOD."\n            ",
             $input,
             ['elements' => [
                 'const' => 'one',
@@ -2078,25 +2382,27 @@ enum Cards: string
         ];
 
         yield [
-            '<?php
-enum Cards: string
-{
-    protected const Deck = "d.d";
-    protected const Pack = "p.p";
+            <<<'EOD'
+                <?php
+                enum Cards: string
+                {
+                    protected const Deck = "d.d";
+                    protected const Pack = "p.p";
 
-    case Hearts = "H";
-    case Spades = "S";
-    case Diamonds = "D";
-    case Clubs = "C";
+                    case Hearts = "H";
+                    case Spades = "S";
+                    case Diamonds = "D";
+                    case Clubs = "C";
 
-    protected function test() {
-        echo 1;
-    }
+                    protected function test() {
+                        echo 1;
+                    }
 
-    protected function test2() {
-        echo 2;
-    }
-}'."\n            ",
+                    protected function test2() {
+                        echo 2;
+                    }
+                }
+                EOD."\n            ",
             $input,
             ['elements' => [
                 'const' => 'none',
@@ -2119,25 +2425,31 @@ enum Cards: string
     public static function provideFix82Cases(): iterable
     {
         yield [
-            '<?php
-            trait Foo {
-                const Bar = 1;
+            <<<'EOD'
+                <?php
+                            trait Foo {
+                                const Bar = 1;
 
-                const Baz = 2;
-            }',
-            '<?php
-            trait Foo {
-                const Bar = 1;
-                const Baz = 2;
-            }',
+                                const Baz = 2;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            trait Foo {
+                                const Bar = 1;
+                                const Baz = 2;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-            class X
-            {
-                private A|(B&C) $propertyName;
-            }',
+            <<<'EOD'
+                <?php
+                            class X
+                            {
+                                private A|(B&C) $propertyName;
+                            }
+                EOD,
         ];
     }
 
@@ -2206,72 +2518,88 @@ enum Cards: string
     {
         yield [
             4,
-            '<?php
-                    //ui
+            <<<'EOD'
+                <?php
+                                    //ui
 
-                    //j1
-                    //k2'."\n                ",
+                                    //j1
+                                    //k2
+                EOD."\n                ",
             6,
         ];
 
         yield [
             4,
-            '<?php
-                    //ui
+            <<<'EOD'
+                <?php
+                                    //ui
 
-                    //j1
-                    //k2'."\n                ",
+                                    //j1
+                                    //k2
+                EOD."\n                ",
             5,
         ];
 
         yield [
             4,
-            '<?php
-                    /**/
+            <<<'EOD'
+                <?php
+                                    /**/
 
-                    //j1
-                    //k2'."\n                ",
+                                    //j1
+                                    //k2
+                EOD."\n                ",
             6,
         ];
 
         yield [
             4,
-            '<?php
-                    $a;//j
-                    //k'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a;//j
+                                    //k
+                EOD."\n                ",
             6,
         ];
 
         yield [
             2,
-            '<?php
-                    //a'."\n                ",
+            <<<'EOD'
+                <?php
+                                    //a
+                EOD."\n                ",
             2,
         ];
 
         yield [
             2,
-            '<?php
-                    //b
-                    //c'."\n                ",
+            <<<'EOD'
+                <?php
+                                    //b
+                                    //c
+                EOD."\n                ",
             2,
         ];
 
         yield [
             2,
-            '<?php
-                    //d
-                    //e'."\n                ",
+            <<<'EOD'
+                <?php
+                                    //d
+                                    //e
+                EOD."\n                ",
             4,
         ];
 
         yield [
             2,
-            '<?php
-                    /**/
-                    //f
-                    //g
-                    //h'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**/
+                                    //f
+                                    //g
+                                    //h
+                EOD."\n                ",
             8,
         ];
     }

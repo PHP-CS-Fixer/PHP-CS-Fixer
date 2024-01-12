@@ -53,19 +53,21 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
                 88 => CT::T_FIRST_CLASS_CALLABLE,
                 101 => CT::T_FIRST_CLASS_CALLABLE,
             ],
-            '<?php
-strlen(...);
-$closure(...);
-$invokableObject(...);
-$obj->method(...);
-$obj->$methodStr(...);
-($obj->property)(...);
-Foo::method(...);
-$classStr::$methodStr(...);
-self::{$complex . $expression}(...);
-\'strlen\'(...);
-[$obj, \'method\'](...);
-[Foo::class, \'method\'](...) ?>',
+            <<<'EOD'
+                <?php
+                strlen(...);
+                $closure(...);
+                $invokableObject(...);
+                $obj->method(...);
+                $obj->$methodStr(...);
+                ($obj->property)(...);
+                Foo::method(...);
+                $classStr::$methodStr(...);
+                self::{$complex . $expression}(...);
+                'strlen'(...);
+                [$obj, 'method'](...);
+                [Foo::class, 'method'](...) ?>
+                EOD,
         ];
 
         yield 'comments and spacing' => [
@@ -76,24 +78,28 @@ self::{$complex . $expression}(...);
                 28 => CT::T_FIRST_CLASS_CALLABLE,
                 40 => CT::T_FIRST_CLASS_CALLABLE,
             ],
-            '<?php
-strlen(/* */.../* */);
-$closure(   ...);
-$invokableObject(...  );
-$obj->method(  ...  );
-$obj->$methodStr(  /* */  ... /* */  );'."\n            ",
+            <<<'EOD'
+                <?php
+                strlen(/* */.../* */);
+                $closure(   ...);
+                $invokableObject(...  );
+                $obj->method(  ...  );
+                $obj->$methodStr(  /* */  ... /* */  );
+                EOD."\n            ",
         ];
 
         yield 'not cases' => [
             [],
-            '<?php
-                array_unshift($types, ...$nulls);
-                array_unshift(...$nulls, 1);
-                foo(...$args, named: $arg);
-                foo(named: $arg, ...$args);
-                foo(...$nulls);
-                $fruits = ["banana", "orange", ...$parts, "watermelon"];
-                $a = [...$array1, ...$array2];'."\n            ",
+            <<<'EOD'
+                <?php
+                                array_unshift($types, ...$nulls);
+                                array_unshift(...$nulls, 1);
+                                foo(...$args, named: $arg);
+                                foo(named: $arg, ...$args);
+                                foo(...$nulls);
+                                $fruits = ["banana", "orange", ...$parts, "watermelon"];
+                                $a = [...$array1, ...$array2];
+                EOD."\n            ",
         ];
     }
 }

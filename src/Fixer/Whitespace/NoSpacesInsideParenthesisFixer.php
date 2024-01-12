@@ -38,10 +38,12 @@ final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements
             [
                 new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
-                    "<?php
-function foo( \$bar, \$baz )
-{
-}\n"
+                    <<<EOD
+                        <?php
+                        function foo( \$bar, \$baz )
+                        {
+                        }\n
+                        EOD
                 ),
             ]
         );

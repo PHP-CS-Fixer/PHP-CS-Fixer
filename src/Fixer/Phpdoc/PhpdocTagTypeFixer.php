@@ -30,15 +30,17 @@ use Symfony\Component\OptionsResolver\Options;
 
 final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const TAG_REGEX = '/^(?:
-        (?<tag>
-            (?:@(?<tag_name>.+?)(?:\s.+)?)
-        )
-        |
-        {(?<inlined_tag>
-            (?:@(?<inlined_tag_name>.+?)(?:\s.+)?)
-        )}
-    )$/x';
+    private const TAG_REGEX = <<<'EOD'
+        /^(?:
+                (?<tag>
+                    (?:@(?<tag_name>.+?)(?:\s.+)?)
+                )
+                |
+                {(?<inlined_tag>
+                    (?:@(?<inlined_tag_name>.+?)(?:\s.+)?)
+                )}
+            )$/x
+        EOD;
 
     public function isCandidate(Tokens $tokens): bool
     {

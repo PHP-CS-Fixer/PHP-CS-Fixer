@@ -36,141 +36,151 @@ final class PhpUnitDedicateAssertInternalTypeFixerTest extends AbstractFixerTest
     public static function provideFixCases(): iterable
     {
         yield 'skip cases' => [
-            '<?php
-final class MyTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function testMe()
-    {
-        $this->assertInternalType(gettype($expectedVar), $var);
-        $this->assertNotInternalType(gettype($expectedVar), $var);
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function testMe()
+                    {
+                        $this->assertInternalType(gettype($expectedVar), $var);
+                        $this->assertNotInternalType(gettype($expectedVar), $var);
 
-        $this->assertInternalType("foo", $var);
-        $this->assertNotInternalType("bar", $var);
+                        $this->assertInternalType("foo", $var);
+                        $this->assertNotInternalType("bar", $var);
 
-        $this->assertInternalType();
-        $this->assertNotInternalType();
+                        $this->assertInternalType();
+                        $this->assertNotInternalType();
 
-        $this->assertInternalType("array" . "foo", $var);
-        $this->assertNotInternalType(\'bool\' . "bar", $var);
-    }
-}
-',
+                        $this->assertInternalType("array" . "foo", $var);
+                        $this->assertNotInternalType('bool' . "bar", $var);
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'expected normal cases' => [
-            '<?php
-final class MyTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function testMe()
-    {
-        $this->assertIsArray($var);
-        $this->assertIsBool($var);
-        $this->assertIsBool($var);
-        $this->assertIsFloat($var);
-        $this->assertIsFloat($var);
-        $this->assertIsInt($var);
-        $this->assertIsInt($var);
-        $this->assertNull($var);
-        $this->assertIsNumeric($var);
-        $this->assertIsObject($var);
-        $this->assertIsFloat($var);
-        $this->assertIsResource($var);
-        $this->assertIsString($var);
-        $this->assertIsScalar($var);
-        $this->assertIsCallable($var);
-        $this->assertIsIterable($var);
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function testMe()
+                    {
+                        $this->assertIsArray($var);
+                        $this->assertIsBool($var);
+                        $this->assertIsBool($var);
+                        $this->assertIsFloat($var);
+                        $this->assertIsFloat($var);
+                        $this->assertIsInt($var);
+                        $this->assertIsInt($var);
+                        $this->assertNull($var);
+                        $this->assertIsNumeric($var);
+                        $this->assertIsObject($var);
+                        $this->assertIsFloat($var);
+                        $this->assertIsResource($var);
+                        $this->assertIsString($var);
+                        $this->assertIsScalar($var);
+                        $this->assertIsCallable($var);
+                        $this->assertIsIterable($var);
 
-        $this->assertIsNotArray($var);
-        $this->assertIsNotBool($var);
-        $this->assertIsNotBool($var);
-        $this->assertIsNotFloat($var);
-        $this->assertIsNotFloat($var);
-        $this->assertIsNotInt($var);
-        $this->assertIsNotInt($var);
-        $this->assertNotNull($var);
-        $this->assertIsNotNumeric($var);
-        $this->assertIsNotObject($var);
-        $this->assertIsNotFloat($var);
-        $this->assertIsNotResource($var);
-        $this->assertIsNotString($var);
-        $this->assertIsNotScalar($var);
-        $this->assertIsNotCallable($var);
-        $this->assertIsNotIterable($var);
-    }
-}
-',
-            '<?php
-final class MyTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function testMe()
-    {
-        $this->assertInternalType(\'array\', $var);
-        $this->assertInternalType("boolean", $var);
-        $this->assertInternalType("bool", $var);
-        $this->assertInternalType("double", $var);
-        $this->assertInternalType("float", $var);
-        $this->assertInternalType("integer", $var);
-        $this->assertInternalType("int", $var);
-        $this->assertInternalType("null", $var);
-        $this->assertInternalType("numeric", $var);
-        $this->assertInternalType("object", $var);
-        $this->assertInternalType("real", $var);
-        $this->assertInternalType("resource", $var);
-        $this->assertInternalType("string", $var);
-        $this->assertInternalType("scalar", $var);
-        $this->assertInternalType("callable", $var);
-        $this->assertInternalType("iterable", $var);
+                        $this->assertIsNotArray($var);
+                        $this->assertIsNotBool($var);
+                        $this->assertIsNotBool($var);
+                        $this->assertIsNotFloat($var);
+                        $this->assertIsNotFloat($var);
+                        $this->assertIsNotInt($var);
+                        $this->assertIsNotInt($var);
+                        $this->assertNotNull($var);
+                        $this->assertIsNotNumeric($var);
+                        $this->assertIsNotObject($var);
+                        $this->assertIsNotFloat($var);
+                        $this->assertIsNotResource($var);
+                        $this->assertIsNotString($var);
+                        $this->assertIsNotScalar($var);
+                        $this->assertIsNotCallable($var);
+                        $this->assertIsNotIterable($var);
+                    }
+                }
 
-        $this->assertNotInternalType("array", $var);
-        $this->assertNotInternalType("boolean", $var);
-        $this->assertNotInternalType("bool", $var);
-        $this->assertNotInternalType("double", $var);
-        $this->assertNotInternalType("float", $var);
-        $this->assertNotInternalType("integer", $var);
-        $this->assertNotInternalType("int", $var);
-        $this->assertNotInternalType("null", $var);
-        $this->assertNotInternalType("numeric", $var);
-        $this->assertNotInternalType("object", $var);
-        $this->assertNotInternalType("real", $var);
-        $this->assertNotInternalType("resource", $var);
-        $this->assertNotInternalType("string", $var);
-        $this->assertNotInternalType("scalar", $var);
-        $this->assertNotInternalType("callable", $var);
-        $this->assertNotInternalType("iterable", $var);
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function testMe()
+                    {
+                        $this->assertInternalType('array', $var);
+                        $this->assertInternalType("boolean", $var);
+                        $this->assertInternalType("bool", $var);
+                        $this->assertInternalType("double", $var);
+                        $this->assertInternalType("float", $var);
+                        $this->assertInternalType("integer", $var);
+                        $this->assertInternalType("int", $var);
+                        $this->assertInternalType("null", $var);
+                        $this->assertInternalType("numeric", $var);
+                        $this->assertInternalType("object", $var);
+                        $this->assertInternalType("real", $var);
+                        $this->assertInternalType("resource", $var);
+                        $this->assertInternalType("string", $var);
+                        $this->assertInternalType("scalar", $var);
+                        $this->assertInternalType("callable", $var);
+                        $this->assertInternalType("iterable", $var);
+
+                        $this->assertNotInternalType("array", $var);
+                        $this->assertNotInternalType("boolean", $var);
+                        $this->assertNotInternalType("bool", $var);
+                        $this->assertNotInternalType("double", $var);
+                        $this->assertNotInternalType("float", $var);
+                        $this->assertNotInternalType("integer", $var);
+                        $this->assertNotInternalType("int", $var);
+                        $this->assertNotInternalType("null", $var);
+                        $this->assertNotInternalType("numeric", $var);
+                        $this->assertNotInternalType("object", $var);
+                        $this->assertNotInternalType("real", $var);
+                        $this->assertNotInternalType("resource", $var);
+                        $this->assertNotInternalType("string", $var);
+                        $this->assertNotInternalType("scalar", $var);
+                        $this->assertNotInternalType("callable", $var);
+                        $this->assertNotInternalType("iterable", $var);
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'false positive cases' => [
-            '<?php
-final class MyTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function testMe()
-    {
-        $this->assertInternalType = 42;
-        $this->assertNotInternalType = 43;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function testMe()
+                    {
+                        $this->assertInternalType = 42;
+                        $this->assertNotInternalType = 43;
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'anonymous class false positive case' => [
-            '<?php
-final class MyTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function testMe()
-    {
-        $class = new class {
-            private function assertInternalType()
-            {}
-            private function foo(){
-                $this->assertInternalType("array", $var);
-            }
-        };
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function testMe()
+                    {
+                        $class = new class {
+                            private function assertInternalType()
+                            {}
+                            private function foo(){
+                                $this->assertInternalType("array", $var);
+                            }
+                        };
+                    }
+                }
+
+                EOD,
         ];
     }
 }

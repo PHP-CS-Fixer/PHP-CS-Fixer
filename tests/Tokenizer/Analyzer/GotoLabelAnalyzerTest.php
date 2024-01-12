@@ -49,54 +49,66 @@ final class GotoLabelAnalyzerTest extends TestCase
     public static function provideGotoLabelCases(): iterable
     {
         yield 'no candidates' => [
-            '<?php
-                    $a = \InvalidArgumentException::class;
-                    $this->fixer->configure($legacy ? [$statement] : [1]);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = \InvalidArgumentException::class;
+                                    $this->fixer->configure($legacy ? [$statement] : [1]);
+                EOD."\n                ",
             [],
         ];
 
         yield 'after php tag' => [
-            '<?php
-                    beginning:
-                    echo $guard?1:2;',
+            <<<'EOD'
+                <?php
+                                    beginning:
+                                    echo $guard?1:2;
+                EOD,
             [3],
         ];
 
         yield 'after closing brace' => [
-            '<?php
-                    function A(){}
-                    beginning:
-                    echo $guard?1:2;',
+            <<<'EOD'
+                <?php
+                                    function A(){}
+                                    beginning:
+                                    echo $guard?1:2;
+                EOD,
             [11],
         ];
 
         yield 'after statement' => [
-            '<?php
-                    echo 1;
-                    beginning:
-                    echo $guard?1:2;',
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                                    beginning:
+                                    echo $guard?1:2;
+                EOD,
             [8],
         ];
 
         yield 'after opening brace' => [
-            '<?php
-                    echo 1;
-                    {
-                        beginning:
-                        echo $guard?1:2;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                                    {
+                                        beginning:
+                                        echo $guard?1:2;
+                                    }
+                EOD."\n                ",
             [10],
         ];
 
         yield 'after use statements' => [
-            '<?php
-use Bar1;
-use const Bar2;
-use function Bar3;
-Bar1:
-Bar2:
-Bar3:
-',
+            <<<'EOD'
+                <?php
+                use Bar1;
+                use const Bar2;
+                use function Bar3;
+                Bar1:
+                Bar2:
+                Bar3:
+
+                EOD,
             [21, 24, 27],
         ];
     }

@@ -87,147 +87,171 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
             'An empty line feed must precede any configured statement.',
             [
                 new CodeSample(
-                    '<?php
-function A() {
-    echo 1;
-    return 1;
-}
-'
+                    <<<'EOD'
+                        <?php
+                        function A() {
+                            echo 1;
+                            return 1;
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 42:
-        $bar->process();
-        break;
-    case 44:
-        break;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        switch ($foo) {
+                            case 42:
+                                $bar->process();
+                                break;
+                            case 44:
+                                break;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['break'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-foreach ($foo as $bar) {
-    if ($bar->isTired()) {
-        $bar->sleep();
-        continue;
-    }
-}
-',
+                    <<<'EOD'
+                        <?php
+                        foreach ($foo as $bar) {
+                            if ($bar->isTired()) {
+                                $bar->sleep();
+                                continue;
+                            }
+                        }
+
+                        EOD,
                     [
                         'statements' => ['continue'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$i = 0;
-do {
-    echo $i;
-} while ($i > 0);
-',
+                    <<<'EOD'
+                        <?php
+                        $i = 0;
+                        do {
+                            echo $i;
+                        } while ($i > 0);
+
+                        EOD,
                     [
                         'statements' => ['do'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-if ($foo === false) {
-    exit(0);
-} else {
-    $bar = 9000;
-    exit(1);
-}
-',
+                    <<<'EOD'
+                        <?php
+                        if ($foo === false) {
+                            exit(0);
+                        } else {
+                            $bar = 9000;
+                            exit(1);
+                        }
+
+                        EOD,
                     [
                         'statements' => ['exit'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-a:
+                    <<<'EOD'
+                        <?php
+                        a:
 
-if ($foo === false) {
-    goto a;
-} else {
-    $bar = 9000;
-    goto b;
-}
-',
+                        if ($foo === false) {
+                            goto a;
+                        } else {
+                            $bar = 9000;
+                            goto b;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['goto'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$a = 9000;
-if (true) {
-    $foo = $bar;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        $a = 9000;
+                        if (true) {
+                            $foo = $bar;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['if'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-if (true) {
-    $foo = $bar;
-    return;
-}
-',
+                        if (true) {
+                            $foo = $bar;
+                            return;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['return'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$a = 9000;
-switch ($a) {
-    case 42:
-        break;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        $a = 9000;
+                        switch ($a) {
+                            case 42:
+                                break;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['switch'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-if (null === $a) {
-    $foo->bar();
-    throw new \UnexpectedValueException("A cannot be null.");
-}
-',
+                    <<<'EOD'
+                        <?php
+                        if (null === $a) {
+                            $foo->bar();
+                            throw new \UnexpectedValueException("A cannot be null.");
+                        }
+
+                        EOD,
                     [
                         'statements' => ['throw'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$a = 9000;
-try {
-    $foo->bar();
-} catch (\Exception $exception) {
-    $a = -1;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        $a = 9000;
+                        try {
+                            $foo->bar();
+                        } catch (\Exception $exception) {
+                            $a = -1;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['try'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-function getValues() {
-    yield 1;
-    yield 2;
-    // comment
-    yield 3;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        function getValues() {
+                            yield 1;
+                            yield 2;
+                            // comment
+                            yield 3;
+                        }
+
+                        EOD,
                     [
                         'statements' => ['yield'],
                     ]

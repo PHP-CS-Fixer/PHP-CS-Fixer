@@ -37,15 +37,17 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
             'There should not be blank lines between docblock and the documented element.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-/**
- * This is the bar class.
- */
+                        /**
+                         * This is the bar class.
+                         */
 
 
-class Bar {}
-'
+                        class Bar {}
+
+                        EOD
                 ),
             ]
         );

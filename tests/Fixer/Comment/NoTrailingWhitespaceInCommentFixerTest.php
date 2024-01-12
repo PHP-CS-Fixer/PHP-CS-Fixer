@@ -36,108 +36,194 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-        /*
-                //
-                //
+            <<<'EOD'
+                <?php
+                        /*
+                                //
+                                //
 
-                //
-                //
-                //
+                                //
+                                //
+                                //
 
-                //
-                //
+                                //
+                                //
 
-                //
-        */'."\n                ",
-            '<?php
-        /*
-                //
-                //'."\n                ".'
-                //
-                //
-                //'."\n                ".'
-                //
-                //'."\n                ".'
-                //
-        */'."\n                ",
+                                //
+                        */
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                        /*
+                                //
+                                //
+                EOD."\n                ".<<<'EOD'
+
+                                //
+                                //
+                                //
+                EOD."\n                ".<<<'EOD'
+
+                                //
+                                //
+                EOD."\n                ".<<<'EOD'
+
+                                //
+                        */
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-    // This is'.'
-    //'.'
-    //'.'
-    // multiline comment.
-    //',
-            '<?php
-    // This is'.' '.'
-    //'.' '.'
-    //'.'    '.'
-    // multiline comment.'.' '.'
-    //'.' ',
+            <<<'EOD'
+                <?php
+                    // This is
+                EOD.<<<'EOD'
+
+                    //
+                EOD.<<<'EOD'
+
+                    //
+                EOD.<<<'EOD'
+
+                    // multiline comment.
+                    //
+                EOD,
+            <<<'EOD'
+                <?php
+                    // This is
+                EOD.' '.<<<'EOD'
+
+                    //
+                EOD.' '.<<<'EOD'
+
+                    //
+                EOD.'    '.<<<'EOD'
+
+                    // multiline comment.
+                EOD.' '.<<<'EOD'
+
+                    //
+                EOD.' ',
         ];
 
         yield [
-            '<?php
-    /*
-     * This is another'.'
-     *'.'
-     *'.'
-     * multiline comment.'.'
-     */',
-            '<?php
-    /*'.' '.'
-     * This is another'.' '.'
-     *'.' '.'
-     *'.' '.'
-     * multiline comment.'.' '.'
-     */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * This is another
+                EOD.<<<'EOD'
+
+                     *
+                EOD.<<<'EOD'
+
+                     *
+                EOD.<<<'EOD'
+
+                     * multiline comment.
+                EOD.<<<'EOD'
+
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /*
+                EOD.' '.<<<'EOD'
+
+                     * This is another
+                EOD.' '.<<<'EOD'
+
+                     *
+                EOD.' '.<<<'EOD'
+
+                     *
+                EOD.' '.<<<'EOD'
+
+                     * multiline comment.
+                EOD.' '.<<<'EOD'
+
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * Summary'.'
-     *'.'
-     *'.'
-     * Description.'.'
-     *
-     * @annotation
-     *  Foo
-     */',
-            '<?php
-    /**'.' '.'
-     * Summary'.' '.'
-     *'.' '.'
-     *'.' '.'
-     * Description.'.' '.'
-     *'.' '.'
-     * @annotation'.' '.'
-     *  Foo'.' '.'
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Summary
+                EOD.<<<'EOD'
+
+                     *
+                EOD.<<<'EOD'
+
+                     *
+                EOD.<<<'EOD'
+
+                     * Description.
+                EOD.<<<'EOD'
+
+                     *
+                     * @annotation
+                     *  Foo
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                EOD.' '.<<<'EOD'
+
+                     * Summary
+                EOD.' '.<<<'EOD'
+
+                     *
+                EOD.' '.<<<'EOD'
+
+                     *
+                EOD.' '.<<<'EOD'
+
+                     * Description.
+                EOD.' '.<<<'EOD'
+
+                     *
+                EOD.' '.<<<'EOD'
+
+                     * @annotation
+                EOD.' '.<<<'EOD'
+
+                     *  Foo
+                EOD.' '.<<<'EOD'
+
+                     */
+                EOD,
         ];
 
         yield [
             str_replace(
                 "\n",
                 "\r\n",
-                '<?php
-    /**
-     * Summary
-     *'.'
-     * Description
-    */'
+                <<<'EOD'
+                    <?php
+                        /**
+                         * Summary
+                         *
+                    EOD.<<<'EOD'
+
+                         * Description
+                        */
+                    EOD
             ),
             str_replace(
                 "\n",
                 "\r\n",
-                '<?php
-    /**
-     * Summary
-     *'.' '.'
-     * Description
-    */'
+                <<<'EOD'
+                    <?php
+                        /**
+                         * Summary
+                         *
+                    EOD.' '.<<<'EOD'
+
+                         * Description
+                        */
+                    EOD
             ),
         ];
 
@@ -145,22 +231,30 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
             str_replace(
                 "\n",
                 "\r",
-                '<?php
-    /**
-     * Summary
-     *'.'
-     * Description
-    */'
+                <<<'EOD'
+                    <?php
+                        /**
+                         * Summary
+                         *
+                    EOD.<<<'EOD'
+
+                         * Description
+                        */
+                    EOD
             ),
             str_replace(
                 "\n",
                 "\r",
-                '<?php
-    /**
-     * Summary
-     *'.' '.'
-     * Description
-    */'
+                <<<'EOD'
+                    <?php
+                        /**
+                         * Summary
+                         *
+                    EOD.' '.<<<'EOD'
+
+                         * Description
+                        */
+                    EOD
             ),
         ];
     }

@@ -39,284 +39,328 @@ final class PhpUnitInternalClassFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'It does not change normal classes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Hello
-{
-}
-',
+                class Hello
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It marks a test class as internal' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @internal
- */
-class Test extends TestCase
-{
-}
-',
-            '<?php
+                /**
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
 
-class Test extends TestCase
-{
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It adds an internal tag to a class that already has a doc block' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @coversNothing
- * @internal
- */
-class Test extends TestCase
-{
-}
-',
-            '<?php
+                /**
+                 * @coversNothing
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
 
-/**
- * @coversNothing
- */
-class Test extends TestCase
-{
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /**
+                 * @coversNothing
+                 */
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It does not change a class that is already internal' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @internal
- */
-class Test extends TestCase
-{
-}
-',
+                /**
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It does not change a class that is already internal and has other annotations' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @author me
- * @coversNothing
- * @internal
- * @group large
- */
-class Test extends TestCase
-{
-}
-',
+                /**
+                 * @author me
+                 * @coversNothing
+                 * @internal
+                 * @group large
+                 */
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It works on other indentation levels' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-if (class_exists("Foo\Bar")) {
-    /**
-     * @internal
-     */
-    class Test Extends TestCase
-    {
-    }
-}
-',
-            '<?php
+                if (class_exists("Foo\Bar")) {
+                    /**
+                     * @internal
+                     */
+                    class Test Extends TestCase
+                    {
+                    }
+                }
 
-if (class_exists("Foo\Bar")) {
-    class Test Extends TestCase
-    {
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                if (class_exists("Foo\Bar")) {
+                    class Test Extends TestCase
+                    {
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'It works on other indentation levels when the class has other annotations' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-if (class_exists("Foo\Bar")) {
-    /**
-     * @author me again
-     *
-     *
-     * @covers \Other\Class
-     * @internal
-     */
-    class Test Extends TestCase
-    {
-    }
-}
-',
-            '<?php
+                if (class_exists("Foo\Bar")) {
+                    /**
+                     * @author me again
+                     *
+                     *
+                     * @covers \Other\Class
+                     * @internal
+                     */
+                    class Test Extends TestCase
+                    {
+                    }
+                }
 
-if (class_exists("Foo\Bar")) {
-    /**
-     * @author me again
-     *
-     *
-     * @covers \Other\Class
-     */
-    class Test Extends TestCase
-    {
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                if (class_exists("Foo\Bar")) {
+                    /**
+                     * @author me again
+                     *
+                     *
+                     * @covers \Other\Class
+                     */
+                    class Test Extends TestCase
+                    {
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'It works for tab ident' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-if (class_exists("Foo\Bar")) {
-	/**
-	 * @author me again
-	 *
-	 *
-	 * @covers \Other\Class
-	 * @internal
-	 */
-	class Test Extends TestCase
-	{
-	}
-}
-',
-            '<?php
+                if (class_exists("Foo\Bar")) {
+                	/**
+                	 * @author me again
+                	 *
+                	 *
+                	 * @covers \Other\Class
+                	 * @internal
+                	 */
+                	class Test Extends TestCase
+                	{
+                	}
+                }
 
-if (class_exists("Foo\Bar")) {
-	/**
-	 * @author me again
-	 *
-	 *
-	 * @covers \Other\Class
-	 */
-	class Test Extends TestCase
-	{
-	}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                if (class_exists("Foo\Bar")) {
+                	/**
+                	 * @author me again
+                	 *
+                	 *
+                	 * @covers \Other\Class
+                	 */
+                	class Test Extends TestCase
+                	{
+                	}
+                }
+
+                EOD,
         ];
 
         yield 'It always adds @internal to the bottom of the doc block' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @coversNothing
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- * @internal
- */
-class Test extends TestCase
-{
-}
-',
-            '<?php
+                /**
+                 * @coversNothing
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
 
-/**
- * @coversNothing
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- */
-class Test extends TestCase
-{
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /**
+                 * @coversNothing
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 */
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It does not change a class with a single line internal doc block' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/** @internal */
-class Test extends TestCase
-{
-}
-',
+                /** @internal */
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'It adds an internal tag to a class that already has a one linedoc block' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @coversNothing
- * @internal
- */
-class Test extends TestCase
-{
-}
-',
-            '<?php
+                /**
+                 * @coversNothing
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
 
-/** @coversNothing */
-class Test extends TestCase
-{
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /** @coversNothing */
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'By default it will not mark an abstract class as internal' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Test extends TestCase
-{
-}
-',
+                abstract class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
 
         yield 'If abstract is added as an option, abstract classes will be marked internal' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @internal
- */
-abstract class Test extends TestCase
-{
-}
-',
-            '<?php
+                /**
+                 * @internal
+                 */
+                abstract class Test extends TestCase
+                {
+                }
 
-abstract class Test extends TestCase
-{
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                abstract class Test extends TestCase
+                {
+                }
+
+                EOD,
             [
                 'types' => ['abstract'],
             ],
         ];
 
         yield 'If final is not added as an option, final classes will not be marked internal' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-final class Test extends TestCase
-{
-}
-',
+                final class Test extends TestCase
+                {
+                }
+
+                EOD,
             null,
             [
                 'types' => ['abstract'],
@@ -324,12 +368,14 @@ final class Test extends TestCase
         ];
 
         yield 'If normal is not added as an option, normal classes will not be marked internal' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Test extends TestCase
-{
-}
-',
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
             null,
             [
                 'types' => ['abstract'],
@@ -337,48 +383,52 @@ class Test extends TestCase
         ];
 
         yield 'It works correctly with multiple classes in one file, even when one of them is not allowed' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @internal
- */
-class Test extends TestCase
-{
-}
+                /**
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
 
-abstract class Test2 extends TestCase
-{
-}
+                abstract class Test2 extends TestCase
+                {
+                }
 
-class FooBar
-{
-}
+                class FooBar
+                {
+                }
 
-/**
- * @internal
- */
-class Test extends TestCase
-{
-}
-',
-            '<?php
+                /**
+                 * @internal
+                 */
+                class Test extends TestCase
+                {
+                }
 
-class Test extends TestCase
-{
-}
+                EOD,
+            <<<'EOD'
+                <?php
 
-abstract class Test2 extends TestCase
-{
-}
+                class Test extends TestCase
+                {
+                }
 
-class FooBar
-{
-}
+                abstract class Test2 extends TestCase
+                {
+                }
 
-class Test extends TestCase
-{
-}
-',
+                class FooBar
+                {
+                }
+
+                class Test extends TestCase
+                {
+                }
+
+                EOD,
         ];
     }
 
@@ -398,87 +448,103 @@ class Test extends TestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'it adds a docblock above when there is an attribute' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            /**
-             * @internal
-             */
-            #[SimpleTest]
-            class Test extends TestCase
-            {
-            }'."\n            ",
-            '<?php
+                            /**
+                             * @internal
+                             */
+                            #[SimpleTest]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-            #[SimpleTest]
-            class Test extends TestCase
-            {
-            }'."\n            ",
+                            #[SimpleTest]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
         ];
 
         yield 'it adds the internal tag along other tags when there is an attribute' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            /**
-             * @coversNothing
-             * @internal
-             */
-            #[SimpleTest]
-            class Test extends TestCase
-            {
-            }'."\n            ",
-            '<?php
+                            /**
+                             * @coversNothing
+                             * @internal
+                             */
+                            #[SimpleTest]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-            /**
-             * @coversNothing
-             */
-            #[SimpleTest]
-            class Test extends TestCase
-            {
-            }'."\n            ",
+                            /**
+                             * @coversNothing
+                             */
+                            #[SimpleTest]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
         ];
 
         yield 'it adds a docblock above when there are attributes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            /**
-             * @internal
-             */
-            #[SimpleTest]
-            #[Annotated]
-            class Test extends TestCase
-            {
-            }'."\n            ",
-            '<?php
+                            /**
+                             * @internal
+                             */
+                            #[SimpleTest]
+                            #[Annotated]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-            #[SimpleTest]
-            #[Annotated]
-            class Test extends TestCase
-            {
-            }'."\n            ",
+                            #[SimpleTest]
+                            #[Annotated]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
         ];
 
         yield 'it adds the internal tag along other tags when there are attributes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            /**
-             * @coversNothing
-             * @internal
-             */
-            #[SimpleTest]
-            #[Annotated]
-            class Test extends TestCase
-            {
-            }'."\n            ",
-            '<?php
+                            /**
+                             * @coversNothing
+                             * @internal
+                             */
+                            #[SimpleTest]
+                            #[Annotated]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-            /**
-             * @coversNothing
-             */
-            #[SimpleTest]
-            #[Annotated]
-            class Test extends TestCase
-            {
-            }'."\n            ",
+                            /**
+                             * @coversNothing
+                             */
+                            #[SimpleTest]
+                            #[Annotated]
+                            class Test extends TestCase
+                            {
+                            }
+                EOD."\n            ",
         ];
     }
 
@@ -501,10 +567,12 @@ class Test extends TestCase
     public static function provideFix82Cases(): iterable
     {
         yield 'If final is not added as an option, final classes will not be marked internal' => [
-            '<?php
-final readonly class Test extends TestCase
-{}
-',
+            <<<'EOD'
+                <?php
+                final readonly class Test extends TestCase
+                {}
+
+                EOD,
             null,
             [
                 'types' => ['normal'],
@@ -512,14 +580,18 @@ final readonly class Test extends TestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @internal
- */
-readonly final class Test extends TestCase {}',
-            '<?php
-readonly final class Test extends TestCase {}',
+                /**
+                 * @internal
+                 */
+                readonly final class Test extends TestCase {}
+                EOD,
+            <<<'EOD'
+                <?php
+                readonly final class Test extends TestCase {}
+                EOD,
         ];
     }
 }

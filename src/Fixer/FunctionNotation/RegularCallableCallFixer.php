@@ -34,20 +34,24 @@ final class RegularCallableCallFixer extends AbstractFixer
             'Callables must be called without using `call_user_func*` when possible.',
             [
                 new CodeSample(
-                    '<?php
-    call_user_func("var_dump", 1, 2);
+                    <<<'EOD'
+                        <?php
+                            call_user_func("var_dump", 1, 2);
 
-    call_user_func("Bar\Baz::d", 1, 2);
+                            call_user_func("Bar\Baz::d", 1, 2);
 
-    call_user_func_array($callback, [1, 2]);
-'
+                            call_user_func_array($callback, [1, 2]);
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
+                    <<<'EOD'
+                        <?php
+                        call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
-call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
-'
+                        call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
+
+                        EOD
                 ),
             ],
             null,

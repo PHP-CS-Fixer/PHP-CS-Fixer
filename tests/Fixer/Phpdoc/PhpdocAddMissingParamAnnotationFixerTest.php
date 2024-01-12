@@ -102,286 +102,356 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     *
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     *
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int $foo
-     * @param mixed $bar
-     */
-    function f1($foo, $bar) {}',
-            '<?php
-    /**
-     * @param int $foo
-     */
-    function f1($foo, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $foo
+                     * @param mixed $bar
+                     */
+                    function f1($foo, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $foo
+                     */
+                    function f1($foo, $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int $bar
-     * @param mixed $foo
-     */
-    function f2($foo, $bar) {}',
-            '<?php
-    /**
-     * @param int $bar
-     */
-    function f2($foo, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     * @param mixed $foo
+                     */
+                    function f2($foo, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     */
+                    function f2($foo, $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @return void
-     * @param mixed $foo
-     * @param mixed $bar
-     */
-    function f3($foo, $bar) {}',
-            '<?php
-    /**
-     * @return void
-     */
-    function f3($foo, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @return void
+                     * @param mixed $foo
+                     * @param mixed $bar
+                     */
+                    function f3($foo, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @return void
+                     */
+                    function f3($foo, $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    abstract class Foo {
-        /**
-         * @param int $bar
-         * @param mixed $foo
-         */
-        abstract public function f4a($foo, $bar);
-    }',
-            '<?php
-    abstract class Foo {
-        /**
-         * @param int $bar
-         */
-        abstract public function f4a($foo, $bar);
-    }',
+            <<<'EOD'
+                <?php
+                    abstract class Foo {
+                        /**
+                         * @param int $bar
+                         * @param mixed $foo
+                         */
+                        abstract public function f4a($foo, $bar);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    abstract class Foo {
+                        /**
+                         * @param int $bar
+                         */
+                        abstract public function f4a($foo, $bar);
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        /**
-         * @param int $bar
-         * @param mixed $foo
-         */
-        static final public function f4b($foo, $bar) {}
-    }',
-            '<?php
-    class Foo {
-        /**
-         * @param int $bar
-         */
-        static final public function f4b($foo, $bar) {}
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        /**
+                         * @param int $bar
+                         * @param mixed $foo
+                         */
+                        static final public function f4b($foo, $bar) {}
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        /**
+                         * @param int $bar
+                         */
+                        static final public function f4b($foo, $bar) {}
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        /**
-         * @var int
-         */
-        private $foo;
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        /**
+                         * @var int
+                         */
+                        private $foo;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param $bar No type !!
-     * @param mixed $foo
-     */
-    function f5($foo, $bar) {}',
-            '<?php
-    /**
-     * @param $bar No type !!
-     */
-    function f5($foo, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param $bar No type !!
+                     * @param mixed $foo
+                     */
+                    function f5($foo, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param $bar No type !!
+                     */
+                    function f5($foo, $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int
-     * @param int $bar
-     * @param Foo\Bar $foo
-     */
-    function f6(Foo\Bar $foo, $bar) {}',
-            '<?php
-    /**
-     * @param int
-     * @param int $bar
-     */
-    function f6(Foo\Bar $foo, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int
+                     * @param int $bar
+                     * @param Foo\Bar $foo
+                     */
+                    function f6(Foo\Bar $foo, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int
+                     * @param int $bar
+                     */
+                    function f6(Foo\Bar $foo, $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int $bar
-     * @param null|string $foo
-     */
-    function f7(string $foo = nuLl, $bar) {}',
-            '<?php
-    /**
-     * @param int $bar
-     */
-    function f7(string $foo = nuLl, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     * @param null|string $foo
+                     */
+                    function f7(string $foo = nuLl, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     */
+                    function f7(string $foo = nuLl, $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int $bar
-     * @param mixed $baz
-     *
-     * @return void
-     */
-    function f9(string $foo, $bar, $baz) {}',
-            '<?php
-    /**
-     * @param int $bar
-     *
-     * @return void
-     */
-    function f9(string $foo, $bar, $baz) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     * @param mixed $baz
+                     *
+                     * @return void
+                     */
+                    function f9(string $foo, $bar, $baz) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     *
+                     * @return void
+                     */
+                    function f9(string $foo, $bar, $baz) {}
+                EOD,
             ['only_untyped' => true],
         ];
 
         yield [
-            '<?php
-    /**
-     * @param bool|bool[] $caseSensitive Line 1
-     *                                   Line 2
-     */
-     function f11($caseSensitive) {}
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param bool|bool[] $caseSensitive Line 1
+                     *                                   Line 2
+                     */
+                     function f11($caseSensitive) {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    /** @return string */
-    function hello($string)
-    {
-        return $string;
-    }',
+            <<<'EOD'
+                <?php
+                    /** @return string */
+                    function hello($string)
+                    {
+                        return $string;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    /** @return string
-     * @param mixed $string
-     */
-    function hello($string)
-    {
-        return $string;
-    }',
-            '<?php
-    /** @return string
-     */
-    function hello($string)
-    {
-        return $string;
-    }',
+            <<<'EOD'
+                <?php
+                    /** @return string
+                     * @param mixed $string
+                     */
+                    function hello($string)
+                    {
+                        return $string;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    /** @return string
+                     */
+                    function hello($string)
+                    {
+                        return $string;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param mixed $string
-     * @return string */
-    function hello($string)
-    {
-        return $string;
-    }',
-            '<?php
-    /**
-     * @return string */
-    function hello($string)
-    {
-        return $string;
-    }',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param mixed $string
+                     * @return string */
+                    function hello($string)
+                    {
+                        return $string;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @return string */
+                    function hello($string)
+                    {
+                        return $string;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int $bar
-     * @param string $foo
-     */
-    function f8(string $foo = "null", $bar) {}',
-            '<?php
-    /**
-     * @param int $bar
-     */
-    function f8(string $foo = "null", $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     * @param string $foo
+                     */
+                    function f8(string $foo = "null", $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     */
+                    function f8(string $foo = "null", $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @{inheritdoc}
-     */
-    function f10(string $foo = "null", $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @{inheritdoc}
+                     */
+                    function f10(string $foo = "null", $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritDoc
-     */
-    function f10(string $foo = "null", $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritDoc
+                     */
+                    function f10(string $foo = "null", $bar) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @param int $bar
-     * @param ?array $foo
-     */
-    function p1(?array $foo = null, $bar) {}',
-            '<?php
-    /**
-     * @param int $bar
-     */
-    function p1(?array $foo = null, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     * @param ?array $foo
+                     */
+                    function p1(?array $foo = null, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param int $bar
+                     */
+                    function p1(?array $foo = null, $bar) {}
+                EOD,
             ['only_untyped' => false],
         ];
 
         yield [
-            '<?php
-    /**
-     * Foo
-     * @param mixed $bar
-     */
-    function p1(?int $foo = 0, $bar) {}',
-            '<?php
-    /**
-     * Foo
-     */
-    function p1(?int $foo = 0, $bar) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Foo
+                     * @param mixed $bar
+                     */
+                    function p1(?int $foo = 0, $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * Foo
+                     */
+                    function p1(?int $foo = 0, $bar) {}
+                EOD,
             ['only_untyped' => true],
         ];
 
         yield [
-            '<?php
-    /**
-     * Foo
-     * @return int
-     */
-    function p1(?int $foo = 0) {}',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Foo
+                     * @return int
+                     */
+                    function p1(?int $foo = 0) {}
+                EOD,
             null,
             ['only_untyped' => true],
         ];
@@ -419,31 +489,39 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public static function provideByReferenceCases(): iterable
     {
         yield [
-            '<?php
-                    /**
-                     * something
-                     * @param mixed $numbers
-                     */
-                    function add(&$numbers) {}'."\n                ",
-            '<?php
-                    /**
-                     * something
-                     */
-                    function add(&$numbers) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * something
+                                     * @param mixed $numbers
+                                     */
+                                    function add(&$numbers) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * something
+                                     */
+                                    function add(&$numbers) {}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    /**
-                     * something
-                     * @param null|array $numbers
-                     */
-                    function add(array &$numbers = null) {}'."\n                ",
-            '<?php
-                    /**
-                     * something
-                     */
-                    function add(array &$numbers = null) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * something
+                                     * @param null|array $numbers
+                                     */
+                                    function add(array &$numbers = null) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * something
+                                     */
+                                    function add(array &$numbers = null) {}
+                EOD."\n                ",
         ];
     }
 
@@ -459,43 +537,55 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public static function provideVariableNumberOfArgumentsCases(): iterable
     {
         yield [
-            '<?php
-                    /**
-                     * something
-                     * @param array $numbers
-                     */
-                    function sum(...$numbers) {}'."\n                ",
-            '<?php
-                    /**
-                     * something
-                     */
-                    function sum(...$numbers) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * something
+                                     * @param array $numbers
+                                     */
+                                    function sum(...$numbers) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * something
+                                     */
+                                    function sum(...$numbers) {}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    /**
-                     * @param int $a
-                     * @param array $numbers
-                     */
-                    function sum($a, ...$numbers) {}'."\n                ",
-            '<?php
-                    /**
-                     * @param int $a
-                     */
-                    function sum($a, ...$numbers) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @param int $a
+                                     * @param array $numbers
+                                     */
+                                    function sum($a, ...$numbers) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @param int $a
+                                     */
+                                    function sum($a, ...$numbers) {}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    /**
-                     * @param \Date[] $numbers
-                     */
-                    function sum(\Date ...$numbers) {}'."\n                ",
-            '<?php
-                    /**
-                     */
-                    function sum(\Date ...$numbers) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @param \Date[] $numbers
+                                     */
+                                    function sum(\Date ...$numbers) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     */
+                                    function sum(\Date ...$numbers) {}
+                EOD."\n                ",
         ];
     }
 
@@ -513,27 +603,31 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php class Foo {
-                /**
-                 * @param Bar $x
-                 * @param ?Bar $y
-                 * @param null|Bar $z
-                 */
-                public function __construct(
-                    public Bar $x,
-                    protected ?Bar $y,
-                    private null|Bar $z,
-                ) {}
-            }',
-            '<?php class Foo {
-                /**
-                 */
-                public function __construct(
-                    public Bar $x,
-                    protected ?Bar $y,
-                    private null|Bar $z,
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                /**
+                                 * @param Bar $x
+                                 * @param ?Bar $y
+                                 * @param null|Bar $z
+                                 */
+                                public function __construct(
+                                    public Bar $x,
+                                    protected ?Bar $y,
+                                    private null|Bar $z,
+                                ) {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                /**
+                                 */
+                                public function __construct(
+                                    public Bar $x,
+                                    protected ?Bar $y,
+                                    private null|Bar $z,
+                                ) {}
+                            }
+                EOD,
         ];
     }
 
@@ -551,24 +645,28 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php class Foo {
-                /**
-                 * @param Bar $bar
-                 * @param Baz $baz
-                 */
-                public function __construct(
-                    public readonly Bar $bar,
-                    readonly public Baz $baz,
-                ) {}
-            }',
-            '<?php class Foo {
-                /**
-                 */
-                public function __construct(
-                    public readonly Bar $bar,
-                    readonly public Baz $baz,
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                /**
+                                 * @param Bar $bar
+                                 * @param Baz $baz
+                                 */
+                                public function __construct(
+                                    public readonly Bar $bar,
+                                    readonly public Baz $baz,
+                                ) {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                /**
+                                 */
+                                public function __construct(
+                                    public readonly Bar $bar,
+                                    readonly public Baz $baz,
+                                ) {}
+                            }
+                EOD,
         ];
     }
 }

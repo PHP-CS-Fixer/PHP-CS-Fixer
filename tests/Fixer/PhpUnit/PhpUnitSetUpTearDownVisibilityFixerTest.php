@@ -36,234 +36,274 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
     public static function provideFixCases(): iterable
     {
         yield 'setUp and tearDown are made protected if they are public' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected function setUp() {}
 
-    protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function setUp() {}
+                    protected function tearDown() {}
+                }
 
-    public function tearDown() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function setUp() {}
+
+                    public function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'Other functions are ignored' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function hello() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function hello() {}
 
-    protected function setUp() {}
+                    protected function setUp() {}
 
-    protected function tearDown() {}
+                    protected function tearDown() {}
 
-    public function testWork() {}
+                    public function testWork() {}
 
-    protected function testProtectedFunction() {}
+                    protected function testProtectedFunction() {}
 
-    private function privateHelperFunction() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function hello() {}
+                    private function privateHelperFunction() {}
+                }
 
-    public function setUp() {}
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function hello() {}
 
-    public function tearDown() {}
+                    public function setUp() {}
 
-    public function testWork() {}
+                    public function tearDown() {}
 
-    protected function testProtectedFunction() {}
+                    public function testWork() {}
 
-    private function privateHelperFunction() {}
-}
-',
+                    protected function testProtectedFunction() {}
+
+                    private function privateHelperFunction() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works when setUp and tearDown are final' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected final function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected final function setUp() {}
 
-    final protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public final function setUp() {}
+                    final protected function tearDown() {}
+                }
 
-    final public function tearDown() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public final function setUp() {}
+
+                    final public function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works when setUp and tearDown do not have visibility defined' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected function setUp() {}
 
-    protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    function setUp() {}
+                    protected function tearDown() {}
+                }
 
-    function tearDown() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    function setUp() {}
+
+                    function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works when setUp and tearDown do not have visibility defined and are final' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    final protected function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    final protected function setUp() {}
 
-    final protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    final function setUp() {}
+                    final protected function tearDown() {}
+                }
 
-    final function tearDown() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    final function setUp() {}
+
+                    final function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'Functions outside a test class do not get changed' => [
-            '<?php
-class Fixer extends OtherClass
-{
-    public function hello() {}
+            <<<'EOD'
+                <?php
+                class Fixer extends OtherClass
+                {
+                    public function hello() {}
 
-    public function setUp() {}
+                    public function setUp() {}
 
-    public function tearDown() {}
+                    public function tearDown() {}
 
-    public function testWork() {}
+                    public function testWork() {}
 
-    protected function testProtectedFunction() {}
+                    protected function testProtectedFunction() {}
 
-    private function privateHelperFunction() {}
-}
-',
+                    private function privateHelperFunction() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works even when setup and teardown have improper casing' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected function sEtUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected function sEtUp() {}
 
-    protected function TeArDoWn() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function sEtUp() {}
+                    protected function TeArDoWn() {}
+                }
 
-    public function TeArDoWn() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function sEtUp() {}
+
+                    public function TeArDoWn() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works even with messy comments' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected /** foo */ function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected /** foo */ function setUp() {}
 
-    /** foo */protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public /** foo */ function setUp() {}
+                    /** foo */protected function tearDown() {}
+                }
 
-    /** foo */public function tearDown() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public /** foo */ function setUp() {}
+
+                    /** foo */public function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works even with messy comments and no defined visibility' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    /** foo */protected function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    /** foo */protected function setUp() {}
 
-    /** bar */protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    /** foo */function setUp() {}
+                    /** bar */protected function tearDown() {}
+                }
 
-    /** bar */function tearDown() {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    /** foo */function setUp() {}
+
+                    /** bar */function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'Nothing changes if setUp or tearDown are private' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    private function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    private function setUp() {}
 
-    private function tearDown() {}
-}
-',
+                    private function tearDown() {}
+                }
+
+                EOD,
         ];
 
         yield 'It works when there are multiple classes in one file' => [
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected function setUp() {}
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected function setUp() {}
 
-    protected function tearDown() {}
-}
+                    protected function tearDown() {}
+                }
 
-class OtherTest extends \PhpUnit\FrameWork\TestCase
-{
-    protected function setUp() {}
+                class OtherTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    protected function setUp() {}
 
-    protected function tearDown() {}
-}
-',
-            '<?php
-class FixerTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function setUp() {}
+                    protected function tearDown() {}
+                }
 
-    public function tearDown() {}
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                class FixerTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function setUp() {}
 
-class OtherTest extends \PhpUnit\FrameWork\TestCase
-{
-    public function setUp() {}
+                    public function tearDown() {}
+                }
 
-    public function tearDown() {}
-}
-',
+                class OtherTest extends \PhpUnit\FrameWork\TestCase
+                {
+                    public function setUp() {}
+
+                    public function tearDown() {}
+                }
+
+                EOD,
         ];
     }
 }

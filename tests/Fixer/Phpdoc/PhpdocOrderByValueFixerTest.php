@@ -87,99 +87,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithAuthorCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @author Bob
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @author Bob
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @author Alice
-                     * @author Bob
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @author Bob
-                     * @author Alice
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @author Alice
+                                     * @author Bob
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @author Bob
+                                     * @author Alice
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @author Alice
-                     * Comment 3
-                     * @author Bob
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @author Bob
-                     * Comment 2
-                     * @author Alice
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @author Alice
+                                     * Comment 3
+                                     * @author Bob
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @author Bob
+                                     * Comment 2
+                                     * @author Alice
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @author Alice
-                     * @author chris
-                     * @author Daniel
-                     * @author Erna
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @author Alice
-                     * @author Erna
-                     * @author chris
-                     * @author Daniel
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @author Alice
+                                     * @author chris
+                                     * @author Daniel
+                                     * @author Erna
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @author Alice
+                                     * @author Erna
+                                     * @author chris
+                                     * @author Daniel
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @author Alice
-                         * @dataProvider provide
-                         * @author Bob
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @author Bob
-                         * @dataProvider provide
-                         * @author Alice
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @author Alice
+                                         * @dataProvider provide
+                                         * @author Bob
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @author Bob
+                                         * @dataProvider provide
+                                         * @author Alice
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -200,99 +218,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithCoversCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @covers Foo
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @covers Foo
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @covers Bar
-                     * @covers Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @covers Foo
-                     * @covers Bar
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @covers Bar
+                                     * @covers Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @covers Foo
+                                     * @covers Bar
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @covers Bar
-                     * Comment 3
-                     * @covers Foo
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @covers Foo
-                     * Comment 2
-                     * @covers Bar
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @covers Bar
+                                     * Comment 3
+                                     * @covers Foo
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @covers Foo
+                                     * Comment 2
+                                     * @covers Bar
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @covers A
-                     * @covers c
-                     * @covers D
-                     * @covers E
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @covers A
-                     * @covers E
-                     * @covers c
-                     * @covers D
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @covers A
+                                     * @covers c
+                                     * @covers D
+                                     * @covers E
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @covers A
+                                     * @covers E
+                                     * @covers c
+                                     * @covers D
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @covers Bar
-                         * @dataProvider provide
-                         * @covers Foo
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @covers Foo
-                         * @dataProvider provide
-                         * @covers Bar
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @covers Bar
+                                         * @dataProvider provide
+                                         * @covers Foo
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @covers Foo
+                                         * @dataProvider provide
+                                         * @covers Bar
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -313,99 +349,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithCoversNothingCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @coversNothing Foo
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @coversNothing Foo
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @coversNothing Bar
-                     * @coversNothing Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @coversNothing Foo
-                     * @coversNothing Bar
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @coversNothing Bar
+                                     * @coversNothing Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @coversNothing Foo
+                                     * @coversNothing Bar
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @coversNothing Bar
-                     * Comment 3
-                     * @coversNothing Foo
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @coversNothing Foo
-                     * Comment 2
-                     * @coversNothing Bar
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @coversNothing Bar
+                                     * Comment 3
+                                     * @coversNothing Foo
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @coversNothing Foo
+                                     * Comment 2
+                                     * @coversNothing Bar
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @coversNothing A
-                     * @coversNothing c
-                     * @coversNothing D
-                     * @coversNothing E
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @coversNothing A
-                     * @coversNothing E
-                     * @coversNothing c
-                     * @coversNothing D
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @coversNothing A
+                                     * @coversNothing c
+                                     * @coversNothing D
+                                     * @coversNothing E
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @coversNothing A
+                                     * @coversNothing E
+                                     * @coversNothing c
+                                     * @coversNothing D
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @coversNothing Bar
-                         * @dataProvider provide
-                         * @coversNothing Foo
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @coversNothing Foo
-                         * @dataProvider provide
-                         * @coversNothing Bar
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @coversNothing Bar
+                                         * @dataProvider provide
+                                         * @coversNothing Foo
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @coversNothing Foo
+                                         * @dataProvider provide
+                                         * @coversNothing Bar
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -426,99 +480,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithDataProviderCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @dataProvider Foo::provideData()
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @dataProvider Foo::provideData()
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @dataProvider Bar::provideData()
-                     * @dataProvider Foo::provideData()
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @dataProvider Foo::provideData()
-                     * @dataProvider Bar::provideData()
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @dataProvider Bar::provideData()
+                                     * @dataProvider Foo::provideData()
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @dataProvider Foo::provideData()
+                                     * @dataProvider Bar::provideData()
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @dataProvider Bar::provideData()
-                     * Comment 3
-                     * @dataProvider Foo::provideData()
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @dataProvider Foo::provideData()
-                     * Comment 2
-                     * @dataProvider Bar::provideData()
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @dataProvider Bar::provideData()
+                                     * Comment 3
+                                     * @dataProvider Foo::provideData()
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @dataProvider Foo::provideData()
+                                     * Comment 2
+                                     * @dataProvider Bar::provideData()
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @dataProvider A::provideData()
-                     * @dataProvider c::provideData()
-                     * @dataProvider D::provideData()
-                     * @dataProvider E::provideData()
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @dataProvider A::provideData()
-                     * @dataProvider E::provideData()
-                     * @dataProvider c::provideData()
-                     * @dataProvider D::provideData()
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @dataProvider A::provideData()
+                                     * @dataProvider c::provideData()
+                                     * @dataProvider D::provideData()
+                                     * @dataProvider E::provideData()
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @dataProvider A::provideData()
+                                     * @dataProvider E::provideData()
+                                     * @dataProvider c::provideData()
+                                     * @dataProvider D::provideData()
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @dataProvider Bar::provideData()
-                         * @dataProvider dataProvider
-                         * @dataProvider Foo::provideData()
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @dataProvider Foo::provideData()
-                         * @dataProvider dataProvider
-                         * @dataProvider Bar::provideData()
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @dataProvider Bar::provideData()
+                                         * @dataProvider dataProvider
+                                         * @dataProvider Foo::provideData()
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @dataProvider Foo::provideData()
+                                         * @dataProvider dataProvider
+                                         * @dataProvider Bar::provideData()
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -539,99 +611,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithDependsCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @depends testFoo
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @depends testFoo
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @depends testBar
-                     * @depends testFoo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @depends testFoo
-                     * @depends testBar
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @depends testBar
+                                     * @depends testFoo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @depends testFoo
+                                     * @depends testBar
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @depends testBar
-                     * Comment 3
-                     * @depends testFoo
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @depends testFoo
-                     * Comment 2
-                     * @depends testBar
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @depends testBar
+                                     * Comment 3
+                                     * @depends testFoo
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @depends testFoo
+                                     * Comment 2
+                                     * @depends testBar
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @depends testA
-                     * @depends testc
-                     * @depends testD
-                     * @depends testE
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @depends testA
-                     * @depends testE
-                     * @depends testc
-                     * @depends testD
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @depends testA
+                                     * @depends testc
+                                     * @depends testD
+                                     * @depends testE
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @depends testA
+                                     * @depends testE
+                                     * @depends testc
+                                     * @depends testD
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @depends testBar
-                         * @dataProvider provide
-                         * @depends testFoo
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @depends testFoo
-                         * @dataProvider provide
-                         * @depends testBar
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @depends testBar
+                                         * @dataProvider provide
+                                         * @depends testFoo
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @depends testFoo
+                                         * @dataProvider provide
+                                         * @depends testBar
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -652,99 +742,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithGroupCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @group slow
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @group slow
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @group fast
-                     * @group slow
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @group slow
-                     * @group fast
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @group fast
+                                     * @group slow
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @group slow
+                                     * @group fast
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @group fast
-                     * Comment 3
-                     * @group slow
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @group slow
-                     * Comment 2
-                     * @group fast
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @group fast
+                                     * Comment 3
+                                     * @group slow
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @group slow
+                                     * Comment 2
+                                     * @group fast
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @group A
-                     * @group c
-                     * @group D
-                     * @group E
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @group A
-                     * @group E
-                     * @group c
-                     * @group D
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @group A
+                                     * @group c
+                                     * @group D
+                                     * @group E
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @group A
+                                     * @group E
+                                     * @group c
+                                     * @group D
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @group fast
-                         * @dataProvider provide
-                         * @group slow
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @group slow
-                         * @dataProvider provide
-                         * @group fast
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @group fast
+                                         * @dataProvider provide
+                                         * @group slow
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @group slow
+                                         * @dataProvider provide
+                                         * @group fast
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -765,99 +873,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithInternalCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @internal Foo
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @internal Foo
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @internal Bar
-                     * @internal Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @internal Foo
-                     * @internal Bar
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @internal Bar
+                                     * @internal Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @internal Foo
+                                     * @internal Bar
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @internal Bar
-                     * Comment 3
-                     * @internal Foo
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @internal Foo
-                     * Comment 2
-                     * @internal Bar
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @internal Bar
+                                     * Comment 3
+                                     * @internal Foo
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @internal Foo
+                                     * Comment 2
+                                     * @internal Bar
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @internal A
-                     * @internal c
-                     * @internal D
-                     * @internal E
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @internal A
-                     * @internal E
-                     * @internal c
-                     * @internal D
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @internal A
+                                     * @internal c
+                                     * @internal D
+                                     * @internal E
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @internal A
+                                     * @internal E
+                                     * @internal c
+                                     * @internal D
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @internal Bar
-                         * @dataProvider provide
-                         * @internal Foo
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @internal Foo
-                         * @dataProvider provide
-                         * @internal Bar
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @internal Bar
+                                         * @dataProvider provide
+                                         * @internal Foo
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @internal Foo
+                                         * @dataProvider provide
+                                         * @internal Bar
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -878,102 +1004,124 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithMethodCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                /**
-                 * @method int foo(array $b)
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method int foo(array $b)
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                /**
-                 * @method bool bar(int $a, bool $b)
-                 * @method array|null baz()
-                 * @method int foo(array $b)
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @method int foo(array $b)
-                 * @method bool bar(int $a, bool $b)
-                 * @method array|null baz()
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method bool bar(int $a, bool $b)
+                                 * @method array|null baz()
+                                 * @method int foo(array $b)
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method int foo(array $b)
+                                 * @method bool bar(int $a, bool $b)
+                                 * @method array|null baz()
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                /**
-                 * Comment 1
-                 * @method bool bar(int $a, bool $b)
-                 * Comment 3
-                 * @method int foo(array $b)
-                 * Comment 2
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * Comment 1
-                 * @method int foo(array $b)
-                 * Comment 2
-                 * @method bool bar(int $a, bool $b)
-                 * Comment 3
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @method bool bar(int $a, bool $b)
+                                 * Comment 3
+                                 * @method int foo(array $b)
+                                 * Comment 2
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @method int foo(array $b)
+                                 * Comment 2
+                                 * @method bool bar(int $a, bool $b)
+                                 * Comment 3
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                /**
-                 * @method int A()
-                 * @method bool b()
-                 * @method array|null c()
-                 * @method float D()
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @method array|null c()
-                 * @method float D()
-                 * @method bool b()
-                 * @method int A()
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method int A()
+                                 * @method bool b()
+                                 * @method array|null c()
+                                 * @method float D()
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method array|null c()
+                                 * @method float D()
+                                 * @method bool b()
+                                 * @method int A()
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'with-possibly-unexpected-comparable' => [
-            '<?php
-                /**
-                 * @method int foo(Z $b)
-                 * @method int fooA( $b)
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @method int fooA( $b)
-                 * @method int foo(Z $b)
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method int foo(Z $b)
+                                 * @method int fooA( $b)
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method int fooA( $b)
+                                 * @method int foo(Z $b)
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'with-and-without-types' => [
-            '<?php
-                /**
-                 * @method int A()
-                 * @method b()
-                 * @method array|null c()
-                 * @method D()
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @method array|null c()
-                 * @method D()
-                 * @method b()
-                 * @method int A()
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method int A()
+                                 * @method b()
+                                 * @method array|null c()
+                                 * @method D()
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @method array|null c()
+                                 * @method D()
+                                 * @method b()
+                                 * @method int A()
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
     }
 
@@ -994,101 +1142,119 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithMixinCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    /**
-                     * @package SomePackage
-                     * @mixin Bar
-                     * @license MIT
-                     */
-                    class Foo {
-                    }
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @package SomePackage
+                                     * @mixin Bar
+                                     * @license MIT
+                                     */
+                                    class Foo {
+                                    }
 
-                    /**
-                     * @package SomePackage
-                     * @license MIT
-                     */
-                    class Foo2 {
-                    }'."\n                ",
+                                    /**
+                                     * @package SomePackage
+                                     * @license MIT
+                                     */
+                                    class Foo2 {
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @mixin Bar1
-                     * @mixin Bar2
-                     * @mixin Bar3
-                     */
-                    class Foo {
-                    }'."\n                ",
-            '<?php
-                    /**
-                     * @mixin Bar2
-                     * @mixin Bar3
-                     * @mixin Bar1
-                     */
-                    class Foo {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @mixin Bar1
+                                     * @mixin Bar2
+                                     * @mixin Bar3
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @mixin Bar2
+                                     * @mixin Bar3
+                                     * @mixin Bar1
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @mixin Bar1
-                     * Comment 3
-                     * @mixin Bar2
-                     * Comment 2
-                     */
-                    class Foo {
-                    }'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @mixin Bar2
-                     * Comment 2
-                     * @mixin Bar1
-                     * Comment 3
-                     */
-                    class Foo {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @mixin Bar1
+                                     * Comment 3
+                                     * @mixin Bar2
+                                     * Comment 2
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @mixin Bar2
+                                     * Comment 2
+                                     * @mixin Bar1
+                                     * Comment 3
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @mixin A
-                     * @mixin b
-                     * @mixin C
-                     */
-                    class Foo {
-                    }'."\n                ",
-            '<?php
-                    /**
-                     * @mixin b
-                     * @mixin A
-                     * @mixin C
-                     */
-                    class Foo {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @mixin A
+                                     * @mixin b
+                                     * @mixin C
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @mixin b
+                                     * @mixin A
+                                     * @mixin C
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'fully-qualified' => [
-            '<?php
-                    /**
-                     * @mixin \A\B\Bar2
-                     * @mixin Bar1
-                     * @mixin Bar3
-                     */
-                    class Foo {
-                    }'."\n                ",
-            '<?php
-                    /**
-                     * @mixin Bar3
-                     * @mixin Bar1
-                     * @mixin \A\B\Bar2
-                     */
-                    class Foo {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @mixin \A\B\Bar2
+                                     * @mixin Bar1
+                                     * @mixin Bar3
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @mixin Bar3
+                                     * @mixin Bar1
+                                     * @mixin \A\B\Bar2
+                                     */
+                                    class Foo {
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -1109,87 +1275,105 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithPropertyCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                /**
-                 * @property int|\stdClass $foo
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property int|\stdClass $foo
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                /**
-                 * @property bool $bar
-                 * @property array|null $baz
-                 * @property int|\stdClass $foo
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property int|\stdClass $foo
-                 * @property bool $bar
-                 * @property array|null $baz
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property bool $bar
+                                 * @property array|null $baz
+                                 * @property int|\stdClass $foo
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property int|\stdClass $foo
+                                 * @property bool $bar
+                                 * @property array|null $baz
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                /**
-                 * Comment 1
-                 * @property bool $bar
-                 * Comment 3
-                 * @property int|\stdClass $foo
-                 * Comment 2
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * Comment 1
-                 * @property int|\stdClass $foo
-                 * Comment 2
-                 * @property bool $bar
-                 * Comment 3
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @property bool $bar
+                                 * Comment 3
+                                 * @property int|\stdClass $foo
+                                 * Comment 2
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @property int|\stdClass $foo
+                                 * Comment 2
+                                 * @property bool $bar
+                                 * Comment 3
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                /**
-                 * @property int|\stdClass $A
-                 * @property bool $b
-                 * @property array|null $C
-                 * @property float $D
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property array|null $C
-                 * @property float $D
-                 * @property bool $b
-                 * @property int|\stdClass $A
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property int|\stdClass $A
+                                 * @property bool $b
+                                 * @property array|null $C
+                                 * @property float $D
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property array|null $C
+                                 * @property float $D
+                                 * @property bool $b
+                                 * @property int|\stdClass $A
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'with-and-without-types' => [
-            '<?php
-                /**
-                 * @property int|\stdClass $A
-                 * @property $b
-                 * @property array|null $C
-                 * @property $D
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property array|null $C
-                 * @property $D
-                 * @property $b
-                 * @property int|\stdClass $A
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property int|\stdClass $A
+                                 * @property $b
+                                 * @property array|null $C
+                                 * @property $D
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property array|null $C
+                                 * @property $D
+                                 * @property $b
+                                 * @property int|\stdClass $A
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
     }
 
@@ -1210,87 +1394,105 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithPropertyReadCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                /**
-                 * @property-read int|\stdClass $foo
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read int|\stdClass $foo
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                /**
-                 * @property-read bool $bar
-                 * @property-read array|null $baz
-                 * @property-read int|\stdClass $foo
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property-read int|\stdClass $foo
-                 * @property-read bool $bar
-                 * @property-read array|null $baz
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read bool $bar
+                                 * @property-read array|null $baz
+                                 * @property-read int|\stdClass $foo
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read int|\stdClass $foo
+                                 * @property-read bool $bar
+                                 * @property-read array|null $baz
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                /**
-                 * Comment 1
-                 * @property-read bool $bar
-                 * Comment 3
-                 * @property-read int|\stdClass $foo
-                 * Comment 2
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * Comment 1
-                 * @property-read int|\stdClass $foo
-                 * Comment 2
-                 * @property-read bool $bar
-                 * Comment 3
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @property-read bool $bar
+                                 * Comment 3
+                                 * @property-read int|\stdClass $foo
+                                 * Comment 2
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @property-read int|\stdClass $foo
+                                 * Comment 2
+                                 * @property-read bool $bar
+                                 * Comment 3
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                /**
-                 * @property-read int|\stdClass $A
-                 * @property-read bool $b
-                 * @property-read array|null $C
-                 * @property-read float $D
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property-read array|null $C
-                 * @property-read float $D
-                 * @property-read bool $b
-                 * @property-read int|\stdClass $A
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read int|\stdClass $A
+                                 * @property-read bool $b
+                                 * @property-read array|null $C
+                                 * @property-read float $D
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read array|null $C
+                                 * @property-read float $D
+                                 * @property-read bool $b
+                                 * @property-read int|\stdClass $A
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'with-and-without-types' => [
-            '<?php
-                /**
-                 * @property-read int|\stdClass $A
-                 * @property-read $b
-                 * @property-read array|null $C
-                 * @property-read $D
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property-read array|null $C
-                 * @property-read $D
-                 * @property-read $b
-                 * @property-read int|\stdClass $A
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read int|\stdClass $A
+                                 * @property-read $b
+                                 * @property-read array|null $C
+                                 * @property-read $D
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-read array|null $C
+                                 * @property-read $D
+                                 * @property-read $b
+                                 * @property-read int|\stdClass $A
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
     }
 
@@ -1311,87 +1513,105 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithPropertyWriteCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                /**
-                 * @property-write int|\stdClass $foo
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write int|\stdClass $foo
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                /**
-                 * @property-write bool $bar
-                 * @property-write array|null $baz
-                 * @property-write int|\stdClass $foo
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property-write int|\stdClass $foo
-                 * @property-write bool $bar
-                 * @property-write array|null $baz
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write bool $bar
+                                 * @property-write array|null $baz
+                                 * @property-write int|\stdClass $foo
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write int|\stdClass $foo
+                                 * @property-write bool $bar
+                                 * @property-write array|null $baz
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                /**
-                 * Comment 1
-                 * @property-write bool $bar
-                 * Comment 3
-                 * @property-write int|\stdClass $foo
-                 * Comment 2
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * Comment 1
-                 * @property-write int|\stdClass $foo
-                 * Comment 2
-                 * @property-write bool $bar
-                 * Comment 3
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @property-write bool $bar
+                                 * Comment 3
+                                 * @property-write int|\stdClass $foo
+                                 * Comment 2
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * Comment 1
+                                 * @property-write int|\stdClass $foo
+                                 * Comment 2
+                                 * @property-write bool $bar
+                                 * Comment 3
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                /**
-                 * @property-write int|\stdClass $A
-                 * @property-write bool $b
-                 * @property-write array|null $C
-                 * @property-write float $D
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property-write array|null $C
-                 * @property-write float $D
-                 * @property-write bool $b
-                 * @property-write int|\stdClass $A
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write int|\stdClass $A
+                                 * @property-write bool $b
+                                 * @property-write array|null $C
+                                 * @property-write float $D
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write array|null $C
+                                 * @property-write float $D
+                                 * @property-write bool $b
+                                 * @property-write int|\stdClass $A
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'with-and-without-types' => [
-            '<?php
-                /**
-                 * @property-write int|\stdClass $A
-                 * @property-write $b
-                 * @property-write array|null $C
-                 * @property-write $D
-                 */
-                class Foo {}'."\n                ",
-            '<?php
-                /**
-                 * @property-write array|null $C
-                 * @property-write $D
-                 * @property-write $b
-                 * @property-write int|\stdClass $A
-                 */
-                class Foo {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write int|\stdClass $A
+                                 * @property-write $b
+                                 * @property-write array|null $C
+                                 * @property-write $D
+                                 */
+                                class Foo {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @property-write array|null $C
+                                 * @property-write $D
+                                 * @property-write $b
+                                 * @property-write int|\stdClass $A
+                                 */
+                                class Foo {}
+                EOD."\n                ",
         ];
     }
 
@@ -1412,99 +1632,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithRequiresCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @requires function json_decode
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @requires function json_decode
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @requires extension redis
-                     * @requires function json_decode
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @requires function json_decode
-                     * @requires extension redis
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @requires extension redis
+                                     * @requires function json_decode
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @requires function json_decode
+                                     * @requires extension redis
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @requires extension redis
-                     * Comment 3
-                     * @requires function json_decode
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @requires function json_decode
-                     * Comment 2
-                     * @requires extension redis
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @requires extension redis
+                                     * Comment 3
+                                     * @requires function json_decode
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @requires function json_decode
+                                     * Comment 2
+                                     * @requires extension redis
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @requires extension redis
-                     * @requires function json_decode
-                     * @requires OS Linux
-                     * @requires PHP 7.2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @requires PHP 7.2
-                     * @requires function json_decode
-                     * @requires extension redis
-                     * @requires OS Linux
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @requires extension redis
+                                     * @requires function json_decode
+                                     * @requires OS Linux
+                                     * @requires PHP 7.2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @requires PHP 7.2
+                                     * @requires function json_decode
+                                     * @requires extension redis
+                                     * @requires OS Linux
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @requires extension redis
-                         * @dataProvider provide
-                         * @requires function json_decode
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @requires function json_decode
-                         * @dataProvider provide
-                         * @requires extension redis
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @requires extension redis
+                                         * @dataProvider provide
+                                         * @requires function json_decode
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @requires function json_decode
+                                         * @dataProvider provide
+                                         * @requires extension redis
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -1525,115 +1763,133 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithThrowsCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class Foo {
-                        /**
-                         * @throws Bar
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function bar() {}
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /**
+                                         * @throws Bar
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function bar() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function baz() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function baz() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * @throws Bar
-                         * @throws Baz
-                         */
-                        public function bar() {}
-                    }'."\n                ",
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * @throws Baz
-                         * @throws Bar
-                         */
-                        public function bar() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * @throws Bar
+                                         * @throws Baz
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * @throws Baz
+                                         * @throws Bar
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * Comment 1
-                         * @throws Bar
-                         * Comment 3
-                         * @throws Baz
-                         * Comment 2
-                         */
-                        public function bar() {}
-                    }'."\n                ",
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * Comment 1
-                         * @throws Baz
-                         * Comment 2
-                         * @throws Bar
-                         * Comment 3
-                         */
-                        public function bar() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * Comment 1
+                                         * @throws Bar
+                                         * Comment 3
+                                         * @throws Baz
+                                         * Comment 2
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * Comment 1
+                                         * @throws Baz
+                                         * Comment 2
+                                         * @throws Bar
+                                         * Comment 3
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * @throws A
-                         * @throws b
-                         * @throws C
-                         */
-                        public function bar() {}
-                    }'."\n                ",
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * @throws b
-                         * @throws C
-                         * @throws A
-                         */
-                        public function bar() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * @throws A
+                                         * @throws b
+                                         * @throws C
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * @throws b
+                                         * @throws C
+                                         * @throws A
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'fully-qualified' => [
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * @throws \Bar\Baz\Qux
-                         * @throws Bar
-                         * @throws Foo
-                         */
-                        public function bar() {}
-                    }'."\n                ",
-            '<?php
-                    class Foo
-                    {
-                        /**
-                         * @throws Bar
-                         * @throws \Bar\Baz\Qux
-                         * @throws Foo
-                         */
-                        public function bar() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * @throws \Bar\Baz\Qux
+                                         * @throws Bar
+                                         * @throws Foo
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo
+                                    {
+                                        /**
+                                         * @throws Bar
+                                         * @throws \Bar\Baz\Qux
+                                         * @throws Foo
+                                         */
+                                        public function bar() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -1654,99 +1910,117 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithUsesCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @uses Foo
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @uses Foo
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @uses Bar
-                     * @uses Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @uses Foo
-                     * @uses Bar
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses Bar
+                                     * @uses Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses Foo
+                                     * @uses Bar
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @uses Bar
-                     * Comment 3
-                     * @uses Foo
-                     * Comment 2
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @uses Foo
-                     * Comment 2
-                     * @uses Bar
-                     * Comment 3
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @uses Bar
+                                     * Comment 3
+                                     * @uses Foo
+                                     * Comment 2
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @uses Foo
+                                     * Comment 2
+                                     * @uses Bar
+                                     * Comment 3
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @uses A
-                     * @uses c
-                     * @uses D
-                     * @uses E
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @uses A
-                     * @uses E
-                     * @uses c
-                     * @uses D
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses A
+                                     * @uses c
+                                     * @uses D
+                                     * @uses E
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses A
+                                     * @uses E
+                                     * @uses c
+                                     * @uses D
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @uses Bar
-                         * @dataProvider provide
-                         * @uses Foo
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @uses Foo
-                         * @dataProvider provide
-                         * @uses Bar
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @uses Bar
+                                         * @dataProvider provide
+                                         * @uses Foo
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @uses Foo
+                                         * @dataProvider provide
+                                         * @uses Bar
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -1768,120 +2042,138 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     public static function provideFixWithMultipleConfiguredAnnotationsCases(): iterable
     {
         yield 'skip on 1 or 0 occurrences' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase {
-                        /**
-                         * @uses Foo
-                         * @covers Baz
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe() {}
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase {
+                                        /**
+                                         * @uses Foo
+                                         * @covers Baz
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe() {}
 
-                        /**
-                         * @params bool $bool
-                         * @return void
-                         */
-                        public function testMe2() {}
-                    }'."\n                ",
+                                        /**
+                                         * @params bool $bool
+                                         * @return void
+                                         */
+                                        public function testMe2() {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'base case' => [
-            '<?php
-                    /**
-                     * @uses Bar
-                     * @uses Foo
-                     * @covers Baz
-                     * @covers Qux
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @uses Foo
-                     * @uses Bar
-                     * @covers Qux
-                     * @covers Baz
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses Bar
+                                     * @uses Foo
+                                     * @covers Baz
+                                     * @covers Qux
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses Foo
+                                     * @uses Bar
+                                     * @covers Qux
+                                     * @covers Baz
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'preserve positions if other docblock parts are present' => [
-            '<?php
-                    /**
-                     * Comment 1
-                     * @uses Bar
-                     * Comment 3
-                     * @uses Foo
-                     * Comment 2
-                     * @covers Baz
-                     * Comment 5
-                     * @covers Qux
-                     * Comment 4
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * Comment 1
-                     * @uses Foo
-                     * Comment 2
-                     * @uses Bar
-                     * Comment 3
-                     * @covers Qux
-                     * Comment 4
-                     * @covers Baz
-                     * Comment 5
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @uses Bar
+                                     * Comment 3
+                                     * @uses Foo
+                                     * Comment 2
+                                     * @covers Baz
+                                     * Comment 5
+                                     * @covers Qux
+                                     * Comment 4
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * Comment 1
+                                     * @uses Foo
+                                     * Comment 2
+                                     * @uses Bar
+                                     * Comment 3
+                                     * @covers Qux
+                                     * Comment 4
+                                     * @covers Baz
+                                     * Comment 5
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'case-insensitive' => [
-            '<?php
-                    /**
-                     * @uses A
-                     * @uses c
-                     * @covers D
-                     * @covers e
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /**
-                     * @uses c
-                     * @uses A
-                     * @covers e
-                     * @covers D
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses A
+                                     * @uses c
+                                     * @covers D
+                                     * @covers e
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @uses c
+                                     * @uses A
+                                     * @covers e
+                                     * @covers D
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'data provider' => [
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @uses Bar
-                         * @dataProvider provideOne
-                         * @uses Foo
-                         * @dataProvider provideTwo
-                         * @covers Baz
-                         * @dataProvider provideThree
-                         * @covers Qux
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
-            '<?php
-                    class FooTest extends \PHPUnit_Framework_TestCase
-                    {
-                        /**
-                         * @uses Foo
-                         * @dataProvider provideOne
-                         * @uses Bar
-                         * @dataProvider provideTwo
-                         * @covers Qux
-                         * @dataProvider provideThree
-                         * @covers Baz
-                         */
-                        public function testMe() {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @uses Bar
+                                         * @dataProvider provideOne
+                                         * @uses Foo
+                                         * @dataProvider provideTwo
+                                         * @covers Baz
+                                         * @dataProvider provideThree
+                                         * @covers Qux
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class FooTest extends \PHPUnit_Framework_TestCase
+                                    {
+                                        /**
+                                         * @uses Foo
+                                         * @dataProvider provideOne
+                                         * @uses Bar
+                                         * @dataProvider provideTwo
+                                         * @covers Qux
+                                         * @dataProvider provideThree
+                                         * @covers Baz
+                                         */
+                                        public function testMe() {}
+                                    }
+                EOD."\n                ",
         ];
     }
 }

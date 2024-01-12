@@ -53,50 +53,60 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         yield 'trait' => ["<?php trait MyClass { {$original} }"];
 
         yield 'interface' => [
-            '<?php interface MyClass {
-                    public function f1();
-                    public static function f4();
-                    static public function f7();
-                }',
+            <<<'EOD'
+                <?php interface MyClass {
+                                    public function f1();
+                                    public static function f4();
+                                    static public function f7();
+                                }
+                EOD,
         ];
 
         yield 'magic-methods' => [
-            '<?php abstract class MyClass {
-                    public function __construct() {}
-                    public function __destruct() {}
-                    public function __call($a, $b) {}
-                    public static function __callStatic($a, $b) {}
-                    public function __get($a) {}
-                    public function __set($a, $b) {}
-                    public function __isset($a) {}
-                    public function __unset($a) {}
-                    public function __sleep() {}
-                    public function __wakeup() {}
-                    public function __toString() {}
-                    public function __invoke() {}
-                    public function __clone() {}
-                    public function __debugInfo() {}
-                }',
+            <<<'EOD'
+                <?php abstract class MyClass {
+                                    public function __construct() {}
+                                    public function __destruct() {}
+                                    public function __call($a, $b) {}
+                                    public static function __callStatic($a, $b) {}
+                                    public function __get($a) {}
+                                    public function __set($a, $b) {}
+                                    public function __isset($a) {}
+                                    public function __unset($a) {}
+                                    public function __sleep() {}
+                                    public function __wakeup() {}
+                                    public function __toString() {}
+                                    public function __invoke() {}
+                                    public function __clone() {}
+                                    public function __debugInfo() {}
+                                }
+                EOD,
         ];
 
         yield 'magic-methods-casing' => [
-            '<?php abstract class MyClass {
-                    public function __Construct() {}
-                    public function __SET($a, $b) {}
-                    public function __ToString() {}
-                    public function __DeBuGiNfO() {}
-                }',
+            <<<'EOD'
+                <?php abstract class MyClass {
+                                    public function __Construct() {}
+                                    public function __SET($a, $b) {}
+                                    public function __ToString() {}
+                                    public function __DeBuGiNfO() {}
+                                }
+                EOD,
         ];
 
         yield 'non magic-methods' => [
-            '<?php abstract class MyClass {
-                    final public function __foo() {}
-                    final public static function __bar($a, $b) {}
-                }',
-            '<?php abstract class MyClass {
-                    public function __foo() {}
-                    public static function __bar($a, $b) {}
-                }',
+            <<<'EOD'
+                <?php abstract class MyClass {
+                                    final public function __foo() {}
+                                    final public static function __bar($a, $b) {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php abstract class MyClass {
+                                    public function __foo() {}
+                                    public static function __bar($a, $b) {}
+                                }
+                EOD,
         ];
 
         yield 'abstract-class' => [
@@ -105,10 +115,12 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         ];
 
         yield 'abstract-class-with-abstract-public-methods' => [
-            '<?php abstract class MyClass {
-                    abstract public function foo();
-                    abstract public static function bar();
-                }',
+            <<<'EOD'
+                <?php abstract class MyClass {
+                                    abstract public function foo();
+                                    abstract public static function bar();
+                                }
+                EOD,
         ];
 
         yield 'anonymous-class' => [
@@ -119,11 +131,13 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         ];
 
         yield 'constant visibility' => [
-            '<?php abstract class MyClass {
-                    public const A = 1;
-                    protected const B = 2;
-                    private const C = 3;
-                }',
+            <<<'EOD'
+                <?php abstract class MyClass {
+                                    public const A = 1;
+                                    protected const B = 2;
+                                    private const C = 3;
+                                }
+                EOD,
         ];
     }
 
@@ -143,53 +157,67 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
     public static function provideFix82Cases(): iterable
     {
         yield 'abstract keyword after readonly/public keywords' => [
-            '<?php readonly abstract class Foo {
-                public abstract function bar();
-            }',
+            <<<'EOD'
+                <?php readonly abstract class Foo {
+                                public abstract function bar();
+                            }
+                EOD,
         ];
 
         yield 'abstract keyword before readonly/public keywords' => [
-            '<?php abstract readonly class Foo {
-                abstract public function bar();
-            }',
+            <<<'EOD'
+                <?php abstract readonly class Foo {
+                                abstract public function bar();
+                            }
+                EOD,
         ];
 
         yield 'abstract readonly class' => [
-            '<?php abstract readonly class Foo {
-                final public function bar() {}
-            }',
-            '<?php abstract readonly class Foo {
-                public function bar() {}
-            }',
+            <<<'EOD'
+                <?php abstract readonly class Foo {
+                                final public function bar() {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php abstract readonly class Foo {
+                                public function bar() {}
+                            }
+                EOD,
         ];
 
         yield 'readonly abstract class' => [
-            '<?php readonly abstract class Foo {
-                final public function bar() {}
-            }',
-            '<?php readonly abstract class Foo {
-                public function bar() {}
-            }',
+            <<<'EOD'
+                <?php readonly abstract class Foo {
+                                final public function bar() {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php readonly abstract class Foo {
+                                public function bar() {}
+                            }
+                EOD,
         ];
     }
 
     private static function getClassElementStubs(): string
     {
-        return '
-            public $a1;
-            protected $a2;
-            private $a3;
-            public static $a4;
-            protected static $a5;
-            private static $a6;
-            public function f1(){}
-            protected function f2(){}
-            private function f3(){}
-            public static function f4(){}
-            protected static function f5(){}
-            private static function f6(){}
-            static public function f7(){}
-            static protected function f8(){}
-            static private function f9(){}'."\n        ";
+        return <<<'EOD'
+
+                        public $a1;
+                        protected $a2;
+                        private $a3;
+                        public static $a4;
+                        protected static $a5;
+                        private static $a6;
+                        public function f1(){}
+                        protected function f2(){}
+                        private function f3(){}
+                        public static function f4(){}
+                        protected static function f5(){}
+                        private static function f6(){}
+                        static public function f7(){}
+                        static protected function f8(){}
+                        static private function f9(){}
+            EOD."\n        ";
     }
 }

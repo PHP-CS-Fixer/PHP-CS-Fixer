@@ -183,10 +183,12 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     public static function provideGetDeclarationsInNamespaceCases(): iterable
     {
         yield [
-            '<?php
-                namespace Foo;
-                use Bar;
-                use Baz;',
+            <<<'EOD'
+                <?php
+                                namespace Foo;
+                                use Bar;
+                                use Baz;
+                EOD,
             new NamespaceAnalysis('Foo', 'Foo', 2, 5, 2, 15),
             [
                 new NamespaceUseAnalysis('Bar', 'Bar', false, 7, 10, NamespaceUseAnalysis::TYPE_CLASS),
@@ -195,15 +197,17 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         ];
 
         yield [
-            '<?php
-                namespace Foo1 {
-                    use Bar1;
-                    use Baz1;
-                }
-                namespace Foo2 {
-                    use Bar2;
-                    use Baz2;
-                }',
+            <<<'EOD'
+                <?php
+                                namespace Foo1 {
+                                    use Bar1;
+                                    use Baz1;
+                                }
+                                namespace Foo2 {
+                                    use Bar2;
+                                    use Baz2;
+                                }
+                EOD,
             new NamespaceAnalysis('Foo1', 'Foo1', 2, 4, 2, 18),
             [
                 new NamespaceUseAnalysis('Bar1', 'Bar1', false, 8, 11, NamespaceUseAnalysis::TYPE_CLASS),
@@ -212,15 +216,17 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         ];
 
         yield [
-            '<?php
-                namespace Foo1 {
-                    use Bar1;
-                    use Baz1;
-                }
-                namespace Foo2 {
-                    use Bar2;
-                    use Baz2;
-                }',
+            <<<'EOD'
+                <?php
+                                namespace Foo1 {
+                                    use Bar1;
+                                    use Baz1;
+                                }
+                                namespace Foo2 {
+                                    use Bar2;
+                                    use Baz2;
+                                }
+                EOD,
             new NamespaceAnalysis('Foo2', 'Foo2', 20, 22, 20, 36),
             [
                 new NamespaceUseAnalysis('Bar2', 'Bar2', false, 26, 29, NamespaceUseAnalysis::TYPE_CLASS),

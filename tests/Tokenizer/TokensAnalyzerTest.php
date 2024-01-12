@@ -83,31 +83,33 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'method',
                 ],
             ],
-            '<?php
-            /**  */
-            class Foo
-            {
-                use A\B;
-                //
-                use Foo;
+            <<<'EOD'
+                <?php
+                            /**  */
+                            class Foo
+                            {
+                                use A\B;
+                                //
+                                use Foo;
 
-                const A = 1;
+                                const A = 1;
 
-                public function foo()
-                {
-                    $a = new class()
-                    {
-                        use Z; // nested trait import
+                                public function foo()
+                                {
+                                    $a = new class()
+                                    {
+                                        use Z; // nested trait import
 
-                        public function bar()
-                        {
-                            echo 123;
-                        }
-                    };
+                                        public function bar()
+                                        {
+                                            echo 123;
+                                        }
+                                    };
 
-                    $a->bar();
-                }
-            }',
+                                    $a->bar();
+                                }
+                            }
+                EOD,
         ];
 
         yield [
@@ -522,13 +524,15 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'property', // $prop13
                 ],
             ],
-            '<?php
-class Foo
-{
-    readonly string $prop1;
-    readonly public string $prop2;
-    public readonly string $prop3;
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    readonly string $prop1;
+                    readonly public string $prop2;
+                    public readonly string $prop3;
+                }
+                EOD."\n            ",
         ];
 
         yield 'final const' => [
@@ -542,12 +546,14 @@ class Foo
                     'type' => 'const', // B
                 ],
             ],
-            '<?php
-class Foo
-{
-    final public const A = "1";
-    public final const B = "2";
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final public const A = "1";
+                    public final const B = "2";
+                }
+                EOD."\n            ",
         ];
 
         yield 'enum final const' => [
@@ -561,12 +567,14 @@ class Foo
                     'type' => 'const', // B
                 ],
             ],
-            '<?php
-enum Foo
-{
-    final public const A = "1";
-    public final const B = "2";
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    final public const A = "1";
+                    public final const B = "2";
+                }
+                EOD."\n            ",
         ];
 
         yield 'enum case' => [
@@ -592,46 +600,48 @@ enum Foo
                     'type' => 'method', // function bar7
                 ],
             ],
-            '<?php
-enum Foo: string
-{
-    private const Spades = 123;
+            <<<'EOD'
+                <?php
+                enum Foo: string
+                {
+                    private const Spades = 123;
 
-    case Hearts = "H";
+                    case Hearts = "H";
 
-    private function test($foo) {
-        switch ($foo) {
-            case 1:
-            // case 2
-            case 3:
-                echo 123;
-            break;
-        }
+                    private function test($foo) {
+                        switch ($foo) {
+                            case 1:
+                            // case 2
+                            case 3:
+                                echo 123;
+                            break;
+                        }
 
-        return new class {
-            public function bar123($foo) {
-                switch ($foo) {
-                    case 1:
-                    // case 2
-                    case 3:
-                        echo 123;
-                };
-            }
-        };
-    }
-}
+                        return new class {
+                            public function bar123($foo) {
+                                switch ($foo) {
+                                    case 1:
+                                    // case 2
+                                    case 3:
+                                        echo 123;
+                                };
+                            }
+                        };
+                    }
+                }
 
-class Bar {
-    public function bar7($foo) {
-        switch ($foo) {
-            case 1:
-            // case 2
-            case 3:
-                echo 123;
-        };
-    }
-}
-',
+                class Bar {
+                    public function bar7($foo) {
+                        switch ($foo) {
+                            case 1:
+                            // case 2
+                            case 3:
+                                echo 123;
+                        };
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'enum' => [
@@ -649,17 +659,19 @@ class Bar {
                     'type' => 'method',
                 ],
             ],
-            '<?php
-enum Foo: string
-{
-    case Bar = "bar";
-    case Baz = "baz";
-    function qux() {
-        switch (true) {
-            case "x": break;
-        }
-    }
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                enum Foo: string
+                {
+                    case Bar = "bar";
+                    case Baz = "baz";
+                    function qux() {
+                        switch (true) {
+                            case "x": break;
+                        }
+                    }
+                }
+                EOD."\n            ",
         ];
     }
 
@@ -895,14 +907,16 @@ enum Foo: string
 
         yield [
             [7 => true],
-            '<?php
-preg_replace_callback(
-    "/(^|[a-z])/",
-    function (array $matches) {
-        return "a";
-    },
-    $string
-);',
+            <<<'EOD'
+                <?php
+                preg_replace_callback(
+                    "/(^|[a-z])/",
+                    function (array $matches) {
+                        return "a";
+                    },
+                    $string
+                );
+                EOD,
         ];
 
         yield [
@@ -912,58 +926,72 @@ preg_replace_callback(
 
         yield [
             [6 => true],
-            '<?php
-                    $a = function (): array {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    $a = function (): array {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [2 => false],
-            '<?php
-                    function foo (): array {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    function foo (): array {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [6 => true],
-            '<?php
-                    $a = function (): void {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    $a = function (): void {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [2 => false],
-            '<?php
-                    function foo (): void {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    function foo (): void {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [6 => true],
-            '<?php
-                    $a = function (): ?int {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    $a = function (): ?int {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [6 => true],
-            '<?php
-                    $a = function (): int {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    $a = function (): int {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [2 => false],
-            '<?php
-                    function foo (): ?int {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    function foo (): ?int {
+                                        return [];
+                                    };
+                EOD,
         ];
     }
 
@@ -1014,35 +1042,41 @@ preg_replace_callback(
     {
         yield [
             [6 => true],
-            '<?php
-                    $a = function (): ?static {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    $a = function (): ?static {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [6 => true],
-            '<?php
-                    $a = function (): static {
-                        return [];
-                    };',
+            <<<'EOD'
+                <?php
+                                    $a = function (): static {
+                                        return [];
+                                    };
+                EOD,
         ];
 
         yield [
             [14 => true],
-            '<?php
-$c = 4; //
-$a = function(
-    $a,
-    $b,
-) use (
-    $c,
-) {
-    echo $a + $b + $c;
-};
+            <<<'EOD'
+                <?php
+                $c = 4; //
+                $a = function(
+                    $a,
+                    $b,
+                ) use (
+                    $c,
+                ) {
+                    echo $a + $b + $c;
+                };
 
 
-$a(1,2);',
+                $a(1,2);
+                EOD,
         ];
     }
 
@@ -1269,13 +1303,15 @@ $a(1,2);',
 
         yield [
             [6 => false, 16 => false, 21 => false],
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Baz
-{
-    abstract public function test(): Foo;
-}
-',
+                abstract class Baz
+                {
+                    abstract public function test(): Foo;
+                }
+
+                EOD,
         ];
 
         yield [
@@ -1330,13 +1366,15 @@ abstract class Baz
     {
         yield 'abstract method return alternation' => [
             [6 => false, 16 => false, 21 => false, 23 => false],
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Baz
-{
-    abstract public function test(): Foo|Bar;
-}
-',
+                abstract class Baz
+                {
+                    abstract public function test(): Foo|Bar;
+                }
+
+                EOD,
         ];
 
         yield 'function return alternation' => [
@@ -1416,11 +1454,13 @@ abstract class Baz
 
         yield 'attribute before' => [
             [4 => false, 6 => false, 8 => false, 13 => false, 17 => false, 23 => false, 25 => false],
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Psr\Log\LoggerInterface;
-function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
-',
+                use Psr\Log\LoggerInterface;
+                function f( #[Target('xxx')] LoggerInterface|null $logger) {}
+
+                EOD,
         ];
     }
 
@@ -1440,24 +1480,28 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     {
         yield [
             [5 => false, 15 => false],
-            '<?php
-abstract class Baz
-{
-    final public const Y = "i";
-}
-',
+            <<<'EOD'
+                <?php
+                abstract class Baz
+                {
+                    final public const Y = "i";
+                }
+
+                EOD,
         ];
 
         yield [
             [4 => false, 12 => false, 23 => false],
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Test {
-    public function __construct(
-        public $prop = new Foo,
-    ) {}
-}
-',
+                class Test {
+                    public function __construct(
+                        public $prop = new Foo,
+                    ) {}
+                }
+
+                EOD,
         ];
 
         yield 'intersection' => [
@@ -1467,13 +1511,15 @@ class Test {
 
         yield 'abstract method return intersection' => [
             [6 => false, 16 => false, 21 => false, 23 => false, 25 => false, 27 => false, 29 => false],
-            '<?php
+            <<<'EOD'
+                <?php
 
-abstract class Baz
-{
-    abstract public function foo(): Foo&Bar1&Bar2&Bar3&Bar4;
-}
-',
+                abstract class Baz
+                {
+                    abstract public function foo(): Foo&Bar1&Bar2&Bar3&Bar4;
+                }
+
+                EOD,
         ];
     }
 
@@ -1785,14 +1831,18 @@ abstract class Baz
 
         yield [
             [3 => true],
-            '<?php $a =
-$b;',
+            <<<'EOD'
+                <?php $a =
+                $b;
+                EOD,
         ];
 
         yield [
             [3 => true],
-            '<?php $a
-= $b;',
+            <<<'EOD'
+                <?php $a
+                = $b;
+                EOD,
         ];
 
         yield [
@@ -1893,49 +1943,61 @@ $b;',
     public static function provideIsArrayCases(): iterable
     {
         yield [
-            '<?php
-                    array("a" => 1);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    array("a" => 1);
+                EOD."\n                ",
             2,
         ];
 
         yield [
-            '<?php
-                    ["a" => 2];'."\n                ",
+            <<<'EOD'
+                <?php
+                                    ["a" => 2];
+                EOD."\n                ",
             2, false,
         ];
 
         yield [
-            '<?php
-                    array(
-                        "a" => 3
-                    );'."\n                ",
+            <<<'EOD'
+                <?php
+                                    array(
+                                        "a" => 3
+                                    );
+                EOD."\n                ",
             2, true,
         ];
 
         yield [
-            '<?php
-                    [
-                        "a" => 4
-                    ];'."\n                ",
+            <<<'EOD'
+                <?php
+                                    [
+                                        "a" => 4
+                                    ];
+                EOD."\n                ",
             2, true,
         ];
 
         yield [
-            '<?php
-                    array(
-                        "a" => array(5, 6, 7),
-8 => new \Exception(\'Hello\')
-                    );'."\n                ",
+            <<<'EOD'
+                <?php
+                                    array(
+                                        "a" => array(5, 6, 7),
+                8 => new \Exception('Hello')
+                                    );
+                EOD."\n                ",
             2, true,
         ];
 
         yield [
             // mix short array syntax
-            '<?php
-                    array(
-                        "a" => [9, 10, 11],
-12 => new \Exception(\'Hello\')
-                    );'."\n                ",
+            <<<'EOD'
+                <?php
+                                    array(
+                                        "a" => [9, 10, 11],
+                12 => new \Exception('Hello')
+                                    );
+                EOD."\n                ",
             2, true,
         ];
 
@@ -1975,12 +2037,14 @@ $b;',
     public static function provideIsArray71Cases(): iterable
     {
         yield [
-            '<?php
-                    [$a] = $z;
-                    ["a" => $a, "b" => $b] = $array;
-                    $c = [$d, $e] = $array[$a];
-                    [[$a, $b], [$c, $d]] = $d;
-                    $array = []; $d = array();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    [$a] = $z;
+                                    ["a" => $a, "b" => $b] = $array;
+                                    $c = [$d, $e] = $array[$a];
+                                    [[$a, $b], [$c, $d]] = $d;
+                                    $array = []; $d = array();
+                EOD."\n                ",
             [76, 84],
         ];
     }
@@ -2206,26 +2270,32 @@ $b;',
 
         yield [
             true,
-            '<?php foo(1,
-                2,
-                3
-            );',
+            <<<'EOD'
+                <?php foo(1,
+                                2,
+                                3
+                            );
+                EOD,
             2,
         ];
 
         yield [
             false,
-            '<?php foo(1, "Multi
-                string", 2, 3);',
+            <<<'EOD'
+                <?php foo(1, "Multi
+                                string", 2, 3);
+                EOD,
             2,
         ];
 
         yield [
             false,
-            '<?php foo(1, havingNestedBlockThatIsMultilineDoesNotMakeTheMainBlockMultiline(
-                    "a",
-                    "b"
-                ), 2, 3);',
+            <<<'EOD'
+                <?php foo(1, havingNestedBlockThatIsMultilineDoesNotMakeTheMainBlockMultiline(
+                                    "a",
+                                    "b"
+                                ), 2, 3);
+                EOD,
             2,
         ];
     }
@@ -2253,14 +2323,16 @@ $b;',
             'final' => false,
         ];
 
-        $template = '
-<?php
-class TestClass {
-    %s function a() {
-        //
-    }
-}
-';
+        $template = <<<'EOD'
+
+            <?php
+            class TestClass {
+                %s function a() {
+                    //
+                }
+            }
+
+            EOD;
         $cases = [];
 
         $attributes = $defaultAttributes;
@@ -2410,18 +2482,20 @@ class TestClass {
     public static function provideIsEnumCaseCases(): iterable
     {
         yield 'switch only' => [
-            '<?php
-function bar(string $a): string
-{
-    switch ($a) {
-        case \'one\':
-            return $a;
-        case \'two\':
-        default:
-            return strtoupper($a);
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                function bar(string $a): string
+                {
+                    switch ($a) {
+                        case 'one':
+                            return $a;
+                        case 'two':
+                        default:
+                            return strtoupper($a);
+                    }
+                }
+
+                EOD,
             [
                 23 => false,
                 33 => false,
@@ -2429,13 +2503,15 @@ function bar(string $a): string
         ];
 
         yield 'pure enum' => [
-            '<?php
-enum Foo
-{
-    case One;
-    case Two;
-}
-',
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    case One;
+                    case Two;
+                }
+
+                EOD,
             [
                 7 => true,
                 12 => true,
@@ -2443,22 +2519,24 @@ enum Foo
         ];
 
         yield 'pure enum with switch' => [
-            '<?php
-enum Foo
-{
-    case One;
-    case Two;
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    case One;
+                    case Two;
 
-    public static function getLowerName(self $instance): string
-    {
-        switch ($instance->name) {
-            case \'One\':
-            case \'Two\':
-                return strtolower($instance->name);
-        }
-    }
-}
-',
+                    public static function getLowerName(self $instance): string
+                    {
+                        switch ($instance->name) {
+                            case 'One':
+                            case 'Two':
+                                return strtolower($instance->name);
+                        }
+                    }
+                }
+
+                EOD,
             [
                 7 => true,
                 12 => true,
@@ -2468,15 +2546,17 @@ enum Foo
         ];
 
         yield 'backed enum' => [
-            '<?php
-enum Suit: string
-{
-    case Hearts = \'hearts\';
-    case Spades = \'spades\';
-    case Clubs = \'clubs\';
-    case Diamonds = \'diamonds\';
-}
-',
+            <<<'EOD'
+                <?php
+                enum Suit: string
+                {
+                    case Hearts = 'hearts';
+                    case Spades = 'spades';
+                    case Clubs = 'clubs';
+                    case Diamonds = 'diamonds';
+                }
+
+                EOD,
             [
                 10 => true,
                 19 => true,
@@ -2486,26 +2566,28 @@ enum Suit: string
         ];
 
         yield 'backed enum with switch' => [
-            '<?php
-enum Suit: string
-{
-    case Hearts = \'hearts\';
-    case Spades = \'spades\';
-    case Clubs = \'clubs\';
-    case Diamonds = \'diamonds\';
+            <<<'EOD'
+                <?php
+                enum Suit: string
+                {
+                    case Hearts = 'hearts';
+                    case Spades = 'spades';
+                    case Clubs = 'clubs';
+                    case Diamonds = 'diamonds';
 
-    public static function getUppercasedValue(self $instance): string
-    {
-        switch ($instance->value) {
-            case \'hearts\':
-            case \'spades\':
-                return strtoupper($instance->value);
-            default:
-                return $instance->value;
-        }
-    }
-}
-',
+                    public static function getUppercasedValue(self $instance): string
+                    {
+                        switch ($instance->value) {
+                            case 'hearts':
+                            case 'spades':
+                                return strtoupper($instance->value);
+                            default:
+                                return $instance->value;
+                        }
+                    }
+                }
+
+                EOD,
             [
                 10 => true,
                 19 => true,
@@ -2539,11 +2621,13 @@ enum Suit: string
 
         yield [
             [[1], [14], [29]],
-            '<?php
-use T\A;
-namespace A { use D\C; }
-namespace b { use D\C; }
-',
+            <<<'EOD'
+                <?php
+                use T\A;
+                namespace A { use D\C; }
+                namespace b { use D\C; }
+
+                EOD,
             true,
         ];
 
@@ -2560,10 +2644,12 @@ namespace b { use D\C; }
 
         yield [
             [7, 22],
-            '<?php
-namespace A { use D\C; }
-namespace b { use D\C; }
-',
+            <<<'EOD'
+                <?php
+                namespace A { use D\C; }
+                namespace b { use D\C; }
+
+                EOD,
         ];
 
         yield [
@@ -2595,73 +2681,83 @@ namespace b { use D\C; }
 
         yield [
             [1, 22, 41],
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};'."\n                ",
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
+                EOD."\n                ",
         ];
 
         yield [
             [[1, 22, 41]],
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};'."\n                ",
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
+                EOD."\n                ",
             true,
         ];
 
         yield [
             [1, 23, 43],
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA, ConstB, ConstC,};'."\n                ",
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\a\{ConstA, ConstB, ConstC,};
+                EOD."\n                ",
         ];
 
         yield [
             [[1, 23, 43]],
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA, ConstB, ConstC,};'."\n                ",
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\a\{ConstA, ConstB, ConstC,};
+                EOD."\n                ",
             true,
         ];
     }
 
     public function testGetClassyElementsWithMultipleNestedAnonymousClass(): void
     {
-        $source = '<?php
-class MyTestWithAnonymousClass extends TestCase
-{
-    public function setUp()
-    {
-        $provider = new class(function () {}) {};
-    }
+        $source = <<<'EOD'
+            <?php
+            class MyTestWithAnonymousClass extends TestCase
+            {
+                public function setUp()
+                {
+                    $provider = new class(function () {}) {};
+                }
 
-    public function testSomethingWithMoney(
-        Money $amount
-    ) {
-        $a = new class(function () {
-    new class(function () {
-        new class(function () {})
-        {
-            const A=1;
-        };
-    })
-    {
-        const B=1;
+                public function testSomethingWithMoney(
+                    Money $amount
+                ) {
+                    $a = new class(function () {
+                new class(function () {
+                    new class(function () {})
+                    {
+                        const A=1;
+                    };
+                })
+                {
+                    const B=1;
 
-        public function foo() {
-            $c = new class() {const AA=3;};
-            $d = new class {const AB=3;};
-        }
-    };
-})
-{
-    const C=1;
-};
-    }
-}';
+                    public function foo() {
+                        $c = new class() {const AA=3;};
+                        $d = new class {const AB=3;};
+                    }
+                };
+            })
+            {
+                const C=1;
+            };
+                }
+            }
+            EOD;
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
@@ -2886,13 +2982,15 @@ class MyTestWithAnonymousClass extends TestCase
                 28 => 39,
                 46 => 61,
             ],
-            '<?php
-                fn(array $x) => $x;
+            <<<'EOD'
+                <?php
+                                fn(array $x) => $x;
 
-                static fn(): int => $x;
+                                static fn(): int => $x;
 
-                fn($x = 42) => $x;
-                $eq = fn ($x, $y) => $x == $y;'."\n            ",
+                                fn($x = 42) => $x;
+                                $eq = fn ($x, $y) => $x == $y;
+                EOD."\n            ",
         ];
 
         yield 'references, splat and arrow cases' => [
@@ -2903,14 +3001,16 @@ class MyTestWithAnonymousClass extends TestCase
                 42 => 51,
                 65 => 77,
             ],
-            '<?php
-                fn(&$x) => $x;
-                fn&($x) => $x;
-                fn($x, ...$rest) => $rest;
+            <<<'EOD'
+                <?php
+                                fn(&$x) => $x;
+                                fn&($x) => $x;
+                                fn($x, ...$rest) => $rest;
 
-                $fn = fn(&$x) => $x++;
-                $y = &$fn($x);
-                fn($x, &...$rest) => 1;'."\n            ",
+                                $fn = fn(&$x) => $x++;
+                                $y = &$fn($x);
+                                fn($x, &...$rest) => 1;
+                EOD."\n            ",
         ];
 
         yield 'different endings' => [
@@ -2918,13 +3018,15 @@ class MyTestWithAnonymousClass extends TestCase
                 9 => 21,
                 31 => 43,
             ],
-            '<?php
-                $results = array_map(
-                    fn ($item) => $item * 2,
-                    $list
-                );
+            <<<'EOD'
+                <?php
+                                $results = array_map(
+                                    fn ($item) => $item * 2,
+                                    $list
+                                );
 
-                return fn ($y) => $x * $y ?>'."\n            ",
+                                return fn ($y) => $x * $y ?>
+                EOD."\n            ",
         ];
 
         yield 'nested arrow function' => [
@@ -2949,12 +3051,14 @@ class MyTestWithAnonymousClass extends TestCase
                 46 => 55,
                 62 => 69,
             ],
-            '<?php return [
-                [1, fn(array $x) => $x1, 1],
-                [fn(array $x) => $x2, 1],
-                [1, fn(array $x) => $x3],
-                ([(fn($x4) => $x5)]),
-            ];',
+            <<<'EOD'
+                <?php return [
+                                [1, fn(array $x) => $x1, 1],
+                                [fn(array $x) => $x2, 1],
+                                [1, fn(array $x) => $x3],
+                                ([(fn($x4) => $x5)]),
+                            ];
+                EOD,
         ];
 
         yield 'nested inside anonymous class' => [
@@ -2976,11 +3080,13 @@ class MyTestWithAnonymousClass extends TestCase
             [
                 9 => 28,
             ],
-            '<?php
-                $a = array_map(
-                    fn (array $item) => $item[\'callback\']($item[\'value\']),
-                    [/* items */]
-                );'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = array_map(
+                                    fn (array $item) => $item['callback']($item['value']),
+                                    [/* items */]
+                                );
+                EOD."\n            ",
         ];
 
         yield 'arrow function returning array' => [

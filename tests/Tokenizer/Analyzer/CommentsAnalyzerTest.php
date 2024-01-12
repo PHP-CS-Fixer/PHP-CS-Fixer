@@ -55,98 +55,114 @@ final class CommentsAnalyzerTest extends TestCase
     public static function provideCommentsCases(): iterable
     {
         yield 'discover all 4 comments for the 1st comment with slash' => [
-            '<?php
-$foo;
-// one
-// two
-// three
-// four
-$bar;',
+            <<<'EOD'
+                <?php
+                $foo;
+                // one
+                // two
+                // three
+                // four
+                $bar;
+                EOD,
             4,
             [4, 6, 8, 10],
         ];
 
         yield 'discover all 4 comments for the 1st comment with hash' => [
-            '<?php
-$foo;
-# one
-# two
-# three
-# four
-$bar;',
+            <<<'EOD'
+                <?php
+                $foo;
+                # one
+                # two
+                # three
+                # four
+                $bar;
+                EOD,
             4,
             [4, 6, 8, 10],
         ];
 
         yield 'discover 3 comments out of 4 for the 2nd comment' => [
-            '<?php
-$foo;
-// one
-// two
-// three
-// four
-$bar;',
+            <<<'EOD'
+                <?php
+                $foo;
+                // one
+                // two
+                // three
+                // four
+                $bar;
+                EOD,
             6,
             [6, 8, 10],
         ];
 
         yield 'discover 3 comments when empty line separates 4th' => [
-            '<?php
-$foo;
-// one
-// two
-// three
+            <<<'EOD'
+                <?php
+                $foo;
+                // one
+                // two
+                // three
 
-// four
-$bar;',
+                // four
+                $bar;
+                EOD,
             4,
             [4, 6, 8],
         ];
 
         yield 'discover 3 comments when empty line of CR separates 4th' => [
-            str_replace("\n", "\r", '<?php
-$foo;
-// one
-// two
-// three
+            str_replace("\n", "\r", <<<'EOD'
+                <?php
+                $foo;
+                // one
+                // two
+                // three
 
-// four
-$bar;'),
+                // four
+                $bar;
+                EOD),
             4,
             [4, 6, 8],
         ];
 
         yield 'discover correctly when mix of slash and hash' => [
-            '<?php
-$foo;
-// one
-// two
-# three
-// four
-$bar;',
+            <<<'EOD'
+                <?php
+                $foo;
+                // one
+                // two
+                # three
+                // four
+                $bar;
+                EOD,
             4,
             [4, 6],
         ];
 
         yield 'do not group asterisk comments' => [
-            '<?php
-$foo;
-/* one */
-/* two */
-/* three */
-$bar;',
+            <<<'EOD'
+                <?php
+                $foo;
+                /* one */
+                /* two */
+                /* three */
+                $bar;
+                EOD,
             4,
             [4],
         ];
 
         yield 'handle fancy indent' => [
-            '<?php
-$foo;
-        // one
-       //  two
-      //   three
-     //    four
-$bar;',
+            <<<'EOD'
+                <?php
+                $foo;
+                        // one
+                       //  two
+                      //   three
+                     //    four
+                $bar;
+                EOD,
             4,
             [4, 6, 8, 10],
         ];
@@ -335,10 +351,12 @@ $bar;',
 
         yield ['<?php /* Comment, but not doc block */ if ($foo === -1) {};'];
 
-        yield ['<?php
-                $a = $b[1]; // @phpstan-ignore-line
+        yield [<<<'EOD'
+            <?php
+                            $a = $b[1]; // @phpstan-ignore-line
 
-                static::bar();',
+                            static::bar();
+            EOD,
         ];
 
         yield ['<?php /* @var int $a */ [$b] = [2];'];
@@ -361,12 +379,14 @@ $bar;',
     public static function providePhpdocCandidatePhp80Cases(): iterable
     {
         yield 'attribute between class and phpDoc' => [
-            '<?php
-/**
- * @Annotation
- */
-#[CustomAnnotationA]
-Class MyAnnotation3 {}',
+            <<<'EOD'
+                <?php
+                /**
+                 * @Annotation
+                 */
+                #[CustomAnnotationA]
+                Class MyAnnotation3 {}
+                EOD,
         ];
     }
 
@@ -399,19 +419,23 @@ Class MyAnnotation3 {}',
         ];
 
         yield 'public final const' => [
-            '<?php final class Foo2 extends B implements A
-            {
-                /* */
-                public final const Y = "i";
-            }',
+            <<<'EOD'
+                <?php final class Foo2 extends B implements A
+                            {
+                                /* */
+                                public final const Y = "i";
+                            }
+                EOD,
         ];
 
         yield 'final public const' => [
-            '<?php final class Foo2 extends B implements A
-            {
-                /* */
-                final public const Y = "i";
-            }',
+            <<<'EOD'
+                <?php final class Foo2 extends B implements A
+                            {
+                                /* */
+                                final public const Y = "i";
+                            }
+                EOD,
         ];
 
         yield 'enum' => [
@@ -419,13 +443,15 @@ Class MyAnnotation3 {}',
         ];
 
         yield 'enum with deprecated case' => [
-            '<?php
-enum Foo: int {
-    /**
-     * @deprecated Lorem ipsum
-     */
-    case BAR = 1;
-}',
+            <<<'EOD'
+                <?php
+                enum Foo: int {
+                    /**
+                     * @deprecated Lorem ipsum
+                     */
+                    case BAR = 1;
+                }
+                EOD,
         ];
     }
 
@@ -446,21 +472,25 @@ enum Foo: int {
     public static function provideNotPhpdocCandidatePhp81Cases(): iterable
     {
         yield 'enum and switch' => [
-            '<?php
-            enum E {}
-            switch ($x) {
-                /* */
-                case 1: return 2;
-            }'."\n            ",
+            <<<'EOD'
+                <?php
+                            enum E {}
+                            switch ($x) {
+                                /* */
+                                case 1: return 2;
+                            }
+                EOD."\n            ",
         ];
 
         yield 'switch and enum' => [
-            '<?php
-            switch ($x) {
-                /* */
-                case 1: return 2;
-            }
-            enum E {}'."\n            ",
+            <<<'EOD'
+                <?php
+                            switch ($x) {
+                                /* */
+                                case 1: return 2;
+                            }
+                            enum E {}
+                EOD."\n            ",
         ];
     }
 
@@ -482,46 +512,54 @@ enum Foo: int {
     public static function provideReturnStatementCases(): iterable
     {
         yield 'docblock before var' => [
-            '<?php
-            function returnClassName()
-            {
-                /** @todo something */
-                $var = 123;
+            <<<'EOD'
+                <?php
+                            function returnClassName()
+                            {
+                                /** @todo something */
+                                $var = 123;
 
-                return;
-            }'."\n            ",
+                                return;
+                            }
+                EOD."\n            ",
             false,
         ];
 
         yield 'comment before var' => [
-            '<?php
-            function returnClassName()
-            {
-                // @todo something
-                $var = 123;
+            <<<'EOD'
+                <?php
+                            function returnClassName()
+                            {
+                                // @todo something
+                                $var = 123;
 
-                return;
-            }'."\n            ",
+                                return;
+                            }
+                EOD."\n            ",
             false,
         ];
 
         yield 'docblock return' => [
-            '<?php
-            function returnClassName()
-            {
-                /** @todo something */
-                return;
-            }'."\n            ",
+            <<<'EOD'
+                <?php
+                            function returnClassName()
+                            {
+                                /** @todo something */
+                                return;
+                            }
+                EOD."\n            ",
             true,
         ];
 
         yield 'comment return' => [
-            '<?php
-            function returnClassName()
-            {
-                // @todo something
-                return;
-            }'."\n            ",
+            <<<'EOD'
+                <?php
+                            function returnClassName()
+                            {
+                                // @todo something
+                                return;
+                            }
+                EOD."\n            ",
             true,
         ];
     }

@@ -35,10 +35,12 @@ final class FullOpeningTagFixer extends AbstractFixer
             'PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.',
             [
                 new CodeSample(
-                    '<?
+                    <<<'EOD'
+                        <?
 
-echo "Hello!";
-'
+                        echo "Hello!";
+
+                        EOD
                 ),
             ]
         );

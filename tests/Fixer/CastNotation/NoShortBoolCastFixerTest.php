@@ -34,57 +34,69 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-            $c = // lala
-                // cc
-            (bool)$content;',
-            '<?php
-            $c = ! // lala
-                // cc
-            !$content;',
+            <<<'EOD'
+                <?php
+                            $c = // lala
+                                // cc
+                            (bool)$content;
+                EOD,
+            <<<'EOD'
+                <?php
+                            $c = ! // lala
+                                // cc
+                            !$content;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = \'0\';
-$b = /*
+            <<<'EOD'
+                <?php
+                $a = '0';
+                $b = /*
 
-    */(bool)$a;',
-            '<?php
-$a = \'0\';
-$b = !/*
+                    */(bool)$a;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = '0';
+                $b = !/*
 
-    */!$a;',
+                    */!$a;
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo($a, $b) {
-    $c = (bool)$a;
-    $d = !$a;
-    $d1 = !  $a;
-    $d2 =    !$a;
-    $b = !(!$foo);
-    echo \'!!\'; // !! ! !
-    $c = (bool) $b;
-    $e = (bool) $d1;
-    return (bool) $a;
-}'."\n                ",
-            '<?php
-function foo($a, $b) {
-    $c = !!$a;
-    $d = !$a;
-    $d1 = !  $a;
-    $d2 =    !$a;
-    $b = !(!$foo);
-    echo \'!!\'; // !! ! !
-    $c = ! ! $b;
-    $e = !
+            <<<'EOD'
+                <?php
+                function foo($a, $b) {
+                    $c = (bool)$a;
+                    $d = !$a;
+                    $d1 = !  $a;
+                    $d2 =    !$a;
+                    $b = !(!$foo);
+                    echo '!!'; // !! ! !
+                    $c = (bool) $b;
+                    $e = (bool) $d1;
+                    return (bool) $a;
+                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                function foo($a, $b) {
+                    $c = !!$a;
+                    $d = !$a;
+                    $d1 = !  $a;
+                    $d2 =    !$a;
+                    $b = !(!$foo);
+                    echo '!!'; // !! ! !
+                    $c = ! ! $b;
+                    $e = !
 
 
-    ! $d1;
-    return !! $a;
-}'."\n                ",
+                    ! $d1;
+                    return !! $a;
+                }
+                EOD."\n                ",
         ];
     }
 }

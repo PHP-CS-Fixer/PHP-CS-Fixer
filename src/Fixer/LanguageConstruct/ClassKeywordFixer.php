@@ -31,11 +31,13 @@ final class ClassKeywordFixer extends AbstractFixer
             'EXPERIMENTAL: Converts FQCN strings to `*::class` keywords. Do not use it, unless you know what you are doing.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-$foo = \'PhpCsFixer\Tokenizer\Tokens\';
-$bar = "\PhpCsFixer\Tokenizer\Tokens";
-'
+                        $foo = 'PhpCsFixer\Tokenizer\Tokens';
+                        $bar = "\PhpCsFixer\Tokenizer\Tokens";
+
+                        EOD
                 ),
             ],
             'This rule does not have an understanding of whether a class exists in the scope of the codebase or not, relying on run-time and autoloaded classes to determine it, which makes the rule useless when running on a single file out of codebase context.',

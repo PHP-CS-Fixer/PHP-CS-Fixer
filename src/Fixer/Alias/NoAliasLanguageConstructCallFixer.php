@@ -29,9 +29,11 @@ final class NoAliasLanguageConstructCallFixer extends AbstractFixer
             'Master language constructs shall be used instead of aliases.',
             [
                 new CodeSample(
-                    '<?php
-die;
-'
+                    <<<'EOD'
+                        <?php
+                        die;
+
+                        EOD
                 ),
             ]
         );

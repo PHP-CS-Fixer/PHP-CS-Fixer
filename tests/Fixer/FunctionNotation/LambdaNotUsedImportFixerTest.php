@@ -49,79 +49,99 @@ final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'simple, but witch comments' => [
-            '<?php $foo = function()
-# 1
-#2
-# 3
-#4
-# 5
- #6
-{};',
-            '<?php $foo = function()
-use
-# 1
-( #2
-# 3
-$bar #4
-# 5
-) #6
-{};',
+            <<<'EOD'
+                <?php $foo = function()
+                # 1
+                #2
+                # 3
+                #4
+                # 5
+                 #6
+                {};
+                EOD,
+            <<<'EOD'
+                <?php $foo = function()
+                use
+                # 1
+                ( #2
+                # 3
+                $bar #4
+                # 5
+                ) #6
+                {};
+                EOD,
         ];
 
         yield 'nested lambda I' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$f = function() {
-    return function ($d) use ($c) {
-        $b = 1; echo $c;
-    };
-};
-',
-            '<?php
+                $f = function() {
+                    return function ($d) use ($c) {
+                        $b = 1; echo $c;
+                    };
+                };
 
-$f = function() use ($b) {
-    return function ($d) use ($c) {
-        $b = 1; echo $c;
-    };
-};
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                $f = function() use ($b) {
+                    return function ($d) use ($c) {
+                        $b = 1; echo $c;
+                    };
+                };
+
+                EOD,
         ];
 
         yield 'nested lambda II' => [
-            '<?php
-// do not fix
-$f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
-$f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
+            <<<'EOD'
+                <?php
+                // do not fix
+                $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
+                $f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
 
-// do fix
-$f = function() { return function() { return function() { return function() { }; }; }; };'."\n                ",
-            '<?php
-// do not fix
-$f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
-$f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
+                // do fix
+                $f = function() { return function() { return function() { return function() { }; }; }; };
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                // do not fix
+                $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
+                $f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
 
-// do fix
-$f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { }; }; }; };'."\n                ",
+                // do fix
+                $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { }; }; }; };
+                EOD."\n                ",
         ];
 
         yield 'anonymous class' => [
-            '<?php
-$a = function() use ($b) { new class($b){}; }; // do not fix
-$a = function() { new class(){ public function foo($b){echo $b;}}; }; // do fix
-',
-            '<?php
-$a = function() use ($b) { new class($b){}; }; // do not fix
-$a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; // do fix
-',
+            <<<'EOD'
+                <?php
+                $a = function() use ($b) { new class($b){}; }; // do not fix
+                $a = function() { new class(){ public function foo($b){echo $b;}}; }; // do fix
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = function() use ($b) { new class($b){}; }; // do not fix
+                $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; // do fix
+
+                EOD,
         ];
 
         yield 'anonymous class with a string argument' => [
-            '<?php $function = function () {
-                    new class("bar") {};
-                };',
-            '<?php $function = function () use ($foo) {
-                    new class("bar") {};
-                };',
+            <<<'EOD'
+                <?php $function = function () {
+                                    new class("bar") {};
+                                };
+                EOD,
+            <<<'EOD'
+                <?php $function = function () use ($foo) {
+                                    new class("bar") {};
+                                };
+                EOD,
         ];
 
         yield 'reference' => [
@@ -177,17 +197,19 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
         ];
 
         yield 'heredoc' => [
-            '<?php
-$b = 123;
-$foo = function() use ($b) {
-    echo
-<<<"TEST"
-Foo $b
-TEST;
-};
+            <<<'EOD'
+                <?php
+                $b = 123;
+                $foo = function() use ($b) {
+                    echo
+                <<<"TEST"
+                Foo $b
+                TEST;
+                };
 
-$foo();
-',
+                $foo();
+
+                EOD,
         ];
     }
 

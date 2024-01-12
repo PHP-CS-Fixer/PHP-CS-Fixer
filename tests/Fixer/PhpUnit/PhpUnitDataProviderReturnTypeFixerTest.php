@@ -37,14 +37,16 @@ final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'data provider with iterable return type' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    public function provideFooCases() : iterable {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    public function testFoo() {}
+                    public function provideFooCases() : iterable {}
+                }
+                EOD,
         ];
 
         yield 'data provider without return type' => self::mapToTemplate(
@@ -73,119 +75,131 @@ class FooTest extends TestCase {
         );
 
         yield 'multiple data providers' => [
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider provider4
-                 * @dataProvider provider1
-                 * @dataProvider provider5
-                 * @dataProvider provider6
-                 * @dataProvider provider2
-                 * @dataProvider provider3
-                 */
-                public function testFoo() {}
-                public function provider1(): iterable {}
-                public function provider2(): iterable {}
-                public function provider3(): iterable {}
-                public function provider4(): iterable {}
-                public function provider5(): iterable {}
-                public function provider6(): iterable {}
-            }',
-            '<?php class FooTest extends TestCase {
-                /**
-                 * @dataProvider provider4
-                 * @dataProvider provider1
-                 * @dataProvider provider5
-                 * @dataProvider provider6
-                 * @dataProvider provider2
-                 * @dataProvider provider3
-                 */
-                public function testFoo() {}
-                public function provider1() {}
-                public function provider2() {}
-                public function provider3() {}
-                public function provider4() {}
-                public function provider5() {}
-                public function provider6() {}
-            }',
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider provider4
+                                 * @dataProvider provider1
+                                 * @dataProvider provider5
+                                 * @dataProvider provider6
+                                 * @dataProvider provider2
+                                 * @dataProvider provider3
+                                 */
+                                public function testFoo() {}
+                                public function provider1(): iterable {}
+                                public function provider2(): iterable {}
+                                public function provider3(): iterable {}
+                                public function provider4(): iterable {}
+                                public function provider5(): iterable {}
+                                public function provider6(): iterable {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class FooTest extends TestCase {
+                                /**
+                                 * @dataProvider provider4
+                                 * @dataProvider provider1
+                                 * @dataProvider provider5
+                                 * @dataProvider provider6
+                                 * @dataProvider provider2
+                                 * @dataProvider provider3
+                                 */
+                                public function testFoo() {}
+                                public function provider1() {}
+                                public function provider2() {}
+                                public function provider3() {}
+                                public function provider4() {}
+                                public function provider5() {}
+                                public function provider6() {}
+                            }
+                EOD,
         ];
 
         yield 'advanced case' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     * @dataProvider provideFooCases2
-     */
-    public function testFoo()
-    {
-        /**
-         * @dataProvider someFunction
-         */
-        $foo = /** foo */ function ($x) { return $x + 1; };
-        /**
-         * @dataProvider someFunction2
-         */
-        /* foo */someFunction2();
-    }
-    /**
-     * @dataProvider provideFooCases3
-     */
-    public function testBar() {}
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     * @dataProvider provideFooCases2
+                     */
+                    public function testFoo()
+                    {
+                        /**
+                         * @dataProvider someFunction
+                         */
+                        $foo = /** foo */ function ($x) { return $x + 1; };
+                        /**
+                         * @dataProvider someFunction2
+                         */
+                        /* foo */someFunction2();
+                    }
+                    /**
+                     * @dataProvider provideFooCases3
+                     */
+                    public function testBar() {}
 
-    public function provideFooCases(): iterable {}
-    public function provideFooCases2(): iterable {}
-    public function provideFooCases3(): iterable {}
-    public function someFunction() {}
-    public function someFunction2() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     * @dataProvider provideFooCases2
-     */
-    public function testFoo()
-    {
-        /**
-         * @dataProvider someFunction
-         */
-        $foo = /** foo */ function ($x) { return $x + 1; };
-        /**
-         * @dataProvider someFunction2
-         */
-        /* foo */someFunction2();
-    }
-    /**
-     * @dataProvider provideFooCases3
-     */
-    public function testBar() {}
+                    public function provideFooCases(): iterable {}
+                    public function provideFooCases2(): iterable {}
+                    public function provideFooCases3(): iterable {}
+                    public function someFunction() {}
+                    public function someFunction2() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     * @dataProvider provideFooCases2
+                     */
+                    public function testFoo()
+                    {
+                        /**
+                         * @dataProvider someFunction
+                         */
+                        $foo = /** foo */ function ($x) { return $x + 1; };
+                        /**
+                         * @dataProvider someFunction2
+                         */
+                        /* foo */someFunction2();
+                    }
+                    /**
+                     * @dataProvider provideFooCases3
+                     */
+                    public function testBar() {}
 
-    public function provideFooCases() {}
-    public function provideFooCases2() {}
-    public function provideFooCases3() {}
-    public function someFunction() {}
-    public function someFunction2() {}
-}',
+                    public function provideFooCases() {}
+                    public function provideFooCases2() {}
+                    public function provideFooCases3() {}
+                    public function someFunction() {}
+                    public function someFunction2() {}
+                }
+                EOD,
         ];
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
             yield sprintf('test function with %s modifier', $modifier) => [
-                sprintf('<?php
-                    abstract class FooTest extends TestCase {
-                        /**
-                         * @dataProvider provideFooCases
-                         */
-                        %s function testFoo() %s
-                        public function provideFooCases(): iterable {}
-                    }'."\n                ", $modifier, 'abstract' === $modifier ? ';' : '{}'),
-                sprintf('<?php
-                    abstract class FooTest extends TestCase {
-                        /**
-                         * @dataProvider provideFooCases
-                         */
-                        %s function testFoo() %s
-                        public function provideFooCases() {}
-                    }'."\n                ", $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                sprintf(<<<'EOD'
+                    <?php
+                                        abstract class FooTest extends TestCase {
+                                            /**
+                                             * @dataProvider provideFooCases
+                                             */
+                                            %s function testFoo() %s
+                                            public function provideFooCases(): iterable {}
+                                        }
+                    EOD."\n                ", $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                sprintf(<<<'EOD'
+                    <?php
+                                        abstract class FooTest extends TestCase {
+                                            /**
+                                             * @dataProvider provideFooCases
+                                             */
+                                            %s function testFoo() %s
+                                            public function provideFooCases() {}
+                                        }
+                    EOD."\n                ", $modifier, 'abstract' === $modifier ? ';' : '{}'),
             ];
         }
     }
@@ -219,20 +233,22 @@ class FooTest extends TestCase {
      */
     private static function mapToTemplate(string ...$types): array
     {
-        static $template = '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    /**
-     * @dataProvider provider
-     */
-    public function testBar() {}
-    public function provideFooCases()%1$s {}
-    public function provider()%1$s {}
-    public function notProvider(): array {}
-}';
+        static $template = <<<'EOD'
+            <?php
+            class FooTest extends TestCase {
+                /**
+                 * @dataProvider provideFooCases
+                 */
+                public function testFoo() {}
+                /**
+                 * @dataProvider provider
+                 */
+                public function testBar() {}
+                public function provideFooCases()%1$s {}
+                public function provider()%1$s {}
+                public function notProvider(): array {}
+            }
+            EOD;
 
         return array_map(
             static fn (string $type): string => sprintf($template, $type),

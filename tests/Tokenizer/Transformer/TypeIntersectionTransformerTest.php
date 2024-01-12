@@ -45,21 +45,23 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
     public static function provideProcessCases(): iterable
     {
         yield 'do not fix cases' => [
-            '<?php
-                echo 2 & 4;
-                echo "aaa" & "bbb";
-                echo F_OK & F_ERR;
-                echo foo(F_OK & F_ERR);
-                foo($A&&$b);
-                foo($A&$b);
-                // try {} catch (ExceptionType1 & ExceptionType2) {}
-                $a = function(){};
-                $x = ($y&$z);
-                function foo(){}
-                $a = $b&$c;
-                $a &+ $b;
-                const A1 = B&C;
-                const B1 = D::X & C;'."\n            ",
+            <<<'EOD'
+                <?php
+                                echo 2 & 4;
+                                echo "aaa" & "bbb";
+                                echo F_OK & F_ERR;
+                                echo foo(F_OK & F_ERR);
+                                foo($A&&$b);
+                                foo($A&$b);
+                                // try {} catch (ExceptionType1 & ExceptionType2) {}
+                                $a = function(){};
+                                $x = ($y&$z);
+                                function foo(){}
+                                $a = $b&$c;
+                                $a &+ $b;
+                                const A1 = B&C;
+                                const B1 = D::X & C;
+                EOD."\n            ",
         ];
 
         if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
@@ -94,9 +96,11 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'static function' => [
-            '<?php
-$a = static function (A&B&int $a):int&null {};
-',
+            <<<'EOD'
+                <?php
+                $a = static function (A&B&int $a):int&null {};
+
+                EOD,
             [
                 11 => CT::T_TYPE_INTERSECTION,
                 13 => CT::T_TYPE_INTERSECTION,
@@ -105,19 +109,23 @@ $a = static function (A&B&int $a):int&null {};
         ];
 
         yield 'static function with use' => [
-            '<?php
-$a = static function () use ($a) : int&null {};
-',
+            <<<'EOD'
+                <?php
+                $a = static function () use ($a) : int&null {};
+
+                EOD,
             [
                 21 => CT::T_TYPE_INTERSECTION,
             ],
         ];
 
         yield 'function variable unions' => [
-            '<?php
-function Bar1(A&B&int $a) {
-}
-',
+            <<<'EOD'
+                <?php
+                function Bar1(A&B&int $a) {
+                }
+
+                EOD,
             [
                 6 => CT::T_TYPE_INTERSECTION,
                 8 => CT::T_TYPE_INTERSECTION,
@@ -125,14 +133,16 @@ function Bar1(A&B&int $a) {
         ];
 
         yield 'class method variable unions' => [
-            '<?php
-class Foo
-{
-    public function Bar1(A&B&int $a) {}
-    public function Bar2(A\B&\A\Z $a) {}
-    public function Bar3(int $a) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function Bar1(A&B&int $a) {}
+                    public function Bar2(A\B&\A\Z $a) {}
+                    public function Bar3(int $a) {}
+                }
+
+                EOD,
             [
                 // Bar1
                 14 => CT::T_TYPE_INTERSECTION,
@@ -143,12 +153,14 @@ class Foo
         ];
 
         yield 'class method return unions' => [
-            '<?php
-class Foo
-{
-    public function Bar(): A&B&int {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function Bar(): A&B&int {}
+                }
+
+                EOD,
             [
                 17 => CT::T_TYPE_INTERSECTION,
                 19 => CT::T_TYPE_INTERSECTION,
@@ -156,12 +168,14 @@ class Foo
         ];
 
         yield 'class attribute var + union' => [
-            '<?php
-class Number
-{
-    var int&float&null $number;
-}
-',
+            <<<'EOD'
+                <?php
+                class Number
+                {
+                    var int&float&null $number;
+                }
+
+                EOD,
             [
                 10 => CT::T_TYPE_INTERSECTION,
                 12 => CT::T_TYPE_INTERSECTION,
@@ -169,28 +183,30 @@ class Number
         ];
 
         yield 'class attributes visibility + unions' => [
-            '<?php
-class Number
-{
-    public array $numbers;
+            <<<'EOD'
+                <?php
+                class Number
+                {
+                    public array $numbers;
 
-    /**  */
-    public int&float $number1;
+                    /**  */
+                    public int&float $number1;
 
-    // 2
-    protected int&float&null $number2;
+                    // 2
+                    protected int&float&null $number2;
 
-    # - foo 3
-    private int&float&string&null $number3;
+                    # - foo 3
+                    private int&float&string&null $number3;
 
-    /* foo 4 */
-    private \Foo\Bar\A&null $number4;
+                    /* foo 4 */
+                    private \Foo\Bar\A&null $number4;
 
-    private \Foo&Bar $number5;
+                    private \Foo&Bar $number5;
 
-    private ?Bar $number6; // ? cannot be part of a union in PHP8
-}
-',
+                    private ?Bar $number6; // ? cannot be part of a union in PHP8
+                }
+
+                EOD,
             [
                 // number 1
                 19 => CT::T_TYPE_INTERSECTION,
@@ -209,12 +225,14 @@ class Number
         ];
 
         yield 'typed static properties' => [
-            '<?php
-            class Foo {
-                private static int & null $bar;
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private static int & null $bar;
 
-                private static int & float & string & null $baz;
-            }',
+                                private static int & float & string & null $baz;
+                            }
+                EOD,
             [
                 14 => CT::T_TYPE_INTERSECTION,
                 27 => CT::T_TYPE_INTERSECTION,
@@ -257,13 +275,15 @@ class Number
         ];
 
         yield 'function calls and function definitions' => [
-            '<?php
-                f1(CONST_A&CONST_B);
-                function f2(A&B $x, C&D $y, E&F $z) {};
-                f3(CONST_A&CONST_B);
-                function f4(A&B $x, C&D $y, E&F $z) {};
-                f5(CONST_A&CONST_B);
-                $x = ($y&$z);'."\n            ",
+            <<<'EOD'
+                <?php
+                                f1(CONST_A&CONST_B);
+                                function f2(A&B $x, C&D $y, E&F $z) {};
+                                f3(CONST_A&CONST_B);
+                                function f4(A&B $x, C&D $y, E&F $z) {};
+                                f5(CONST_A&CONST_B);
+                                $x = ($y&$z);
+                EOD."\n            ",
             [
                 15 => CT::T_TYPE_INTERSECTION,
                 22 => CT::T_TYPE_INTERSECTION,
@@ -275,9 +295,11 @@ class Number
         ];
 
         yield 'static function with alternation' => [
-            '<?php
-$a = static function (A&B&int $a):int|null {};
-',
+            <<<'EOD'
+                <?php
+                $a = static function (A&B&int $a):int|null {};
+
+                EOD,
             [
                 11 => CT::T_TYPE_INTERSECTION,
                 13 => CT::T_TYPE_INTERSECTION,
@@ -285,13 +307,15 @@ $a = static function (A&B&int $a):int|null {};
         ];
 
         yield 'promoted properties' => [
-            '<?php class Foo {
-                public function __construct(
-                    public readonly int&string $a,
-                    protected readonly int&string $b,
-                    private readonly int&string $c
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public readonly int&string $a,
+                                    protected readonly int&string $b,
+                                    private readonly int&string $c
+                                ) {}
+                            }
+                EOD,
             [
                 19 => CT::T_TYPE_INTERSECTION,
                 30 => CT::T_TYPE_INTERSECTION,
@@ -300,11 +324,13 @@ $a = static function (A&B&int $a):int|null {};
         ];
 
         yield 'callable type' => [
-            '<?php
-                function f1(array&callable $x) {};
-                function f2(callable&array $x) {};
-                function f3(string&callable $x) {};
-                function f4(callable&string $x) {};'."\n            ",
+            <<<'EOD'
+                <?php
+                                function f1(array&callable $x) {};
+                                function f2(callable&array $x) {};
+                                function f3(string&callable $x) {};
+                                function f4(callable&string $x) {};
+                EOD."\n            ",
             [
                 7 => CT::T_TYPE_INTERSECTION,
                 22 => CT::T_TYPE_INTERSECTION,
@@ -314,39 +340,45 @@ $a = static function (A&B&int $a):int|null {};
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Psr\Log\LoggerInterface;
-function f( #[Target(\'xxx\')] LoggerInterface&A $logger) {}
+                use Psr\Log\LoggerInterface;
+                function f( #[Target('xxx')] LoggerInterface&A $logger) {}
 
-',
+
+                EOD,
             [
                 24 => CT::T_TYPE_INTERSECTION,
             ],
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-use Psr\Log\LoggerInterface;
-function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] LoggerInterface&X $logger) {}
+                use Psr\Log\LoggerInterface;
+                function f( #[Target('a')] #[Target('b')] #[Target('c')] #[Target('d')] LoggerInterface&X $logger) {}
 
-',
+
+                EOD,
             [
                 45 => CT::T_TYPE_INTERSECTION,
             ],
         ];
 
         yield 'parameters by reference' => [
-            '<?php
-                f(FOO|BAR|BAZ&$x);
-                function f1(FOO|BAR|BAZ&$x) {}
-                function f2(FOO&BAR&BAZ&$x) {} // Intersection found
-                f(FOO&BAR|BAZ&$x);
-                f(FOO|BAR&BAZ&$x);
-                fn(FOO&BAR&BAZ&$x) => 0; // Intersection found
-                fn(FOO|BAR|BAZ&$x) => 0;
-                f(FOO&BAR&BAZ&$x);'."\n            ",
+            <<<'EOD'
+                <?php
+                                f(FOO|BAR|BAZ&$x);
+                                function f1(FOO|BAR|BAZ&$x) {}
+                                function f2(FOO&BAR&BAZ&$x) {} // Intersection found
+                                f(FOO&BAR|BAZ&$x);
+                                f(FOO|BAR&BAZ&$x);
+                                fn(FOO&BAR&BAZ&$x) => 0; // Intersection found
+                                fn(FOO|BAR|BAZ&$x) => 0;
+                                f(FOO&BAR&BAZ&$x);
+                EOD."\n            ",
             [
                 35 => CT::T_TYPE_INTERSECTION,
                 37 => CT::T_TYPE_INTERSECTION,
@@ -356,10 +388,12 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'self as type' => [
-            '<?php class Foo {
-                function f1(bool&self&int $x): void {}
-                function f2(): self&\stdClass {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function f1(bool&self&int $x): void {}
+                                function f2(): self&\stdClass {}
+                            }
+                EOD,
             [
                 12 => CT::T_TYPE_INTERSECTION,
                 14 => CT::T_TYPE_INTERSECTION,
@@ -368,11 +402,13 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'static as type' => [
-            '<?php class Foo {
-                function f1(): static&TypeA {}
-                function f2(): TypeA&static&TypeB {}
-                function f3(): TypeA&static {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function f1(): static&TypeA {}
+                                function f2(): TypeA&static&TypeB {}
+                                function f3(): TypeA&static {}
+                            }
+                EOD,
             [
                 15 => CT::T_TYPE_INTERSECTION,
                 29 => CT::T_TYPE_INTERSECTION,
@@ -382,10 +418,12 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'splat operator' => [
-            '<?php class Foo {
-                function f1(bool&int ... $x) {}
-                function f2(bool&int $x, TypeA&\Bar\Baz&TypeB ...$y) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                function f1(bool&int ... $x) {}
+                                function f2(bool&int $x, TypeA&\Bar\Baz&TypeB ...$y) {}
+                            }
+                EOD,
             [
                 12 => CT::T_TYPE_INTERSECTION,
                 28 => CT::T_TYPE_INTERSECTION,
@@ -424,11 +462,13 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'disjunctive normal form types parameters' => [
-            '<?php function foo(
-                (A&B)|C|D $x,
-                A|(B&C)|D $y,
-                (A&B)|(C&D) $z,
-            ): void {}',
+            <<<'EOD'
+                <?php function foo(
+                                (A&B)|C|D $x,
+                                A|(B&C)|D $y,
+                                (A&B)|(C&D) $z,
+                            ): void {}
+                EOD,
             [
                 8 => CT::T_TYPE_INTERSECTION,
                 23 => CT::T_TYPE_INTERSECTION,
@@ -438,20 +478,22 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         ];
 
         yield 'lambda with lots of DNF parameters and some others' => [
-            '<?php
-$a = function(
-    (X&Y)|C $a,
-    $b = array(1,2),
-    (\X&\Y)|C $c,
-    array $d = [1,2],
-    (\X&\Y)|C $e,
-    $x, $y, $z, P|(H&J) $uu,
-) {};
+            <<<'EOD'
+                <?php
+                $a = function(
+                    (X&Y)|C $a,
+                    $b = array(1,2),
+                    (\X&\Y)|C $c,
+                    array $d = [1,2],
+                    (\X&\Y)|C $e,
+                    $x, $y, $z, P|(H&J) $uu,
+                ) {};
 
-function foo (array $a = array(66,88, $d = [99,44],array()), $e = [99,44],(C&V)|G|array $f = array()){};
+                function foo (array $a = array(66,88, $d = [99,44],array()), $e = [99,44],(C&V)|G|array $f = array()){};
 
-return new static();
-',
+                return new static();
+
+                EOD,
             [
                 10 => CT::T_TYPE_INTERSECTION, // $a
                 34 => CT::T_TYPE_INTERSECTION, // $c
@@ -462,23 +504,25 @@ return new static();
         ];
 
         yield 'bigger set of multiple DNF properties' => [
-            '<?php
-class Dnf
-{
-    public A|(C&D) $a;
-    protected (C&D)|B $b;
-    private (C&D)|(E&F)|(G&H) $c;
-    static (C&D)|Z $d;
-    public /* */ (C&D)|X $e;
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public A|(C&D) $a;
+                    protected (C&D)|B $b;
+                    private (C&D)|(E&F)|(G&H) $c;
+                    static (C&D)|Z $d;
+                    public /* */ (C&D)|X $e;
 
-    public function foo($a, $b) {
-        return
-            $z|($A&$B)|(A::z&B\A::x)
-            || A::b|($A&$B)
-        ;
-    }
-}
-',
+                    public function foo($a, $b) {
+                        return
+                            $z|($A&$B)|(A::z&B\A::x)
+                            || A::b|($A&$B)
+                        ;
+                    }
+                }
+
+                EOD,
             [
                 13 => CT::T_TYPE_INTERSECTION,
                 24 => CT::T_TYPE_INTERSECTION,
@@ -491,9 +535,11 @@ class Dnf
         ];
 
         yield 'arrow function with DNF types' => [
-            '<?php
-                $f1 = fn (): A|(B&C) => new Foo();
-                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $f1 = fn (): A|(B&C) => new Foo();
+                                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+                EOD."\n            ",
             [
                 16 => CT::T_TYPE_INTERSECTION,
                 38 => CT::T_TYPE_INTERSECTION,

@@ -361,21 +361,25 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    /**
-     * @no_candidate string Hello!
-     */
-    public $foo;
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /**
+                     * @no_candidate string Hello!
+                     */
+                    public $foo;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo{}
-/**  */',
+            <<<'EOD'
+                <?php
+                class Foo{}
+                /**  */
+                EOD,
         ];
 
         yield 'anonymousClass' => [
@@ -438,66 +442,74 @@ class Foo{}
         ];
 
         yield [
-            '<?php
-/**
- * Header
- */
+            <<<'EOD'
+                <?php
+                /**
+                 * Header
+                 */
 
-class A {} // for the candidate check
+                class A {} // for the candidate check
 
-/**
- * @var ClassLoader $loader
- */
-$loader = require __DIR__.\'/../vendor/autoload.php\';
+                /**
+                 * @var ClassLoader $loader
+                 */
+                $loader = require __DIR__.'/../vendor/autoload.php';
 
-/**
- * @var \Foo\Bar $bar
- */
-$bar->doSomething(1);
+                /**
+                 * @var \Foo\Bar $bar
+                 */
+                $bar->doSomething(1);
 
-/**
- * @var $bar \Foo\Bar
- */
-$bar->doSomething(2);
+                /**
+                 * @var $bar \Foo\Bar
+                 */
+                $bar->doSomething(2);
 
-/**
- * @var User $bar
- */
-($bar = tmp())->doSomething(3);
+                /**
+                 * @var User $bar
+                 */
+                ($bar = tmp())->doSomething(3);
 
-/**
- * @var User $bar
- */
-list($bar) = a();'."\n                ",
+                /**
+                 * @var User $bar
+                 */
+                list($bar) = a();
+                EOD."\n                ",
         ];
 
         yield 'const are not handled by this fixer' => [
-            '<?php
-class A
-{
-    /**
-     * @var array<string, true> SKIPPED_TYPES
-     */
-    private const SKIPPED_TYPES = ["a" => true];
-}
-',
+            <<<'EOD'
+                <?php
+                class A
+                {
+                    /**
+                     * @var array<string, true> SKIPPED_TYPES
+                     */
+                    private const SKIPPED_TYPES = ["a" => true];
+                }
+
+                EOD,
         ];
 
         yield 'trait' => [
-            '<?php
- trait StaticExample {
-    /**
-     * @var string Hello!
-     */
-    public static $static = "foo";
-}',
-            '<?php
- trait StaticExample {
-    /**
-     * @var string $static Hello!
-     */
-    public static $static = "foo";
-}',
+            <<<'EOD'
+                <?php
+                 trait StaticExample {
+                    /**
+                     * @var string Hello!
+                     */
+                    public static $static = "foo";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                 trait StaticExample {
+                    /**
+                     * @var string $static Hello!
+                     */
+                    public static $static = "foo";
+                }
+                EOD,
         ];
 
         yield 'complex type with union containing callable that has `$this` in signature' => [
@@ -605,50 +617,56 @@ class A
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @var Foo */
-    public $bar1;
+                class Foo
+                {
+                    /** @var Foo */
+                    public $bar1;
 
-    /** @var Foo */
-    public readonly int $bar2;
+                    /** @var Foo */
+                    public readonly int $bar2;
 
-    /** @var Foo */
-    readonly public int $bar3;
+                    /** @var Foo */
+                    readonly public int $bar3;
 
-    /** @var Foo */
-    readonly int $bar4;
-}',
-            '<?php
+                    /** @var Foo */
+                    readonly int $bar4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    /** @var Foo $bar1 */
-    public $bar1;
+                class Foo
+                {
+                    /** @var Foo $bar1 */
+                    public $bar1;
 
-    /** @var Foo $bar2 */
-    public readonly int $bar2;
+                    /** @var Foo $bar2 */
+                    public readonly int $bar2;
 
-    /** @var Foo $bar3 */
-    readonly public int $bar3;
+                    /** @var Foo $bar3 */
+                    readonly public int $bar3;
 
-    /** @var Foo $bar4 */
-    readonly int $bar4;
-}',
+                    /** @var Foo $bar4 */
+                    readonly int $bar4;
+                }
+                EOD,
         ];
 
         yield 'final public const are not handled by this fixer' => [
-            '<?php
-class A
-{
-    /**
-     * @var array<string, true> SKIPPED_TYPES
-     */
-    final public const SKIPPED_TYPES = ["a" => true];
-}
-',
+            <<<'EOD'
+                <?php
+                class A
+                {
+                    /**
+                     * @var array<string, true> SKIPPED_TYPES
+                     */
+                    final public const SKIPPED_TYPES = ["a" => true];
+                }
+
+                EOD,
         ];
     }
 }

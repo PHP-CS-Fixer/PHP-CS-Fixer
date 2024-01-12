@@ -84,91 +84,111 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     public static function provideFixWithBreakCases(): iterable
     {
         yield [
-            '<?php
-switch ($a) {
-    case 42:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 42:
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($a) {
-    case 42:
-        $foo = $bar;
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 42:
+                        $foo = $bar;
 
-        break;
-}',
-            '<?php
-switch ($a) {
-    case 42:
-        $foo = $bar;
-        break;
-}',
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 42:
+                        $foo = $bar;
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        break;
-    }
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        break;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        break 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        break 1;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        echo $baz;
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        echo $baz;
 
-        break;
-    }
-}',
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        echo $baz;
-        break;
-    }
-}',
+                        break;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        echo $baz;
+                        break;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        echo $baz;
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        echo $baz;
 
-        break 1;
-    }
-}',
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        echo $baz;
-        break 1;
-    }
-}',
+                        break 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        echo $baz;
+                        break 1;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    if ($foo === $bar) {
-        /** X */
-        break 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    if ($foo === $bar) {
+                        /** X */
+                        break 1;
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -187,26 +207,30 @@ while (true) {
     public static function provideFixWithCaseCases(): iterable
     {
         yield [
-            '<?php
-switch ($a) {
-    case 1:
-        return 1;
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 1:
+                        return 1;
 
-    case 2;
-        return 2;
+                    case 2;
+                        return 2;
 
-    case 3:
-        return 3;
-}',
-            '<?php
-switch ($a) {
-    case 1:
-        return 1;
-    case 2;
-        return 2;
-    case 3:
-        return 3;
-}',
+                    case 3:
+                        return 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 1:
+                        return 1;
+                    case 2;
+                        return 2;
+                    case 3:
+                        return 3;
+                }
+                EOD,
         ];
     }
 
@@ -225,83 +249,101 @@ switch ($a) {
     public static function provideFixWithContinueCases(): iterable
     {
         yield [
-            '<?php
-while (true) {
-    continue;
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    continue;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    continue 1;
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    continue 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    while (true) {
-        continue 2;
-    }
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    while (true) {
+                        continue 2;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    $foo = true;
+            <<<'EOD'
+                <?php
+                while (true) {
+                    $foo = true;
 
-    continue;
-}',
-            '<?php
-while (true) {
-    $foo = true;
-    continue;
-}',
+                    continue;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                while (true) {
+                    $foo = true;
+                    continue;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    $foo = true;
+            <<<'EOD'
+                <?php
+                while (true) {
+                    $foo = true;
 
-    continue 1;
-}',
-            '<?php
-while (true) {
-    $foo = true;
-    continue 1;
-}',
+                    continue 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                while (true) {
+                    $foo = true;
+                    continue 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-while (true) {
-    while (true) {
-        switch($a) {
-            case 1:
-                echo 1;
+            <<<'EOD'
+                <?php
+                while (true) {
+                    while (true) {
+                        switch($a) {
+                            case 1:
+                                echo 1;
 
-                continue;
-        }
-        $foo = true;
+                                continue;
+                        }
+                        $foo = true;
 
-        continue 2;
-    }
-}',
-            '<?php
-while (true) {
-    while (true) {
-        switch($a) {
-            case 1:
-                echo 1;
-                continue;
-        }
-        $foo = true;
-        continue 2;
-    }
-}',
+                        continue 2;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                while (true) {
+                    while (true) {
+                        switch($a) {
+                            case 1:
+                                echo 1;
+                                continue;
+                        }
+                        $foo = true;
+                        continue 2;
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -320,24 +362,30 @@ while (true) {
     public static function provideFixWithDeclareCases(): iterable
     {
         yield [
-            '<?php
-declare(ticks=1);',
+            <<<'EOD'
+                <?php
+                declare(ticks=1);
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = "bar";
-do {
-} while (true);
-$foo = "bar";
+            <<<'EOD'
+                <?php
+                $foo = "bar";
+                do {
+                } while (true);
+                $foo = "bar";
 
-declare(ticks=1);',
-            '<?php
-$foo = "bar";
-do {
-} while (true);
-$foo = "bar";
-declare(ticks=1);',
+                declare(ticks=1);
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = "bar";
+                do {
+                } while (true);
+                $foo = "bar";
+                declare(ticks=1);
+                EOD,
         ];
     }
 
@@ -356,31 +404,35 @@ declare(ticks=1);',
     public static function provideFixWithDefaultCases(): iterable
     {
         yield [
-            '<?php
-switch ($a) {
-    case 1:
-        return 1;
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 1:
+                        return 1;
 
-    default:
-        return 2;
-}
+                    default:
+                        return 2;
+                }
 
-switch ($a1) {
-    default:
-        return 22;
-}',
-            '<?php
-switch ($a) {
-    case 1:
-        return 1;
-    default:
-        return 2;
-}
+                switch ($a1) {
+                    default:
+                        return 22;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 1:
+                        return 1;
+                    default:
+                        return 2;
+                }
 
-switch ($a1) {
-    default:
-        return 22;
-}',
+                switch ($a1) {
+                    default:
+                        return 22;
+                }
+                EOD,
         ];
     }
 
@@ -399,21 +451,27 @@ switch ($a1) {
     public static function provideFixWithDoCases(): iterable
     {
         yield [
-            '<?php
-do {
-} while (true);',
+            <<<'EOD'
+                <?php
+                do {
+                } while (true);
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = "bar";
+            <<<'EOD'
+                <?php
+                $foo = "bar";
 
-do {
-} while (true);',
-            '<?php
-$foo = "bar";
-do {
-} while (true);',
+                do {
+                } while (true);
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = "bar";
+                do {
+                } while (true);
+                EOD,
         ];
     }
 
@@ -432,46 +490,58 @@ do {
     public static function provideFixWithExitCases(): iterable
     {
         yield [
-            '<?php
-if ($foo === $bar) {
-    exit();
-}',
+            <<<'EOD'
+                <?php
+                if ($foo === $bar) {
+                    exit();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo === $bar) {
-    echo $baz;
+            <<<'EOD'
+                <?php
+                if ($foo === $bar) {
+                    echo $baz;
 
-    exit();
-}',
-            '<?php
-if ($foo === $bar) {
-    echo $baz;
-    exit();
-}',
+                    exit();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo === $bar) {
+                    echo $baz;
+                    exit();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo === $bar) {
-    echo $baz;
+            <<<'EOD'
+                <?php
+                if ($foo === $bar) {
+                    echo $baz;
 
-    exit();
-}',
+                    exit();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-mysqli_connect() or exit();',
+            <<<'EOD'
+                <?php
+                mysqli_connect() or exit();
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo === $bar) {
-    $bar = 9001;
-    mysqli_connect() or exit();
-}',
+            <<<'EOD'
+                <?php
+                if ($foo === $bar) {
+                    $bar = 9001;
+                    mysqli_connect() or exit();
+                }
+                EOD,
         ];
     }
 
@@ -490,13 +560,17 @@ if ($foo === $bar) {
     public static function provideFixWithForCases(): iterable
     {
         yield [
-            '<?php
-                    echo 1;
+            <<<'EOD'
+                <?php
+                                    echo 1;
 
-                    for(;;){break;}'."\n                ",
-            '<?php
-                    echo 1;
-                    for(;;){break;}'."\n                ",
+                                    for(;;){break;}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                                    for(;;){break;}
+                EOD."\n                ",
         ];
     }
 
@@ -515,41 +589,49 @@ if ($foo === $bar) {
     public static function provideFixWithGotoCases(): iterable
     {
         yield [
-            '<?php
-a:
+            <<<'EOD'
+                <?php
+                a:
 
-if ($foo === $bar) {
-    goto a;
-}',
+                if ($foo === $bar) {
+                    goto a;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-a:
+            <<<'EOD'
+                <?php
+                a:
 
-if ($foo === $bar) {
-    echo $baz;
+                if ($foo === $bar) {
+                    echo $baz;
 
-    goto a;
-}',
-            '<?php
-a:
+                    goto a;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                a:
 
-if ($foo === $bar) {
-    echo $baz;
-    goto a;
-}',
+                if ($foo === $bar) {
+                    echo $baz;
+                    goto a;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-a:
+            <<<'EOD'
+                <?php
+                a:
 
-if ($foo === $bar) {
-    echo $baz;
+                if ($foo === $bar) {
+                    echo $baz;
 
-    goto a;
-}',
+                    goto a;
+                }
+                EOD,
         ];
     }
 
@@ -568,36 +650,46 @@ if ($foo === $bar) {
     public static function provideFixWithIfCases(): iterable
     {
         yield [
-            '<?php if (true) {
-    echo $bar;
-}',
+            <<<'EOD'
+                <?php if (true) {
+                    echo $bar;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    echo $bar;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo $bar;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-if (true) {
-    echo $bar;
-}',
-            '<?php
-$foo = $bar;
-if (true) {
-    echo $bar;
-}',
+                if (true) {
+                    echo $bar;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                if (true) {
+                    echo $bar;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-// foo
-if ($foo) { }',
+            <<<'EOD'
+                <?php
+                // foo
+                if ($foo) { }
+                EOD,
         ];
     }
 
@@ -616,13 +708,17 @@ if ($foo) { }',
     public static function provideFixWithForEachCases(): iterable
     {
         yield [
-            '<?php
-                    echo 1;
+            <<<'EOD'
+                <?php
+                                    echo 1;
 
-                    foreach($a as $b){break;}'."\n                ",
-            '<?php
-                    echo 1;
-                    foreach($a as $b){break;}'."\n                ",
+                                    foreach($a as $b){break;}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                                    foreach($a as $b){break;}
+                EOD."\n                ",
         ];
     }
 
@@ -641,18 +737,24 @@ if ($foo) { }',
     public static function provideFixWithIncludeCases(): iterable
     {
         yield [
-            '<?php
-include "foo.php";',
+            <<<'EOD'
+                <?php
+                include "foo.php";
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-include "foo.php";',
-            '<?php
-$foo = $bar;
-include "foo.php";',
+                include "foo.php";
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                include "foo.php";
+                EOD,
         ];
     }
 
@@ -671,18 +773,24 @@ include "foo.php";',
     public static function provideFixWithIncludeOnceCases(): iterable
     {
         yield [
-            '<?php
-include_once "foo.php";',
+            <<<'EOD'
+                <?php
+                include_once "foo.php";
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-include_once "foo.php";',
-            '<?php
-$foo = $bar;
-include_once "foo.php";',
+                include_once "foo.php";
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                include_once "foo.php";
+                EOD,
         ];
     }
 
@@ -701,18 +809,24 @@ include_once "foo.php";',
     public static function provideFixWithRequireCases(): iterable
     {
         yield [
-            '<?php
-require "foo.php";',
+            <<<'EOD'
+                <?php
+                require "foo.php";
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-require "foo.php";',
-            '<?php
-$foo = $bar;
-require "foo.php";',
+                require "foo.php";
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                require "foo.php";
+                EOD,
         ];
     }
 
@@ -731,18 +845,24 @@ require "foo.php";',
     public static function provideFixWithRequireOnceCases(): iterable
     {
         yield [
-            '<?php
-require_once "foo.php";',
+            <<<'EOD'
+                <?php
+                require_once "foo.php";
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-require_once "foo.php";',
-            '<?php
-$foo = $bar;
-require_once "foo.php";',
+                require_once "foo.php";
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                require_once "foo.php";
+                EOD,
         ];
     }
 
@@ -761,168 +881,214 @@ require_once "foo.php";',
     public static function provideFixWithReturnCases(): iterable
     {
         yield [
-            '<?php
-if ($a) { /* 1 */ /* 2 */ /* 3 */ // something about $a
-    return $b;
-}
-',
+            <<<'EOD'
+                <?php
+                if ($a) { /* 1 */ /* 2 */ /* 3 */ // something about $a
+                    return $b;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($a) { // something about $a
-    return $b;
-}
-',
+            <<<'EOD'
+                <?php
+                if ($a) { // something about $a
+                    return $b;
+                }
+
+                EOD,
         ];
 
         yield [
-            '
-$a = $a;
-return $a;',
+            <<<'EOD'
+
+                $a = $a;
+                return $a;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = $a;
+            <<<'EOD'
+                <?php
+                $a = $a;
 
-return $a;',
-            '<?php
-$a = $a; return $a;',
+                return $a;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = $a; return $a;
+                EOD,
         ];
 
         yield [
-            '<?php
-$b = $b;
+            <<<'EOD'
+                <?php
+                $b = $b;
 
-return $b;',
-            '<?php
-$b = $b;return $b;',
+                return $b;
+                EOD,
+            <<<'EOD'
+                <?php
+                $b = $b;return $b;
+                EOD,
         ];
 
         yield [
-            '<?php
-$c = $c;
+            <<<'EOD'
+                <?php
+                $c = $c;
 
-return $c;',
-            '<?php
-$c = $c;
-return $c;',
+                return $c;
+                EOD,
+            <<<'EOD'
+                <?php
+                $c = $c;
+                return $c;
+                EOD,
         ];
 
         yield [
-            '<?php
-$d = $d;
+            <<<'EOD'
+                <?php
+                $d = $d;
 
-return $d;',
-            '<?php
-$d = $d;
-return $d;',
+                return $d;
+                EOD,
+            <<<'EOD'
+                <?php
+                $d = $d;
+                return $d;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    return 1;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    return 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true)
-    return 1;',
+            <<<'EOD'
+                <?php
+                if (true)
+                    return 1;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    return 1;
-} else {
-    return 2;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true)
-    return 1;
-else
-    return 2;',
+            <<<'EOD'
+                <?php
+                if (true)
+                    return 1;
+                else
+                    return 2;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    return 1;
-} elseif (false) {
-    return 2;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    return 1;
+                } elseif (false) {
+                    return 2;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true)
-    return 1;
-elseif (false)
-    return 2;',
+            <<<'EOD'
+                <?php
+                if (true)
+                    return 1;
+                elseif (false)
+                    return 2;
+                EOD,
         ];
 
         yield [
-            '<?php
-throw new Exception("return true; //.");',
+            <<<'EOD'
+                <?php
+                throw new Exception("return true; //.");
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    // comment
-    return "foo";
-}',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    // comment
+                    return "foo";
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    // comment
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    // comment
 
-    return "bar";
-}',
+                    return "bar";
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-function foo()
-{
-    switch ($foo) {
-        case 2: // comment
-            return 1;
-    }
-}',
+                function foo()
+                {
+                    switch ($foo) {
+                        case 2: // comment
+                            return 1;
+                    }
+                }
+                EOD,
         ];
 
         yield 'do not fix when there is empty line between statement and preceding comment' => [
-            '<?php function foo()
-                {
-                    bar();
-                    // comment
+            <<<'EOD'
+                <?php function foo()
+                                {
+                                    bar();
+                                    // comment
 
-                    return 42;
-                }',
+                                    return 42;
+                                }
+                EOD,
         ];
 
         yield 'do not fix when there is empty line between preceding comments' => [
-            '<?php function foo()
-                {
-                    bar();
-                    // comment1
-                    // comment2
+            <<<'EOD'
+                <?php function foo()
+                                {
+                                    bar();
+                                    // comment1
+                                    // comment2
 
-                    // comment3
-                    return 42;
-                }',
+                                    // comment3
+                                    return 42;
+                                }
+                EOD,
         ];
     }
 
@@ -969,27 +1135,33 @@ function foo()
     public static function provideFixWithSwitchCases(): iterable
     {
         yield [
-            '<?php
-switch ($a) {
-    case 42:
-        break;
-}',
+            <<<'EOD'
+                <?php
+                switch ($a) {
+                    case 42:
+                        break;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-switch ($foo) {
-    case $bar:
-        break;
-}',
-            '<?php
-$foo = $bar;
-switch ($foo) {
-    case $bar:
-        break;
-}',
+                switch ($foo) {
+                    case $bar:
+                        break;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                switch ($foo) {
+                    case $bar:
+                        break;
+                }
+                EOD,
         ];
     }
 
@@ -1008,24 +1180,30 @@ switch ($foo) {
     public static function provideFixWithThrowCases(): iterable
     {
         yield [
-            '<?php
-if (false) {
-    throw new \Exception("Something unexpected happened.");
-}',
+            <<<'EOD'
+                <?php
+                if (false) {
+                    throw new \Exception("Something unexpected happened.");
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (false) {
-    $log->error("No");
+            <<<'EOD'
+                <?php
+                if (false) {
+                    $log->error("No");
 
-    throw new \Exception("Something unexpected happened.");
-}',
-            '<?php
-if (false) {
-    $log->error("No");
-    throw new \Exception("Something unexpected happened.");
-}',
+                    throw new \Exception("Something unexpected happened.");
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (false) {
+                    $log->error("No");
+                    throw new \Exception("Something unexpected happened.");
+                }
+                EOD,
         ];
     }
 
@@ -1044,30 +1222,36 @@ if (false) {
     public static function provideFixWithTryCases(): iterable
     {
         yield [
-            '<?php
-try {
-    $transaction->commit();
-} catch (\Exception $exception) {
-    $transaction->rollback();
-}',
+            <<<'EOD'
+                <?php
+                try {
+                    $transaction->commit();
+                } catch (\Exception $exception) {
+                    $transaction->rollback();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-try {
-    $transaction->commit();
-} catch (\Exception $exception) {
-    $transaction->rollback();
-}',
-            '<?php
-$foo = $bar;
-try {
-    $transaction->commit();
-} catch (\Exception $exception) {
-    $transaction->rollback();
-}',
+                try {
+                    $transaction->commit();
+                } catch (\Exception $exception) {
+                    $transaction->rollback();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                try {
+                    $transaction->commit();
+                } catch (\Exception $exception) {
+                    $transaction->rollback();
+                }
+                EOD,
         ];
     }
 
@@ -1086,44 +1270,54 @@ try {
     public static function provideFixWithWhileCases(): iterable
     {
         yield [
-            '<?php
-while (true) {
-    $worker->work();
-}',
+            <<<'EOD'
+                <?php
+                while (true) {
+                    $worker->work();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-while (true) {
-    $worker->work();
-}',
-            '<?php
-$foo = $bar;
-while (true) {
-    $worker->work();
-}',
+                while (true) {
+                    $worker->work();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
+                while (true) {
+                    $worker->work();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = $bar;
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-do {
-    echo 1;
+                do {
+                    echo 1;
 
-    while($a());
-    $worker->work();
-} while (true);',
-            '<?php
-$foo = $bar;
+                    while($a());
+                    $worker->work();
+                } while (true);
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = $bar;
 
-do {
-    echo 1;
-    while($a());
-    $worker->work();
-} while (true);',
+                do {
+                    echo 1;
+                    while($a());
+                    $worker->work();
+                } while (true);
+                EOD,
         ];
     }
 
@@ -1145,146 +1339,182 @@ do {
     public static function provideFixWithYieldCases(): iterable
     {
         yield [
-            '<?php
-function foo() {
-yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */'."\n   ".'
-yield $b;
-}',
-            '<?php
-function foo() {
-yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */'.'   '.'
-yield $b;
-}',
+            <<<'EOD'
+                <?php
+                function foo() {
+                yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */
+                EOD."\n   ".<<<'EOD'
+
+                yield $b;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                yield $a; /* a *//* b */     /* c */       /* d *//* e *//* etc */
+                EOD.'   '.<<<'EOD'
+
+                yield $b;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    yield $a; // test
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield $a; // test
 
-    yield $b; // test /* A */
+                    yield $b; // test /* A */
 
-    yield $c;
+                    yield $c;
 
-    yield $d;
+                    yield $d;
 
-yield $e;#
+                yield $e;#
 
-yield $f;
+                yield $f;
 
-    /* @var int $g */
-    yield $g;
+                    /* @var int $g */
+                    yield $g;
 
-/* @var int $h */
-yield $i;
+                /* @var int $h */
+                yield $i;
 
-yield $j;
-}',
-            '<?php
-function foo() {
-    yield $a; // test
-    yield $b; // test /* A */
-    yield $c;
-    yield $d;yield $e;#
-yield $f;
-    /* @var int $g */
-    yield $g;
-/* @var int $h */
-yield $i;
-yield $j;
-}',
+                yield $j;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield $a; // test
+                    yield $b; // test /* A */
+                    yield $c;
+                    yield $d;yield $e;#
+                yield $f;
+                    /* @var int $g */
+                    yield $g;
+                /* @var int $h */
+                yield $i;
+                yield $j;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    yield $a;
-}',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield $a;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    yield $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield $a;
 
-    yield $b;
-}',
-            '<?php
-function foo() {
-    yield $a;
-    yield $b;
-}',
+                    yield $b;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield $a;
+                    yield $b;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    yield \'b\' => $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield 'b' => $a;
 
-    yield "a" => $b;
-}',
-            '<?php
-function foo() {
-    yield \'b\' => $a;
-    yield "a" => $b;
-}',
+                    yield "a" => $b;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield 'b' => $a;
+                    yield "a" => $b;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    $a = $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $a;
 
-    yield $a;
-}',
+                    yield $a;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    $a = $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $a;
 
-    yield $a;
-}',
-            '<?php
-function foo() {
-    $a = $a;
-    yield $a;
-}',
+                    yield $a;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $a;
+                    yield $a;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php function foo() {
-                    // yield 1
-                    yield 1;
+            <<<'EOD'
+                <?php function foo() {
+                                    // yield 1
+                                    yield 1;
 
-                    // yield 2
-                    yield 2;
-                }',
-            '<?php function foo() {
-                    // yield 1
-                    yield 1;
-                    // yield 2
-                    yield 2;
-                }',
+                                    // yield 2
+                                    yield 2;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php function foo() {
+                                    // yield 1
+                                    yield 1;
+                                    // yield 2
+                                    yield 2;
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php function foo() {
-                    yield 1;
+            <<<'EOD'
+                <?php function foo() {
+                                    yield 1;
 
-                    // yield 2
-                    // or maybe yield 3
-                    // better compromise
-                    yield 2.5;
-                }',
-            '<?php function foo() {
-                    yield 1;
-                    // yield 2
-                    // or maybe yield 3
-                    // better compromise
-                    yield 2.5;
-                }',
+                                    // yield 2
+                                    // or maybe yield 3
+                                    // better compromise
+                                    yield 2.5;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php function foo() {
+                                    yield 1;
+                                    // yield 2
+                                    // or maybe yield 3
+                                    // better compromise
+                                    yield 2.5;
+                                }
+                EOD,
         ];
     }
 
@@ -1306,50 +1536,62 @@ function foo() {
     public static function provideFixWithYieldFromCases(): iterable
     {
         yield [
-            '<?php
-function foo() {
-    yield from $a;
-}',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield from $a;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    yield from $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield from $a;
 
-    yield from $b;
-}',
-            '<?php
-function foo() {
-    yield from $a;
-    yield from $b;
-}',
+                    yield from $b;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    yield from $a;
+                    yield from $b;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    $a = $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $a;
 
-    yield from $a;
+                    yield from $a;
 
-    yield $a;
-    yield $b;
-}',
+                    yield $a;
+                    yield $b;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo() {
-    $a = $a;
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $a;
 
-    yield from $a;
-}',
-            '<?php
-function foo() {
-    $a = $a;
-    yield from $a;
-}',
+                    yield from $a;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $a;
+                    yield from $a;
+                }
+                EOD,
         ];
     }
 
@@ -1389,69 +1631,77 @@ function foo() {
 
         yield [
             $statementsWithoutCaseOrDefault,
-            '<?php
-                    while($a) {
-                        if ($c) {
-                            switch ($d) {
-                                case $e:
-                                    continue 2;
-                                case 4:
-                                    break;
-                                case 5:
-                                    return 1;
-                                default:
-                                    return 0;
-                            }
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    while($a) {
+                                        if ($c) {
+                                            switch ($d) {
+                                                case $e:
+                                                    continue 2;
+                                                case 4:
+                                                    break;
+                                                case 5:
+                                                    return 1;
+                                                default:
+                                                    return 0;
+                                            }
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
             $allStatements,
-            '<?php
-                    while($a) {
-                        if ($c) {
-                            switch ($d) {
-                                case $e:
-                                    continue 2;
+            <<<'EOD'
+                <?php
+                                    while($a) {
+                                        if ($c) {
+                                            switch ($d) {
+                                                case $e:
+                                                    continue 2;
 
-                                case 4:
-                                    break;
+                                                case 4:
+                                                    break;
 
-                                case 5:
-                                    return 1;
+                                                case 5:
+                                                    return 1;
 
-                                default:
-                                    return 0;
-                            }
-                        }
-                    }'."\n                ",
+                                                default:
+                                                    return 0;
+                                            }
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
             ['break', 'throw'],
-            '<?php
-do {
-    echo 0;
-    if ($a) {
-        echo 1;
+            <<<'EOD'
+                <?php
+                do {
+                    echo 0;
+                    if ($a) {
+                        echo 1;
 
-        break;
-    }
-    echo 2;
+                        break;
+                    }
+                    echo 2;
 
-    throw $f;
-} while(true);',
-            '<?php
-do {
-    echo 0;
-    if ($a) {
-        echo 1;
-        break;
-    }
-    echo 2;
-    throw $f;
-} while(true);',
+                    throw $f;
+                } while(true);
+                EOD,
+            <<<'EOD'
+                <?php
+                do {
+                    echo 0;
+                    if ($a) {
+                        echo 1;
+                        break;
+                    }
+                    echo 2;
+                    throw $f;
+                } while(true);
+                EOD,
         ];
     }
 
@@ -1472,18 +1722,20 @@ do {
     public static function provideFix80Cases(): iterable
     {
         yield 'match' => [
-            '<?php
-                match ($foo) {
-                    1 => "a",
-                    default => "b"
-                };
+            <<<'EOD'
+                <?php
+                                match ($foo) {
+                                    1 => "a",
+                                    default => "b"
+                                };
 
-                match ($foo) {
-                    1 => "a1",
+                                match ($foo) {
+                                    1 => "a1",
 
 
-                    default => "b2"
-                };'."\n            ",
+                                    default => "b2"
+                                };
+                EOD."\n            ",
         ];
     }
 
@@ -1504,59 +1756,63 @@ do {
     public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [
-            '<?php
-enum Suit {
-    case Hearts;
-    case Diamonds;
-    case Clubs;
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts;
+                    case Diamonds;
+                    case Clubs;
 
 
-    case Spades;
-}
+                    case Spades;
+                }
 
-enum UserStatus: string {
-    case Pending = "P";
-    case Active = "A";
+                enum UserStatus: string {
+                    case Pending = "P";
+                    case Active = "A";
 
-    public function label(): string {
-        switch ($a) {
-            case 1:
-                return 1;
+                    public function label(): string {
+                        switch ($a) {
+                            case 1:
+                                return 1;
 
-            case 2:
-                return 2; // do fix
-        }
+                            case 2:
+                                return 2; // do fix
+                        }
 
-        return "label";
-    }
-}
-',
-            '<?php
-enum Suit {
-    case Hearts;
-    case Diamonds;
-    case Clubs;
+                        return "label";
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts;
+                    case Diamonds;
+                    case Clubs;
 
 
-    case Spades;
-}
+                    case Spades;
+                }
 
-enum UserStatus: string {
-    case Pending = "P";
-    case Active = "A";
+                enum UserStatus: string {
+                    case Pending = "P";
+                    case Active = "A";
 
-    public function label(): string {
-        switch ($a) {
-            case 1:
-                return 1;
-            case 2:
-                return 2; // do fix
-        }
+                    public function label(): string {
+                        switch ($a) {
+                            case 1:
+                                return 1;
+                            case 2:
+                                return 2; // do fix
+                        }
 
-        return "label";
-    }
-}
-',
+                        return "label";
+                    }
+                }
+
+                EOD,
         ];
     }
 
@@ -1575,38 +1831,44 @@ enum UserStatus: string {
     public static function provideFixWithDocCommentCases(): iterable
     {
         yield [
-            '<?php
-/** @var int $foo */
-$foo = 123;
+            <<<'EOD'
+                <?php
+                /** @var int $foo */
+                $foo = 123;
 
-/** @var float $bar */
-$bar = 45.6;
+                /** @var float $bar */
+                $bar = 45.6;
 
-/** @var string */
-$baz = "789";
-',
-            '<?php
-/** @var int $foo */
-$foo = 123;
-/** @var float $bar */
-$bar = 45.6;
-/** @var string */
-$baz = "789";
-',
+                /** @var string */
+                $baz = "789";
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @var int $foo */
+                $foo = 123;
+                /** @var float $bar */
+                $bar = 45.6;
+                /** @var string */
+                $baz = "789";
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/* header */
+            <<<'EOD'
+                <?php
+                /* header */
 
-/**
- * Class description
- */
-class Foo {
-    /** test */
-    public function bar() {}
-}
-',
+                /**
+                 * Class description
+                 */
+                class Foo {
+                    /** test */
+                    public function bar() {}
+                }
+
+                EOD,
         ];
     }
 }

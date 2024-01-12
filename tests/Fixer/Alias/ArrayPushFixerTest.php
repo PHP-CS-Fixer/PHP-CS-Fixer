@@ -64,14 +64,18 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield ') before' => [
-            '<?php
-                if ($c) $a[] = $b;
+            <<<'EOD'
+                <?php
+                                if ($c) $a[] = $b;
 
-                while (--$c > 0) $a[] = $c;'."\n            ",
-            '<?php
-                if ($c) array_push($a, $b);
+                                while (--$c > 0) $a[] = $c;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($c) array_push($a, $b);
 
-                while (--$c > 0) array_push($a, $c);'."\n            ",
+                                while (--$c > 0) array_push($a, $c);
+                EOD."\n            ",
         ];
 
         yield '} before' => [
@@ -95,18 +99,22 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'case insensitive and precedence' => [
-            '<?php
-                $a[] = $b--;
-                $a[] = ++$b;
-                $a[] = !$b;
-                $a[] = $b + $c;
-                $a[] = 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1];'."\n            ",
-            '<?php
-                array_push($a, $b--);
-                ARRAY_push($a, ++$b);
-                array_PUSH($a, !$b);
-                ARRAY_PUSH($a, $b + $c);
-                \array_push($a, 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1]);'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a[] = $b--;
+                                $a[] = ++$b;
+                                $a[] = !$b;
+                                $a[] = $b + $c;
+                                $a[] = 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1];
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                array_push($a, $b--);
+                                ARRAY_push($a, ++$b);
+                                array_PUSH($a, !$b);
+                                ARRAY_PUSH($a, $b + $c);
+                                \array_push($a, 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1]);
+                EOD."\n            ",
         ];
 
         yield 'simple traditional array' => [
@@ -215,10 +223,12 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'different namespace and not a function call' => [
-            '<?php
-                A\array_push($a, $b17);
-                A::array_push($a, $b18);
-                $a->array_push($a, $b19);'."\n            ",
+            <<<'EOD'
+                <?php
+                                A\array_push($a, $b17);
+                                A::array_push($a, $b18);
+                                $a->array_push($a, $b19);
+                EOD."\n            ",
         ];
 
         yield 'open echo' => [
@@ -245,16 +255,20 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         }
 
         yield [
-            '<?php
-                while (foo()) $a[] = $b;
-                foreach (foo() as $C) $a[] = $b;
-                if (foo()) $a[] = $b;
-                if ($b) {} elseif (foo()) $a[] = $b;'."\n            ",
-            '<?php
-                while (foo()) array_push($a, $b);
-                foreach (foo() as $C) array_push($a, $b);
-                if (foo()) array_push($a, $b);
-                if ($b) {} elseif (foo()) array_push($a, $b);'."\n            ",
+            <<<'EOD'
+                <?php
+                                while (foo()) $a[] = $b;
+                                foreach (foo() as $C) $a[] = $b;
+                                if (foo()) $a[] = $b;
+                                if ($b) {} elseif (foo()) $a[] = $b;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                while (foo()) array_push($a, $b);
+                                foreach (foo() as $C) array_push($a, $b);
+                                if (foo()) array_push($a, $b);
+                                if ($b) {} elseif (foo()) array_push($a, $b);
+                EOD."\n            ",
         ];
     }
 
@@ -311,12 +325,16 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
-            '<?php
-                $a[] = $b;
-                $a = array_push(...);'."\n            ",
-            '<?php
-                array_push($a, $b);
-                $a = array_push(...);'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a[] = $b;
+                                $a = array_push(...);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                array_push($a, $b);
+                                $a = array_push(...);
+                EOD."\n            ",
         ];
     }
 }

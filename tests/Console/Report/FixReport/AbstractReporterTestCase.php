@@ -83,17 +83,19 @@ abstract class AbstractReporterTestCase extends TestCase
                 [
                     'someFile.php' => [
                         'appliedFixers' => ['some_fixer_name_here'],
-                        'diff' => '--- Original
-+++ New
-@@ -2,7 +2,7 @@
+                        'diff' => <<<'EOD'
+                            --- Original
+                            +++ New
+                            @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }',
+                             class Foo
+                             {
+                            -    public function bar($foo = 1, $bar)
+                            +    public function bar($foo, $bar)
+                                 {
+                                 }
+                             }
+                            EOD,
                     ],
                 ],
                 10,
@@ -111,17 +113,19 @@ abstract class AbstractReporterTestCase extends TestCase
                 [
                     'someFile.php' => [
                         'appliedFixers' => ['some_fixer_name_here'],
-                        'diff' => '--- Original
-+++ New
-@@ -2,7 +2,7 @@
+                        'diff' => <<<'EOD'
+                            --- Original
+                            +++ New
+                            @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }',
+                             class Foo
+                             {
+                            -    public function bar($foo = 1, $bar)
+                            +    public function bar($foo, $bar)
+                                 {
+                                 }
+                             }
+                            EOD,
                     ],
                 ],
                 10,
@@ -157,17 +161,19 @@ abstract class AbstractReporterTestCase extends TestCase
                 [
                     'someFile.php' => [
                         'appliedFixers' => ['some_fixer_name_here'],
-                        'diff' => '--- Original
-+++ New
-@@ -2,7 +2,7 @@
+                        'diff' => <<<'EOD'
+                            --- Original
+                            +++ New
+                            @@ -2,7 +2,7 @@
 
- class Foo
- {
--    public function bar($foo = 1, $bar)
-+    public function bar($foo, $bar)
-     {
-     }
- }',
+                             class Foo
+                             {
+                            -    public function bar($foo = 1, $bar)
+                            +    public function bar($foo, $bar)
+                                 {
+                                 }
+                             }
+                            EOD,
                     ],
                 ],
                 10,

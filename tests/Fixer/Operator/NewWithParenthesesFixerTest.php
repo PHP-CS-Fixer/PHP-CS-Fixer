@@ -74,9 +74,11 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $bar1 = new $foo[0]->bar();
-                    $bar2 = new $foo[0][1]->bar();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $bar1 = new $foo[0]->bar();
+                                    $bar2 = new $foo[0][1]->bar();
+                EOD."\n                ",
         ];
 
         yield [
@@ -177,71 +179,87 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = new Foo() + 1;
-                    $a = new Foo() - 1;
-                    $a = new Foo() * 1;
-                    $a = new Foo() / 1;
-                    $a = new Foo() % 1;'."\n                ",
-            '<?php
-                    $a = new Foo + 1;
-                    $a = new Foo - 1;
-                    $a = new Foo * 1;
-                    $a = new Foo / 1;
-                    $a = new Foo % 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() + 1;
+                                    $a = new Foo() - 1;
+                                    $a = new Foo() * 1;
+                                    $a = new Foo() / 1;
+                                    $a = new Foo() % 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo + 1;
+                                    $a = new Foo - 1;
+                                    $a = new Foo * 1;
+                                    $a = new Foo / 1;
+                                    $a = new Foo % 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new Foo() & 1;
-                    $a = new Foo() | 1;
-                    $a = new Foo() ^ 1;
-                    $a = new Foo() << 1;
-                    $a = new Foo() >> 1;'."\n                ",
-            '<?php
-                    $a = new Foo & 1;
-                    $a = new Foo | 1;
-                    $a = new Foo ^ 1;
-                    $a = new Foo << 1;
-                    $a = new Foo >> 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() & 1;
+                                    $a = new Foo() | 1;
+                                    $a = new Foo() ^ 1;
+                                    $a = new Foo() << 1;
+                                    $a = new Foo() >> 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo & 1;
+                                    $a = new Foo | 1;
+                                    $a = new Foo ^ 1;
+                                    $a = new Foo << 1;
+                                    $a = new Foo >> 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new Foo() and 1;
-                    $a = new Foo() or 1;
-                    $a = new Foo() xor 1;
-                    $a = new Foo() && 1;
-                    $a = new Foo() || 1;'."\n                ",
-            '<?php
-                    $a = new Foo and 1;
-                    $a = new Foo or 1;
-                    $a = new Foo xor 1;
-                    $a = new Foo && 1;
-                    $a = new Foo || 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() and 1;
+                                    $a = new Foo() or 1;
+                                    $a = new Foo() xor 1;
+                                    $a = new Foo() && 1;
+                                    $a = new Foo() || 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo and 1;
+                                    $a = new Foo or 1;
+                                    $a = new Foo xor 1;
+                                    $a = new Foo && 1;
+                                    $a = new Foo || 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if (new DateTime() > $this->startDate) {}
-                    if (new DateTime() >= $this->startDate) {}
-                    if (new DateTime() < $this->startDate) {}
-                    if (new DateTime() <= $this->startDate) {}
-                    if (new DateTime() == $this->startDate) {}
-                    if (new DateTime() != $this->startDate) {}
-                    if (new DateTime() <> $this->startDate) {}
-                    if (new DateTime() === $this->startDate) {}
-                    if (new DateTime() !== $this->startDate) {}'."\n                ",
-            '<?php
-                    if (new DateTime > $this->startDate) {}
-                    if (new DateTime >= $this->startDate) {}
-                    if (new DateTime < $this->startDate) {}
-                    if (new DateTime <= $this->startDate) {}
-                    if (new DateTime == $this->startDate) {}
-                    if (new DateTime != $this->startDate) {}
-                    if (new DateTime <> $this->startDate) {}
-                    if (new DateTime === $this->startDate) {}
-                    if (new DateTime !== $this->startDate) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (new DateTime() > $this->startDate) {}
+                                    if (new DateTime() >= $this->startDate) {}
+                                    if (new DateTime() < $this->startDate) {}
+                                    if (new DateTime() <= $this->startDate) {}
+                                    if (new DateTime() == $this->startDate) {}
+                                    if (new DateTime() != $this->startDate) {}
+                                    if (new DateTime() <> $this->startDate) {}
+                                    if (new DateTime() === $this->startDate) {}
+                                    if (new DateTime() !== $this->startDate) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (new DateTime > $this->startDate) {}
+                                    if (new DateTime >= $this->startDate) {}
+                                    if (new DateTime < $this->startDate) {}
+                                    if (new DateTime <= $this->startDate) {}
+                                    if (new DateTime == $this->startDate) {}
+                                    if (new DateTime != $this->startDate) {}
+                                    if (new DateTime <> $this->startDate) {}
+                                    if (new DateTime === $this->startDate) {}
+                                    if (new DateTime !== $this->startDate) {}
+                EOD."\n                ",
         ];
 
         yield [
@@ -270,17 +288,25 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = new Foo() ** 1;'."\n                ",
-            '<?php
-                    $a = new Foo ** 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() ** 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo ** 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new Foo() <=> 1;'."\n                ",
-            '<?php
-                    $a = new Foo <=> 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() <=> 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo <=> 1;
+                EOD."\n                ",
         ];
 
         yield [
@@ -456,71 +482,87 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = new Foo + 1;
-                    $a = new Foo - 1;
-                    $a = new Foo * 1;
-                    $a = new Foo / 1;
-                    $a = new Foo % 1;'."\n                ",
-            '<?php
-                    $a = new Foo() + 1;
-                    $a = new Foo() - 1;
-                    $a = new Foo() * 1;
-                    $a = new Foo() / 1;
-                    $a = new Foo() % 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo + 1;
+                                    $a = new Foo - 1;
+                                    $a = new Foo * 1;
+                                    $a = new Foo / 1;
+                                    $a = new Foo % 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() + 1;
+                                    $a = new Foo() - 1;
+                                    $a = new Foo() * 1;
+                                    $a = new Foo() / 1;
+                                    $a = new Foo() % 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new Foo & 1;
-                    $a = new Foo | 1;
-                    $a = new Foo ^ 1;
-                    $a = new Foo << 1;
-                    $a = new Foo >> 1;'."\n                ",
-            '<?php
-                    $a = new Foo() & 1;
-                    $a = new Foo() | 1;
-                    $a = new Foo() ^ 1;
-                    $a = new Foo() << 1;
-                    $a = new Foo() >> 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo & 1;
+                                    $a = new Foo | 1;
+                                    $a = new Foo ^ 1;
+                                    $a = new Foo << 1;
+                                    $a = new Foo >> 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() & 1;
+                                    $a = new Foo() | 1;
+                                    $a = new Foo() ^ 1;
+                                    $a = new Foo() << 1;
+                                    $a = new Foo() >> 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new Foo and 1;
-                    $a = new Foo or 1;
-                    $a = new Foo xor 1;
-                    $a = new Foo && 1;
-                    $a = new Foo || 1;'."\n                ",
-            '<?php
-                    $a = new Foo() and 1;
-                    $a = new Foo() or 1;
-                    $a = new Foo() xor 1;
-                    $a = new Foo() && 1;
-                    $a = new Foo() || 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo and 1;
+                                    $a = new Foo or 1;
+                                    $a = new Foo xor 1;
+                                    $a = new Foo && 1;
+                                    $a = new Foo || 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() and 1;
+                                    $a = new Foo() or 1;
+                                    $a = new Foo() xor 1;
+                                    $a = new Foo() && 1;
+                                    $a = new Foo() || 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if (new DateTime > $this->startDate) {}
-                    if (new DateTime >= $this->startDate) {}
-                    if (new DateTime < $this->startDate) {}
-                    if (new DateTime <= $this->startDate) {}
-                    if (new DateTime == $this->startDate) {}
-                    if (new DateTime != $this->startDate) {}
-                    if (new DateTime <> $this->startDate) {}
-                    if (new DateTime === $this->startDate) {}
-                    if (new DateTime !== $this->startDate) {}'."\n                ",
-            '<?php
-                    if (new DateTime() > $this->startDate) {}
-                    if (new DateTime() >= $this->startDate) {}
-                    if (new DateTime() < $this->startDate) {}
-                    if (new DateTime() <= $this->startDate) {}
-                    if (new DateTime() == $this->startDate) {}
-                    if (new DateTime() != $this->startDate) {}
-                    if (new DateTime() <> $this->startDate) {}
-                    if (new DateTime() === $this->startDate) {}
-                    if (new DateTime() !== $this->startDate) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (new DateTime > $this->startDate) {}
+                                    if (new DateTime >= $this->startDate) {}
+                                    if (new DateTime < $this->startDate) {}
+                                    if (new DateTime <= $this->startDate) {}
+                                    if (new DateTime == $this->startDate) {}
+                                    if (new DateTime != $this->startDate) {}
+                                    if (new DateTime <> $this->startDate) {}
+                                    if (new DateTime === $this->startDate) {}
+                                    if (new DateTime !== $this->startDate) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (new DateTime() > $this->startDate) {}
+                                    if (new DateTime() >= $this->startDate) {}
+                                    if (new DateTime() < $this->startDate) {}
+                                    if (new DateTime() <= $this->startDate) {}
+                                    if (new DateTime() == $this->startDate) {}
+                                    if (new DateTime() != $this->startDate) {}
+                                    if (new DateTime() <> $this->startDate) {}
+                                    if (new DateTime() === $this->startDate) {}
+                                    if (new DateTime() !== $this->startDate) {}
+                EOD."\n                ",
         ];
 
         yield [
@@ -549,17 +591,25 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = new Foo ** 1;'."\n                ",
-            '<?php
-                    $a = new Foo() ** 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo ** 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() ** 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new Foo <=> 1;'."\n                ",
-            '<?php
-                    $a = new Foo() <=> 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo <=> 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() <=> 1;
+                EOD."\n                ",
         ];
 
         yield [
@@ -606,42 +656,54 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         yield ['<?php $a = new class( $h  /**/) {}?>'];
 
         yield [
-            '<?php
-                    $a = new Foo() <=> 1;'."\n                ",
-            '<?php
-                    $a = new Foo <=> 1;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo() <=> 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new Foo <=> 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = new class() {use SomeTrait;};
-                    $a = new class() implements Foo{};
-                    $a = new class() /**/ extends Bar1{};
-                    $a = new class()  extends Bar2 implements Foo{};
-                    $a = new class()    extends Bar3 implements Foo, Foo2{};
-                    $a = new class() {}?>'."\n                ",
-            '<?php
-                    $a = new class {use SomeTrait;};
-                    $a = new class implements Foo{};
-                    $a = new class /**/ extends Bar1{};
-                    $a = new class  extends Bar2 implements Foo{};
-                    $a = new class    extends Bar3 implements Foo, Foo2{};
-                    $a = new class {}?>'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new class() {use SomeTrait;};
+                                    $a = new class() implements Foo{};
+                                    $a = new class() /**/ extends Bar1{};
+                                    $a = new class()  extends Bar2 implements Foo{};
+                                    $a = new class()    extends Bar3 implements Foo, Foo2{};
+                                    $a = new class() {}?>
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new class {use SomeTrait;};
+                                    $a = new class implements Foo{};
+                                    $a = new class /**/ extends Bar1{};
+                                    $a = new class  extends Bar2 implements Foo{};
+                                    $a = new class    extends Bar3 implements Foo, Foo2{};
+                                    $a = new class {}?>
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class A {
-                        public function B() {
-                            $static = new static(new class(){});
-                        }
-                    }'."\n                ",
-            '<?php
-                    class A {
-                        public function B() {
-                            $static = new static(new class{});
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A {
+                                        public function B() {
+                                            $static = new static(new class(){});
+                                        }
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A {
+                                        public function B() {
+                                            $static = new static(new class{});
+                                        }
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -669,35 +731,43 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         yield ['<?php $a = new class( $h  /**/) {}?>'];
 
         yield [
-            '<?php
-                    $a = new class {use SomeTrait;};
-                    $a = new class implements Foo{};
-                    $a = new class /**/ extends Bar1{};
-                    $a = new class  extends Bar2 implements Foo{};
-                    $a = new class    extends Bar3 implements Foo, Foo2{};
-                    $a = new class    {}?>'."\n                ",
-            '<?php
-                    $a = new class() {use SomeTrait;};
-                    $a = new class() implements Foo{};
-                    $a = new class() /**/ extends Bar1{};
-                    $a = new class()  extends Bar2 implements Foo{};
-                    $a = new class()    extends Bar3 implements Foo, Foo2{};
-                    $a = new class ( )  {}?>'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new class {use SomeTrait;};
+                                    $a = new class implements Foo{};
+                                    $a = new class /**/ extends Bar1{};
+                                    $a = new class  extends Bar2 implements Foo{};
+                                    $a = new class    extends Bar3 implements Foo, Foo2{};
+                                    $a = new class    {}?>
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = new class() {use SomeTrait;};
+                                    $a = new class() implements Foo{};
+                                    $a = new class() /**/ extends Bar1{};
+                                    $a = new class()  extends Bar2 implements Foo{};
+                                    $a = new class()    extends Bar3 implements Foo, Foo2{};
+                                    $a = new class ( )  {}?>
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class A {
-                        public function B() {
-                            $static = new static(new class{});
-                        }
-                    }'."\n                ",
-            '<?php
-                    class A {
-                        public function B() {
-                            $static = new static(new class(){});
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A {
+                                        public function B() {
+                                            $static = new static(new class{});
+                                        }
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A {
+                                        public function B() {
+                                            $static = new static(new class(){});
+                                        }
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -746,32 +816,40 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Bar {
-    public function __construct(int $a = null) {
-        echo $a;
-    }
-};
+                class Bar {
+                    public function __construct(int $a = null) {
+                        echo $a;
+                    }
+                };
 
-$foo = "B";
+                $foo = "B";
 
-$a = new ($foo."ar");',
+                $a = new ($foo."ar");
+                EOD,
         ];
 
         yield [
-            '<?php
-                $bar1 = new $foo[0]?->bar();
-                $bar2 = new $foo[0][1]?->bar();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $bar1 = new $foo[0]?->bar();
+                                $bar2 = new $foo[0][1]?->bar();
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php $a = new
-                #[Internal]
-                class(){};'."\n            ",
-            '<?php $a = new
-                #[Internal]
-                class{};'."\n            ",
+            <<<'EOD'
+                <?php $a = new
+                                #[Internal]
+                                class(){};
+                EOD."\n            ",
+            <<<'EOD'
+                <?php $a = new
+                                #[Internal]
+                                class{};
+                EOD."\n            ",
         ];
     }
 
@@ -788,44 +866,48 @@ $a = new ($foo."ar");',
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-function test(
-    $foo = new A(),
-    $baz = new C(x: 2),
-) {
-}
+            <<<'EOD'
+                <?php
+                function test(
+                    $foo = new A(),
+                    $baz = new C(x: 2),
+                ) {
+                }
 
-class Test {
-    public function __construct(
-        public $prop = new Foo(),
-    ) {}
-}
+                class Test {
+                    public function __construct(
+                        public $prop = new Foo(),
+                    ) {}
+                }
 
-static $x = new Foo();
+                static $x = new Foo();
 
-const C = new Foo();
+                const C = new Foo();
 
-function test2($param = new Foo()) {}
-',
-            '<?php
-function test(
-    $foo = new A,
-    $baz = new C(x: 2),
-) {
-}
+                function test2($param = new Foo()) {}
 
-class Test {
-    public function __construct(
-        public $prop = new Foo,
-    ) {}
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                function test(
+                    $foo = new A,
+                    $baz = new C(x: 2),
+                ) {
+                }
 
-static $x = new Foo;
+                class Test {
+                    public function __construct(
+                        public $prop = new Foo,
+                    ) {}
+                }
 
-const C = new Foo;
+                static $x = new Foo;
 
-function test2($param = new Foo) {}
-',
+                const C = new Foo;
+
+                function test2($param = new Foo) {}
+
+                EOD,
         ];
     }
 }

@@ -89,28 +89,40 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'It works when around messy whitespace' => [
-            '<?php
-     unset($a); $this->b = null;
-     $this->a = null; unset($b);
-',
-            '<?php
-     unset($a, $this->b);
-     unset($this->a, $b);
-',
+            <<<'EOD'
+                <?php
+                     unset($a); $this->b = null;
+                     $this->a = null; unset($b);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                     unset($a, $this->b);
+                     unset($this->a, $b);
+
+                EOD,
         ];
 
         yield 'It works with weirdly placed comments' => [
-            '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*hello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);
-                unset/*foo*/(/*bar*/$bar);',
-            '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*hello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b);
-                unset/*foo*/(/*bar*/$bar);',
+            <<<'EOD'
+                <?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*hello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);
+                                unset/*foo*/(/*bar*/$bar);
+                EOD,
+            <<<'EOD'
+                <?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*hello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b);
+                                unset/*foo*/(/*bar*/$bar);
+                EOD,
         ];
 
         yield 'It does not mess with consecutive unsets' => [
-            '<?php unset($a, $b, $c);
-                $this->a = null;',
-            '<?php unset($a, $b, $c);
-                unset($this->a);',
+            <<<'EOD'
+                <?php unset($a, $b, $c);
+                                $this->a = null;
+                EOD,
+            <<<'EOD'
+                <?php unset($a, $b, $c);
+                                unset($this->a);
+                EOD,
         ];
 
         yield 'It does not replace function call with class constant inside' => [
@@ -122,11 +134,13 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'It does not break complex expressions' => [
-            '<?php
-                unset(a()[b()["a"]]);
-                unset(a()[b()]);
-                unset(a()["a"]);
-                unset(c($a)->a);'."\n            ",
+            <<<'EOD'
+                <?php
+                                unset(a()[b()["a"]]);
+                                unset(a()[b()]);
+                                unset(a()["a"]);
+                                unset(c($a)->a);
+                EOD."\n            ",
         ];
 
         yield 'It replaces an unset on a property with = null 1' => [
@@ -178,28 +192,40 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'It works when around messy whitespace 1' => [
-            '<?php
-     unset($a); $this->b = null;
-     $this->a = null; unset($b,);
-',
-            '<?php
-     unset($a, $this->b,);
-     unset($this->a, $b,);
-',
+            <<<'EOD'
+                <?php
+                     unset($a); $this->b = null;
+                     $this->a = null; unset($b,);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                     unset($a, $this->b,);
+                     unset($this->a, $b,);
+
+                EOD,
         ];
 
         yield 'It works with weirdly placed comments 11' => [
-            '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*hello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b,);
-                unset/*foo*/(/*bar*/$bar,);',
-            '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*hello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b,);
-                unset/*foo*/(/*bar*/$bar,);',
+            <<<'EOD'
+                <?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*hello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b,);
+                                unset/*foo*/(/*bar*/$bar,);
+                EOD,
+            <<<'EOD'
+                <?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*hello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b,);
+                                unset/*foo*/(/*bar*/$bar,);
+                EOD,
         ];
 
         yield 'It does not mess with consecutive unsets 1' => [
-            '<?php unset($a, $b, $c,);
-                $this->a = null;',
-            '<?php unset($a, $b, $c,);
-                unset($this->a,);',
+            <<<'EOD'
+                <?php unset($a, $b, $c,);
+                                $this->a = null;
+                EOD,
+            <<<'EOD'
+                <?php unset($a, $b, $c,);
+                                unset($this->a,);
+                EOD,
         ];
 
         yield 'It does not replace function call with class constant inside 1' => [

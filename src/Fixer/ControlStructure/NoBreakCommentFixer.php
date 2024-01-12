@@ -41,28 +41,32 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
             'There must be a comment when fall-through is intentional in a non-empty case body.',
             [
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 1:
-        foo();
-    case 2:
-        bar();
-        // no break
-        break;
-    case 3:
-        baz();
-}
-'
+                    <<<'EOD'
+                        <?php
+                        switch ($foo) {
+                            case 1:
+                                foo();
+                            case 2:
+                                bar();
+                                // no break
+                                break;
+                            case 3:
+                                baz();
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 1:
-        foo();
-    case 2:
-        foo();
-}
-',
+                    <<<'EOD'
+                        <?php
+                        switch ($foo) {
+                            case 1:
+                                foo();
+                            case 2:
+                                foo();
+                        }
+
+                        EOD,
                     ['comment_text' => 'some comment']
                 ),
             ],

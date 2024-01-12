@@ -56,41 +56,47 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             'Imports or fully qualifies global classes/functions/constants.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-namespace Foo;
+                        namespace Foo;
 
-$d = new \DateTimeImmutable();
-'
+                        $d = new \DateTimeImmutable();
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-namespace Foo;
+                        namespace Foo;
 
-if (\count($x)) {
-    /** @var \DateTimeImmutable $d */
-    $d = new \DateTimeImmutable();
-    $p = \M_PI;
-}
-',
+                        if (\count($x)) {
+                            /** @var \DateTimeImmutable $d */
+                            $d = new \DateTimeImmutable();
+                            $p = \M_PI;
+                        }
+
+                        EOD,
                     ['import_classes' => true, 'import_constants' => true, 'import_functions' => true]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-namespace Foo;
+                        namespace Foo;
 
-use DateTimeImmutable;
-use function count;
-use const M_PI;
+                        use DateTimeImmutable;
+                        use function count;
+                        use const M_PI;
 
-if (count($x)) {
-    /** @var DateTimeImmutable $d */
-    $d = new DateTimeImmutable();
-    $p = M_PI;
-}
-',
+                        if (count($x)) {
+                            /** @var DateTimeImmutable $d */
+                            $d = new DateTimeImmutable();
+                            $p = M_PI;
+                        }
+
+                        EOD,
                     ['import_classes' => false, 'import_constants' => false, 'import_functions' => false]
                 ),
             ]

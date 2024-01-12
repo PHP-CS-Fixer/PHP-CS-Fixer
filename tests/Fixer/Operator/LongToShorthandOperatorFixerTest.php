@@ -158,40 +158,52 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a5 .=  '.'
-<<<EOD
-EOD
-;',
-            '<?php $a5 = $a5 .
-<<<EOD
-EOD
-;',
+            '<?php $a5 .=  '.<<<'EOD_'
+
+                <<<EOD
+                EOD
+                ;
+                EOD_,
+            <<<'EOD_'
+                <?php $a5 = $a5 .
+                <<<EOD
+                EOD
+                ;
+                EOD_,
         ];
 
         yield [
-            '<?php $a6 .=  '.'
-<<<\'EOD\'
-EOD
-?>',
-            '<?php $a6 = $a6 .
-<<<\'EOD\'
-EOD
-?>',
+            '<?php $a6 .=  '.<<<'EOD_'
+
+                <<<'EOD'
+                EOD
+                ?>
+                EOD_,
+            <<<'EOD_'
+                <?php $a6 = $a6 .
+                <<<'EOD'
+                EOD
+                ?>
+                EOD_,
         ];
 
         yield [
-            '<?php
-                $t += 1;
-                $t1 -= 1;
-                $t2 *= 1;
-                $t3 /= 1;
-                $t4 .= /* */  1;',
-            '<?php
-                $t = ((($t))) + 1;
-                $t1 = ($t1) - 1;
-                $t2 = $t2 * 1;
-                $t3 = ($t3) / 1;
-                $t4 = ($t4) /* */ . 1;',
+            <<<'EOD'
+                <?php
+                                $t += 1;
+                                $t1 -= 1;
+                                $t2 *= 1;
+                                $t3 /= 1;
+                                $t4 .= /* */  1;
+                EOD,
+            <<<'EOD'
+                <?php
+                                $t = ((($t))) + 1;
+                                $t1 = ($t1) - 1;
+                                $t2 = $t2 * 1;
+                                $t3 = ($t3) / 1;
+                                $t4 = ($t4) /* */ . 1;
+                EOD,
         ];
 
         // before assignment var
@@ -222,49 +234,55 @@ EOD
         ];
 
         yield [
-            '<?php
-                $a1 /= +$b1;
-                $a2 /= -$b2;'."\n            ",
-            '<?php
-                $a1 = $a1 / +$b1;
-                $a2 = $a2 / -$b2;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a1 /= +$b1;
+                                $a2 /= -$b2;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a1 = $a1 / +$b1;
+                                $a2 = $a2 / -$b2;
+                EOD."\n            ",
         ];
 
         // do not fix
 
-        yield 'do not fix various' => ['<?php
-            $a = ${foo} . 1;
-            $a = ${foo}++ + 1;
-            $a = $a[1] * 1;
-            $a = $a(1 + 2) . 1;
-            $a = $a[1][2] . 1;
-            $a = $a[1][2][3][foo()][$a++][1+$a][${"foo"}][99] . 1;
-            $a = ${foo}++ . 1;
-            $a = ($a /* */ /* */ /* */ /* */ + 1 /* */ ) + 1;
-            $a = 1 . 1 + foo();
-            $a = 1 . foo() + 1;
-            $a = 1 . foo();
-            $a = 1 . foo(1, ++$a);
-            $a = foo() . 1;
-            $a = foo(1, ++$a) . 1;
-            $a = $a[1] * 1;
-            $a[1] = $a[0] * 1;
-            $a = $a(1 + 2) . 1;
-            foo($b, ${foo} + 1);
-            foo($a + 1);
-            $a++ + 2;
-            2 + $a++;
-            $a = 7 . (int) $a;
-            $a = (int) $a . 7;
-            (int) $a = 7 . (int) $a;
-            (int) $a = (int) $a . 7;
-            $a = 1 . $a + foo();
-            $a = $a instanceof \Foo & $b;
-            $a = $a + $b instanceof \Foo;
-            $a = $d / $a + $b;
-            $d + $a = $a - $e;
-            $a = $a >= $b;
-            $a[1] = $a[1] instanceof \Foo & $b;'."\n        "];
+        yield 'do not fix various' => [<<<'EOD'
+            <?php
+                        $a = ${foo} . 1;
+                        $a = ${foo}++ + 1;
+                        $a = $a[1] * 1;
+                        $a = $a(1 + 2) . 1;
+                        $a = $a[1][2] . 1;
+                        $a = $a[1][2][3][foo()][$a++][1+$a][${"foo"}][99] . 1;
+                        $a = ${foo}++ . 1;
+                        $a = ($a /* */ /* */ /* */ /* */ + 1 /* */ ) + 1;
+                        $a = 1 . 1 + foo();
+                        $a = 1 . foo() + 1;
+                        $a = 1 . foo();
+                        $a = 1 . foo(1, ++$a);
+                        $a = foo() . 1;
+                        $a = foo(1, ++$a) . 1;
+                        $a = $a[1] * 1;
+                        $a[1] = $a[0] * 1;
+                        $a = $a(1 + 2) . 1;
+                        foo($b, ${foo} + 1);
+                        foo($a + 1);
+                        $a++ + 2;
+                        2 + $a++;
+                        $a = 7 . (int) $a;
+                        $a = (int) $a . 7;
+                        (int) $a = 7 . (int) $a;
+                        (int) $a = (int) $a . 7;
+                        $a = 1 . $a + foo();
+                        $a = $a instanceof \Foo & $b;
+                        $a = $a + $b instanceof \Foo;
+                        $a = $d / $a + $b;
+                        $d + $a = $a - $e;
+                        $a = $a >= $b;
+                        $a[1] = $a[1] instanceof \Foo & $b;
+            EOD."\n        "];
 
         yield ['<?php $a = 123 + $a + $c ?>'];
 
@@ -283,55 +301,57 @@ EOD
         // do not fix; precedence
 
         yield [
-            '<?php
-                $a = 1;
-                $b = 3;
-                $a = $a + $b ? 1 : 2;
-                var_dump($a);
+            <<<'EOD'
+                <?php
+                                $a = 1;
+                                $b = 3;
+                                $a = $a + $b ? 1 : 2;
+                                var_dump($a);
 
-                $a = 1;
-                $b = 3;
-                $a += $b ? 1 : 2;
-                var_dump($a);
+                                $a = 1;
+                                $b = 3;
+                                $a += $b ? 1 : 2;
+                                var_dump($a);
 
-                //---------------------
+                                //---------------------
 
-                $a = 2;
-                $b = null;
-                $a = $a + $b ?? 3;
-                var_dump($a);
+                                $a = 2;
+                                $b = null;
+                                $a = $a + $b ?? 3;
+                                var_dump($a);
 
-                $a = 2;
-                $b = null;
-                $a += $b ?? 3;
-                var_dump($a);
+                                $a = 2;
+                                $b = null;
+                                $a += $b ?? 3;
+                                var_dump($a);
 
-                //---------------------
+                                //---------------------
 
-                $a = 3;
-                $b = null;
-                $a = $a + $b === null ? 3 : 1;
-                var_dump($a);
+                                $a = 3;
+                                $b = null;
+                                $a = $a + $b === null ? 3 : 1;
+                                var_dump($a);
 
-                $a = 3;
-                $b = null;
-                $a += $b === null ? 3 : 1;
-                var_dump($a);
+                                $a = 3;
+                                $b = null;
+                                $a += $b === null ? 3 : 1;
+                                var_dump($a);
 
-                //---------------------
+                                //---------------------
 
-                $a = $a & $a ^ true;
-                $a = $a ^ true & $a;
-                $a = 1 . $a + foo();
+                                $a = $a & $a ^ true;
+                                $a = $a ^ true & $a;
+                                $a = 1 . $a + foo();
 
-                //---------------------
+                                //---------------------
 
-                $a = 1;
-                $b = false;
-                $z = true;
+                                $a = 1;
+                                $b = false;
+                                $z = true;
 
-                $a = $a + $b || $z;
-                var_dump($a);'."\n            ",
+                                $a = $a + $b || $z;
+                                var_dump($a);
+                EOD."\n            ",
         ];
 
         yield ['<?php {echo 1;} $a = new class{} & $a;'];
@@ -354,56 +374,72 @@ EOD
         ];
 
         yield [
-            '<?php $a99 .= // foo
-<<<EOD
-EOD
-    ;',
-            '<?php $a99 = $a99 . // foo
-<<<EOD
-EOD
-    ;',
+            <<<'EOD_'
+                <?php $a99 .= // foo
+                <<<EOD
+                EOD
+                    ;
+                EOD_,
+            <<<'EOD_'
+                <?php $a99 = $a99 . // foo
+                <<<EOD
+                EOD
+                    ;
+                EOD_,
         ];
 
         yield [
-            '<?php $a00 .= // foo2
-<<<\'EOD\'
-EOD
-;',
-            '<?php $a00 = $a00 . // foo2
-<<<\'EOD\'
-EOD
-;',
+            <<<'EOD_'
+                <?php $a00 .= // foo2
+                <<<'EOD'
+                EOD
+                ;
+                EOD_,
+            <<<'EOD_'
+                <?php $a00 = $a00 . // foo2
+                <<<'EOD'
+                EOD
+                ;
+                EOD_,
         ];
 
         yield 'do bother with to much mess' => [
-            '<?php
-                $a = 1 + $a + 2 + $a;
-                $a = $a + 1 + $a + 2;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = 1 + $a + 2 + $a;
+                                $a = $a + 1 + $a + 2;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                $r[1] = [&$r[1]];
-                $r[1] = [$r[1],&$r[1]];'."\n            ",
+            <<<'EOD'
+                <?php
+                                $r[1] = [&$r[1]];
+                                $r[1] = [$r[1],&$r[1]];
+                EOD."\n            ",
         ];
 
         yield 'switch case & default' => [
-            '<?php
-                switch(foo()) {
-                    case \'X\':
-                        $pX -= 789;
-                        break;
-                    default:
-                        $pY -= $b5;
-                }'."\n            ",
-            '<?php
-                switch(foo()) {
-                    case \'X\':
-                        $pX = $pX - 789;
-                        break;
-                    default:
-                        $pY = $pY - $b5;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                switch(foo()) {
+                                    case 'X':
+                                        $pX -= 789;
+                                        break;
+                                    default:
+                                        $pY -= $b5;
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                switch(foo()) {
+                                    case 'X':
+                                        $pX = $pX - 789;
+                                        break;
+                                    default:
+                                        $pY = $pY - $b5;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'operator precedence' => [
@@ -416,28 +452,32 @@ EOD
         ];
 
         yield 'assign and return' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    private int $test = 1;
+                class Foo
+                {
+                    private int $test = 1;
 
-    public function bar(int $i): int
-    {
-        return $this->test += $i;
-    }
-}',
-            '<?php
+                    public function bar(int $i): int
+                    {
+                        return $this->test += $i;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    private int $test = 1;
+                class Foo
+                {
+                    private int $test = 1;
 
-    public function bar(int $i): int
-    {
-        return $this->test = $this->test + $i;
-    }
-}',
+                    public function bar(int $i): int
+                    {
+                        return $this->test = $this->test + $i;
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -454,11 +494,13 @@ class Foo
     public static function provideFixPre80Cases(): iterable
     {
         yield [
-            '<?php
-                $a = $a[1]{2} . 1;
-                $a = $a[1]{2}[3][foo()][$a++][1+$a][${"foo"}][99] . 1;
-                $a = 1 . $a[1]{2};
-                $a = 1 . $a[1]{2}[3][foo()][$a++][1+$a][${"foo"}][99];',
+            <<<'EOD'
+                <?php
+                                $a = $a[1]{2} . 1;
+                                $a = $a[1]{2}[3][foo()][$a++][1+$a][${"foo"}][99] . 1;
+                                $a = 1 . $a[1]{2};
+                                $a = 1 . $a[1]{2}[3][foo()][$a++][1+$a][${"foo"}][99];
+                EOD,
         ];
 
         yield 'simple I\' array' => [

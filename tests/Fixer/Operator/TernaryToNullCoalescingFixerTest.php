@@ -100,10 +100,14 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'Minimal number of tokens case.' => [
-            '<?php
-$x=$a??null?>',
-            '<?php
-$x=isset($a)?$a:null?>',
+            <<<'EOD'
+                <?php
+                $x=$a??null?>
+                EOD,
+            <<<'EOD'
+                <?php
+                $x=isset($a)?$a:null?>
+                EOD,
         ];
 
         yield [
@@ -192,34 +196,38 @@ $x=isset($a)?$a:null?>',
         ];
 
         yield [
-            '<?php $x = (
-// c1
-// c2
-// c3
-$a
-// c4
-??
-// c5
-null
-/* c6 */
-)
-# c7
-;',
-            '<?php $x = (
-// c1
-isset($a)
-// c2
-?
-// c3
-$a
-// c4
-:
-// c5
-null
-/* c6 */
-)
-# c7
-;',
+            <<<'EOD'
+                <?php $x = (
+                // c1
+                // c2
+                // c3
+                $a
+                // c4
+                ??
+                // c5
+                null
+                /* c6 */
+                )
+                # c7
+                ;
+                EOD,
+            <<<'EOD'
+                <?php $x = (
+                // c1
+                isset($a)
+                // c2
+                ?
+                // c3
+                $a
+                // c4
+                :
+                // c5
+                null
+                /* c6 */
+                )
+                # c7
+                ;
+                EOD,
         ];
 
         yield [

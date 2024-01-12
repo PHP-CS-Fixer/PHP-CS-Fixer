@@ -37,424 +37,516 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-    $user->setEmail(\'voff.web@gmail.com\')
-        ->setPassword(\'233434\')
-        ->setEmailConfirmed(false)
-        ->setEmailConfirmationCode(\'123456\')
-        ->setHashsalt(\'1234\')
-        ->setTncAccepted(true);
-',
-            '<?php
+                    $user->setEmail('voff.web@gmail.com')
+                        ->setPassword('233434')
+                        ->setEmailConfirmed(false)
+                        ->setEmailConfirmationCode('123456')
+                        ->setHashsalt('1234')
+                        ->setTncAccepted(true);
 
-    $user->setEmail(\'voff.web@gmail.com\')
+                EOD,
+            <<<'EOD'
+                <?php
 
-     ->setPassword(\'233434\')
-        ->setEmailConfirmed(false)
-->setEmailConfirmationCode(\'123456\')
+                    $user->setEmail('voff.web@gmail.com')
 
-                ->setHashsalt(\'1234\')
-  ->setTncAccepted(true);
-',
+                     ->setPassword('233434')
+                        ->setEmailConfirmed(false)
+                ->setEmailConfirmationCode('123456')
+
+                                ->setHashsalt('1234')
+                  ->setTncAccepted(true);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo
-    ->bar1() // comment
-    ->bar2() /*
-comment
-*/
-    ->bar3()
-    // comment
-    ->bar4()
-    ->bar5()
-                                /** buahaha */
-    ->bar6()
-                                /** buahaha */
-    ->bar7();',
-            '<?php
-$foo
-         ->bar1() // comment
-      ->bar2() /*
-comment
-*/
-  ->bar3()
-    // comment
-        ->bar4()
-->bar5()
-                                /** buahaha */    ->bar6()
-                                /** buahaha */->bar7();',
+            <<<'EOD'
+                <?php
+                $foo
+                    ->bar1() // comment
+                    ->bar2() /*
+                comment
+                */
+                    ->bar3()
+                    // comment
+                    ->bar4()
+                    ->bar5()
+                                                /** buahaha */
+                    ->bar6()
+                                                /** buahaha */
+                    ->bar7();
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo
+                         ->bar1() // comment
+                      ->bar2() /*
+                comment
+                */
+                  ->bar3()
+                    // comment
+                        ->bar4()
+                ->bar5()
+                                                /** buahaha */    ->bar6()
+                                                /** buahaha */->bar7();
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo
-    ->bar1()
-    ->bar2();',
-            '<?php
-$foo
-->bar1()
-->bar2();',
+            <<<'EOD'
+                <?php
+                $foo
+                    ->bar1()
+                    ->bar2();
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo
+                ->bar1()
+                ->bar2();
+                EOD,
         ];
 
         yield [
-            '<?php $foo
-    ->bar();',
-            '<?php $foo
-->bar();',
+            <<<'EOD'
+                <?php $foo
+                    ->bar();
+                EOD,
+            <<<'EOD'
+                <?php $foo
+                ->bar();
+                EOD,
         ];
 
         yield [
-            '<?php $foo->bar()->baz()
-    ->qux();',
-            '<?php $foo->bar()->baz()
-->qux();',
+            <<<'EOD'
+                <?php $foo->bar()->baz()
+                    ->qux();
+                EOD,
+            <<<'EOD'
+                <?php $foo->bar()->baz()
+                ->qux();
+                EOD,
         ];
 
         yield [
-            '<?php
-someCodeHereAndMultipleBreaks();
+            <<<'EOD'
+                <?php
+                someCodeHereAndMultipleBreaks();
 
 
 
-$foo
-    ->bar1()
-    ->bar2();',
+                $foo
+                    ->bar1()
+                    ->bar2();
+                EOD,
         ];
 
         yield [
-            '<?php
-        if (null !== $files) {
-            return $files;
-        }
+            <<<'EOD'
+                <?php
+                        if (null !== $files) {
+                            return $files;
+                        }
 
-        $finder = Finder::create()
-            ->files()
-        ;',
+                        $finder = Finder::create()
+                            ->files()
+                        ;
+                EOD,
         ];
 
         yield [
-            '<?php
-        $finder = Finder::create()
-            ->files()
-        ;',
+            <<<'EOD'
+                <?php
+                        $finder = Finder::create()
+                            ->files()
+                        ;
+                EOD,
         ];
 
         yield [
-            '<?php
-        $replacements = $replacements
-            ->setAllowedTypes([\'array\'])
-            ->setNormalizer(function (Options $options, $value) use ($toTypes, $default) {
-                return $normalizedValue;
-            })
-            ->setDefault($default)
-            ->setWhitespacesConfig(
-                new WhitespacesFixerConfig($config[\'indent\'], $config[\'lineEnding\'])
-            )
-            ;',
+            <<<'EOD'
+                <?php
+                        $replacements = $replacements
+                            ->setAllowedTypes(['array'])
+                            ->setNormalizer(function (Options $options, $value) use ($toTypes, $default) {
+                                return $normalizedValue;
+                            })
+                            ->setDefault($default)
+                            ->setWhitespacesConfig(
+                                new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
+                            )
+                            ;
+                EOD,
         ];
 
         yield [
-            '<?php
-        return foo()
-            ->bar (
-                new foo()
-            )
-            ->bar();'."\n            ",
+            <<<'EOD'
+                <?php
+                        return foo()
+                            ->bar (
+                                new foo()
+                            )
+                            ->bar();
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-        return new Foo("param", [
-            (new Bar("param1", "param2"))
-                ->Foo([
-                    (new Bar())->foo(),
-                ])
-            ]);'."\n                ",
+            <<<'EOD'
+                <?php
+                        return new Foo("param", [
+                            (new Bar("param1", "param2"))
+                                ->Foo([
+                                    (new Bar())->foo(),
+                                ])
+                            ]);
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-(new Foo(
-    \'argument on line 1\',
-    \'argument on line 2\'
-))
-    ->foo()
-    ->bar()
-;',
-            '<?php
-(new Foo(
-    \'argument on line 1\',
-    \'argument on line 2\'
-))
-  ->foo()
-->bar()
-;',
+            <<<'EOD'
+                <?php
+                (new Foo(
+                    'argument on line 1',
+                    'argument on line 2'
+                ))
+                    ->foo()
+                    ->bar()
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+                (new Foo(
+                    'argument on line 1',
+                    'argument on line 2'
+                ))
+                  ->foo()
+                ->bar()
+                ;
+                EOD,
         ];
 
         yield [
-            '<div>
-    <?php $object
-        ->method()
-        ->method();
-    ?>
-</div>
+            <<<'EOD'
+                <div>
+                    <?php $object
+                        ->method()
+                        ->method();
+                    ?>
+                </div>
 
-<?= $object
-    ->method()
-    ->method();
-?>',
-            '<div>
-    <?php $object
-        ->method()
-    ->method();
-    ?>
-</div>
+                <?= $object
+                    ->method()
+                    ->method();
+                ?>
+                EOD,
+            <<<'EOD'
+                <div>
+                    <?php $object
+                        ->method()
+                    ->method();
+                    ?>
+                </div>
 
-<?= $object
-    ->method()
-        ->method();
-?>',
+                <?= $object
+                    ->method()
+                        ->method();
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-    $user->setFoo(1)
-        ->setBar([
-            1 => 1,
-            ])
-        ->setBaz(true)
-        ->setX(array(
-            2 => 2,
-        ))
-        ->setY();
-',
-            '<?php
+                    $user->setFoo(1)
+                        ->setBar([
+                            1 => 1,
+                            ])
+                        ->setBaz(true)
+                        ->setX(array(
+                            2 => 2,
+                        ))
+                        ->setY();
 
-    $user->setFoo(1)
-            ->setBar([
-                1 => 1,
-                ])
-  ->setBaz(true)
-->setX(array(
-    2 => 2,
-))
-                    ->setY();
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                    $user->setFoo(1)
+                            ->setBar([
+                                1 => 1,
+                                ])
+                  ->setBaz(true)
+                ->setX(array(
+                    2 => 2,
+                ))
+                                    ->setY();
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-    $user->setEmail("voff.web@gmail.com", )
-        ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-        ->setEmailConfirmationCode("123456",    );
-',
-            '<?php
+                    $user->setEmail("voff.web@gmail.com", )
+                        ->setPassword("233434" ,)
+                        ->setEmailConfirmed(false , )
+                        ->setEmailConfirmationCode("123456",    );
 
-    $user->setEmail("voff.web@gmail.com", )
+                EOD,
+            <<<'EOD'
+                <?php
 
-     ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-->setEmailConfirmationCode("123456",    );
-',
+                    $user->setEmail("voff.web@gmail.com", )
+
+                     ->setPassword("233434" ,)
+                        ->setEmailConfirmed(false , )
+                ->setEmailConfirmationCode("123456",    );
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj = (new Foo)
-                    ->setBar((new Bar)
-                        ->baz());
-',
-            '<?php
+                                $obj = (new Foo)
+                                    ->setBar((new Bar)
+                                        ->baz());
 
-                $obj = (new Foo)
-        ->setBar((new Bar)
-                            ->baz());
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj = (new Foo)
+                        ->setBar((new Bar)
+                                            ->baz());
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj
-                    ->foo("bar", function ($baz) {
-                                    return $baz
-                                        ->on("table1", "table2");
-                                })
-                    ->where("a", "b");
-',
-            '<?php
+                                $obj
+                                    ->foo("bar", function ($baz) {
+                                                    return $baz
+                                                        ->on("table1", "table2");
+                                                })
+                                    ->where("a", "b");
 
-                $obj
-        ->foo("bar", function ($baz) {
-                        return $baz
-                                    ->on("table1", "table2");
-                    })
-                ->where("a", "b");
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj
+                        ->foo("bar", function ($baz) {
+                                        return $baz
+                                                    ->on("table1", "table2");
+                                    })
+                                ->where("a", "b");
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj
-                    ->foo("baz", fn ($bar) => $bar
+                                $obj
+                                    ->foo("baz", fn ($bar) => $bar
+                                        ->baz("foobar"))
+                                    ->baz();
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj
+                                                        ->foo("baz", fn ($bar) => $bar
                         ->baz("foobar"))
-                    ->baz();
-',
-            '<?php
+                                                ->baz();
 
-                $obj
-                                        ->foo("baz", fn ($bar) => $bar
-        ->baz("foobar"))
-                                ->baz();
-',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj
-                    ->foo("baz", fn (string $bar) => otherFunc($bar)
+                                $obj
+                                    ->foo("baz", fn (string $bar) => otherFunc($bar)
+                                        ->baz("foobar"))
+                                    ->baz();
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj
+                                                        ->foo("baz", fn (string $bar) => otherFunc($bar)
+                                            ->baz("foobar"))
+                                                ->baz();
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                                $obj
+                                    ->foo("baz", fn (SomeClass $bar) => $bar
+                                        ->baz("foobar"))
+                                    ->baz();
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj
+                                                        ->foo("baz", fn (SomeClass $bar) => $bar
                         ->baz("foobar"))
-                    ->baz();
-',
-            '<?php
+                                                ->baz();
 
-                $obj
-                                        ->foo("baz", fn (string $bar) => otherFunc($bar)
-                            ->baz("foobar"))
-                                ->baz();
-',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj
-                    ->foo("baz", fn (SomeClass $bar) => $bar
+                                $obj
+                                    ->foo("baz", fn (?AnotherClass $bar) => $bar
+                                        ->baz("foobar"))
+                                    ->baz();
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj
+                                                        ->foo("baz", fn (?AnotherClass $bar) => $bar
                         ->baz("foobar"))
-                    ->baz();
-',
-            '<?php
+                                                ->baz();
 
-                $obj
-                                        ->foo("baz", fn (SomeClass $bar) => $bar
-        ->baz("foobar"))
-                                ->baz();
-',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj
-                    ->foo("baz", fn (?AnotherClass $bar) => $bar
-                        ->baz("foobar"))
-                    ->baz();
-',
-            '<?php
+                                $obj
+                        /*buahaha*/
+                                    ->foo("baz", fn ($bar) => $bar
+                                        ->baz/*buahaha*/("foobar"))
+                                    ->/**buahaha*/baz();
 
-                $obj
-                                        ->foo("baz", fn (?AnotherClass $bar) => $bar
-        ->baz("foobar"))
-                                ->baz();
-',
-        ];
+                EOD,
+            <<<'EOD'
+                <?php
 
-        yield [
-            '<?php
-
-                $obj
-        /*buahaha*/
-                    ->foo("baz", fn ($bar) => $bar
+                                $obj
+                        /*buahaha*/                                ->foo("baz", fn ($bar) => $bar
                         ->baz/*buahaha*/("foobar"))
-                    ->/**buahaha*/baz();
-',
-            '<?php
+                                                ->/**buahaha*/baz();
 
-                $obj
-        /*buahaha*/                                ->foo("baz", fn ($bar) => $bar
-        ->baz/*buahaha*/("foobar"))
-                                ->/**buahaha*/baz();
-',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $obj
-                    ->      foo("baz", fn ($bar) => $bar
+                                $obj
+                                    ->      foo("baz", fn ($bar) => $bar
+                                        ->baz              ("foobar"))
+                                    ->       baz  ();
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                $obj
+                                                        ->      foo("baz", fn ($bar) => $bar
                         ->baz              ("foobar"))
-                    ->       baz  ();
-',
-            '<?php
+                                                ->       baz  ();
 
-                $obj
-                                        ->      foo("baz", fn ($bar) => $bar
-        ->baz              ("foobar"))
-                                ->       baz  ();
-',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-    $user->setEmail("voff.web@gmail.com", )
-        ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-        ->setEmailConfirmationCode("123456",    );
-',
-            '<?php
+                    $user->setEmail("voff.web@gmail.com", )
+                        ->setPassword("233434" ,)
+                        ->setEmailConfirmed(false , )
+                        ->setEmailConfirmationCode("123456",    );
 
-    $user->setEmail("voff.web@gmail.com", )
+                EOD,
+            <<<'EOD'
+                <?php
 
-     ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-->setEmailConfirmationCode("123456",    );
-',
+                    $user->setEmail("voff.web@gmail.com", )
+
+                     ->setPassword("233434" ,)
+                        ->setEmailConfirmed(false , )
+                ->setEmailConfirmationCode("123456",    );
+
+                EOD,
         ];
 
         yield [
-            '<?php return $foo
-->bar;',
+            <<<'EOD'
+                <?php return $foo
+                ->bar;
+                EOD,
         ];
 
         yield [
-            '<?php return $foo
-->bar;
+            <<<'EOD'
+                <?php return $foo
+                ->bar;
 
-    if (foo()) {
-        echo 123;
-    }
-',
+                    if (foo()) {
+                        echo 123;
+                    }
+
+                EOD,
         ];
 
         yield [
-            '<?php return $foo
-->bar?>
+            <<<'EOD'
+                <?php return $foo
+                ->bar?>
 
-<?php
-if (foo()) {
-    echo 123;
-}
-',
+                <?php
+                if (foo()) {
+                    echo 123;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php return [$foo
-->bar,
-1,
-2,
-abc(),
-];
-',
+            <<<'EOD'
+                <?php return [$foo
+                ->bar,
+                1,
+                2,
+                abc(),
+                ];
+
+                EOD,
         ];
     }
 
@@ -481,21 +573,25 @@ abc(),
     public function testFix80(): void
     {
         $this->doTest(
-            '<?php
+            <<<'EOD'
+                <?php
 
-    $user?->setEmail("voff.web@gmail.com")
-        ?->setPassword("233434")
-        ?->setEmailConfirmed(false)
-        ?->setEmailConfirmationCode("123456");
-',
-            '<?php
+                    $user?->setEmail("voff.web@gmail.com")
+                        ?->setPassword("233434")
+                        ?->setEmailConfirmed(false)
+                        ?->setEmailConfirmationCode("123456");
 
-    $user?->setEmail("voff.web@gmail.com")
+                EOD,
+            <<<'EOD'
+                <?php
 
-     ?->setPassword("233434")
-        ?->setEmailConfirmed(false)
-?->setEmailConfirmationCode("123456");
-'
+                    $user?->setEmail("voff.web@gmail.com")
+
+                     ?->setPassword("233434")
+                        ?->setEmailConfirmed(false)
+                ?->setEmailConfirmationCode("123456");
+
+                EOD
         );
     }
 }

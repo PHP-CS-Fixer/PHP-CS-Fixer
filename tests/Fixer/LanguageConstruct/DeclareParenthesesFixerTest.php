@@ -40,18 +40,22 @@ final class DeclareParenthesesFixerTest extends AbstractFixerTestCase
 
         yield 'newlines (\n) around parentheses' => [
             '<?php declare(strict_types = 1);',
-            '<?php declare
-            (
-                strict_types = 1
-            );',
+            <<<'EOD'
+                <?php declare
+                            (
+                                strict_types = 1
+                            );
+                EOD,
         ];
 
         yield 'newlines (\r\n) around parentheses' => [
             '<?php declare(strict_types = 1);',
-            "<?php declare\r
-            (\r
-                strict_types = 1\r
-            );",
+            <<<EOD
+                <?php declare\r
+                            (\r
+                                strict_types = 1\r
+                            );
+                EOD,
         ];
     }
 }

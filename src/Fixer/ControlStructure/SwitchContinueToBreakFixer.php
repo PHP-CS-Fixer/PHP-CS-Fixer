@@ -35,30 +35,34 @@ final class SwitchContinueToBreakFixer extends AbstractFixer
             'Switch case must not be ended with `continue` but with `break`.',
             [
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 1:
-        continue;
-}
-'
+                    <<<'EOD'
+                        <?php
+                        switch ($foo) {
+                            case 1:
+                                continue;
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 1:
-        while($bar) {
-            do {
-                continue 3;
-            } while(false);
+                    <<<'EOD'
+                        <?php
+                        switch ($foo) {
+                            case 1:
+                                while($bar) {
+                                    do {
+                                        continue 3;
+                                    } while(false);
 
-            if ($foo + 1 > 3) {
-                continue;
-            }
+                                    if ($foo + 1 > 3) {
+                                        continue;
+                                    }
 
-            continue 2;
-        }
-}
-'
+                                    continue 2;
+                                }
+                        }
+
+                        EOD
                 ),
             ]
         );

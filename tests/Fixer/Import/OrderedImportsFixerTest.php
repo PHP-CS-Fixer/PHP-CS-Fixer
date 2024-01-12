@@ -194,34 +194,42 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
         yield [$expected, $input];
 
         $expected =
-            '<?php
-                use B;
-                use C;
-                $foo = new C();
-                use A;'."\n            ";
+            <<<'EOD'
+                <?php
+                                use B;
+                                use C;
+                                $foo = new C();
+                                use A;
+                EOD."\n            ";
 
         $input =
-            '<?php
-                use C;
-                use B;
-                $foo = new C();
-                use A;'."\n            ";
+            <<<'EOD'
+                <?php
+                                use C;
+                                use B;
+                                $foo = new C();
+                                use A;
+                EOD."\n            ";
 
         yield [$expected, $input];
 
         yield 'open-close groups' => [
-            '
-                <?php use X ?>
-                <?php use Z ?>
-                <?php echo X::class ?>
-                <?php use E ?>   output
-                <?php use F ?><?php echo E::class; use A; ?>'."\n            ",
-            '
-                <?php use Z ?>
-                <?php use X ?>
-                <?php echo X::class ?>
-                <?php use F ?>   output
-                <?php use E ?><?php echo E::class; use A; ?>'."\n            ",
+            <<<'EOD'
+
+                                <?php use X ?>
+                                <?php use Z ?>
+                                <?php echo X::class ?>
+                                <?php use E ?>   output
+                                <?php use F ?><?php echo E::class; use A; ?>
+                EOD."\n            ",
+            <<<'EOD'
+
+                                <?php use Z ?>
+                                <?php use X ?>
+                                <?php echo X::class ?>
+                                <?php use F ?>   output
+                                <?php use E ?><?php echo E::class; use A; ?>
+                EOD."\n            ",
         ];
     }
 
@@ -571,24 +579,32 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
     public function testCodeWithCloseTag(): void
     {
         $this->doTest(
-            '<?php
-                use A\C1;
-                use A\D?><?php use B\C2; use E\F ?>',
-            '<?php
-                use A\C1;
-                use B\C2?><?php use A\D; use E\F ?>'
+            <<<'EOD'
+                <?php
+                                use A\C1;
+                                use A\D?><?php use B\C2; use E\F ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                                use A\C1;
+                                use B\C2?><?php use A\D; use E\F ?>
+                EOD
         );
     }
 
     public function testCodeWithComments(): void
     {
         $this->doTest(
-            '<?php
-                use A\C1 /* A */;
-                use /* B */ B\C2;',
-            '<?php
-                use /* B */ B\C2;
-                use A\C1 /* A */;'
+            <<<'EOD'
+                <?php
+                                use A\C1 /* A */;
+                                use /* B */ B\C2;
+                EOD,
+            <<<'EOD'
+                <?php
+                                use /* B */ B\C2;
+                                use A\C1 /* A */;
+                EOD
         );
     }
 
@@ -598,20 +614,24 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
     public function testCodeWithCommentsAndMultiLine(): void
     {
         $this->doTest(
-            '<?php
-                    use#
-A\C1;
-                    use B#
-\C2#
-#
-;',
-            '<?php
-                    use#
-B#
-\C2#
-#
-;
-                    use A\C1;'
+            <<<'EOD'
+                <?php
+                                    use#
+                A\C1;
+                                    use B#
+                \C2#
+                #
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+                                    use#
+                B#
+                \C2#
+                #
+                ;
+                                    use A\C1;
+                EOD
         );
     }
 
@@ -706,46 +726,50 @@ B#
         ];
 
         yield [
-            '<?php
-use A\B;
-use some\a\{ClassA, ClassB, ClassC as C};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstA, ConstB, ConstC};
-use const some\b\{
-    ConstX,
-    ConstY,
-    ConstZ
-};
-use function some\a\{fn_a, fn_b, fn_c};
-use function some\b\{
-    fn_x,
-    fn_y,
-    fn_z
-};
-',
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\b\{
-    fn_y,
-    fn_z,
-    fn_x
-};
-use function some\a\{fn_a, fn_b, fn_c};
-use A\B;
-use const some\b\{
-    ConstZ,
-    ConstX,
-    ConstY
-};
-use const some\a\{ConstA, ConstB, ConstC};
-use some\b\{
-    ClassG,
-    ClassF
-};
-',
+            <<<'EOD'
+                <?php
+                use A\B;
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstA, ConstB, ConstC};
+                use const some\b\{
+                    ConstX,
+                    ConstY,
+                    ConstZ
+                };
+                use function some\a\{fn_a, fn_b, fn_c};
+                use function some\b\{
+                    fn_x,
+                    fn_y,
+                    fn_z
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\b\{
+                    fn_y,
+                    fn_z,
+                    fn_x
+                };
+                use function some\a\{fn_a, fn_b, fn_c};
+                use A\B;
+                use const some\b\{
+                    ConstZ,
+                    ConstX,
+                    ConstY
+                };
+                use const some\a\{ConstA, ConstB, ConstC};
+                use some\b\{
+                    ClassG,
+                    ClassF
+                };
+
+                EOD,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'const', 'function'],
@@ -753,26 +777,30 @@ use some\b\{
         ];
 
         yield [
-            '<?php
-use A\B;
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
-use const some\a\{
-    ConstA,
-    ConstB,
-    ConstC
-};
-use function some\a\{fn_a, fn_b, fn_c};
-',
-            '<?php
-use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
-use function some\a\{fn_c,  fn_a,fn_b   };
-use A\B;
-use const some\a\{
-    ConstA,
-    ConstB,
-    ConstC
-};
-',
+            <<<'EOD'
+                <?php
+                use A\B;
+                use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+                use const some\a\{
+                    ConstA,
+                    ConstB,
+                    ConstC
+                };
+                use function some\a\{fn_a, fn_b, fn_c};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
+                use function some\a\{fn_c,  fn_a,fn_b   };
+                use A\B;
+                use const some\a\{
+                    ConstA,
+                    ConstB,
+                    ConstC
+                };
+
+                EOD,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'const', 'function'],
@@ -780,80 +808,92 @@ use const some\a\{
         ];
 
         yield [
-            '<?php
-use A\B;
-use some\a\{ClassA, ClassB, ClassC as C};
-use const some\a\{ConstA, ConstB, ConstC};
-use function some\a\{fn_a, fn_b, fn_c};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\b\{
-    ConstX,
-    ConstY,
-    ConstZ
-};
-use function some\b\{
-    fn_x,
-    fn_y,
-    fn_z
-};
-',
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\b\{
-    fn_y,
-    fn_z,
-    fn_x
-};
-use function some\a\{fn_a, fn_b, fn_c};
-use A\B;
-use const some\b\{
-    ConstZ,
-    ConstX,
-    ConstY
-};
-use const some\a\{ConstA, ConstB, ConstC};
-use some\b\{
-    ClassG,
-    ClassF
-};
-',
+            <<<'EOD'
+                <?php
+                use A\B;
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use const some\a\{ConstA, ConstB, ConstC};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\b\{
+                    ConstX,
+                    ConstY,
+                    ConstZ
+                };
+                use function some\b\{
+                    fn_x,
+                    fn_y,
+                    fn_z
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\b\{
+                    fn_y,
+                    fn_z,
+                    fn_x
+                };
+                use function some\a\{fn_a, fn_b, fn_c};
+                use A\B;
+                use const some\b\{
+                    ConstZ,
+                    ConstX,
+                    ConstY
+                };
+                use const some\a\{ConstA, ConstB, ConstC};
+                use some\b\{
+                    ClassG,
+                    ClassF
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use A\B;
-use const some\a\{
-    ConstA,
-    ConstB,
-    ConstC
-};
-use some\a\{ClassA as A /*z2*/, ClassB, ClassC};
-use function some\a\{fn_a, fn_b, fn_c};
-',
-            '<?php
-use some\a\{  ClassB,ClassC, /*z2*/ ClassA as A};
-use function some\a\{fn_c,  fn_a,fn_b   };
-use A\B;
-use const some\a\{
-    ConstA,
-    ConstB,
-    ConstC
-};
-',
+            <<<'EOD'
+                <?php
+                use A\B;
+                use const some\a\{
+                    ConstA,
+                    ConstB,
+                    ConstC
+                };
+                use some\a\{ClassA as A /*z2*/, ClassB, ClassC};
+                use function some\a\{fn_a, fn_b, fn_c};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use some\a\{  ClassB,ClassC, /*z2*/ ClassA as A};
+                use function some\a\{fn_c,  fn_a,fn_b   };
+                use A\B;
+                use const some\a\{
+                    ConstA,
+                    ConstB,
+                    ConstC
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use C\B;
-use function B\fn_a;
-use const A\ConstA;'."\n            ",
-            '<?php
-use const A\ConstA;
-use function B\fn_a;
-use C\B;'."\n            ",
+            <<<'EOD'
+                <?php
+                use C\B;
+                use function B\fn_a;
+                use const A\ConstA;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use const A\ConstA;
+                use function B\fn_a;
+                use C\B;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'function', 'const'],
@@ -861,73 +901,93 @@ use C\B;'."\n            ",
         ];
 
         yield [
-            '<?php
-use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
-use Foo\Bir;
-',
-            '<?php
-use Foo\Bar\Baz, Foo\Bir;
-use Foo\Bar\{ClassC, ClassB, ClassA};
-',
+            <<<'EOD'
+                <?php
+                use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
+                use Foo\Bir;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\Bar\Baz, Foo\Bir;
+                use Foo\Bar\{ClassC, ClassB, ClassA};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use K\K;use Loo1\Bar\{ClassC};use M\M;
-',
-            '<?php
-use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
-',
+            <<<'EOD'
+                <?php
+                use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use K\K;use Loo1\Bar\{ClassC};use M\M;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
-use Foo\Bir;
-',
-            '<?php
-use Foo\Bar\Baz, Foo\Bir;
-use Foo\Bar\{ClassC, ClassB, ClassA};
-',
+            <<<'EOD'
+                <?php
+                use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
+                use Foo\Bir;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\Bar\Baz, Foo\Bir;
+                use Foo\Bar\{ClassC, ClassB, ClassA};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Foo\Bar\{ClassA, ClassB, ClassC};
-use Foo\Bir\{
-    ClassD,
-    ClassE,
-    ClassF
-};
-use Foo\Bor\{
-    ClassG,
-    ClassH,
-    ClassI,
-    ClassJ
-};
-',
-            '<?php
-use Foo\Bar\{ClassC, ClassB, ClassA};
-use Foo\Bir\{ClassE, ClassF,
-    ClassD};
-use Foo\Bor\{
-            ClassJ,
+            <<<'EOD'
+                <?php
+                use Foo\Bar\{ClassA, ClassB, ClassC};
+                use Foo\Bir\{
+                    ClassD,
+                    ClassE,
+                    ClassF
+                };
+                use Foo\Bor\{
+                    ClassG,
+                    ClassH,
                     ClassI,
-    ClassH,
-                        ClassG
-};
-',
+                    ClassJ
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\Bar\{ClassC, ClassB, ClassA};
+                use Foo\Bir\{ClassE, ClassF,
+                    ClassD};
+                use Foo\Bor\{
+                            ClassJ,
+                                    ClassI,
+                    ClassH,
+                                        ClassG
+                };
+
+                EOD,
         ];
 
         yield 'alpha - [\'class\', \'function\', \'const\']' => [
-            '<?php
-use Z\Z;
-use function X\X;
-use const Y\Y;'."\n            ",
-            '<?php
-use const Y\Y;
-use function X\X;
-use Z\Z;'."\n            ",
+            <<<'EOD'
+                <?php
+                use Z\Z;
+                use function X\X;
+                use const Y\Y;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use const Y\Y;
+                use function X\X;
+                use Z\Z;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'function', 'const'],
@@ -935,14 +995,18 @@ use Z\Z;'."\n            ",
         ];
 
         yield 'alpha - [\'class\', \'const\', \'function\']' => [
-            '<?php
-use Z\Z;
-use const Y\Y;
-use function X\X;'."\n            ",
-            '<?php
-use function X\X;
-use const Y\Y;
-use Z\Z;'."\n            ",
+            <<<'EOD'
+                <?php
+                use Z\Z;
+                use const Y\Y;
+                use function X\X;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use function X\X;
+                use const Y\Y;
+                use Z\Z;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['class', 'const', 'function'],
@@ -950,14 +1014,18 @@ use Z\Z;'."\n            ",
         ];
 
         yield 'alpha - [\'function\', \'class\', \'const\']' => [
-            '<?php
-use function Z\Z;
-use Y\Y;
-use const X\X;'."\n            ",
-            '<?php
-use const X\X;
-use Y\Y;
-use function Z\Z;'."\n            ",
+            <<<'EOD'
+                <?php
+                use function Z\Z;
+                use Y\Y;
+                use const X\X;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use const X\X;
+                use Y\Y;
+                use function Z\Z;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['function', 'class', 'const'],
@@ -965,14 +1033,18 @@ use function Z\Z;'."\n            ",
         ];
 
         yield 'alpha - [\'function\', \'const\', \'class\']' => [
-            '<?php
-use function Z\Z;
-use const Y\Y;
-use X\X;'."\n            ",
-            '<?php
-use X\X;
-use const Y\Y;
-use function Z\Z;'."\n            ",
+            <<<'EOD'
+                <?php
+                use function Z\Z;
+                use const Y\Y;
+                use X\X;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use X\X;
+                use const Y\Y;
+                use function Z\Z;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['function', 'const', 'class'],
@@ -980,14 +1052,18 @@ use function Z\Z;'."\n            ",
         ];
 
         yield 'alpha - [\'const\', \'function\', \'class\']' => [
-            '<?php
-use const Z\Z;
-use function Y\Y;
-use X\X;'."\n            ",
-            '<?php
-use X\X;
-use function Y\Y;
-use const Z\Z;'."\n            ",
+            <<<'EOD'
+                <?php
+                use const Z\Z;
+                use function Y\Y;
+                use X\X;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use X\X;
+                use function Y\Y;
+                use const Z\Z;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['const', 'function', 'class'],
@@ -995,14 +1071,18 @@ use const Z\Z;'."\n            ",
         ];
 
         yield 'alpha - [\'const\', \'class\', \'function\']' => [
-            '<?php
-use const Z\Z;
-use Y\Y;
-use function X\X;'."\n            ",
-            '<?php
-use function X\X;
-use Y\Y;
-use const Z\Z;'."\n            ",
+            <<<'EOD'
+                <?php
+                use const Z\Z;
+                use Y\Y;
+                use function X\X;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use function X\X;
+                use Y\Y;
+                use const Z\Z;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                 'imports_order' => ['const', 'class', 'function'],
@@ -1010,75 +1090,95 @@ use const Z\Z;'."\n            ",
         ];
 
         yield '"strcasecmp" vs. "strnatcasecmp"' => [
-            '<?php
-use A\A1;
-use A\A10;
-use A\A2;
-use A\A20;'."\n            ",
-            '<?php
-use A\A20;
-use A\A2;
-use A\A10;
-use A\A1;'."\n            ",
+            <<<'EOD'
+                <?php
+                use A\A1;
+                use A\A10;
+                use A\A2;
+                use A\A20;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use A\A20;
+                use A\A2;
+                use A\A10;
+                use A\A1;
+                EOD."\n            ",
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
             ],
         ];
 
         yield [
-            '<?php
-use A\{B,};
-use C\{D,E,};
-',
-            '<?php
-use C\{D,E,};
-use A\{B,};
-',
+            <<<'EOD'
+                <?php
+                use A\{B,};
+                use C\{D,E,};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use C\{D,E,};
+                use A\{B,};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use Foo\{
-    Aaa,
-    Bbb,
-};',
-            '<?php
-use Foo\{
-    Bbb,
-    Aaa,
-};',
+            <<<'EOD'
+                <?php
+                use Foo\{
+                    Aaa,
+                    Bbb,
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\{
+                    Bbb,
+                    Aaa,
+                };
+                EOD,
         ];
 
         yield [
-            '<?php
-use Foo\{
-    Aaa /* 3 *//* 4 *//* 5 */,
-    Bbb /* 1 *//* 2 */,
-};',
-            '<?php
-use Foo\{
-    /* 1 */Bbb/* 2 */,/* 3 */
-    /* 4 */Aaa/* 5 */,/* 6 */
-};',
+            <<<'EOD'
+                <?php
+                use Foo\{
+                    Aaa /* 3 *//* 4 *//* 5 */,
+                    Bbb /* 1 *//* 2 */,
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                use Foo\{
+                    /* 1 */Bbb/* 2 */,/* 3 */
+                    /* 4 */Aaa/* 5 */,/* 6 */
+                };
+                EOD,
         ];
 
         $input =
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
-';
+            <<<'EOD'
+                <?php use A\{B,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\Z\{ConstAA,ConstBB,ConstCC,};
+                use const some\X\{ConstA,ConstB,ConstC,ConstF};
+                use C\{D,E,};
+
+                EOD;
 
         yield [
-            '<?php use A\{B,};
-use C\{D,E,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use function some\a\{fn_a, fn_b, fn_c,};
-',
+            <<<'EOD'
+                <?php use A\{B,};
+                use C\{D,E,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use const some\X\{ConstA,ConstB,ConstC,ConstF};
+                use const some\Z\{ConstAA,ConstBB,ConstCC,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+
+                EOD,
             $input,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -1087,13 +1187,15 @@ use function some\a\{fn_a, fn_b, fn_c,};
         ];
 
         yield [
-            '<?php use A\{B,};
-use C\{D,E,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use function some\a\{fn_a, fn_b, fn_c,};
-',
+            <<<'EOD'
+                <?php use A\{B,};
+                use C\{D,E,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use const some\Z\{ConstAA,ConstBB,ConstCC,};
+                use const some\X\{ConstA,ConstB,ConstC,ConstF};
+                use function some\a\{fn_a, fn_b, fn_c,};
+
+                EOD,
             $input,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1102,13 +1204,15 @@ use function some\a\{fn_a, fn_b, fn_c,};
         ];
 
         yield [
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use C\{D,E,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use function some\a\{fn_a, fn_b, fn_c,};
-',
+            <<<'EOD'
+                <?php use A\{B,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use C\{D,E,};
+                use const some\Z\{ConstAA,ConstBB,ConstCC,};
+                use const some\X\{ConstA,ConstB,ConstC,ConstF};
+                use function some\a\{fn_a, fn_b, fn_c,};
+
+                EOD,
             $input,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
@@ -1916,49 +2020,57 @@ use function some\a\{fn_a, fn_b, fn_c,};
         ];
 
         yield [
-            '<?php
-use A\B;
-use Foo\Bar\Biz;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use function some\a\{fn_a, fn_b, fn_c};
-use some\b\{ClassA, ClassB, ClassC as C};
-use const some\a\{ConstA, ConstB, ConstC};
-use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
-use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
-use const some\b\{ConstG, ConstX, ConstY, ConstZ};
-use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
-',
-            '<?php
-use function some\a\{fn_a, fn_b, fn_c};
-use Foo\Bar\Biz;
-use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
-use A\B;
-use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstB, ConstA, ConstC};
-use const some\b\{ConstX, ConstY, ConstZ, ConstG};
-use some\b\{ClassA, ClassB, ClassC as C};
-use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
-',
+            <<<'EOD'
+                <?php
+                use A\B;
+                use Foo\Bar\Biz;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use function some\a\{fn_a, fn_b, fn_c};
+                use some\b\{ClassA, ClassB, ClassC as C};
+                use const some\a\{ConstA, ConstB, ConstC};
+                use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
+                use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
+                use const some\b\{ConstG, ConstX, ConstY, ConstZ};
+                use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use function some\a\{fn_a, fn_b, fn_c};
+                use Foo\Bar\Biz;
+                use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
+                use A\B;
+                use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstB, ConstA, ConstC};
+                use const some\b\{ConstX, ConstY, ConstZ, ConstG};
+                use some\b\{ClassA, ClassB, ClassC as C};
+                use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-use const ZZZ;
-use function B;
-use function A123;
-',
-            '<?php
-use function B;
-use function A123;
-use const ZZZ;
-',
+            <<<'EOD'
+                <?php
+                use const ZZZ;
+                use function B;
+                use function A123;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use function B;
+                use function A123;
+                use const ZZZ;
+
+                EOD,
         ];
     }
 
@@ -1978,40 +2090,44 @@ use const ZZZ;
     public static function provideFixTypesOrderAndLengthCases(): iterable
     {
         yield [
-            '<?php
-use A\B;
-use Some\Bar;
-use Foo\Zar\Baz;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use some\a\{ClassA, ClassB, ClassC as C};
-use some\b\{ClassK, ClassL, ClassM as M};
-use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
-use const some\a\{ConstA, ConstB, ConstC};
-use const some\b\{ConstD, ConstE, ConstF};
-use function some\a\{fn_a, fn_b};
-use function some\f\{fn_c, fn_d, fn_e};
-use function some\b\{fn_k, fn_l, func_m};
-',
-            '<?php
-use const some\a\{ConstA, ConstB, ConstC};
-use some\a\{ClassA, ClassB, ClassC as C};
-use Foo\Zar\Baz;
-use some\b\{ClassK, ClassL, ClassM as M};
-use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
-use A\B;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use function some\b\{fn_k, fn_l, func_m};
-use Some\Bar;
-use function some\a\{fn_a, fn_b};
-use const some\b\{ConstD, ConstE, ConstF};
-use function some\f\{fn_c, fn_d, fn_e};
-',
+            <<<'EOD'
+                <?php
+                use A\B;
+                use Some\Bar;
+                use Foo\Zar\Baz;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use some\b\{ClassK, ClassL, ClassM as M};
+                use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
+                use const some\a\{ConstA, ConstB, ConstC};
+                use const some\b\{ConstD, ConstE, ConstF};
+                use function some\a\{fn_a, fn_b};
+                use function some\f\{fn_c, fn_d, fn_e};
+                use function some\b\{fn_k, fn_l, func_m};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use const some\a\{ConstA, ConstB, ConstC};
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use Foo\Zar\Baz;
+                use some\b\{ClassK, ClassL, ClassM as M};
+                use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
+                use A\B;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use function some\b\{fn_k, fn_l, func_m};
+                use Some\Bar;
+                use function some\a\{fn_a, fn_b};
+                use const some\b\{ConstD, ConstE, ConstF};
+                use function some\f\{fn_c, fn_d, fn_e};
+
+                EOD,
         ];
     }
 
@@ -2033,50 +2149,54 @@ use function some\f\{fn_c, fn_d, fn_e};
     public static function provideFixTypesOrderAndAlphabetCases(): iterable
     {
         yield [
-            '<?php
-use Aaa\Bbb;
-use Aaa\Ccc;
-use Bar\Biz\Boooz\Bum;
-use Foo\Zar\Baz;
-use some\a\{ClassA};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use some\b\{ClassB, ClassC as C, ClassD};
-use Some\Cloz;
-use const some\a\{ConstA};
-use const some\a\{ConstB, ConstC as CC};
-use const some\a\{ConstD};
-use const some\b\{ConstE};
-use function some\a\{fn_a, fn_b};
-use function some\a\{fn_bc};
-use function some\b\{fn_c, fn_d, fn_e};
-use function some\c\{fn_f};
-use function some\f\{fn_g, fn_h, fn_i};
-',
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use function some\c\{fn_f};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstD};
-use Some\Cloz;
-use function some\a\{fn_bc};
-use const some\a\{ConstA};
-use function some\b\{fn_c, fn_d, fn_e};
-use const some\a\{ConstB, ConstC as CC};
-use Aaa\Bbb;
-use const some\b\{ConstE};
-use function some\a\{fn_a, fn_b};
-',
+            <<<'EOD'
+                <?php
+                use Aaa\Bbb;
+                use Aaa\Ccc;
+                use Bar\Biz\Boooz\Bum;
+                use Foo\Zar\Baz;
+                use some\a\{ClassA};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use some\b\{ClassB, ClassC as C, ClassD};
+                use Some\Cloz;
+                use const some\a\{ConstA};
+                use const some\a\{ConstB, ConstC as CC};
+                use const some\a\{ConstD};
+                use const some\b\{ConstE};
+                use function some\a\{fn_a, fn_b};
+                use function some\a\{fn_bc};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use function some\c\{fn_f};
+                use function some\f\{fn_g, fn_h, fn_i};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use function some\c\{fn_f};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstD};
+                use Some\Cloz;
+                use function some\a\{fn_bc};
+                use const some\a\{ConstA};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use const some\a\{ConstB, ConstC as CC};
+                use Aaa\Bbb;
+                use const some\b\{ConstE};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
             [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ];
     }
@@ -2099,50 +2219,54 @@ use function some\a\{fn_a, fn_b};
     public static function provideFixTypesOrderAndNoneCases(): iterable
     {
         yield [
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use some\b\{
-    ClassF,
-    ClassG
-};
-use Some\Cloz;
-use Aaa\Bbb;
-use const some\a\{ConstD};
-use const some\a\{ConstA};
-use const some\a\{ConstB, ConstC as CC};
-use const some\b\{ConstE};
-use function some\f\{fn_g, fn_h, fn_i};
-use function some\c\{fn_f};
-use function some\a\{fn_x};
-use function some\b\{fn_c, fn_d, fn_e};
-use function some\a\{fn_a, fn_b};
-',
-            '<?php
-use Aaa\Ccc;
-use Foo\Zar\Baz;
-use function some\f\{fn_g, fn_h, fn_i};
-use some\a\{ClassA};
-use some\b\{ClassD, ClassB, ClassC as C};
-use Bar\Biz\Boooz\Bum;
-use function some\c\{fn_f};
-use some\b\{
-    ClassF,
-    ClassG
-};
-use const some\a\{ConstD};
-use Some\Cloz;
-use function some\a\{fn_x};
-use const some\a\{ConstA};
-use function some\b\{fn_c, fn_d, fn_e};
-use const some\a\{ConstB, ConstC as CC};
-use Aaa\Bbb;
-use const some\b\{ConstE};
-use function some\a\{fn_a, fn_b};
-',
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use Some\Cloz;
+                use Aaa\Bbb;
+                use const some\a\{ConstD};
+                use const some\a\{ConstA};
+                use const some\a\{ConstB, ConstC as CC};
+                use const some\b\{ConstE};
+                use function some\f\{fn_g, fn_h, fn_i};
+                use function some\c\{fn_f};
+                use function some\a\{fn_x};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                use Aaa\Ccc;
+                use Foo\Zar\Baz;
+                use function some\f\{fn_g, fn_h, fn_i};
+                use some\a\{ClassA};
+                use some\b\{ClassD, ClassB, ClassC as C};
+                use Bar\Biz\Boooz\Bum;
+                use function some\c\{fn_f};
+                use some\b\{
+                    ClassF,
+                    ClassG
+                };
+                use const some\a\{ConstD};
+                use Some\Cloz;
+                use function some\a\{fn_x};
+                use const some\a\{ConstA};
+                use function some\b\{fn_c, fn_d, fn_e};
+                use const some\a\{ConstB, ConstC as CC};
+                use Aaa\Bbb;
+                use const some\b\{ConstE};
+                use function some\a\{fn_a, fn_b};
+
+                EOD,
             [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ];
     }

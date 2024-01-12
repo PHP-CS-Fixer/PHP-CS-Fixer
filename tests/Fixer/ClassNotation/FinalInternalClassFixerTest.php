@@ -50,141 +50,163 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/** @internal */
-final class class1
-{
-}
+                /** @internal */
+                final class class1
+                {
+                }
 
-interface A {}
-trait B{}
+                interface A {}
+                trait B{}
 
-/** @internal */
-final class class2
-{
-}
-',
-            '<?php
+                /** @internal */
+                final class class2
+                {
+                }
 
-/** @internal */
-class class1
-{
-}
+                EOD,
+            <<<'EOD'
+                <?php
 
-interface A {}
-trait B{}
+                /** @internal */
+                class class1
+                {
+                }
 
-/** @internal */
-class class2
-{
-}
-',
+                interface A {}
+                trait B{}
+
+                /** @internal */
+                class class2
+                {
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @internal */
-final class class1
-{
-}
+            <<<'EOD'
+                <?php
+                /** @internal */
+                final class class1
+                {
+                }
 
-/** @internal */
-final class class2
-{
-}
+                /** @internal */
+                final class class2
+                {
+                }
 
-/**
- * @internal
- * @final
- */
-class class3
-{
-}
+                /**
+                 * @internal
+                 * @final
+                 */
+                class class3
+                {
+                }
 
-/**
- * @internal
- */
-abstract class class4 {}
-',
-            '<?php
-/** @internal */
-final class class1
-{
-}
+                /**
+                 * @internal
+                 */
+                abstract class class4 {}
 
-/** @internal */
-class class2
-{
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @internal */
+                final class class1
+                {
+                }
 
-/**
- * @internal
- * @final
- */
-class class3
-{
-}
+                /** @internal */
+                class class2
+                {
+                }
 
-/**
- * @internal
- */
-abstract class class4 {}
-',
+                /**
+                 * @internal
+                 * @final
+                 */
+                class class3
+                {
+                }
+
+                /**
+                 * @internal
+                 */
+                abstract class class4 {}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                    /**
-                     * @ annotation_with_space_after_at_sign
-                     */
-                    class A {}
-',
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @ annotation_with_space_after_at_sign
+                                     */
+                                    class A {}
+
+                EOD,
         ];
 
         yield 'indent before `class`' => [
-            '<?php /** @internal */
-                    final class class1
-                    {
-                    }',
-            '<?php /** @internal */
-                    class class1
-                    {
-                    }',
+            <<<'EOD'
+                <?php /** @internal */
+                                    final class class1
+                                    {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php /** @internal */
+                                    class class1
+                                    {
+                                    }
+                EOD,
         ];
 
         yield 'multiple classes, first with internal annotation and second without internal annotation' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/** @internal */
-final class Foo {}
+                /** @internal */
+                final class Foo {}
 
-class Bar {}
-',
-            '<?php
+                class Bar {}
 
-/** @internal */
-class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-class Bar {}
-',
+                /** @internal */
+                class Foo {}
+
+                class Bar {}
+
+                EOD,
         ];
 
         yield 'multiple classes, first without internal annotation and second with internal annotation' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo {}
+                class Foo {}
 
-/** @internal */
-final class Bar {}
-',
-            '<?php
+                /** @internal */
+                final class Bar {}
 
-class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/** @internal */
-class Bar {}
-',
+                class Foo {}
+
+                /** @internal */
+                class Bar {}
+
+                EOD,
         ];
 
         yield [
@@ -196,78 +218,86 @@ class Bar {}
         ];
 
         yield [
-            '<?php
-/**
- * @CUSTOM
- * @abc
- */
-final class A{}
+            <<<'EOD'
+                <?php
+                /**
+                 * @CUSTOM
+                 * @abc
+                 */
+                final class A{}
 
-/**
- * @CUSTOM
- */
-final class B{}
-',
-            '<?php
-/**
- * @CUSTOM
- * @abc
- */
-class A{}
+                /**
+                 * @CUSTOM
+                 */
+                final class B{}
 
-/**
- * @CUSTOM
- */
-class B{}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @CUSTOM
+                 * @abc
+                 */
+                class A{}
+
+                /**
+                 * @CUSTOM
+                 */
+                class B{}
+
+                EOD,
             [
                 'include' => ['@Custom', '@abc'],
             ],
         ];
 
         yield [
-            '<?php
-/**
- * @CUSTOM
- * @internal
- */
- final class A{}
+            <<<'EOD'
+                <?php
+                /**
+                 * @CUSTOM
+                 * @internal
+                 */
+                 final class A{}
 
-/**
- * @CUSTOM
- * @internal
- * @other
- */
- final class B{}
+                /**
+                 * @CUSTOM
+                 * @internal
+                 * @other
+                 */
+                 final class B{}
 
-/**
- * @CUSTOM
- * @internal
- * @not-fix
- */
- class C{}
-',
-            '<?php
-/**
- * @CUSTOM
- * @internal
- */
- class A{}
+                /**
+                 * @CUSTOM
+                 * @internal
+                 * @not-fix
+                 */
+                 class C{}
 
-/**
- * @CUSTOM
- * @internal
- * @other
- */
- class B{}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @CUSTOM
+                 * @internal
+                 */
+                 class A{}
 
-/**
- * @CUSTOM
- * @internal
- * @not-fix
- */
- class C{}
-',
+                /**
+                 * @CUSTOM
+                 * @internal
+                 * @other
+                 */
+                 class B{}
+
+                /**
+                 * @CUSTOM
+                 * @internal
+                 * @not-fix
+                 */
+                 class C{}
+
+                EOD,
             [
                 'include' => ['@Custom', '@internal'],
                 'exclude' => ['@not-fix'],
@@ -275,28 +305,32 @@ class B{}
         ];
 
         yield [
-            '<?php
-/**
- * @internal
- */
-final class A{}
+            <<<'EOD'
+                <?php
+                /**
+                 * @internal
+                 */
+                final class A{}
 
-/**
- * @abc
- */
-class B{}
-',
-            '<?php
-/**
- * @internal
- */
-class A{}
+                /**
+                 * @abc
+                 */
+                class B{}
 
-/**
- * @abc
- */
-class B{}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @internal
+                 */
+                class A{}
+
+                /**
+                 * @abc
+                 */
+                class B{}
+
+                EOD,
             [
                 'exclude' => ['abc'],
             ],
@@ -309,16 +343,20 @@ class B{}
         ];
 
         yield 'class with annotation with matching include and partial matching exclude' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/** @HelloWorld */
-final class Foo {}
-',
-            '<?php
+                /** @HelloWorld */
+                final class Foo {}
 
-/** @HelloWorld */
-class Foo {}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /** @HelloWorld */
+                class Foo {}
+
+                EOD,
             [
                 'include' => ['HelloWorld'],
                 'exclude' => ['Hello'],
@@ -326,15 +364,19 @@ class Foo {}
         ];
 
         yield [
-            '<?php
-/** @internal */
-$a = new class (){};',
+            <<<'EOD'
+                <?php
+                /** @internal */
+                $a = new class (){};
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @internal */
-$a = new class{};',
+            <<<'EOD'
+                <?php
+                /** @internal */
+                $a = new class{};
+                EOD,
         ];
 
         yield [
@@ -411,19 +453,23 @@ $a = new class{};',
     public static function provideFix80Cases(): iterable
     {
         yield 'multiple attributes, all configured as not to fix' => [
-            '<?php
-#[X]
-#[A]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                #[X]
+                #[A]
+                class Foo {}
+                EOD,
             null,
             ['exclude' => ['a', 'X']],
         ];
 
         yield 'multiple attributes, one configured as to fix, one as not to fix' => [
-            '<?php
-#[Internal]
-#[A]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                #[Internal]
+                #[A]
+                class Foo {}
+                EOD,
             null,
             [
                 'include' => ['internal'],
@@ -432,94 +478,108 @@ class Foo {}',
         ];
 
         yield 'multiple attributes, one configured as to fix' => [
-            '<?php
-#[Internal]
-#[A]
-final class Foo {}',
-            '<?php
-#[Internal]
-#[A]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                #[Internal]
+                #[A]
+                final class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
+                #[Internal]
+                #[A]
+                class Foo {}
+                EOD,
             ['include' => ['internal']],
         ];
 
         yield 'single attribute configured as to fix' => [
-            '<?php
-#[Internal]
-final class Foo {}',
-            '<?php
-#[Internal]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                #[Internal]
+                final class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
+                #[Internal]
+                class Foo {}
+                EOD,
             ['include' => ['internal']],
         ];
 
         yield 'class that should be ignored as it has an attribute not included with absent docblock as true' => [
-            '<?php
-#[StandWithUkraine]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                #[StandWithUkraine]
+                class Foo {}
+                EOD,
             null,
             ['consider_absent_docblock_as_internal_class' => true],
         ];
 
         yield 'mixed bag of cases' => [
-            '<?php
-#[Entity(repositoryClass: PostRepository::class)]
-class User
-{}
+            <<<'EOD'
+                <?php
+                #[Entity(repositoryClass: PostRepository::class)]
+                class User
+                {}
 
-#[ORM\Entity]
-#[Index(name: "category_idx", columns: ["category"])]
-final class Article
-{}
+                #[ORM\Entity]
+                #[Index(name: "category_idx", columns: ["category"])]
+                final class Article
+                {}
 
-#[A]
-class ArticleB
-{}
+                #[A]
+                class ArticleB
+                {}
 
-#[B]
-final class Foo {}
+                #[B]
+                final class Foo {}
 
-#[C]
-class FooX {}
+                #[C]
+                class FooX {}
 
-$object1 = new #[ExampleAttribute] class(){};
-$object2 = new /* */ class(){};
-$object3 = new #[B] #[ExampleAttribute] class(){};
+                $object1 = new #[ExampleAttribute] class(){};
+                $object2 = new /* */ class(){};
+                $object3 = new #[B] #[ExampleAttribute] class(){};
 
-/**
- * @B
- */
-final class PhpDocClass{}
-',
-            '<?php
-#[Entity(repositoryClass: PostRepository::class)]
-class User
-{}
+                /**
+                 * @B
+                 */
+                final class PhpDocClass{}
 
-#[ORM\Entity]
-#[Index(name: "category_idx", columns: ["category"])]
-class Article
-{}
+                EOD,
+            <<<'EOD'
+                <?php
+                #[Entity(repositoryClass: PostRepository::class)]
+                class User
+                {}
 
-#[A]
-class ArticleB
-{}
+                #[ORM\Entity]
+                #[Index(name: "category_idx", columns: ["category"])]
+                class Article
+                {}
 
-#[B]
-class Foo {}
+                #[A]
+                class ArticleB
+                {}
 
-#[C]
-class FooX {}
+                #[B]
+                class Foo {}
 
-$object1 = new #[ExampleAttribute] class(){};
-$object2 = new /* */ class(){};
-$object3 = new #[B] #[ExampleAttribute] class(){};
+                #[C]
+                class FooX {}
 
-/**
- * @B
- */
-class PhpDocClass{}
-',
+                $object1 = new #[ExampleAttribute] class(){};
+                $object2 = new /* */ class(){};
+                $object3 = new #[B] #[ExampleAttribute] class(){};
+
+                /**
+                 * @B
+                 */
+                class PhpDocClass{}
+
+                EOD,
             [
                 'exclude' => ['Entity', 'A'],
                 'include' => ['orm\entity', 'B'],
@@ -527,38 +587,48 @@ class PhpDocClass{}
         ];
 
         yield 'multiple classes, first configured with attribute, second without attribute' => [
-            '<?php
-#[Internal]
-final class Foo {}
+            <<<'EOD'
+                <?php
+                #[Internal]
+                final class Foo {}
 
-class Bar {}',
-            '<?php
-#[Internal]
-class Foo {}
+                class Bar {}
+                EOD,
+            <<<'EOD'
+                <?php
+                #[Internal]
+                class Foo {}
 
-class Bar {}',
+                class Bar {}
+                EOD,
             ['include' => ['internal']],
         ];
 
         yield 'multiple classes, first configured without attribute, second with attribute' => [
-            '<?php
-class Foo {}
+            <<<'EOD'
+                <?php
+                class Foo {}
 
-#[Internal]
-final class Bar {}',
-            '<?php
-class Foo {}
+                #[Internal]
+                final class Bar {}
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {}
 
-#[Internal]
-class Bar {}',
+                #[Internal]
+                class Bar {}
+                EOD,
             ['include' => ['internal']],
         ];
 
         yield 'include by attribute, but exclude by doc' => [
-            '<?php
-/** @final */
-#[A]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                /** @final */
+                #[A]
+                class Foo {}
+                EOD,
             null,
             [
                 'exclude' => ['final'],
@@ -567,10 +637,12 @@ class Foo {}',
         ];
 
         yield 'include by phpDoc, but exclude by attribute' => [
-            '<?php
-/** @a */
-#[Internal]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                /** @a */
+                #[Internal]
+                class Foo {}
+                EOD,
             null,
             [
                 'exclude' => ['Internal'],
@@ -579,20 +651,24 @@ class Foo {}',
         ];
 
         yield 'comment between attributes' => [
-            '<?php
-#[A]
-/**
- * @B
- */
-#[C]
-final class Foo {}',
-            '<?php
-#[A]
-/**
- * @B
- */
-#[C]
-class Foo {}',
+            <<<'EOD'
+                <?php
+                #[A]
+                /**
+                 * @B
+                 */
+                #[C]
+                final class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
+                #[A]
+                /**
+                 * @B
+                 */
+                #[C]
+                class Foo {}
+                EOD,
             [
                 'include' => ['A', 'C'],
             ],

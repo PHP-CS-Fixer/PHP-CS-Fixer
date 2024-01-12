@@ -36,22 +36,26 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'call by name - list' => [
-            '<?php
-                dont_touch_me(1, 2);
-                foo();
-                foo();
-                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
-                var_dump(1, 2);
-                Bar\Baz::d(1, 2);
-                \Bar\Baz::d(1, 2);',
-            '<?php
-                dont_touch_me(1, 2);
-                call_user_func(\'foo\');
-                call_user_func("foo");
-                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
-                call_user_func("var_dump", 1, 2);
-                call_user_func("Bar\Baz::d", 1, 2);
-                call_user_func("\Bar\Baz::d", 1, 2);',
+            <<<'EOD'
+                <?php
+                                dont_touch_me(1, 2);
+                                foo();
+                                foo();
+                                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
+                                var_dump(1, 2);
+                                Bar\Baz::d(1, 2);
+                                \Bar\Baz::d(1, 2);
+                EOD,
+            <<<'EOD'
+                <?php
+                                dont_touch_me(1, 2);
+                                call_user_func('foo');
+                                call_user_func("foo");
+                                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
+                                call_user_func("var_dump", 1, 2);
+                                call_user_func("Bar\Baz::d", 1, 2);
+                                call_user_func("\Bar\Baz::d", 1, 2);
+                EOD,
         ];
 
         yield 'call by name - array' => [
@@ -60,53 +64,63 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'call by array-as-name, not supported' => [
-            '<?php
-                call_user_func(array("Bar\baz", "myCallbackMethod"), 1, 2);
-                call_user_func(["Bar\baz", "myCallbackMethod"], 1, 2);
-                call_user_func([$obj, "myCallbackMethod"], 1, 2);
-                call_user_func([$obj, $cb."Method"], 1, 2);
-                call_user_func(array(__NAMESPACE__ ."Foo", "test"), 1, 2);
-                call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`'."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func(array("Bar\baz", "myCallbackMethod"), 1, 2);
+                                call_user_func(["Bar\baz", "myCallbackMethod"], 1, 2);
+                                call_user_func([$obj, "myCallbackMethod"], 1, 2);
+                                call_user_func([$obj, $cb."Method"], 1, 2);
+                                call_user_func(array(__NAMESPACE__ ."Foo", "test"), 1, 2);
+                                call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`
+                EOD."\n            ",
         ];
 
         yield 'call by variable' => [
-            '<?php
-                $c(1, 2);
-                $a["b"]["c"](1, 2);'."\n            ",
-            '<?php
-                call_user_func($c, 1, 2);
-                call_user_func($a["b"]["c"], 1, 2);'."\n            ",
+            <<<'EOD'
+                <?php
+                                $c(1, 2);
+                                $a["b"]["c"](1, 2);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func($c, 1, 2);
+                                call_user_func($a["b"]["c"], 1, 2);
+                EOD."\n            ",
         ];
 
         yield 'call with comments' => [
-            '<?php
-                dont_touch_me(/* a */1, 2/** b */);
-                foo();
-                foo(/* a */1, 2/** b */);
-                foo(/* a *//** b *//** c */1/** d */,/** e */ 2);
-                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
-                var_dump(1, /*
-                    aaa
-                    */ 2);
-                var_dump(3 /*
-                    aaa
-                    */, 4);
-                Bar\Baz::d(1, 2);
-                \Bar\Baz::d(1, 2);',
-            '<?php
-                dont_touch_me(/* a */1, 2/** b */);
-                call_user_func(\'foo\');
-                call_user_func("foo", /* a */1, 2/** b */);
-                call_user_func("foo"/* a *//** b */, /** c */1/** d */,/** e */ 2);
-                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
-                call_user_func("var_dump", 1, /*
-                    aaa
-                    */ 2);
-                call_user_func("var_dump", 3 /*
-                    aaa
-                    */, 4);
-                call_user_func("Bar\Baz::d", 1, 2);
-                call_user_func("\Bar\Baz::d", 1, 2);',
+            <<<'EOD'
+                <?php
+                                dont_touch_me(/* a */1, 2/** b */);
+                                foo();
+                                foo(/* a */1, 2/** b */);
+                                foo(/* a *//** b *//** c */1/** d */,/** e */ 2);
+                                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
+                                var_dump(1, /*
+                                    aaa
+                                    */ 2);
+                                var_dump(3 /*
+                                    aaa
+                                    */, 4);
+                                Bar\Baz::d(1, 2);
+                                \Bar\Baz::d(1, 2);
+                EOD,
+            <<<'EOD'
+                <?php
+                                dont_touch_me(/* a */1, 2/** b */);
+                                call_user_func('foo');
+                                call_user_func("foo", /* a */1, 2/** b */);
+                                call_user_func("foo"/* a *//** b */, /** c */1/** d */,/** e */ 2);
+                                call_user_func("foo" . "bar"); // not (yet?) supported by Fixer, possible since PHP 7+
+                                call_user_func("var_dump", 1, /*
+                                    aaa
+                                    */ 2);
+                                call_user_func("var_dump", 3 /*
+                                    aaa
+                                    */, 4);
+                                call_user_func("Bar\Baz::d", 1, 2);
+                                call_user_func("\Bar\Baz::d", 1, 2);
+                EOD,
         ];
 
         yield 'single var' => [
@@ -119,42 +133,54 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'call by property' => [
-            '<?php
-                ($f->c)(1, 2);
-                ($f->{c})(1, 2);
-                ($x["y"]->c)(1, 2);
-                ($x["y"]->{"c"})(1, 2);'."\n            ",
-            '<?php
-                call_user_func($f->c, 1, 2);
-                call_user_func($f->{c}, 1, 2);
-                call_user_func($x["y"]->c, 1, 2);
-                call_user_func($x["y"]->{"c"}, 1, 2);'."\n            ",
+            <<<'EOD'
+                <?php
+                                ($f->c)(1, 2);
+                                ($f->{c})(1, 2);
+                                ($x["y"]->c)(1, 2);
+                                ($x["y"]->{"c"})(1, 2);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func($f->c, 1, 2);
+                                call_user_func($f->{c}, 1, 2);
+                                call_user_func($x["y"]->c, 1, 2);
+                                call_user_func($x["y"]->{"c"}, 1, 2);
+                EOD."\n            ",
         ];
 
         yield 'call by anon-function' => [
-            '<?php
-                (function ($a, $b) { var_dump($a, $b); })(1, 2);
-                (static function ($a, $b) { var_dump($a, $b); })(1, 2);'."\n            ",
-            '<?php
-                call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
-                call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);'."\n            ",
+            <<<'EOD'
+                <?php
+                                (function ($a, $b) { var_dump($a, $b); })(1, 2);
+                                (static function ($a, $b) { var_dump($a, $b); })(1, 2);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
+                                call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
+                EOD."\n            ",
         ];
 
         yield 'complex cases' => [
-            '<?php
-                call_user_func(\'a\'.$a.$b, 1, 2);
-                ($a/**/.$b)(1, 2);
-                (function (){})();
-                ($a["b"]["c"]->a)(1, 2, 3, 4);
-                ($a::$b)(1, 2);
-                ($a[1]::$b[2][3])([&$c], array(&$d));'."\n            ",
-            '<?php
-                call_user_func(\'a\'.$a.$b, 1, 2);
-                call_user_func($a/**/.$b, 1, 2);
-                \call_user_func(function (){});
-                call_user_func($a["b"]["c"]->a, 1, 2, 3, 4);
-                call_user_func($a::$b, 1, 2);
-                call_user_func($a[1]::$b[2][3], [&$c], array(&$d));'."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func('a'.$a.$b, 1, 2);
+                                ($a/**/.$b)(1, 2);
+                                (function (){})();
+                                ($a["b"]["c"]->a)(1, 2, 3, 4);
+                                ($a::$b)(1, 2);
+                                ($a[1]::$b[2][3])([&$c], array(&$d));
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func('a'.$a.$b, 1, 2);
+                                call_user_func($a/**/.$b, 1, 2);
+                                \call_user_func(function (){});
+                                call_user_func($a["b"]["c"]->a, 1, 2, 3, 4);
+                                call_user_func($a::$b, 1, 2);
+                                call_user_func($a[1]::$b[2][3], [&$c], array(&$d));
+                EOD."\n            ",
         ];
 
         yield [
@@ -163,10 +189,12 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'redeclare/override' => [
-            '<?php
-                if (!function_exists("call_user_func")) {
-                    function call_user_func($foo){}
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                if (!function_exists("call_user_func")) {
+                                    function call_user_func($foo){}
+                                }
+                EOD."\n            ",
         ];
 
         yield 'function name with escaped slash' => [
@@ -210,13 +238,15 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'static property as first argument' => [
-            '<?php
-class Foo {
-  public static $factory;
-  public static function createFromFactory(...$args) {
-    return call_user_func_array(static::$factory, $args);
-  }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                  public static $factory;
+                  public static function createFromFactory(...$args) {
+                    return call_user_func_array(static::$factory, $args);
+                  }
+                }
+                EOD,
         ];
     }
 
@@ -236,10 +266,14 @@ class Foo {
     public static function provideFixPre80Cases(): iterable
     {
         yield 'call by variable' => [
-            '<?php
-                $a{"b"}{"c"}(1, 2);'."\n            ",
-            '<?php
-                call_user_func($a{"b"}{"c"}, 1, 2);'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a{"b"}{"c"}(1, 2);
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                call_user_func($a{"b"}{"c"}, 1, 2);
+                EOD."\n            ",
         ];
     }
 

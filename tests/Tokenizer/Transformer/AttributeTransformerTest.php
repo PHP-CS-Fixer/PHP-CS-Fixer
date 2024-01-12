@@ -39,40 +39,48 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
 
     public static function provideProcessCases(): iterable
     {
-        yield ['<?php class Foo {
-    #[Listens(ProductCreatedEvent::class)]
-    public $foo;
-}
-',
+        yield [<<<'EOD'
+            <?php class Foo {
+                #[Listens(ProductCreatedEvent::class)]
+                public $foo;
+            }
+
+            EOD,
             [
                 14 => CT::T_ATTRIBUTE_CLOSE,
             ],
         ];
 
-        yield ['<?php class Foo {
-    #[Required]
-    public $bar;
-}',
+        yield [<<<'EOD'
+            <?php class Foo {
+                #[Required]
+                public $bar;
+            }
+            EOD,
             [
                 9 => CT::T_ATTRIBUTE_CLOSE,
             ],
         ];
 
         yield [
-            '<?php function foo(
-    #[MyAttr([1, 2])] Type $myParam,
-) {}',
+            <<<'EOD'
+                <?php function foo(
+                    #[MyAttr([1, 2])] Type $myParam,
+                ) {}
+                EOD,
             [
                 16 => CT::T_ATTRIBUTE_CLOSE,
             ],
         ];
 
         yield [
-            '<?php class Foo {
-                #[ORM\Column("string", ORM\Column::UNIQUE)]
-                #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
-                private $email;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                #[ORM\Column("string", ORM\Column::UNIQUE)]
+                                #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+                                private $email;
+                            }
+                EOD,
             [
                 21 => CT::T_ATTRIBUTE_CLOSE,
                 36 => CT::T_ATTRIBUTE_CLOSE,
@@ -80,23 +88,25 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php
-#[ORM\Id]
+            <<<'EOD'
+                <?php
+                #[ORM\Id]
 
-#[ConditionalDeclare(PHP_VERSION_ID < 70000+1**2-1>>9+foo(a)+foo((bool)$b))] // gets removed from AST when >= 7.0
-#[IgnoreRedeclaration] // throws no error when already declared, removes the redeclared thing
-function intdiv(int $numerator, int $divisor) {
-}
+                #[ConditionalDeclare(PHP_VERSION_ID < 70000+1**2-1>>9+foo(a)+foo((bool)$b))] // gets removed from AST when >= 7.0
+                #[IgnoreRedeclaration] // throws no error when already declared, removes the redeclared thing
+                function intdiv(int $numerator, int $divisor) {
+                }
 
-#[
-Attr1("foo"),Attr2("bar"),
-]
+                #[
+                Attr1("foo"),Attr2("bar"),
+                ]
 
-#[PhpAttribute(self::IS_REPEATABLE)]
-class Route
-{
-}
-',
+                #[PhpAttribute(self::IS_REPEATABLE)]
+                class Route
+                {
+                }
+
+                EOD,
             [
                 5 => CT::T_ATTRIBUTE_CLOSE,
                 35 => CT::T_ATTRIBUTE_CLOSE,
@@ -107,25 +117,27 @@ class Route
         ];
 
         yield [
-            '<?php
-#[Jit]
-function foo() {}
+            <<<'EOD'
+                <?php
+                #[Jit]
+                function foo() {}
 
-class Foo
-{
-    #[ExampleAttribute]
-    public const FOO = "foo";
+                class Foo
+                {
+                    #[ExampleAttribute]
+                    public const FOO = "foo";
 
-    #[ExampleAttribute]
-    public function foo(#[ExampleAttribute] Type $bar) {}
-}
+                    #[ExampleAttribute]
+                    public function foo(#[ExampleAttribute] Type $bar) {}
+                }
 
-$object = new #[ExampleAttribute] class () {};
+                $object = new #[ExampleAttribute] class () {};
 
-$f1 = #[ExampleAttribute] function () {};
+                $f1 = #[ExampleAttribute] function () {};
 
-$f2 = #[ExampleAttribute] fn() => 1;
-',
+                $f2 = #[ExampleAttribute] fn() => 1;
+
+                EOD,
             [
                 3 => CT::T_ATTRIBUTE_CLOSE,
                 22 => CT::T_ATTRIBUTE_CLOSE,
@@ -138,31 +150,33 @@ $f2 = #[ExampleAttribute] fn() => 1;
         ];
 
         yield [
-            '<?php
-#[
-    ORM\Entity,
-    ORM\Table("user")
-]
-class User
-{
-    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
-    private $id;
+            <<<'EOD'
+                <?php
+                #[
+                    ORM\Entity,
+                    ORM\Table("user")
+                ]
+                class User
+                {
+                    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+                    private $id;
 
-    #[ORM\Column("string", ORM\Column::UNIQUE)]
-    #[Assert\Email(["message" => "The email \'{{ value }}\' is not a valid email."])]
-    private $email;
+                    #[ORM\Column("string", ORM\Column::UNIQUE)]
+                    #[Assert\Email(["message" => "The email '{{ value }}' is not a valid email."])]
+                    private $email;
 
-    #[\Doctrine\ORM\ManyToMany(
-        targetEntity: User::class,
-        joinColumn: "group_id",
-        inverseJoinColumn: "user_id",
-        cascade: array("persist", "remove")
-    )]
-    #[Assert\Valid]
-    #[JMSSerializer\XmlList(inline: true, entry: "user")]
-    public $users;
-}
-',
+                    #[\Doctrine\ORM\ManyToMany(
+                        targetEntity: User::class,
+                        joinColumn: "group_id",
+                        inverseJoinColumn: "user_id",
+                        cascade: array("persist", "remove")
+                    )]
+                    #[Assert\Valid]
+                    #[JMSSerializer\XmlList(inline: true, entry: "user")]
+                    public $users;
+                }
+
+                EOD,
             [
                 15 => CT::T_ATTRIBUTE_CLOSE,
                 40 => CT::T_ATTRIBUTE_CLOSE,
@@ -192,11 +206,13 @@ class User
     public static function provideNotChangeCases(): iterable
     {
         yield [
-            '<?php
-                $foo = [];
-                $a[] = $b[1];
-                $c = $d[2];
-                // [$e] = $f;',
+            <<<'EOD'
+                <?php
+                                $foo = [];
+                                $a[] = $b[1];
+                                $c = $d[2];
+                                // [$e] = $f;
+                EOD,
         ];
 
         yield [

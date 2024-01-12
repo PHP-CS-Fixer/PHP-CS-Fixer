@@ -36,93 +36,115 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
     public static function provideCloseTagCases(): iterable
     {
         yield [
-            '<?php
-                    if (true) {
-                        $b = $a > 2 ? "" : die
-                        ?>
-                    <?php
-                    } else {
-                        echo 798;
-                    }',
+            <<<'EOD'
+                <?php
+                                    if (true) {
+                                        $b = $a > 2 ? "" : die
+                                        ?>
+                                    <?php
+                                    } else {
+                                        echo 798;
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    if (true) {
-                        $b = $a > 2 ? "" : die
-                        ?>
-                    <?php ; // useless semicolon case
-                    } else {
-                        echo 798;
-                    }',
+            <<<'EOD'
+                <?php
+                                    if (true) {
+                                        $b = $a > 2 ? "" : die
+                                        ?>
+                                    <?php ; // useless semicolon case
+                                    } else {
+                                        echo 798;
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    if (true) {
-                        if($a) die
-                        ?>
-                    <?php ; // useless semicolon case
-                    } else {
-                        echo 798;
-                    }',
+            <<<'EOD'
+                <?php
+                                    if (true) {
+                                        if($a) die
+                                        ?>
+                                    <?php ; // useless semicolon case
+                                    } else {
+                                        echo 798;
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    if (true) {
-                        echo 1;
-                        ?>
-                    <?php ; // useless semicolon case
-                    } else {
-                        echo 798;
-                    }',
+            <<<'EOD'
+                <?php
+                                    if (true) {
+                                        echo 1;
+                                        ?>
+                                    <?php ; // useless semicolon case
+                                    } else {
+                                        echo 798;
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    if (true) {
-                        echo 777;
-                        if(false) die ?>
-                    <?php
-                    } else {
-                        echo 778;
-                    }',
+            <<<'EOD'
+                <?php
+                                    if (true) {
+                                        echo 777;
+                                        if(false) die ?>
+                                    <?php
+                                    } else {
+                                        echo 778;
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    if (true)
-                        echo 3;
-                    else {
-                        ?><?php
-                        echo 4;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (true)
+                                        echo 3;
+                                    else {
+                                        ?><?php
+                                        echo 4;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if (true)
-                        echo 3;'."\n                    ".'
-                    ?><?php
-                echo 4;'."\n                ",
-            '<?php
-                    if (true)
-                        echo 3;
-                    else
-                    ?><?php
-                echo 4;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (true)
+                                        echo 3;
+                EOD."\n                    ".<<<'EOD'
+
+                                    ?><?php
+                                echo 4;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (true)
+                                        echo 3;
+                                    else
+                                    ?><?php
+                                echo 4;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-if (true)
-    echo 4;
-?><?php echo 5;',
-            '<?php
-if (true)
-    echo 4;
-else?><?php echo 5;',
+            <<<'EOD'
+                <?php
+                if (true)
+                    echo 4;
+                ?><?php echo 5;
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)
+                    echo 4;
+                else?><?php echo 5;
+                EOD,
         ];
     }
 
@@ -137,107 +159,123 @@ else?><?php echo 5;',
     public static function provideFixIfElseIfElseCases(): iterable
     {
         $expected =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($provideFixIfElseIfElseCases) {
-                            return;
-                        } elseif($a1) {
-                            if ($b) {echo 1; die;}  echo 552;
-                            return 1;
-                        } elseif($b) {
-                            %s
-                        }'.'  '.'
-                            echo 662;'."\n                        ".'
-                    }
-                }'."\n            ";
+            <<<'EOD'
+                <?php
+                                while(true) {
+                                    while(true) {
+                                        if ($provideFixIfElseIfElseCases) {
+                                            return;
+                                        } elseif($a1) {
+                                            if ($b) {echo 1; die;}  echo 552;
+                                            return 1;
+                                        } elseif($b) {
+                                            %s
+                                        }
+                EOD.'  '.<<<'EOD'
+
+                                            echo 662;
+                EOD."\n                        ".<<<'EOD'
+
+                                    }
+                                }
+                EOD."\n            ";
 
         $input =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($provideFixIfElseIfElseCases) {
-                            return;
-                        } elseif($a1) {
-                            if ($b) {echo 1; die;} else {echo 552;}
-                            return 1;
-                        } elseif($b) {
-                            %s
-                        } else {
-                            echo 662;
-                        }
-                    }
-                }'."\n            ";
+            <<<'EOD'
+                <?php
+                                while(true) {
+                                    while(true) {
+                                        if ($provideFixIfElseIfElseCases) {
+                                            return;
+                                        } elseif($a1) {
+                                            if ($b) {echo 1; die;} else {echo 552;}
+                                            return 1;
+                                        } elseif($b) {
+                                            %s
+                                        } else {
+                                            echo 662;
+                                        }
+                                    }
+                                }
+                EOD."\n            ";
 
         yield from self::generateCases($expected, $input);
 
         $expected =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if($a) {
-                            echo 100;
-                        } elseif($b) {
-                            %s
-                        } else {
-                            echo 3;
-                        }
-                    }
-                }'."\n            ";
+            <<<'EOD'
+                <?php
+                                while(true) {
+                                    while(true) {
+                                        if($a) {
+                                            echo 100;
+                                        } elseif($b) {
+                                            %s
+                                        } else {
+                                            echo 3;
+                                        }
+                                    }
+                                }
+                EOD."\n            ";
 
         yield from self::generateCases($expected);
 
         $expected =
-            '<?php
-                while(true) {
-                    while(true) {
-                        if ($a) {
-                            echo 100;
-                        } elseif  ($a1) {
-                            echo 99887;
-                        } elseif  ($b) {
-                            echo $b+1; //
-                            /* test */
-                            %s
-                        } else {
-                            echo 321;
-                        }
-                    }
-                }'."\n            ";
+            <<<'EOD'
+                <?php
+                                while(true) {
+                                    while(true) {
+                                        if ($a) {
+                                            echo 100;
+                                        } elseif  ($a1) {
+                                            echo 99887;
+                                        } elseif  ($b) {
+                                            echo $b+1; //
+                                            /* test */
+                                            %s
+                                        } else {
+                                            echo 321;
+                                        }
+                                    }
+                                }
+                EOD."\n            ";
 
         yield from self::generateCases($expected);
 
         yield [
-            '<?php
-                if ($a)
-                    echo 1789;
-                else if($b)
-                    echo 256;
-                elseif($c)
-                    echo 3;
-                    if ($a) {
+            <<<'EOD'
+                <?php
+                                if ($a)
+                                    echo 1789;
+                                else if($b)
+                                    echo 256;
+                                elseif($c)
+                                    echo 3;
+                                    if ($a) {
 
-                    }elseif($d) {
-                        return 1;
-                    }
-                else
-                    echo 4;'."\n            ",
+                                    }elseif($d) {
+                                        return 1;
+                                    }
+                                else
+                                    echo 4;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                if ($a)
-                    echo 1789;
-                else if($b) {
-                    echo 256;
-                } elseif($c) {
-                    echo 3;
-                    if ($d) {
-                        echo 4;
-                    } elseif($e)
-                        return 1;
-                } else
-                    echo 4;'."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($a)
+                                    echo 1789;
+                                else if($b) {
+                                    echo 256;
+                                } elseif($c) {
+                                    echo 3;
+                                    if ($d) {
+                                        echo 4;
+                                    } elseif($e)
+                                        return 1;
+                                } else
+                                    echo 4;
+                EOD."\n            ",
         ];
     }
 
@@ -251,45 +289,61 @@ else?><?php echo 5;',
 
     public static function provideFixIfElseCases(): iterable
     {
-        $expected = '<?php
-            while(true) {
-                while(true) {
-                    if ($a) {
-                        %s
-                    }'.'  '.'
-                        echo 1;'."\n                    ".'
-                }
-            }'."\n        ";
+        $expected = <<<'EOD'
+            <?php
+                        while(true) {
+                            while(true) {
+                                if ($a) {
+                                    %s
+                                }
+            EOD.'  '.<<<'EOD'
 
-        $input = '<?php
-            while(true) {
-                while(true) {
-                    if ($a) {
-                        %s
-                    } else {
-                        echo 1;
-                    }
-                }
-            }'."\n        ";
+                                    echo 1;
+            EOD."\n                    ".<<<'EOD'
+
+                            }
+                        }
+            EOD."\n        ";
+
+        $input = <<<'EOD'
+            <?php
+                        while(true) {
+                            while(true) {
+                                if ($a) {
+                                    %s
+                                } else {
+                                    echo 1;
+                                }
+                            }
+                        }
+            EOD."\n        ";
 
         yield from self::generateCases($expected, $input);
 
         yield [
-            '<?php
-                if ($a) {
-                    GOTO jump;
-                }'.'  '.'
-                    echo 1789;'."\n                ".'
+            <<<'EOD'
+                <?php
+                                if ($a) {
+                                    GOTO jump;
+                                }
+                EOD.'  '.<<<'EOD'
 
-                jump:'."\n            ",
-            '<?php
-                if ($a) {
-                    GOTO jump;
-                } else {
-                    echo 1789;
-                }
+                                    echo 1789;
+                EOD."\n                ".<<<'EOD'
 
-                jump:'."\n            ",
+
+                                jump:
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($a) {
+                                    GOTO jump;
+                                } else {
+                                    echo 1789;
+                                }
+
+                                jump:
+                EOD."\n            ",
         ];
     }
 
@@ -304,24 +358,34 @@ else?><?php echo 5;',
     public static function provideFixNestedIfCases(): iterable
     {
         yield [
-            '<?php
-                    if ($x) {
-                        if ($y) {
-                            return 1;
-                        }'.'  '.'
-                            return 2;'."\n                        ".'
-                    }'.'  '.'
-                        return 3;'."\n                    ".''."\n                ",
-            '<?php
-                    if ($x) {
-                        if ($y) {
-                            return 1;
-                        } else {
-                            return 2;
-                        }
-                    } else {
-                        return 3;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($x) {
+                                        if ($y) {
+                                            return 1;
+                                        }
+                EOD.'  '.<<<'EOD'
+
+                                            return 2;
+                EOD."\n                        ".<<<'EOD'
+
+                                    }
+                EOD.'  '.<<<'EOD'
+
+                                        return 3;
+                EOD."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($x) {
+                                        if ($y) {
+                                            return 1;
+                                        } else {
+                                            return 2;
+                                        }
+                                    } else {
+                                        return 3;
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -336,13 +400,17 @@ else?><?php echo 5;',
     public static function provideFixEmptyElseCases(): iterable
     {
         yield [
-            '<?php
-                    if (false)
-                        echo 1;'."\n                    ".''."\n                ",
-            '<?php
-                    if (false)
-                        echo 1;
-                    else{}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (false)
+                                        echo 1;
+                EOD."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (false)
+                                        echo 1;
+                                    else{}
+                EOD."\n                ",
         ];
 
         yield [
@@ -361,55 +429,63 @@ else?><?php echo 5;',
         ];
 
         yield [
-            '<?php
-                    if /**/($a) /**/{ //
-                        /**/
-                        /**/return/**/1/**/;
-                        //
-                    }/**/  /**/
-                        /**/
-                        //
-                    /**/'."\n                ",
-            '<?php
-                    if /**/($a) /**/{ //
-                        /**/
-                        /**/return/**/1/**/;
-                        //
-                    }/**/ else /**/{
-                        /**/
-                        //
-                    }/**/'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if /**/($a) /**/{ //
+                                        /**/
+                                        /**/return/**/1/**/;
+                                        //
+                                    }/**/  /**/
+                                        /**/
+                                        //
+                                    /**/
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if /**/($a) /**/{ //
+                                        /**/
+                                        /**/return/**/1/**/;
+                                        //
+                                    }/**/ else /**/{
+                                        /**/
+                                        //
+                                    }/**/
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                        if ($b) {
-                            if ($c) {
-                            } elseif ($d) {
-                                return;
-                            }  //
-                            //
-                            return;
-                        }  //
-                        //
-                        return;
-                    }  //
-                    //'."\n                ",
-            '<?php
-                    if ($a) {
-                        if ($b) {
-                            if ($c) {
-                            } elseif ($d) {
-                                return;
-                            } else {//
-                            }//
-                            return;
-                        } else {//
-                        }//
-                        return;
-                    } else {//
-                    }//'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        if ($b) {
+                                            if ($c) {
+                                            } elseif ($d) {
+                                                return;
+                                            }  //
+                                            //
+                                            return;
+                                        }  //
+                                        //
+                                        return;
+                                    }  //
+                                    //
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        if ($b) {
+                                            if ($c) {
+                                            } elseif ($d) {
+                                                return;
+                                            } else {//
+                                            }//
+                                            return;
+                                        } else {//
+                                        }//
+                                        return;
+                                    } else {//
+                                    }//
+                EOD."\n                ",
         ];
     }
 
@@ -424,21 +500,25 @@ else?><?php echo 5;',
     public static function provideNegativeCases(): iterable
     {
         yield [
-            '<?php
-                    if ($a0) {
-                        //
-                    } else {
-                        echo 0;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a0) {
+                                        //
+                                    } else {
+                                        echo 0;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if (false)
-                        echo "a";
-                    else
+            <<<'EOD'
+                <?php
+                                    if (false)
+                                        echo "a";
+                                    else
 
-                    echo "a";'."\n                ",
+                                    echo "a";
+                EOD."\n                ",
         ];
 
         yield [
@@ -458,131 +538,153 @@ else?><?php echo 5;',
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                        if ($b) return;
-                    } else {
-                        echo 1;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        if ($b) return;
+                                    } else {
+                                        echo 1;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                        if ($b) throw new \Exception();
-                    } else {
-                        echo 1;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        if ($b) throw new \Exception();
+                                    } else {
+                                        echo 1;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                        if ($b) { throw new \Exception(); }
-                    } else {
-                        echo 1;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        if ($b) { throw new \Exception(); }
+                                    } else {
+                                        echo 1;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = true; // 6
-                    if (true === $a)
-                        $b = true === $a ? 1 : die;
-                    else
-                        echo 40;
+            <<<'EOD'
+                <?php
+                                    $a = true; // 6
+                                    if (true === $a)
+                                        $b = true === $a ? 1 : die;
+                                    else
+                                        echo 40;
 
-                    echo "end";'."\n                ",
+                                    echo "end";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = true; // 6
-                    if (true === $a)
-                        $b = true === $a ? 1 : exit(1);
-                    else
-                        echo 40;
+            <<<'EOD'
+                <?php
+                                    $a = true; // 6
+                                    if (true === $a)
+                                        $b = true === $a ? 1 : exit(1);
+                                    else
+                                        echo 40;
 
-                    echo "end";'."\n                ",
+                                    echo "end";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a = true; // 6
-                    if (true === $a)
-                        $b = true === $a ? 1 : exit(1);
-                    else
-                        echo 4;
+            <<<'EOD'
+                <?php
+                                    $a = true; // 6
+                                    if (true === $a)
+                                        $b = true === $a ? 1 : exit(1);
+                                    else
+                                        echo 4;
 
-                    echo "end";'."\n                ",
+                                    echo "end";
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if (false)
-                        die;
-                    elseif (true)
-                        if(true)echo 777;else die;
-                    else if (true)
-                        die;
-                    elseif (false)
-                        die;
-                    else
-                        echo 7;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if (false)
+                                        die;
+                                    elseif (true)
+                                        if(true)echo 777;else die;
+                                    else if (true)
+                                        die;
+                                    elseif (false)
+                                        die;
+                                    else
+                                        echo 7;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $tmp = function($b){$b();};
-                    $a =1;
-                    return $tmp(function () use ($a) {
-                        if ($a) {
-                            $a++;
-                        } else {
-                            $a--;
-                        }
-                    });'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $tmp = function($b){$b();};
+                                    $a =1;
+                                    return $tmp(function () use ($a) {
+                                        if ($a) {
+                                            $a++;
+                                        } else {
+                                            $a--;
+                                        }
+                                    });
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $tmp = function($b){$b();};
-                    $a =1;
-                    return $tmp(function () use ($a) {
-                        if ($a) {
-                            $a++;
-                        } elseif($a > 2) {
-                            return 1;
-                        } else {
-                            $a--;
-                        }
-                    });'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $tmp = function($b){$b();};
+                                    $a =1;
+                                    return $tmp(function () use ($a) {
+                                        if ($a) {
+                                            $a++;
+                                        } elseif($a > 2) {
+                                            return 1;
+                                        } else {
+                                            $a--;
+                                        }
+                                    });
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    return function() {
-                        if (false) {
+            <<<'EOD'
+                <?php
+                                    return function() {
+                                        if (false) {
 
-                        } elseif (3 > 2) {
+                                        } elseif (3 > 2) {
 
-                        } else {
-                            echo 1;
-                        }
-                    };',
+                                        } else {
+                                            echo 1;
+                                        }
+                                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-                    return function() {
-                        if (false) {
-                            return 1;
-                        } elseif (3 > 2) {
+            <<<'EOD'
+                <?php
+                                    return function() {
+                                        if (false) {
+                                            return 1;
+                                        } elseif (3 > 2) {
 
-                        } else {
-                            echo 1;
-                        }
-                    };',
+                                        } else {
+                                            echo 1;
+                                        }
+                                    };
+                EOD,
         ];
     }
 
@@ -602,21 +704,25 @@ else?><?php echo 5;',
             '$bar = $foo1 ?? throw new \Exception($e);',
             '$callable = fn() => throw new Exception();',
             '$value = $falsableValue ?: throw new InvalidArgumentException();',
-            '$value = !empty($array)
-                    ? reset($array)
-                    : throw new InvalidArgumentException();',
+            <<<'EOD'
+                $value = !empty($array)
+                                    ? reset($array)
+                                    : throw new InvalidArgumentException();
+                EOD,
             '$a = $condition && throw new Exception();',
             '$a = $condition || throw new Exception();',
             '$a = $condition and throw new Exception();',
             '$a = $condition or throw new Exception();',
         ];
 
-        $template = '<?php
-                if ($foo) {
-                    %s
-                } else {
-                    echo 123;
-                }'."\n            ";
+        $template = <<<'EOD'
+            <?php
+                            if ($foo) {
+                                %s
+                            } else {
+                                echo 123;
+                            }
+            EOD."\n            ";
 
         foreach ($cases as $index => $case) {
             yield [sprintf('PHP8 Negative case %d', $index) => sprintf($template, $case)];
@@ -643,14 +749,16 @@ else?><?php echo 5;',
 
     public static function provideBlockDetectionCases(): iterable
     {
-        $source = '<?php
-                    if ($a)
-                        echo 1;
-                    elseif ($a) ///
-                        echo 2;
-                    else if ($b) /**/ echo 3;
-                    else
-                        echo 4;'."\n                    ";
+        $source = <<<'EOD'
+            <?php
+                                if ($a)
+                                    echo 1;
+                                elseif ($a) ///
+                                    echo 2;
+                                else if ($b) /**/ echo 3;
+                                else
+                                    echo 4;
+            EOD."\n                    ";
 
         yield [[2, 11], $source, 13];
 
@@ -660,20 +768,22 @@ else?><?php echo 5;',
 
         yield [[26, 39], $source, 41];
 
-        $source = '<?php
-                    if ($a) {
-                        if ($b) {
+        $source = <<<'EOD'
+            <?php
+                                if ($a) {
+                                    if ($b) {
 
-                        }
-                        echo 1;
-                    } elseif (true) {
-                        echo 2;
-                    } else if (false) {
-                        echo 3;
-                    } elseif ($c) {
-                        echo 4;
-                    } else
-                        echo 1;'."\n                    ";
+                                    }
+                                    echo 1;
+                                } elseif (true) {
+                                    echo 2;
+                                } else if (false) {
+                                    echo 3;
+                                } elseif ($c) {
+                                    echo 4;
+                                } else
+                                    echo 1;
+            EOD."\n                    ";
 
         yield [[2, 25], $source, 27];
 
@@ -707,24 +817,28 @@ else?><?php echo 5;',
         }
 
         yield [
-            '<?php
-                if ($a === false)
-                {
-                    if ($v) { $ret = "foo"; if($d){return 1;}echo $a;}
-                }
-                else
-                    $ret .= $value;
+            <<<'EOD'
+                <?php
+                                if ($a === false)
+                                {
+                                    if ($v) { $ret = "foo"; if($d){return 1;}echo $a;}
+                                }
+                                else
+                                    $ret .= $value;
 
-                return $ret;',
-            '<?php
-                if ($a === false)
-                {
-                    if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;}}
-                }
-                else
-                    $ret .= $value;
+                                return $ret;
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($a === false)
+                                {
+                                    if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;}}
+                                }
+                                else
+                                    $ret .= $value;
 
-                return $ret;',
+                                return $ret;
+                EOD,
         ];
 
         yield from self::generateConditionsWithoutBracesCase('throw new class extends Exception{};');
@@ -776,16 +890,18 @@ else?><?php echo 5;',
                 25 => false, // return
                 36 => false, // return
             ],
-            '<?php
-                    if ($x) {
-                        if ($y) {
-                            return 1;
-                        }
-                            return 2;
+            <<<'EOD'
+                <?php
+                                    if ($x) {
+                                        if ($y) {
+                                            return 1;
+                                        }
+                                            return 2;
 
-                    } else {
-                        return 3;
-                    }'."\n                ",
+                                    } else {
+                                        return 3;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
@@ -793,10 +909,12 @@ else?><?php echo 5;',
                 0 => false,
                 29 => false, // throw
             ],
-            '<?php
-                    if ($v) { $ret = "foo"; }
-                    else
-                        if($a){}else{throw new Exception($i);}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($v) { $ret = "foo"; }
+                                    else
+                                        if($a){}else{throw new Exception($i);}
+                EOD."\n                ",
         ];
 
         yield [
@@ -804,10 +922,12 @@ else?><?php echo 5;',
                 0 => false,
                 38 => true, // throw
             ],
-            '<?php
-                    if ($v) { $ret = "foo"; }
-                    else
-                        for($i =0;$i < 1;++$i) throw new Exception($i);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($v) { $ret = "foo"; }
+                                    else
+                                        for($i =0;$i < 1;++$i) throw new Exception($i);
+                EOD."\n                ",
         ];
 
         yield [
@@ -817,10 +937,12 @@ else?><?php echo 5;',
                 28 => true, // new
                 30 => true, // Exception
             ],
-            '<?php
-                    if ($v) { $ret = "foo"; }
-                    else
-                        while(false){throw new Exception($i);}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($v) { $ret = "foo"; }
+                                    else
+                                        while(false){throw new Exception($i);}
+                EOD."\n                ",
         ];
 
         yield [
@@ -830,10 +952,12 @@ else?><?php echo 5;',
                 32 => true, // new
                 34 => true, // Exception
             ],
-            '<?php
-                    if ($v) { $ret = "foo"; }
-                    else
-                        foreach($a as $b){throw new Exception($i);}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($v) { $ret = "foo"; }
+                                    else
+                                        foreach($a as $b){throw new Exception($i);}
+                EOD."\n                ",
         ];
 
         yield [
@@ -843,20 +967,24 @@ else?><?php echo 5;',
                 27 => true, // new
                 29 => true, // Exception
             ],
-            '<?php
-                    if ($v) { $ret = "foo"; }
-                    else
-                        while(false)throw new Exception($i);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($v) { $ret = "foo"; }
+                                    else
+                                        while(false)throw new Exception($i);
+                EOD."\n                ",
         ];
 
         yield [
             [
                 26 => true, // throw
             ],
-            '<?php
-                    if ($v) { $ret = "foo"; }
-                    elseif($a)
-                        do{throw new Exception($i);}while(false);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($v) { $ret = "foo"; }
+                                    elseif($a)
+                                        do{throw new Exception($i);}while(false);
+                EOD."\n                ",
         ];
 
         yield [
@@ -870,11 +998,13 @@ else?><?php echo 5;',
                 46 => false, // ;
                 51 => false, // echo (123)
             ],
-            '<?php
-                    echo 1;
-                    if ($a) if ($a) while(true)echo 1;
-                    elseif($c) while(true){if($d){echo 2;}};
-                    echo 123;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                                    if ($a) if ($a) while(true)echo 1;
+                                    elseif($c) while(true){if($d){echo 2;}};
+                                    echo 123;
+                EOD."\n                ",
         ];
 
         yield [
@@ -885,10 +1015,12 @@ else?><?php echo 5;',
                 20 => true, // die
                 23 => false, // echo
             ],
-            '<?php
-                    echo 1;
-                    if ($a) echo 2;
-                    else die; echo 3;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                                    if ($a) echo 2;
+                                    else die; echo 3;
+                EOD."\n                ",
         ];
 
         yield [
@@ -897,11 +1029,13 @@ else?><?php echo 5;',
                 9 => true,  // /**/
                 15 => true, // die
             ],
-            '<?php
-                    if ($a)
-                        die/**/;
-                    else
-                        /**/die/**/;#'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a)
+                                        die/**/;
+                                    else
+                                        /**/die/**/;#
+                EOD."\n                ",
         ];
 
         yield [
@@ -910,11 +1044,13 @@ else?><?php echo 5;',
                 9 => true,  // /**/
                 15 => true, // die
             ],
-            '<?php
-                    if ($a)
-                        die/**/;
-                    else
-                        /**/die/**/?>'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a)
+                                        die/**/;
+                                    else
+                                        /**/die/**/?>
+                EOD."\n                ",
         ];
     }
 
@@ -923,39 +1059,45 @@ else?><?php echo 5;',
      */
     private static function generateConditionsWithoutBracesCase(string $statement): iterable
     {
-        $ifTemplate = '<?php
-            if ($a === false)
-            {
-                if ($v) %s
-            }
-            else
-                $ret .= $value;
+        $ifTemplate = <<<'EOD'
+            <?php
+                        if ($a === false)
+                        {
+                            if ($v) %s
+                        }
+                        else
+                            $ret .= $value;
 
-            return $ret;';
+                        return $ret;
+            EOD;
 
-        $ifElseIfTemplate = '<?php
-            if ($a === false)
-            {
-                if ($v) { $ret = "foo"; }
-                elseif($a)
-                    %s
-            }
-            else
-                $ret .= $value;
+        $ifElseIfTemplate = <<<'EOD'
+            <?php
+                        if ($a === false)
+                        {
+                            if ($v) { $ret = "foo"; }
+                            elseif($a)
+                                %s
+                        }
+                        else
+                            $ret .= $value;
 
-            return $ret;';
+                        return $ret;
+            EOD;
 
-        $ifElseTemplate = '<?php
-            if ($a === false)
-            {
-                if ($v) { $ret = "foo"; }
-                else
-                    %s
-            }
-            else
-                $ret .= $value;
+        $ifElseTemplate = <<<'EOD'
+            <?php
+                        if ($a === false)
+                        {
+                            if ($v) { $ret = "foo"; }
+                            else
+                                %s
+                        }
+                        else
+                            $ret .= $value;
 
-            return $ret;';
+                        return $ret;
+            EOD;
 
         yield [sprintf($ifTemplate, $statement)];
 

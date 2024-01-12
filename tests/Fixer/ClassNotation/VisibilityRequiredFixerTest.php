@@ -420,12 +420,16 @@ final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class A { public const B=1;public const C=1;/**/public const#a
-                D=1;public const E=1;//
-public const F=1; }',
-            '<?php class A { const B=1;const C=1;/**/const#a
-                D=1;const E=1;//
-const F=1; }',
+            <<<'EOD'
+                <?php class A { public const B=1;public const C=1;/**/public const#a
+                                D=1;public const E=1;//
+                public const F=1; }
+                EOD,
+            <<<'EOD'
+                <?php class A { const B=1;const C=1;/**/const#a
+                                D=1;const E=1;//
+                const F=1; }
+                EOD,
             ['elements' => ['const']],
         ];
 
@@ -436,151 +440,175 @@ const F=1; }',
         ];
 
         yield [
-            '<?php
-                    class foo
-                    {
-                        public const A = 1, B =2, C =3;
-                        public const TWO = ONE * 2;
-                        public const THREE = ONE + self::TWO;
-                        public const SENTENCE = "The value of THREE is ".self::THREE;
-                    }'."\n                ",
-            '<?php
-                    class foo
-                    {
-                        const A = 1, B =2, C =3;
-                        const TWO = ONE * 2;
-                        const THREE = ONE + self::TWO;
-                        const SENTENCE = "The value of THREE is ".self::THREE;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class foo
+                                    {
+                                        public const A = 1, B =2, C =3;
+                                        public const TWO = ONE * 2;
+                                        public const THREE = ONE + self::TWO;
+                                        public const SENTENCE = "The value of THREE is ".self::THREE;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class foo
+                                    {
+                                        const A = 1, B =2, C =3;
+                                        const TWO = ONE * 2;
+                                        const THREE = ONE + self::TWO;
+                                        const SENTENCE = "The value of THREE is ".self::THREE;
+                                    }
+                EOD."\n                ",
             ['elements' => ['const']],
         ];
 
         yield 'comment' => [
-            '<?php
-class A
-{# We will have a function below
-# It will be static
-# and awesome
-public static function# <- this is the function
-AB# <- this is the name
-(#
-)#
-{#
-}#
-}'."\n            ",
-            '<?php
-class A
-{# We will have a function below
-static# It will be static
-# and awesome
-function# <- this is the function
-AB# <- this is the name
-(#
-)#
-{#
-}#
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                class A
+                {# We will have a function below
+                # It will be static
+                # and awesome
+                public static function# <- this is the function
+                AB# <- this is the name
+                (#
+                )#
+                {#
+                }#
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                class A
+                {# We will have a function below
+                static# It will be static
+                # and awesome
+                function# <- this is the function
+                AB# <- this is the name
+                (#
+                )#
+                {#
+                }#
+                }
+                EOD."\n            ",
         ];
 
         yield 'anonymous class' => [
-            '<?php
-                $a = new class() {
-                    public function a() {
-                    }
-                };
+            <<<'EOD'
+                <?php
+                                $a = new class() {
+                                    public function a() {
+                                    }
+                                };
 
-                class C
-                {
-                    public function A()
-                    {
-                        $a = new class() {public function a() {}};
-                    }
-                }'."\n            ",
-            '<?php
-                $a = new class() {
-                    function a() {
-                    }
-                };
+                                class C
+                                {
+                                    public function A()
+                                    {
+                                        $a = new class() {public function a() {}};
+                                    }
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = new class() {
+                                    function a() {
+                                    }
+                                };
 
-                class C
-                {
-                    function A()
-                    {
-                        $a = new class() {function a() {}};
-                    }
-                }'."\n            ",
+                                class C
+                                {
+                                    function A()
+                                    {
+                                        $a = new class() {function a() {}};
+                                    }
+                                }
+                EOD."\n            ",
         ];
 
         yield 'removing newlines between keywords' => [
-            '<?php
-                class Foo
-                {
-                    public $bar;
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    public $bar;
 
-                    final public static function bar() {}
+                                    final public static function bar() {}
 
-                    final public static function baz() {}
-                }',
-            '<?php
-                class Foo
-                {
-                    var
-                    $bar;
+                                    final public static function baz() {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    var
+                                    $bar;
 
-                    final
-                    public
-                    static
-                    function bar() {}
+                                    final
+                                    public
+                                    static
+                                    function bar() {}
 
-                    static
-                    final
-                    function baz() {}
-                }',
+                                    static
+                                    final
+                                    function baz() {}
+                                }
+                EOD,
         ];
 
         yield 'keeping comment' => [
-            '<?php
-                class Foo
-                {
-                    /* constant */ private const BAR = 3;
-                    /* variable */ private $bar;
-                    /* function */ private function bar() {}
-                }',
-            '<?php
-                class Foo
-                {
-                    private /* constant */ const BAR = 3;
-                    private /* variable */ $bar;
-                    private /* function */ function bar() {}
-                }',
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    /* constant */ private const BAR = 3;
+                                    /* variable */ private $bar;
+                                    /* function */ private function bar() {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    private /* constant */ const BAR = 3;
+                                    private /* variable */ $bar;
+                                    private /* function */ function bar() {}
+                                }
+                EOD,
             ['elements' => ['property', 'method', 'const']],
         ];
 
         yield 'fixing with all keywords' => [
-            '<?php
-                abstract class Foo
-                {
-                    abstract protected static function fooA();
-                    abstract protected static function fooB();
-                    abstract protected static function fooC();
-                    abstract protected static function fooD();
-                    abstract protected static function fooE();
-                    abstract protected static function fooF();
-                    abstract public static function fooG();
-                    abstract public static function fooH();
-                }'."\n            ",
-            '<?php
-                abstract class Foo
-                {
-                    abstract protected static function fooA();
-                    abstract static protected function fooB();
-                    protected abstract static function fooC();
-                    protected static abstract function fooD();
-                    static abstract protected function fooE();
-                    static protected abstract function fooF();
-                    abstract static function fooG();
-                    static abstract function fooH();
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                abstract class Foo
+                                {
+                                    abstract protected static function fooA();
+                                    abstract protected static function fooB();
+                                    abstract protected static function fooC();
+                                    abstract protected static function fooD();
+                                    abstract protected static function fooE();
+                                    abstract protected static function fooF();
+                                    abstract public static function fooG();
+                                    abstract public static function fooH();
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                abstract class Foo
+                                {
+                                    abstract protected static function fooA();
+                                    abstract static protected function fooB();
+                                    protected abstract static function fooC();
+                                    protected static abstract function fooD();
+                                    static abstract protected function fooE();
+                                    static protected abstract function fooF();
+                                    abstract static function fooG();
+                                    static abstract function fooH();
+                                }
+                EOD."\n            ",
         ];
 
         yield [
@@ -670,78 +698,98 @@ AB# <- this is the name
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public readonly string $prop2a;
-}'."\n            ",
-            '<?php
-class Foo
-{
-    readonly public string $prop2a;
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public readonly string $prop2a;
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    readonly public string $prop2a;
+                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public readonly string $prop1;
-    public readonly string $prop2;
-}'."\n            ",
-            '<?php
-class Foo
-{
-    readonly string $prop1;
-    public readonly string $prop2;
-}'."\n            ",
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public readonly string $prop1;
+                    public readonly string $prop2;
+                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    readonly string $prop1;
+                    public readonly string $prop2;
+                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    final public const B = "2";
-}
-',
-            '<?php
-class Foo
-{
-    public final const B = "2";
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final public const B = "2";
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public final const B = "2";
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    final public const B = "2";
-}
-',
-            '<?php
-class Foo
-{
-    final const B = "2";
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final public const B = "2";
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final const B = "2";
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-enum Foo {
-    case CAT;
-    public function test(): self { return $this; }
-}
+            <<<'EOD'
+                <?php
+                enum Foo {
+                    case CAT;
+                    public function test(): self { return $this; }
+                }
 
-var_dump(Foo::CAT->test());',
-            '<?php
-enum Foo {
-    case CAT;
-    function test(): self { return $this; }
-}
+                var_dump(Foo::CAT->test());
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Foo {
+                    case CAT;
+                    function test(): self { return $this; }
+                }
 
-var_dump(Foo::CAT->test());',
+                var_dump(Foo::CAT->test());
+                EOD,
         ];
     }
 
@@ -763,11 +811,13 @@ var_dump(Foo::CAT->test());',
         ];
 
         yield [
-            '<?php class Foo {
-                public (A&B)|C|D $x;
-                protected A|(B&C)|D $y;
-                private A|B|(C&D) $z;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public (A&B)|C|D $x;
+                                protected A|(B&C)|D $y;
+                                private A|B|(C&D) $z;
+                            }
+                EOD,
         ];
     }
 

@@ -68,123 +68,143 @@ final class DescribeCommandTest extends TestCase
     public static function provideExecuteOutputCases(): iterable
     {
         yield 'rule is configurable, risky and deprecated' => [
-            "Description of the `Foo/bar` rule.
+            <<<'EOD'
+                Description of the `Foo/bar` rule.
 
-DEPRECATED: use `Foo/baz` instead.
+                DEPRECATED: use `Foo/baz` instead.
 
-Fixes stuff.
-Replaces bad stuff with good stuff.
+                Fixes stuff.
+                Replaces bad stuff with good stuff.
 
-Fixer applying this rule is risky.
-Can break stuff.
+                Fixer applying this rule is risky.
+                Can break stuff.
 
-Fixer is configurable using following options:
-* deprecated_option (bool): a deprecated option; defaults to false. DEPRECATED: use option `functions` instead.
-* functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
+                Fixer is configurable using following options:
+                * deprecated_option (bool): a deprecated option; defaults to false. DEPRECATED: use option `functions` instead.
+                * functions (a subset of ['foo', 'test']): list of `function` names to fix; defaults to ['foo', 'test']; DEPRECATED alias: funcs
 
-Fixing examples:
- * Example #1. Fixing with the default configuration.
-   ---------- begin diff ----------
-   --- Original
-   +++ New
-   @@ -1,1 +1,1 @@
-   -<?php echo 'bad stuff and bad thing';
-   +<?php echo 'good stuff and bad thing';"."\n   "."
-   ----------- end diff -----------
+                Fixing examples:
+                 * Example #1. Fixing with the default configuration.
+                   ---------- begin diff ----------
+                   --- Original
+                   +++ New
+                   @@ -1,1 +1,1 @@
+                   -<?php echo 'bad stuff and bad thing';
+                   +<?php echo 'good stuff and bad thing';
+                EOD."\n   ".<<<'EOD'
 
- * Example #2. Fixing with configuration: ['functions' => ['foo', 'bar']].
-   ---------- begin diff ----------
-   --- Original
-   +++ New
-   @@ -1,1 +1,1 @@
-   -<?php echo 'bad stuff and bad thing';
-   +<?php echo 'good stuff and good thing';"."\n   ".'
-   ----------- end diff -----------
+                   ----------- end diff -----------
 
-',
+                 * Example #2. Fixing with configuration: ['functions' => ['foo', 'bar']].
+                   ---------- begin diff ----------
+                   --- Original
+                   +++ New
+                   @@ -1,1 +1,1 @@
+                   -<?php echo 'bad stuff and bad thing';
+                   +<?php echo 'good stuff and good thing';
+                EOD."\n   ".<<<'EOD'
+
+                   ----------- end diff -----------
+
+
+                EOD,
             false,
             false,
         ];
 
         yield 'rule is configurable, risky and deprecated [with decoration]' => [
-            "\033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
+            <<<EOD
+                \033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
 
-\033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
+                \033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
 
-Fixes stuff.
-Replaces bad stuff with good stuff.
+                Fixes stuff.
+                Replaces bad stuff with good stuff.
 
-\033[37;41mFixer applying this rule is risky.\033[39;49m
-Can break stuff.
+                \033[37;41mFixer applying this rule is risky.\033[39;49m
+                Can break stuff.
 
-Fixer is configurable using following options:
-* \033[32mdeprecated_option\033[39m (\033[33mbool\033[39m): a deprecated option; defaults to \e[33mfalse\e[39m. \033[37;41mDEPRECATED\033[39;49m: use option \e[32m`functions`\e[39m instead.
-* \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; \e[37;41mDEPRECATED\e[39;49m alias: \033[33mfuncs\033[39m
+                Fixer is configurable using following options:
+                * \033[32mdeprecated_option\033[39m (\033[33mbool\033[39m): a deprecated option; defaults to \e[33mfalse\e[39m. \033[37;41mDEPRECATED\033[39;49m: use option \e[32m`functions`\e[39m instead.
+                * \033[32mfunctions\033[39m (a subset of \e[33m['foo', 'test']\e[39m): list of \033[32m`function`\033[39m names to fix; defaults to \033[33m['foo', 'test']\033[39m; \e[37;41mDEPRECATED\e[39;49m alias: \033[33mfuncs\033[39m
 
-Fixing examples:
- * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
-\033[33m   ---------- begin diff ----------\033[39m
-   \033[31m--- Original\033[39m
-   \033[32m+++ New\033[39m
-   \033[36m@@ -1,1 +1,1 @@\033[39m
-   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
-   \033[32m+<?php echo 'good stuff and bad thing';\033[39m"."\n   "."
-\033[33m   ----------- end diff -----------\033[39m
+                Fixing examples:
+                 * Example #1. Fixing with the \033[33mdefault\033[39m configuration.
+                \033[33m   ---------- begin diff ----------\033[39m
+                   \033[31m--- Original\033[39m
+                   \033[32m+++ New\033[39m
+                   \033[36m@@ -1,1 +1,1 @@\033[39m
+                   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
+                   \033[32m+<?php echo 'good stuff and bad thing';\033[39m
+                EOD."\n   ".<<<EOD
 
- * Example #2. Fixing with configuration: \033[33m['functions' => ['foo', 'bar']]\033[39m.
-\033[33m   ---------- begin diff ----------\033[39m
-   \033[31m--- Original\033[39m
-   \033[32m+++ New\033[39m
-   \033[36m@@ -1,1 +1,1 @@\033[39m
-   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
-   \033[32m+<?php echo 'good stuff and good thing';\033[39m"."\n   "."
-\033[33m   ----------- end diff -----------\033[39m
+                \033[33m   ----------- end diff -----------\033[39m
 
-",
+                 * Example #2. Fixing with configuration: \033[33m['functions' => ['foo', 'bar']]\033[39m.
+                \033[33m   ---------- begin diff ----------\033[39m
+                   \033[31m--- Original\033[39m
+                   \033[32m+++ New\033[39m
+                   \033[36m@@ -1,1 +1,1 @@\033[39m
+                   \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
+                   \033[32m+<?php echo 'good stuff and good thing';\033[39m
+                EOD."\n   ".<<<EOD
+
+                \033[33m   ----------- end diff -----------\033[39m
+
+
+                EOD,
             false,
             true,
         ];
 
         yield 'rule without code samples' => [
-            'Description of the `Foo/samples` rule.
+            <<<'EOD'
+                Description of the `Foo/samples` rule.
 
-Summary of the rule.
-Description of the rule.
+                Summary of the rule.
+                Description of the rule.
 
-Fixing examples are not available for this rule.
+                Fixing examples are not available for this rule.
 
-',
+
+                EOD,
             false,
             false,
             self::createFixerWithSamplesDouble([]),
         ];
 
         yield 'rule with code samples' => [
-            "Description of the `Foo/samples` rule.
+            <<<'EOD'
+                Description of the `Foo/samples` rule.
 
-Summary of the rule.
-Description of the rule.
+                Summary of the rule.
+                Description of the rule.
 
-Fixing examples:
- * Example #1.
-   ---------- begin diff ----------
-   --- Original
-   +++ New
-   @@ -1,1 +1,1 @@
-   -<?php echo 'BEFORE';
-   +<?php echo 'AFTER';"."\n   "."
-   ----------- end diff -----------
+                Fixing examples:
+                 * Example #1.
+                   ---------- begin diff ----------
+                   --- Original
+                   +++ New
+                   @@ -1,1 +1,1 @@
+                   -<?php echo 'BEFORE';
+                   +<?php echo 'AFTER';
+                EOD."\n   ".<<<'EOD'
 
- * Example #2.
-   ---------- begin diff ----------
-   --- Original
-   +++ New
-   @@ -1,1 +1,1 @@
-   -<?php echo 'BEFORE'.'-B';
-   +<?php echo 'AFTER'.'-B';"."\n   ".'
-   ----------- end diff -----------
+                   ----------- end diff -----------
 
-',
+                 * Example #2.
+                   ---------- begin diff ----------
+                   --- Original
+                   +++ New
+                   @@ -1,1 +1,1 @@
+                   -<?php echo 'BEFORE'.'-B';
+                   +<?php echo 'AFTER'.'-B';
+                EOD."\n   ".<<<'EOD'
+
+                   ----------- end diff -----------
+
+
+                EOD,
             false,
             false,
             self::createFixerWithSamplesDouble([
@@ -198,22 +218,26 @@ Fixing examples:
         ];
 
         yield 'rule with code samples (one with matching PHP version, one NOT)' => [
-            "Description of the `Foo/samples` rule.
+            <<<'EOD'
+                Description of the `Foo/samples` rule.
 
-Summary of the rule.
-Description of the rule.
+                Summary of the rule.
+                Description of the rule.
 
-Fixing examples:
- * Example #1.
-   ---------- begin diff ----------
-   --- Original
-   +++ New
-   @@ -1,1 +1,1 @@
-   -<?php echo 'BEFORE';
-   +<?php echo 'AFTER';"."\n   ".'
-   ----------- end diff -----------
+                Fixing examples:
+                 * Example #1.
+                   ---------- begin diff ----------
+                   --- Original
+                   +++ New
+                   @@ -1,1 +1,1 @@
+                   -<?php echo 'BEFORE';
+                   +<?php echo 'AFTER';
+                EOD."\n   ".<<<'EOD'
 
-',
+                   ----------- end diff -----------
+
+
+                EOD,
             false,
             false,
             self::createFixerWithSamplesDouble([
@@ -228,14 +252,16 @@ Fixing examples:
         ];
 
         yield 'rule with code samples (all with NOT matching PHP version)' => [
-            'Description of the `Foo/samples` rule.
+            <<<'EOD'
+                Description of the `Foo/samples` rule.
 
-Summary of the rule.
-Description of the rule.
+                Summary of the rule.
+                Description of the rule.
 
-Fixing examples cannot be demonstrated on the current PHP version.
+                Fixing examples cannot be demonstrated on the current PHP version.
 
-',
+
+                EOD,
             false,
             false,
             self::createFixerWithSamplesDouble([
@@ -251,19 +277,25 @@ Fixing examples cannot be demonstrated on the current PHP version.
         ];
 
         yield 'rule that is part of ruleset' => [
-            '/^Description of the `binary_operator_spaces` rule.
-.*
-   ----------- end diff -----------
+            <<<'EOD'
+                /^Description of the `binary_operator_spaces` rule.
+                .*
+                   ----------- end diff -----------
 
-'.preg_quote("Fixer is part of the following rule sets:
-* @PER with config: ['default' => 'at_least_single_space']
-* @PER-CS with config: ['default' => 'at_least_single_space']
-* @PER-CS1.0 with config: ['default' => 'at_least_single_space']
-* @PER-CS2.0 with config: ['default' => 'at_least_single_space']
-* @PSR12 with config: ['default' => 'at_least_single_space']
-* @PhpCsFixer with default config
-* @Symfony with default config").'
-$/s',
+
+                EOD.preg_quote(<<<'EOD'
+                Fixer is part of the following rule sets:
+                * @PER with config: ['default' => 'at_least_single_space']
+                * @PER-CS with config: ['default' => 'at_least_single_space']
+                * @PER-CS1.0 with config: ['default' => 'at_least_single_space']
+                * @PER-CS2.0 with config: ['default' => 'at_least_single_space']
+                * @PSR12 with config: ['default' => 'at_least_single_space']
+                * @PhpCsFixer with default config
+                * @Symfony with default config
+                EOD).<<<'EOD'
+
+                $/s
+                EOD,
 
             true,
             false,
@@ -421,22 +453,26 @@ $/s',
         ]);
 
         $expected =
-"Description of the `Vendor/describe_fixture` rule.
+<<<'EOD'
+    Description of the `Vendor/describe_fixture` rule.
 
-Fixture for describe command.
+    Fixture for describe command.
 
-Fixing examples:
- * Example #1.
-   ---------- begin diff ----------
-   --- Original
-   +++ New
-   @@ -1,2 +1,2 @@
-    <?php
-   -echo 'describe fixture';
-   +echo 'fixture for describe';"."\n   ".'
-   ----------- end diff -----------
+    Fixing examples:
+     * Example #1.
+       ---------- begin diff ----------
+       --- Original
+       +++ New
+       @@ -1,2 +1,2 @@
+        <?php
+       -echo 'describe fixture';
+       +echo 'fixture for describe';
+    EOD."\n   ".<<<'EOD'
 
-';
+       ----------- end diff -----------
+
+
+    EOD;
         self::assertSame($expected, $commandTester->getDisplay(true));
         self::assertSame(0, $commandTester->getStatusCode());
     }

@@ -60,221 +60,267 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit\Framework\TestCase
-    {
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit\Framework\TestCase
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class TextDiffTest extends PHPUnit\Framework\TestCase
-    {
-    }',
-            '<?php
-    final class TextDiffTest extends PHPUnit_Framework_TestCase
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    final class TextDiffTest extends PHPUnit\Framework\TestCase
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class TextDiffTest extends PHPUnit_Framework_TestCase
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    use \PHPUnit\Framework\TestCase;
-    final class TextDiffTest extends TestCase
-    {
-    }',
-            '<?php
-    use \PHPUnit_Framework_TestCase;
-    final class TextDiffTest extends PHPUnit_Framework_TestCase
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    use \PHPUnit\Framework\TestCase;
+                    final class TextDiffTest extends TestCase
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    use \PHPUnit_Framework_TestCase;
+                    final class TextDiffTest extends PHPUnit_Framework_TestCase
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    use \PHPUnit\FRAMEWORK\TestCase as TestAlias;
-    final class TextDiffTest extends TestAlias
-    {
-    }',
-            '<?php
-    use \PHPUnit_FRAMEWORK_TestCase as TestAlias;
-    final class TextDiffTest extends TestAlias
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    use \PHPUnit\FRAMEWORK\TestCase as TestAlias;
+                    final class TextDiffTest extends TestAlias
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    use \PHPUnit_FRAMEWORK_TestCase as TestAlias;
+                    final class TextDiffTest extends TestAlias
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace Foo;
-    use PHPUnit\Framework\TestCase;
-    final class TextDiffTest extends TestCase
-    {
-    }',
-            '<?php
-    namespace Foo;
-    use PHPUnit_Framework_TestCase;
-    final class TextDiffTest extends PHPUnit_Framework_TestCase
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    namespace Foo;
+                    use PHPUnit\Framework\TestCase;
+                    final class TextDiffTest extends TestCase
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    namespace Foo;
+                    use PHPUnit_Framework_TestCase;
+                    final class TextDiffTest extends PHPUnit_Framework_TestCase
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace Foo;
-    use PHPUnit\Framework\TestCase as TestAlias;
-    final class TextDiffTest extends TestAlias
-    {
-    }',
-            '<?php
-    namespace Foo;
-    use PHPUnit_Framework_TestCase as TestAlias;
-    final class TextDiffTest extends TestAlias
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    namespace Foo;
+                    use PHPUnit\Framework\TestCase as TestAlias;
+                    final class TextDiffTest extends TestAlias
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    namespace Foo;
+                    use PHPUnit_Framework_TestCase as TestAlias;
+                    final class TextDiffTest extends TestAlias
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit\Framework\TestCase
-    {
-        public function aaa()
-        {
-            $a = new PHPUnit_Framework_Assert();
-            $b = new PHPUnit_Framework_BaseTestListener();
-            $c = new PHPUnit_Framework_TestListener();
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit\Framework\TestCase
+                    {
+                        public function aaa()
+                        {
+                            $a = new PHPUnit_Framework_Assert();
+                            $b = new PHPUnit_Framework_BaseTestListener();
+                            $c = new PHPUnit_Framework_TestListener();
 
-            $d1 = new PHPUnit_Aaa();
-            $d2 = new PHPUnit_Aaa_Bbb();
-            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
-            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
-            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function aaa()
-        {
-            $a = new PHPUnit_Framework_Assert();
-            $b = new PHPUnit_Framework_BaseTestListener();
-            $c = new PHPUnit_Framework_TestListener();
+                            $d1 = new PHPUnit_Aaa();
+                            $d2 = new PHPUnit_Aaa_Bbb();
+                            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
+                            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
+                            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function aaa()
+                        {
+                            $a = new PHPUnit_Framework_Assert();
+                            $b = new PHPUnit_Framework_BaseTestListener();
+                            $c = new PHPUnit_Framework_TestListener();
 
-            $d1 = new PHPUnit_Aaa();
-            $d2 = new PHPUnit_Aaa_Bbb();
-            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
-            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
-            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
-        }
-    }',
+                            $d1 = new PHPUnit_Aaa();
+                            $d2 = new PHPUnit_Aaa_Bbb();
+                            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
+                            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
+                            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
+                        }
+                    }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_4_8],
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit\Framework\TestCase
-    {
-        public function aaa()
-        {
-            $a = new PHPUnit\Framework\Assert();
-            $b = new PHPUnit\Framework\BaseTestListener();
-            $c = new PHPUnit\Framework\TestListener();
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit\Framework\TestCase
+                    {
+                        public function aaa()
+                        {
+                            $a = new PHPUnit\Framework\Assert();
+                            $b = new PHPUnit\Framework\BaseTestListener();
+                            $c = new PHPUnit\Framework\TestListener();
 
-            $d1 = new PHPUnit_Aaa();
-            $d2 = new PHPUnit_Aaa_Bbb();
-            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
-            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
-            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function aaa()
-        {
-            $a = new PHPUnit_Framework_Assert();
-            $b = new PHPUnit_Framework_BaseTestListener();
-            $c = new PHPUnit_Framework_TestListener();
+                            $d1 = new PHPUnit_Aaa();
+                            $d2 = new PHPUnit_Aaa_Bbb();
+                            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
+                            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
+                            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function aaa()
+                        {
+                            $a = new PHPUnit_Framework_Assert();
+                            $b = new PHPUnit_Framework_BaseTestListener();
+                            $c = new PHPUnit_Framework_TestListener();
 
-            $d1 = new PHPUnit_Aaa();
-            $d2 = new PHPUnit_Aaa_Bbb();
-            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
-            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
-            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
-        }
-    }',
+                            $d1 = new PHPUnit_Aaa();
+                            $d2 = new PHPUnit_Aaa_Bbb();
+                            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
+                            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
+                            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
+                        }
+                    }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_5_7],
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit\Framework\TestCase
-    {
-        public function aaa()
-        {
-            $a = new PHPUnit\Framework\Assert();
-            $b = new PHPUnit\Framework\BaseTestListener();
-            $c = new PHPUnit\Framework\TestListener();
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit\Framework\TestCase
+                    {
+                        public function aaa()
+                        {
+                            $a = new PHPUnit\Framework\Assert();
+                            $b = new PHPUnit\Framework\BaseTestListener();
+                            $c = new PHPUnit\Framework\TestListener();
 
-            $d1 = new PHPUnit\Aaa();
-            $d2 = new PHPUnit\Aaa\Bbb();
-            $d3 = new PHPUnit\Aaa\Bbb\Ccc();
-            $d4 = new PHPUnit\Aaa\Bbb\Ccc\Ddd();
-            $d5 = new PHPUnit\Aaa\Bbb\Ccc\Ddd\Eee();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        public function aaa()
-        {
-            $a = new PHPUnit_Framework_Assert();
-            $b = new PHPUnit_Framework_BaseTestListener();
-            $c = new PHPUnit_Framework_TestListener();
+                            $d1 = new PHPUnit\Aaa();
+                            $d2 = new PHPUnit\Aaa\Bbb();
+                            $d3 = new PHPUnit\Aaa\Bbb\Ccc();
+                            $d4 = new PHPUnit\Aaa\Bbb\Ccc\Ddd();
+                            $d5 = new PHPUnit\Aaa\Bbb\Ccc\Ddd\Eee();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        public function aaa()
+                        {
+                            $a = new PHPUnit_Framework_Assert();
+                            $b = new PHPUnit_Framework_BaseTestListener();
+                            $c = new PHPUnit_Framework_TestListener();
 
-            $d1 = new PHPUnit_Aaa();
-            $d2 = new PHPUnit_Aaa_Bbb();
-            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
-            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
-            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
-        }
-    }',
+                            $d1 = new PHPUnit_Aaa();
+                            $d2 = new PHPUnit_Aaa_Bbb();
+                            $d3 = new PHPUnit_Aaa_Bbb_Ccc();
+                            $d4 = new PHPUnit_Aaa_Bbb_Ccc_Ddd();
+                            $d5 = new PHPUnit_Aaa_Bbb_Ccc_Ddd_Eee();
+                        }
+                    }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_6_0],
         ];
 
         yield [
-            '<?php
-                    echo \PHPUnit\Runner\Version::id();
-                    echo \PHPUnit\Runner\Version::id();'."\n                    ",
-            '<?php
-                    echo \PHPUnit_Runner_Version::id();
-                    echo \PHPUnit_Runner_Version::id();'."\n                    ",
+            <<<'EOD'
+                <?php
+                                    echo \PHPUnit\Runner\Version::id();
+                                    echo \PHPUnit\Runner\Version::id();
+                EOD."\n                    ",
+            <<<'EOD'
+                <?php
+                                    echo \PHPUnit_Runner_Version::id();
+                                    echo \PHPUnit_Runner_Version::id();
+                EOD."\n                    ",
         ];
 
         yield [
-            '<?php
-                final class MyTest extends TestCase
-                {
-                    const PHPUNIT_FOO = "foo";
-                }',
+            <<<'EOD'
+                <?php
+                                final class MyTest extends TestCase
+                                {
+                                    const PHPUNIT_FOO = "foo";
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                final class MyTest extends TestCase
-                {
-                    const FOO = Bar::PHPUNIT_FOO;
-                }',
+            <<<'EOD'
+                <?php
+                                final class MyTest extends TestCase
+                                {
+                                    const FOO = Bar::PHPUNIT_FOO;
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                define(\'PHPUNIT_COMPOSER_INSTALL\', dirname(__DIR__).\'/vendor/autoload.php\');
-                require PHPUNIT_COMPOSER_INSTALL;',
+                                define('PHPUNIT_COMPOSER_INSTALL', dirname(__DIR__).'/vendor/autoload.php');
+                                require PHPUNIT_COMPOSER_INSTALL;
+                EOD,
         ];
     }
 
@@ -291,12 +337,14 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-                final class MyTest extends TestCase
-                {
-                    final public const PHPUNIT_FOO_A = "foo";
-                    final public const PHPUNIT_FOO_B = Bar::PHPUNIT_FOO;
-                }',
+            <<<'EOD'
+                <?php
+                                final class MyTest extends TestCase
+                                {
+                                    final public const PHPUNIT_FOO_A = "foo";
+                                    final public const PHPUNIT_FOO_B = Bar::PHPUNIT_FOO;
+                                }
+                EOD,
         ];
     }
 }

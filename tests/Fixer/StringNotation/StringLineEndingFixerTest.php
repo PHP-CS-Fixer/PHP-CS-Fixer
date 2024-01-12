@@ -38,14 +38,16 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
     {
         $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";
         $nowdocTemplate = "<?php\n\$a=\n<<<'EOT'\n%s\n\nEOT;\n";
-        $input = '/**
-* @SWG\Get(
-*     path="/api/v0/cards",
-*     operationId="listCards",
-*     tags={"Банковские карты"},
-*     summary="Возвращает список банковских карт."
-*  )
-*/';
+        $input = <<<'EOD'
+            /**
+            * @SWG\Get(
+            *     path="/api/v0/cards",
+            *     operationId="listCards",
+            *     tags={"Банковские карты"},
+            *     summary="Возвращает список банковских карт."
+            *  )
+            */
+            EOD;
 
         yield [
             "<?php \$a = 'my\nmulti\nline\nstring';\r\n",

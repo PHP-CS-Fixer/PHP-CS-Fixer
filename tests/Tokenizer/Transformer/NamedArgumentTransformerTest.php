@@ -58,13 +58,15 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'method' => [
-            '<?php
-                class Bar {
-                    public function a($foo){}
-                }
+            <<<'EOD'
+                <?php
+                                class Bar {
+                                    public function a($foo){}
+                                }
 
-                $foo = new Bar();
-                $foo->a(foo: 1);'."\n            ",
+                                $foo = new Bar();
+                                $foo->a(foo: 1);
+                EOD."\n            ",
             [
                 36 => CT::T_NAMED_ARGUMENT_NAME,
                 37 => CT::T_NAMED_ARGUMENT_COLON,
@@ -72,11 +74,13 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'nested' => [
-            '<?php
-    foo(test: static function() {
-        bar(test: 1);
-    },);
-',
+            <<<'EOD'
+                <?php
+                    foo(test: static function() {
+                        bar(test: 1);
+                    },);
+
+                EOD,
             [
                 4 => CT::T_NAMED_ARGUMENT_NAME,
                 5 => CT::T_NAMED_ARGUMENT_COLON,
@@ -97,41 +101,45 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
     public static function provideDoNotChangeCases(): iterable
     {
         yield 'switch/case/constants' => [
-            '<?php
-                define(\'FOO\', 123);
-                define(\'BAR\', 123);
+            <<<'EOD'
+                <?php
+                                define('FOO', 123);
+                                define('BAR', 123);
 
-                $a = $guard = 123;
+                                $a = $guard = 123;
 
-                switch($a) {
-                    case FOO:
-                        echo 456;
-                        break;
+                                switch($a) {
+                                    case FOO:
+                                        echo 456;
+                                        break;
 
-                    case 3 + FOO:
-                        echo 789;
-                        break;
+                                    case 3 + FOO:
+                                        echo 789;
+                                        break;
 
-                    case ($guard ? BAR : 2):
-                        echo 456;
-                        break;
-                }
+                                    case ($guard ? BAR : 2):
+                                        echo 456;
+                                        break;
+                                }
 
-                foo(1 , $a3 ? BAR : 2);
-                $a1 = [1, BAR ? 1 : 2];
-                $a2 = [1, (BAR) ? 1 : 2];'."\n            ",
+                                foo(1 , $a3 ? BAR : 2);
+                                $a1 = [1, BAR ? 1 : 2];
+                                $a2 = [1, (BAR) ? 1 : 2];
+                EOD."\n            ",
         ];
 
         yield 'goto' => [
-            '<?php
-                define(\'FOO\', 123);
-                $guard = 1;
+            <<<'EOD'
+                <?php
+                                define('FOO', 123);
+                                $guard = 1;
 
-                {
-                    beginning:
-                    echo $guard ? 1 + FOO : 2;
-                    echo $guard ? 1 : 2;
-                }'."\n            ",
+                                {
+                                    beginning:
+                                    echo $guard ? 1 + FOO : 2;
+                                    echo $guard ? 1 : 2;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'return type' => ['<?php function foo(): array { return []; }'];

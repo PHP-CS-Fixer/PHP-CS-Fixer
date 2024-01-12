@@ -53,15 +53,17 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
                 25 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                 36 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
             ],
-            '<?php
-class Point {
-    public function __construct(
-        public float $x = 0.0,
-        protected float $y = 0.0,
-        private float $z = 0.0,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Point {
+                    public function __construct(
+                        public float $x = 0.0,
+                        protected float $y = 0.0,
+                        private float $z = 0.0,
+                    ) {}
+                }
+
+                EOD,
         ];
 
         yield [
@@ -76,43 +78,45 @@ class Point {
 
     public function testNotChange(): void
     {
-        $code = '<?php
-            // class Foo1 {
-            //     function __construct(
-            //         private float $z = new class {
-            //             public function __construct() {}
-            //         }
-            //     ) {}
-            // }
+        $code = <<<'EOD'
+            <?php
+                        // class Foo1 {
+                        //     function __construct(
+                        //         private float $z = new class {
+                        //             public function __construct() {}
+                        //         }
+                        //     ) {}
+                        // }
 
-            // class Foo2 {
-            //     function __construct(
-            //         private array $z = [new class {}],
-            //     ) {}
-            // }
+                        // class Foo2 {
+                        //     function __construct(
+                        //         private array $z = [new class {}],
+                        //     ) {}
+                        // }
 
-            // class Foo3 {
-            //     public function __construct(
-            //         public float $x = 0.0,
-            //         protected float $y = 0.0,
-            //         private float $z = 0.0,
-            //     ) {}
-            // }
+                        // class Foo3 {
+                        //     public function __construct(
+                        //         public float $x = 0.0,
+                        //         protected float $y = 0.0,
+                        //         private float $z = 0.0,
+                        //     ) {}
+                        // }
 
-            function __construct(/* public */ $foo){}
+                        function __construct(/* public */ $foo){}
 
-            class Foo4 {
-                public function construct(/* public */ $foo)
-                {}
-            }
+                        class Foo4 {
+                            public function construct(/* public */ $foo)
+                            {}
+                        }
 
-            class Foo5 {
-                public $foo1;
-                protected $foo2;
-                private $foo3;
+                        class Foo5 {
+                            public $foo1;
+                            protected $foo2;
+                            private $foo3;
 
-                public function __construct(/* public */ $foo){} public $foo4;
-            }'."\n        ";
+                            public function __construct(/* public */ $foo){} public $foo4;
+                        }
+            EOD."\n        ";
 
         Tokens::clearCache();
 
@@ -152,15 +156,17 @@ class Point {
                 36 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 52 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
             ],
-            '<?php
-class Test {
-    public function __construct(
-        public readonly float $f,
-        private readonly int $i = 0,
-        public readonly array $ary = [],
-        readonly public array $bar = [],
-    ) {}
-}',
+            <<<'EOD'
+                <?php
+                class Test {
+                    public function __construct(
+                        public readonly float $f,
+                        private readonly int $i = 0,
+                        public readonly array $ary = [],
+                        readonly public array $bar = [],
+                    ) {}
+                }
+                EOD,
         ];
     }
 }

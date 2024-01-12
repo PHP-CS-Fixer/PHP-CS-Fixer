@@ -71,26 +71,34 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-if ((1 === $a) === 1) {
-    return;
-}',
-            '<?php
-if (($a === 1) === 1) {
-    return;
-}',
+            <<<'EOD'
+                <?php
+                if ((1 === $a) === 1) {
+                    return;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (($a === 1) === 1) {
+                    return;
+                }
+                EOD,
             ['always_move_variable' => false],
         ];
 
         yield [
-            '<?php
-if (true === (1 !== $foo[0])) {
-    return;
-}',
-            '<?php
-if (($foo[0] !== 1) === true) {
-    return;
-}',
+            <<<'EOD'
+                <?php
+                if (true === (1 !== $foo[0])) {
+                    return;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (($foo[0] !== 1) === true) {
+                    return;
+                }
+                EOD,
             ['always_move_variable' => true],
         ];
 
@@ -109,10 +117,14 @@ if (($foo[0] !== 1) === true) {
         ];
 
         yield [
-            '<?php
-                echo 3 === $a ? 2 : 4;'."\n                ",
-            '<?php
-                echo $a === 3 ? 2 : 4;'."\n                ",
+            <<<'EOD'
+                <?php
+                                echo 3 === $a ? 2 : 4;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                echo $a === 3 ? 2 : 4;
+                EOD."\n                ",
         ];
 
         yield [
@@ -181,14 +193,18 @@ if (($foo[0] !== 1) === true) {
         ];
 
         yield [
-            '<?php
-if ($a = true === $obj instanceof A) {
-    echo \'A\';
-}',
-            '<?php
-if ($a = $obj instanceof A === true) {
-    echo \'A\';
-}',
+            <<<'EOD'
+                <?php
+                if ($a = true === $obj instanceof A) {
+                    echo 'A';
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a = $obj instanceof A === true) {
+                    echo 'A';
+                }
+                EOD,
         ];
 
         yield [
@@ -222,12 +238,16 @@ if ($a = $obj instanceof A === true) {
         ];
 
         yield [
-            '<?php switch(1 === $a){
-                    case true: echo 1;
-                };',
-            '<?php switch($a === 1){
-                    case true: echo 1;
-                };',
+            <<<'EOD'
+                <?php switch(1 === $a){
+                                    case true: echo 1;
+                                };
+                EOD,
+            <<<'EOD'
+                <?php switch($a === 1){
+                                    case true: echo 1;
+                                };
+                EOD,
         ];
 
         yield [
@@ -317,12 +337,16 @@ if ($a = $obj instanceof A === true) {
         ];
 
         yield 'Comments.' => [
-            '<?php $z = /**/ /**/2/**/ /**/
-                 # aa
-                 /**/==/**/$a/***/;',
-            '<?php $z = /**/ /**/$a/**/ /**/
-                 # aa
-                 /**/==/**/2/***/;',
+            <<<'EOD'
+                <?php $z = /**/ /**/2/**/ /**/
+                                 # aa
+                                 /**/==/**/$a/***/;
+                EOD,
+            <<<'EOD'
+                <?php $z = /**/ /**/$a/**/ /**/
+                                 # aa
+                                 /**/==/**/2/***/;
+                EOD,
         ];
 
         yield [
@@ -410,22 +434,26 @@ if ($a = $obj instanceof A === true) {
         ];
 
         yield 'Complex code sample.' => [
-            '<?php
-if ($a == $b) {
-    return null === $b ? (null === $a ? 0 : 0 === $a->b) : 0 === $b->a;
-} else {
-    if ($c === (null === $b)) {
-        return false === $d;
-    }
-}',
-            '<?php
-if ($a == $b) {
-    return $b === null ? ($a === null ? 0 : $a->b === 0) : $b->a === 0;
-} else {
-    if ($c === ($b === null)) {
-        return $d === false;
-    }
-}',
+            <<<'EOD'
+                <?php
+                if ($a == $b) {
+                    return null === $b ? (null === $a ? 0 : 0 === $a->b) : 0 === $b->a;
+                } else {
+                    if ($c === (null === $b)) {
+                        return false === $d;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a == $b) {
+                    return $b === null ? ($a === null ? 0 : $a->b === 0) : $b->a === 0;
+                } else {
+                    if ($c === ($b === null)) {
+                        return $d === false;
+                    }
+                }
+                EOD,
         ];
 
         yield [
@@ -439,30 +467,34 @@ if ($a == $b) {
         ];
 
         yield [
-            '<?php
-$z#1
-#2
-=
-#3
-1#4
-#5
-===#6
-#7
-$a#8
-#9
-;#10',
-            '<?php
-$z#1
-#2
-=
-#3
-$a#4
-#5
-===#6
-#7
-1#8
-#9
-;#10',
+            <<<'EOD'
+                <?php
+                $z#1
+                #2
+                =
+                #3
+                1#4
+                #5
+                ===#6
+                #7
+                $a#8
+                #9
+                ;#10
+                EOD,
+            <<<'EOD'
+                <?php
+                $z#1
+                #2
+                =
+                #3
+                $a#4
+                #5
+                ===#6
+                #7
+                1#8
+                #9
+                ;#10
+                EOD,
         ];
 
         yield [
@@ -476,38 +508,50 @@ $a#4
         ];
 
         yield [
-            '<?php
-                function hello() {}
-                1 === $a ? b() : c();'."\n                ",
-            '<?php
-                function hello() {}
-                $a === 1 ? b() : c();'."\n                ",
+            <<<'EOD'
+                <?php
+                                function hello() {}
+                                1 === $a ? b() : c();
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                function hello() {}
+                                $a === 1 ? b() : c();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                class A{}
-                1 === $a ? b() : c();'."\n                ",
-            '<?php
-                class A{}
-                $a === 1 ? b() : c();'."\n                ",
+            <<<'EOD'
+                <?php
+                                class A{}
+                                1 === $a ? b() : c();
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class A{}
+                                $a === 1 ? b() : c();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                function foo() {
-                    foreach ($arr as $key => $value) {
-                        false !== uniqid() ? 1 : 2;
-                    }
-                    false !== uniqid() ? 1 : 2;
-                }',
-            '<?php
-                function foo() {
-                    foreach ($arr as $key => $value) {
-                        uniqid() !== false ? 1 : 2;
-                    }
-                    uniqid() !== false ? 1 : 2;
-                }',
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    foreach ($arr as $key => $value) {
+                                        false !== uniqid() ? 1 : 2;
+                                    }
+                                    false !== uniqid() ? 1 : 2;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    foreach ($arr as $key => $value) {
+                                        uniqid() !== false ? 1 : 2;
+                                    }
+                                    uniqid() !== false ? 1 : 2;
+                                }
+                EOD,
         ];
 
         yield [
@@ -741,12 +785,16 @@ $a#4
         ];
 
         yield [
-            '<?php return [
-                    // 1
-                ] === $array;',
-            '<?php return $array === [
-                    // 1
-                ];',
+            <<<'EOD'
+                <?php return [
+                                    // 1
+                                ] === $array;
+                EOD,
+            <<<'EOD'
+                <?php return $array === [
+                                    // 1
+                                ];
+                EOD,
         ];
 
         yield [
@@ -798,20 +846,24 @@ $a#4
         ];
 
         yield [
-            '<?php
-function a() {
-    for ($i = 1; $i <= 3; $i++) {
-        echo yield 1 === $i ? 1 : 2;
-    }
-}
-',
-            '<?php
-function a() {
-    for ($i = 1; $i <= 3; $i++) {
-        echo yield $i === 1 ? 1 : 2;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                function a() {
+                    for ($i = 1; $i <= 3; $i++) {
+                        echo yield 1 === $i ? 1 : 2;
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function a() {
+                    for ($i = 1; $i <= 3; $i++) {
+                        echo yield $i === 1 ? 1 : 2;
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
@@ -825,22 +877,26 @@ function a() {
         ];
 
         yield [
-            '<?php
-$a = 1;
-switch ($a) {
-    case 1 === $a:
-        echo 123;
-        break;
-}
-',
-            '<?php
-$a = 1;
-switch ($a) {
-    case $a === 1:
-        echo 123;
-        break;
-}
-',
+            <<<'EOD'
+                <?php
+                $a = 1;
+                switch ($a) {
+                    case 1 === $a:
+                        echo 123;
+                        break;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1;
+                switch ($a) {
+                    case $a === 1:
+                        echo 123;
+                        break;
+                }
+
+                EOD,
         ];
 
         yield 'require' => [
@@ -916,14 +972,18 @@ switch ($a) {
         ]);
 
         $this->doTest(
-            '<?php
-                $a = 1 === $b;
-                $b = $c != 1;
-                $c = $c > 3;'."\n            ",
-            '<?php
-                $a = $b === 1;
-                $b = $c != 1;
-                $c = $c > 3;'."\n            "
+            <<<'EOD'
+                <?php
+                                $a = 1 === $b;
+                                $b = $c != 1;
+                                $c = $c > 3;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = $b === 1;
+                                $b = $c != 1;
+                                $c = $c > 3;
+                EOD."\n            "
         );
     }
 
@@ -1053,10 +1113,12 @@ switch ($a) {
             [
                 'identical' => false,
             ],
-            '<?php
-$a = [1, 2, 3];
-while (2 !== $b = array_pop($c));
-',
+            <<<'EOD'
+                <?php
+                $a = [1, 2, 3];
+                while (2 !== $b = array_pop($c));
+
+                EOD,
         ];
 
         yield [
@@ -1064,16 +1126,18 @@ while (2 !== $b = array_pop($c));
                 'equal' => false,
                 'identical' => false,
             ],
-            '<?php
-                if ($revision->event == \'created\') {
-    foreach ($revision->getModified() as $col => $data) {
-        $model->$col = $data[\'new\'];
-    }
-} else {
-    foreach ($revision->getModified() as $col => $data) {
-        $model->$col = $data[\'old\'];
-    }
-}',
+            <<<'EOD'
+                <?php
+                                if ($revision->event == 'created') {
+                    foreach ($revision->getModified() as $col => $data) {
+                        $model->$col = $data['new'];
+                    }
+                } else {
+                    foreach ($revision->getModified() as $col => $data) {
+                        $model->$col = $data['old'];
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -1175,14 +1239,18 @@ while (2 !== $b = array_pop($c));
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
-if ($a = true === $obj instanceof (foo())) {
-    echo 1;
-}',
-            '<?php
-if ($a = $obj instanceof (foo()) === true) {
-    echo 1;
-}',
+            <<<'EOD'
+                <?php
+                if ($a = true === $obj instanceof (foo())) {
+                    echo 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a = $obj instanceof (foo()) === true) {
+                    echo 1;
+                }
+                EOD,
         ];
 
         yield [

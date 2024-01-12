@@ -91,18 +91,22 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php random_int#1
-                #2
-                (0, getrandmax()#3
-                #4
-                )#5
-                ;',
-            '<?php rand#1
-                #2
-                (#3
-                #4
-                )#5
-                ;',
+            <<<'EOD'
+                <?php random_int#1
+                                #2
+                                (0, getrandmax()#3
+                                #4
+                                )#5
+                                ;
+                EOD,
+            <<<'EOD'
+                <?php rand#1
+                                #2
+                                (#3
+                                #4
+                                )#5
+                                ;
+                EOD,
             ['replacements' => ['rand' => 'random_int']],
         ];
 
@@ -137,22 +141,24 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         yield ['<?php "test" . "srand"."in concatenation";'];
 
         yield [
-            '<?php
-class SrandClass
-{
-    const srand = 1;
-    public function srand($srand)
-    {
-        if (!defined("srand") || $srand instanceof srand) {
-            echo srand;
-        }
-    }
-}
+            <<<'EOD'
+                <?php
+                class SrandClass
+                {
+                    const srand = 1;
+                    public function srand($srand)
+                    {
+                        if (!defined("srand") || $srand instanceof srand) {
+                            echo srand;
+                        }
+                    }
+                }
 
-class srand extends SrandClass{
-    const srand = "srand";
-}
-',
+                class srand extends SrandClass{
+                    const srand = "srand";
+                }
+
+                EOD,
         ];
 
         yield ['<?php mt_srand($a);', '<?php srand($a);'];
@@ -198,12 +204,14 @@ class srand extends SrandClass{
         ];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function getrandmax();
-                    public function &rand();
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function getrandmax();
+                                    public function &rand();
+                                }
+                EOD,
             null,
             ['replacements' => ['rand' => 'random_int']],
         ];

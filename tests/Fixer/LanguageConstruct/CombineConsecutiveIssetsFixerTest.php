@@ -94,56 +94,66 @@ final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'comments' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$a =#0
-isset#1
-(#2
-$a, $b,$c, $d#3
-)#4
-#5
+                $a =#0
+                isset#1
+                (#2
+                $a, $b,$c, $d#3
+                )#4
+                #5
 
- #6
- #7
-  #8
-  #9
- /*10*/     /**11
-*/'."\n ".'
-;',
-            '<?php
+                 #6
+                 #7
+                  #8
+                  #9
+                 /*10*/     /**11
+                */
+                EOD."\n ".<<<'EOD'
 
-$a =#0
-isset#1
-(#2
-$a#3
-)#4
-&&#5
-isset
- #6
- #7
- ( #8
- $b #9
- /*10*/,     $c/**11
-*/
-)&& isset($d)
-;',
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+
+                $a =#0
+                isset#1
+                (#2
+                $a#3
+                )#4
+                &&#5
+                isset
+                 #6
+                 #7
+                 ( #8
+                 $b #9
+                 /*10*/,     $c/**11
+                */
+                )&& isset($d)
+                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $a = isset($a, $b, $c, $d, $e, $f)          ;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    $a = isset($a, $b)  ;'."\n                ",
-            '<?php
-                    $a = isset($a) && isset($b) && isset($c) && isset($d) && isset($e) && isset($f);
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    $a = isset($a) && isset($b);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = isset($a, $b, $c, $d, $e, $f)          ;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    $a = isset($a, $b)  ;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = isset($a) && isset($b) && isset($c) && isset($d) && isset($e) && isset($f);
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
+                                    $a = isset($a) && isset($b);
+                EOD."\n                ",
         ];
 
         yield [
@@ -152,14 +162,18 @@ isset
         ];
 
         yield [
-            '<?php
-                    $a = isset($a, $b)   && isset($c) === false;
-                    $a = isset($a, $b)   && isset($c) | false;
-                    $a = isset($a, $b)   && isset($c) ^ false;'."\n                ",
-            '<?php
-                    $a = isset($a) && isset($b) && isset($c) === false;
-                    $a = isset($a) && isset($b) && isset($c) | false;
-                    $a = isset($a) && isset($b) && isset($c) ^ false;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = isset($a, $b)   && isset($c) === false;
+                                    $a = isset($a, $b)   && isset($c) | false;
+                                    $a = isset($a, $b)   && isset($c) ^ false;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = isset($a) && isset($b) && isset($c) === false;
+                                    $a = isset($a) && isset($b) && isset($c) | false;
+                                    $a = isset($a) && isset($b) && isset($c) ^ false;
+                EOD."\n                ",
         ];
 
         // don't fix cases
@@ -168,18 +182,20 @@ isset
         ];
 
         yield [
-            '<?php
-                    $a = !isset($a) && isset($b);
-                    $a = !isset($a) && !isset($b);
-                    $a = isset($a) && !isset($b);
-                    //
-                    $a = isset($b) && isset($c) === false;
-                    $a = isset($b) && isset($c) | false;
-                    $a = isset($b) && isset($c) ^ false;
-                    //
-                    $a = false === isset($b) && isset($c);
-                    $a = false | isset($b) && isset($c);
-                    $a = false ^ isset($b) && isset($c);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = !isset($a) && isset($b);
+                                    $a = !isset($a) && !isset($b);
+                                    $a = isset($a) && !isset($b);
+                                    //
+                                    $a = isset($b) && isset($c) === false;
+                                    $a = isset($b) && isset($c) | false;
+                                    $a = isset($b) && isset($c) ^ false;
+                                    //
+                                    $a = false === isset($b) && isset($c);
+                                    $a = false | isset($b) && isset($c);
+                                    $a = false ^ isset($b) && isset($c);
+                EOD."\n                ",
         ];
 
         yield [
@@ -187,10 +203,12 @@ isset
         ];
 
         yield 'anonymous class' => [
-            '<?php
-                class A {function isset(){}} // isset($b) && isset($c)
-                $a = new A(); /** isset($b) && isset($c) */
-                if (isset($b) && $a->isset()) {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                class A {function isset(){}} // isset($b) && isset($c)
+                                $a = new A(); /** isset($b) && isset($c) */
+                                if (isset($b) && $a->isset()) {}
+                EOD."\n            ",
         ];
     }
 }

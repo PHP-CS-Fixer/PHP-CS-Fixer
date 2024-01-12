@@ -74,73 +74,83 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             'Class, trait and interface elements must be separated with one or none blank line.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
-    protected function foo()
-    {
-    }
-    protected function bar()
-    {
-    }
+                    <<<'EOD'
+                        <?php
+                        final class Sample
+                        {
+                            protected function foo()
+                            {
+                            }
+                            protected function bar()
+                            {
+                            }
 
 
-}
-'
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-class Sample
-{private $a; // foo
-    /** second in a hour */
-    private $b;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Sample
+                        {private $a; // foo
+                            /** second in a hour */
+                            private $b;
+                        }
+
+                        EOD,
                     ['elements' => ['property' => self::SPACING_ONE]]
                 ),
                 new CodeSample(
-                    '<?php
-class Sample
-{
-    const A = 1;
-    /** seconds in some hours */
-    const B = 3600;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Sample
+                        {
+                            const A = 1;
+                            /** seconds in some hours */
+                            const B = 3600;
+                        }
+
+                        EOD,
                     ['elements' => ['const' => self::SPACING_ONE]]
                 ),
                 new CodeSample(
-                    '<?php
-class Sample
-{
-    /** @var int */
-    const SECOND = 1;
-    /** @var int */
-    const MINUTE = 60;
+                    <<<'EOD'
+                        <?php
+                        class Sample
+                        {
+                            /** @var int */
+                            const SECOND = 1;
+                            /** @var int */
+                            const MINUTE = 60;
 
-    const HOUR = 3600;
+                            const HOUR = 3600;
 
-    const DAY = 86400;
-}
-',
+                            const DAY = 86400;
+                        }
+
+                        EOD,
                     ['elements' => ['const' => self::SPACING_ONLY_IF_META]]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-class Sample
-{
-    public $a;
-    #[SetUp]
-    public $b;
-    /** @var string */
-    public $c;
-    /** @internal */
-    #[Assert\String()]
-    public $d;
+                    <<<'EOD'
+                        <?php
+                        class Sample
+                        {
+                            public $a;
+                            #[SetUp]
+                            public $b;
+                            /** @var string */
+                            public $c;
+                            /** @internal */
+                            #[Assert\String()]
+                            public $d;
 
-    public $e;
-}
-',
+                            public $e;
+                        }
+
+                        EOD,
                     new VersionSpecification(8_00_00),
                     ['elements' => ['property' => self::SPACING_ONLY_IF_META]]
                 ),

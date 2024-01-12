@@ -49,28 +49,38 @@ final class SingleBlankLineAtEofFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-$a = 1;
-',
-            '<?php
-$a = 1;',
+            <<<'EOD'
+                <?php
+                $a = 1;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = 2;
-',
+            <<<'EOD'
+                <?php
+                $a = 2;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = 3;
-',
-            '<?php
-$a = 3;
+            <<<'EOD'
+                <?php
+                $a = 3;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 3;
 
 
-',
+
+                EOD,
         ];
 
         yield [
@@ -84,45 +94,53 @@ $a = 3;
         ];
 
         yield [
-            '<?php
-$a = 6;
+            <<<'EOD'
+                <?php
+                $a = 6;
 
-//test
+                //test
 
-?>'."\n  ",
+                ?>
+                EOD."\n  ",
         ];
 
         yield [
             // test for not adding an empty line after PHP tag has been closed
-            '<?php
-$a = 7;
+            <<<'EOD'
+                <?php
+                $a = 7;
 
-//test
+                //test
 
-?>',
+                ?>
+                EOD,
         ];
 
         yield [
             // test for not adding an empty line after PHP tag has been closed
-            '<?php
-$a = 8;
-//test
-?>
-Outside of PHP tags rendering
+            <<<'EOD'
+                <?php
+                $a = 8;
+                //test
+                ?>
+                Outside of PHP tags rendering
 
 
-',
+
+                EOD,
         ];
 
         yield [
             // test for not adding an empty line after PHP tag has been closed
-            "<?php
-//test
-?>
-inline 1
-<?php
+            <<<EOD
+                <?php
+                //test
+                ?>
+                inline 1
+                <?php
 
-?>Inline2\r\n",
+                ?>Inline2\r\n
+                EOD,
         ];
 
         yield [

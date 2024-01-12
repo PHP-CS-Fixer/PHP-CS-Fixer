@@ -32,11 +32,13 @@ final class LogicalOperatorsFixer extends AbstractFixer
             'Use `&&` and `||` logical operators instead of `and` and `or`.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-if ($a == "foo" and ($b == "bar" or $c == "baz")) {
-}
-'
+                        if ($a == "foo" and ($b == "bar" or $c == "baz")) {
+                        }
+
+                        EOD
                 ),
             ],
             null,

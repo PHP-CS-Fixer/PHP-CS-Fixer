@@ -42,11 +42,15 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
     public static function provideFixMultiLineWhitespaceCases(): iterable
     {
         yield [
-            '<?php
-                    $foo->bar(); // test',
-            '<?php
-                    $foo->bar() // test
-                    ;',
+            <<<'EOD'
+                <?php
+                                    $foo->bar(); // test
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $foo->bar() // test
+                                    ;
+                EOD,
         ];
 
         yield [
@@ -59,23 +63,31 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         ];
 
         yield [
-            '<?php
-                    $foo->bar(); # test',
-            '<?php
-                    $foo->bar() # test
+            <<<'EOD'
+                <?php
+                                    $foo->bar(); # test
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $foo->bar() # test
 
 
-                ;',
+                                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $foo->bar();// test',
-            '<?php
-                    $foo->bar()// test
+            <<<'EOD'
+                <?php
+                                    $foo->bar();// test
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $foo->bar()// test
 
 
-                ;',
+                                ;
+                EOD,
         ];
 
         yield [
@@ -87,31 +99,39 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         ];
 
         yield [
-            '<?php
-$this
-    ->setName(\'readme1\')
-    ->setDescription(\'Generates the README\');
-',
-            '<?php
-$this
-    ->setName(\'readme1\')
-    ->setDescription(\'Generates the README\')
-;
-',
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme1')
+                    ->setDescription('Generates the README');
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme1')
+                    ->setDescription('Generates the README')
+                ;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$this
-    ->setName(\'readme2\')
-    ->setDescription(\'Generates the README\');
-',
-            '<?php
-$this
-    ->setName(\'readme2\')
-    ->setDescription(\'Generates the README\')
-    ;
-',
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme2')
+                    ->setDescription('Generates the README');
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme2')
+                    ->setDescription('Generates the README')
+                    ;
+
+                EOD,
         ];
 
         yield [
@@ -143,60 +163,80 @@ $this
         ];
 
         yield [
-            '<?php
-$this
-    ->example();',
-            '<?php
-$this
-    ->example()
+            <<<'EOD'
+                <?php
+                $this
+                    ->example();
+                EOD,
+            <<<'EOD'
+                <?php
+                $this
+                    ->example()
 
-    ;',
+                    ;
+                EOD,
         ];
 
         yield [
-            '<?php
-                    Foo::bar(); // test',
-            '<?php
-                    Foo::bar() // test
-                    ;',
+            <<<'EOD'
+                <?php
+                                    Foo::bar(); // test
+                EOD,
+            <<<'EOD'
+                <?php
+                                    Foo::bar() // test
+                                    ;
+                EOD,
         ];
 
         yield [
-            '<?php
-                    Foo::bar(); # test',
-            '<?php
-                    Foo::bar() # test
+            <<<'EOD'
+                <?php
+                                    Foo::bar(); # test
+                EOD,
+            <<<'EOD'
+                <?php
+                                    Foo::bar() # test
 
 
-                ;',
+                                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-self
-    ::setName(\'readme1\')
-    ->setDescription(\'Generates the README\');
-',
-            '<?php
-self
-    ::setName(\'readme1\')
-    ->setDescription(\'Generates the README\')
-;
-',
+            <<<'EOD'
+                <?php
+                self
+                    ::setName('readme1')
+                    ->setDescription('Generates the README');
+
+                EOD,
+            <<<'EOD'
+                <?php
+                self
+                    ::setName('readme1')
+                    ->setDescription('Generates the README')
+                ;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-self
-    ::setName(\'readme2\')
-    ->setDescription(\'Generates the README\');
-',
-            '<?php
-self
-    ::setName(\'readme2\')
-    ->setDescription(\'Generates the README\')
-    ;
-',
+            <<<'EOD'
+                <?php
+                self
+                    ::setName('readme2')
+                    ->setDescription('Generates the README');
+
+                EOD,
+            <<<'EOD'
+                <?php
+                self
+                    ::setName('readme2')
+                    ->setDescription('Generates the README')
+                    ;
+
+                EOD,
         ];
 
         yield [
@@ -228,58 +268,78 @@ self
         ];
 
         yield [
-            '<?php
-self
-    ::example();',
-            '<?php
-self
-    ::example()
+            <<<'EOD'
+                <?php
+                self
+                    ::example();
+                EOD,
+            <<<'EOD'
+                <?php
+                self
+                    ::example()
 
-    ;',
+                    ;
+                EOD,
         ];
 
         yield [
-            '<?php
-$seconds = $minutes
-    * 60; // seconds in a minute',
-            '<?php
-$seconds = $minutes
-    * 60 // seconds in a minute
-;',
+            <<<'EOD'
+                <?php
+                $seconds = $minutes
+                    * 60; // seconds in a minute
+                EOD,
+            <<<'EOD'
+                <?php
+                $seconds = $minutes
+                    * 60 // seconds in a minute
+                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-$seconds = $minutes
-    * (int) \'60\'; // seconds in a minute',
-            '<?php
-$seconds = $minutes
-    * (int) \'60\' // seconds in a minute
-;',
+            <<<'EOD'
+                <?php
+                $seconds = $minutes
+                    * (int) '60'; // seconds in a minute
+                EOD,
+            <<<'EOD'
+                <?php
+                $seconds = $minutes
+                    * (int) '60' // seconds in a minute
+                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-$secondsPerMinute = 60;
-$seconds = $minutes
-    * $secondsPerMinute; // seconds in a minute',
-            '<?php
-$secondsPerMinute = 60;
-$seconds = $minutes
-    * $secondsPerMinute // seconds in a minute
-;',
+            <<<'EOD'
+                <?php
+                $secondsPerMinute = 60;
+                $seconds = $minutes
+                    * $secondsPerMinute; // seconds in a minute
+                EOD,
+            <<<'EOD'
+                <?php
+                $secondsPerMinute = 60;
+                $seconds = $minutes
+                    * $secondsPerMinute // seconds in a minute
+                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-$secondsPerMinute = 60;
-$seconds = $minutes
-    * 60 * (int) true; // seconds in a minute',
-            '<?php
-$secondsPerMinute = 60;
-$seconds = $minutes
-    * 60 * (int) true // seconds in a minute
-;',
+            <<<'EOD'
+                <?php
+                $secondsPerMinute = 60;
+                $seconds = $minutes
+                    * 60 * (int) true; // seconds in a minute
+                EOD,
+            <<<'EOD'
+                <?php
+                $secondsPerMinute = 60;
+                $seconds = $minutes
+                    * 60 * (int) true // seconds in a minute
+                ;
+                EOD,
         ];
     }
 
@@ -313,661 +373,789 @@ $seconds = $minutes
     public static function provideSemicolonForChainedCallsFixCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $this
-                        ->method1()
-                        ->method2()
-                    ;
-                ?>',
-            '<?php
+                                    $this
+                                        ->method1()
+                                        ->method2()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $this
-                        ->method1()
-                        ->method2();
-                ?>',
+                                    $this
+                                        ->method1()
+                                        ->method2();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $this
-                        ->method1()
-                        ->method2() // comment
-                    ;
-
-
-',
-            '<?php
-
-                    $this
-                        ->method1()
-                        ->method2(); // comment
+                                    $this
+                                        ->method1()
+                                        ->method2() // comment
+                                    ;
 
 
-',
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    $this
+                                        ->method1()
+                                        ->method2(); // comment
+
+
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $service->method1()
-                        ->method2()
-                    ;
+                                    $service->method1()
+                                        ->method2()
+                                    ;
 
-                    $service->method3();
-                    $this
-                        ->method1()
-                        ->method2()
-                    ;',
-            '<?php
+                                    $service->method3();
+                                    $this
+                                        ->method1()
+                                        ->method2()
+                                    ;
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $service->method1()
-                        ->method2()
-                    ;
+                                    $service->method1()
+                                        ->method2()
+                                    ;
 
-                    $service->method3();
-                    $this
-                        ->method1()
-                        ->method2();',
+                                    $service->method3();
+                                    $this
+                                        ->method1()
+                                        ->method2();
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method2()
-                    ;
-                ?>',
-            '<?php
+                                    $service
+                                        ->method2()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method2();
-                ?>',
+                                    $service
+                                        ->method2();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $service->method1()
-                        ->method2()
-                        ->method3()
-                        ->method4()
-                    ;
-                ?>',
-            '<?php
+                                    $service->method1()
+                                        ->method2()
+                                        ->method3()
+                                        ->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $service->method1()
-                        ->method2()
-                        ->method3()
-                        ->method4();
-                ?>',
+                                    $service->method1()
+                                        ->method2()
+                                        ->method3()
+                                        ->method4();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $this->service->method1()
-                        ->method2([1, 2])
-                        ->method3(
-                            "2",
-                            2,
-                            [1, 2]
-                        )
-                        ->method4()
-                    ;
-                ?>',
-            '<?php
+                                    $this->service->method1()
+                                        ->method2([1, 2])
+                                        ->method3(
+                                            "2",
+                                            2,
+                                            [1, 2]
+                                        )
+                                        ->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $this->service->method1()
-                        ->method2([1, 2])
-                        ->method3(
-                            "2",
-                            2,
-                            [1, 2]
-                        )
-                        ->method4();
-                ?>',
+                                    $this->service->method1()
+                                        ->method2([1, 2])
+                                        ->method3(
+                                            "2",
+                                            2,
+                                            [1, 2]
+                                        )
+                                        ->method4();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method1()
-                            ->method2()
-                        ->method3()
-                            ->method4()
-                    ;
-                ?>',
-            '<?php
+                                    $service
+                                        ->method1()
+                                            ->method2()
+                                        ->method3()
+                                            ->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method1()
-                            ->method2()
-                        ->method3()
-                            ->method4();
-                ?>',
+                                    $service
+                                        ->method1()
+                                            ->method2()
+                                        ->method3()
+                                            ->method4();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $f = "g";
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    $service
-                        ->method1("a", true)
-                        ->method2(true, false)
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f)
-                    ;
-                ?>',
-            '<?php
-                    $f = "g";
+                                    $service
+                                        ->method1("a", true)
+                                        ->method2(true, false)
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f)
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    $service
-                        ->method1("a", true)
-                        ->method2(true, false)
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f);
-                ?>',
+                                    $service
+                                        ->method1("a", true)
+                                        ->method2(true, false)
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f);
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $f = "g";
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    $service
-                        ->method1("a", true) // this is a comment
-                        /* ->method2(true, false) */
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f) /* this is a comment */
-                    ;
-                ?>',
-            '<?php
-                    $f = "g";
+                                    $service
+                                        ->method1("a", true) // this is a comment
+                                        /* ->method2(true, false) */
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f) /* this is a comment */
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    $service
-                        ->method1("a", true) // this is a comment
-                        /* ->method2(true, false) */
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f); /* this is a comment */
-                ?>',
+                                    $service
+                                        ->method1("a", true) // this is a comment
+                                        /* ->method2(true, false) */
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f); /* this is a comment */
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $service->method1();
-                    $service->method2()->method3();
-                ?>',
+            <<<'EOD'
+                <?php
+                                    $service->method1();
+                                    $service->method2()->method3();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $service->method1() ;
-                    $service->method2()->method3() ;
-                ?>',
+            <<<'EOD'
+                <?php
+                                    $service->method1() ;
+                                    $service->method2()->method3() ;
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method2(function ($a) {
-                            $a->otherCall()
-                                ->a()
-                                ->b()
-                            ;
-                        })
-                    ;
-                ?>',
-            '<?php
+                                    $service
+                                        ->method2(function ($a) {
+                                            $a->otherCall()
+                                                ->a()
+                                                ->b()
+                                            ;
+                                        })
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method2(function ($a) {
-                            $a->otherCall()
-                                ->a()
-                                ->b()
-                            ;
-                        });
-                ?>',
+                                    $service
+                                        ->method2(function ($a) {
+                                            $a->otherCall()
+                                                ->a()
+                                                ->b()
+                                            ;
+                                        });
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $data = $service
-                        ->method2(function ($a) {
-                            $a->otherCall()
-                                ->a()
-                                ->b(array_merge([
-                                        1 => 1,
-                                        2 => 2,
-                                    ], $this->getOtherArray()
-                                ))
-                            ;
-                        })
-                    ;
-                ?>',
-            '<?php
+                                    $data = $service
+                                        ->method2(function ($a) {
+                                            $a->otherCall()
+                                                ->a()
+                                                ->b(array_merge([
+                                                        1 => 1,
+                                                        2 => 2,
+                                                    ], $this->getOtherArray()
+                                                ))
+                                            ;
+                                        })
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $data = $service
-                        ->method2(function ($a) {
-                            $a->otherCall()
-                                ->a()
-                                ->b(array_merge([
-                                        1 => 1,
-                                        2 => 2,
-                                    ], $this->getOtherArray()
-                                ));
-                        });
-                ?>',
+                                    $data = $service
+                                        ->method2(function ($a) {
+                                            $a->otherCall()
+                                                ->a()
+                                                ->b(array_merge([
+                                                        1 => 1,
+                                                        2 => 2,
+                                                    ], $this->getOtherArray()
+                                                ));
+                                        });
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $service
-                        ->method1(null, null, [
-                            null => null,
-                            1 => $data->getId() > 0,
-                        ])
-                        ->method2(4, Type::class)
-                    ;
-',
-            '<?php
+                                    $service
+                                        ->method1(null, null, [
+                                            null => null,
+                                            1 => $data->getId() > 0,
+                                        ])
+                                        ->method2(4, Type::class)
+                                    ;
 
-                    $service
-                        ->method1(null, null, [
-                            null => null,
-                            1 => $data->getId() > 0,
-                        ])
-                        ->method2(4, Type::class);
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    $service
+                                        ->method1(null, null, [
+                                            null => null,
+                                            1 => $data->getId() > 0,
+                                        ])
+                                        ->method2(4, Type::class);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$this
-                        ->method1()
-                        ->method2()
-;
-                ?>',
-            '<?php
-$this
-                        ->method1()
-                        ->method2();
-                ?>',
+            <<<'EOD'
+                <?php
+                $this
+                                        ->method1()
+                                        ->method2()
+                ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                $this
+                                        ->method1()
+                                        ->method2();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    self
-                        ::method1()
-                        ->method2()
-                    ;
-                ?>',
-            '<?php
+                                    self
+                                        ::method1()
+                                        ->method2()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    self
-                        ::method1()
-                        ->method2();
-                ?>',
+                                    self
+                                        ::method1()
+                                        ->method2();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    self
-                        ::method1()
-                        ->method2() // comment
-                    ;
-
-
-',
-            '<?php
-
-                    self
-                        ::method1()
-                        ->method2(); // comment
+                                    self
+                                        ::method1()
+                                        ->method2() // comment
+                                    ;
 
 
-',
+
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    self
+                                        ::method1()
+                                        ->method2(); // comment
+
+
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    Service::method1()
-                        ->method2()
-                    ;
+                                    Service::method1()
+                                        ->method2()
+                                    ;
 
-                    Service::method3();
-                    $this
-                        ->method1()
-                        ->method2()
-                    ;',
-            '<?php
+                                    Service::method3();
+                                    $this
+                                        ->method1()
+                                        ->method2()
+                                    ;
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    Service::method1()
-                        ->method2()
-                    ;
+                                    Service::method1()
+                                        ->method2()
+                                    ;
 
-                    Service::method3();
-                    $this
-                        ->method1()
-                        ->method2();',
+                                    Service::method3();
+                                    $this
+                                        ->method1()
+                                        ->method2();
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method2()
-                    ;
-                ?>',
-            '<?php
+                                    Service
+                                        ::method2()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method2();
-                ?>',
+                                    Service
+                                        ::method2();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    Service::method1()
-                        ->method2()
-                        ->method3()
-                        ->method4()
-                    ;
-                ?>',
-            '<?php
+                                    Service::method1()
+                                        ->method2()
+                                        ->method3()
+                                        ->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    Service::method1()
-                        ->method2()
-                        ->method3()
-                        ->method4();
-                ?>',
+                                    Service::method1()
+                                        ->method2()
+                                        ->method3()
+                                        ->method4();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    self::method1()
-                        ->method2([1, 2])
-                        ->method3(
-                            "2",
-                            2,
-                            [1, 2]
-                        )
-                        ->method4()
-                    ;
-                ?>',
-            '<?php
+                                    self::method1()
+                                        ->method2([1, 2])
+                                        ->method3(
+                                            "2",
+                                            2,
+                                            [1, 2]
+                                        )
+                                        ->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    self::method1()
-                        ->method2([1, 2])
-                        ->method3(
-                            "2",
-                            2,
-                            [1, 2]
-                        )
-                        ->method4();
-                ?>',
+                                    self::method1()
+                                        ->method2([1, 2])
+                                        ->method3(
+                                            "2",
+                                            2,
+                                            [1, 2]
+                                        )
+                                        ->method4();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method1()
-                            ->method2()
-                        ->method3()
-                            ->method4()
-                    ;
-                ?>',
-            '<?php
+                                    Service
+                                        ::method1()
+                                            ->method2()
+                                        ->method3()
+                                            ->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method1()
-                            ->method2()
-                        ->method3()
-                            ->method4();
-                ?>',
+                                    Service
+                                        ::method1()
+                                            ->method2()
+                                        ->method3()
+                                            ->method4();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $f = "g";
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    Service
-                        ::method1("a", true)
-                        ->method2(true, false)
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f)
-                    ;
-                ?>',
-            '<?php
-                    $f = "g";
+                                    Service
+                                        ::method1("a", true)
+                                        ->method2(true, false)
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f)
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    Service
-                        ::method1("a", true)
-                        ->method2(true, false)
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f);
-                ?>',
+                                    Service
+                                        ::method1("a", true)
+                                        ->method2(true, false)
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f);
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    $f = "g";
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    Service
-                        ::method1("a", true) // this is a comment
-                        /* ->method2(true, false) */
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f) /* this is a comment */
-                    ;
-                ?>',
-            '<?php
-                    $f = "g";
+                                    Service
+                                        ::method1("a", true) // this is a comment
+                                        /* ->method2(true, false) */
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f) /* this is a comment */
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                                    $f = "g";
 
-                    Service
-                        ::method1("a", true) // this is a comment
-                        /* ->method2(true, false) */
-                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
-                        ->method4(1, "a", $f); /* this is a comment */
-                ?>',
+                                    Service
+                                        ::method1("a", true) // this is a comment
+                                        /* ->method2(true, false) */
+                                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                                        ->method4(1, "a", $f); /* this is a comment */
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    Service::method1();
-                    Service::method2()->method3();
-                ?>',
+            <<<'EOD'
+                <?php
+                                    Service::method1();
+                                    Service::method2()->method3();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    Service::method1() ;
-                    Service::method2()->method3() ;
-                ?>',
+            <<<'EOD'
+                <?php
+                                    Service::method1() ;
+                                    Service::method2()->method3() ;
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method2(function ($a) {
-                            $a->otherCall()
-                                ->a()
-                                ->b()
-                            ;
-                        })
-                    ;
-                ?>',
-            '<?php
+                                    Service
+                                        ::method2(function ($a) {
+                                            $a->otherCall()
+                                                ->a()
+                                                ->b()
+                                            ;
+                                        })
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method2(function ($a) {
-                            $a->otherCall()
-                                ->a()
-                                ->b()
-                            ;
-                        });
-                ?>',
+                                    Service
+                                        ::method2(function ($a) {
+                                            $a->otherCall()
+                                                ->a()
+                                                ->b()
+                                            ;
+                                        });
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $data = Service
-                        ::method2(function () {
-                            Foo::otherCall()
-                                ->a()
-                                ->b(array_merge([
-                                        1 => 1,
-                                        2 => 2,
-                                    ], $this->getOtherArray()
-                                ))
-                            ;
-                        })
-                    ;
-                ?>',
-            '<?php
+                                    $data = Service
+                                        ::method2(function () {
+                                            Foo::otherCall()
+                                                ->a()
+                                                ->b(array_merge([
+                                                        1 => 1,
+                                                        2 => 2,
+                                                    ], $this->getOtherArray()
+                                                ))
+                                            ;
+                                        })
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $data = Service
-                        ::method2(function () {
-                            Foo::otherCall()
-                                ->a()
-                                ->b(array_merge([
-                                        1 => 1,
-                                        2 => 2,
-                                    ], $this->getOtherArray()
-                                ));
-                        });
-                ?>',
+                                    $data = Service
+                                        ::method2(function () {
+                                            Foo::otherCall()
+                                                ->a()
+                                                ->b(array_merge([
+                                                        1 => 1,
+                                                        2 => 2,
+                                                    ], $this->getOtherArray()
+                                                ));
+                                        });
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    Service
-                        ::method1(null, null, [
-                            null => null,
-                            1 => $data->getId() > 0,
-                        ])
-                        ->method2(4, Type::class)
-                    ;
-',
-            '<?php
+                                    Service
+                                        ::method1(null, null, [
+                                            null => null,
+                                            1 => $data->getId() > 0,
+                                        ])
+                                        ->method2(4, Type::class)
+                                    ;
 
-                    Service
-                        ::method1(null, null, [
-                            null => null,
-                            1 => $data->getId() > 0,
-                        ])
-                        ->method2(4, Type::class);
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    Service
+                                        ::method1(null, null, [
+                                            null => null,
+                                            1 => $data->getId() > 0,
+                                        ])
+                                        ->method2(4, Type::class);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-Service
-                        ::method1()
-                        ->method2()
-;
-                ?>',
-            '<?php
-Service
-                        ::method1()
-                        ->method2();
-                ?>',
+            <<<'EOD'
+                <?php
+                Service
+                                        ::method1()
+                                        ->method2()
+                ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                Service
+                                        ::method1()
+                                        ->method2();
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    function foo($bar)
-                    {
-                        if ($bar === 1) {
-                            $baz
-                                ->bar()
-                            ;
-                        }
+                                    function foo($bar)
+                                    {
+                                        if ($bar === 1) {
+                                            $baz
+                                                ->bar()
+                                            ;
+                                        }
 
-                        return (new Foo($bar))
-                            ->baz()
-                        ;
-                    }
-                ?>',
-            '<?php
+                                        return (new Foo($bar))
+                                            ->baz()
+                                        ;
+                                    }
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    function foo($bar)
-                    {
-                        if ($bar === 1) {
-                            $baz
-                                ->bar();
-                        }
+                                    function foo($bar)
+                                    {
+                                        if ($bar === 1) {
+                                            $baz
+                                                ->bar();
+                                        }
 
-                        return (new Foo($bar))
-                            ->baz();
-                    }
-                ?>',
+                                        return (new Foo($bar))
+                                            ->baz();
+                                    }
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $foo = (new Foo($bar))
-                        ->baz()
-                    ;
+                                    $foo = (new Foo($bar))
+                                        ->baz()
+                                    ;
 
-                    function foo($bar)
-                    {
-                        $foo = (new Foo($bar))
-                            ->baz()
-                        ;
-                    }
-                ?>',
-            '<?php
+                                    function foo($bar)
+                                    {
+                                        $foo = (new Foo($bar))
+                                            ->baz()
+                                        ;
+                                    }
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
 
-                    $foo = (new Foo($bar))
-                        ->baz();
+                                    $foo = (new Foo($bar))
+                                        ->baz();
 
-                    function foo($bar)
-                    {
-                        $foo = (new Foo($bar))
-                            ->baz();
-                    }
-                ?>',
+                                    function foo($bar)
+                                    {
+                                        $foo = (new Foo($bar))
+                                            ->baz();
+                                    }
+                                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-$object
-    ->methodA()
-    ->methodB()
-;
-',
-            '<?php
-$object
-    ->methodA()
-    ->methodB();
-',
+            <<<'EOD'
+                <?php
+                $object
+                    ->methodA()
+                    ->methodB()
+                ;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $object
+                    ->methodA()
+                    ->methodB();
+
+                EOD,
         ];
 
         yield [
-            '<?php $object
-    ->methodA()
-    ->methodB()
-;
-',
-            '<?php $object
-    ->methodA()
-    ->methodB();
-',
+            <<<'EOD'
+                <?php $object
+                    ->methodA()
+                    ->methodB()
+                ;
+
+                EOD,
+            <<<'EOD'
+                <?php $object
+                    ->methodA()
+                    ->methodB();
+
+                EOD,
         ];
 
         yield [
@@ -981,163 +1169,199 @@ $object
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    $foo->bar();
+                                    $foo->bar();
 
-                    Service::method1()
-                        ->method2()
-                        ->method3()->method4()
+                                    Service::method1()
+                                        ->method2()
+                                        ->method3()->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar()
+                                    ;
+
+                                    Service::method1()
+                                        ->method2()
+                                        ->method3()->method4();
+                                ?>
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar();
+
+                                    \Service::method1()
+                                        ->method2()
+                                        ->method3()->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar()
+                                    ;
+
+                                    \Service::method1()
+                                        ->method2()
+                                        ->method3()->method4();
+                                ?>
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar();
+
+                                    Ns\Service::method1()
+                                        ->method2()
+                                        ->method3()->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar()
+                                    ;
+
+                                    Ns\Service::method1()
+                                        ->method2()
+                                        ->method3()->method4();
+                                ?>
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar();
+
+                                    \Ns\Service::method1()
+                                        ->method2()
+                                        ->method3()->method4()
+                                    ;
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                    $foo->bar()
+                                    ;
+
+                                    \Ns\Service::method1()
+                                        ->method2()
+                                        ->method3()->method4();
+                                ?>
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme2')
+                    ->setDescription('Generates the README')
+                ;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme2')
+                    ->setDescription('Generates the README')
                     ;
-                ?>',
-            '<?php
 
-                    $foo->bar()
-                    ;
-
-                    Service::method1()
-                        ->method2()
-                        ->method3()->method4();
-                ?>',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
+                $this
+                    ->foo()
+                    ->{$bar ? 'bar' : 'baz'}()
+                ;
 
-                    $foo->bar();
-
-                    \Service::method1()
-                        ->method2()
-                        ->method3()->method4()
-                    ;
-                ?>',
-            '<?php
-
-                    $foo->bar()
-                    ;
-
-                    \Service::method1()
-                        ->method2()
-                        ->method3()->method4();
-                ?>',
+                EOD,
         ];
 
         yield [
-            '<?php
-
-                    $foo->bar();
-
-                    Ns\Service::method1()
-                        ->method2()
-                        ->method3()->method4()
-                    ;
-                ?>',
-            '<?php
-
-                    $foo->bar()
-                    ;
-
-                    Ns\Service::method1()
-                        ->method2()
-                        ->method3()->method4();
-                ?>',
+            <<<'EOD'
+                <?php
+                                    foo("bar")
+                                        ->method1()
+                                        ->method2()
+                                    ;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    foo("bar")
+                                        ->method1()
+                                        ->method2();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-
-                    $foo->bar();
-
-                    \Ns\Service::method1()
-                        ->method2()
-                        ->method3()->method4()
-                    ;
-                ?>',
-            '<?php
-
-                    $foo->bar()
-                    ;
-
-                    \Ns\Service::method1()
-                        ->method2()
-                        ->method3()->method4();
-                ?>',
+            <<<'EOD'
+                <?php
+                                    $result = $arrayOfAwesomeObjects["most awesome object"]
+                                        ->method1()
+                                        ->method2()
+                                    ;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $result = $arrayOfAwesomeObjects["most awesome object"]
+                                        ->method1()
+                                        ->method2();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-$this
-    ->setName(\'readme2\')
-    ->setDescription(\'Generates the README\')
-;
-',
-            '<?php
-$this
-    ->setName(\'readme2\')
-    ->setDescription(\'Generates the README\')
-    ;
-',
+            <<<'EOD'
+                <?php
+                                    $foo;
+                                    $bar = [
+                                        1 => 2,
+                                        3 => $baz->method(),
+                                    ];
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-$this
-    ->foo()
-    ->{$bar ? \'bar\' : \'baz\'}()
-;
-',
-        ];
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        $bar
+                            ->baz()
+                        ;
+                }
 
-        yield [
-            '<?php
-                    foo("bar")
-                        ->method1()
-                        ->method2()
-                    ;'."\n                ",
-            '<?php
-                    foo("bar")
-                        ->method1()
-                        ->method2();'."\n                ",
-        ];
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        $bar
+                            ->baz()
+                              ;
+                }
 
-        yield [
-            '<?php
-                    $result = $arrayOfAwesomeObjects["most awesome object"]
-                        ->method1()
-                        ->method2()
-                    ;'."\n                ",
-            '<?php
-                    $result = $arrayOfAwesomeObjects["most awesome object"]
-                        ->method1()
-                        ->method2();'."\n                ",
-        ];
-
-        yield [
-            '<?php
-                    $foo;
-                    $bar = [
-                        1 => 2,
-                        3 => $baz->method(),
-                    ];'."\n                ",
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1:
-        $bar
-            ->baz()
-        ;
-}
-',
-            '<?php
-switch ($foo) {
-    case 1:
-        $bar
-            ->baz()
-              ;
-}
-',
+                EOD,
         ];
     }
 
@@ -1176,17 +1400,21 @@ switch ($foo) {
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
         $this->doTest(
-            '<?php
+            <<<'EOD'
+                <?php
 
-                $foo?->method1()
-                    ?->method2()
-                    ?->method3()
-                ;'."\n                ",
-            '<?php
+                                $foo?->method1()
+                                    ?->method2()
+                                    ?->method3()
+                                ;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                $foo?->method1()
-                    ?->method2()
-                    ?->method3();'."\n                "
+                                $foo?->method1()
+                                    ?->method2()
+                                    ?->method3();
+                EOD."\n                "
         );
     }
 }

@@ -45,37 +45,45 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
     public static function provideDefaultCases(): iterable
     {
         yield [
-            '<?php
-$a = 1;
-    /**
-     * Doc comment
-     *
-     *
-     *
-     * first without an asterisk
-     * second without an asterisk or space
-     */',
-            '<?php
-$a = 1;
-    /**
-     * Doc comment
-       *
+            <<<'EOD'
+                <?php
+                $a = 1;
+                    /**
+                     * Doc comment
+                     *
+                     *
+                     *
+                     * first without an asterisk
+                     * second without an asterisk or space
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1;
+                    /**
+                     * Doc comment
+                       *
 
-*
-    first without an asterisk
-second without an asterisk or space
-   */',
+                *
+                    first without an asterisk
+                second without an asterisk or space
+                   */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * Document start
-     */',
-            '<?php
-    /**
-* Document start
-    */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Document start
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                * Document start
+                    */
+                EOD,
         ];
 
         yield [
@@ -84,98 +92,122 @@ second without an asterisk or space
         ];
 
         yield [
-            "<?php
-\t/**
-\t * Tabs as indentation
-\t */",
-            "<?php
-\t/**
-* Tabs as indentation
-        */",
+            <<<EOD
+                <?php
+                \t/**
+                \t * Tabs as indentation
+                \t */
+                EOD,
+            <<<EOD
+                <?php
+                \t/**
+                * Tabs as indentation
+                        */
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = 1;
-/**
- * Doc command without prior indentation
- */',
-            '<?php
-$a = 1;
-/**
-* Doc command without prior indentation
-*/',
+            <<<'EOD'
+                <?php
+                $a = 1;
+                /**
+                 * Doc command without prior indentation
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1;
+                /**
+                * Doc command without prior indentation
+                */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * Doc command without prior indentation
- * Document start
- */',
-            '<?php
-/**
-* Doc command without prior indentation
-* Document start
-*/',
+            <<<'EOD'
+                <?php
+                /**
+                 * Doc command without prior indentation
+                 * Document start
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                * Doc command without prior indentation
+                * Document start
+                */
+                EOD,
         ];
 
         // Untouched cases
         yield [
-            '<?php
-    /*
-     * Multiline comment
-       *
-*
-   */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * Multiline comment
+                       *
+                *
+                   */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /** inline doc comment */',
+            <<<'EOD'
+                <?php
+                    /** inline doc comment */
+                EOD,
         ];
 
         yield [
-            '<?php
- $a=1;  /**
-*
- doc comment that doesn\'t start in a new line
+            <<<'EOD'
+                <?php
+                 $a=1;  /**
+                *
+                 doc comment that doesn't start in a new line
 
-*/',
+                */
+                EOD,
         ];
 
         yield [
-            '<?php
-    # Hash single line comments are untouched
-     #
-   #
-      #',
+            <<<'EOD'
+                <?php
+                    # Hash single line comments are untouched
+                     #
+                   #
+                      #
+                EOD,
         ];
 
         yield [
-            '<?php
-    // Slash single line comments are untouched
-     //
-   //
-      //',
+            <<<'EOD'
+                <?php
+                    // Slash single line comments are untouched
+                     //
+                   //
+                      //
+                EOD,
         ];
 
         yield 'uni code test' => [
-            '<?php
-class A
-{
-    /**
-     * @SWG\Get(
-     *     path="/api/v0/cards",
-     *     operationId="listCards",
-     *     tags={"Банковские карты"},
-     *     summary="Возвращает список банковских карт."
-     *  )
-     */
-    public function indexAction()
-    {
-    }
-}',
+            <<<'EOD'
+                <?php
+                class A
+                {
+                    /**
+                     * @SWG\Get(
+                     *     path="/api/v0/cards",
+                     *     operationId="listCards",
+                     *     tags={"Банковские карты"},
+                     *     summary="Возвращает список банковских карт."
+                     *  )
+                     */
+                    public function indexAction()
+                    {
+                    }
+                }
+                EOD,
         ];
     }
 
@@ -191,39 +223,47 @@ class A
     public static function provideDocLikeMultilineCommentsCases(): iterable
     {
         yield [
-            '<?php
-    /*
-     * Doc-like Multiline comment
-     *
-     *
-     */',
-            '<?php
-    /*
-     * Doc-like Multiline comment
-       *
-*
-   */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * Doc-like Multiline comment
+                     *
+                     *
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /*
+                     * Doc-like Multiline comment
+                       *
+                *
+                   */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     * Multiline comment with mixed content
-       *
-  Line without an asterisk
-*
-   */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * Multiline comment with mixed content
+                       *
+                  Line without an asterisk
+                *
+                   */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /*
-     * Two empty lines
-        *
+            <<<'EOD'
+                <?php
+                    /*
+                     * Two empty lines
+                        *
 
 
-*
-   */',
+                *
+                   */
+                EOD,
         ];
     }
 
@@ -239,20 +279,24 @@ class A
     public static function provideMixedContentMultilineCommentsCases(): iterable
     {
         yield [
-            '<?php
-    /*
-     * Multiline comment with mixed content
-     *
-  Line without an asterisk
-     *
-     */',
-            '<?php
-    /*
-     * Multiline comment with mixed content
-       *
-  Line without an asterisk
-*
-   */',
+            <<<'EOD'
+                <?php
+                    /*
+                     * Multiline comment with mixed content
+                     *
+                  Line without an asterisk
+                     *
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /*
+                     * Multiline comment with mixed content
+                       *
+                  Line without an asterisk
+                *
+                   */
+                EOD,
         ];
     }
 

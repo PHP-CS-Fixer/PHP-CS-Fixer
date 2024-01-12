@@ -42,13 +42,17 @@ final class DiffConsoleFormatterTest extends TestCase
     {
         yield [
             sprintf(
-                '<comment>   ---------- begin diff ----------</comment>'."\n   ".'
-   <fg=cyan>%s</fg=cyan>
-    no change
-   <fg=red>%s</fg=red>
-   <fg=green>%s</fg=green>
-   <fg=green>%s</fg=green>'."\n   ".'
-<comment>   ----------- end diff -----------</comment>',
+                '<comment>   ---------- begin diff ----------</comment>'."\n   ".<<<'EOD'
+
+                       <fg=cyan>%s</fg=cyan>
+                        no change
+                       <fg=red>%s</fg=red>
+                       <fg=green>%s</fg=green>
+                       <fg=green>%s</fg=green>
+                    EOD."\n   ".<<<'EOD'
+
+                    <comment>   ----------- end diff -----------</comment>
+                    EOD,
                 OutputFormatter::escape('@@ -12,51 +12,151 @@'),
                 OutputFormatter::escape('-/**\\'),
                 OutputFormatter::escape('+/*\\'),
@@ -60,36 +64,50 @@ final class DiffConsoleFormatterTest extends TestCase
                 PHP_EOL,
                 PHP_EOL
             ),
-            '
-@@ -12,51 +12,151 @@
- no change
--/**\
-+/*\
-+A
-',
+            <<<'EOD'
+
+                @@ -12,51 +12,151 @@
+                 no change
+                -/**\
+                +/*\
+                +A
+
+                EOD,
             '   %s',
         ];
 
         yield [
-            '[start]
-|'.' '.'
-| @@ -12,51 +12,151 @@
-|  no change
-|'.'  '.'
-| -/**\
-| +/*\
-| +A
-|'.' '.'
-[end]',
+            <<<'EOD'
+                [start]
+                |
+                EOD.' '.<<<'EOD'
+
+                | @@ -12,51 +12,151 @@
+                |  no change
+                |
+                EOD.'  '.<<<'EOD'
+
+                | -/**\
+                | +/*\
+                | +A
+                |
+                EOD.' '.<<<'EOD'
+
+                [end]
+                EOD,
             false,
             sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),
-            '
-@@ -12,51 +12,151 @@
- no change'."\n ".'
--/**\
-+/*\
-+A
-',
+            <<<'EOD'
+
+                @@ -12,51 +12,151 @@
+                 no change
+                EOD."\n ".<<<'EOD'
+
+                -/**\
+                +/*\
+                +A
+
+                EOD,
             '| %s',
         ];
 

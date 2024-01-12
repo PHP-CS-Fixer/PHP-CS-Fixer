@@ -34,95 +34,105 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                    class A {
-                        /** @var MyCass6 $a */
-                        public $test6 = 6;
+            <<<'EOD'
+                <?php
+                                    class A {
+                                        /** @var MyCass6 $a */
+                                        public $test6 = 6;
 
-                        /** @var MyCass6 */
-                        public $testB = 7;
-                    }'."\n                ",
-            '<?php
-                    class A {
-                        /**@var MyCass6 $a */
-                        public $test6 = 6;
+                                        /** @var MyCass6 */
+                                        public $testB = 7;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A {
+                                        /**@var MyCass6 $a */
+                                        public $test6 = 6;
 
-                        /**@var MyCass6*/
-                        public $testB = 7;
-                    }'."\n                ",
+                                        /**@var MyCass6*/
+                                        public $testB = 7;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    /** @var MyCass1 $test1 description   and more. */
-                    $test0 = 1;
+            <<<'EOD'
+                <?php
+                                    /** @var MyCass1 $test1 description   and more. */
+                                    $test0 = 1;
 
-                    /** @var MyCass2 description and    such. */
-                    $test1 = 2;
+                                    /** @var MyCass2 description and    such. */
+                                    $test1 = 2;
 
-                    /** @var MyCass3 description. */
-                    $test2 = 3;
+                                    /** @var MyCass3 description. */
+                                    $test2 = 3;
 
-                    class A {
-                        /** @var MyCass4 aa */
-                        public $test4 = 4;
+                                    class A {
+                                        /** @var MyCass4 aa */
+                                        public $test4 = 4;
 
-                        /** @var MyCass5 */
-                        public $test5 = 5;
+                                        /** @var MyCass5 */
+                                        public $test5 = 5;
 
-                        /** @var MyCass6 */
-                        public $test6 = 6;
-                    }'."\n                ",
-            '<?php
-                    /**    @var   MyCass1 $test1      description   and more.*/
-                    $test0 = 1;
+                                        /** @var MyCass6 */
+                                        public $test6 = 6;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**    @var   MyCass1 $test1      description   and more.*/
+                                    $test0 = 1;
 
-                    /**    @var   MyCass2    description and    such. */
-                    $test1 = 2;
+                                    /**    @var   MyCass2    description and    such. */
+                                    $test1 = 2;
 
-                    /** @var	MyCass3    description.    */
-                    $test2 = 3;
+                                    /** @var	MyCass3    description.    */
+                                    $test2 = 3;
 
-                    class A {
-                        /**  @var   MyCass4   aa       */
-                        public $test4 = 4;
+                                    class A {
+                                        /**  @var   MyCass4   aa       */
+                                        public $test4 = 4;
 
-                        /**     @var		MyCass5       */
-                        public $test5 = 5;
+                                        /**     @var		MyCass5       */
+                                        public $test5 = 5;
 
-                        /**     @var		MyCass6*/
-                        public $test6 = 6;
-                    }'."\n                ",
+                                        /**     @var		MyCass6*/
+                                        public $test6 = 6;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-class A
-{
-    /**
-     * @param array $options {
-     *     @var bool   $required Whether this element is required
-     *     @var string $label    The display name for this element
-     * }
-     */
-    public function __construct(array $options = array())
-    {
+            <<<'EOD'
+                <?php
+                class A
+                {
+                    /**
+                     * @param array $options {
+                     *     @var bool   $required Whether this element is required
+                     *     @var string $label    The display name for this element
+                     * }
+                     */
+                    public function __construct(array $options = array())
+                    {
 
-    }
+                    }
 
-    /**
-     * @var bool   $required Whether this element is required
-     * @var string $label    The display name for this element
-     */
-    public function test($required, $label)
-    {
+                    /**
+                     * @var bool   $required Whether this element is required
+                     * @var string $label    The display name for this element
+                     */
+                    public function test($required, $label)
+                    {
 
-    }
+                    }
 
-    /** @var   MyCass3
-    */
-    private $test0 = 0;
-}',
+                    /** @var   MyCass3
+                    */
+                    private $test0 = 0;
+                }
+                EOD,
         ];
     }
 }

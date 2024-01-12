@@ -80,12 +80,16 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php 1//
-                #
-                **2/**/ /**  */;',
-            '<?php pow(1//
-                #
-                ,2/**/ /**  */);',
+            <<<'EOD'
+                <?php 1//
+                                #
+                                **2/**/ /**  */;
+                EOD,
+            <<<'EOD'
+                <?php pow(1//
+                                #
+                                ,2/**/ /**  */);
+                EOD,
         ];
 
         yield [
@@ -174,16 +178,20 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    $z = 1**2;
-                    $a = 1**( 2**( 3**( 4**( 5**( 6**( 7**( 8**( 9** 3))))))));
-                    $b = 1**( 2**( 3**( 4**( 5**( 6**( 7**( 8**( 9** 3))))))));
-                    $d = 1**2;'."\n                ",
-            '<?php
-                    $z = pow(1,2);
-                    $a = \pow(1, \poW(2, \pOw(3, \pOW(4, \Pow(5, \PoW(6, \POw(7, \POW(8, \pow(9, 3)))))))));
-                    $b = \pow(1, \pow(2, \pow(3, \pow(4, \pow(5, \pow(6, \pow(7, \pow(8, \pow(9, 3)))))))));
-                    $d = pow(1,2);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $z = 1**2;
+                                    $a = 1**( 2**( 3**( 4**( 5**( 6**( 7**( 8**( 9** 3))))))));
+                                    $b = 1**( 2**( 3**( 4**( 5**( 6**( 7**( 8**( 9** 3))))))));
+                                    $d = 1**2;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $z = pow(1,2);
+                                    $a = \pow(1, \poW(2, \pOw(3, \pOW(4, \Pow(5, \PoW(6, \POw(7, \POW(8, \pow(9, 3)))))))));
+                                    $b = \pow(1, \pow(2, \pow(3, \pow(4, \pow(5, \pow(6, \pow(7, \pow(8, \pow(9, 3)))))))));
+                                    $d = pow(1,2);
+                EOD."\n                ",
         ];
 
         yield [
@@ -192,20 +200,24 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    ($a-$b)**(
-                    ($a-$b)**(
-                    ($a-$b)**(
-                    ($a-$b)**(
-                    ($a-$b)**($a-$b)
-                ))));',
-            '<?php
-                    pow($a-$b,
-                    pow($a-$b,
-                    pow($a-$b,
-                    pow($a-$b,
-                    pow($a-$b,$a-$b)
-                ))));',
+            <<<'EOD'
+                <?php
+                                    ($a-$b)**(
+                                    ($a-$b)**(
+                                    ($a-$b)**(
+                                    ($a-$b)**(
+                                    ($a-$b)**($a-$b)
+                                ))));
+                EOD,
+            <<<'EOD'
+                <?php
+                                    pow($a-$b,
+                                    pow($a-$b,
+                                    pow($a-$b,
+                                    pow($a-$b,
+                                    pow($a-$b,$a-$b)
+                                ))));
+                EOD,
         ];
 
         yield [
@@ -234,19 +246,23 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function pow($a, $b);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function pow($a, $b);
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function &pow($a, $b);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function &pow($a, $b);
+                                }
+                EOD,
         ];
 
         yield [

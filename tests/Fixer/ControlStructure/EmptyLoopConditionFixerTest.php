@@ -38,12 +38,16 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'from `for` to `while`' => [
-            '<?php
-                while (true){ if(foo()) {break;}}
-                for(;$i < 1;){ if(foo()) {break;}}',
-            '<?php
-                for(;;){ if(foo()) {break;}}
-                for(;$i < 1;){ if(foo()) {break;}}',
+            <<<'EOD'
+                <?php
+                                while (true){ if(foo()) {break;}}
+                                for(;$i < 1;){ if(foo()) {break;}}
+                EOD,
+            <<<'EOD'
+                <?php
+                                for(;;){ if(foo()) {break;}}
+                                for(;$i < 1;){ if(foo()) {break;}}
+                EOD,
         ];
 
         yield 'from `do while` to `while`' => [
@@ -52,14 +56,18 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'from `while` to `for`' => [
-            '<?php
-                for(;;){ if(foo()) {break;}}
-                while(false){ echo 1; }
-                while($a()) { echo 2; }'."\n            ",
-            '<?php
-                while(true){ if(foo()) {break;}}
-                while(false){ echo 1; }
-                while($a()) { echo 2; }'."\n            ",
+            <<<'EOD'
+                <?php
+                                for(;;){ if(foo()) {break;}}
+                                while(false){ echo 1; }
+                                while($a()) { echo 2; }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                while(true){ if(foo()) {break;}}
+                                while(false){ echo 1; }
+                                while($a()) { echo 2; }
+                EOD."\n            ",
             ['style' => 'for'],
         ];
 
@@ -99,24 +107,28 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-while (true) {
-    foo1();
-}
+                while (true) {
+                    foo1();
+                }
 
 
 
-',
-            '<?php
 
-do {
-    foo1();
-}
-while(
-true
-)
-;',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                do {
+                    foo1();
+                }
+                while(
+                true
+                )
+                ;
+                EOD,
         ];
 
         // do not fix cases

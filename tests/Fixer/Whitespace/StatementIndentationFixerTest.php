@@ -41,1178 +41,1406 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'no brace block' => [
-            '<?php
-foo();
-bar();',
-            '<?php
-  foo();
-       bar();',
+            <<<'EOD'
+                <?php
+                foo();
+                bar();
+                EOD,
+            <<<'EOD'
+                <?php
+                  foo();
+                       bar();
+                EOD,
         ];
 
         yield 'simple' => [
-            '<?php
-if ($foo) {
-    foo();
-    bar();
-}',
-            '<?php
-if ($foo) {
-  foo();
-       bar();
- }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
+                    bar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                  foo();
+                       bar();
+                 }
+                EOD,
         ];
 
         yield 'braces on same line as code' => [
-            '<?php
-if ($foo) {
-    foo();
-    if ($bar) { bar(); }
-}',
-            '<?php
-if ($foo) {
- foo();
-       if ($bar) { bar(); }
-  }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
+                    if ($bar) { bar(); }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                 foo();
+                       if ($bar) { bar(); }
+                  }
+                EOD,
         ];
 
         yield 'with several closing braces on same line' => [
-            '<?php
-if ($foo) { foo();
-    if ($bar) { bar();
-        if ($baz) { baz(); }}
-    foo();
-}
-foo();',
-            '<?php
-if ($foo) { foo();
- if ($bar) { bar();
-  if ($baz) { baz(); }}
-   foo();
-   }
-  foo();',
+            <<<'EOD'
+                <?php
+                if ($foo) { foo();
+                    if ($bar) { bar();
+                        if ($baz) { baz(); }}
+                    foo();
+                }
+                foo();
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) { foo();
+                 if ($bar) { bar();
+                  if ($baz) { baz(); }}
+                   foo();
+                   }
+                  foo();
+                EOD,
         ];
 
         yield 'with meaningful content on closing line' => [
-            '<?php
-if ($foo) {
-    foo(); }
-foo();',
-            '<?php
-if ($foo) {
-    foo(); }
-    foo();',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo(); }
+                foo();
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo(); }
+                    foo();
+                EOD,
         ];
 
         // @TODO brace at line 6 should have one level of indentation
         yield 'with several opening braces on same line' => [
-            '<?php
-if ($foo) { if ($foo) { foo();
-    if ($bar) { if ($bar) { bar(); }
-        baz();
-    }
-}
-    baz();
-}
-baz();',
-            '<?php
-if ($foo) { if ($foo) { foo();
-  if ($bar) { if ($bar) { bar(); }
-   baz();
-  }
-  }
-   baz();
-   }
-  baz();',
+            <<<'EOD'
+                <?php
+                if ($foo) { if ($foo) { foo();
+                    if ($bar) { if ($bar) { bar(); }
+                        baz();
+                    }
+                }
+                    baz();
+                }
+                baz();
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) { if ($foo) { foo();
+                  if ($bar) { if ($bar) { bar(); }
+                   baz();
+                  }
+                  }
+                   baz();
+                   }
+                  baz();
+                EOD,
         ];
 
         yield 'function definition arguments' => [
-            '<?php
-function foo(
-    $bar,
-    $baz
-) {
-}',
-            '<?php
-   function foo(
-     $bar,
-      $baz
- ) {
-  }',
+            <<<'EOD'
+                <?php
+                function foo(
+                    $bar,
+                    $baz
+                ) {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                   function foo(
+                     $bar,
+                      $baz
+                 ) {
+                  }
+                EOD,
         ];
 
         yield 'anonymous function definition arguments' => [
-            '<?php
-$foo = function(
-    $bar,
-    $baz
-) {
-};',
-            '<?php
-   $foo = function(
-     $bar,
-      $baz
- ) {
-  };',
+            <<<'EOD'
+                <?php
+                $foo = function(
+                    $bar,
+                    $baz
+                ) {
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                   $foo = function(
+                     $bar,
+                      $baz
+                 ) {
+                  };
+                EOD,
         ];
 
         yield 'interface method definition arguments' => [
-            '<?php
-interface Foo {
-    public function foo(
-        $bar,
-        $baz
-    );
-}',
-            '<?php
-interface Foo {
-   public function foo(
-     $bar,
-      $baz
- );
- }',
+            <<<'EOD'
+                <?php
+                interface Foo {
+                    public function foo(
+                        $bar,
+                        $baz
+                    );
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                interface Foo {
+                   public function foo(
+                     $bar,
+                      $baz
+                 );
+                 }
+                EOD,
         ];
 
         yield 'class method definition arguments' => [
-            '<?php
-class Foo {
-    public function foo(
-        $bar,
-        $baz
-    ) {
-    }
-}',
-            '<?php
-class Foo {
-   public function foo(
-     $bar,
-      $baz
- ) {
-  }
- }',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public function foo(
+                        $bar,
+                        $baz
+                    ) {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                   public function foo(
+                     $bar,
+                      $baz
+                 ) {
+                  }
+                 }
+                EOD,
         ];
 
         yield 'multiple class methods with many permutations of visibility modifiers' => [
-            '<?php
-abstract class Test {
-    final protected function test_final_protected() {}
-    static private function test_static_private() {}
-    private function test_private() {}
-    private static function test_private_static() {}
-    abstract public static function test_abstract_public_static();
-    abstract static public function test_abstract_static_public();
-    abstract public function test_abstract_public();
-    protected abstract function test_protected_abstract();
-    public abstract function test_public_abstract();
-    final static protected function test_final_static_protected() {}
-    final private static function test_final_private_static() {}
-    public final function test_public_final() {}
-    final private function test_final_private() {}
-    static final public function test_static_final_public() {}
-    protected abstract static function test_protected_abstract_static();
-    public static abstract function test_public_static_abstract();
-    protected static abstract function test_protected_static_abstract();
-    static final function test_static_final() {}
-    final static private function test_final_static_private() {}
-    static protected abstract function test_static_protected_abstract();
-    public abstract static function test_public_abstract_static();
-    static final protected function test_static_final_protected() {}
-    final public static function test_final_public_static() {}
-    static final private function test_static_final_private() {}
-    abstract protected function test_abstract_protected();
-    abstract static protected function test_abstract_static_protected();
-    private static final function test_private_static_final() {}
-    final static function test_final_static() {}
-    protected static function test_protected_static() {}
-    protected function test_protected() {}
-    public static function test_public_static() {}
-    final function test_final() {}
-    abstract protected static function test_abstract_protected_static();
-    static protected function test_static_protected() {}
-    static abstract function test_static_abstract();
-    static abstract protected function test_static_abstract_protected();
-    protected final static function test_protected_final_static() {}
-    static public final function test_static_public_final() {}
-    public final static function test_public_final_static() {}
-    abstract static function test_abstract_static();
-    public static final function test_public_static_final() {}
-    static function test_static() {}
-    abstract function test_abstract();
-    static protected final function test_static_protected_final() {}
-    static private final function test_static_private_final() {}
-    private final function test_private_final() {}
-    static public abstract function test_static_public_abstract();
-    protected static final function test_protected_static_final() {}
-    final protected static function test_final_protected_static() {}
-    final static public function test_final_static_public() {}
-    static public function test_static_public() {}
-    function test_() {}
-    static abstract public function test_static_abstract_public();
-    final public function test_final_public() {}
-    private final static function test_private_final_static() {}
-    protected final function test_protected_final() {}
-    public function test_public() {}
-}',
-            '<?php
-abstract class Test {
-                      final protected function test_final_protected() {}
-                 static private function test_static_private() {}
+            <<<'EOD'
+                <?php
+                abstract class Test {
+                    final protected function test_final_protected() {}
+                    static private function test_static_private() {}
                     private function test_private() {}
-             private static function test_private_static() {}
-        abstract public static function test_abstract_public_static();
-                 abstract static public function test_abstract_static_public();
-abstract public function test_abstract_public();
-protected abstract function test_protected_abstract();
-       public abstract function test_public_abstract();
-       final static protected function test_final_static_protected() {}
-                     final private static function test_final_private_static() {}
-           public final function test_public_final() {}
-                      final private function test_final_private() {}
-            static final public function test_static_final_public() {}
-           protected abstract static function test_protected_abstract_static();
-                 public static abstract function test_public_static_abstract();
-                       protected static abstract function test_protected_static_abstract();
-                      static final function test_static_final() {}
-                final static private function test_final_static_private() {}
-             static protected abstract function test_static_protected_abstract();
- public abstract static function test_public_abstract_static();
-     static final protected function test_static_final_protected() {}
-      final public static function test_final_public_static() {}
-     static final private function test_static_final_private() {}
-  abstract protected function test_abstract_protected();
-      abstract static protected function test_abstract_static_protected();
+                    private static function test_private_static() {}
+                    abstract public static function test_abstract_public_static();
+                    abstract static public function test_abstract_static_public();
+                    abstract public function test_abstract_public();
+                    protected abstract function test_protected_abstract();
+                    public abstract function test_public_abstract();
+                    final static protected function test_final_static_protected() {}
+                    final private static function test_final_private_static() {}
+                    public final function test_public_final() {}
+                    final private function test_final_private() {}
+                    static final public function test_static_final_public() {}
+                    protected abstract static function test_protected_abstract_static();
+                    public static abstract function test_public_static_abstract();
+                    protected static abstract function test_protected_static_abstract();
+                    static final function test_static_final() {}
+                    final static private function test_final_static_private() {}
+                    static protected abstract function test_static_protected_abstract();
+                    public abstract static function test_public_abstract_static();
+                    static final protected function test_static_final_protected() {}
+                    final public static function test_final_public_static() {}
+                    static final private function test_static_final_private() {}
+                    abstract protected function test_abstract_protected();
+                    abstract static protected function test_abstract_static_protected();
                     private static final function test_private_static_final() {}
-               final static function test_final_static() {}
-           protected static function test_protected_static() {}
-        protected function test_protected() {}
-   public static function test_public_static() {}
-         final function test_final() {}
-                   abstract protected static function test_abstract_protected_static();
-     static protected function test_static_protected() {}
-      static abstract function test_static_abstract();
-        static abstract protected function test_static_abstract_protected();
-               protected final static function test_protected_final_static() {}
-static public final function test_static_public_final() {}
-       public final static function test_public_final_static() {}
+                    final static function test_final_static() {}
+                    protected static function test_protected_static() {}
+                    protected function test_protected() {}
+                    public static function test_public_static() {}
+                    final function test_final() {}
+                    abstract protected static function test_abstract_protected_static();
+                    static protected function test_static_protected() {}
+                    static abstract function test_static_abstract();
+                    static abstract protected function test_static_abstract_protected();
+                    protected final static function test_protected_final_static() {}
+                    static public final function test_static_public_final() {}
+                    public final static function test_public_final_static() {}
                     abstract static function test_abstract_static();
                     public static final function test_public_static_final() {}
-   static function test_static() {}
-          abstract function test_abstract();
-                      static protected final function test_static_protected_final() {}
-                       static private final function test_static_private_final() {}
-        private final function test_private_final() {}
-                  static public abstract function test_static_public_abstract();
-                     protected static final function test_protected_static_final() {}
-                  final protected static function test_final_protected_static() {}
-               final static public function test_final_static_public() {}
-                  static public function test_static_public() {}
+                    static function test_static() {}
+                    abstract function test_abstract();
+                    static protected final function test_static_protected_final() {}
+                    static private final function test_static_private_final() {}
+                    private final function test_private_final() {}
+                    static public abstract function test_static_public_abstract();
+                    protected static final function test_protected_static_final() {}
+                    final protected static function test_final_protected_static() {}
+                    final static public function test_final_static_public() {}
+                    static public function test_static_public() {}
                     function test_() {}
-                       static abstract public function test_static_abstract_public();
-          final public function test_final_public() {}
-                 private final static function test_private_final_static() {}
-                protected final function test_protected_final() {}
-  public function test_public() {}
-}',
+                    static abstract public function test_static_abstract_public();
+                    final public function test_final_public() {}
+                    private final static function test_private_final_static() {}
+                    protected final function test_protected_final() {}
+                    public function test_public() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                abstract class Test {
+                                      final protected function test_final_protected() {}
+                                 static private function test_static_private() {}
+                                    private function test_private() {}
+                             private static function test_private_static() {}
+                        abstract public static function test_abstract_public_static();
+                                 abstract static public function test_abstract_static_public();
+                abstract public function test_abstract_public();
+                protected abstract function test_protected_abstract();
+                       public abstract function test_public_abstract();
+                       final static protected function test_final_static_protected() {}
+                                     final private static function test_final_private_static() {}
+                           public final function test_public_final() {}
+                                      final private function test_final_private() {}
+                            static final public function test_static_final_public() {}
+                           protected abstract static function test_protected_abstract_static();
+                                 public static abstract function test_public_static_abstract();
+                                       protected static abstract function test_protected_static_abstract();
+                                      static final function test_static_final() {}
+                                final static private function test_final_static_private() {}
+                             static protected abstract function test_static_protected_abstract();
+                 public abstract static function test_public_abstract_static();
+                     static final protected function test_static_final_protected() {}
+                      final public static function test_final_public_static() {}
+                     static final private function test_static_final_private() {}
+                  abstract protected function test_abstract_protected();
+                      abstract static protected function test_abstract_static_protected();
+                                    private static final function test_private_static_final() {}
+                               final static function test_final_static() {}
+                           protected static function test_protected_static() {}
+                        protected function test_protected() {}
+                   public static function test_public_static() {}
+                         final function test_final() {}
+                                   abstract protected static function test_abstract_protected_static();
+                     static protected function test_static_protected() {}
+                      static abstract function test_static_abstract();
+                        static abstract protected function test_static_abstract_protected();
+                               protected final static function test_protected_final_static() {}
+                static public final function test_static_public_final() {}
+                       public final static function test_public_final_static() {}
+                                    abstract static function test_abstract_static();
+                                    public static final function test_public_static_final() {}
+                   static function test_static() {}
+                          abstract function test_abstract();
+                                      static protected final function test_static_protected_final() {}
+                                       static private final function test_static_private_final() {}
+                        private final function test_private_final() {}
+                                  static public abstract function test_static_public_abstract();
+                                     protected static final function test_protected_static_final() {}
+                                  final protected static function test_final_protected_static() {}
+                               final static public function test_final_static_public() {}
+                                  static public function test_static_public() {}
+                                    function test_() {}
+                                       static abstract public function test_static_abstract_public();
+                          final public function test_final_public() {}
+                                 private final static function test_private_final_static() {}
+                                protected final function test_protected_final() {}
+                  public function test_public() {}
+                }
+                EOD,
         ];
 
         yield 'trait method definition arguments' => [
-            '<?php
-trait Foo {
-    public function foo(
-        $bar,
-        $baz
-    ) {
-    }
-}',
-            '<?php
-trait Foo {
-   public function foo(
-     $bar,
-      $baz
- ) {
-  }
- }',
+            <<<'EOD'
+                <?php
+                trait Foo {
+                    public function foo(
+                        $bar,
+                        $baz
+                    ) {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                trait Foo {
+                   public function foo(
+                     $bar,
+                      $baz
+                 ) {
+                  }
+                 }
+                EOD,
         ];
 
         yield 'function call arguments' => [
-            '<?php
-foo(
-    $bar,
-    $baz
-);',
-            '<?php
-foo(
-  $bar,
-   $baz
-    );',
+            <<<'EOD'
+                <?php
+                foo(
+                    $bar,
+                    $baz
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                foo(
+                  $bar,
+                   $baz
+                    );
+                EOD,
         ];
 
         yield 'variable function call arguments' => [
-            '<?php
-$foo(
-    $bar,
-    $baz
-);',
-            '<?php
-$foo(
-  $bar,
-   $baz
-    );',
+            <<<'EOD'
+                <?php
+                $foo(
+                    $bar,
+                    $baz
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo(
+                  $bar,
+                   $baz
+                    );
+                EOD,
         ];
 
         yield 'chained method calls' => [
-            '<?php
-if ($foo) {
-    $foo
-               ->bar()
-                 ->baz()
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo
-                    ->bar()
-                      ->baz()
-                        ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo
+                               ->bar()
+                                 ->baz()
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo
+                                    ->bar()
+                                      ->baz()
+                                        ;
+                      }
+                EOD,
         ];
 
         yield 'nested arrays (long syntax)' => [
-            '<?php
-if ($foo) {
-    $foo = array(
-             $foo,
-               $bar
-                   ->bar()
-                  ,
-                   array($baz)
-            )
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = array(
-                  $foo,
-                    $bar
-                        ->bar()
-                       ,
-                        array($baz)
-                 )
-                 ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = array(
+                             $foo,
+                               $bar
+                                   ->bar()
+                                  ,
+                                   array($baz)
+                            )
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = array(
+                                  $foo,
+                                    $bar
+                                        ->bar()
+                                       ,
+                                        array($baz)
+                                 )
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'nested arrays (short syntax)' => [
-            '<?php
-if ($foo) {
-    $foo = [
-             $foo,
-               $bar
-                   ->bar()
-                  ,
-                   [$baz]
-            ]
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = [
-                  $foo,
-                    $bar
-                        ->bar()
-                       ,
-                        [$baz]
-                 ]
-                 ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = [
+                             $foo,
+                               $bar
+                                   ->bar()
+                                  ,
+                                   [$baz]
+                            ]
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = [
+                                  $foo,
+                                    $bar
+                                        ->bar()
+                                       ,
+                                        [$baz]
+                                 ]
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'array (long syntax) with function call' => [
-            '<?php
-if ($foo) {
-    $foo = array(
-             foo(
-                 $bar,
-                 $baz
-             )
-             )
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = array(
-                  foo(
-                   $bar,
-                     $baz
-                     )
-                  )
-                 ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = array(
+                             foo(
+                                 $bar,
+                                 $baz
+                             )
+                             )
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = array(
+                                  foo(
+                                   $bar,
+                                     $baz
+                                     )
+                                  )
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'array (short syntax) with function call' => [
-            '<?php
-if ($foo) {
-    $foo = [
-             foo(
-                 $bar,
-                 $baz
-             )
-             ]
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = [
-                  foo(
-                   $bar,
-                     $baz
-                     )
-                  ]
-                 ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = [
+                             foo(
+                                 $bar,
+                                 $baz
+                             )
+                             ]
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = [
+                                  foo(
+                                   $bar,
+                                     $baz
+                                     )
+                                  ]
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'array (long syntax) with class instantiation' => [
-            '<?php
-if ($foo) {
-    $foo = array(
-             new Foo(
-                 $bar,
-                 $baz
-             )
-             )
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = array(
-                  new Foo(
-                   $bar,
-                     $baz
-                     )
-                  )
-                 ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = array(
+                             new Foo(
+                                 $bar,
+                                 $baz
+                             )
+                             )
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = array(
+                                  new Foo(
+                                   $bar,
+                                     $baz
+                                     )
+                                  )
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'array (short syntax) with class instantiation' => [
-            '<?php
-if ($foo) {
-    $foo = [
-             new Foo(
-                 $bar,
-                 $baz
-             )
-             ]
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = [
-                  new Foo(
-                   $bar,
-                     $baz
-                     )
-                  ]
-                 ;
-      }',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = [
+                             new Foo(
+                                 $bar,
+                                 $baz
+                             )
+                             ]
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = [
+                                  new Foo(
+                                   $bar,
+                                     $baz
+                                     )
+                                  ]
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'implements list' => [
-            '<?php
-class Foo implements
-    Bar,
-    Baz
-{}',
-            '<?php
-  class Foo implements
-   Bar,
-    Baz
-     {}',
+            <<<'EOD'
+                <?php
+                class Foo implements
+                    Bar,
+                    Baz
+                {}
+                EOD,
+            <<<'EOD'
+                <?php
+                  class Foo implements
+                   Bar,
+                    Baz
+                     {}
+                EOD,
         ];
 
         yield 'extends list' => [
-            '<?php
-interface Foo extends
-    Bar,
-    Baz
-{}',
-            '<?php
-  interface Foo extends
-   Bar,
-    Baz
-     {}',
+            <<<'EOD'
+                <?php
+                interface Foo extends
+                    Bar,
+                    Baz
+                {}
+                EOD,
+            <<<'EOD'
+                <?php
+                  interface Foo extends
+                   Bar,
+                    Baz
+                     {}
+                EOD,
         ];
 
         yield 'use list' => [
-            '<?php
-class Foo {
-    use Bar,
-        Baz;
-}',
-            '<?php
-  class Foo {
-       use Bar,
-              Baz;
- }',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    use Bar,
+                        Baz;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  class Foo {
+                       use Bar,
+                              Baz;
+                 }
+                EOD,
         ];
 
         yield 'chained method call with argument' => [
-            '<?php
-$foo
- ->bar(
-     $baz
- );',
-            '<?php
-$foo
- ->bar(
-  $baz
- );',
+            <<<'EOD'
+                <?php
+                $foo
+                 ->bar(
+                     $baz
+                 );
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo
+                 ->bar(
+                  $baz
+                 );
+                EOD,
         ];
 
         yield 'argument separator on its own line' => [
-            '<?php
-foo(
-    1
-    ,
-    2
-);',
-            '<?php
-foo(
- 1
-,
- 2
-);',
+            <<<'EOD'
+                <?php
+                foo(
+                    1
+                    ,
+                    2
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                foo(
+                 1
+                ,
+                 2
+                );
+                EOD,
         ];
 
         yield 'statement end on its own line' => [
-            '<?php
-if (true) {
-    $foo =
-         $a
-             && $b
-    ;
-}',
-            '<?php
-if (true) {
-  $foo =
-       $a
-           && $b
-             ;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo =
+                         $a
+                             && $b
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                  $foo =
+                       $a
+                           && $b
+                             ;
+                }
+                EOD,
         ];
 
         yield 'multiline control structure conditions' => [
-            '<?php
-if ($a
-       && $b) {
-    foo();
-}',
-            '<?php
-if ($a
-       && $b) {
-     foo();
- }',
+            <<<'EOD'
+                <?php
+                if ($a
+                       && $b) {
+                    foo();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a
+                       && $b) {
+                     foo();
+                 }
+                EOD,
         ];
 
         yield 'switch' => [
-            '<?php
-switch ($foo) {
-    case 1:
-        echo "foo";
-        break;
-    case 2:
-        echo "bar";
-        break;
-    case 3:
-    default:
-        echo "baz";
-}',
-            '<?php
-switch ($foo) {
-  case 1:
-     echo "foo";
-  break;
-  case 2:
-     echo "bar";
- break;
-  case 3:
-   default:
-    echo "baz";
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        echo "foo";
+                        break;
+                    case 2:
+                        echo "bar";
+                        break;
+                    case 3:
+                    default:
+                        echo "baz";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                  case 1:
+                     echo "foo";
+                  break;
+                  case 2:
+                     echo "bar";
+                 break;
+                  case 3:
+                   default:
+                    echo "baz";
+                }
+                EOD,
         ];
 
         yield 'array (long syntax) with anonymous class' => [
-            '<?php
-if ($foo) {
-    $foo = array(
-             new class (
-                 $bar,
-                 $baz
-             ) {
-                 private $foo;
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = array(
+                             new class (
+                                 $bar,
+                                 $baz
+                             ) {
+                                 private $foo;
 
-                 public function foo(
-                     $foo
-                 ) {
-                     return $foo;
-                 }
-             }
-             )
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = array(
-                  new class (
-                   $bar,
-                     $baz
-                      ) {
-                        private $foo;
+                                 public function foo(
+                                     $foo
+                                 ) {
+                                     return $foo;
+                                 }
+                             }
+                             )
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = array(
+                                  new class (
+                                   $bar,
+                                     $baz
+                                      ) {
+                                        private $foo;
 
-                       public function foo(
-                       $foo
-                        ) {
-                             return $foo;
-                            }
-                     }
-                  )
-                 ;
-      }',
+                                       public function foo(
+                                       $foo
+                                        ) {
+                                             return $foo;
+                                            }
+                                     }
+                                  )
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'array (short syntax) with anonymous class' => [
-            '<?php
-if ($foo) {
-    $foo = [
-             new class (
-                 $bar,
-                 $baz
-             ) {
-                 private $foo;
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    $foo = [
+                             new class (
+                                 $bar,
+                                 $baz
+                             ) {
+                                 private $foo;
 
-                 public function foo(
-                     $foo
-                 ) {
-                     return $foo;
-                 }
-             }
-             ]
-    ;
-}',
-            '<?php
-  if ($foo) {
-         $foo = [
-                  new class (
-                   $bar,
-                     $baz
-                      ) {
-                        private $foo;
+                                 public function foo(
+                                     $foo
+                                 ) {
+                                     return $foo;
+                                 }
+                             }
+                             ]
+                    ;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if ($foo) {
+                         $foo = [
+                                  new class (
+                                   $bar,
+                                     $baz
+                                      ) {
+                                        private $foo;
 
-                       public function foo(
-                       $foo
-                        ) {
-                             return $foo;
-                            }
-                     }
-                  ]
-                 ;
-      }',
+                                       public function foo(
+                                       $foo
+                                        ) {
+                                             return $foo;
+                                            }
+                                     }
+                                  ]
+                                 ;
+                      }
+                EOD,
         ];
 
         yield 'expression function call arguments' => [
-            '<?php
-(\'foo\')(
-    $bar,
-    $baz
-);',
-            '<?php
-(\'foo\')(
-  $bar,
-   $baz
-    );',
+            <<<'EOD'
+                <?php
+                ('foo')(
+                    $bar,
+                    $baz
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                ('foo')(
+                  $bar,
+                   $baz
+                    );
+                EOD,
         ];
 
         yield 'arrow function definition arguments' => [
-            '<?php
-$foo = fn(
-    $bar,
-    $baz
-) => null;',
-            '<?php
-   $foo = fn(
-     $bar,
-      $baz
- ) => null;',
+            <<<'EOD'
+                <?php
+                $foo = fn(
+                    $bar,
+                    $baz
+                ) => null;
+                EOD,
+            <<<'EOD'
+                <?php
+                   $foo = fn(
+                     $bar,
+                      $baz
+                 ) => null;
+                EOD,
         ];
 
         yield 'multiline list in foreach' => [
-            '<?php
-foreach ($array as [
-    "foo" => $foo,
-    "bar" => $bar,
-]) {
-}',
+            <<<'EOD'
+                <?php
+                foreach ($array as [
+                    "foo" => $foo,
+                    "bar" => $bar,
+                ]) {
+                }
+                EOD,
         ];
 
         yield 'switch case with control structure' => [
-            '<?php
-switch ($foo) {
-    case true:
-        if ($bar) {
-            bar();
-        }
-        return true;
-}',
-            '<?php
-switch ($foo) {
-    case true:
-    if ($bar) {
-      bar();
-    }
-return true;
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case true:
+                        if ($bar) {
+                            bar();
+                        }
+                        return true;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case true:
+                    if ($bar) {
+                      bar();
+                    }
+                return true;
+                }
+                EOD,
         ];
 
         yield 'comment in method calls chain' => [
-            '<?php
-$foo
-    ->baz()
-    /* ->baz() */
-;',
+            <<<'EOD'
+                <?php
+                $foo
+                    ->baz()
+                    /* ->baz() */
+                ;
+                EOD,
         ];
 
         yield 'multiple anonymous functions as function arguments' => [
-            '<?php
-foo(function () {
-    bar();
-}, function () {
-    baz();
-});',
+            <<<'EOD'
+                <?php
+                foo(function () {
+                    bar();
+                }, function () {
+                    baz();
+                });
+                EOD,
         ];
 
         yield 'multiple anonymous functions as method arguments' => [
-            '<?php
-$this
-    ->bar(function ($a) {
-        echo $a;
-    }, function ($b) {
-        echo $b;
-    })
-;',
+            <<<'EOD'
+                <?php
+                $this
+                    ->bar(function ($a) {
+                        echo $a;
+                    }, function ($b) {
+                        echo $b;
+                    })
+                ;
+                EOD,
         ];
 
         yield 'semicolon on a newline inside a switch case without break statement' => [
-            '<?php
-switch (true) {
-    case $foo:
-        $foo
-            ->baz()
-        ;
-}',
+            <<<'EOD'
+                <?php
+                switch (true) {
+                    case $foo:
+                        $foo
+                            ->baz()
+                        ;
+                }
+                EOD,
         ];
 
         yield 'alternative syntax' => [
-            '<?php if (1): ?>
-    <div></div>
-<?php else: ?>
-    <?php if (2): ?>
-        <div></div>
-    <?php else: ?>
-        <div></div>
-    <?php endif; ?>
-<?php endif; ?>
-',
+            <<<'EOD'
+                <?php if (1): ?>
+                    <div></div>
+                <?php else: ?>
+                    <?php if (2): ?>
+                        <div></div>
+                    <?php else: ?>
+                        <div></div>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                EOD,
         ];
 
         yield 'trait import with conflict resolution' => [
-            '<?php
-class Foo {
-    use Bar,
-        Baz {
-            Baz::baz insteadof Bar;
-        }
-}',
-            '<?php
-class Foo {
-    use Bar,
-      Baz {
-       Baz::baz insteadof Bar;
-       }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    use Bar,
+                        Baz {
+                            Baz::baz insteadof Bar;
+                        }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                    use Bar,
+                      Baz {
+                       Baz::baz insteadof Bar;
+                       }
+                }
+                EOD,
         ];
 
         yield 'multiline class definition' => [
-            '<?php
-class Foo
-extends
-    BaseFoo
-implements Bar,
-    Baz {
-    public function foo() {
-    }
-}',
-            '<?php
-class Foo
-  extends
-    BaseFoo
-   implements Bar,
-  Baz {
-    public function foo() {
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                extends
+                    BaseFoo
+                implements Bar,
+                    Baz {
+                    public function foo() {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                  extends
+                    BaseFoo
+                   implements Bar,
+                  Baz {
+                    public function foo() {
+                    }
+                }
+                EOD,
         ];
 
         yield 'comment at end of switch case' => [
-            '<?php
-switch ($foo) {
-    case 1:
-        // Nothing to do
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        // Nothing to do
+                }
+                EOD,
         ];
 
         yield 'comment at end of switch default' => [
-            '<?php
-switch ($foo) {
-    case 1:
-        break;
-    case 2:
-        break;
-    default:
-        // Nothing to do
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        // Nothing to do
+                }
+                EOD,
         ];
 
         yield 'switch ending with empty case' => [
-            '<?php
-switch ($foo) {
-    case 1:
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                }
+                EOD,
         ];
 
         yield 'switch ending with empty default' => [
-            '<?php
-switch ($foo) {
-    default:
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    default:
+                }
+                EOD,
         ];
 
         yield 'function ending with a comment and followed by a comma' => [
-            '<?php
-foo(function () {
-    bar();
-    // comment
-}, );',
+            <<<'EOD'
+                <?php
+                foo(function () {
+                    bar();
+                    // comment
+                }, );
+                EOD,
         ];
 
         yield 'multiline arguments starting with "new" keyword' => [
-            '<?php
-$result1 = foo(
-    new Bar1(),
-    1
-);
-$result2 = ($function)(
-    new Bar2(),
-    2
-);
-$result3 = (new Argument())(
-    new Bar3(),
-    3
-);',
+            <<<'EOD'
+                <?php
+                $result1 = foo(
+                    new Bar1(),
+                    1
+                );
+                $result2 = ($function)(
+                    new Bar2(),
+                    2
+                );
+                $result3 = (new Argument())(
+                    new Bar3(),
+                    3
+                );
+                EOD,
         ];
 
         yield 'if with only a comment and followed by else' => [
-            '<?php
-if (true) {
-    // foo
-} else {
-    // bar
-}',
-            '<?php
-if (true) {
-// foo
-} else {
-        // bar
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // foo
+                } else {
+                    // bar
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                // foo
+                } else {
+                        // bar
+                }
+                EOD,
         ];
 
         yield 'comment before else blocks WITHOUT stick_comment_to_next_continuous_control_statement' => [
-            '<?php
-// foo
-if ($foo) {
-    echo "foo";
-    // bar
-} else {
-    $aaa = 1;
-}',
-            '<?php
-        // foo
-if ($foo) {
-    echo "foo";
-        // bar
-} else {
-    $aaa = 1;
-}',
+            <<<'EOD'
+                <?php
+                // foo
+                if ($foo) {
+                    echo "foo";
+                    // bar
+                } else {
+                    $aaa = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                        // foo
+                if ($foo) {
+                    echo "foo";
+                        // bar
+                } else {
+                    $aaa = 1;
+                }
+                EOD,
             ['stick_comment_to_next_continuous_control_statement' => false],
         ];
 
         yield 'comment before else blocks WITH stick_comment_to_next_continuous_control_statement' => [
-            '<?php
-// foo
-if ($foo) {
-    echo "foo";
-// bar
-} else {
-    $aaa = 1;
-}',
-            '<?php
-        // foo
-if ($foo) {
-    echo "foo";
-        // bar
-} else {
-    $aaa = 1;
-}',
+            <<<'EOD'
+                <?php
+                // foo
+                if ($foo) {
+                    echo "foo";
+                // bar
+                } else {
+                    $aaa = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                        // foo
+                if ($foo) {
+                    echo "foo";
+                        // bar
+                } else {
+                    $aaa = 1;
+                }
+                EOD,
             ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - describing next block' => [
-            '<?php
-if (1) {
-    $b = "a";
-// multiline comment line 1
-// multiline comment line 2
-// multiline comment line 3
-} else {
-    $c = "b";
-}',
-            '<?php
-if (1) {
-    $b = "a";
-    // multiline comment line 1
-    // multiline comment line 2
-    // multiline comment line 3
-} else {
-    $c = "b";
-}',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $b = "a";
+                // multiline comment line 1
+                // multiline comment line 2
+                // multiline comment line 3
+                } else {
+                    $c = "b";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $b = "a";
+                    // multiline comment line 1
+                    // multiline comment line 2
+                    // multiline comment line 3
+                } else {
+                    $c = "b";
+                }
+                EOD,
             ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'multiline comment in block - the only content in block' => [
-            '<?php
-if (1) {
-    // multiline comment line 1
-    // multiline comment line 2
-    // multiline comment line 3
-} else {
-    $c = "b";
-}',
-            '<?php
-if (1) {
- // multiline comment line 1
-  // multiline comment line 2
-// multiline comment line 3
-} else {
-    $c = "b";
-}',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    // multiline comment line 1
+                    // multiline comment line 2
+                    // multiline comment line 3
+                } else {
+                    $c = "b";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                 // multiline comment line 1
+                  // multiline comment line 2
+                // multiline comment line 3
+                } else {
+                    $c = "b";
+                }
+                EOD,
         ];
 
         yield 'comment before elseif blocks' => [
-            '<?php
-// foo
-if ($foo) {
-    echo "foo";
-// bar
-} elseif(1) {
-    echo "bar";
-} elseif(2) {
-    // do nothing
-} elseif(3) {
-    $aaa = 1;
-    // end comment in final block
-}',
-            '<?php
-    // foo
-if ($foo) {
-    echo "foo";
-    // bar
-} elseif(1) {
-    echo "bar";
-} elseif(2) {
-// do nothing
-} elseif(3) {
-    $aaa = 1;
-    // end comment in final block
-}',
+            <<<'EOD'
+                <?php
+                // foo
+                if ($foo) {
+                    echo "foo";
+                // bar
+                } elseif(1) {
+                    echo "bar";
+                } elseif(2) {
+                    // do nothing
+                } elseif(3) {
+                    $aaa = 1;
+                    // end comment in final block
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                    // foo
+                if ($foo) {
+                    echo "foo";
+                    // bar
+                } elseif(1) {
+                    echo "bar";
+                } elseif(2) {
+                // do nothing
+                } elseif(3) {
+                    $aaa = 1;
+                    // end comment in final block
+                }
+                EOD,
             ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'comments at the end of if/elseif/else blocks' => [
-            '<?php
-if ($foo) {
-    echo "foo";
-// foo
-} elseif ($bar) {
-    echo "bar";
-// bar
-} else {
-    echo "baz";
-    // baz
-}',
-            '<?php
-if ($foo) {
-    echo "foo";
-    // foo
-} elseif ($bar) {
-    echo "bar";
-    // bar
-} else {
-    echo "baz";
-    // baz
-}',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    echo "foo";
+                // foo
+                } elseif ($bar) {
+                    echo "bar";
+                // bar
+                } else {
+                    echo "baz";
+                    // baz
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    echo "foo";
+                    // foo
+                } elseif ($bar) {
+                    echo "bar";
+                    // bar
+                } else {
+                    echo "baz";
+                    // baz
+                }
+                EOD,
             ['stick_comment_to_next_continuous_control_statement' => true],
         ];
 
         yield 'if-elseif-else without braces' => [
-            '<?php
-if ($foo)
-    foo();
-elseif ($bar)
-    bar();
-else
-    baz();',
-            '<?php
-if ($foo)
-foo();
-elseif ($bar)
-  bar();
-else
-        baz();',
+            <<<'EOD'
+                <?php
+                if ($foo)
+                    foo();
+                elseif ($bar)
+                    bar();
+                else
+                    baz();
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo)
+                foo();
+                elseif ($bar)
+                  bar();
+                else
+                        baz();
+                EOD,
         ];
 
         yield 'for without braces' => [
-            '<?php
-for (;;)
-    foo();',
-            '<?php
-for (;;)
-  foo();',
+            <<<'EOD'
+                <?php
+                for (;;)
+                    foo();
+                EOD,
+            <<<'EOD'
+                <?php
+                for (;;)
+                  foo();
+                EOD,
         ];
 
         yield 'foreach without braces' => [
-            '<?php
-foreach ($foo as $bar)
-    foo();',
-            '<?php
-foreach ($foo as $bar)
-  foo();',
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar)
+                    foo();
+                EOD,
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar)
+                  foo();
+                EOD,
         ];
 
         yield 'while without braces' => [
-            '<?php
-while (true)
-    foo();',
-            '<?php
-while (true)
-  foo();',
+            <<<'EOD'
+                <?php
+                while (true)
+                    foo();
+                EOD,
+            <<<'EOD'
+                <?php
+                while (true)
+                  foo();
+                EOD,
         ];
 
         yield 'do-while without braces' => [
-            '<?php
-do
-    foo();
-while (true);',
-            '<?php
-do
-  foo();
- while (true);',
+            <<<'EOD'
+                <?php
+                do
+                    foo();
+                while (true);
+                EOD,
+            <<<'EOD'
+                <?php
+                do
+                  foo();
+                 while (true);
+                EOD,
         ];
 
         yield 'nested control structures without braces' => [
-            '<?php
-if (true)
-    if (true)
-        if (true)
-            for ($i = 0; $i < 1; ++$i)
-                echo 1;
-        elseif (true)
-            foreach ([] as $foo)
-                echo 2;
-        else if (true)
-            while (true)
-                echo 3;
-        else
-            do
-                echo 4;
-            while (true);
-    else
-        echo 5;',
-            '<?php
-if (true)
-if (true)
- if (true)
-    for ($i = 0; $i < 1; ++$i)
-  echo 1;
-elseif (true)
-  foreach ([] as $foo)
-   echo 2;
-else if (true)
-  while (true)
-   echo 3;
-  else
-  do
-      echo 4;
-      while (true);
-    else
-     echo 5;',
+            <<<'EOD'
+                <?php
+                if (true)
+                    if (true)
+                        if (true)
+                            for ($i = 0; $i < 1; ++$i)
+                                echo 1;
+                        elseif (true)
+                            foreach ([] as $foo)
+                                echo 2;
+                        else if (true)
+                            while (true)
+                                echo 3;
+                        else
+                            do
+                                echo 4;
+                            while (true);
+                    else
+                        echo 5;
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)
+                if (true)
+                 if (true)
+                    for ($i = 0; $i < 1; ++$i)
+                  echo 1;
+                elseif (true)
+                  foreach ([] as $foo)
+                   echo 2;
+                else if (true)
+                  while (true)
+                   echo 3;
+                  else
+                  do
+                      echo 4;
+                      while (true);
+                    else
+                     echo 5;
+                EOD,
         ];
 
         yield 'mixex if-else with and without braces' => [
-            '<?php
-if (true)
-    if (true) {
-        if (true)
-            echo 1;
-        else
-            echo 2;
-    }
-    else {
-        echo 3;
-    }
-else
-    echo 4;',
-            '<?php
-if (true)
-  if (true) {
-          if (true)
-               echo 1;
-  else
-        echo 2;
-   }
- else {
-    echo 3;
- }
-    else
-     echo 4;',
+            <<<'EOD'
+                <?php
+                if (true)
+                    if (true) {
+                        if (true)
+                            echo 1;
+                        else
+                            echo 2;
+                    }
+                    else {
+                        echo 3;
+                    }
+                else
+                    echo 4;
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)
+                  if (true) {
+                          if (true)
+                               echo 1;
+                  else
+                        echo 2;
+                   }
+                 else {
+                    echo 3;
+                 }
+                    else
+                     echo 4;
+                EOD,
         ];
 
         yield 'empty if and else without braces' => [
-            '<?php
-if (true) {
-    if (false);
-    elseif (false);
-    else if (false);
-    else
-        echo 1;
-}',
-            '<?php
-  if (true) {
-   if (false);
-  elseif (false);
- else if (false);
-else
-echo 1;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (false);
+                    elseif (false);
+                    else if (false);
+                    else
+                        echo 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                  if (true) {
+                   if (false);
+                  elseif (false);
+                 else if (false);
+                else
+                echo 1;
+                }
+                EOD,
         ];
     }
 
@@ -1234,16 +1462,20 @@ echo 1;
     public static function provideFixWithTabsCases(): iterable
     {
         yield 'simple' => [
-            "<?php
-if (\$foo) {
-\tfoo();
-\tbar();
-}",
-            '<?php
-if ($foo) {
-  foo();
-       bar();
- }',
+            <<<EOD
+                <?php
+                if (\$foo) {
+                \tfoo();
+                \tbar();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                  foo();
+                       bar();
+                 }
+                EOD,
         ];
     }
 
@@ -1266,57 +1498,65 @@ if ($foo) {
     public static function provideFixPhp80Cases(): iterable
     {
         yield 'match expression' => [
-            '<?php
-return match ($bool) {
-    0 => false,
-    1 => true,
-    default => throw new Exception(),
-};',
-            '<?php
-return match ($bool) {
- 0 => false,
-      1 => true,
-   default => throw new Exception(),
-};',
+            <<<'EOD'
+                <?php
+                return match ($bool) {
+                    0 => false,
+                    1 => true,
+                    default => throw new Exception(),
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                return match ($bool) {
+                 0 => false,
+                      1 => true,
+                   default => throw new Exception(),
+                };
+                EOD,
         ];
 
         yield 'attribute' => [
-            '<?php
-class Foo {
-    #[SimpleAttribute]
-    #[
-        MultilineAttribute
-    ]
-    #[ComplexAttribute(
-        foo: true,
-        bar: [
-                    1,
-                        2,
-                  3,
-         ]
-    )]
-    public function bar()
-    {
-    }
-}',
-            '<?php
-class Foo {
- #[SimpleAttribute]
- #[
- MultilineAttribute
- ]
-#[ComplexAttribute(
- foo: true,
-    bar: [
-                1,
-                    2,
-              3,
-     ]
- )]
-  public function bar()
-     {
-     }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    #[SimpleAttribute]
+                    #[
+                        MultilineAttribute
+                    ]
+                    #[ComplexAttribute(
+                        foo: true,
+                        bar: [
+                                    1,
+                                        2,
+                                  3,
+                         ]
+                    )]
+                    public function bar()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                 #[SimpleAttribute]
+                 #[
+                 MultilineAttribute
+                 ]
+                #[ComplexAttribute(
+                 foo: true,
+                    bar: [
+                                1,
+                                    2,
+                              3,
+                     ]
+                 )]
+                  public function bar()
+                     {
+                     }
+                }
+                EOD,
         ];
     }
 
@@ -1339,56 +1579,68 @@ class Foo {
     public static function provideFixPhp81Cases(): iterable
     {
         yield 'simple enum' => [
-            '<?php
-enum Color {
-    case Red;
-    case Green;
-    case Blue;
-}',
-            '<?php
-enum Color {
- case Red;
-      case Green;
-  case Blue;
-}',
+            <<<'EOD'
+                <?php
+                enum Color {
+                    case Red;
+                    case Green;
+                    case Blue;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Color {
+                 case Red;
+                      case Green;
+                  case Blue;
+                }
+                EOD,
         ];
 
         yield 'backend enum' => [
-            '<?php
-enum Color: string {
-    case Red = "R";
-    case Green = "G";
-    case Blue = "B";
-}',
-            '<?php
-enum Color: string {
- case Red = "R";
-      case Green = "G";
-  case Blue = "B";
-}',
+            <<<'EOD'
+                <?php
+                enum Color: string {
+                    case Red = "R";
+                    case Green = "G";
+                    case Blue = "B";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Color: string {
+                 case Red = "R";
+                      case Green = "G";
+                  case Blue = "B";
+                }
+                EOD,
         ];
 
         yield 'enum with method' => [
-            '<?php
-enum Color {
-    case Red;
-    case Green;
-    case Blue;
+            <<<'EOD'
+                <?php
+                enum Color {
+                    case Red;
+                    case Green;
+                    case Blue;
 
-    public function foo() {
-        return true;
-    }
-}',
-            '<?php
-enum Color {
- case Red;
-      case Green;
-  case Blue;
+                    public function foo() {
+                        return true;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Color {
+                 case Red;
+                      case Green;
+                  case Blue;
 
-      public function foo() {
-            return true;
-        }
-}',
+                      public function foo() {
+                            return true;
+                        }
+                }
+                EOD,
         ];
     }
 }

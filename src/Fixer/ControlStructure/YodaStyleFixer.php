@@ -61,18 +61,22 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             'Write conditions in Yoda style (`true`), non-Yoda style (`[\'equal\' => false, \'identical\' => false, \'less_and_greater\' => false]`) or ignore those conditions (`null`) based on configuration.',
             [
                 new CodeSample(
-                    '<?php
-    if ($a === null) {
-        echo "null";
-    }
-'
+                    <<<'EOD'
+                        <?php
+                            if ($a === null) {
+                                echo "null";
+                            }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-    $b = $c != 1;  // equal
-    $a = 1 === $b; // identical
-    $c = $c > 3;   // less than
-',
+                    <<<'EOD'
+                        <?php
+                            $b = $c != 1;  // equal
+                            $a = 1 === $b; // identical
+                            $c = $c > 3;   // less than
+
+                        EOD,
                     [
                         'equal' => true,
                         'identical' => false,
@@ -80,20 +84,24 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-return $foo === count($bar);
-',
+                    <<<'EOD'
+                        <?php
+                        return $foo === count($bar);
+
+                        EOD,
                     [
                         'always_move_variable' => true,
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-    // Enforce non-Yoda style.
-    if (null === $a) {
-        echo "null";
-    }
-',
+                    <<<'EOD'
+                        <?php
+                            // Enforce non-Yoda style.
+                            if (null === $a) {
+                                echo "null";
+                            }
+
+                        EOD,
                     [
                         'equal' => false,
                         'identical' => false,

@@ -52,43 +52,55 @@ final class ElseifFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                        $x = 1;
-                    } elseif ($b) {
-                        $x = 2;
-                    }',
-            '<?php
-                    if ($a) {
-                        $x = 1;
-                    } else
-                    if ($b) {
-                        $x = 2;
-                    }',
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        $x = 1;
+                                    } elseif ($b) {
+                                        $x = 2;
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                        $x = 1;
+                                    } else
+                                    if ($b) {
+                                        $x = 2;
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                    } elseif/**/ ($b) {
-                    }'."\n                ",
-            '<?php
-                    if ($a) {
-                    } else /**/ if ($b) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                    } elseif/**/ ($b) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                    } else /**/ if ($b) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if ($a) {
-                    } elseif//
-                        ($b) {
-                    }'."\n                ",
-            '<?php
-                    if ($a) {
-                    } else //
-                        if ($b) {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                    } elseif//
+                                        ($b) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if ($a) {
+                                    } else //
+                                        if ($b) {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [

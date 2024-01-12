@@ -38,18 +38,22 @@ final class GetClassToClassKeywordFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '
-<?php
+            <<<'EOD'
 
-$before = $before::class;
-$after = $after::class;
-',
-            '
-<?php
+                <?php
 
-$before = get_class($before);
-$after = get_class($after);
-',
+                $before = $before::class;
+                $after = $after::class;
+
+                EOD,
+            <<<'EOD'
+
+                <?php
+
+                $before = get_class($before);
+                $after = get_class($after);
+
+                EOD,
         ];
 
         yield [
@@ -151,12 +155,14 @@ $after = get_class($after);
         ];
 
         yield [
-            '<?php
-class A
-{
-    public function get_class($foo) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class A
+                {
+                    public function get_class($foo) {}
+                }
+
+                EOD,
         ];
 
         yield [

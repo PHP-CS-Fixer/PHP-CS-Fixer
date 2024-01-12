@@ -69,83 +69,109 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = "a".
-"b";',
-            '<?php $foo = "a" .
-"b";',
+            <<<'EOD'
+                <?php $foo = "a".
+                "b";
+                EOD,
+            <<<'EOD'
+                <?php $foo = "a" .
+                "b";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar"
-    ."baz";',
+            <<<'EOD'
+                <?php $a = "foobar"
+                    ."baz";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar"
-                     //test
-                     ."baz";',
+            <<<'EOD'
+                <?php $a = "foobar"
+                                     //test
+                                     ."baz";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar"
-                     /* test */
-                     ."baz";',
+            <<<'EOD'
+                <?php $a = "foobar"
+                                     /* test */
+                                     ."baz";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar" //
-    ."baz";',
+            <<<'EOD'
+                <?php $a = "foobar" //
+                    ."baz";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar" //
-                            ."baz"//
-                            ."cex"/**/
-                            ."dev"/**  */
-                            ."baz"      //
-                            ."cex"      /**/
-                            ."ewer23"'.'           '.'
-                            ."dev"      /**  */
-                    ;',
+            <<<'EOD'
+                <?php $a = "foobar" //
+                                            ."baz"//
+                                            ."cex"/**/
+                                            ."dev"/**  */
+                                            ."baz"      //
+                                            ."cex"      /**/
+                                            ."ewer23"
+                EOD.'           '.<<<'EOD'
+
+                                            ."dev"      /**  */
+                                    ;
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar" //
-    ."baz" /**/
-    ."something";',
+            <<<'EOD'
+                <?php $a = "foobar" //
+                    ."baz" /**/
+                    ."something";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar"
-    ."baz".      //
-    "something";',
+            <<<'EOD'
+                <?php $a = "foobar"
+                    ."baz".      //
+                    "something";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar"
-    ."baz".      /**  */
-    "something";',
+            <<<'EOD'
+                <?php $a = "foobar"
+                    ."baz".      /**  */
+                    "something";
+                EOD,
         ];
 
         yield [
-            "<?php
-                \$longString = '*'
-                    .'*****'
-                    .'*****'
-                    .'*****'
-                    // Comment about next line
-                    .'*****'
-                    // Other comment
-                    .'*****';"."\n                ",
-            "<?php
-                \$longString = '*'
-                    . '*****'
-                    .  '*****'
-                    .   '*****'
-                    // Comment about next line
-                    .  '*****'
-                    // Other comment
-                    .  '*****';"."\n                ",
+            <<<'EOD'
+                <?php
+                                $longString = '*'
+                                    .'*****'
+                                    .'*****'
+                                    .'*****'
+                                    // Comment about next line
+                                    .'*****'
+                                    // Other comment
+                                    .'*****';
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                $longString = '*'
+                                    . '*****'
+                                    .  '*****'
+                                    .   '*****'
+                                    // Comment about next line
+                                    .  '*****'
+                                    // Other comment
+                                    .  '*****';
+                EOD."\n                ",
         ];
     }
 
@@ -161,20 +187,24 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     public static function provideFixWithSpaceCases(): iterable
     {
         yield [
-            '<?php
-                    $a =   //
-                    $c .   /**/
-                    $d     #
-                    . $e   /**  */
-                    . $f . //
-                    $z;'."\n                ",
-            '<?php
-                    $a =   //
-                    $c   .   /**/
-                    $d     #
-                    .   $e   /**  */
-                    .   $f   . //
-                    $z;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a =   //
+                                    $c .   /**/
+                                    $d     #
+                                    . $e   /**  */
+                                    . $f . //
+                                    $z;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a =   //
+                                    $c   .   /**/
+                                    $d     #
+                                    .   $e   /**  */
+                                    .   $f   . //
+                                    $z;
+                EOD."\n                ",
         ];
 
         yield [
@@ -183,32 +213,44 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = "a" .
-"b";',
-            '<?php $foo = "a".
-"b";',
+            <<<'EOD'
+                <?php $foo = "a" .
+                "b";
+                EOD,
+            <<<'EOD'
+                <?php $foo = "a".
+                "b";
+                EOD,
         ];
 
         yield [
-            '<?php $a = "foobar"
-    . "baz";',
-            '<?php $a = "foobar"
-    ."baz";',
+            <<<'EOD'
+                <?php $a = "foobar"
+                    . "baz";
+                EOD,
+            <<<'EOD'
+                <?php $a = "foobar"
+                    ."baz";
+                EOD,
         ];
 
         yield [
-            '<?php echo $a . $b;
-                    echo $d . $e .   //
-                        $f;
-                    echo $a . $b?>
-                 <?php
-                    echo $c;'."\n                ",
-            '<?php echo $a.$b;
-                    echo $d    .            $e          .   //
-                        $f;
-                    echo $a   .                  $b?>
-                 <?php
-                    echo $c;'."\n                ",
+            <<<'EOD'
+                <?php echo $a . $b;
+                                    echo $d . $e .   //
+                                        $f;
+                                    echo $a . $b?>
+                                 <?php
+                                    echo $c;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php echo $a.$b;
+                                    echo $d    .            $e          .   //
+                                        $f;
+                                    echo $a   .                  $b?>
+                                 <?php
+                                    echo $c;
+                EOD."\n                ",
         ];
     }
 }

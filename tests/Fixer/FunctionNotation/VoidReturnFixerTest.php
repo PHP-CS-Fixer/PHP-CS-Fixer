@@ -64,19 +64,23 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
 
         yield ['<?php use Foo\ { function Bar }; function test() { return Bar(); }'];
 
-        yield ['<?php
-                /**
-                 * @return array
-                 */
-                function foo($param) {}'."\n            "];
+        yield [<<<'EOD'
+            <?php
+                            /**
+                             * @return array
+                             */
+                            function foo($param) {}
+            EOD."\n            "];
 
-        yield ['<?php
-                interface Test {
-                    /**
-                     * @return array
-                     */
-                    public function foo($param);
-                }'."\n            "];
+        yield [<<<'EOD'
+            <?php
+                            interface Test {
+                                /**
+                                 * @return array
+                                 */
+                                public function foo($param);
+                            }
+            EOD."\n            "];
 
         yield [
             '<?php function foo($param): void { return; }',
@@ -139,111 +143,139 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                function foo(): void {
-                    $a = function (): void {};
-                }',
-            '<?php
-                function foo() {
-                    $a = function () {};
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(): void {
+                                    $a = function (): void {};
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    $a = function () {};
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                function foo(): void {
-                    (function (): void {
-                        return;
-                    })();
-                }',
-            '<?php
-                function foo() {
-                    (function () {
-                        return;
-                    })();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(): void {
+                                    (function (): void {
+                                        return;
+                                    })();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    (function () {
+                                        return;
+                                    })();
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                function foo(): void {
-                    (function () {
-                        return 1;
-                    })();
-                }',
-            '<?php
-                function foo() {
-                    (function () {
-                        return 1;
-                    })();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(): void {
+                                    (function () {
+                                        return 1;
+                                    })();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    (function () {
+                                        return 1;
+                                    })();
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                function foo(): void {
-                    $b = new class {
-                        public function b1(): void {}
-                        public function b2() { return 2; }
-                    };
-                }',
-            '<?php
-                function foo() {
-                    $b = new class {
-                        public function b1() {}
-                        public function b2() { return 2; }
-                    };
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(): void {
+                                    $b = new class {
+                                        public function b1(): void {}
+                                        public function b2() { return 2; }
+                                    };
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                    $b = new class {
+                                        public function b1() {}
+                                        public function b2() { return 2; }
+                                    };
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                /**
-                 * @return void
-                 */
-                function foo($param): void {}',
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @return void
+                                 */
+                                function foo($param): void {}
+                EOD,
 
-            '<?php
-                /**
-                 * @return void
-                 */
-                function foo($param) {}',
+            <<<'EOD'
+                <?php
+                                /**
+                                 * @return void
+                                 */
+                                function foo($param) {}
+                EOD,
         ];
 
         yield [
-            '<?php
-                interface Test {
-                    /**
-                     * @return void
-                     */
-                    public function foo($param): void;
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test {
+                                    /**
+                                     * @return void
+                                     */
+                                    public function foo($param): void;
+                                }
+                EOD,
 
-            '<?php
-                interface Test {
-                    /**
-                     * @return void
-                     */
-                    public function foo($param);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test {
+                                    /**
+                                     * @return void
+                                     */
+                                    public function foo($param);
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-                abstract class Test {
-                    /**
-                     * @return void
-                     */
-                    abstract protected function foo($param): void;
-                }',
+            <<<'EOD'
+                <?php
+                                abstract class Test {
+                                    /**
+                                     * @return void
+                                     */
+                                    abstract protected function foo($param): void;
+                                }
+                EOD,
 
-            '<?php
-                abstract class Test {
-                    /**
-                     * @return void
-                     */
-                    abstract protected function foo($param);
-                }',
+            <<<'EOD'
+                <?php
+                                abstract class Test {
+                                    /**
+                                     * @return void
+                                     */
+                                    abstract protected function foo($param);
+                                }
+                EOD,
         ];
 
         yield [
@@ -300,33 +332,39 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            class Foo
-            {
-                /**
-                 * @return int|false
-                 */
-                #[\ReturnTypeWillChange]
-                public function test() {}
-            }'."\n            ",
+                            class Foo
+                            {
+                                /**
+                                 * @return int|false
+                                 */
+                                #[\ReturnTypeWillChange]
+                                public function test() {}
+                            }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-            /**
-             * @return void
-             */
-            #[\Deprecated]
-            function test(): void {};'."\n            ",
-            '<?php
+                            /**
+                             * @return void
+                             */
+                            #[\Deprecated]
+                            function test(): void {};
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-            /**
-             * @return void
-             */
-            #[\Deprecated]
-            function test() {};'."\n            ",
+                            /**
+                             * @return void
+                             */
+                            #[\Deprecated]
+                            function test() {};
+                EOD."\n            ",
         ];
     }
 

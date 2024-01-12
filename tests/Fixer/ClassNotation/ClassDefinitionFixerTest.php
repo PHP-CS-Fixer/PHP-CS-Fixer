@@ -187,104 +187,128 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'PSR-12 Extends/Implements Parenthesis on the next line.' => [
-            '<?php
-$instance = new class extends \Foo implements
-\ArrayAccess,
-    \Countable,
-    \Serializable
-{};',
-            '<?php
-$instance = new class   extends \Foo  implements
-\ArrayAccess,\Countable,\Serializable{};',
+            <<<'EOD'
+                <?php
+                $instance = new class extends \Foo implements
+                \ArrayAccess,
+                    \Countable,
+                    \Serializable
+                {};
+                EOD,
+            <<<'EOD'
+                <?php
+                $instance = new class   extends \Foo  implements
+                \ArrayAccess,\Countable,\Serializable{};
+                EOD,
         ];
 
         yield 'PSR-12 Implements Parenthesis on the next line.' => [
-            '<?php
-$instance = new class implements
-\ArrayAccess,
-    \Countable,
-    \Serializable
-{};',
-            '<?php
-$instance = new class implements
-\ArrayAccess,\Countable,\Serializable{};',
+            <<<'EOD'
+                <?php
+                $instance = new class implements
+                \ArrayAccess,
+                    \Countable,
+                    \Serializable
+                {};
+                EOD,
+            <<<'EOD'
+                <?php
+                $instance = new class implements
+                \ArrayAccess,\Countable,\Serializable{};
+                EOD,
         ];
 
         yield 'PSR-12 Extends Parenthesis on the next line.' => [
-            '<?php
-$instance = new class extends
-ArrayAccess
-{};',
-            '<?php
-$instance = new class
-extends
-ArrayAccess
-{};',
+            <<<'EOD'
+                <?php
+                $instance = new class extends
+                ArrayAccess
+                {};
+                EOD,
+            <<<'EOD'
+                <?php
+                $instance = new class
+                extends
+                ArrayAccess
+                {};
+                EOD,
         ];
 
         yield [
-            "<?php \$a = new #
-class #
-( #
-'1a', #
-1 #
-) #
-implements#
-A, #
-B,
-    C #
-{#
-#
-}#
-;",
-            "<?php \$a = new#
-class#
-(#
-'1a',#
-1 #
-)#
-implements#
-A, #
-B,C#
-{#
-#
-}#
-;",
+            <<<'EOD'
+                <?php $a = new #
+                class #
+                ( #
+                '1a', #
+                1 #
+                ) #
+                implements#
+                A, #
+                B,
+                    C #
+                {#
+                #
+                }#
+                ;
+                EOD,
+            <<<'EOD'
+                <?php $a = new#
+                class#
+                (#
+                '1a',#
+                1 #
+                )#
+                implements#
+                A, #
+                B,C#
+                {#
+                #
+                }#
+                ;
+                EOD,
         ];
 
         yield [
-            "<?php \$a = new #
-class #
-( #
-'1a', #
-1 #
-) #
-implements #
-A #
-{#
-#
-}#
-;",
-            "<?php \$a = new#
-class#
-(#
-'1a',#
-1 #
-)#
-implements#
-A#
-{#
-#
-}#
-;",
+            <<<'EOD'
+                <?php $a = new #
+                class #
+                ( #
+                '1a', #
+                1 #
+                ) #
+                implements #
+                A #
+                {#
+                #
+                }#
+                ;
+                EOD,
+            <<<'EOD'
+                <?php $a = new#
+                class#
+                (#
+                '1a',#
+                1 #
+                )#
+                implements#
+                A#
+                {#
+                #
+                }#
+                ;
+                EOD,
             ['single_item_single_line' => true],
         ];
 
         yield [
-            '<?php $a = new class() #
-{};',
-            '<?php $a = new class()#
-{};',
+            <<<'EOD'
+                <?php $a = new class() #
+                {};
+                EOD,
+            <<<'EOD'
+                <?php $a = new class()#
+                {};
+                EOD,
         ];
 
         yield 'space_before_parenthesis 1' => [
@@ -368,60 +392,80 @@ A#
         yield from self::provideClassyExtendingCases('interface');
 
         yield [
-            '<?php
-interface Test extends
-  /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
-    TestInterface2   ,   // test'."\n    ".'
+            <<<'EOD'
+                <?php
+                interface Test extends
+                  /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
+                    TestInterface2   ,   // test
+                EOD."\n    ".<<<'EOD'
 
-// Note: PSR does not have a rule for multiple extends
-TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,'.'     '.'
-        /**/TestInterface65
-{}'."\n            ",
-            '<?php
-interface Test
-extends
-  /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
-    TestInterface2   ,   // test'."\n    ".'
 
-// Note: PSR does not have a rule for multiple extends
-TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,'.'     '.'
-        /**/TestInterface65    {}'."\n            ",
+                // Note: PSR does not have a rule for multiple extends
+                TestInterface3, /**/     TestInterface4   ,
+                      TestInterface5    ,
+                EOD.'     '.<<<'EOD'
+
+                        /**/TestInterface65
+                {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                interface Test
+                extends
+                  /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
+                    TestInterface2   ,   // test
+                EOD."\n    ".<<<'EOD'
+
+
+                // Note: PSR does not have a rule for multiple extends
+                TestInterface3, /**/     TestInterface4   ,
+                      TestInterface5    ,
+                EOD.'     '.<<<'EOD'
+
+                        /**/TestInterface65    {}
+                EOD."\n            ",
         ];
 
         yield from self::provideClassyCases('trait');
 
         yield [
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc,
-    \GFddZz
-{
-};',
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc, \GFddZz
-{
-};',
+            <<<'EOD'
+                <?php
+                $a = new class implements
+                    \RFb,
+                    \Fcc,
+                    \GFddZz
+                {
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = new class implements
+                    \RFb,
+                    \Fcc, \GFddZz
+                {
+                };
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc,
-    \GFddZz
-{
-}?>',
-            '<?php
-$a = new class implements
-    \RFb,
-    \Fcc, \GFddZz
-{
-}?>',
+            <<<'EOD'
+                <?php
+                $a = new class implements
+                    \RFb,
+                    \Fcc,
+                    \GFddZz
+                {
+                }?>
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = new class implements
+                    \RFb,
+                    \Fcc, \GFddZz
+                {
+                }?>
+                EOD,
         ];
 
         yield [
@@ -431,11 +475,13 @@ $a = new class implements
 
         yield [
             '<?php new class(1, 2, 3, ) {};',
-            '<?php new class(
-                    1,
-                    2,
-                    3,
-                ) {};',
+            <<<'EOD'
+                <?php new class(
+                                    1,
+                                    2,
+                                    3,
+                                ) {};
+                EOD,
         ];
     }
 
@@ -559,19 +605,23 @@ $a = new class implements
     public static function provideClassyInheritanceInfoCases(): iterable
     {
         yield '1' => [
-            '<?php
-class X11 implements    Z   , T,R
-{
-}',
+            <<<'EOD'
+                <?php
+                class X11 implements    Z   , T,R
+                {
+                }
+                EOD,
             'numberOfImplements',
             ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
         ];
 
         yield '2' => [
-            '<?php
-class X10 implements    Z   , T,R    //
-{
-}',
+            <<<'EOD'
+                <?php
+                class X10 implements    Z   , T,R    //
+                {
+                }
+                EOD,
             'numberOfImplements',
             ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
         ];
@@ -595,25 +645,27 @@ class X10 implements    Z   , T,R    //
         ];
 
         yield [
-            '<?php
-namespace A {
-    interface X {}
-}
+            <<<'EOD'
+                <?php
+                namespace A {
+                    interface X {}
+                }
 
-namespace {
-    class B{}
+                namespace {
+                    class B{}
 
-    class A extends //
-        B     implements /*  */ \A\C, Z{
-        public function test()
-        {
-            echo 1;
-        }
-    }
+                    class A extends //
+                        B     implements /*  */ \A\C, Z{
+                        public function test()
+                        {
+                            echo 1;
+                        }
+                    }
 
-    $a = new A();
-    $a->test();
-}',
+                    $a = new A();
+                    $a->test();
+                }
+                EOD,
             'numberOfImplements',
             ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => false],
         ];
@@ -652,26 +704,28 @@ namespace {
     public static function provideClassyInheritanceInfoPre80Cases(): iterable
     {
         yield [
-            '<?php
-namespace A {
-    interface X {}
-}
+            <<<'EOD'
+                <?php
+                namespace A {
+                    interface X {}
+                }
 
-namespace {
-    class B{}
+                namespace {
+                    class B{}
 
-    class A extends //
-        B     implements /*  */ \A
-        \C, Z{
-        public function test()
-        {
-            echo 1;
-        }
-    }
+                    class A extends //
+                        B     implements /*  */ \A
+                        \C, Z{
+                        public function test()
+                        {
+                            echo 1;
+                        }
+                    }
 
-    $a = new A();
-    $a->test();
-}',
+                    $a = new A();
+                    $a->test();
+                }
+                EOD,
             'numberOfImplements',
             ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
         ];
@@ -758,24 +812,36 @@ namespace {
     public static function provideFix82Cases(): iterable
     {
         yield 'final readonly works' => [
-            '<?php final readonly class a
-{}',
-            '<?php final           readonly      class a
-{}',
+            <<<'EOD'
+                <?php final readonly class a
+                {}
+                EOD,
+            <<<'EOD'
+                <?php final           readonly      class a
+                {}
+                EOD,
         ];
 
         yield 'final - readonly modifiers get sorted' => [
-            '<?php final readonly class a
-{}',
-            '<?php readonly final class a
-{}',
+            <<<'EOD'
+                <?php final readonly class a
+                {}
+                EOD,
+            <<<'EOD'
+                <?php readonly final class a
+                {}
+                EOD,
         ];
 
         yield 'abstract - readonly modifiers get sorted' => [
-            '<?php abstract readonly class a
-{}',
-            '<?php readonly abstract class a
-{}',
+            <<<'EOD'
+                <?php abstract readonly class a
+                {}
+                EOD,
+            <<<'EOD'
+                <?php readonly abstract class a
+                {}
+                EOD,
         ];
     }
 
@@ -864,43 +930,51 @@ namespace {
             ],
             [
                 sprintf(
-                    "<?php
-%s A
-{}
+                    <<<EOD
+                        <?php
+                        %s A
+                        {}
 
-%s /**/ B //
-/**/\n{}",
+                        %s /**/ B //
+                        /**/\n{}
+                        EOD,
                     $classy,
                     $classy
                 ),
                 sprintf(
-                    '<?php
-%s
-   A
-{}
+                    <<<'EOD'
+                        <?php
+                        %s
+                           A
+                        {}
 
-%s/**/B //
-/**/ {}',
+                        %s/**/B //
+                        /**/ {}
+                        EOD,
                     $classy,
                     $classy
                 ),
             ],
             [
                 sprintf(
-                    '<?php
-namespace {
-    %s IndentedNameSpacedClass
-{
-    }
-}',
+                    <<<'EOD'
+                        <?php
+                        namespace {
+                            %s IndentedNameSpacedClass
+                        {
+                            }
+                        }
+                        EOD,
                     $classy
                 ),
                 sprintf(
-                    '<?php
-namespace {
-    %s IndentedNameSpacedClass    {
-    }
-}',
+                    <<<'EOD'
+                        <?php
+                        namespace {
+                            %s IndentedNameSpacedClass    {
+                            }
+                        }
+                        EOD,
                     $classy
                 ),
             ],
@@ -923,16 +997,20 @@ namespace {
                 sprintf("<?php %s /*%s*/ AE2 extends\nB{}", $classy, $classy),
             ],
             [
-                sprintf('<?php
-%s Test124 extends
-\Exception
-{}', $classy),
-                sprintf('<?php
-%s
-Test124
+                sprintf(<<<'EOD'
+                    <?php
+                    %s Test124 extends
+                    \Exception
+                    {}
+                    EOD, $classy),
+                sprintf(<<<'EOD'
+                    <?php
+                    %s
+                    Test124
 
-extends
-\Exception {}', $classy),
+                    extends
+                    \Exception {}
+                    EOD, $classy),
             ],
         ];
     }
@@ -941,8 +1019,10 @@ extends
     {
         return [
             [
-                '<?php class LotOfImplements implements A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q
-{}',
+                <<<'EOD'
+                    <?php class LotOfImplements implements A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q
+                    {}
+                    EOD,
                 '<?php class LotOfImplements implements A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q{}',
             ],
             [
@@ -954,169 +1034,225 @@ extends
                 '<?php abstract    class    F    extends     B    implements C {}',
             ],
             'multiline abstract extends implements with comments' => [
-                "<?php abstract class G extends       //
-B /*  */ implements C\n{}",
-                '<?php abstract    class     G     extends       //
-B/*  */implements C{}',
+                <<<EOD
+                    <?php abstract class G extends       //
+                    B /*  */ implements C\n{}
+                    EOD,
+                <<<'EOD'
+                    <?php abstract    class     G     extends       //
+                    B/*  */implements C{}
+                    EOD,
             ],
             'final extends implement' => [
-                "<?php final class G extends       //
-B /*  */ implements C\n{}",
-                '<?php final    class     G     extends       //
-B/*  */implements C{}',
+                <<<EOD
+                    <?php final class G extends       //
+                    B /*  */ implements C\n{}
+                    EOD,
+                <<<'EOD'
+                    <?php final    class     G     extends       //
+                    B/*  */implements C{}
+                    EOD,
             ],
             'final' => [
-                '<?php final class G        //
-/*  */
-{}',
-                '<?php final    class     G        //
-/*  */{}',
+                <<<'EOD'
+                    <?php final class G        //
+                    /*  */
+                    {}
+                    EOD,
+                <<<'EOD'
+                    <?php final    class     G        //
+                    /*  */{}
+                    EOD,
             ],
             [
-                '<?php
-class Aaa IMPLEMENTS
-    \RFb,
-    \Fcc,
-    \GFddZz
-{
-}',
-                '<?php
-class Aaa IMPLEMENTS
-    \RFb,
-    \Fcc, \GFddZz
-{
-}',
+                <<<'EOD'
+                    <?php
+                    class Aaa IMPLEMENTS
+                        \RFb,
+                        \Fcc,
+                        \GFddZz
+                    {
+                    }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class Aaa IMPLEMENTS
+                        \RFb,
+                        \Fcc, \GFddZz
+                    {
+                    }
+                    EOD,
             ],
             [
-                '<?php
-class        //
-X            //
-extends      //
-Y            //
-implements   //
-Z,       //
-U            //
-{}           //',
-                '<?php
-class        //
-X            //
-extends      //
-Y            //
-implements   //
-Z    ,       //
-U            //
-{}           //',
+                <<<'EOD'
+                    <?php
+                    class        //
+                    X            //
+                    extends      //
+                    Y            //
+                    implements   //
+                    Z,       //
+                    U            //
+                    {}           //
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class        //
+                    X            //
+                    extends      //
+                    Y            //
+                    implements   //
+                    Z    ,       //
+                    U            //
+                    {}           //
+                    EOD,
             ],
             [
-                '<?php
-class Aaa implements
-    PhpCsFixer\Tests\Fixer,
-    \RFb,
-    \Fcc1,
-    \GFdd
-{
-}',
-                '<?php
-class Aaa implements
-    PhpCsFixer\Tests\Fixer,\RFb,
-    \Fcc1, \GFdd
-{
-}',
+                <<<'EOD'
+                    <?php
+                    class Aaa implements
+                        PhpCsFixer\Tests\Fixer,
+                        \RFb,
+                        \Fcc1,
+                        \GFdd
+                    {
+                    }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class Aaa implements
+                        PhpCsFixer\Tests\Fixer,\RFb,
+                        \Fcc1, \GFdd
+                    {
+                    }
+                    EOD,
             ],
             [
-                '<?php
-class /**/ Test123 EXtends /**/ \RuntimeException implements
-TestZ
-{
-}',
-                '<?php
-class/**/Test123
-EXtends  /**/        \RuntimeException    implements
-TestZ
-{
-}',
+                <<<'EOD'
+                    <?php
+                    class /**/ Test123 EXtends /**/ \RuntimeException implements
+                    TestZ
+                    {
+                    }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class/**/Test123
+                    EXtends  /**/        \RuntimeException    implements
+                    TestZ
+                    {
+                    }
+                    EOD,
             ],
             [
-                '<?php
-    class Aaa implements Ebb, \Ccc
-    {
-    }',
-                '<?php
-    class Aaa    implements    Ebb,    \Ccc
-    {
-    }',
+                <<<'EOD'
+                    <?php
+                        class Aaa implements Ebb, \Ccc
+                        {
+                        }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                        class Aaa    implements    Ebb,    \Ccc
+                        {
+                        }
+                    EOD,
             ],
             [
-                '<?php
-class X2 IMPLEMENTS
-Z, //
-U,
-    D
-{
-}',
-                '<?php
-class X2 IMPLEMENTS
-Z    , //
-U, D
-{
-}',
+                <<<'EOD'
+                    <?php
+                    class X2 IMPLEMENTS
+                    Z, //
+                    U,
+                        D
+                    {
+                    }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class X2 IMPLEMENTS
+                    Z    , //
+                    U, D
+                    {
+                    }
+                    EOD,
             ],
             [
-                '<?php
-                    class VeryLongClassNameWithLotsOfLetters extends AnotherVeryLongClassName implements
-    VeryLongInterfaceNameThatIDontWantOnTheSameLine
-{
-}',
-                '<?php
-                    class      VeryLongClassNameWithLotsOfLetters    extends AnotherVeryLongClassName implements
-    VeryLongInterfaceNameThatIDontWantOnTheSameLine
-{
-}',
+                <<<'EOD'
+                    <?php
+                                        class VeryLongClassNameWithLotsOfLetters extends AnotherVeryLongClassName implements
+                        VeryLongInterfaceNameThatIDontWantOnTheSameLine
+                    {
+                    }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                                        class      VeryLongClassNameWithLotsOfLetters    extends AnotherVeryLongClassName implements
+                        VeryLongInterfaceNameThatIDontWantOnTheSameLine
+                    {
+                    }
+                    EOD,
             ],
             [
-                '<?php
-class /**/ Test125 //aaa
-extends  /*
+                <<<'EOD'
+                    <?php
+                    class /**/ Test125 //aaa
+                    extends  /*
 
-*/
-//
-\Exception        //
-{}',
-                '<?php
-class/**/Test125 //aaa
-extends  /*
+                    */
+                    //
+                    \Exception        //
+                    {}
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class/**/Test125 //aaa
+                    extends  /*
 
-*/
-//
-\Exception        //
-{}',
+                    */
+                    //
+                    \Exception        //
+                    {}
+                    EOD,
             ],
             [
-                '<?php
-class Test extends TestInterface8 implements      /*a*/      /*b*/
-    TestInterface1,  /* test */
-    TestInterface2,   // test'."\n    ".'
+                <<<'EOD'
+                    <?php
+                    class Test extends TestInterface8 implements      /*a*/      /*b*/
+                        TestInterface1,  /* test */
+                        TestInterface2,   // test
+                    EOD."\n    ".<<<'EOD'
 
-// test
-TestInterface3, /**/
-    TestInterface4,
-      TestInterface5,'.'    '.'
-        /**/TestInterface6c
-{
-}',
-                '<?php
-class Test
-extends
-    TestInterface8
-  implements      /*a*/      /*b*/TestInterface1   ,  /* test */
-    TestInterface2   ,   // test'."\n    ".'
 
-// test
-TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,'.'    '.'
-        /**/TestInterface6c
-{
-}',
+                    // test
+                    TestInterface3, /**/
+                        TestInterface4,
+                          TestInterface5,
+                    EOD.'    '.<<<'EOD'
+
+                            /**/TestInterface6c
+                    {
+                    }
+                    EOD,
+                <<<'EOD'
+                    <?php
+                    class Test
+                    extends
+                        TestInterface8
+                      implements      /*a*/      /*b*/TestInterface1   ,  /* test */
+                        TestInterface2   ,   // test
+                    EOD."\n    ".<<<'EOD'
+
+
+                    // test
+                    TestInterface3, /**/     TestInterface4   ,
+                          TestInterface5    ,
+                    EOD.'    '.<<<'EOD'
+
+                            /**/TestInterface6c
+                    {
+                    }
+                    EOD,
             ],
         ];
     }

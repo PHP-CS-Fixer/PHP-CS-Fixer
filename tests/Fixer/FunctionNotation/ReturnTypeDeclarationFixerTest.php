@@ -78,37 +78,45 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function foo5(int $e)#
-: #
-#
-string {}',
-            '<?php function foo5(int $e)#
-:#
-#
-string {}',
+            <<<'EOD'
+                <?php function foo5(int $e)#
+                : #
+                #
+                string {}
+                EOD,
+            <<<'EOD'
+                <?php function foo5(int $e)#
+                :#
+                #
+                string {}
+                EOD,
         ];
 
         yield [
-            '<?php
-                    function foo1(int $a): string {}
-                    function foo2(int $a): string {}
-                    function foo3(int $a): string {}
-                    function foo4(int $a): string {}
-                    function foo5(int $a): string {}
-                    function foo6(int $a): string {}
-                    function foo7(int $a): string {}
-                    function foo8(int $a): string {}
-                    function foo9(int $a): string {}'."\n                ",
-            '<?php
-                    function foo1(int $a):string {}
-                    function foo2(int $a):string {}
-                    function foo3(int $a):string {}
-                    function foo4(int $a):string {}
-                    function foo5(int $a):string {}
-                    function foo6(int $a):string {}
-                    function foo7(int $a):string {}
-                    function foo8(int $a):string {}
-                    function foo9(int $a):string {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    function foo1(int $a): string {}
+                                    function foo2(int $a): string {}
+                                    function foo3(int $a): string {}
+                                    function foo4(int $a): string {}
+                                    function foo5(int $a): string {}
+                                    function foo6(int $a): string {}
+                                    function foo7(int $a): string {}
+                                    function foo8(int $a): string {}
+                                    function foo9(int $a): string {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    function foo1(int $a):string {}
+                                    function foo2(int $a):string {}
+                                    function foo3(int $a):string {}
+                                    function foo4(int $a):string {}
+                                    function foo5(int $a):string {}
+                                    function foo6(int $a):string {}
+                                    function foo7(int $a):string {}
+                                    function foo8(int $a):string {}
+                                    function foo9(int $a):string {}
+                EOD."\n                ",
         ];
 
         yield [

@@ -38,65 +38,77 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     * {link} { LINK }
-     * { test }
-     * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿}
-     * test other comment
-     * {@inheritdoc test} a
-     * {@inheritdoc test} b
-     * {@inheritdoc test} c
-     * {@inheritdoc foo bar.} d
-     * {@inheritdoc foo bar.} e
-     * {@inheritdoc test} f
-     * end comment {@inheritdoc here we are done} @foo {1}
-     */
-',
-            '<?php
-    /**
-     * {link} { LINK }
-     * { test }
-     * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿ }
-     * test other comment
-     * @{inheritdoc test} a
-     * {{@inheritdoc    test}} b
-     * {@ inheritdoc   test} c
-     * { @inheritdoc 	foo bar.  } d
-     * {@ 	inheritdoc foo bar.	} e
-     * @{{inheritdoc test}} f
-     * end comment {@inheritdoc here we are done} @foo {1}
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * {link} { LINK }
+                     * { test }
+                     * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿}
+                     * test other comment
+                     * {@inheritdoc test} a
+                     * {@inheritdoc test} b
+                     * {@inheritdoc test} c
+                     * {@inheritdoc foo bar.} d
+                     * {@inheritdoc foo bar.} e
+                     * {@inheritdoc test} f
+                     * end comment {@inheritdoc here we are done} @foo {1}
+                     */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * {link} { LINK }
+                     * { test }
+                     * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿ }
+                     * test other comment
+                     * @{inheritdoc test} a
+                     * {{@inheritdoc    test}} b
+                     * {@ inheritdoc   test} c
+                     * { @inheritdoc 	foo bar.  } d
+                     * {@ 	inheritdoc foo bar.	} e
+                     * @{{inheritdoc test}} f
+                     * end comment {@inheritdoc here we are done} @foo {1}
+                     */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * {@foo}
-     * @{ bar }
-     */',
-            '<?php
-    /**
-     * @{ foo }
-     * @{ bar }
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@foo}
+                     * @{ bar }
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @{ foo }
+                     * @{ bar }
+                     */
+                EOD,
             [
                 'tags' => ['foo'],
             ],
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritDoc
-     * {@inheritDoc}
-     */',
-            '<?php
-    /**
-     * @inheritDoc
-     * @{ inheritDoc }
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritDoc
+                     * {@inheritDoc}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritDoc
+                     * @{ inheritDoc }
+                     */
+                EOD,
         ];
 
         foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
@@ -158,21 +170,25 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
 
         // invalid syntax
         yield [
-            '<?php
-    /**
-     * {@link https://symfony.com/rfc/rfc1035.text)
-     */
-    $someVar = "hello";',
+            <<<'EOD'
+                <?php
+                    /**
+                     * {@link https://symfony.com/rfc/rfc1035.text)
+                     */
+                    $someVar = "hello";
+                EOD,
         ];
 
         yield 'do not rename tags' => [
-            '<?php
-                /**
-                 * { @iDontWantToBeChanged }
-                 * @Route("/conventions/@{idcc}", name="api_v1_convention_read_by_idcc")
-                 *
-                 * { @ids }
-                 */'."\n            ",
+            <<<'EOD'
+                <?php
+                                /**
+                                 * { @iDontWantToBeChanged }
+                                 * @Route("/conventions/@{idcc}", name="api_v1_convention_read_by_idcc")
+                                 *
+                                 * { @ids }
+                                 */
+                EOD."\n            ",
         ];
     }
 }

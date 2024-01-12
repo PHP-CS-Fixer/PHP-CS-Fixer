@@ -99,11 +99,13 @@ abstract class AbstractLinterTestCase extends TestCase
         ];
 
         yield [
-            '<?php
-                    print "line 2";
-                    print "line 3";
-                    print "line 4";
-                    echo echo;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    print "line 2";
+                                    print "line 3";
+                                    print "line 4";
+                                    echo echo;
+                EOD."\n                ",
             sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
     }

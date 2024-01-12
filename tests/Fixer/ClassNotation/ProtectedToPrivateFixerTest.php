@@ -101,32 +101,36 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'anonymous-class-inside' => [
-            "<?php
-final class Foo
-{
-    {$attributesAndMethodsFixed}
+            <<<EOD
+                <?php
+                final class Foo
+                {
+                    {$attributesAndMethodsFixed}
 
-    private function bar()
-    {
-        new class {
-            {$attributesAndMethodsOriginal}
-        };
-    }
-}
-",
-            "<?php
-final class Foo
-{
-    {$attributesAndMethodsOriginal}
+                    private function bar()
+                    {
+                        new class {
+                            {$attributesAndMethodsOriginal}
+                        };
+                    }
+                }
 
-    protected function bar()
-    {
-        new class {
-            {$attributesAndMethodsOriginal}
-        };
-    }
-}
-",
+                EOD,
+            <<<EOD
+                <?php
+                final class Foo
+                {
+                    {$attributesAndMethodsOriginal}
+
+                    protected function bar()
+                    {
+                        new class {
+                            {$attributesAndMethodsOriginal}
+                        };
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
@@ -162,16 +166,20 @@ final class Foo
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
-final class Foo2 {
-    private int|float $a;
-}
-',
-            '<?php
-final class Foo2 {
-    protected int|float $a;
-}
-',
+            <<<'EOD'
+                <?php
+                final class Foo2 {
+                    private int|float $a;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                final class Foo2 {
+                    protected int|float $a;
+                }
+
+                EOD,
         ];
     }
 
@@ -188,17 +196,23 @@ final class Foo2 {
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-                final class Foo { private readonly int $d; }'."\n            ",
-            '<?php
-                final class Foo { protected readonly int $d; }'."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo { private readonly int $d; }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo { protected readonly int $d; }
+                EOD."\n            ",
         ];
 
         yield 'protected final const' => [
             // '<?php final class Foo { final private const Y = "i"; }', 'Fatal error: Private constant Foo::Y cannot be final as it is not visible to other classes on line 1.
-            '<?php
-                final class Foo1 { final protected const Y = "abc"; }
-                final class Foo2 { protected final const Y = "def"; }'."\n            ",
+            <<<'EOD'
+                <?php
+                                final class Foo1 { final protected const Y = "abc"; }
+                                final class Foo2 { protected final const Y = "def"; }
+                EOD."\n            ",
         ];
 
         yield [
@@ -215,79 +229,87 @@ final class Foo2 {
         // Methods may be public, private, or protected, although in practice private and protected are equivalent as inheritance is not allowed.
 
         yield 'enum' => [
-            '<?php
-enum Foo: string
-{
-    private const Spades = 123;
+            <<<'EOD'
+                <?php
+                enum Foo: string
+                {
+                    private const Spades = 123;
 
-    case Hearts = "H";
+                    case Hearts = "H";
 
-    private function test() {
-        echo 123;
-    }
-}
+                    private function test() {
+                        echo 123;
+                    }
+                }
 
-Foo::Hearts->test();'."\n            ",
-            '<?php
-enum Foo: string
-{
-    protected const Spades = 123;
+                Foo::Hearts->test();
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                enum Foo: string
+                {
+                    protected const Spades = 123;
 
-    case Hearts = "H";
+                    case Hearts = "H";
 
-    protected function test() {
-        echo 123;
-    }
-}
+                    protected function test() {
+                        echo 123;
+                    }
+                }
 
-Foo::Hearts->test();'."\n            ",
+                Foo::Hearts->test();
+                EOD."\n            ",
         ];
 
         yield 'enum with trait' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-trait NamedDocumentStatus
-{
-    public function getStatusName(): string
-    {
-        return $this->getFoo();
-    }
-}
+                trait NamedDocumentStatus
+                {
+                    public function getStatusName(): string
+                    {
+                        return $this->getFoo();
+                    }
+                }
 
-enum DocumentStats {
-    use NamedDocumentStatus;
+                enum DocumentStats {
+                    use NamedDocumentStatus;
 
-    case DRAFT;
+                    case DRAFT;
 
-    private function getFoo(): string {
-        return "X";
-    }
-}
+                    private function getFoo(): string {
+                        return "X";
+                    }
+                }
 
-echo DocumentStats::DRAFT->getStatusName();
-',
-            '<?php
+                echo DocumentStats::DRAFT->getStatusName();
 
-trait NamedDocumentStatus
-{
-    public function getStatusName(): string
-    {
-        return $this->getFoo();
-    }
-}
+                EOD,
+            <<<'EOD'
+                <?php
 
-enum DocumentStats {
-    use NamedDocumentStatus;
+                trait NamedDocumentStatus
+                {
+                    public function getStatusName(): string
+                    {
+                        return $this->getFoo();
+                    }
+                }
 
-    case DRAFT;
+                enum DocumentStats {
+                    use NamedDocumentStatus;
 
-    protected function getFoo(): string {
-        return "X";
-    }
-}
+                    case DRAFT;
 
-echo DocumentStats::DRAFT->getStatusName();
-',
+                    protected function getFoo(): string {
+                        return "X";
+                    }
+                }
+
+                echo DocumentStats::DRAFT->getStatusName();
+
+                EOD,
         ];
     }
 
@@ -304,44 +326,54 @@ echo DocumentStats::DRAFT->getStatusName();
     public static function provideFix82Cases(): iterable
     {
         yield 'final readonly' => [
-            '<?php
-            final readonly class Foo {
-                private function noop(): void{}
-            }',
-            '<?php
-            final readonly class Foo {
-                protected function noop(): void{}
-            }',
+            <<<'EOD'
+                <?php
+                            final readonly class Foo {
+                                private function noop(): void{}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            final readonly class Foo {
+                                protected function noop(): void{}
+                            }
+                EOD,
         ];
 
         yield 'final readonly reversed' => [
-            '<?php
-            readonly final class Foo {
-                private function noop(): void{}
-            }',
-            '<?php
-            readonly final class Foo {
-                protected function noop(): void{}
-            }',
+            <<<'EOD'
+                <?php
+                            readonly final class Foo {
+                                private function noop(): void{}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            readonly final class Foo {
+                                protected function noop(): void{}
+                            }
+                EOD,
         ];
     }
 
     private static function getAttributesAndMethods(bool $original): string
     {
-        $attributesAndMethodsOriginal = '
-public $v1;
-protected $v2;
-private $v3;
-public static $v4;
-protected static $v5;
-private static $v6;
-public function f1(){}
-protected function f2(){}
-private function f3(){}
-public static function f4(){}
-protected static function f5(){}
-private static function f6(){}
-';
+        $attributesAndMethodsOriginal = <<<'EOD'
+
+            public $v1;
+            protected $v2;
+            private $v3;
+            public static $v4;
+            protected static $v5;
+            private static $v6;
+            public function f1(){}
+            protected function f2(){}
+            private function f3(){}
+            public static function f4(){}
+            protected static function f5(){}
+            private static function f6(){}
+
+            EOD;
         if ($original) {
             return $attributesAndMethodsOriginal;
         }

@@ -56,30 +56,34 @@ final class NoUnsetCastFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'comments' => [
-            '<?php
-#0
-$a#1
-#2
-= null#3
-#4
-#5
-#6
-#7
-#8
-;
-',
-            '<?php
-#0
-$a#1
-#2
-=#3
-#4
-(unset)#5
-#6
-$b#7
-#8
-;
-',
+            <<<'EOD'
+                <?php
+                #0
+                $a#1
+                #2
+                = null#3
+                #4
+                #5
+                #6
+                #7
+                #8
+                ;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                #0
+                $a#1
+                #2
+                =#3
+                #4
+                (unset)#5
+                #6
+                $b#7
+                #8
+                ;
+
+                EOD,
         ];
 
         yield [

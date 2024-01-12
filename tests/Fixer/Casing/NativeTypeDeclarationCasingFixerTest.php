@@ -34,98 +34,122 @@ final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                function A(int $a): void {}
+            <<<'EOD'
+                <?php
+                                function A(int $a): void {}
 
+                                class Foo
+                                {
+                                    private bool $c = false;
+                                    private bool $d = false;
+
+                                    public function B(int $a): bool { return $this->c || $this->d; }
+                                }
+
+                                function C(float $a): array { return [$a];}
+                                function D(array $a): array { return [$a];}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function A(INT $a): VOID {}
+
+                                class Foo
+                                {
+                                    private BOOL $c = false;
+                                    private BOOL $d = false;
+
+                                    public function B(INT $a): BOOL { return $this->c || $this->d; }
+                                }
+
+                                function C(FLOAT $a): ARRAY { return [$a];}
+                                function D(ARRAY $a): ARRAY { return [$a];}
+                EOD."\n            ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
                 class Foo
                 {
-                    private bool $c = false;
-                    private bool $d = false;
-
-                    public function B(int $a): bool { return $this->c || $this->d; }
+                    private function Bar(array $bar) {
+                        return false;
+                    }
                 }
 
-                function C(float $a): array { return [$a];}
-                function D(array $a): array { return [$a];}'."\n            ",
-            '<?php
-                function A(INT $a): VOID {}
-
+                EOD,
+            <<<'EOD'
+                <?php
                 class Foo
                 {
-                    private BOOL $c = false;
-                    private BOOL $d = false;
-
-                    public function B(INT $a): BOOL { return $this->c || $this->d; }
+                    private function Bar(ARRAY $bar) {
+                        return false;
+                    }
                 }
 
-                function C(FLOAT $a): ARRAY { return [$a];}
-                function D(ARRAY $a): ARRAY { return [$a];}'."\n            ",
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    private function Bar(array $bar) {
-        return false;
-    }
-}
-',
-            '<?php
-class Foo
-{
-    private function Bar(ARRAY $bar) {
-        return false;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                interface Foo
+                {
+                    public function Bar(array $bar);
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                interface Foo
+                {
+                    public function Bar(ArrAY $bar);
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-interface Foo
-{
-    public function Bar(array $bar);
-}
-',
-            '<?php
-interface Foo
-{
-    public function Bar(ArrAY $bar);
-}
-',
+            <<<'EOD'
+                <?php
+                function Foo(/**/array/**/$bar) {
+                    return false;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function Foo(/**/ARRAY/**/$bar) {
+                    return false;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-function Foo(/**/array/**/$bar) {
-    return false;
-}
-',
-            '<?php
-function Foo(/**/ARRAY/**/$bar) {
-    return false;
-}
-',
+            <<<'EOD'
+                <?php
+                class Bar { function Foo(array $a, callable $b, self $c) {} }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-class Bar { function Foo(array $a, callable $b, self $c) {} }'."\n                ",
-            '<?php
-class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }'."\n                ",
+            <<<'EOD'
+                <?php
+                function Foo(INTEGER $a) {}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-function Foo(INTEGER $a) {}'."\n                ",
-        ];
-
-        yield [
-            '<?php function Foo(
-                    String\A $x,
-                    B\String\C $y
-                ) {}',
+            <<<'EOD'
+                <?php function Foo(
+                                    String\A $x,
+                                    B\String\C $y
+                                ) {}
+                EOD,
         ];
 
         yield [
@@ -178,65 +202,73 @@ function Foo(INTEGER $a) {}'."\n                ",
         ];
 
         yield [
-            '<?php
-                class Foo
-                {
-                    const A = 1;
-                    const B = [];
-                    const INT = "A"; // class constant; INT is the name of the const, not the type
-                    const FLOAT=1.2;
-                }
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    const A = 1;
+                                    const B = [];
+                                    const INT = "A"; // class constant; INT is the name of the const, not the type
+                                    const FLOAT=1.2;
+                                }
 
-                const INT = "A"; // outside class; INT is the name of the const, not the type'."\n            ",
+                                const INT = "A"; // outside class; INT is the name of the const, not the type
+                EOD."\n            ",
         ];
 
         yield 'class properties single type' => [
-            '<?php
-                class D{}
+            <<<'EOD'
+                <?php
+                                class D{}
 
-                $a = new class extends D {
-                    private array $ax;
-                    private bool $bx = false;
-                    private float $cx = 3.14;
-                    private int $dx = 667;
-                    private iterable $ex = [];
-                    private mixed $f;
-                    private object $g;
-                    private parent $h;
-                    private self $i;
-                    private static $j;
-                    private ?string $k;
+                                $a = new class extends D {
+                                    private array $ax;
+                                    private bool $bx = false;
+                                    private float $cx = 3.14;
+                                    private int $dx = 667;
+                                    private iterable $ex = [];
+                                    private mixed $f;
+                                    private object $g;
+                                    private parent $h;
+                                    private self $i;
+                                    private static $j;
+                                    private ?string $k;
 
-                    private $INT = 1;
-                    private FOO $bar;
-                    private A\INT\B $z;
-                };'."\n            ",
-            '<?php
-                class D{}
+                                    private $INT = 1;
+                                    private FOO $bar;
+                                    private A\INT\B $z;
+                                };
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class D{}
 
-                $a = new class extends D {
-                    private ARRAY $ax;
-                    private BOOL $bx = false;
-                    private FLOAT $cx = 3.14;
-                    private INT $dx = 667;
-                    private ITERABLE $ex = [];
-                    private MIXED $f;
-                    private OBJECT $g;
-                    private PARENT $h;
-                    private Self $i;
-                    private STatic $j;
-                    private ?STRIng $k;
+                                $a = new class extends D {
+                                    private ARRAY $ax;
+                                    private BOOL $bx = false;
+                                    private FLOAT $cx = 3.14;
+                                    private INT $dx = 667;
+                                    private ITERABLE $ex = [];
+                                    private MIXED $f;
+                                    private OBJECT $g;
+                                    private PARENT $h;
+                                    private Self $i;
+                                    private STatic $j;
+                                    private ?STRIng $k;
 
-                    private $INT = 1;
-                    private FOO $bar;
-                    private A\INT\B $z;
-                };'."\n            ",
+                                    private $INT = 1;
+                                    private FOO $bar;
+                                    private A\INT\B $z;
+                                };
+                EOD."\n            ",
         ];
 
         yield 'var keyword' => [
-            '<?php class Foo {
-                var $bar;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                var $bar;
+                            }
+                EOD,
         ];
 
         yield 'static property without type' => [
@@ -308,12 +340,16 @@ function Foo(INTEGER $a) {}'."\n                ",
         ];
 
         yield 'union Types' => [
-            '<?php $a = new class {
-                    private null|int|bool $a4 = false;
-                };',
-            '<?php $a = new class {
-                    private NULL|INT|BOOL $a4 = false;
-                };',
+            <<<'EOD'
+                <?php $a = new class {
+                                    private null|int|bool $a4 = false;
+                                };
+                EOD,
+            <<<'EOD'
+                <?php $a = new class {
+                                    private NULL|INT|BOOL $a4 = false;
+                                };
+                EOD,
         ];
     }
 
@@ -335,12 +371,16 @@ function Foo(INTEGER $a) {}'."\n                ",
         ];
 
         yield 'class readonly property' => [
-            '<?php class Z {
-                    private readonly array $ax;
-                };',
-            '<?php class Z {
-                    private readonly ARRAY $ax;
-                };',
+            <<<'EOD'
+                <?php class Z {
+                                    private readonly array $ax;
+                                };
+                EOD,
+            <<<'EOD'
+                <?php class Z {
+                                    private readonly ARRAY $ax;
+                                };
+                EOD,
         ];
     }
 
@@ -389,14 +429,18 @@ function Foo(INTEGER $a) {}'."\n                ",
         }
 
         yield 'intersection Types' => [
-            '<?php $a = new class {
-                    private (A&B)|int|D $d5;
-                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
-                };',
-            '<?php $a = new class {
-                    private (A&B)|INT|D $d5;
-                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
-                };',
+            <<<'EOD'
+                <?php $a = new class {
+                                    private (A&B)|int|D $d5;
+                                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
+                                };
+                EOD,
+            <<<'EOD'
+                <?php $a = new class {
+                                    private (A&B)|INT|D $d5;
+                                    private (A\STRING\B&B\INT\C)|int|(A&B) $e6;
+                                };
+                EOD,
         ];
     }
 
@@ -413,152 +457,190 @@ function Foo(INTEGER $a) {}'."\n                ",
     public static function provideFix83Cases(): iterable
     {
         yield 'simple case' => [
-            '<?php
-                class Foo
-                {
-                    const int FOO = 6;
-                }'."\n            ",
-            '<?php
-                class Foo
-                {
-                    const INT FOO = 6;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    const int FOO = 6;
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    const INT FOO = 6;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'single types' => [
-            '<?php
-                class Foo
-                {
-                    const int SOME_INT = 3;
-                    const array SOME_ARRAY = [7];
-                    const float SOME_FLOAT = 1.23;
-                    const iterable SOME_ITERABLE = [1, 2];
-                    const mixed SOME_MIXED = 1;
-                    const null SOME_NULL = NULL;
-                    const string SOME_STRING = "X";
-                }'."\n            ",
-            '<?php
-                class Foo
-                {
-                    const INT SOME_INT = 3;
-                    const ARRAY SOME_ARRAY = [7];
-                    const Float SOME_FLOAT = 1.23;
-                    const ITERABLE SOME_ITERABLE = [1, 2];
-                    const MIXED SOME_MIXED = 1;
-                    const NULL SOME_NULL = NULL;
-                    const STRING SOME_STRING = "X";
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    const int SOME_INT = 3;
+                                    const array SOME_ARRAY = [7];
+                                    const float SOME_FLOAT = 1.23;
+                                    const iterable SOME_ITERABLE = [1, 2];
+                                    const mixed SOME_MIXED = 1;
+                                    const null SOME_NULL = NULL;
+                                    const string SOME_STRING = "X";
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    const INT SOME_INT = 3;
+                                    const ARRAY SOME_ARRAY = [7];
+                                    const Float SOME_FLOAT = 1.23;
+                                    const ITERABLE SOME_ITERABLE = [1, 2];
+                                    const MIXED SOME_MIXED = 1;
+                                    const NULL SOME_NULL = NULL;
+                                    const STRING SOME_STRING = "X";
+                                }
+                EOD."\n            ",
         ];
 
         yield 'nullables `self`, `parent` and `object`' => [
-            '<?php
-                class Foo extends FooParent
-                {
-                    const ?object SOME_OBJECT = NULL;
-                    const ?parent SOME_PARENT = NULL;
-                    const ?self SOME_SELF = NULL;
-                    const ?int/* x */A/* y */= 3;
+            <<<'EOD'
+                <?php
+                                class Foo extends FooParent
+                                {
+                                    const ?object SOME_OBJECT = NULL;
+                                    const ?parent SOME_PARENT = NULL;
+                                    const ?self SOME_SELF = NULL;
+                                    const ?int/* x */A/* y */= 3;
 
-                    const ?BAR B = null;
-                    const ?BAR C = null;
-                    const ?\BAR D = null;
-                    const ?\INT\B E = null;
-                    public const ?INT\A/* x */X=C;
-                }'."\n            ",
-            '<?php
-                class Foo extends FooParent
-                {
-                    const ?OBJECT SOME_OBJECT = NULL;
-                    const ?PARENT SOME_PARENT = NULL;
-                    const ?Self SOME_SELF = NULL;
-                    const ?INT/* x */A/* y */= 3;
+                                    const ?BAR B = null;
+                                    const ?BAR C = null;
+                                    const ?\BAR D = null;
+                                    const ?\INT\B E = null;
+                                    public const ?INT\A/* x */X=C;
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo extends FooParent
+                                {
+                                    const ?OBJECT SOME_OBJECT = NULL;
+                                    const ?PARENT SOME_PARENT = NULL;
+                                    const ?Self SOME_SELF = NULL;
+                                    const ?INT/* x */A/* y */= 3;
 
-                    const ?BAR B = null;
-                    const ?BAR C = null;
-                    const ?\BAR D = null;
-                    const ?\INT\B E = null;
-                    public const ?INT\A/* x */X=C;
-                }'."\n            ",
+                                    const ?BAR B = null;
+                                    const ?BAR C = null;
+                                    const ?\BAR D = null;
+                                    const ?\INT\B E = null;
+                                    public const ?INT\A/* x */X=C;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'simple `|`' => [
-            '<?php class Foo1 {
-                const D|float BAR = 1.0;
-            }',
-            '<?php class Foo1 {
-                const D|Float BAR = 1.0;
-            }',
+            <<<'EOD'
+                <?php class Foo1 {
+                                const D|float BAR = 1.0;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo1 {
+                                const D|Float BAR = 1.0;
+                            }
+                EOD,
         ];
 
         yield 'multiple `|`' => [
-            '<?php class Foo2 {
-                const int|array|null|A\B|\C\D|float BAR_1 = NULL;
-            }',
-            '<?php class Foo2 {
-                const INT|ARRAY|NULL|A\B|\C\D|FLOAT BAR_1 = NULL;
-            }',
+            <<<'EOD'
+                <?php class Foo2 {
+                                const int|array|null|A\B|\C\D|float BAR_1 = NULL;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo2 {
+                                const INT|ARRAY|NULL|A\B|\C\D|FLOAT BAR_1 = NULL;
+                            }
+                EOD,
         ];
 
         yield 'handle mix of `|` and `(X&Y)`' => [
-            '<?php
-                class Foo extends FooParent
-                {
-                    private const Z|A\S\T\R|int|float|iterable SOMETHING = 123;
-                    protected const \A\B|(Foo & Stringable )|null|\X D = null;
+            <<<'EOD'
+                <?php
+                                class Foo extends FooParent
+                                {
+                                    private const Z|A\S\T\R|int|float|iterable SOMETHING = 123;
+                                    protected const \A\B|(Foo & Stringable )|null|\X D = null;
 
-                    public const Foo&Stringable G = V::A;
-                }'."\n            ",
-            '<?php
-                class Foo extends FooParent
-                {
-                    private const Z|A\S\T\R|INT|FLOAT|ITERABLE SOMETHING = 123;
-                    protected const \A\B|(Foo & Stringable )|NULL|\X D = null;
+                                    public const Foo&Stringable G = V::A;
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo extends FooParent
+                                {
+                                    private const Z|A\S\T\R|INT|FLOAT|ITERABLE SOMETHING = 123;
+                                    protected const \A\B|(Foo & Stringable )|NULL|\X D = null;
 
-                    public const Foo&Stringable G = V::A;
-                }'."\n            ",
+                                    public const Foo&Stringable G = V::A;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'interface, nullable int' => [
-            '<?php interface SomeInterface {
-                const ?int FOO = 1;
-            }',
-            '<?php interface SomeInterface {
-                const ?INT FOO = 1;
-            }',
+            <<<'EOD'
+                <?php interface SomeInterface {
+                                const ?int FOO = 1;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php interface SomeInterface {
+                                const ?INT FOO = 1;
+                            }
+                EOD,
         ];
 
         yield 'trait, string' => [
-            '<?php trait T {
-                const string TEST = E::TEST;
-            }',
-            '<?php trait T {
-                const STRING TEST = E::TEST;
-            }',
+            <<<'EOD'
+                <?php trait T {
+                                const string TEST = E::TEST;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php trait T {
+                                const STRING TEST = E::TEST;
+                            }
+                EOD,
         ];
 
         yield 'enum, int' => [
-            '<?php enum E: string {
-                case Hearts = "H";
+            <<<'EOD'
+                <?php enum E: string {
+                                case Hearts = "H";
 
-                const int TEST = 789;
-                const self A = self::Hearts;
-                const static B = self::Hearts;
-            }',
-            '<?php enum E: string {
-                case Hearts = "H";
+                                const int TEST = 789;
+                                const self A = self::Hearts;
+                                const static B = self::Hearts;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php enum E: string {
+                                case Hearts = "H";
 
-                const INT TEST = 789;
-                const SELF A = self::Hearts;
-                const STATIC B = self::Hearts;
-            }',
+                                const INT TEST = 789;
+                                const SELF A = self::Hearts;
+                                const STATIC B = self::Hearts;
+                            }
+                EOD,
         ];
 
         yield 'do not fix' => [
-            '<?php class Foo {
-                PUBLIC CONST FOO&STRINGABLE G = A::B;
-            }
+            <<<'EOD'
+                <?php class Foo {
+                                PUBLIC CONST FOO&STRINGABLE G = A::B;
+                            }
 
-            CONST A = 1;',
+                            CONST A = 1;
+                EOD,
         ];
     }
 }

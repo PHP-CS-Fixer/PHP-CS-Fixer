@@ -475,58 +475,66 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         ];
 
         yield 'handle $this with double colon following' => [
-            '<?php
-                class FooTest extends TestCase
-                {
-                    public function testFoo()
-                    {
-                        static::assertTrue(true);
-                    }
-                }',
-            '<?php
-                class FooTest extends TestCase
-                {
-                    public function testFoo()
-                    {
-                        $this::assertTrue(true);
-                    }
-                }',
+            <<<'EOD'
+                <?php
+                                class FooTest extends TestCase
+                                {
+                                    public function testFoo()
+                                    {
+                                        static::assertTrue(true);
+                                    }
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class FooTest extends TestCase
+                                {
+                                    public function testFoo()
+                                    {
+                                        $this::assertTrue(true);
+                                    }
+                                }
+                EOD,
         ];
     }
 
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(
-            '<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        static::assertSame(1, 2);
+            <<<'EOD'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        static::assertSame(1, 2);
 
-        $foo = new class() {
-            public function assertSame($a, $b)
-            {
-                $this->assertSame(1, 2);
-            }
-        };
-    }
-}',
-            '<?php
-class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testBaseCase()
-    {
-        $this->assertSame(1, 2);
+                        $foo = new class() {
+                            public function assertSame($a, $b)
+                            {
+                                $this->assertSame(1, 2);
+                            }
+                        };
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testBaseCase()
+                    {
+                        $this->assertSame(1, 2);
 
-        $foo = new class() {
-            public function assertSame($a, $b)
-            {
-                $this->assertSame(1, 2);
-            }
-        };
-    }
-}'
+                        $foo = new class() {
+                            public function assertSame($a, $b)
+                            {
+                                $this->assertSame(1, 2);
+                            }
+                        };
+                    }
+                }
+                EOD
         );
     }
 
@@ -543,14 +551,16 @@ class MyTest extends \PHPUnit_Framework_TestCase
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-                class FooTest extends TestCase
-                {
-                    public function testFoo()
-                    {
-                        $a = $this::assertTrue(...);
-                    }
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class FooTest extends TestCase
+                                {
+                                    public function testFoo()
+                                    {
+                                        $a = $this::assertTrue(...);
+                                    }
+                                }
+                EOD."\n            ",
         ];
     }
 }

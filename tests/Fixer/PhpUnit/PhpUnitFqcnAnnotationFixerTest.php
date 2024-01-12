@@ -87,16 +87,18 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-class Foo {
-    /**
-     * @expectedException Some\Exception\ClassName
-     * @covers Foo
-     * @uses Baz
-     * @uses self::someFunction
-     */
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    /**
+                     * @expectedException Some\Exception\ClassName
+                     * @covers Foo
+                     * @uses Baz
+                     * @uses self::someFunction
+                     */
+                }
+
+                EOD,
         ];
     }
 }

@@ -41,44 +41,52 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-class Foo
-{
-    private static $bar1 = array(1,2,3);
-    private static $bar2 = [1,2,3];
-    private static $baz1 = array(array(1,2), array(3, 4));
-    private static $baz2 = array(1,2,3);
-    private static $aaa1 = 1;
-    private static $aaa2 = array(2, 2);
-    private static $aaa3 = 3;
-}',
-            '<?php
-class Foo
-{
-    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
-    private static $baz1 = array(array(1,2), array(3, 4)), $baz2 = array(1,2,3);
-    private static $aaa1 = 1, $aaa2 = array(2, 2), $aaa3 = 3;
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private static $bar1 = array(1,2,3);
+                    private static $bar2 = [1,2,3];
+                    private static $baz1 = array(array(1,2), array(3, 4));
+                    private static $baz2 = array(1,2,3);
+                    private static $aaa1 = 1;
+                    private static $aaa2 = array(2, 2);
+                    private static $aaa3 = 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+                    private static $baz1 = array(array(1,2), array(3, 4)), $baz2 = array(1,2,3);
+                    private static $aaa1 = 1, $aaa2 = array(2, 2), $aaa3 = 3;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    const A = 1;
-    const B = 2;
-}
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    const A = 1;
+                    const B = 2;
+                }
 
-echo Foo::A, Foo::B;
-',
-            '<?php
-class Foo
-{
-    const A = 1, B = 2;
-}
+                echo Foo::A, Foo::B;
 
-echo Foo::A, Foo::B;
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    const A = 1, B = 2;
+                }
+
+                echo Foo::A, Foo::B;
+
+                EOD,
         ];
 
         yield [
@@ -618,99 +626,127 @@ echo Foo::A, Foo::B;
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    const A = 1;
-    const #
-B#
-=#
-2#
-;#
-}
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    const A = 1;
+                    const #
+                B#
+                =#
+                2#
+                ;#
+                }
 
-echo Foo::A, Foo::B;
-',
-            '<?php
-class Foo
-{
-    const A = 1,#
-B#
-=#
-2#
-;#
-}
+                echo Foo::A, Foo::B;
 
-echo Foo::A, Foo::B;
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    const A = 1,#
+                B#
+                =#
+                2#
+                ;#
+                }
+
+                echo Foo::A, Foo::B;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                    class Token {
-                        const PUBLIC_CONST = 0;
-                        private const PRIVATE_CONST = 0;
-                        protected const PROTECTED_CONST = 0;
-                        public const PUBLIC_CONST_TWO = 0;
-                        public const TEST_71 = 0;
-                    }'."\n                ",
-            '<?php
-                    class Token {
-                        const PUBLIC_CONST = 0;
-                        private const PRIVATE_CONST = 0;
-                        protected const PROTECTED_CONST = 0;
-                        public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Token {
+                                        const PUBLIC_CONST = 0;
+                                        private const PRIVATE_CONST = 0;
+                                        protected const PROTECTED_CONST = 0;
+                                        public const PUBLIC_CONST_TWO = 0;
+                                        public const TEST_71 = 0;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Token {
+                                        const PUBLIC_CONST = 0;
+                                        private const PRIVATE_CONST = 0;
+                                        protected const PROTECTED_CONST = 0;
+                                        public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php class Foo {
-                private int $foo;
-                private int $bar;
-            }',
-            '<?php class Foo {
-                private int $foo, $bar;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                private int $foo;
+                                private int $bar;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                private int $foo, $bar;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo {
-                protected ?string $foo;
-                protected ?string $bar;
-            }',
-            '<?php class Foo {
-                protected ?string $foo, $bar;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                protected ?string $foo;
+                                protected ?string $bar;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                protected ?string $foo, $bar;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo {
-                public ? string $foo;
-                public ? string $bar;
-            }',
-            '<?php class Foo {
-                public ? string $foo, $bar;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public ? string $foo;
+                                public ? string $bar;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                public ? string $foo, $bar;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo {
-                var ? Foo\Bar $foo;
-                var ? Foo\Bar $bar;
-            }',
-            '<?php class Foo {
-                var ? Foo\Bar $foo, $bar;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                var ? Foo\Bar $foo;
+                                var ? Foo\Bar $bar;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                var ? Foo\Bar $foo, $bar;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php class Foo {
-                var array $foo;
-                var array $bar;
-            }',
-            '<?php class Foo {
-                var array $foo, $bar;
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                var array $foo;
+                                var array $bar;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                var array $foo, $bar;
+                            }
+                EOD,
         ];
 
         yield [
@@ -784,44 +820,48 @@ echo Foo::A, Foo::B;
         ];
 
         yield 'anonymous class' => [
-            '<?php
-                $a = new class() {
-                    const PUBLIC_CONST_TWO = 0;
-                    const TEST_70 = 0;
+            <<<'EOD'
+                <?php
+                                $a = new class() {
+                                    const PUBLIC_CONST_TWO = 0;
+                                    const TEST_70 = 0;
 
-                    public function a() {
-                    }
-                };
+                                    public function a() {
+                                    }
+                                };
 
-                class C
-                {
-                    public function A()
-                    {
-                        $a = new class() {
-                            const PUBLIC_CONST_TWO = 0;
-                            const TEST_70 = 0;
-                            public function a() {}
-                        };
-                    }
-                }'."\n            ",
-            '<?php
-                $a = new class() {
-                    const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
+                                class C
+                                {
+                                    public function A()
+                                    {
+                                        $a = new class() {
+                                            const PUBLIC_CONST_TWO = 0;
+                                            const TEST_70 = 0;
+                                            public function a() {}
+                                        };
+                                    }
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = new class() {
+                                    const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
 
-                    public function a() {
-                    }
-                };
+                                    public function a() {
+                                    }
+                                };
 
-                class C
-                {
-                    public function A()
-                    {
-                        $a = new class() {
-                            const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
-                            public function a() {}
-                        };
-                    }
-                }'."\n            ",
+                                class C
+                                {
+                                    public function A()
+                                    {
+                                        $a = new class() {
+                                            const PUBLIC_CONST_TWO = 0, TEST_70 = 0;
+                                            public function a() {}
+                                        };
+                                    }
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -848,19 +888,23 @@ echo Foo::A, Foo::B;
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
-class Foo
-{
-    private string|int $prop1;
-    private string|int $prop2;
-}
-',
-            '<?php
-class Foo
-{
-    private string|int $prop1, $prop2;
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private string|int $prop1;
+                    private string|int $prop2;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private string|int $prop1, $prop2;
+                }
+
+                EOD,
         ];
     }
 
@@ -877,81 +921,95 @@ class Foo
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
-class Foo
-{
-    readonly int $a;
-    readonly int $b;
-    public readonly int $c;
-    public readonly int $d;
-    readonly private string /*1*/$e;
-    readonly private string /*2*/$f;
-    readonly float $g;
-    protected readonly float $h1;
-    protected readonly float $h2;
-    readonly float $z1;
-    readonly float $z2;
-    readonly float $z3;
-}',
-            '<?php
-class Foo
-{
-    readonly int $a, $b;
-    public readonly int $c, $d;
-    readonly private string /*1*/$e,/*2*/$f;
-    readonly float $g;
-    protected readonly float $h1, $h2;
-    readonly float $z1, $z2, $z3;
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    readonly int $a;
+                    readonly int $b;
+                    public readonly int $c;
+                    public readonly int $d;
+                    readonly private string /*1*/$e;
+                    readonly private string /*2*/$f;
+                    readonly float $g;
+                    protected readonly float $h1;
+                    protected readonly float $h2;
+                    readonly float $z1;
+                    readonly float $z2;
+                    readonly float $z3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    readonly int $a, $b;
+                    public readonly int $c, $d;
+                    readonly private string /*1*/$e,/*2*/$f;
+                    readonly float $g;
+                    protected readonly float $h1, $h2;
+                    readonly float $z1, $z2, $z3;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    final public const B1 = "2";
-    final public const B2 = "2";
-    readonly float $z2;
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    final public const B1 = "2";
+                    final public const B2 = "2";
+                    readonly float $z2;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    private Foo&Bar $prop1;
-    private Foo&Bar $prop2;
-}
-',
-            '<?php
-class Foo
-{
-    private Foo&Bar $prop1, $prop2;
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private Foo&Bar $prop1;
+                    private Foo&Bar $prop2;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private Foo&Bar $prop1, $prop2;
+                }
+
+                EOD,
         ];
 
         yield [
-            "<?php
+            <<<'EOD'
+                <?php
 
-enum Foo: string {
-    public const A = 'A';
-    public const B = 'B';
-    case Hearts = 'H';
-    case Spades = 'S';
-}
+                enum Foo: string {
+                    public const A = 'A';
+                    public const B = 'B';
+                    case Hearts = 'H';
+                    case Spades = 'S';
+                }
 
-var_dump(Foo::A.Foo::B);",
-            "<?php
+                var_dump(Foo::A.Foo::B);
+                EOD,
+            <<<'EOD'
+                <?php
 
-enum Foo: string {
-    public const A = 'A', B = 'B';
-    case Hearts = 'H';
-    case Spades = 'S';
-}
+                enum Foo: string {
+                    public const A = 'A', B = 'B';
+                    case Hearts = 'H';
+                    case Spades = 'S';
+                }
 
-var_dump(Foo::A.Foo::B);",
+                var_dump(Foo::A.Foo::B);
+                EOD,
         ];
     }
 

@@ -39,9 +39,11 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php $a= 1;$a#
-++#
-;#',
+            <<<'EOD'
+                <?php $a= 1;$a#
+                ++#
+                ;#
+                EOD,
         ];
 
         yield [

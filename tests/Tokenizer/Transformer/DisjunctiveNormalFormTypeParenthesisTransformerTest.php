@@ -39,20 +39,22 @@ final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends Abstract
     public static function provideProcessCases(): iterable
     {
         yield 'lambda with lots of arguments and some others' => [
-            '<?php
-$a = function(
-    (X&Y)|C $a,
-    $b = array(1,2),
-    (\X&\Y)|C $c,
-    array $d = [1,2],
-    (\X&\Y)|C $e,
-    $x, $y, $z, P|(H&J) $uu,
-) {};
+            <<<'EOD'
+                <?php
+                $a = function(
+                    (X&Y)|C $a,
+                    $b = array(1,2),
+                    (\X&\Y)|C $c,
+                    array $d = [1,2],
+                    (\X&\Y)|C $e,
+                    $x, $y, $z, P|(H&J) $uu,
+                ) {};
 
-function foo (array $a = array(66,88, $d = [99,44],array()), $e = [99,44],(C&V)|G|array $f = array()){};
+                function foo (array $a = array(66,88, $d = [99,44],array()), $e = [99,44],(C&V)|G|array $f = array()){};
 
-return new static();
-',
+                return new static();
+
+                EOD,
             [
                 8 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, // $a
                 12 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -80,13 +82,15 @@ return new static();
         ];
 
         yield 'multiple functions and arguments' => [
-            '<?php
-function Foo1 ((A&B)|C $x1): void {}
-function Foo2 (C|(A&B) $x2): void {}
-function Foo3 (C|(A&B)|D $x3): void {}
-function Foo4 ((A&B)|(\C&E\B\D) $x4): void {}
-function Foo5 ($x5): void {}
-',
+            <<<'EOD'
+                <?php
+                function Foo1 ((A&B)|C $x1): void {}
+                function Foo2 (C|(A&B) $x2): void {}
+                function Foo3 (C|(A&B)|D $x3): void {}
+                function Foo4 ((A&B)|(\C&E\B\D) $x4): void {}
+                function Foo5 ($x5): void {}
+
+                EOD,
             [
                 6 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, // Foo1
                 10 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -102,16 +106,18 @@ function Foo5 ($x5): void {}
         ];
 
         yield 'multiple functions including methods' => [
-            '<?php
-function Foo():M|(A&B)|J {}
-$a = function(): X|(A&B) {};
-interface Bar {
-    function G():(A&C)|(A&B);
-}
-class G {
-    public function X():K|(Z&Y)|P{}
-}
-',
+            <<<'EOD'
+                <?php
+                function Foo():M|(A&B)|J {}
+                $a = function(): X|(A&B) {};
+                interface Bar {
+                    function G():(A&C)|(A&B);
+                }
+                class G {
+                    public function X():K|(Z&Y)|P{}
+                }
+
+                EOD,
             [
                 9 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 13 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -127,16 +133,18 @@ class G {
         ];
 
         yield 'multiple functions including methods 2' => [
-            '<?php
-function Foo():(A&B)|M {}
-$a = function(): (A&B)|N {};
-interface Bar {
-    function G():(A&C)|I;
-}
-class G {
-    public function X():(Z&Y)|P{}
-}
-',
+            <<<'EOD'
+                <?php
+                function Foo():(A&B)|M {}
+                $a = function(): (A&B)|N {};
+                interface Bar {
+                    function G():(A&C)|I;
+                }
+                class G {
+                    public function X():(Z&Y)|P{}
+                }
+
+                EOD,
             [
                 7 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 11 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -150,18 +158,20 @@ class G {
         ];
 
         yield 'DNF property, A|(C&D)' => [
-            '<?php
-class Dnf
-{
-    public A|(C&D) $a;
-}
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public A|(C&D) $a;
+                }
 
-const E = 1;
-const F = 2;
+                const E = 1;
+                const F = 2;
 
-(E&F);
+                (E&F);
 
-',
+
+                EOD,
             [
                 11 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 15 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -169,11 +179,13 @@ const F = 2;
         ];
 
         yield 'DNF property, (A&B)|C' => [
-            '<?php
-class Dnf
-{
-    public (A&B)|C $a;
-}',
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public (A&B)|C $a;
+                }
+                EOD,
             [
                 9 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 13 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -181,12 +193,14 @@ class Dnf
         ];
 
         yield 'DNF property, two groups with string and namespace separator' => [
-            '<?php
-class Dnf
-{
-public (A\BH&Z\SAD\I)|(G\J&F\G\AK) $a;
-}
-',
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                public (A\BH&Z\SAD\I)|(G\J&F\G\AK) $a;
+                }
+
+                EOD,
             [
                 9 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 19 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -196,23 +210,25 @@ public (A\BH&Z\SAD\I)|(G\J&F\G\AK) $a;
         ];
 
         yield 'bigger set of multiple DNF properties' => [
-            '<?php
-class Dnf
-{
-    public /* A|(C&D) */ A|(C&D) $a;
-    protected (C&D)|B $b;
-    private (C&D)|(E&F)|(G&H) $c;
-    static (C&D)|Z $d;
-    public /** (C&D)|X */ (C&D)|X $e;
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public /* A|(C&D) */ A|(C&D) $a;
+                    protected (C&D)|B $b;
+                    private (C&D)|(E&F)|(G&H) $c;
+                    static (C&D)|Z $d;
+                    public /** (C&D)|X */ (C&D)|X $e;
 
-    public function foo($a, $b) {
-        return
-            $z|($A&$B)|(A::z&B\A::x)
-            || A::b|($A&$B)
-        ;
-    }
-}
-',
+                    public function foo($a, $b) {
+                        return
+                            $z|($A&$B)|(A::z&B\A::x)
+                            || A::b|($A&$B)
+                        ;
+                    }
+                }
+
+                EOD,
             [
                 13 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 17 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -232,16 +248,18 @@ class Dnf
         ];
 
         yield 'constructor property promotion' => [
-            '<?php
-class Dnf
-{
-    public function __construct(
-        public Y|(A&B) $x,
-        protected (A&B)|X $u,
-        private (\A\C&B\A)|(\D\C&\E\D) $i,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public function __construct(
+                        public Y|(A&B) $x,
+                        protected (A&B)|X $u,
+                        private (\A\C&B\A)|(\D\C&\E\D) $i,
+                    ) {}
+                }
+
+                EOD,
             [
                 18 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 22 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -255,20 +273,22 @@ class Dnf
         ];
 
         yield 'more properties' => [
-            '<?php
-class Dnf
-{
-    public A|B|C|(E&D) $a;
-    public E/**/ | X\C\B | /** */  \C|(E1&D1) $v;
-    public F | B | C | (D&Y) | E | (F&O) $a;
-    static G|B|C|(E77&D88) $XYZ;
-    static public (H&S)|B $f;
-    public static I|(P&S11) $f2;
-}
+            <<<'EOD'
+                <?php
+                class Dnf
+                {
+                    public A|B|C|(E&D) $a;
+                    public E/**/ | X\C\B | /** */  \C|(E1&D1) $v;
+                    public F | B | C | (D&Y) | E | (F&O) $a;
+                    static G|B|C|(E77&D88) $XYZ;
+                    static public (H&S)|B $f;
+                    public static I|(P&S11) $f2;
+                }
 
-static $a = 1;
-return new static();
-',
+                static $a = 1;
+                return new static();
+
+                EOD,
             [
                 15 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, // E&D
                 19 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -288,9 +308,11 @@ return new static();
         ];
 
         yield 'arrow functions' => [
-            '<?php
-                $f1 = fn (): A|(B&C) => new Foo();
-                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();'."\n            ",
+            <<<'EOD'
+                <?php
+                                $f1 = fn (): A|(B&C) => new Foo();
+                                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
+                EOD."\n            ",
             [
                 14 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 18 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -306,16 +328,18 @@ return new static();
         ];
 
         yield 'invokable class' => [
-            '<?php
-                class A
-                {
-                    public function __invoke((Foo&Bar)|string $a): string
-                        {
-                            return "A";
-                        }
-                    }
+            <<<'EOD'
+                <?php
+                                class A
+                                {
+                                    public function __invoke((Foo&Bar)|string $a): string
+                                        {
+                                            return "A";
+                                        }
+                                    }
 
-                return (new A())(new class implements Foo, Bar {});'."\n            ",
+                                return (new A())(new class implements Foo, Bar {});
+                EOD."\n            ",
             [
                 14 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 18 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -338,12 +362,14 @@ return new static();
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const' => [
-            '<?php
-                class Foo {
-                    const A|(B&C) Bar = 1;
-                    const (B&C)|A Bar = 2;
-                    const D|(B&C)|A Bar = 3;
-                }',
+            <<<'EOD'
+                <?php
+                                class Foo {
+                                    const A|(B&C) Bar = 1;
+                                    const (B&C)|A Bar = 2;
+                                    const D|(B&C)|A Bar = 3;
+                                }
+                EOD,
             [
                 12 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 16 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,

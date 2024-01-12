@@ -58,31 +58,39 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
         yield ['<?php /** @var Bar */'];
 
         yield [
-            '<?php
-/**
- * @var Foo $foo
- * @var Bar $bar
- */
-',
-            '<?php
-/**
- * @var $foo Foo
- * @var $bar Bar
- */
-',
+            <<<'EOD'
+                <?php
+                /**
+                 * @var Foo $foo
+                 * @var Bar $bar
+                 */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @var $foo Foo
+                 * @var $bar Bar
+                 */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @var Foo $foo Some description
- */
-',
-            '<?php
-/**
- * @var $foo Foo Some description
- */
-',
+            <<<'EOD'
+                <?php
+                /**
+                 * @var Foo $foo Some description
+                 */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @var $foo Foo Some description
+                 */
+
+                EOD,
         ];
 
         yield [
@@ -111,65 +119,87 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
         ];
 
         yield [
-            '<?php
-/** @var Foo|Bar|mixed|int $someWeirdLongNAME__123 */
-',
-            '<?php
-/** @var $someWeirdLongNAME__123 Foo|Bar|mixed|int */
-',
+            <<<'EOD'
+                <?php
+                /** @var Foo|Bar|mixed|int $someWeirdLongNAME__123 */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @var $someWeirdLongNAME__123 Foo|Bar|mixed|int */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @var Foo $bar long description
- *               goes here
- */
-',
-            '<?php
-/**
- * @var $bar Foo long description
- *               goes here
- */
-',
+            <<<'EOD'
+                <?php
+                /**
+                 * @var Foo $bar long description
+                 *               goes here
+                 */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @var $bar Foo long description
+                 *               goes here
+                 */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @var array<int, int> $foo */
-',
-            '<?php
-/** @var $foo array<int, int> */
-',
+            <<<'EOD'
+                <?php
+                /** @var array<int, int> $foo */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @var $foo array<int, int> */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @var array<int, int> $foo Array of something */
-',
-            '<?php
-/** @var $foo array<int, int> Array of something */
-',
+            <<<'EOD'
+                <?php
+                /** @var array<int, int> $foo Array of something */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @var $foo array<int, int> Array of something */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @var Foo|array<int, int>|null $foo */
-',
-            '<?php
-/** @var $foo Foo|array<int, int>|null */
-',
+            <<<'EOD'
+                <?php
+                /** @var Foo|array<int, int>|null $foo */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @var $foo Foo|array<int, int>|null */
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                class Foo
-                {
-                    /**
-                     * @var $bar
-                     */
-                    private $bar;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    /**
+                                     * @var $bar
+                                     */
+                                    private $bar;
+                                }
+                EOD."\n            ",
         ];
     }
 }

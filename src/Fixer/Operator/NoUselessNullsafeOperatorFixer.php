@@ -30,14 +30,16 @@ final class NoUselessNullsafeOperatorFixer extends AbstractFixer
             'There should not be useless Null-safe operator `?->` used.',
             [
                 new VersionSpecificCodeSample(
-                    '<?php
-class Foo extends Bar
-{
-    public function test() {
-        echo $this?->parentMethod();
-    }
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Foo extends Bar
+                        {
+                            public function test() {
+                                echo $this?->parentMethod();
+                            }
+                        }
+
+                        EOD,
                     new VersionSpecification(8_00_00)
                 ),
             ]

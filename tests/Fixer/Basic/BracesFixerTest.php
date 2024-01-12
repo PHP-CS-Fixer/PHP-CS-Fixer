@@ -55,829 +55,1001 @@ final class BracesFixerTest extends AbstractFixerTestCase
     public static function provideFixControlContinuationBracesCases(): iterable
     {
         yield [
-            '<?php
-    $a = function() {
-        $a = 1;
-        while (false);
-    };',
+            <<<'EOD'
+                <?php
+                    $a = function() {
+                        $a = 1;
+                        while (false);
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = function() {
-        $a = 1;
-        for ($i=0;$i<5;++$i);
-    };',
+            <<<'EOD'
+                <?php
+                    $a = function() {
+                        $a = 1;
+                        for ($i=0;$i<5;++$i);
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Foo
-    {
-        public function A()
-        {
-            ?>
-            Test<?php echo $foobar; ?>Test
-            <?php
-            $a = 1;
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function A()
+                        {
+                            ?>
+                            Test<?php echo $foobar; ?>Test
+                            <?php
+                            $a = 1;
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        $a = 1;
-    } else {
-        $b = 2;
-    }',
-            '<?php
-    if (true) {
-        $a = 1;
-    }
-    else {
-        $b = 2;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        $a = 1;
+                    } else {
+                        $b = 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        $a = 1;
+                    }
+                    else {
+                        $b = 2;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    try {
-        throw new \Exception();
-    } catch (\LogicException $e) {
-        // do nothing
-    } catch (\Exception $e) {
-        // do nothing
-    }',
-            '<?php
-    try {
-        throw new \Exception();
-    }catch (\LogicException $e) {
-        // do nothing
-    }
-    catch (\Exception $e) {
-        // do nothing
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    } catch (\LogicException $e) {
+                        // do nothing
+                    } catch (\Exception $e) {
+                        // do nothing
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    }catch (\LogicException $e) {
+                        // do nothing
+                    }
+                    catch (\Exception $e) {
+                        // do nothing
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    }',
-            '<?php
-    if (true) {
-        echo 1;
-    } elseif (true)
-    {
-        echo 2;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    } elseif (true)
+                    {
+                        echo 2;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    try {
-        echo 1;
-    } catch (Exception $e) {
-        echo 2;
-    }',
-            '<?php
-    try
-    {
-        echo 1;
-    }
-    catch (Exception $e)
-    {
-        echo 2;
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        echo 1;
+                    } catch (Exception $e) {
+                        echo 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try
+                    {
+                        echo 1;
+                    }
+                    catch (Exception $e)
+                    {
+                        echo 2;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Foo
-    {
-        public function bar(
-            FooInterface $foo,
-            BarInterface $bar,
-            array $data = []
-        ) {
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function bar(
-            FooInterface $foo,
-            BarInterface $bar,
-            array $data = []
-        ){
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function bar(
+                            FooInterface $foo,
+                            BarInterface $bar,
+                            array $data = []
+                        ) {
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function bar(
+                            FooInterface $foo,
+                            BarInterface $bar,
+                            array $data = []
+                        ){
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (1) {
-        self::${$key} = $val;
-        self::${$type}[$rule] = $pattern;
-        self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
-        self::${$type}[$rule] = $pattern + self::${$type}["rules"];
-    }'."\n                ",
-        ];
-
-        yield [
-            '<?php
-    if (1) {
-        do {
-            $a = 1;
-        } while (true);
-    }',
-        ];
-
-        yield [
-            '<?php
-    if /* 1 */ (2) {
-    }',
-            '<?php
-    if /* 1 */ (2) {}',
-        ];
-
-        yield [
-            '<?php
+            <<<'EOD'
+                <?php
                     if (1) {
-                        echo $items{0}->foo;
-                        echo $collection->items{1}->property;
-                    }'."\n                ",
+                        self::${$key} = $val;
+                        self::${$type}[$rule] = $pattern;
+                        self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
+                        self::${$type}[$rule] = $pattern + self::${$type}["rules"];
+                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-    $a = function() {
-        $a = 1;
-        while (false);
-    };',
+            <<<'EOD'
+                <?php
+                    if (1) {
+                        do {
+                            $a = 1;
+                        } while (true);
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    if /* 1 */ (2) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if /* 1 */ (2) {}
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                    if (1) {
+                                        echo $items{0}->foo;
+                                        echo $collection->items{1}->property;
+                                    }
+                EOD."\n                ",
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    $a = function() {
+                        $a = 1;
+                        while (false);
+                    };
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $a = function()
-    {
-        $a = 1;
-        while (false);
-    };',
-            '<?php
-    $a = function() {
-        $a = 1;
-        while (false);
-    };',
+            <<<'EOD'
+                <?php
+                    $a = function()
+                    {
+                        $a = 1;
+                        while (false);
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $a = function() {
+                        $a = 1;
+                        while (false);
+                    };
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    $a = function() {
-        $a = 1;
-        for ($i=0;$i<5;++$i);
-    };',
+            <<<'EOD'
+                <?php
+                    $a = function() {
+                        $a = 1;
+                        for ($i=0;$i<5;++$i);
+                    };
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $a = function()
-    {
-        $a = 1;
-        for ($i=0;$i<5;++$i);
-    };',
-            '<?php
-    $a = function() {
-        $a = 1;
-        for ($i=0;$i<5;++$i);
-    };',
+            <<<'EOD'
+                <?php
+                    $a = function()
+                    {
+                        $a = 1;
+                        for ($i=0;$i<5;++$i);
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $a = function() {
+                        $a = 1;
+                        for ($i=0;$i<5;++$i);
+                    };
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function A() {
-            ?>
-            Test<?php echo $foobar; ?>Test
-            <?php
-            $a = 1;
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function A()
-        {
-            ?>
-            Test<?php echo $foobar; ?>Test
-            <?php
-            $a = 1;
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function A() {
+                            ?>
+                            Test<?php echo $foobar; ?>Test
+                            <?php
+                            $a = 1;
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function A()
+                        {
+                            ?>
+                            Test<?php echo $foobar; ?>Test
+                            <?php
+                            $a = 1;
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        $a = 1;
-    } else {
-        $b = 2;
-    }',
-            '<?php
-    if (true) {
-        $a = 1;
-    }
-    else {
-        $b = 2;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        $a = 1;
+                    } else {
+                        $b = 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        $a = 1;
+                    }
+                    else {
+                        $b = 2;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true)
-    {
-        $a = 1;
-    }
-    else
-    {
-        $b = 2;
-    }',
-            '<?php
-    if (true) {
-        $a = 1;
-    }
-    else {
-        $b = 2;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true)
+                    {
+                        $a = 1;
+                    }
+                    else
+                    {
+                        $b = 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        $a = 1;
+                    }
+                    else {
+                        $b = 2;
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    try {
-        throw new \Exception();
-    } catch (\LogicException $e) {
-        // do nothing
-    } catch (\Exception $e) {
-        // do nothing
-    }',
-            '<?php
-    try {
-        throw new \Exception();
-    }catch (\LogicException $e) {
-        // do nothing
-    }
-    catch (\Exception $e) {
-        // do nothing
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    } catch (\LogicException $e) {
+                        // do nothing
+                    } catch (\Exception $e) {
+                        // do nothing
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    }catch (\LogicException $e) {
+                        // do nothing
+                    }
+                    catch (\Exception $e) {
+                        // do nothing
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    try
-    {
-        throw new \Exception();
-    }
-    catch (\LogicException $e)
-    {
-        // do nothing
-    }
-    catch (\Exception $e)
-    {
-        // do nothing
-    }',
-            '<?php
-    try {
-        throw new \Exception();
-    }catch (\LogicException $e) {
-        // do nothing
-    }
-    catch (\Exception $e) {
-        // do nothing
-    }',
+            <<<'EOD'
+                <?php
+                    try
+                    {
+                        throw new \Exception();
+                    }
+                    catch (\LogicException $e)
+                    {
+                        // do nothing
+                    }
+                    catch (\Exception $e)
+                    {
+                        // do nothing
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    }catch (\LogicException $e) {
+                        // do nothing
+                    }
+                    catch (\Exception $e) {
+                        // do nothing
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    }',
-            '<?php
-    if (true) {
-        echo 1;
-    } elseif (true)
-    {
-        echo 2;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    } elseif (true)
+                    {
+                        echo 2;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    try {
-        echo 1;
-    } catch (Exception $e) {
-        echo 2;
-    }',
-            '<?php
-    try
-    {
-        echo 1;
-    }
-    catch (Exception $e)
-    {
-        echo 2;
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        echo 1;
+                    } catch (Exception $e) {
+                        echo 2;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try
+                    {
+                        echo 1;
+                    }
+                    catch (Exception $e)
+                    {
+                        echo 2;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function bar(
-            FooInterface $foo,
-            BarInterface $bar,
-            array $data = []
-        ) {
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function bar(
-            FooInterface $foo,
-            BarInterface $bar,
-            array $data = []
-        ){
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function bar(
+                            FooInterface $foo,
+                            BarInterface $bar,
+                            array $data = []
+                        ) {
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function bar(
+                            FooInterface $foo,
+                            BarInterface $bar,
+                            array $data = []
+                        ){
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (1) {
-        self::${$key} = $val;
-        self::${$type}[$rule] = $pattern;
-        self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
-        self::${$type}[$rule] = $pattern + self::${$type}["rules"];
-    }'."\n                ",
-            null,
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-    if (1) {
-        do {
-            $a = 1;
-        } while (true);
-    }',
-            null,
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-    if /* 1 */ (2) {
-    }',
-            '<?php
-    if /* 1 */ (2) {}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
+            <<<'EOD'
+                <?php
                     if (1) {
-                        echo $items{0}->foo;
-                        echo $collection->items{1}->property;
-                    }'."\n                ",
+                        self::${$key} = $val;
+                        self::${$type}[$rule] = $pattern;
+                        self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
+                        self::${$type}[$rule] = $pattern + self::${$type}["rules"];
+                    }
+                EOD."\n                ",
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php class A {
-    /** */
-}',
-            '<?php class A
-/** */
-{
-}',
+            <<<'EOD'
+                <?php
+                    if (1) {
+                        do {
+                            $a = 1;
+                        } while (true);
+                    }
+                EOD,
+            null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function foo()
-    {
-        foo();
-
-        // baz
-        bar();
-    }
-}',
-            '<?php
-class Foo
-{
-    public function foo(){
-    foo();
-
-    // baz
-    bar();
-    }
-}',
+            <<<'EOD'
+                <?php
+                    if /* 1 */ (2) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if /* 1 */ (2) {}
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function foo($foo)
-    {
-        return $foo // foo
-            ? \'foo\'
-            : \'bar\'
-        ;
-    }
-}',
+            <<<'EOD'
+                <?php
+                                    if (1) {
+                                        echo $items{0}->foo;
+                                        echo $collection->items{1}->property;
+                                    }
+                EOD."\n                ",
+            null,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    /**
-     * Foo.
-     */
-    public $foo;
-
-    /**
-     * Bar.
-     */
-    public $bar;
-}',
-            '<?php
-class Foo {
-  /**
-   * Foo.
-   */
-  public $foo;
-
-  /**
-   * Bar.
-   */
-  public $bar;
-}',
+            <<<'EOD'
+                <?php class A {
+                    /** */
+                }
+                EOD,
+            <<<'EOD'
+                <?php class A
+                /** */
+                {
+                }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    /*
-     * Foo.
-     */
-    public $foo;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function foo()
+                    {
+                        foo();
 
-    /*
-     * Bar.
-     */
-    public $bar;
-}',
-            '<?php
-class Foo {
-  /*
-   * Foo.
-   */
-  public $foo;
+                        // baz
+                        bar();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function foo(){
+                    foo();
 
-  /*
-   * Bar.
-   */
-  public $bar;
-}',
+                    // baz
+                    bar();
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (1==1) {
-    $a = 1;
-    // test
-    $b = 2;
-}',
-            '<?php
-if (1==1) {
- $a = 1;
-  // test
-  $b = 2;
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function foo($foo)
+                    {
+                        return $foo // foo
+                            ? 'foo'
+                            : 'bar'
+                        ;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (1==1) {
-    $a = 1;
-    # test
-    $b = 2;
-}',
-            '<?php
-if (1==1) {
- $a = 1;
-  # test
-  $b = 2;
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /**
+                     * Foo.
+                     */
+                    public $foo;
+
+                    /**
+                     * Bar.
+                     */
+                    public $bar;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                  /**
+                   * Foo.
+                   */
+                  public $foo;
+
+                  /**
+                   * Bar.
+                   */
+                  public $bar;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (1==1) {
-    $a = 1;
-    /** @var int $b */
-    $b = a();
-}',
-            '<?php
-if (1==1) {
-    $a = 1;
-    /** @var int $b */
-$b = a();
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    /*
+                     * Foo.
+                     */
+                    public $foo;
+
+                    /*
+                     * Bar.
+                     */
+                    public $bar;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                  /*
+                   * Foo.
+                   */
+                  public $foo;
+
+                  /*
+                   * Bar.
+                   */
+                  public $bar;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if ($b) {
-        if (1==1) {
-            $a = 1;
-            // test
-            $b = 2;
-        }
-    }
-',
-            '<?php
-    if ($b) {
-        if (1==1) {
-         $a = 1;
-          // test
-          $b = 2;
-        }
-    }
-',
+            <<<'EOD'
+                <?php
+                if (1==1) {
+                    $a = 1;
+                    // test
+                    $b = 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1==1) {
+                 $a = 1;
+                  // test
+                  $b = 2;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if ($b) {
-        if (1==1) {
-            $a = 1;
-            /* test */
-            $b = 2;
-            echo 123;//
-        }
-    }
-',
-            '<?php
-    if ($b) {
-        if (1==1) {
-         $a = 1;
-          /* test */
-          $b = 2;
-          echo 123;//
-        }
-    }
-',
+            <<<'EOD'
+                <?php
+                if (1==1) {
+                    $a = 1;
+                    # test
+                    $b = 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1==1) {
+                 $a = 1;
+                  # test
+                  $b = 2;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class A
-{
-    public function B()
-    {/*
-        */
-        $a = 1;
-    }
-}',
-            '<?php
-class A {
-    public function B()
-    {/*
-        */
-      $a = 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                if (1==1) {
+                    $a = 1;
+                    /** @var int $b */
+                    $b = a();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1==1) {
+                    $a = 1;
+                    /** @var int $b */
+                $b = a();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class B
-{
-    public function B()
-    {
-        /*
-            *//**/
-        $a = 1;
-    }
-}',
-            '<?php
-class B {
-    public function B()
-    {
-    /*
-        *//**/
-       $a = 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                    if ($b) {
+                        if (1==1) {
+                            $a = 1;
+                            // test
+                            $b = 2;
+                        }
+                    }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    if ($b) {
+                        if (1==1) {
+                         $a = 1;
+                          // test
+                          $b = 2;
+                        }
+                    }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-class C
-{
-    public function C()
-    {
-        /* */#
-        $a = 1;
-    }
-}',
-            '<?php
-class C {
-    public function C()
-    {
-    /* */#
-       $a = 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                    if ($b) {
+                        if (1==1) {
+                            $a = 1;
+                            /* test */
+                            $b = 2;
+                            echo 123;//
+                        }
+                    }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    if ($b) {
+                        if (1==1) {
+                         $a = 1;
+                          /* test */
+                          $b = 2;
+                          echo 123;//
+                        }
+                    }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($a) { /*
-*/
-    echo 1;
-}',
-            '<?php
-if ($a){ /*
-*/
-echo 1;
-}',
+            <<<'EOD'
+                <?php
+                class A
+                {
+                    public function B()
+                    {/*
+                        */
+                        $a = 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class A {
+                    public function B()
+                    {/*
+                        */
+                      $a = 1;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($a) { /**/ /*
-*/
-    echo 1;
-    echo 2;
-}',
-            '<?php
-if ($a){ /**/ /*
-*/
-echo 1;
-echo 2;
-}',
+            <<<'EOD'
+                <?php
+                class B
+                {
+                    public function B()
+                    {
+                        /*
+                            *//**/
+                        $a = 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class B {
+                    public function B()
+                    {
+                    /*
+                        *//**/
+                       $a = 1;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-foreach ($foo as $bar) {
-    if (true) {
-    }
-    // comment
-    elseif (false) {
-    }
-}',
+            <<<'EOD'
+                <?php
+                class C
+                {
+                    public function C()
+                    {
+                        /* */#
+                        $a = 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class C {
+                    public function C()
+                    {
+                    /* */#
+                       $a = 1;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $bar = 1;                   // multiline ...
-                                // ... comment
-    $baz  = 2;                  // next comment
-}',
+            <<<'EOD'
+                <?php
+                if ($a) { /*
+                */
+                    echo 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a){ /*
+                */
+                echo 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $foo = 1;
-
-    // multiline...
-    // ... comment
-    return $foo;
-}',
-            '<?php
-function foo()
-{
-        $foo = 1;
-
-        // multiline...
-        // ... comment
-        return $foo;
-}',
+            <<<'EOD'
+                <?php
+                if ($a) { /**/ /*
+                */
+                    echo 1;
+                    echo 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a){ /**/ /*
+                */
+                echo 1;
+                echo 2;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $bar = 1;     /* bar */     // multiline ...
-                                // ... comment
-    $baz  = 2;    /* baz */     // next comment
-}',
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar) {
+                    if (true) {
+                    }
+                    // comment
+                    elseif (false) {
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function bar()
-    {
-        foreach (new Bar() as $file) {
-            foo();
-        }
-    }
-}',
-            '<?php
-class Foo {
-    public function bar() {
-        foreach (new Bar() as $file)
-        {
-            foo();
-        }
-    }
-}',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $bar = 1;                   // multiline ...
+                                                // ... comment
+                    $baz  = 2;                  // next comment
+                }
+                EOD,
         ];
 
         yield [
-            '<?php if ($condition) { ?>
-echo 1;
-<?php } else { ?>
-echo 2;
-<?php } ?>
-',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $foo = 1;
+
+                    // multiline...
+                    // ... comment
+                    return $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                        $foo = 1;
+
+                        // multiline...
+                        // ... comment
+                        return $foo;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php $arr = [true, false]; ?>
-<?php foreach ($arr as $index => $item) {
-    if ($item): ?>
-    <?php echo $index; ?>
-<?php endif;
-} ?>',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $bar = 1;     /* bar */     // multiline ...
+                                                // ... comment
+                    $baz  = 2;    /* baz */     // next comment
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-do {
-    foo();
-} // comment
-while (false);
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar()
+                    {
+                        foreach (new Bar() as $file) {
+                            foo();
+                        }
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public function bar() {
+                        foreach (new Bar() as $file)
+                        {
+                            foo();
+                        }
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php if ($condition) { ?>
+                echo 1;
+                <?php } else { ?>
+                echo 2;
+                <?php } ?>
 
-if (true) {
-    ?>
-<hr />
-    <?php
-    if (true) {
-        echo \'x\';
-    }
-    ?>
-<hr />
-    <?php
-}',
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php $arr = [true, false]; ?>
+                <?php foreach ($arr as $index => $item) {
+                    if ($item): ?>
+                    <?php echo $index; ?>
+                <?php endif;
+                } ?>
+                EOD,
+        ];
 
-    function foo()
-    {
-    }',
+        yield [
+            <<<'EOD'
+                <?php
+                do {
+                    foo();
+                } // comment
+                while (false);
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                if (true) {
+                    ?>
+                <hr />
+                    <?php
+                    if (true) {
+                        echo 'x';
+                    }
+                    ?>
+                <hr />
+                    <?php
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+
+                    function foo()
+                    {
+                    }
+                EOD,
         ];
     }
 
@@ -896,1931 +1068,2377 @@ if (true) {
     public static function provideFixMissingBracesAndIndentCases(): iterable
     {
         yield [
-            '<?php
-if (true):
-    $foo = 0;
-endif;',
+            <<<'EOD'
+                <?php
+                if (true):
+                    $foo = 0;
+                endif;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true)  :
-    $foo = 0;
-endif;',
+            <<<'EOD'
+                <?php
+                if (true)  :
+                    $foo = 0;
+                endif;
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) : $foo = 1; endif;',
+            <<<'EOD'
+                <?php
+                    if (true) : $foo = 1; endif;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $foo = 1;
-}',
-            '<?php
-if (true)$foo = 1;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)$foo = 1;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $foo = 2;
-}',
-            '<?php
-if (true)    $foo = 2;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo = 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)    $foo = 2;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $foo = 3;
-}',
-            '<?php
-if (true){$foo = 3;}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo = 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true){$foo = 3;}
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    echo 1;
-} else {
-    echo 2;
-}',
-            '<?php
-if(true) { echo 1; } else echo 2;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo 1;
+                } else {
+                    echo 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) { echo 1; } else echo 2;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    echo 3;
-} else {
-    echo 4;
-}',
-            '<?php
-if(true) echo 3; else { echo 4; }',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo 3;
+                } else {
+                    echo 4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) echo 3; else { echo 4; }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    echo 5;
-} else {
-    echo 6;
-}',
-            '<?php
-if (true) echo 5; else echo 6;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo 5;
+                } else {
+                    echo 6;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) echo 5; else echo 6;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    while (true) {
-        $foo = 1;
-        $bar = 2;
-    }
-}',
-            '<?php
-if (true) while (true) { $foo = 1; $bar = 2;}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    while (true) {
+                        $foo = 1;
+                        $bar = 2;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) while (true) { $foo = 1; $bar = 2;}
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } else {
-        echo 2;
-    }
-} else {
-    echo 3;
-}',
-            '<?php
-if (true) if (true) echo 1; else echo 2; else echo 3;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } else {
+                        echo 2;
+                    }
+                } else {
+                    echo 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) if (true) echo 1; else echo 2; else echo 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    // sth here...
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // sth here...
 
-    if ($a && ($b || $c)) {
-        $d = 1;
-    }
-}',
-            '<?php
-if (true) {
-    // sth here...
+                    if ($a && ($b || $c)) {
+                        $d = 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // sth here...
 
-    if ($a && ($b || $c)) $d = 1;
-}',
+                    if ($a && ($b || $c)) $d = 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-for ($i = 1; $i < 10; ++$i) {
-    echo $i;
-}
-for ($i = 1; $i < 10; ++$i) {
-    echo $i;
-}',
-            '<?php
-for ($i = 1; $i < 10; ++$i) echo $i;
-for ($i = 1; $i < 10; ++$i) { echo $i; }',
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 10; ++$i) {
+                    echo $i;
+                }
+                for ($i = 1; $i < 10; ++$i) {
+                    echo $i;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 10; ++$i) echo $i;
+                for ($i = 1; $i < 10; ++$i) { echo $i; }
+                EOD,
         ];
 
         yield [
-            '<?php
-for ($i = 1; $i < 5; ++$i) {
-    for ($i = 1; $i < 10; ++$i) {
-        echo $i;
-    }
-}',
-            '<?php
-for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 5; ++$i) {
+                    for ($i = 1; $i < 10; ++$i) {
+                        echo $i;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }
+                EOD,
         ];
 
         yield [
-            '<?php
-do {
-    echo 1;
-} while (false);',
-            '<?php
-do { echo 1; } while (false);',
+            <<<'EOD'
+                <?php
+                do {
+                    echo 1;
+                } while (false);
+                EOD,
+            <<<'EOD'
+                <?php
+                do { echo 1; } while (false);
+                EOD,
         ];
 
         yield [
-            '<?php
-while ($foo->next());',
+            <<<'EOD'
+                <?php
+                while ($foo->next());
+                EOD,
         ];
 
         yield [
-            '<?php
-foreach ($foo as $bar) {
-    echo $bar;
-}',
-            '<?php
-foreach ($foo as $bar) echo $bar;',
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar) {
+                    echo $bar;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar) echo $bar;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $a = 1;
-}',
-            '<?php
-if (true) {$a = 1;}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {$a = 1;}
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $a = 1;
-}',
-            '<?php
-if (true) {
- $a = 1;
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                 $a = 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $a = 1;
-    $b = 2;
-    while (true) {
-        $c = 3;
-    }
-    $d = 4;
-}',
-            '<?php
-if (true) {
- $a = 1;
-        $b = 2;
-  while (true) {
-            $c = 3;
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+                    $b = 2;
+                    while (true) {
+                        $c = 3;
+                    }
+                    $d = 4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                 $a = 1;
+                        $b = 2;
+                  while (true) {
+                            $c = 3;
+                                        }
+                        $d = 4;
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+
+
+                    $b = 2;
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $a = 1;
+
+                    // comment at end
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (1) {
+                    if (2) {
+                        $a = "a";
+                    } elseif (3) {
+                        $b = "b";
+                        // comment
+                    } else {
+                        $c = "c";
+                    }
+                    $d = "d";
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                foreach ($numbers as $num) {
+                    for ($i = 0; $i < $num; ++$i) {
+                        $a = "a";
+                    }
+                    $b = "b";
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (1) {
+                    if (2) {
+                        $foo = 2;
+
+                        if (3) {
+                            $foo = 3;
                         }
-        $d = 4;
-}',
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $a = 1;
-
-
-    $b = 2;
-}',
+            <<<'EOD'
+                <?php
+                    declare(ticks = 1) {
+                        $ticks = 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    declare  (
+                    ticks = 1  ) {
+                  $ticks = 1;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (1) {
-    $a = 1;
-
-    // comment at end
-}',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        foo();
+                    } elseif (true) {
+                        bar();
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                    {
+                        foo();
+                    } elseif (true)
+                    {
+                        bar();
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (1) {
-    if (2) {
-        $a = "a";
-    } elseif (3) {
-        $b = "b";
-        // comment
-    } else {
-        $c = "c";
-    }
-    $d = "d";
-}',
+            <<<'EOD'
+                <?php
+                    while (true) {
+                        foo();
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    while (true)
+                    {
+                        foo();
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-foreach ($numbers as $num) {
-    for ($i = 0; $i < $num; ++$i) {
-        $a = "a";
-    }
-    $b = "b";
-}',
+            <<<'EOD'
+                <?php
+                    do {
+                        echo $test;
+                    } while ($test = $this->getTest());
+                EOD,
+            <<<'EOD'
+                <?php
+                    do
+                    {
+                        echo $test;
+                    }
+                    while ($test = $this->getTest());
+                EOD,
         ];
 
         yield [
-            '<?php
-if (1) {
-    if (2) {
-        $foo = 2;
-
-        if (3) {
-            $foo = 3;
-        }
-    }
-}',
+            <<<'EOD'
+                <?php
+                    do {
+                        echo $test;
+                    } while ($test = $this->getTest());
+                EOD,
+            <<<'EOD'
+                <?php
+                    do
+                    {
+                        echo $test;
+                    }while ($test = $this->getTest());
+                EOD,
         ];
 
         yield [
-            '<?php
-    declare(ticks = 1) {
-        $ticks = 1;
-    }',
-            '<?php
-    declare  (
-    ticks = 1  ) {
-  $ticks = 1;
-    }',
+            <<<'EOD'
+                <?php
+                    class ClassName
+                    {
+                        /**
+                         * comment
+                         */
+                        public $foo = null;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class ClassName
+                    {
+
+
+
+
+                        /**
+                         * comment
+                         */
+                        public $foo = null;
+
+
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        foo();
-    } elseif (true) {
-        bar();
-    }',
-            '<?php
-    if (true)
-    {
-        foo();
-    } elseif (true)
-    {
-        bar();
-    }',
+            <<<'EOD'
+                <?php
+                    while ($true) {
+                        try {
+                            throw new \Exception();
+                        } catch (\Exception $e) {
+                            // do nothing
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    while (true) {
-        foo();
-    }',
-            '<?php
-    while (true)
-    {
-        foo();
-    }',
+            <<<'EOD'
+                <?php
+                    interface Foo
+                    {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    do {
-        echo $test;
-    } while ($test = $this->getTest());',
-            '<?php
-    do
-    {
-        echo $test;
-    }
-    while ($test = $this->getTest());',
+            <<<'EOD'
+                <?php
+                function bar()
+                {
+                    $a = 1; //comment
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    do {
-        echo $test;
-    } while ($test = $this->getTest());',
-            '<?php
-    do
-    {
-        echo $test;
-    }while ($test = $this->getTest());',
+            <<<'EOD'
+                <?php
+
+                function & lambda()
+                {
+                    return function () {
+                    };
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class ClassName
-    {
-        /**
-         * comment
-         */
-        public $foo = null;
-    }',
-            '<?php
-    class ClassName
-    {
-
-
-
-
-        /**
-         * comment
-         */
-        public $foo = null;
-
-
-    }',
+            <<<'EOD'
+                <?php
+                function nested()
+                {
+                    $a = "a{$b->c()}d";
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    while ($true) {
-        try {
-            throw new \Exception();
-        } catch (\Exception $e) {
-            // do nothing
-        }
-    }',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = $b->{$c->d}($e);
+                    $f->{$g} = $h;
+                    $i->{$j}[$k] = $l;
+                    $m = $n->{$o};
+                    $p = array($q->{$r}, $s->{$t});
+                    $u->{$v}->w = 1;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    interface Foo
-    {
-        public function setConfig(ConfigInterface $config);
-    }',
+            <<<'EOD'
+                <?php
+                function mixed()
+                {
+                    $a = $b->{"a{$c}d"}();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function bar()
-{
-    $a = 1; //comment
-}',
+            <<<'EOD'
+                <?php
+                function mixedComplex()
+                {
+                    $a = $b->{"a{$c->{'foo-bar'}()}d"}();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-
-function & lambda()
-{
-    return function () {
-    };
-}',
+            <<<'EOD'
+                <?php
+                function mixedComplex()
+                {
+                    $a = ${"b{$foo}"}->{"a{$c->{'foo-bar'}()}d"}();
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function nested()
-{
-    $a = "a{$b->c()}d";
-}',
+            <<<'EOD'
+                <?php
+                    if (true):
+                        echo 1;
+                    else:
+                        echo 2;
+                    endif;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $a = $b->{$c->d}($e);
-    $f->{$g} = $h;
-    $i->{$j}[$k] = $l;
-    $m = $n->{$o};
-    $p = array($q->{$r}, $s->{$t});
-    $u->{$v}->w = 1;
-}',
+            <<<'EOD'
+                <?php
+                    if ($test) { //foo
+                        echo 1;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-function mixed()
-{
-    $a = $b->{"a{$c}d"}();
-}',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        // foo
+                        // bar
+                        if (true) {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                        // foo
+                        // bar
+                            {
+                        if (true)
+                        {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-function mixedComplex()
-{
-    $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
-}',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        // foo
+                        /* bar */
+                        if (true) {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                        // foo
+                        /* bar */{
+                        if (true)
+                        {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-function mixedComplex()
-{
-    $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
-}',
-        ];
-
-        yield [
-            '<?php
-    if (true):
-        echo 1;
-    else:
-        echo 2;
-    endif;
-',
-        ];
-
-        yield [
-            '<?php
-    if ($test) { //foo
-        echo 1;
-    }',
-        ];
-
-        yield [
-            '<?php
-    if (true) {
-        // foo
-        // bar
-        if (true) {
-            print("foo");
-            print("bar");
-        }
-    }',
-            '<?php
-    if (true)
-        // foo
-        // bar
-            {
-        if (true)
-        {
-            print("foo");
-            print("bar");
-        }
-    }',
-        ];
-
-        yield [
-            '<?php
-    if (true) {
-        // foo
-        /* bar */
-        if (true) {
-            print("foo");
-            print("bar");
-        }
-    }',
-            '<?php
-    if (true)
-        // foo
-        /* bar */{
-        if (true)
-        {
-            print("foo");
-            print("bar");
-        }
-    }',
-        ];
-
-        yield [
-            '<?php if (true) {
-    echo "s";
-} ?>x',
+            <<<'EOD'
+                <?php if (true) {
+                    echo "s";
+                } ?>x
+                EOD,
             '<?php if (true) echo "s" ?>x',
         ];
 
         yield [
-            '<?php
-    class Foo
-    {
-        public function getFaxNumbers()
-        {
-            if (1) {
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-            }
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function getFaxNumbers()
-        {
-            if (1)
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-        }
-    }',
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    } else {
-        echo 3;
-    }
-}
-',
-            '<?php
-if(true)
-    if(true)
-        echo 1;
-    elseif(true)
-        echo 2;
-    else
-        echo 3;
-',
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    } else {
-        echo 3;
-    }
-}
-echo 4;
-',
-            '<?php
-if(true)
-    if(true)
-        echo 1;
-    elseif(true)
-        echo 2;
-    else
-        echo 3;
-echo 4;
-',
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    } else {
-        echo 3;
-    }
-}',
-            '<?php
-if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } else {
-        echo 2;
-    }
-} else {
-    echo 3;
-}',
-            '<?php
-if(true) if(true) echo 1; else echo 2; else echo 3;',
-        ];
-
-        yield [
-            '<?php
-foreach ($data as $val) {
-    // test val
-    if ($val === "errors") {
-        echo "!";
-    }
-}',
-            '<?php
-foreach ($data as $val)
-    // test val
-    if ($val === "errors") {
-        echo "!";
-    }',
-        ];
-
-        yield [
-            '<?php
-if (1) {
-    foreach ($data as $val) {
-        // test val
-        if ($val === "errors") {
-            echo "!";
-        }
-    }
-}',
-            '<?php
-if (1)
-    foreach ($data as $val)
-        // test val
-        if ($val === "errors") {
-            echo "!";
-        }',
-        ];
-
-        yield [
-            '<?php
-    class Foo
-    {
-        public function main()
-        {
-            echo "Hello";
-        }
-    }',
-            '<?php
-    class Foo
-    {
-      public function main()
-      {
-        echo "Hello";
-      }
-    }',
-        ];
-
-        yield [
-            '<?php
-class Foo
-{
-    public function main()
-    {
-        echo "Hello";
-    }
-}',
-            '<?php
-class Foo
-{
-  public function main()
-  {
-    echo "Hello";
-  }
-}',
-        ];
-
-        yield [
-            '<?php
-    class Foo
-    {
-        public $bar;
-        public $baz;
-    }',
-            '<?php
-    class Foo
-    {
-                public $bar;
-                public $baz;
-    }',
-        ];
-
-        yield [
-            '<?php
-    function myFunction($foo, $bar)
-    {
-        return \Foo::{$foo}($bar);
-    }',
-        ];
-
-        yield [
-            '<?php
-    class C
-    {
-        public function __construct(
-        ) {
-            //comment
-        }
-    }',
-            '<?php
-    class C {
-        public function __construct(
-        )
-        //comment
-        {}
-    }',
-        ];
-
-        yield [
-            '<?php
-if (true):
-    $foo = 0;
-endif;',
-            null,
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true)  :
-    $foo = 0;
-endif;',
-            null,
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-    if (true) : $foo = 1; endif;',
-            null,
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    $foo = 1;
-}',
-            '<?php
-if (true)$foo = 1;',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    $foo = 2;
-}',
-            '<?php
-if (true)    $foo = 2;',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    $foo = 3;
-}',
-            '<?php
-if (true){$foo = 3;}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    echo 1;
-} else {
-    echo 2;
-}',
-            '<?php
-if(true) { echo 1; } else echo 2;',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    echo 3;
-} else {
-    echo 4;
-}',
-            '<?php
-if(true) echo 3; else { echo 4; }',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    echo 5;
-} else {
-    echo 6;
-}',
-            '<?php
-if (true) echo 5; else echo 6;',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    while (true) {
-        $foo = 1;
-        $bar = 2;
-    }
-}',
-            '<?php
-if (true) while (true) { $foo = 1; $bar = 2;}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } else {
-        echo 2;
-    }
-} else {
-    echo 3;
-}',
-            '<?php
-if (true) if (true) echo 1; else echo 2; else echo 3;',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    // sth here...
-
-    if ($a && ($b || $c)) {
-        $d = 1;
-    }
-}',
-            '<?php
-if (true) {
-    // sth here...
-
-    if ($a && ($b || $c)) $d = 1;
-}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-for ($i = 1; $i < 10; ++$i) {
-    echo $i;
-}
-for ($i = 1; $i < 10; ++$i) {
-    echo $i;
-}',
-            '<?php
-for ($i = 1; $i < 10; ++$i) echo $i;
-for ($i = 1; $i < 10; ++$i) { echo $i; }',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-for ($i = 1; $i < 5; ++$i) {
-    for ($i = 1; $i < 10; ++$i) {
-        echo $i;
-    }
-}',
-            '<?php
-for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-do {
-    echo 1;
-} while (false);',
-            '<?php
-do { echo 1; } while (false);',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-while ($foo->next());',
-            null,
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-foreach ($foo as $bar) {
-    echo $bar;
-}',
-            '<?php
-foreach ($foo as $bar) echo $bar;',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    $a = 1;
-}',
-            '<?php
-if (true) {$a = 1;}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    $a = 1;
-}',
-            '<?php
-if (true) {
- $a = 1;
-}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
-
-        yield [
-            '<?php
-if (true) {
-    $a = 1;
-    $b = 2;
-    while (true) {
-        $c = 3;
-    }
-    $d = 4;
-}',
-            '<?php
-if (true) {
- $a = 1;
-        $b = 2;
-  while (true) {
-            $c = 3;
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function getFaxNumbers()
+                        {
+                            if (1) {
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                            }
                         }
-        $d = 4;
-}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function getFaxNumbers()
+                        {
+                            if (1)
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $a = 1;
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    } else {
+                        echo 3;
+                    }
+                }
 
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true)
+                    if(true)
+                        echo 1;
+                    elseif(true)
+                        echo 2;
+                    else
+                        echo 3;
 
-    $b = 2;
-}',
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    } else {
+                        echo 3;
+                    }
+                }
+                echo 4;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true)
+                    if(true)
+                        echo 1;
+                    elseif(true)
+                        echo 2;
+                    else
+                        echo 3;
+                echo 4;
+
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    } else {
+                        echo 3;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } else {
+                        echo 2;
+                    }
+                } else {
+                    echo 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; else echo 2; else echo 3;
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                foreach ($data as $val) {
+                    // test val
+                    if ($val === "errors") {
+                        echo "!";
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                foreach ($data as $val)
+                    // test val
+                    if ($val === "errors") {
+                        echo "!";
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (1) {
+                    foreach ($data as $val) {
+                        // test val
+                        if ($val === "errors") {
+                            echo "!";
+                        }
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1)
+                    foreach ($data as $val)
+                        // test val
+                        if ($val === "errors") {
+                            echo "!";
+                        }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function main()
+                        {
+                            echo "Hello";
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                      public function main()
+                      {
+                        echo "Hello";
+                      }
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function main()
+                    {
+                        echo "Hello";
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                  public function main()
+                  {
+                    echo "Hello";
+                  }
+                }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public $bar;
+                        public $baz;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                                public $bar;
+                                public $baz;
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    function myFunction($foo, $bar)
+                    {
+                        return \Foo::{$foo}($bar);
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    class C
+                    {
+                        public function __construct(
+                        ) {
+                            //comment
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class C {
+                        public function __construct(
+                        )
+                        //comment
+                        {}
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true):
+                    $foo = 0;
+                endif;
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    $a = 1;
-
-    // comment at end
-}',
+            <<<'EOD'
+                <?php
+                if (true)  :
+                    $foo = 0;
+                endif;
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    if (2) {
-        $a = "a";
-    } elseif (3) {
-        $b = "b";
-        // comment
-    } else {
-        $c = "c";
-    }
-    $d = "d";
-}',
+            <<<'EOD'
+                <?php
+                    if (true) : $foo = 1; endif;
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    if (2) {
-        $a = "a";
-    } elseif (3) {
-        $b = "b";
-        // comment line 1
-        // comment line 2
-        // comment line 3
-        // comment line 4
-    } else {
-        $c = "c";
-    }
-    $d = "d";
-}',
-            '<?php
-if (1) {
-    if (2) {
-        $a = "a";
-    } elseif (3) {
-        $b = "b";
-        // comment line 1
-        // comment line 2
-// comment line 3
-            // comment line 4
-    } else {
-        $c = "c";
-    }
-    $d = "d";
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)$foo = 1;
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-foreach ($numbers as $num) {
-    for ($i = 0; $i < $num; ++$i) {
-        $a = "a";
-    }
-    $b = "b";
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo = 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)    $foo = 2;
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $foo = 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true){$foo = 3;}
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo 1;
+                } else {
+                    echo 2;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) { echo 1; } else echo 2;
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo 3;
+                } else {
+                    echo 4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) echo 3; else { echo 4; }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo 5;
+                } else {
+                    echo 6;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) echo 5; else echo 6;
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    while (true) {
+                        $foo = 1;
+                        $bar = 2;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) while (true) { $foo = 1; $bar = 2;}
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } else {
+                        echo 2;
+                    }
+                } else {
+                    echo 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) if (true) echo 1; else echo 2; else echo 3;
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // sth here...
+
+                    if ($a && ($b || $c)) {
+                        $d = 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // sth here...
+
+                    if ($a && ($b || $c)) $d = 1;
+                }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 10; ++$i) {
+                    echo $i;
+                }
+                for ($i = 1; $i < 10; ++$i) {
+                    echo $i;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 10; ++$i) echo $i;
+                for ($i = 1; $i < 10; ++$i) { echo $i; }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 5; ++$i) {
+                    for ($i = 1; $i < 10; ++$i) {
+                        echo $i;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                for ($i = 1; $i < 5; ++$i) for ($i = 1; $i < 10; ++$i) { echo $i; }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                do {
+                    echo 1;
+                } while (false);
+                EOD,
+            <<<'EOD'
+                <?php
+                do { echo 1; } while (false);
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                while ($foo->next());
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    if (2) {
-        $foo = 2;
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar) {
+                    echo $bar;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                foreach ($foo as $bar) echo $bar;
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
 
-        if (3) {
-            $foo = 3;
-        }
-    }
-}',
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {$a = 1;}
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                 $a = 1;
+                }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+                    $b = 2;
+                    while (true) {
+                        $c = 3;
+                    }
+                    $d = 4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                 $a = 1;
+                        $b = 2;
+                  while (true) {
+                            $c = 3;
+                                        }
+                        $d = 4;
+                }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $a = 1;
+
+
+                    $b = 2;
+                }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    declare(ticks = 1) {
-        $ticks = 1;
-    }',
-            '<?php
-    declare  (
-    ticks = 1  ) {
-  $ticks = 1;
-    }',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $a = 1;
+
+                    // comment at end
+                }
+                EOD,
+            null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        foo();
-    } elseif (true) {
-        bar();
-    }',
-            '<?php
-    if (true)
-    {
-        foo();
-    } elseif (true)
-    {
-        bar();
-    }',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    if (2) {
+                        $a = "a";
+                    } elseif (3) {
+                        $b = "b";
+                        // comment
+                    } else {
+                        $c = "c";
+                    }
+                    $d = "d";
+                }
+                EOD,
+            null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    while (true) {
-        foo();
-    }',
-            '<?php
-    while (true)
-    {
-        foo();
-    }',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    if (2) {
+                        $a = "a";
+                    } elseif (3) {
+                        $b = "b";
+                        // comment line 1
+                        // comment line 2
+                        // comment line 3
+                        // comment line 4
+                    } else {
+                        $c = "c";
+                    }
+                    $d = "d";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                    if (2) {
+                        $a = "a";
+                    } elseif (3) {
+                        $b = "b";
+                        // comment line 1
+                        // comment line 2
+                // comment line 3
+                            // comment line 4
+                    } else {
+                        $c = "c";
+                    }
+                    $d = "d";
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    do {
-        echo $test;
-    } while ($test = $this->getTest());',
-            '<?php
-    do
-    {
-        echo $test;
-    }
-    while ($test = $this->getTest());',
+            <<<'EOD'
+                <?php
+                foreach ($numbers as $num) {
+                    for ($i = 0; $i < $num; ++$i) {
+                        $a = "a";
+                    }
+                    $b = "b";
+                }
+                EOD,
+            null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    do {
-        echo $test;
-    } while ($test = $this->getTest());',
-            '<?php
-    do
-    {
-        echo $test;
-    }while ($test = $this->getTest());',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    if (2) {
+                        $foo = 2;
+
+                        if (3) {
+                            $foo = 3;
+                        }
+                    }
+                }
+                EOD,
+            null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class ClassName {
-        /**
-         * comment
-         */
-        public $foo = null;
-    }',
-            '<?php
-    class ClassName
-    {
-
-
-
-
-        /**
-         * comment
-         */
-        public $foo = null;
-
-
-    }',
+            <<<'EOD'
+                <?php
+                    declare(ticks = 1) {
+                        $ticks = 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    declare  (
+                    ticks = 1  ) {
+                  $ticks = 1;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class ClassName {
-        /**
-         * comment
-         */
-        public $foo = null;
-    }',
-            '<?php
-    class ClassName
-    {
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        foo();
+                    } elseif (true) {
+                        bar();
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                    {
+                        foo();
+                    } elseif (true)
+                    {
+                        bar();
+                    }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    while (true) {
+                        foo();
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    while (true)
+                    {
+                        foo();
+                    }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    do {
+                        echo $test;
+                    } while ($test = $this->getTest());
+                EOD,
+            <<<'EOD'
+                <?php
+                    do
+                    {
+                        echo $test;
+                    }
+                    while ($test = $this->getTest());
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    do {
+                        echo $test;
+                    } while ($test = $this->getTest());
+                EOD,
+            <<<'EOD'
+                <?php
+                    do
+                    {
+                        echo $test;
+                    }while ($test = $this->getTest());
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    class ClassName {
+                        /**
+                         * comment
+                         */
+                        public $foo = null;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class ClassName
+                    {
 
 
 
 
-        /**
-         * comment
-         */
-        public $foo = null;
+                        /**
+                         * comment
+                         */
+                        public $foo = null;
 
 
-    }',
+                    }
+                EOD,
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                    class ClassName {
+                        /**
+                         * comment
+                         */
+                        public $foo = null;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class ClassName
+                    {
+
+
+
+
+                        /**
+                         * comment
+                         */
+                        public $foo = null;
+
+
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    while ($true) {
-        try {
-            throw new \Exception();
-        } catch (\Exception $e) {
-            // do nothing
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    while ($true) {
+                        try {
+                            throw new \Exception();
+                        } catch (\Exception $e) {
+                            // do nothing
+                        }
+                    }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    while ($true)
-    {
-        try
-        {
-            throw new \Exception();
-        }
-        catch (\Exception $e)
-        {
-            // do nothing
-        }
-    }',
-            '<?php
-    while ($true) {
-        try {
-            throw new \Exception();
-        } catch (\Exception $e) {
-            // do nothing
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    while ($true)
+                    {
+                        try
+                        {
+                            throw new \Exception();
+                        }
+                        catch (\Exception $e)
+                        {
+                            // do nothing
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    while ($true) {
+                        try {
+                            throw new \Exception();
+                        } catch (\Exception $e) {
+                            // do nothing
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    interface Foo {
-        public function setConfig(ConfigInterface $config);
-    }',
-            '<?php
-    interface Foo
-    {
-        public function setConfig(ConfigInterface $config);
-    }',
+            <<<'EOD'
+                <?php
+                    interface Foo {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    interface Foo
+                    {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    interface Foo {
-        public function setConfig(ConfigInterface $config);
-    }',
-            '<?php
-    interface Foo
-    {
-        public function setConfig(ConfigInterface $config);
-    }',
+            <<<'EOD'
+                <?php
+                    interface Foo {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    interface Foo
+                    {
+                        public function setConfig(ConfigInterface $config);
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-function bar() {
-    $a = 1; //comment
-}',
-            '<?php
-function bar()
-{
-    $a = 1; //comment
-}',
+            <<<'EOD'
+                <?php
+                function bar() {
+                    $a = 1; //comment
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function bar()
+                {
+                    $a = 1; //comment
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-function & lambda() {
-    return function () {
-    };
-}',
-            '<?php
+                function & lambda() {
+                    return function () {
+                    };
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-function & lambda()
-{
-    return function () {
-    };
-}',
+                function & lambda()
+                {
+                    return function () {
+                    };
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-function & lambda() {
-    return function ()
-    {
-    };
-}',
-            '<?php
+                function & lambda() {
+                    return function ()
+                    {
+                    };
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-function & lambda()
-{
-    return function () {
-    };
-}',
+                function & lambda()
+                {
+                    return function () {
+                    };
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-function & lambda() {
-    return function () {
-    };
-}',
-            '<?php
+                function & lambda() {
+                    return function () {
+                    };
+                }
+                EOD,
+            <<<'EOD'
+                <?php
 
-function & lambda()
-{
-    return function () {
-    };
-}',
+                function & lambda()
+                {
+                    return function () {
+                    };
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-function nested() {
-    $a = "a{$b->c()}d";
-}',
-            '<?php
-function nested()
-{
-    $a = "a{$b->c()}d";
-}',
+            <<<'EOD'
+                <?php
+                function nested() {
+                    $a = "a{$b->c()}d";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function nested()
+                {
+                    $a = "a{$b->c()}d";
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-function nested() {
-    $a = "a{$b->c()}d";
-}',
-            '<?php
-function nested()
-{
-    $a = "a{$b->c()}d";
-}',
+            <<<'EOD'
+                <?php
+                function nested() {
+                    $a = "a{$b->c()}d";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function nested()
+                {
+                    $a = "a{$b->c()}d";
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-function foo() {
-    $a = $b->{$c->d}($e);
-    $f->{$g} = $h;
-    $i->{$j}[$k] = $l;
-    $m = $n->{$o};
-    $p = array($q->{$r}, $s->{$t});
-    $u->{$v}->w = 1;
-}',
-            '<?php
-function foo()
-{
-    $a = $b->{$c->d}($e);
-    $f->{$g} = $h;
-    $i->{$j}[$k] = $l;
-    $m = $n->{$o};
-    $p = array($q->{$r}, $s->{$t});
-    $u->{$v}->w = 1;
-}',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $b->{$c->d}($e);
+                    $f->{$g} = $h;
+                    $i->{$j}[$k] = $l;
+                    $m = $n->{$o};
+                    $p = array($q->{$r}, $s->{$t});
+                    $u->{$v}->w = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = $b->{$c->d}($e);
+                    $f->{$g} = $h;
+                    $i->{$j}[$k] = $l;
+                    $m = $n->{$o};
+                    $p = array($q->{$r}, $s->{$t});
+                    $u->{$v}->w = 1;
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-function foo() {
-    $a = $b->{$c->d}($e);
-    $f->{$g} = $h;
-    $i->{$j}[$k] = $l;
-    $m = $n->{$o};
-    $p = array($q->{$r}, $s->{$t});
-    $u->{$v}->w = 1;
-}',
-            '<?php
-function foo()
-{
-    $a = $b->{$c->d}($e);
-    $f->{$g} = $h;
-    $i->{$j}[$k] = $l;
-    $m = $n->{$o};
-    $p = array($q->{$r}, $s->{$t});
-    $u->{$v}->w = 1;
-}',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    $a = $b->{$c->d}($e);
+                    $f->{$g} = $h;
+                    $i->{$j}[$k] = $l;
+                    $m = $n->{$o};
+                    $p = array($q->{$r}, $s->{$t});
+                    $u->{$v}->w = 1;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = $b->{$c->d}($e);
+                    $f->{$g} = $h;
+                    $i->{$j}[$k] = $l;
+                    $m = $n->{$o};
+                    $p = array($q->{$r}, $s->{$t});
+                    $u->{$v}->w = 1;
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-function mixed() {
-    $a = $b->{"a{$c}d"}();
-}',
-            '<?php
-function mixed()
-{
-    $a = $b->{"a{$c}d"}();
-}',
+            <<<'EOD'
+                <?php
+                function mixed() {
+                    $a = $b->{"a{$c}d"}();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function mixed()
+                {
+                    $a = $b->{"a{$c}d"}();
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-function mixedComplex() {
-    $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
-}',
-            '<?php
-function mixedComplex()
-{
-    $a = $b->{"a{$c->{\'foo-bar\'}()}d"}();
-}',
+            <<<'EOD'
+                <?php
+                function mixedComplex() {
+                    $a = $b->{"a{$c->{'foo-bar'}()}d"}();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function mixedComplex()
+                {
+                    $a = $b->{"a{$c->{'foo-bar'}()}d"}();
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-function mixedComplex() {
-    $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
-}',
-            '<?php
-function mixedComplex()
-{
-    $a = ${"b{$foo}"}->{"a{$c->{\'foo-bar\'}()}d"}();
-}',
+            <<<'EOD'
+                <?php
+                function mixedComplex() {
+                    $a = ${"b{$foo}"}->{"a{$c->{'foo-bar'}()}d"}();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function mixedComplex()
+                {
+                    $a = ${"b{$foo}"}->{"a{$c->{'foo-bar'}()}d"}();
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true):
-        echo 1;
-    else:
-        echo 2;
-    endif;
-',
+            <<<'EOD'
+                <?php
+                    if (true):
+                        echo 1;
+                    else:
+                        echo 2;
+                    endif;
+
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true):
-        echo 1;
-    else:
-        echo 2;
-    endif;
-',
+            <<<'EOD'
+                <?php
+                    if (true):
+                        echo 1;
+                    else:
+                        echo 2;
+                    endif;
+
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if ($test) { //foo
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if ($test) { //foo
+                        echo 1;
+                    }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        // foo
-        // bar
-        if (true) {
-            print("foo");
-            print("bar");
-        }
-    }',
-            '<?php
-    if (true)
-        // foo
-        // bar
-            {
-        if (true)
-        {
-            print("foo");
-            print("bar");
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        // foo
+                        // bar
+                        if (true) {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                        // foo
+                        // bar
+                            {
+                        if (true)
+                        {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true)
-    // foo
-    // bar
-    {
-        if (true)
-        {
-            print("foo");
-            print("bar");
-        }
-    }',
-            '<?php
-    if (true)
-        // foo
-        // bar
-            {
-        if (true)
-        {
-            print("foo");
-            print("bar");
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    if (true)
+                    // foo
+                    // bar
+                    {
+                        if (true)
+                        {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                        // foo
+                        // bar
+                            {
+                        if (true)
+                        {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        // foo
-        /* bar */
-        if (true) {
-            print("foo");
-            print("bar");
-        }
-    }',
-            '<?php
-    if (true)
-        // foo
-        /* bar */{
-        if (true)
-        {
-            print("foo");
-            print("bar");
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        // foo
+                        /* bar */
+                        if (true) {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                        // foo
+                        /* bar */{
+                        if (true)
+                        {
+                            print("foo");
+                            print("bar");
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php if (true) {
-    echo "s";
-} ?>x',
+            <<<'EOD'
+                <?php if (true) {
+                    echo "s";
+                } ?>x
+                EOD,
             '<?php if (true) echo "s" ?>x',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function getFaxNumbers() {
-            if (1) {
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-            }
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function getFaxNumbers()
-        {
-            if (1)
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function getFaxNumbers() {
+                            if (1) {
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                            }
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function getFaxNumbers()
+                        {
+                            if (1)
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function getFaxNumbers() {
-            if (1)
-            {
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-            }
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function getFaxNumbers()
-        {
-            if (1)
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function getFaxNumbers() {
+                            if (1)
+                            {
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                            }
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function getFaxNumbers()
+                        {
+                            if (1)
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function getFaxNumbers() {
-            if (1)
-            {
-                return $this->phoneNumbers->filter(function ($phone)
-                {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-            }
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public function getFaxNumbers()
-        {
-            if (1)
-                return $this->phoneNumbers->filter(function ($phone) {
-                    $a = 1;
-                    $b = 1;
-                    $c = 1;
-                    return ($phone->getType() === 1) ? true : false;
-                });
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function getFaxNumbers() {
+                            if (1)
+                            {
+                                return $this->phoneNumbers->filter(function ($phone)
+                                {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                            }
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function getFaxNumbers()
+                        {
+                            if (1)
+                                return $this->phoneNumbers->filter(function ($phone) {
+                                    $a = 1;
+                                    $b = 1;
+                                    $c = 1;
+                                    return ($phone->getType() === 1) ? true : false;
+                                });
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    } else {
-        echo 3;
-    }
-}
-',
-            '<?php
-if(true)
-    if(true)
-        echo 1;
-    elseif(true)
-        echo 2;
-    else
-        echo 3;
-',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    } else {
+                        echo 3;
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true)
+                    if(true)
+                        echo 1;
+                    elseif(true)
+                        echo 2;
+                    else
+                        echo 3;
+
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    } else {
-        echo 3;
-    }
-}
-echo 4;
-',
-            '<?php
-if(true)
-    if(true)
-        echo 1;
-    elseif(true)
-        echo 2;
-    else
-        echo 3;
-echo 4;
-',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    } else {
+                        echo 3;
+                    }
+                }
+                echo 4;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true)
+                    if(true)
+                        echo 1;
+                    elseif(true)
+                        echo 2;
+                    else
+                        echo 3;
+                echo 4;
+
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } elseif (true) {
-        echo 2;
-    } else {
-        echo 3;
-    }
-}',
-            '<?php
-if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } elseif (true) {
+                        echo 2;
+                    } else {
+                        echo 3;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (true) {
-    if (true) {
-        echo 1;
-    } else {
-        echo 2;
-    }
-} else {
-    echo 3;
-}',
-            '<?php
-if(true) if(true) echo 1; else echo 2; else echo 3;',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    if (true) {
+                        echo 1;
+                    } else {
+                        echo 2;
+                    }
+                } else {
+                    echo 3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; else echo 2; else echo 3;
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-foreach ($data as $val) {
-    // test val
-    if ($val === "errors") {
-        echo "!";
-    }
-}',
-            '<?php
-foreach ($data as $val)
-    // test val
-    if ($val === "errors") {
-        echo "!";
-    }',
+            <<<'EOD'
+                <?php
+                foreach ($data as $val) {
+                    // test val
+                    if ($val === "errors") {
+                        echo "!";
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                foreach ($data as $val)
+                    // test val
+                    if ($val === "errors") {
+                        echo "!";
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    foreach ($data as $val) {
-        // test val
-        if ($val === "errors") {
-            echo "!";
-        }
-    }
-}',
-            '<?php
-if (1)
-    foreach ($data as $val)
-        // test val
-        if ($val === "errors") {
-            echo "!";
-        }',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    foreach ($data as $val) {
+                        // test val
+                        if ($val === "errors") {
+                            echo "!";
+                        }
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1)
+                    foreach ($data as $val)
+                        // test val
+                        if ($val === "errors") {
+                            echo "!";
+                        }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function main() {
-            echo "Hello";
-        }
-    }',
-            '<?php
-    class Foo
-    {
-      public function main()
-      {
-        echo "Hello";
-      }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function main() {
+                            echo "Hello";
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                      public function main()
+                      {
+                        echo "Hello";
+                      }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo {
-    public function main() {
-        echo "Hello";
-    }
-}',
-            '<?php
-class Foo
-{
-  public function main()
-  {
-    echo "Hello";
-  }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public function main() {
+                        echo "Hello";
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                  public function main()
+                  {
+                    echo "Hello";
+                  }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo {
-    public function main() {
-        echo "Hello";
-    }
-}',
-            '<?php
-class Foo
-{
-  public function main()
-  {
-    echo "Hello";
-  }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public function main() {
+                        echo "Hello";
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                  public function main()
+                  {
+                    echo "Hello";
+                  }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public $bar;
-        public $baz;
-    }',
-            '<?php
-    class Foo
-    {
-                public $bar;
-                public $baz;
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public $bar;
+                        public $baz;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                                public $bar;
+                                public $baz;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    function myFunction($foo, $bar) {
-        return \Foo::{$foo}($bar);
-    }',
-            '<?php
-    function myFunction($foo, $bar)
-    {
-        return \Foo::{$foo}($bar);
-    }',
+            <<<'EOD'
+                <?php
+                    function myFunction($foo, $bar) {
+                        return \Foo::{$foo}($bar);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function myFunction($foo, $bar)
+                    {
+                        return \Foo::{$foo}($bar);
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class C {
-        public function __construct(
-        ) {
-            //comment
-        }
-    }',
-            '<?php
-    class C {
-        public function __construct(
-        )
-        //comment
-        {}
-    }',
+            <<<'EOD'
+                <?php
+                    class C {
+                        public function __construct(
+                        ) {
+                            //comment
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class C {
+                        public function __construct(
+                        )
+                        //comment
+                        {}
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Something { # a
-    public function sth() { //
-        return function (int $foo) use ($bar) {
-            return $bar;
-        };
-    }
-}
+            <<<'EOD'
+                <?php
+                class Something { # a
+                    public function sth() { //
+                        return function (int $foo) use ($bar) {
+                            return $bar;
+                        };
+                    }
+                }
 
-function C() { /**/ //    # /**/
-}
+                function C() { /**/ //    # /**/
+                }
 
-function D() { /**
-*
-*/
-}',
-            '<?php
-class Something # a
-{
-    public function sth() //
-    {
-        return function (int $foo) use ($bar) { return $bar; };
-    }
-}
+                function D() { /**
+                *
+                */
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Something # a
+                {
+                    public function sth() //
+                    {
+                        return function (int $foo) use ($bar) { return $bar; };
+                    }
+                }
 
-function C() /**/ //    # /**/
-{
-}
+                function C() /**/ //    # /**/
+                {
+                }
 
-function D() /**
-*
-*/
-{
-}',
+                function D() /**
+                *
+                */
+                {
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    #[Baz]
-    public function bar()
-    {
-    }
-}',
-            '<?php
-class Foo
-{
- #[Baz]
-       public function bar()
- {
-   }
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    #[Baz]
+                    public function bar()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                 #[Baz]
+                       public function bar()
+                 {
+                   }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function bar($arg1,
-                        $arg2,
-                   $arg3)
-    {
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar($arg1,
+                                        $arg2,
+                                   $arg3)
+                    {
+                    }
+                }
+                EOD,
             null,
         ];
     }
@@ -2840,185 +3458,253 @@ class Foo
     public static function provideFixClassyBracesCases(): iterable
     {
         yield [
-            '<?php
-                    class FooA
-                    {
-                    }',
-            '<?php
-                    class FooA {}',
+            <<<'EOD'
+                <?php
+                                    class FooA
+                                    {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    class FooA {}
+                EOD,
         ];
 
         yield [
-            '<?php
-                    class FooB
-                    {
-                    }',
-            '<?php
-                    class FooB{}',
+            <<<'EOD'
+                <?php
+                                    class FooB
+                                    {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    class FooB{}
+                EOD,
         ];
 
         yield [
-            '<?php
-                    class FooC
-                    {
-                    }',
-            '<?php
-                    class FooC
-{}',
+            <<<'EOD'
+                <?php
+                                    class FooC
+                                    {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    class FooC
+                {}
+                EOD,
         ];
 
         yield [
-            '<?php
-                    interface FooD
-                    {
-                    }',
-            '<?php
-                    interface FooD {}',
+            <<<'EOD'
+                <?php
+                                    interface FooD
+                                    {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    interface FooD {}
+                EOD,
         ];
 
         yield [
-            '<?php
-                class TestClass extends BaseTestClass implements TestInterface
+            <<<'EOD'
+                <?php
+                                class TestClass extends BaseTestClass implements TestInterface
+                                {
+                                    private $foo;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class TestClass extends BaseTestClass implements TestInterface { private $foo;}
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                abstract class Foo
                 {
-                    private $foo;
-                }',
-            '<?php
-                class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
+                    public function getProcess($foo)
+                    {
+                        return true;
+                    }
+                }
+                EOD,
+        ];
+
+        yield [<<<'EOD'
+            <?php
+            function foo()
+            {
+                return "$c ($d)";
+            }
+            EOD,
         ];
 
         yield [
-            '<?php
-abstract class Foo
-{
-    public function getProcess($foo)
-    {
-        return true;
-    }
-}',
-        ];
-
-        yield ['<?php
-function foo()
-{
-    return "$c ($d)";
-}',
-        ];
-
-        yield [
-            '<?php
-                    class FooA {
-                    }',
-            '<?php
-                    class FooA {}',
+            <<<'EOD'
+                <?php
+                                    class FooA {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    class FooA {}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-                    class FooB {
-                    }',
-            '<?php
-                    class FooB{}',
+            <<<'EOD'
+                <?php
+                                    class FooB {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    class FooB{}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-                    class FooC {
-                    }',
-            '<?php
-                    class FooC
-{}',
+            <<<'EOD'
+                <?php
+                                    class FooC {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    class FooC
+                {}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-                    interface FooD {
-                    }',
-            '<?php
-                    interface FooD {}',
+            <<<'EOD'
+                <?php
+                                    interface FooD {
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    interface FooD {}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-                class TestClass extends BaseTestClass implements TestInterface {
-                    private $foo;
-                }',
-            '<?php
-                class TestClass extends BaseTestClass implements TestInterface { private $foo;}',
+            <<<'EOD'
+                <?php
+                                class TestClass extends BaseTestClass implements TestInterface {
+                                    private $foo;
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class TestClass extends BaseTestClass implements TestInterface { private $foo;}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-abstract class Foo {
-    public function getProcess($foo) {
-        return true;
-    }
-}',
-            '<?php
-abstract class Foo
-{
-    public function getProcess($foo)
-    {
-        return true;
-    }
-}',
+            <<<'EOD'
+                <?php
+                abstract class Foo {
+                    public function getProcess($foo) {
+                        return true;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                abstract class Foo
+                {
+                    public function getProcess($foo)
+                    {
+                        return true;
+                    }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-function foo() {
-    return "$c ($d)";
-}',
-            '<?php
-function foo()
-{
-    return "$c ($d)";
-}',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return "$c ($d)";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    return "$c ($d)";
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    trait TFoo
-    {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
+            <<<'EOD'
+                <?php
+                    trait TFoo
+                    {
+                        public $a;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    trait TFoo {public $a;}
+                EOD,
         ];
 
         yield [
-            '<?php
-    trait TFoo {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
+            <<<'EOD'
+                <?php
+                    trait TFoo {
+                        public $a;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    trait TFoo {public $a;}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    trait TFoo
-    {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
+            <<<'EOD'
+                <?php
+                    trait TFoo
+                    {
+                        public $a;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    trait TFoo {public $a;}
+                EOD,
         ];
 
         yield [
-            '<?php
-    trait TFoo {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
+            <<<'EOD'
+                <?php
+                    trait TFoo {
+                        public $a;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    trait TFoo {public $a;}
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
@@ -3038,103 +3724,115 @@ function foo()
     public static function provideFixAnonFunctionInShortArraySyntaxCases(): iterable
     {
         yield [
-            '<?php
-    function myFunction()
-    {
-        return [
-            [
-                "callback" => function ($data) {
-                    return true;
-                }
-            ],
-            [
-                "callback" => function ($data) {
-                    return true;
-                },
-            ],
-        ];
-    }',
-            '<?php
-    function myFunction()
-    {
-        return [
-            [
-                "callback" => function ($data) {
-                        return true;
+            <<<'EOD'
+                <?php
+                    function myFunction()
+                    {
+                        return [
+                            [
+                                "callback" => function ($data) {
+                                    return true;
+                                }
+                            ],
+                            [
+                                "callback" => function ($data) {
+                                    return true;
+                                },
+                            ],
+                        ];
                     }
-            ],
-            [
-                "callback" => function ($data) { return true; },
-            ],
-        ];
-    }',
+                EOD,
+            <<<'EOD'
+                <?php
+                    function myFunction()
+                    {
+                        return [
+                            [
+                                "callback" => function ($data) {
+                                        return true;
+                                    }
+                            ],
+                            [
+                                "callback" => function ($data) { return true; },
+                            ],
+                        ];
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    function myFunction() {
-        return [
-            [
-                "callback" => function ($data) {
-                    return true;
-                }
-            ],
-            [
-                "callback" => function ($data) {
-                    return true;
-                },
-            ],
-        ];
-    }',
-            '<?php
-    function myFunction()
-    {
-        return [
-            [
-                "callback" => function ($data) {
-                        return true;
+            <<<'EOD'
+                <?php
+                    function myFunction() {
+                        return [
+                            [
+                                "callback" => function ($data) {
+                                    return true;
+                                }
+                            ],
+                            [
+                                "callback" => function ($data) {
+                                    return true;
+                                },
+                            ],
+                        ];
                     }
-            ],
-            [
-                "callback" => function ($data) { return true; },
-            ],
-        ];
-    }',
+                EOD,
+            <<<'EOD'
+                <?php
+                    function myFunction()
+                    {
+                        return [
+                            [
+                                "callback" => function ($data) {
+                                        return true;
+                                    }
+                            ],
+                            [
+                                "callback" => function ($data) { return true; },
+                            ],
+                        ];
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    function myFunction() {
-        return [
-            [
-                "callback" => function ($data)
-                {
-                    return true;
-                }
-            ],
-            [
-                "callback" => function ($data)
-                {
-                    return true;
-                },
-            ],
-        ];
-    }',
-            '<?php
-    function myFunction()
-    {
-        return [
-            [
-                "callback" => function ($data) {
-                        return true;
+            <<<'EOD'
+                <?php
+                    function myFunction() {
+                        return [
+                            [
+                                "callback" => function ($data)
+                                {
+                                    return true;
+                                }
+                            ],
+                            [
+                                "callback" => function ($data)
+                                {
+                                    return true;
+                                },
+                            ],
+                        ];
                     }
-            ],
-            [
-                "callback" => function ($data) { return true; },
-            ],
-        ];
-    }',
+                EOD,
+            <<<'EOD'
+                <?php
+                    function myFunction()
+                    {
+                        return [
+                            [
+                                "callback" => function ($data) {
+                                        return true;
+                                    }
+                            ],
+                            [
+                                "callback" => function ($data) { return true; },
+                            ],
+                        ];
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
     }
@@ -3158,27 +3856,35 @@ function foo()
         ];
 
         yield [
-            '<?php
-    if ($test) { // foo
-        echo 1;
-    }',
-            '<?php
-    if ($test) // foo
-    {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if ($test) { // foo
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if ($test) // foo
+                    {
+                        echo 1;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo = function ($x) use ($y) { // foo
-        echo 1;
-    };',
-            '<?php
-    $foo = function ($x) use ($y) // foo
-    {
-        echo 1;
-    };',
+            <<<'EOD'
+                <?php
+                    $foo = function ($x) use ($y) { // foo
+                        echo 1;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = function ($x) use ($y) // foo
+                    {
+                        echo 1;
+                    };
+                EOD,
         ];
 
         yield [
@@ -3188,86 +3894,110 @@ function foo()
         ];
 
         yield [
-            '<?php
-    if ($test) { // foo
-        echo 1;
-    }',
-            '<?php
-    if ($test) // foo
-    {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if ($test) { // foo
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if ($test) // foo
+                    {
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $foo = function ($x) use ($y) { // foo
-        echo 1;
-    };',
-            '<?php
-    $foo = function ($x) use ($y) // foo
-    {
-        echo 1;
-    };',
+            <<<'EOD'
+                <?php
+                    $foo = function ($x) use ($y) { // foo
+                        echo 1;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = function ($x) use ($y) // foo
+                    {
+                        echo 1;
+                    };
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    // 2.5+ API
-    if (isNewApi()) {
-        echo "new API";
-        // 2.4- API
-    } elseif (isOldApi()) {
-        echo "old API";
-        // 2.4- API
-    } else {
-        echo "unknown API";
-        // sth
-    }',
+            <<<'EOD'
+                <?php
+                    // 2.5+ API
+                    if (isNewApi()) {
+                        echo "new API";
+                        // 2.4- API
+                    } elseif (isOldApi()) {
+                        echo "old API";
+                        // 2.4- API
+                    } else {
+                        echo "unknown API";
+                        // sth
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($a) { //
-    ?><?php ++$a;
-} ?>',
-            '<?php
-if ($a) { //
-?><?php ++$a;
-} ?>',
+            <<<'EOD'
+                <?php
+                if ($a) { //
+                    ?><?php ++$a;
+                } ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a) { //
+                ?><?php ++$a;
+                } ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($a) { /* */ /* */ /* */ /* */ /* */
-    ?><?php ++$a;
-} ?>',
+            <<<'EOD'
+                <?php
+                if ($a) { /* */ /* */ /* */ /* */ /* */
+                    ?><?php ++$a;
+                } ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo = new class ($a) extends Foo implements Bar { // foo
-        private $x;
-    };',
-            '<?php
-    $foo = new class ($a) extends Foo implements Bar // foo
-    {
-        private $x;
-    };',
+            <<<'EOD'
+                <?php
+                    $foo = new class ($a) extends Foo implements Bar { // foo
+                        private $x;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = new class ($a) extends Foo implements Bar // foo
+                    {
+                        private $x;
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo = new class ($a) extends Foo implements Bar { // foo
-        private $x;
-    };',
-            '<?php
-    $foo = new class ($a) extends Foo implements Bar // foo
-    {
-        private $x;
-    };',
+            <<<'EOD'
+                <?php
+                    $foo = new class ($a) extends Foo implements Bar { // foo
+                        private $x;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = new class ($a) extends Foo implements Bar // foo
+                    {
+                        private $x;
+                    };
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
@@ -3287,216 +4017,276 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     public static function provideFixWhitespaceBeforeBraceCases(): iterable
     {
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true)
-    {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                    {
+                        echo 1;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true){
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true){
+                        echo 1;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true)           {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)           {
+                        echo 1;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    while ($file = $this->getFile()) {
-    }',
-            '<?php
-    while ($file = $this->getFile())
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    while ($file = $this->getFile()) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    while ($file = $this->getFile())
+                    {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    switch (n) {
-        case label1:
-            echo 1;
-            echo 2;
-            break;
-        default:
-            echo 3;
-            echo 4;
-    }',
-            '<?php
-    switch (n)
-    {
-        case label1:
-            echo 1;
-            echo 2;
-            break;
-        default:
-            echo 3;
-            echo 4;
-    }',
+            <<<'EOD'
+                <?php
+                    switch (n) {
+                        case label1:
+                            echo 1;
+                            echo 2;
+                            break;
+                        default:
+                            echo 3;
+                            echo 4;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    switch (n)
+                    {
+                        case label1:
+                            echo 1;
+                            echo 2;
+                            break;
+                        default:
+                            echo 3;
+                            echo 4;
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true)
-    {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                    {
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true){
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true){
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true)           {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)           {
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    while ($file = $this->getFile()) {
-    }',
-            '<?php
-    while ($file = $this->getFile())
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    while ($file = $this->getFile()) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    while ($file = $this->getFile())
+                    {
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    switch (n) {
-        case label1:
-            echo 1;
-            echo 2;
-            break;
-        default:
-            echo 3;
-            echo 4;
-    }',
-            '<?php
-    switch (n)
-    {
-        case label1:
-            echo 1;
-            echo 2;
-            break;
-        default:
-            echo 3;
-            echo 4;
-    }',
+            <<<'EOD'
+                <?php
+                    switch (n) {
+                        case label1:
+                            echo 1;
+                            echo 2;
+                            break;
+                        default:
+                            echo 3;
+                            echo 4;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    switch (n)
+                    {
+                        case label1:
+                            echo 1;
+                            echo 2;
+                            break;
+                        default:
+                            echo 3;
+                            echo 4;
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true)
-    {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)
+                    {
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true){
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true){
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-        echo 1;
-    }',
-            '<?php
-    if (true)           {
-        echo 1;
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                        echo 1;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (true)           {
+                        echo 1;
+                    }
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    while ($file = $this->getFile()) {
-    }',
-            '<?php
-    while ($file = $this->getFile())
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    while ($file = $this->getFile()) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    while ($file = $this->getFile())
+                    {
+                    }
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    switch (n) {
-        case label1:
-            echo 1;
-            echo 2;
-            break;
-        default:
-            echo 3;
-            echo 4;
-    }',
-            '<?php
-    switch (n)
-    {
-        case label1:
-            echo 1;
-            echo 2;
-            break;
-        default:
-            echo 3;
-            echo 4;
-    }',
+            <<<'EOD'
+                <?php
+                    switch (n) {
+                        case label1:
+                            echo 1;
+                            echo 2;
+                            break;
+                        default:
+                            echo 3;
+                            echo 4;
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    switch (n)
+                    {
+                        case label1:
+                            echo 1;
+                            echo 2;
+                            break;
+                        default:
+                            echo 3;
+                            echo 4;
+                    }
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
     }
@@ -3516,373 +4306,473 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     public static function provideFixFunctionsCases(): iterable
     {
         yield [
-            '<?php
-    function download()
-    {
-    }',
-            '<?php
-    function download() {
-    }',
+            <<<'EOD'
+                <?php
+                    function download()
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function download() {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function AAAA()
-    {
-    }
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function AAAA()
+                    {
+                    }
 
-    public function BBBB()
-    {
-    }
+                    public function BBBB()
+                    {
+                    }
 
-    public function CCCC()
-    {
-    }
-}',
-            '<?php
-class Foo
-{
-    public function AAAA(){
-    }
+                    public function CCCC()
+                    {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function AAAA(){
+                    }
 
-    public function BBBB()   {
-    }
+                    public function BBBB()   {
+                    }
 
-    public function CCCC()
-    {
-    }
-}',
+                    public function CCCC()
+                    {
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    filter(function () {
-        return true;
-    });
-',
+            <<<'EOD'
+                <?php
+                    filter(function () {
+                        return true;
+                    });
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    filter(function   ($a) {
-    });',
-            '<?php
-    filter(function   ($a)
-    {});',
+            <<<'EOD'
+                <?php
+                    filter(function   ($a) {
+                    });
+                EOD,
+            <<<'EOD'
+                <?php
+                    filter(function   ($a)
+                    {});
+                EOD,
         ];
 
         yield [
-            '<?php
-    filter(function   ($b) {
-    });',
-            '<?php
-    filter(function   ($b){});',
+            <<<'EOD'
+                <?php
+                    filter(function   ($b) {
+                    });
+                EOD,
+            <<<'EOD'
+                <?php
+                    filter(function   ($b){});
+                EOD,
         ];
 
         yield [
-            '<?php
-    foo(array_map(function ($object) use ($x, $y) {
-        return array_filter($object->bar(), function ($o) {
-            return $o->isBaz();
-        });
-    }, $collection));',
-            '<?php
-    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
+            <<<'EOD'
+                <?php
+                    foo(array_map(function ($object) use ($x, $y) {
+                        return array_filter($object->bar(), function ($o) {
+                            return $o->isBaz();
+                        });
+                    }, $collection));
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));
+                EOD,
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public static function bar()
-    {
-        return 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public static function bar()
+                    {
+                        return 1;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    usort($this->fixers, function &($a, $b) use ($selfName) {
-        return 1;
-    });',
+            <<<'EOD'
+                <?php
+                    usort($this->fixers, function &($a, $b) use ($selfName) {
+                        return 1;
+                    });
+                EOD,
         ];
 
         yield [
-            '<?php
-    usort(
-        $this->fixers,
-        function &($a, $b) use ($selfName) {
-            return 1;
-        }
-    );',
+            <<<'EOD'
+                <?php
+                    usort(
+                        $this->fixers,
+                        function &($a, $b) use ($selfName) {
+                            return 1;
+                        }
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { // random comment
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) // random comment
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { // random comment
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) // random comment
+                    {
+                        return 0;
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { # random comment
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) # random comment
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { # random comment
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) # random comment
+                    {
+                        return 0;
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { /* random comment */
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) /* random comment */
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { /* random comment */
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) /* random comment */
+                    {
+                        return 0;
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { /** random comment */
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) /** random comment */
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { /** random comment */
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) /** random comment */
+                    {
+                        return 0;
+                    };
+                EOD,
         ];
 
         yield [
-            '<?php
-    function download() {
-    }',
+            <<<'EOD'
+                <?php
+                    function download() {
+                    }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo {
-    public function AAAA() {
-    }
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public function AAAA() {
+                    }
 
-    public function BBBB() {
-    }
+                    public function BBBB() {
+                    }
 
-    public function CCCC() {
-    }
-}',
-            '<?php
-class Foo
-{
-    public function AAAA(){
-    }
+                    public function CCCC() {
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function AAAA(){
+                    }
 
-    public function BBBB()   {
-    }
+                    public function BBBB()   {
+                    }
 
-    public function CCCC()
-    {
-    }
-}',
+                    public function CCCC()
+                    {
+                    }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    filter(function () {
-        return true;
-    });
-',
+            <<<'EOD'
+                <?php
+                    filter(function () {
+                        return true;
+                    });
+
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    filter(function   ($a) {
-    });',
-            '<?php
-    filter(function   ($a)
-    {});',
+            <<<'EOD'
+                <?php
+                    filter(function   ($a) {
+                    });
+                EOD,
+            <<<'EOD'
+                <?php
+                    filter(function   ($a)
+                    {});
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    filter(function   ($b) {
-    });',
-            '<?php
-    filter(function   ($b){});',
+            <<<'EOD'
+                <?php
+                    filter(function   ($b) {
+                    });
+                EOD,
+            <<<'EOD'
+                <?php
+                    filter(function   ($b){});
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    foo(array_map(function ($object) use ($x, $y) {
-        return array_filter($object->bar(), function ($o) {
-            return $o->isBaz();
-        });
-    }, $collection));',
-            '<?php
-    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
+            <<<'EOD'
+                <?php
+                    foo(array_map(function ($object) use ($x, $y) {
+                        return array_filter($object->bar(), function ($o) {
+                            return $o->isBaz();
+                        });
+                    }, $collection));
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    foo(array_map(function ($object) use ($x, $y)
-    {
-        return array_filter($object->bar(), function ($o)
-        {
-            return $o->isBaz();
-        });
-    }, $collection));',
-            '<?php
-    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));',
+            <<<'EOD'
+                <?php
+                    foo(array_map(function ($object) use ($x, $y)
+                    {
+                        return array_filter($object->bar(), function ($o)
+                        {
+                            return $o->isBaz();
+                        });
+                    }, $collection));
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(array_map(function ($object) use ($x, $y) { return array_filter($object->bar(), function ($o) { return $o->isBaz(); }); }, $collection));
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-class Foo {
-    public static function bar() {
-        return 1;
-    }
-}',
-            '<?php
-class Foo
-{
-    public static function bar()
-    {
-        return 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public static function bar() {
+                        return 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public static function bar()
+                    {
+                        return 1;
+                    }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-class Foo {
-    public static function bar() {
-        return 1;
-    }
-}',
-            '<?php
-class Foo
-{
-    public static function bar()
-    {
-        return 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public static function bar() {
+                        return 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public static function bar()
+                    {
+                        return 1;
+                    }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-class Foo {
-    public static function bar() {
-        return 1;
-    }
-}',
-            '<?php
-class Foo
-{
-    public static function bar()
-    {
-        return 1;
-    }
-}',
+            <<<'EOD'
+                <?php
+                class Foo {
+                    public static function bar() {
+                        return 1;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public static function bar()
+                    {
+                        return 1;
+                    }
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    usort($this->fixers, function &($a, $b) use ($selfName) {
-        return 1;
-    });',
+            <<<'EOD'
+                <?php
+                    usort($this->fixers, function &($a, $b) use ($selfName) {
+                        return 1;
+                    });
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    usort(
-        $this->fixers,
-        function &($a, $b) use ($selfName) {
-            return 1;
-        }
-    );',
+            <<<'EOD'
+                <?php
+                    usort(
+                        $this->fixers,
+                        function &($a, $b) use ($selfName) {
+                            return 1;
+                        }
+                    );
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { // random comment
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) // random comment
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { // random comment
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) // random comment
+                    {
+                        return 0;
+                    };
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { # random comment
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) # random comment
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { # random comment
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) # random comment
+                    {
+                        return 0;
+                    };
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { /* random comment */
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) /* random comment */
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { /* random comment */
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) /* random comment */
+                    {
+                        return 0;
+                    };
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $fnc = function ($a, $b) { /** random comment */
-        return 0;
-    };',
-            '<?php
-    $fnc = function ($a, $b) /** random comment */
-    {
-        return 0;
-    };',
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) { /** random comment */
+                        return 0;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $fnc = function ($a, $b) /** random comment */
+                    {
+                        return 0;
+                    };
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
@@ -3902,110 +4792,134 @@ class Foo
     public static function provideFixMultiLineStructuresCases(): iterable
     {
         yield [
-            '<?php
-    if (true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if(true === true
-        && true === true
-    )
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    if (true === true
+                        && true === true
+                    ) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(true === true
+                        && true === true
+                    )
+                    {
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    foreach (
-        $boo as $bar => $fooBarBazBuzz
-    ) {
-    }',
-            '<?php
-    foreach (
-        $boo as $bar => $fooBarBazBuzz
-    )
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    foreach (
+                        $boo as $bar => $fooBarBazBuzz
+                    ) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    foreach (
+                        $boo as $bar => $fooBarBazBuzz
+                    )
+                    {
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    $foo = function (
-        $baz,
-        $boo
-    ) {
-    };',
-            '<?php
-    $foo = function (
-        $baz,
-        $boo
-    )
-    {
-    };',
+            <<<'EOD'
+                <?php
+                    $foo = function (
+                        $baz,
+                        $boo
+                    ) {
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = function (
+                        $baz,
+                        $boo
+                    )
+                    {
+                    };
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo
-    {
-        public static function bar(
-            $baz,
-            $boo
-        ) {
-        }
-    }',
-            '<?php
-    class Foo
-    {
-        public static function bar(
-            $baz,
-            $boo
-        )
-        {
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public static function bar(
+                            $baz,
+                            $boo
+                        ) {
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public static function bar(
+                            $baz,
+                            $boo
+                        )
+                        {
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if (true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if(true === true
-        && true === true
-    )
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    if (true === true
+                        && true === true
+                    ) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(true === true
+                        && true === true
+                    )
+                    {
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    if ($foo)
-    {
-    }
-    elseif (
-        true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if ($foo)
-    {
-    }
-    elseif (
-        true === true
-        && true === true
-    )
-    {
-    }',
+            <<<'EOD'
+                <?php
+                    if ($foo)
+                    {
+                    }
+                    elseif (
+                        true === true
+                        && true === true
+                    ) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if ($foo)
+                    {
+                    }
+                    elseif (
+                        true === true
+                        && true === true
+                    )
+                    {
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
@@ -4025,197 +4939,257 @@ class Foo
     public static function provideFixSpaceAroundTokenCases(): iterable
     {
         yield [
-            '<?php
-    try {
-        throw new Exception();
-    } catch (Exception $e) {
-        log($e);
-    }',
-            '<?php
-    try{
-        throw new Exception();
-    }catch (Exception $e){
-        log($e);
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new Exception();
+                    } catch (Exception $e) {
+                        log($e);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try{
+                        throw new Exception();
+                    }catch (Exception $e){
+                        log($e);
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    do {
-        echo 1;
-    } while ($test);',
-            '<?php
-    do{
-        echo 1;
-    }while($test);',
+            <<<'EOD'
+                <?php
+                    do {
+                        echo 1;
+                    } while ($test);
+                EOD,
+            <<<'EOD'
+                <?php
+                    do{
+                        echo 1;
+                    }while($test);
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if(true === true
-        && true === true
-    )     {
-    }',
+            <<<'EOD'
+                <?php
+                    if (true === true
+                        && true === true
+                    ) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(true === true
+                        && true === true
+                    )     {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (1) {
-    }
-    if ($this->tesT ($test)) {
-    }',
-            '<?php
-    if(1){
-    }
-    if ($this->tesT ($test)) {
-    }',
+            <<<'EOD'
+                <?php
+                    if (1) {
+                    }
+                    if ($this->tesT ($test)) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(1){
+                    }
+                    if ($this->tesT ($test)) {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (true) {
-    } elseif (false) {
-    } else {
-    }',
-            '<?php
-    if(true){
-    }elseif(false){
-    }else{
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                    } elseif (false) {
+                    } else {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(true){
+                    }elseif(false){
+                    }else{
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo = function& () use ($bar) {
-    };',
-            '<?php
-    $foo = function& ()use($bar){};',
+            <<<'EOD'
+                <?php
+                    $foo = function& () use ($bar) {
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = function& ()use($bar){};
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-// comment
-declare(strict_types=1);
+                // comment
+                declare(strict_types=1);
 
-// comment
-while (true) {
-}',
+                // comment
+                while (true) {
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-declare(ticks   =   1) {
-}',
-            '<?php
-declare   (   ticks   =   1   )   {
-}',
+            <<<'EOD'
+                <?php
+                declare(ticks   =   1) {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                declare   (   ticks   =   1   )   {
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    try {
-        throw new Exception();
-    } catch (Exception $e) {
-        log($e);
-    }',
-            '<?php
-    try{
-        throw new Exception();
-    }catch (Exception $e){
-        log($e);
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new Exception();
+                    } catch (Exception $e) {
+                        log($e);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try{
+                        throw new Exception();
+                    }catch (Exception $e){
+                        log($e);
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    do {
-        echo 1;
-    } while ($test);',
-            '<?php
-    do{
-        echo 1;
-    }while($test);',
+            <<<'EOD'
+                <?php
+                    do {
+                        echo 1;
+                    } while ($test);
+                EOD,
+            <<<'EOD'
+                <?php
+                    do{
+                        echo 1;
+                    }while($test);
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if(true === true
-        && true === true
-    )     {
-    }',
+            <<<'EOD'
+                <?php
+                    if (true === true
+                        && true === true
+                    ) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(true === true
+                        && true === true
+                    )     {
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (1) {
-    }
-    if ($this->tesT ($test)) {
-    }',
-            '<?php
-    if(1){
-    }
-    if ($this->tesT ($test)) {
-    }',
+            <<<'EOD'
+                <?php
+                    if (1) {
+                    }
+                    if ($this->tesT ($test)) {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(1){
+                    }
+                    if ($this->tesT ($test)) {
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    if (true) {
-    } elseif (false) {
-    } else {
-    }',
-            '<?php
-    if(true){
-    }elseif(false){
-    }else{
-    }',
+            <<<'EOD'
+                <?php
+                    if (true) {
+                    } elseif (false) {
+                    } else {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if(true){
+                    }elseif(false){
+                    }else{
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $foo = function& () use ($bar) {
-    };',
-            '<?php
-    $foo = function& ()use($bar){};',
+            <<<'EOD'
+                <?php
+                    $foo = function& () use ($bar) {
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $foo = function& ()use($bar){};
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-// comment
-declare(strict_types=1);
+                // comment
+                declare(strict_types=1);
 
-// comment
-while (true) {
-}',
+                // comment
+                while (true) {
+                }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-declare(ticks   =   1) {
-}',
-            '<?php
-declare   (   ticks   =   1   )   {
-}',
+            <<<'EOD'
+                <?php
+                declare(ticks   =   1) {
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                declare   (   ticks   =   1   )   {
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
     }
@@ -4235,86 +5209,98 @@ declare   (   ticks   =   1   )   {
     public static function provideFinallyCases(): iterable
     {
         yield [
-            '<?php
-    try {
-        throw new \Exception();
-    } catch (\LogicException $e) {
-        // do nothing
-    } catch (\Exception $e) {
-        // do nothing
-    } finally {
-        echo "finish!";
-    }',
-            '<?php
-    try {
-        throw new \Exception();
-    }catch (\LogicException $e) {
-        // do nothing
-    }
-    catch (\Exception $e) {
-        // do nothing
-    }
-    finally     {
-        echo "finish!";
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    } catch (\LogicException $e) {
+                        // do nothing
+                    } catch (\Exception $e) {
+                        // do nothing
+                    } finally {
+                        echo "finish!";
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    }catch (\LogicException $e) {
+                        // do nothing
+                    }
+                    catch (\Exception $e) {
+                        // do nothing
+                    }
+                    finally     {
+                        echo "finish!";
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    try {
-        throw new \Exception();
-    } catch (\LogicException $e) {
-        // do nothing
-    } catch (\Exception $e) {
-        // do nothing
-    } finally {
-        echo "finish!";
-    }',
-            '<?php
-    try {
-        throw new \Exception();
-    }catch (\LogicException $e) {
-        // do nothing
-    }
-    catch (\Exception $e) {
-        // do nothing
-    }
-    finally     {
-        echo "finish!";
-    }',
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    } catch (\LogicException $e) {
+                        // do nothing
+                    } catch (\Exception $e) {
+                        // do nothing
+                    } finally {
+                        echo "finish!";
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    }catch (\LogicException $e) {
+                        // do nothing
+                    }
+                    catch (\Exception $e) {
+                        // do nothing
+                    }
+                    finally     {
+                        echo "finish!";
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    try
-    {
-        throw new \Exception();
-    }
-    catch (\LogicException $e)
-    {
-        // do nothing
-    }
-    catch (\Exception $e)
-    {
-        // do nothing
-    }
-    finally
-    {
-        echo "finish!";
-    }',
-            '<?php
-    try {
-        throw new \Exception();
-    }catch (\LogicException $e) {
-        // do nothing
-    }
-    catch (\Exception $e) {
-        // do nothing
-    }
-    finally     {
-        echo "finish!";
-    }',
+            <<<'EOD'
+                <?php
+                    try
+                    {
+                        throw new \Exception();
+                    }
+                    catch (\LogicException $e)
+                    {
+                        // do nothing
+                    }
+                    catch (\Exception $e)
+                    {
+                        // do nothing
+                    }
+                    finally
+                    {
+                        echo "finish!";
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    try {
+                        throw new \Exception();
+                    }catch (\LogicException $e) {
+                        // do nothing
+                    }
+                    catch (\Exception $e) {
+                        // do nothing
+                    }
+                    finally     {
+                        echo "finish!";
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
@@ -4334,39 +5320,49 @@ declare   (   ticks   =   1   )   {
     public static function provideFunctionImportCases(): iterable
     {
         yield [
-            '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
+            <<<'EOD'
+                <?php
+                    use function Foo\bar;
+                    if (true) {
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
+            <<<'EOD'
+                <?php
+                    use function Foo\bar;
+                    if (true) {
+                    }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    use function Foo\bar;
-    if (true)
-    {
-    }',
-            '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
+            <<<'EOD'
+                <?php
+                    use function Foo\bar;
+                    if (true)
+                    {
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    use function Foo\bar;
+                    if (true) {
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
+            <<<'EOD'
+                <?php
+                    use function Foo\bar;
+                    if (true) {
+                    }
+                EOD,
         ];
     }
 
@@ -4385,733 +5381,899 @@ declare   (   ticks   =   1   )   {
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo {
-            public function bar()
-            {
-            }
-        };
-    }',
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo { public function bar() {} };
-    }',
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo {
+                            public function bar()
+                            {
+                            }
+                        };
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo { public function bar() {} };
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    foo(1, new class implements Logger {
-        public function log($message)
-        {
-            log($message);
-        }
-    }, 3);',
-            '<?php
-    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger {
+                        public function log($message)
+                        {
+                            log($message);
+                        }
+                    }, 3);
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);
+                EOD,
         ];
 
         yield [
-            '<?php
-$message = (new class() implements FooInterface {
-});',
-            '<?php
-$message = (new class() implements FooInterface{});',
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface {
+                });
+                EOD,
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface{});
+                EOD,
         ];
 
         yield [
-            '<?php $message = (new class() {
-});',
+            <<<'EOD'
+                <?php $message = (new class() {
+                });
+                EOD,
             '<?php $message = (new class() {});',
         ];
 
         yield [
-            '<?php
-if (1) {
-    $message = (new class() extends Foo {
-        public function bar()
-        {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $message = (new class() extends Foo {
+                        public function bar()
+                        {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Foo
-    {
-        public function use()
-        {
-        }
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function use()
+                        {
+                        }
 
-        public function use1(): string
-        {
-        }
-    }'."\n                ",
-            '<?php
-    class Foo
-    {
-        public function use() {
-        }
+                        public function use1(): string
+                        {
+                        }
+                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function use() {
+                        }
 
-        public function use1(): string {
-        }
-    }'."\n                ",
+                        public function use1(): string {
+                        }
+                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-    $a = function (int $foo): string {
-        echo $foo;
-    };
+            <<<'EOD'
+                <?php
+                    $a = function (int $foo): string {
+                        echo $foo;
+                    };
 
-    $b = function (int $foo) use ($bar): string {
-        echo $foo . $bar;
-    };
+                    $b = function (int $foo) use ($bar): string {
+                        echo $foo . $bar;
+                    };
 
-    function a()
-    {
-    }'."\n                ",
-            '<?php
-    $a = function (int $foo): string
-    {
-        echo $foo;
-    };
+                    function a()
+                    {
+                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                    $a = function (int $foo): string
+                    {
+                        echo $foo;
+                    };
 
-    $b = function (int $foo) use($bar): string
-    {
-        echo $foo . $bar;
-    };
+                    $b = function (int $foo) use($bar): string
+                    {
+                        echo $foo . $bar;
+                    };
 
-    function a() {
-    }'."\n                ",
+                    function a() {
+                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-    class Something
-    {
-        public function sth(): string
-        {
-            return function (int $foo) use ($bar): string {
-                return $bar;
-            };
-        }
-    }',
-            '<?php
-    class Something
-    {
-        public function sth(): string
-        {
-            return function (int $foo) use ($bar): string { return $bar; };
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Something
+                    {
+                        public function sth(): string
+                        {
+                            return function (int $foo) use ($bar): string {
+                                return $bar;
+                            };
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Something
+                    {
+                        public function sth(): string
+                        {
+                            return function (int $foo) use ($bar): string { return $bar; };
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-use function some\a\{
-    test1,
-    test2
-};
-test();',
-            '<?php
-use function some\a\{
-     test1,
-    test2
- };
-test();',
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                    test1,
+                    test2
+                };
+                test();
+                EOD,
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                     test1,
+                    test2
+                 };
+                test();
+                EOD,
         ];
 
         yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-',
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    function foo($a) {
-        // foo
-        $foo = new class($a) extends Foo {
-            public function bar() {
-            }
-        };
-    }',
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo { public function bar() {} };
-    }',
+            <<<'EOD'
+                <?php
+                    function foo($a) {
+                        // foo
+                        $foo = new class($a) extends Foo {
+                            public function bar() {
+                            }
+                        };
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo { public function bar() {} };
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo {
-            public function bar()
-            {
-            }
-        };
-    }',
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo { public function bar() {} };
-    }',
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo {
+                            public function bar()
+                            {
+                            }
+                        };
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo { public function bar() {} };
+                    }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    function foo($a) {
-        // foo
-        $foo = new class($a) extends Foo {
-            public function bar() {
-            }
-        };
-    }',
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo { public function bar() {} };
-    }',
+            <<<'EOD'
+                <?php
+                    function foo($a) {
+                        // foo
+                        $foo = new class($a) extends Foo {
+                            public function bar() {
+                            }
+                        };
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo { public function bar() {} };
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo
-        {
-            public function bar()
-            {
-            }
-        };
-    }',
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo { public function bar() {} };
-    }',
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo
+                        {
+                            public function bar()
+                            {
+                            }
+                        };
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo { public function bar() {} };
+                    }
+                EOD,
             self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    function foo($a) {
-        // foo
-        $foo = new class($a) extends Foo
-        {
-            public function bar() {
-            }
-        };
-    }',
-            '<?php
-    function foo($a)
-    {
-        // foo
-        $foo = new class($a) extends Foo { public function bar() {} };
-    }',
+            <<<'EOD'
+                <?php
+                    function foo($a) {
+                        // foo
+                        $foo = new class($a) extends Foo
+                        {
+                            public function bar() {
+                            }
+                        };
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    function foo($a)
+                    {
+                        // foo
+                        $foo = new class($a) extends Foo { public function bar() {} };
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    foo(1, new class implements Logger {
-        public function log($message) {
-            log($message);
-        }
-    }, 3);',
-            '<?php
-    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger {
+                        public function log($message) {
+                            log($message);
+                        }
+                    }, 3);
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    foo(1, new class implements Logger {
-        public function log($message)
-        {
-            log($message);
-        }
-    }, 3);',
-            '<?php
-    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger {
+                        public function log($message)
+                        {
+                            log($message);
+                        }
+                    }, 3);
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    foo(1, new class implements Logger
-    {
-        public function log($message) {
-            log($message);
-        }
-    }, 3);',
-            '<?php
-    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);',
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger
+                    {
+                        public function log($message) {
+                            log($message);
+                        }
+                    }, 3);
+                EOD,
+            <<<'EOD'
+                <?php
+                    foo(1, new class implements Logger { public function log($message) { log($message); } }, 3);
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-$message = (new class() implements FooInterface {
-});',
-            '<?php
-$message = (new class() implements FooInterface{});',
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface {
+                });
+                EOD,
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface{});
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-$message = (new class() implements FooInterface {
-});',
-            '<?php
-$message = (new class() implements FooInterface{});',
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface {
+                });
+                EOD,
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface{});
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-$message = (new class() implements FooInterface
-{
-});',
-            '<?php
-$message = (new class() implements FooInterface{});',
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface
+                {
+                });
+                EOD,
+            <<<'EOD'
+                <?php
+                $message = (new class() implements FooInterface{});
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php $message = (new class() {
-});',
+            <<<'EOD'
+                <?php $message = (new class() {
+                });
+                EOD,
             '<?php $message = (new class() {});',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php $message = (new class() {
-});',
+            <<<'EOD'
+                <?php $message = (new class() {
+                });
+                EOD,
             '<?php $message = (new class() {});',
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php $message = (new class()
-{
-});',
+            <<<'EOD'
+                <?php $message = (new class()
+                {
+                });
+                EOD,
             '<?php $message = (new class() {});',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    $message = (new class() extends Foo {
-        public function bar() {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $message = (new class() extends Foo {
+                        public function bar() {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (1)
-{
-    $message = (new class() extends Foo {
-        public function bar()
-        {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1)
+                {
+                    $message = (new class() extends Foo {
+                        public function bar()
+                        {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    $message = (new class() extends Foo
-    {
-        public function bar() {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $message = (new class() extends Foo
+                    {
+                        public function bar() {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-if (1) {
-    $message = (new class() extends Foo
-    {
-        public function bar() {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1) {
+                    $message = (new class() extends Foo
+                    {
+                        public function bar() {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-if (1)
-{
-    $message = (new class() extends Foo
-    {
-        public function bar()
-        {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1)
+                {
+                    $message = (new class() extends Foo
+                    {
+                        public function bar()
+                        {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
             self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-if (1)
-{
-    $message = (new class() extends Foo
-    {
-        public function bar() {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
+            <<<'EOD'
+                <?php
+                if (1)
+                {
+                    $message = (new class() extends Foo
+                    {
+                        public function bar() {
+                            echo 1;
+                        }
+                    });
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1) {
+                  $message = (new class() extends Foo
+                  {
+                    public function bar() { echo 1; }
+                  });
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function use() {
-        }
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function use() {
+                        }
 
-        public function use1(): string {
-        }
-    }'."\n                ",
-            '<?php
-    class Foo
-    {
-        public function use() {
-        }
+                        public function use1(): string {
+                        }
+                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function use() {
+                        }
 
-        public function use1(): string {
-        }
-    }'."\n                ",
+                        public function use1(): string {
+                        }
+                    }
+                EOD."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class Foo {
-        public function use() {
-        }
+            <<<'EOD'
+                <?php
+                    class Foo {
+                        public function use() {
+                        }
 
-        public function use1(): string {
-        }
-    }'."\n                ",
-            '<?php
-    class Foo
-    {
-        public function use() {
-        }
+                        public function use1(): string {
+                        }
+                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function use() {
+                        }
 
-        public function use1(): string {
-        }
-    }'."\n                ",
+                        public function use1(): string {
+                        }
+                    }
+                EOD."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    $a = function (int $foo): string {
-        echo $foo;
-    };
+            <<<'EOD'
+                <?php
+                    $a = function (int $foo): string {
+                        echo $foo;
+                    };
 
-    $b = function (int $foo) use ($bar): string {
-        echo $foo . $bar;
-    };
+                    $b = function (int $foo) use ($bar): string {
+                        echo $foo . $bar;
+                    };
 
-    function a() {
-    }'."\n                ",
-            '<?php
-    $a = function (int $foo): string
-    {
-        echo $foo;
-    };
+                    function a() {
+                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                    $a = function (int $foo): string
+                    {
+                        echo $foo;
+                    };
 
-    $b = function (int $foo) use($bar): string
-    {
-        echo $foo . $bar;
-    };
+                    $b = function (int $foo) use($bar): string
+                    {
+                        echo $foo . $bar;
+                    };
 
-    function a() {
-    }'."\n                ",
+                    function a() {
+                    }
+                EOD."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    $a = function (int $foo): string
-    {
-        echo $foo;
-    };
+            <<<'EOD'
+                <?php
+                    $a = function (int $foo): string
+                    {
+                        echo $foo;
+                    };
 
-    $b = function (int $foo) use ($bar): string
-    {
-        echo $foo . $bar;
-    };
+                    $b = function (int $foo) use ($bar): string
+                    {
+                        echo $foo . $bar;
+                    };
 
-    function a() {
-    }'."\n                ",
-            '<?php
-    $a = function (int $foo): string
-    {
-        echo $foo;
-    };
+                    function a() {
+                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                    $a = function (int $foo): string
+                    {
+                        echo $foo;
+                    };
 
-    $b = function (int $foo) use($bar): string
-    {
-        echo $foo . $bar;
-    };
+                    $b = function (int $foo) use($bar): string
+                    {
+                        echo $foo . $bar;
+                    };
 
-    function a() {
-    }'."\n                ",
+                    function a() {
+                    }
+                EOD."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-    class Something {
-        public function sth(): string {
-            return function (int $foo) use ($bar): string {
-                return $bar;
-            };
-        }
-    }',
-            '<?php
-    class Something
-    {
-        public function sth(): string
-        {
-            return function (int $foo) use ($bar): string { return $bar; };
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Something {
+                        public function sth(): string {
+                            return function (int $foo) use ($bar): string {
+                                return $bar;
+                            };
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Something
+                    {
+                        public function sth(): string
+                        {
+                            return function (int $foo) use ($bar): string { return $bar; };
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-    class Something {
-        public function sth(): string {
-            return function (int $foo) use ($bar): string
-            {
-                return $bar;
-            };
-        }
-    }',
-            '<?php
-    class Something
-    {
-        public function sth(): string
-        {
-            return function (int $foo) use ($bar): string { return $bar; };
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    class Something {
+                        public function sth(): string {
+                            return function (int $foo) use ($bar): string
+                            {
+                                return $bar;
+                            };
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class Something
+                    {
+                        public function sth(): string
+                        {
+                            return function (int $foo) use ($bar): string { return $bar; };
+                        }
+                    }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-use function some\a\{
-    test1,
-    test2
-};
-test();',
-            '<?php
-use function some\a\{
-     test1,
-    test2
- };
-test();',
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                    test1,
+                    test2
+                };
+                test();
+                EOD,
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                     test1,
+                    test2
+                 };
+                test();
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-use function some\a\{
-    test1,
-    test2
-};
-test();',
-            '<?php
-use function some\a\{
-     test1,
-    test2
- };
-test();',
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                    test1,
+                    test2
+                };
+                test();
+                EOD,
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                     test1,
+                    test2
+                 };
+                test();
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-use function some\a\{
-    test1,
-    test2
-};
-test();',
-            '<?php
-use function some\a\{
-     test1,
-    test2
- };
-test();',
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                    test1,
+                    test2
+                };
+                test();
+                EOD,
+            <<<'EOD'
+                <?php
+                use function some\a\{
+                     test1,
+                    test2
+                 };
+                test();
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-',
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
+
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-',
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
+
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use function some\a\{fn_a, fn_b, fn_c};
-use const some\a\{ConstA, ConstB, ConstC};
-',
+            <<<'EOD'
+                <?php
+                use some\a\{ClassA, ClassB, ClassC as C};
+                use function some\a\{fn_a, fn_b, fn_c};
+                use const some\a\{ConstA, ConstB, ConstC};
+
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
         yield [
-            '<?php
-$foo = new class () extends \Exception {
-};
-',
-            '<?php
-$foo = new class () extends \Exception {};
-',
+            <<<'EOD'
+                <?php
+                $foo = new class () extends \Exception {
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = new class () extends \Exception {};
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = new class () extends \Exception {};
-',
+            <<<'EOD'
+                <?php
+                $foo = new class () extends \Exception {};
+
+                EOD,
             null,
             ['allow_single_line_anonymous_class_with_empty_body' => true],
         ];
 
         yield [
-            '<?php
-$foo = new class() {}; // comment
-',
+            <<<'EOD'
+                <?php
+                $foo = new class() {}; // comment
+
+                EOD,
             null,
             ['allow_single_line_anonymous_class_with_empty_body' => true],
         ];
 
         yield [
-            '<?php
-$foo = new class() { /* comment */ }; // another comment
-',
+            <<<'EOD'
+                <?php
+                $foo = new class() { /* comment */ }; // another comment
+
+                EOD,
             null,
             ['allow_single_line_anonymous_class_with_empty_body' => true],
         ];
 
         yield [
-            '<?php
-$foo = new class () extends \Exception {
-    protected $message = "Surprise";
-};
-',
-            '<?php
-$foo = new class () extends \Exception { protected $message = "Surprise"; };
-',
+            <<<'EOD'
+                <?php
+                $foo = new class () extends \Exception {
+                    protected $message = "Surprise";
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = new class () extends \Exception { protected $message = "Surprise"; };
+
+                EOD,
             ['allow_single_line_anonymous_class_with_empty_body' => true],
         ];
     }
@@ -5131,53 +6293,63 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
     public static function providePreserveLineAfterControlBraceCases(): iterable
     {
         yield [
-            '<?php
-if (1==1) { // test
-    $a = 1;
-}
-echo $a;',
-            '<?php
-if (1==1) // test
-{ $a = 1; }
-echo $a;',
+            <<<'EOD'
+                <?php
+                if (1==1) { // test
+                    $a = 1;
+                }
+                echo $a;
+                EOD,
+            <<<'EOD'
+                <?php
+                if (1==1) // test
+                { $a = 1; }
+                echo $a;
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($test) { // foo
-    echo 1;
-}
-if (1 === 1) {//a
-    $a = "b"; /*d*/
-}//c
-echo $a;
-if ($a === 3) { /**/
-    echo 1;
-}
-',
-            '<?php
-if ($test) // foo
- {
-    echo 1;
-}
-if (1 === 1)//a
-{$a = "b"; /*d*/}//c
-echo $a;
-if ($a === 3) /**/
-{echo 1;}
-',
+            <<<'EOD'
+                <?php
+                if ($test) { // foo
+                    echo 1;
+                }
+                if (1 === 1) {//a
+                    $a = "b"; /*d*/
+                }//c
+                echo $a;
+                if ($a === 3) { /**/
+                    echo 1;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($test) // foo
+                 {
+                    echo 1;
+                }
+                if (1 === 1)//a
+                {$a = "b"; /*d*/}//c
+                echo $a;
+                if ($a === 3) /**/
+                {echo 1;}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    //  The blank line helps with legibility in nested control structures
-    if (true) {
-        // if body
-    }
+            <<<'EOD'
+                <?php
+                if (true) {
+                    //  The blank line helps with legibility in nested control structures
+                    if (true) {
+                        // if body
+                    }
 
-    // if body
-}',
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
@@ -5186,64 +6358,74 @@ if (true) {
         ];
 
         yield [
-            '<?php
-if (true) {
-    //  The blank line helps with legibility in nested control structures
-    if (true) {
-        // if body
-    }
+            <<<'EOD'
+                <?php
+                if (true) {
+                    //  The blank line helps with legibility in nested control structures
+                    if (true) {
+                        // if body
+                    }
 
-    // if body
-}',
+                    // if body
+                }
+                EOD,
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (true) {
-    //  The blank line helps with legibility in nested control structures
-    if (true) {
-        // if body
-    }
+            <<<'EOD'
+                <?php
+                if (true) {
+                    //  The blank line helps with legibility in nested control structures
+                    if (true) {
+                        // if body
+                    }
 
-    // if body
-}',
-            '<?php
-if (true) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
 
-    //  The blank line helps with legibility in nested control structures
-    if (true) {
-        // if body
-    }
+                    //  The blank line helps with legibility in nested control structures
+                    if (true) {
+                        // if body
+                    }
 
-    // if body
-}',
+                    // if body
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (true)
-{
-    //  The blank line helps with legibility in nested control structures
-    if (true)
-    {
-        // if body
-    }
+            <<<'EOD'
+                <?php
+                if (true)
+                {
+                    //  The blank line helps with legibility in nested control structures
+                    if (true)
+                    {
+                        // if body
+                    }
 
-    // if body
-}',
-            '<?php
-if (true) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
 
-    //  The blank line helps with legibility in nested control structures
-    if (true) {
-        // if body
-    }
+                    //  The blank line helps with legibility in nested control structures
+                    if (true) {
+                        // if body
+                    }
 
-    // if body
-}',
+                    // if body
+                }
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
@@ -5254,8 +6436,10 @@ if (true) {
         ];
 
         yield [
-            "<?php if (true)
-{\n    // CRLF newline\n}",
+            <<<EOD
+                <?php if (true)
+                {\n    // CRLF newline\n}
+                EOD,
             "<?php if (true){\r\n\r\n// CRLF newline\n}",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
@@ -5276,35 +6460,49 @@ if (true) {
     public static function provideFixWithAllowSingleLineClosureCases(): iterable
     {
         yield [
-            '<?php
-    $callback = function () { return true; };',
+            <<<'EOD'
+                <?php
+                    $callback = function () { return true; };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $callback = function () { if ($a) { return true; } return false; };',
-            '<?php
-    $callback = function () { if($a){ return true; } return false; };',
+            <<<'EOD'
+                <?php
+                    $callback = function () { if ($a) { return true; } return false; };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $callback = function () { if($a){ return true; } return false; };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $callback = function () { if ($a) { return true; } return false; };',
-            '<?php
-    $callback = function () { if($a) return true; return false; };',
+            <<<'EOD'
+                <?php
+                    $callback = function () { if ($a) { return true; } return false; };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $callback = function () { if($a) return true; return false; };
+                EOD,
         ];
 
         yield [
-            '<?php
-    $callback = function () {
-        if ($a) {
-            return true;
-        }
-        return false;
-    };',
-            '<?php
-    $callback = function () { if($a) return true;
-    return false; };',
+            <<<'EOD'
+                <?php
+                    $callback = function () {
+                        if ($a) {
+                            return true;
+                        }
+                        return false;
+                    };
+                EOD,
+            <<<'EOD'
+                <?php
+                    $callback = function () { if($a) return true;
+                    return false; };
+                EOD,
         ];
     }
 
@@ -5319,17 +6517,21 @@ if (true) {
     public static function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
     {
         yield [
-            '<?php
-if (true) {
-    do {
-        echo 1;
-    } while (false);
-}',
-            '<?php
-if (true)
-    do {
-        echo 1;
-    } while (false);',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    do {
+                        echo 1;
+                    } while (false);
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true)
+                    do {
+                        echo 1;
+                    } while (false);
+                EOD,
         ];
     }
 
@@ -5350,8 +6552,10 @@ if (true)
     public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
-            '<?php
-if (true) {'."\r\n"
+            <<<'EOD'
+                <?php
+                if (true) {
+                EOD."\r\n"
     ."\t".'if (true) {'."\r\n"
         ."\t\t".'echo 1;'."\r\n"
     ."\t".'} elseif (true) {'."\r\n"
@@ -5360,13 +6564,17 @@ if (true) {'."\r\n"
         ."\t\t".'echo 3;'."\r\n"
     ."\t".'}'."\r\n"
 .'}',
-            '<?php
-if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {'."\r\n"
+            <<<'EOD'
+                <?php
+                if (true) {
+                EOD."\r\n"
     ."\t".'if (true) {'."\r\n"
         ."\t\t".'echo 1;'."\r\n"
     ."\t".'} elseif (true) {'."\r\n"
@@ -5375,14 +6583,18 @@ if (true) {'."\r\n"
         ."\t\t".'echo 3;'."\r\n"
     ."\t".'}'."\r\n"
 .'}',
-            '<?php
-if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
         yield [
-            '<?php
-if (true)'
+            <<<'EOD'
+                <?php
+                if (true)
+                EOD
 ."\r\n".'{'."\r\n"
     ."\t".'if (true)'."\r\n\t".'{'."\r\n"
         ."\t\t".'echo 1;'."\r\n"
@@ -5396,8 +6608,10 @@ if (true)'
         ."\t\t".'echo 3;'."\r\n"
     ."\t".'}'."\r\n"
 .'}',
-            '<?php
-if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
+            <<<'EOD'
+                <?php
+                if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;
+                EOD,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
     }
@@ -5471,200 +6685,248 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
     public static function provideFixCommentsCases(): iterable
     {
         yield [
-            '<?php
-function test()
-{
-//    $closure = function ($callback) use ($query) {
-//        doSomething();
-//
-//        return true;
-//    };
-    $a = 3;
-}',
+            <<<'EOD'
+                <?php
+                function test()
+                {
+                //    $closure = function ($callback) use ($query) {
+                //        doSomething();
+                //
+                //        return true;
+                //    };
+                    $a = 3;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function test()
-{
-//    $closure = function ($callback) use ($query) {
-//        doSomething();
-//'.'        '.'
-//        return true;
-//    };
-    $a = 3;
-}',
+            <<<'EOD'
+                <?php
+                function test()
+                {
+                //    $closure = function ($callback) use ($query) {
+                //        doSomething();
+                //
+                EOD.'        '.<<<'EOD'
+
+                //        return true;
+                //    };
+                    $a = 3;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
 
-//    if ($bar === \'bar\') {
-//        return [];
-//    }
-} else {
-    bar();
-}
-',
+                //    if ($bar === 'bar') {
+                //        return [];
+                //    }
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
 
-//    if ($bar === \'bar\') {
-    //        return [];
-//    }
-} else {
-    bar();
-}
-',
+                //    if ($bar === 'bar') {
+                    //        return [];
+                //    }
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
 
-//    if ($bar === \'bar\') {
-//        return [];
-//    }'."\n    ".'
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
+                //    if ($bar === 'bar') {
+                //        return [];
+                //    }
+                EOD."\n    ".<<<'EOD'
+
+                    $bar = 'bar';
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
 
-//    bar();'."\n    ".'
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
+                //    bar();
+                EOD."\n    ".<<<'EOD'
+
+                    $bar = 'bar';
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();
-//    bar();'."\n    ".'
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
+                //    bar();
+                EOD."\n    ".<<<'EOD'
+
+                    $bar = 'bar';
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();'."\n    ".'
-//    bar();
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
+                EOD."\n    ".<<<'EOD'
+
+                //    bar();
+                    $bar = 'bar';
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($foo) {
-    foo();'."\n    ".'
-//    bar();
-} else {
-    bar();
-}
-',
+            <<<'EOD'
+                <?php
+                if ($foo) {
+                    foo();
+                EOD."\n    ".<<<'EOD'
+
+                //    bar();
+                } else {
+                    bar();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $a = 1;
-    // we will return sth
-    return $a;
-}
-',
-            '<?php
-function foo()
-{
-    $a = 1;
-// we will return sth
-    return $a;
-}
-',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = 1;
+                    // we will return sth
+                    return $a;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = 1;
+                // we will return sth
+                    return $a;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $a = 1;'."\n    ".'
-//    bar();
-    // we will return sth
-    return $a;
-}
-',
-            '<?php
-function foo()
-{
-    $a = 1;'."\n    ".'
-//    bar();
-// we will return sth
-    return $a;
-}
-',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = 1;
+                EOD."\n    ".<<<'EOD'
+
+                //    bar();
+                    // we will return sth
+                    return $a;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = 1;
+                EOD."\n    ".<<<'EOD'
+
+                //    bar();
+                // we will return sth
+                    return $a;
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $a = 1;
-//    if ($a === \'bar\') {
-//        return [];
-//    }
-    // we will return sth
-    return $a;
-}
-',
-            '<?php
-function foo()
-{
-    $a = 1;
-//    if ($a === \'bar\') {
-//        return [];
-//    }
-// we will return sth
-    return $a;
-}
-',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = 1;
+                //    if ($a === 'bar') {
+                //        return [];
+                //    }
+                    // we will return sth
+                    return $a;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $a = 1;
+                //    if ($a === 'bar') {
+                //        return [];
+                //    }
+                // we will return sth
+                    return $a;
+                }
+
+                EOD,
         ];
     }
 
     public function testDynamicStaticMethodCallNotTouched(): void
     {
         $this->doTest(
-            '<?php
-SomeClass::{$method}(new \stdClass());
-SomeClass::{\'test\'}(new \stdClass());
+            <<<'EOD'
+                <?php
+                SomeClass::{$method}(new \stdClass());
+                SomeClass::{'test'}(new \stdClass());
 
-function example()
-{
-    SomeClass::{$method}(new \stdClass());
-    SomeClass::{\'test\'}(new \stdClass());
-}'
+                function example()
+                {
+                    SomeClass::{$method}(new \stdClass());
+                    SomeClass::{'test'}(new \stdClass());
+                }
+                EOD
         );
     }
 
@@ -5683,76 +6945,92 @@ function example()
     public static function provideIndentCommentCases(): iterable
     {
         yield [
-            "<?php
-if (true) {
-\t\$i += 2;
-\treturn foo(\$i);
-\t/*
-\t \$i += 3;
+            <<<EOD
+                <?php
+                if (true) {
+                \t\$i += 2;
+                \treturn foo(\$i);
+                \t/*
+                \t \$i += 3;
 
-\t // 1"."\n  "."
-\t   return foo(\$i);
-\t */
-}",
-            '<?php
-if (true) {
-    $i += 2;
-    return foo($i);
-/*
- $i += 3;
+                \t // 1
+                EOD."\n  ".<<<EOD
 
- // 1'."\n  ".'
-   return foo($i);
- */
-}',
+                \t   return foo(\$i);
+                \t */
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $i += 2;
+                    return foo($i);
+                /*
+                 $i += 3;
+
+                 // 1
+                EOD."\n  ".<<<'EOD'
+
+                   return foo($i);
+                 */
+                }
+                EOD,
             new WhitespacesFixerConfig("\t", "\n"),
         ];
 
         yield [
-            '<?php
-class MyClass extends SomeClass
-{
-    /*	public function myFunction() {
+            <<<'EOD'
+                <?php
+                class MyClass extends SomeClass
+                {
+                    /*	public function myFunction() {
 
-    		$MyItems = [];
+                    		$MyItems = [];
 
-    		return $MyItems;
-    	}
-    */
-}',
-            '<?php
-class MyClass extends SomeClass {
-/*	public function myFunction() {
+                    		return $MyItems;
+                    	}
+                    */
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class MyClass extends SomeClass {
+                /*	public function myFunction() {
 
-		$MyItems = [];
+                		$MyItems = [];
 
-		return $MyItems;
-	}
-*/
-}',
+                		return $MyItems;
+                	}
+                */
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    $i += 2;
-    return foo($i);
-    /*
-    $i += 3;
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $i += 2;
+                    return foo($i);
+                    /*
+                    $i += 3;
 
-    return foo($i);
-     */
-}',
-            '<?php
-if (true) {
-    $i += 2;
-    return foo($i);
-/*
-$i += 3;
+                    return foo($i);
+                     */
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    $i += 2;
+                    return foo($i);
+                /*
+                $i += 3;
 
-return foo($i);
- */
-}',
+                return foo($i);
+                 */
+                }
+                EOD,
         ];
     }
 
@@ -5767,44 +7045,56 @@ return foo($i);
     public static function provideFixAlternativeSyntaxCases(): iterable
     {
         yield [
-            '<?php if (foo()) {
-    while (bar()) {
-    }
-}',
+            <<<'EOD'
+                <?php if (foo()) {
+                    while (bar()) {
+                    }
+                }
+                EOD,
             '<?php if (foo()) while (bar()) {}',
         ];
 
         yield [
-            '<?php if ($a) {
-    foreach ($b as $c) {
-    }
-}',
+            <<<'EOD'
+                <?php if ($a) {
+                    foreach ($b as $c) {
+                    }
+                }
+                EOD,
             '<?php if ($a) foreach ($b as $c) {}',
         ];
 
         yield [
-            '<?php if ($a) {
-    foreach ($b as $c): ?> X <?php endforeach;
-} ?>',
+            <<<'EOD'
+                <?php if ($a) {
+                    foreach ($b as $c): ?> X <?php endforeach;
+                } ?>
+                EOD,
             '<?php if ($a) foreach ($b as $c): ?> X <?php endforeach; ?>',
         ];
 
         yield [
-            '<?php if ($a) {
-    while ($b): ?> X <?php endwhile;
-} ?>',
+            <<<'EOD'
+                <?php if ($a) {
+                    while ($b): ?> X <?php endwhile;
+                } ?>
+                EOD,
         ];
 
         yield [
-            '<?php if ($a) {
-    for (;;): ?> X <?php endfor;
-} ?>',
+            <<<'EOD'
+                <?php if ($a) {
+                    for (;;): ?> X <?php endfor;
+                } ?>
+                EOD,
         ];
 
         yield [
-            '<?php if ($a) {
-    switch ($a): case 1: ?> X <?php endswitch;
-} ?>',
+            <<<'EOD'
+                <?php if ($a) {
+                    switch ($a): case 1: ?> X <?php endswitch;
+                } ?>
+                EOD,
         ];
 
         yield [
@@ -5816,19 +7106,12 @@ return foo($i);
         ];
 
         yield [
-            '<?php
-if ($a) {
-    foreach ($b as $c): ?>
-    <?php if ($a) {
-        for (;;): ?>
-        <?php if ($a) {
-            foreach ($b as $c): ?>
-            <?php if ($a) {
-                for (;;): ?>
-                <?php if ($a) {
-                    while ($b): ?>
+            <<<'EOD'
+                <?php
+                if ($a) {
+                    foreach ($b as $c): ?>
                     <?php if ($a) {
-                        while ($b): ?>
+                        for (;;): ?>
                         <?php if ($a) {
                             foreach ($b as $c): ?>
                             <?php if ($a) {
@@ -5837,6 +7120,22 @@ if ($a) {
                                     while ($b): ?>
                                     <?php if ($a) {
                                         while ($b): ?>
+                                        <?php if ($a) {
+                                            foreach ($b as $c): ?>
+                                            <?php if ($a) {
+                                                for (;;): ?>
+                                                <?php if ($a) {
+                                                    while ($b): ?>
+                                                    <?php if ($a) {
+                                                        while ($b): ?>
+                                                    <?php endwhile;
+                                                    } ?>
+                                                <?php endwhile;
+                                                } ?>
+                                            <?php endfor;
+                                            } ?>
+                                        <?php endforeach;
+                                        } ?>
                                     <?php endwhile;
                                     } ?>
                                 <?php endwhile;
@@ -5845,117 +7144,124 @@ if ($a) {
                             } ?>
                         <?php endforeach;
                         } ?>
-                    <?php endwhile;
+                    <?php endfor;
                     } ?>
-                <?php endwhile;
+                <?php endforeach;
                 } ?>
-            <?php endfor;
-            } ?>
-        <?php endforeach;
-        } ?>
-    <?php endfor;
-    } ?>
-<?php endforeach;
-} ?>',
-            '<?php
-if ($a) foreach ($b as $c): ?>
-    <?php if ($a) for (;;): ?>
-        <?php if ($a) foreach ($b as $c): ?>
-            <?php if ($a) for (;;): ?>
-                <?php if ($a) while ($b): ?>
-                    <?php if ($a) while ($b): ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                if ($a) foreach ($b as $c): ?>
+                    <?php if ($a) for (;;): ?>
                         <?php if ($a) foreach ($b as $c): ?>
                             <?php if ($a) for (;;): ?>
                                 <?php if ($a) while ($b): ?>
                                     <?php if ($a) while ($b): ?>
+                                        <?php if ($a) foreach ($b as $c): ?>
+                                            <?php if ($a) for (;;): ?>
+                                                <?php if ($a) while ($b): ?>
+                                                    <?php if ($a) while ($b): ?>
+                                                    <?php endwhile; ?>
+                                                <?php endwhile; ?>
+                                            <?php endfor; ?>
+                                        <?php endforeach; ?>
                                     <?php endwhile; ?>
                                 <?php endwhile; ?>
                             <?php endfor; ?>
                         <?php endforeach; ?>
-                    <?php endwhile; ?>
-                <?php endwhile; ?>
-            <?php endfor; ?>
-        <?php endforeach; ?>
-    <?php endfor; ?>
-<?php endforeach; ?>',
+                    <?php endfor; ?>
+                <?php endforeach; ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-switch (n) {
-    case label1:
-        echo 1;
-        echo 2;
-        break;
-    default:
-        echo 3;
-        echo 4;
-}',
-            '<?php
-switch (n)
-{
- case label1:
-    echo 1;
-        echo 2;
-        break;
-    default:
-        echo 3;
-        echo 4;
-}',
+            <<<'EOD'
+                <?php
+                switch (n) {
+                    case label1:
+                        echo 1;
+                        echo 2;
+                        break;
+                    default:
+                        echo 3;
+                        echo 4;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch (n)
+                {
+                 case label1:
+                    echo 1;
+                        echo 2;
+                        break;
+                    default:
+                        echo 3;
+                        echo 4;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-switch ($foo) {
-    case \'bar\': if (5) {
-        echo 6;
-    }
-}',
-            '<?php
-switch ($foo)
-{
-case \'bar\': if (5) echo 6;
-}',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 'bar': if (5) {
+                        echo 6;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo)
+                {
+                case 'bar': if (5) echo 6;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class mySillyClass
-{
-    public function mrMethod()
-    {
-        switch ($i) {
-            case 0:
+                class mySillyClass
+                {
+                    public function mrMethod()
+                    {
+                        switch ($i) {
+                            case 0:
+                                echo "i equals 0";
+                                break;
+                            case 1:
+                                echo "i equals 1";
+                                break;
+                            case 2:
+                                echo "i equals 2";
+                                break;
+                        }
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class mySillyClass
+                {
+                public function mrMethod() {
+                switch ($i) {
+                case 0:
                 echo "i equals 0";
                 break;
-            case 1:
+                case 1:
                 echo "i equals 1";
                 break;
-            case 2:
+                case 2:
                 echo "i equals 2";
                 break;
-        }
-    }
-}',
-            '<?php
-
-class mySillyClass
-{
-public function mrMethod() {
-switch ($i) {
-case 0:
-echo "i equals 0";
-break;
-case 1:
-echo "i equals 1";
-break;
-case 2:
-echo "i equals 2";
-break;
-}
-}
-}',
+                }
+                }
+                }
+                EOD,
         ];
     }
 
@@ -5972,13 +7278,17 @@ break;
     public static function provideFix80Cases(): iterable
     {
         yield 'match' => [
-            '<?php echo match ($x) {
-    1, 2 => "Same for 1 and 2",
-};',
-            '<?php echo match($x)
-{
-    1, 2 => "Same for 1 and 2",
-};',
+            <<<'EOD'
+                <?php echo match ($x) {
+                    1, 2 => "Same for 1 and 2",
+                };
+                EOD,
+            <<<'EOD'
+                <?php echo match($x)
+                {
+                    1, 2 => "Same for 1 and 2",
+                };
+                EOD,
         ];
     }
 
@@ -5995,33 +7305,41 @@ break;
     public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [
-            '<?php
- enum Foo
- {
-     case Bar;
+            <<<'EOD'
+                <?php
+                 enum Foo
+                 {
+                     case Bar;
 
-     public function abc()
-     {
-     }
- }',
-            '<?php
- enum Foo {
-     case Bar;
+                     public function abc()
+                     {
+                     }
+                 }
+                EOD,
+            <<<'EOD'
+                <?php
+                 enum Foo {
+                     case Bar;
 
-     public function abc() {
-     }
- }',
+                     public function abc() {
+                     }
+                 }
+                EOD,
         ];
 
         yield 'backed-enum' => [
-            '<?php
- enum Foo: string
- {
-     case Bar = "bar";
- }',
-            '<?php
- enum Foo: string {
- case Bar = "bar";}',
+            <<<'EOD'
+                <?php
+                 enum Foo: string
+                 {
+                     case Bar = "bar";
+                 }
+                EOD,
+            <<<'EOD'
+                <?php
+                 enum Foo: string {
+                 case Bar = "bar";}
+                EOD,
         ];
     }
 }

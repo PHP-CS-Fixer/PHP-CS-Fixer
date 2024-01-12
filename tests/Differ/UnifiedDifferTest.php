@@ -28,16 +28,24 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
         $differ = new UnifiedDiffer();
         $file = __FILE__;
 
-        $diff = '--- '.$file.'
-+++'.' '.$file.'
-@@ -2,7 +2,7 @@'."\n ".'
- function baz($options)
- {
--    if (!array_key_exists("foo", $options)) {
-+    if (!\array_key_exists("foo", $options)) {
-         throw new \InvalidArgumentException();
-     }'."\n ".'
-';
+        $diff = '--- '.$file.<<<'EOD'
+
+            +++
+            EOD.' '.$file.<<<'EOD'
+
+            @@ -2,7 +2,7 @@
+            EOD."\n ".<<<'EOD'
+
+             function baz($options)
+             {
+            -    if (!array_key_exists("foo", $options)) {
+            +    if (!\array_key_exists("foo", $options)) {
+                     throw new \InvalidArgumentException();
+                 }
+            EOD."\n ".<<<'EOD'
+
+
+            EOD;
         self::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode(), new \SplFileInfo($file)));
     }
 
@@ -46,12 +54,14 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
         $differ = new UnifiedDiffer();
 
         self::assertSame(
-            '--- "test test test.txt"
-+++ "test test test.txt"
-@@ -1 +1 @@
--a
-+b
-',
+            <<<'EOD'
+                --- "test test test.txt"
+                +++ "test test test.txt"
+                @@ -1 +1 @@
+                -a
+                +b
+
+                EOD,
             $differ->diff("a\n", "b\n", $this->createSplFileInfoDouble('/foo/bar/test test test.txt'))
         );
     }
@@ -61,14 +71,16 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
         $differ = new UnifiedDiffer();
 
         self::assertSame(
-            '--- Original
-+++ New
-@@ -1 +1 @@
--a
-\ No newline at end of file
-+b
-\ No newline at end of file
-',
+            <<<'EOD'
+                --- Original
+                +++ New
+                @@ -1 +1 @@
+                -a
+                \ No newline at end of file
+                +b
+                \ No newline at end of file
+
+                EOD,
             $differ->diff('a', 'b')
         );
     }

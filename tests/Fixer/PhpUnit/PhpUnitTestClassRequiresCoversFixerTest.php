@@ -38,193 +38,235 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
     public static function provideFixCases(): iterable
     {
         yield 'already with annotation: @covers' => [
-            '<?php
-                    /**
-                     * @covers Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @covers Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'already with annotation: @coversDefaultClass' => [
-            '<?php
-                    /**
-                     * @coversDefaultClass
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                     * @coversDefaultClass
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'without docblock #1' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * @coversNothing
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'without docblock #2 (class is final)' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * @coversNothing
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'without docblock #2 (class is abstract)' => [
-            '<?php
-                    abstract class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    abstract class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'with docblock but annotation is missing' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * Description.
-                     *
-                     * @since v2.2
-                     * @coversNothing
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /**
+                                     * Description.
+                                     *
+                                     * @since v2.2
+                                     * @coversNothing
+                                     */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * Description.
-                     *
-                     * @since v2.2
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    /**
+                                     * Description.
+                                     *
+                                     * @since v2.2
+                                     */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'with one-line docblock but annotation is missing' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * Description.
-                     * @coversNothing
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /**
+                                     * Description.
+                                     * @coversNothing
+                                     */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    /** Description. */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    /** Description. */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'with 2-lines docblock but annotation is missing #1' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /** Description.
-                     * @coversNothing
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /** Description.
+                                     * @coversNothing
+                                     */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    /** Description.
-                     */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    /** Description.
+                                     */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'with 2-lines docblock but annotation is missing #2' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * @coversNothing
-                     * Description. */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /**
+                                     * @coversNothing
+                                     * Description. */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * Description. */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    /**
+                                     * Description. */
+                                    final class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'with comment instead of docblock' => [
-            '<?php
-                    /*
-                     * @covers Foo
-                     */
-                    /**
-                     * @coversNothing
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
-                    /*
-                     * @covers Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /*
+                                     * @covers Foo
+                                     */
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    /*
+                                     * @covers Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
 
         yield 'not a test class' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    class Foo {}'."\n                ",
+                                    class Foo {}
+                EOD."\n                ",
         ];
 
         yield 'multiple classes in one file' => [
-            '<?php /** */
+            <<<'EOD'
+                <?php /** */
 
-                    use \PHPUnit\Framework\TestCase;
+                                    use \PHPUnit\Framework\TestCase;
 
-                    /**
-                     * Foo
-                     * @coversNothing
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                                    /**
+                                     * Foo
+                                     * @coversNothing
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
 
-                    class Bar {}
+                                    class Bar {}
 
-                    /**
-                     * @coversNothing
-                     */
-                    class Baz1 extends PHPUnit_Framework_TestCase {}
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class Baz1 extends PHPUnit_Framework_TestCase {}
 
-                    /**
-                     * @coversNothing
-                     */
-                    class Baz2 extends \PHPUnit_Framework_TestCase {}
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class Baz2 extends \PHPUnit_Framework_TestCase {}
 
-                    /**
-                     * @coversNothing
-                     */
-                    class Baz3 extends \PHPUnit\Framework\TestCase {}
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class Baz3 extends \PHPUnit\Framework\TestCase {}
 
-                    /**
-                     * @coversNothing
-                     */
-                    class Baz4 extends TestCase {}'."\n                ",
-            '<?php /** */
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class Baz4 extends TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php /** */
 
-                    use \PHPUnit\Framework\TestCase;
+                                    use \PHPUnit\Framework\TestCase;
 
-                    /**
-                     * Foo
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                                    /**
+                                     * Foo
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
 
-                    class Bar {}
+                                    class Bar {}
 
-                    class Baz1 extends PHPUnit_Framework_TestCase {}
+                                    class Baz1 extends PHPUnit_Framework_TestCase {}
 
-                    class Baz2 extends \PHPUnit_Framework_TestCase {}
+                                    class Baz2 extends \PHPUnit_Framework_TestCase {}
 
-                    class Baz3 extends \PHPUnit\Framework\TestCase {}
+                                    class Baz3 extends \PHPUnit\Framework\TestCase {}
 
-                    class Baz4 extends TestCase {}'."\n                ",
+                                    class Baz4 extends TestCase {}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php /* comment */
+            <<<'EOD'
+                <?php /* comment */
 
-/**
- * @coversNothing
- */
-class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                /**
+                 * @coversNothing
+                 */
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
             '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
         ];
     }
@@ -247,15 +289,19 @@ class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                    /**
-                     * @coversNothing
-                     */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
-            '<?php
+                                    /**
+                                     * @coversNothing
+                                     */
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
 
-                    class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
+                                    class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n                ",
         ];
     }
 
@@ -272,20 +318,26 @@ class FooTest extends \PHPUnit_Framework_TestCase {}'."\n                ",
     public static function provideFix82Cases(): iterable
     {
         yield 'without docblock #2 (class is final)' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-                /**
-                 * @coversNothing
-                 */
-                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}'."\n            ",
-            '<?php
+                                /**
+                                 * @coversNothing
+                                 */
+                                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
 
-                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}'."\n            ",
+                                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n            ",
         ];
 
         yield 'without docblock #2 (class is abstract)' => [
-            '<?php
-                    abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                    abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}
+                EOD."\n            ",
             null,
         ];
     }

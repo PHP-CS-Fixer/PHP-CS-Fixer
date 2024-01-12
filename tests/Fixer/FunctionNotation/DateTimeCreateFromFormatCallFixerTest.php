@@ -107,24 +107,28 @@ final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase
             yield ["<?php \\{$class}::createFromFormat(123, '2022-02-11');"];
 
             yield [
-                "<?php namespace {
-    \\{$class}::createFromFormat('!Y-m-d', '2022-02-11');
-}
+                <<<EOD
+                    <?php namespace {
+                        \\{$class}::createFromFormat('!Y-m-d', '2022-02-11');
+                    }
 
-namespace Bar {
-    class {$class} extends Foo {}
-    {$class}::createFromFormat('Y-m-d', '2022-02-11');
-}
-",
-                "<?php namespace {
-    \\{$class}::createFromFormat('Y-m-d', '2022-02-11');
-}
+                    namespace Bar {
+                        class {$class} extends Foo {}
+                        {$class}::createFromFormat('Y-m-d', '2022-02-11');
+                    }
 
-namespace Bar {
-    class {$class} extends Foo {}
-    {$class}::createFromFormat('Y-m-d', '2022-02-11');
-}
-",
+                    EOD,
+                <<<EOD
+                    <?php namespace {
+                        \\{$class}::createFromFormat('Y-m-d', '2022-02-11');
+                    }
+
+                    namespace Bar {
+                        class {$class} extends Foo {}
+                        {$class}::createFromFormat('Y-m-d', '2022-02-11');
+                    }
+
+                    EOD,
             ];
 
             yield $class.': binary string' => [

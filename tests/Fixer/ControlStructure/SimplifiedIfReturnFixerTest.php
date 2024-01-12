@@ -262,41 +262,45 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'no braces loops' => [
-            '<?php
-function foo1(string $str, array $letters): bool
-{
-    foreach ($letters as $letter)
-        if ($str === $letter)
-            return true;
-    return false;
-}
+            <<<'EOD'
+                <?php
+                function foo1(string $str, array $letters): bool
+                {
+                    foreach ($letters as $letter)
+                        if ($str === $letter)
+                            return true;
+                    return false;
+                }
 
-function foo2(int $z): bool
-{
-    for ($i = 0; $i < 3; ++$i)
-        if ($i === $z)
-            return true;
-    return false;
-}
+                function foo2(int $z): bool
+                {
+                    for ($i = 0; $i < 3; ++$i)
+                        if ($i === $z)
+                            return true;
+                    return false;
+                }
 
-function foo3($y): bool
-{
-    while ($x = bar())
-        if ($x === $z)
-            return true;
-    return false;
-}
-',
+                function foo3($y): bool
+                {
+                    while ($x = bar())
+                        if ($x === $z)
+                            return true;
+                    return false;
+                }
+
+                EOD,
         ];
 
         yield 'alternative syntax not supported' => [
-            '<?php
-if ($foo):
-    return true;
-else:
-    return false;
-endif;
-',
+            <<<'EOD'
+                <?php
+                if ($foo):
+                    return true;
+                else:
+                    return false;
+                endif;
+
+                EOD,
         ];
     }
 }

@@ -54,44 +54,48 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
             'Usages of `@expectedException*` annotations MUST be replaced by `->setExpectedException*` methods.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @expectedException FooException
-     * @expectedExceptionMessageRegExp /foo.*$/
-     * @expectedExceptionCode 123
-     */
-    function testAaa()
-    {
-        aaa();
-    }
-}
-'
+                    <<<'EOD'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            /**
+                             * @expectedException FooException
+                             * @expectedExceptionMessageRegExp /foo.*$/
+                             * @expectedExceptionCode 123
+                             */
+                            function testAaa()
+                            {
+                                aaa();
+                            }
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @expectedException FooException
-     * @expectedExceptionCode 123
-     */
-    function testBbb()
-    {
-        bbb();
-    }
+                    <<<'EOD'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            /**
+                             * @expectedException FooException
+                             * @expectedExceptionCode 123
+                             */
+                            function testBbb()
+                            {
+                                bbb();
+                            }
 
-    /**
-     * @expectedException FooException
-     * @expectedExceptionMessageRegExp /foo.*$/
-     */
-    function testCcc()
-    {
-        ccc();
-    }
-}
-',
+                            /**
+                             * @expectedException FooException
+                             * @expectedExceptionMessageRegExp /foo.*$/
+                             */
+                            function testCcc()
+                            {
+                                ccc();
+                            }
+                        }
+
+                        EOD,
                     ['target' => PhpUnitTargetVersion::VERSION_3_2]
                 ),
             ],

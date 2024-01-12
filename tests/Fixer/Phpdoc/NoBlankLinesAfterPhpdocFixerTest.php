@@ -218,32 +218,44 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
     public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
     {
         $this->doTest(
-            '<?php
-                /**
-                 * PHPDoc with a line with space
-                 */
-                class Foo {}',
-            '<?php
-                /**
-                 * PHPDoc with a line with space
-                 */'."\n                ".'
-                class Foo {}'
+            <<<'EOD'
+                <?php
+                                /**
+                                 * PHPDoc with a line with space
+                                 */
+                                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                /**
+                                 * PHPDoc with a line with space
+                                 */
+                EOD."\n                ".<<<'EOD'
+
+                                class Foo {}
+                EOD
         );
     }
 
     public function testLineWithSpacesIsRemovedWhenNextTokenIsNotIndented(): void
     {
         $this->doTest(
-            '<?php
-    /**
-     * PHPDoc with a line with space
-     */
-class Foo {}',
-            '<?php
-    /**
-     * PHPDoc with a line with space
-     */'."\n    ".'
-class Foo {}'
+            <<<'EOD'
+                <?php
+                    /**
+                     * PHPDoc with a line with space
+                     */
+                class Foo {}
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * PHPDoc with a line with space
+                     */
+                EOD."\n    ".<<<'EOD'
+
+                class Foo {}
+                EOD
         );
     }
 

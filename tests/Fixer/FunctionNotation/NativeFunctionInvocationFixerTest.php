@@ -183,85 +183,105 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-\is_string($foo);
-',
+                \is_string($foo);
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-\is_string($foo);
-',
-            '<?php
+                \is_string($foo);
 
-is_string($foo);
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                is_string($foo);
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    public function bar($foo)
-    {
-        return \is_string($foo);
-    }
-}
-',
+                class Foo
+                {
+                    public function bar($foo)
+                    {
+                        return \is_string($foo);
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-json_encode($foo);
-\strlen($foo);
-',
-            '<?php
+                json_encode($foo);
+                \strlen($foo);
 
-json_encode($foo);
-strlen($foo);
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                json_encode($foo);
+                strlen($foo);
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    public function bar($foo)
-    {
-        return \IS_STRING($foo);
-    }
-}
-',
-            '<?php
+                class Foo
+                {
+                    public function bar($foo)
+                    {
+                        return \IS_STRING($foo);
+                    }
+                }
 
-class Foo
-{
-    public function bar($foo)
-    {
-        return IS_STRING($foo);
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class Foo
+                {
+                    public function bar($foo)
+                    {
+                        return IS_STRING($foo);
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'fix multiple calls in single code' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-json_encode($foo);
-\strlen($foo);
-\strlen($foo);
-',
-            '<?php
+                json_encode($foo);
+                \strlen($foo);
+                \strlen($foo);
 
-json_encode($foo);
-strlen($foo);
-strlen($foo);
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                json_encode($foo);
+                strlen($foo);
+                strlen($foo);
+
+                EOD,
         ];
 
         yield [
@@ -287,23 +307,27 @@ strlen($foo);
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-is_string($foo);
-',
+                is_string($foo);
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    public function bar($foo)
-    {
-        return is_string($foo);
-    }
-}
-',
+                class Foo
+                {
+                    public function bar($foo)
+                    {
+                        return is_string($foo);
+                    }
+                }
+
+                EOD,
         ];
     }
 
@@ -323,80 +347,92 @@ class Foo
         ];
 
         yield [
-            '<?php
-namespace space1 { ?>
-<?php echo \count([2]) ?>
-<?php }namespace {echo count([1]);}
-',
-            '<?php
-namespace space1 { ?>
-<?php echo count([2]) ?>
-<?php }namespace {echo count([1]);}
-',
+            <<<'EOD'
+                <?php
+                namespace space1 { ?>
+                <?php echo \count([2]) ?>
+                <?php }namespace {echo count([1]);}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace space1 { ?>
+                <?php echo count([2]) ?>
+                <?php }namespace {echo count([1]);}
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace Bar {
-    echo \strLEN("in 1");
-}
+            <<<'EOD'
+                <?php
+                namespace Bar {
+                    echo \strLEN("in 1");
+                }
 
-namespace {
-    echo strlen("out 1");
-}
+                namespace {
+                    echo strlen("out 1");
+                }
 
-namespace {
-    echo strlen("out 2");
-}
+                namespace {
+                    echo strlen("out 2");
+                }
 
-namespace Bar{
-    echo \strlen("in 2");
-}
+                namespace Bar{
+                    echo \strlen("in 2");
+                }
 
-namespace {
-    echo strlen("out 3");
-}
-',
-            '<?php
-namespace Bar {
-    echo strLEN("in 1");
-}
+                namespace {
+                    echo strlen("out 3");
+                }
 
-namespace {
-    echo strlen("out 1");
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Bar {
+                    echo strLEN("in 1");
+                }
 
-namespace {
-    echo strlen("out 2");
-}
+                namespace {
+                    echo strlen("out 1");
+                }
 
-namespace Bar{
-    echo strlen("in 2");
-}
+                namespace {
+                    echo strlen("out 2");
+                }
 
-namespace {
-    echo strlen("out 3");
-}
-',
+                namespace Bar{
+                    echo strlen("in 2");
+                }
+
+                namespace {
+                    echo strlen("out 3");
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace space11 ?>
+            <<<'EOD'
+                <?php
+                namespace space11 ?>
 
-    <?php
-echo \strlen(__NAMESPACE__);
-namespace space2;
-echo \strlen(__NAMESPACE__);
-',
-            '<?php
-namespace space11 ?>
+                    <?php
+                echo \strlen(__NAMESPACE__);
+                namespace space2;
+                echo \strlen(__NAMESPACE__);
 
-    <?php
-echo strlen(__NAMESPACE__);
-namespace space2;
-echo strlen(__NAMESPACE__);
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace space11 ?>
+
+                    <?php
+                echo strlen(__NAMESPACE__);
+                namespace space2;
+                echo strlen(__NAMESPACE__);
+
+                EOD,
         ];
 
         yield [
@@ -405,26 +441,30 @@ echo strlen(__NAMESPACE__);
         ];
 
         yield [
-            '<?php
-namespace Space12;
+            <<<'EOD'
+                <?php
+                namespace Space12;
 
-echo \count([1]);
+                echo \count([1]);
 
-namespace Space2;
+                namespace Space2;
 
-echo \count([1]);
-?>
-',
-            '<?php
-namespace Space12;
+                echo \count([1]);
+                ?>
 
-echo count([1]);
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Space12;
 
-namespace Space2;
+                echo count([1]);
 
-echo count([1]);
-?>
-',
+                namespace Space2;
+
+                echo count([1]);
+                ?>
+
+                EOD,
         ];
 
         yield [
@@ -432,51 +472,59 @@ echo count([1]);
         ];
 
         yield [
-            '<?php
-namespace space13 {
-    echo \strlen("in 1");
-}
+            <<<'EOD'
+                <?php
+                namespace space13 {
+                    echo \strlen("in 1");
+                }
 
-namespace space2 {
-    echo \strlen("in 2");
-}
+                namespace space2 {
+                    echo \strlen("in 2");
+                }
 
-namespace { // global
-    echo strlen("global 1");
-}
-',
-            '<?php
-namespace space13 {
-    echo strlen("in 1");
-}
+                namespace { // global
+                    echo strlen("global 1");
+                }
 
-namespace space2 {
-    echo strlen("in 2");
-}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace space13 {
+                    echo strlen("in 1");
+                }
 
-namespace { // global
-    echo strlen("global 1");
-}
-',
+                namespace space2 {
+                    echo strlen("in 2");
+                }
+
+                namespace { // global
+                    echo strlen("global 1");
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-namespace space1 {
-    echo \count([1]);
-}
-namespace {
-    echo \count([1]);
-}
-',
-            '<?php
-namespace space1 {
-    echo count([1]);
-}
-namespace {
-    echo count([1]);
-}
-',
+            <<<'EOD'
+                <?php
+                namespace space1 {
+                    echo \count([1]);
+                }
+                namespace {
+                    echo \count([1]);
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace space1 {
+                    echo count([1]);
+                }
+                namespace {
+                    echo count([1]);
+                }
+
+                EOD,
             'all',
         ];
     }
@@ -495,16 +543,20 @@ namespace {
     public static function provideFixWithConfiguredIncludeCases(): iterable
     {
         yield 'include set + 1, exclude 1' => [
-            '<?php
-                    echo \count([1]);
-                    \some_other($a, 3);
-                    echo strlen($a);
-                    not_me();'."\n                ",
-            '<?php
-                    echo count([1]);
-                    some_other($a, 3);
-                    echo strlen($a);
-                    not_me();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo \count([1]);
+                                    \some_other($a, 3);
+                                    echo strlen($a);
+                                    not_me();
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo count([1]);
+                                    some_other($a, 3);
+                                    echo strlen($a);
+                                    not_me();
+                EOD."\n                ",
             [
                 'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
                 'exclude' => ['strlen'],
@@ -512,57 +564,71 @@ namespace {
         ];
 
         yield 'include @all' => [
-            '<?php
-                    echo \count([1]);
-                    \some_other($a, 3);
-                    echo \strlen($a);
-                    \me_as_well();'."\n                ",
-            '<?php
-                    echo count([1]);
-                    some_other($a, 3);
-                    echo strlen($a);
-                    me_as_well();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo \count([1]);
+                                    \some_other($a, 3);
+                                    echo \strlen($a);
+                                    \me_as_well();
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo count([1]);
+                                    some_other($a, 3);
+                                    echo strlen($a);
+                                    me_as_well();
+                EOD."\n                ",
             [
                 'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
         ];
 
         yield 'include @compiler_optimized' => [
-            '<?php
-                    // do not fix
-                    $a = strrev($a);
-                    $a .= str_repeat($a, 4);
-                    $b = already_prefixed_function();
-                    // fix
-                    $c = \get_class($d);
-                    $e = \intval($f);'."\n                ",
-            '<?php
-                    // do not fix
-                    $a = strrev($a);
-                    $a .= str_repeat($a, 4);
-                    $b = \already_prefixed_function();
-                    // fix
-                    $c = get_class($d);
-                    $e = intval($f);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    // do not fix
+                                    $a = strrev($a);
+                                    $a .= str_repeat($a, 4);
+                                    $b = already_prefixed_function();
+                                    // fix
+                                    $c = \get_class($d);
+                                    $e = \intval($f);
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    // do not fix
+                                    $a = strrev($a);
+                                    $a .= str_repeat($a, 4);
+                                    $b = \already_prefixed_function();
+                                    // fix
+                                    $c = get_class($d);
+                                    $e = intval($f);
+                EOD."\n                ",
             [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
             ],
         ];
 
         yield [
-            '<?php class Foo {
-                        public function & strlen($name) {
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php class Foo {
+                                        public function & strlen($name) {
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'scope namespaced and strict enabled' => [
-            '<?php
-                    $a = not_compiler_optimized_function();
-                    $b = intval($c);'."\n                ",
-            '<?php
-                    $a = \not_compiler_optimized_function();
-                    $b = \intval($c);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = not_compiler_optimized_function();
+                                    $b = intval($c);
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a = \not_compiler_optimized_function();
+                                    $b = \intval($c);
+                EOD."\n                ",
             [
                 'scope' => 'namespaced',
                 'strict' => true,
@@ -570,9 +636,11 @@ namespace {
         ];
 
         yield [
-            '<?php
-                    use function foo\json_decode;
-                    json_decode($base);'."\n                ",
+            <<<'EOD'
+                <?php
+                                    use function foo\json_decode;
+                                    json_decode($base);
+                EOD."\n                ",
             null,
             [
                 'include' => [NativeFunctionInvocationFixer::SET_ALL],
@@ -599,14 +667,18 @@ namespace {
     public static function provideFixPre80Cases(): iterable
     {
         yield 'include @compiler_optimized with strict enabled' => [
-            '<?php
-                        $a = not_compiler_optimized_function();
-                        $b =  not_compiler_optimized_function();
-                        $c = \intval($d);'."\n                    ",
-            '<?php
-                        $a = \not_compiler_optimized_function();
-                        $b = \ not_compiler_optimized_function();
-                        $c = intval($d);'."\n                    ",
+            <<<'EOD'
+                <?php
+                                        $a = not_compiler_optimized_function();
+                                        $b =  not_compiler_optimized_function();
+                                        $c = \intval($d);
+                EOD."\n                    ",
+            <<<'EOD'
+                <?php
+                                        $a = \not_compiler_optimized_function();
+                                        $b = \ not_compiler_optimized_function();
+                                        $c = intval($d);
+                EOD."\n                    ",
             [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                 'strict' => true,
@@ -614,22 +686,26 @@ namespace {
         ];
 
         yield [
-            '<?php
-echo \/**/strlen($a);
-echo \ strlen($a);
-echo \#
-#
-strlen($a);
-echo \strlen($a);
-',
-            '<?php
-echo \/**/strlen($a);
-echo \ strlen($a);
-echo \#
-#
-strlen($a);
-echo strlen($a);
-',
+            <<<'EOD'
+                <?php
+                echo \/**/strlen($a);
+                echo \ strlen($a);
+                echo \#
+                #
+                strlen($a);
+                echo \strlen($a);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                echo \/**/strlen($a);
+                echo \ strlen($a);
+                echo \#
+                #
+                strlen($a);
+                echo strlen($a);
+
+                EOD,
         ];
     }
 
@@ -649,9 +725,11 @@ echo strlen($a);
     public static function provideFix80Cases(): iterable
     {
         yield 'attribute and strict' => [
-            '<?php
-                #[\Attribute(\Attribute::TARGET_CLASS)]
-                class Foo {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                #[\Attribute(\Attribute::TARGET_CLASS)]
+                                class Foo {}
+                EOD."\n            ",
             null,
             ['strict' => true],
         ];
@@ -659,9 +737,11 @@ echo strlen($a);
         yield 'null safe operator' => ['<?php $x?->count();'];
 
         yield 'multiple function-calls-like in attribute' => [
-            '<?php
-                #[Foo(), Bar(), Baz()]
-                class Foo {}'."\n            ",
+            <<<'EOD'
+                <?php
+                                #[Foo(), Bar(), Baz()]
+                                class Foo {}
+                EOD."\n            ",
             null,
             ['include' => ['@all']],
         ];

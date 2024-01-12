@@ -50,164 +50,206 @@ final class OperatorLinebreakFixerTest extends AbstractFixerTestCase
         }
 
         yield 'ignore add operator when only booleans enabled' => [
-            '<?php
-return $foo
-    +
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    +
+                    $bar;
+
+                EOD,
             null,
             ['only_booleans' => true],
         ];
 
         yield 'handle operator when on separate line when position is "beginning"' => [
-            '<?php
-return $foo
-    || $bar;
-',
-            '<?php
-return $foo
-    ||
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    || $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo
+                    ||
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle operator when on separate line when position is "end"' => [
-            '<?php
-return $foo ||
-    $bar;
-',
-            '<?php
-return $foo
-    ||
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo ||
+                    $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo
+                    ||
+                    $bar;
+
+                EOD,
             ['position' => 'end'],
         ];
 
         yield 'handle Elvis operator with space inside' => [
-            '<?php
-return $foo
-    ?: $bar;
-',
-            '<?php
-return $foo ? :
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    ?: $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo ? :
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle Elvis operator with space inside when position is "end"' => [
-            '<?php
-return $foo ?:
-    $bar;
-',
-            '<?php
-return $foo
-    ? : $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo ?:
+                    $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo
+                    ? : $bar;
+
+                EOD,
             ['position' => 'end'],
         ];
 
         yield 'handle Elvis operator with comment inside' => [
-            '<?php
-return $foo/* Lorem ipsum */
-    ?: $bar;
-',
-            '<?php
-return $foo ?/* Lorem ipsum */:
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo/* Lorem ipsum */
+                    ?: $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo ?/* Lorem ipsum */:
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle Elvis operators with comment inside when position is "end"' => [
-            '<?php
-return $foo ?:
-    /* Lorem ipsum */$bar;
-',
-            '<?php
-return $foo
-    ?/* Lorem ipsum */: $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo ?:
+                    /* Lorem ipsum */$bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo
+                    ?/* Lorem ipsum */: $bar;
+
+                EOD,
             ['position' => 'end'],
         ];
 
         yield 'assign by reference' => [
-            '<?php
-                $a
-                    = $b;
-                $c =&
-                     $d;'."\n            ",
-            '<?php
-                $a =
-                    $b;
-                $c =&
-                     $d;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a
+                                    = $b;
+                                $c =&
+                                     $d;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a =
+                                    $b;
+                                $c =&
+                                     $d;
+                EOD."\n            ",
         ];
 
         yield 'passing by reference' => [
-            '<?php
-                function foo(
-                    &$a,
-                    &$b,
-                    int
-                        &$c,
-                    \Bar\Baz
-                        &$d
-                ) {};',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    &$a,
+                                    &$b,
+                                    int
+                                        &$c,
+                                    \Bar\Baz
+                                        &$d
+                                ) {};
+                EOD,
             null,
             ['position' => 'end'],
         ];
 
         yield 'multiple switches' => [
-            '<?php
-                switch ($foo) {
-                   case 1:
-                      break;
-                   case 2:
-                      break;
-                }
-                switch($bar) {
-                   case 1:
-                      break;
-                   case 2:
-                      break;
-                }',
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                   case 1:
+                                      break;
+                                   case 2:
+                                      break;
+                                }
+                                switch($bar) {
+                                   case 1:
+                                      break;
+                                   case 2:
+                                      break;
+                                }
+                EOD,
         ];
 
         yield 'return type' => [
-            '<?php
-            function foo()
-            :
-            bool
-            {};',
+            <<<'EOD'
+                <?php
+                            function foo()
+                            :
+                            bool
+                            {};
+                EOD,
         ];
 
-        yield 'go to' => ['<?php
-                prepare_value:
-                $objectsPool[$value] = [$id = \count($objectsPool)];'."\n        "];
+        yield 'go to' => [<<<'EOD'
+            <?php
+                            prepare_value:
+                            $objectsPool[$value] = [$id = \count($objectsPool)];
+            EOD."\n        "];
 
         yield 'alternative syntax' => [
-            '<?php
-if (true):
-    echo 1;
-else:
-    echo 2;
-endif;
+            <<<'EOD'
+                <?php
+                if (true):
+                    echo 1;
+                else:
+                    echo 2;
+                endif;
 
-while (true):
-    echo "na";
-endwhile;
-',
+                while (true):
+                    echo "na";
+                endwhile;
+
+                EOD,
             null,
             ['position' => 'beginning'],
         ];
 
         yield 'nullable type when position is "end"' => [
-            '<?php
-                function foo(
-                    ?int $x,
-                    ?int $y,
-                    ?int $z
-                ) {};',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    ?int $x,
+                                    ?int $y,
+                                    ?int $z
+                                ) {};
+                EOD,
             null,
             ['position' => 'end'],
         ];
@@ -229,12 +271,16 @@ endwhile;
     public static function provideFix80Cases(): iterable
     {
         yield 'handle ?-> operator' => [
-            '<?php
-                    $foo
-                        ?-> $bar;'."\n                ",
-            '<?php
-                    $foo ?->
-                        $bar;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $foo
+                                        ?-> $bar;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    $foo ?->
+                                        $bar;
+                EOD."\n                ",
         ];
     }
 
@@ -244,257 +290,317 @@ endwhile;
     private static function pairs(): iterable
     {
         yield 'handle equal sign' => [
-            '<?php
-$foo
-    = $bar;
-',
-            '<?php
-$foo =
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                $foo
+                    = $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo =
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle add operator' => [
-            '<?php
-return $foo
-    + $bar;
-',
-            '<?php
-return $foo +
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    + $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo +
+                    $bar;
+
+                EOD,
             ['only_booleans' => false],
         ];
 
         yield 'handle uppercase operator' => [
-            '<?php
-return $foo
-    AND $bar;
-',
-            '<?php
-return $foo AND
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    AND $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo AND
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle concatenation operator' => [
-            '<?php
-return $foo
-    .$bar;
-',
-            '<?php
-return $foo.
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    .$bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo.
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle ternary operator' => [
-            '<?php
-return $foo
-    ? $bar
-    : $baz;
-',
-            '<?php
-return $foo ?
-    $bar :
-    $baz;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    ? $bar
+                    : $baz;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo ?
+                    $bar :
+                    $baz;
+
+                EOD,
         ];
 
         yield 'handle multiple operators' => [
-            '<?php
-return $foo
-    || $bar
-    || $baz;
-',
-            '<?php
-return $foo ||
-    $bar ||
-    $baz;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    || $bar
+                    || $baz;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo ||
+                    $bar ||
+                    $baz;
+
+                EOD,
         ];
 
         yield 'handle multiple operators with nested' => [
-            '<?php
-return $foo
-    || $bar
-    || ($bar2 || $bar3)
-    || $baz;
-',
-            '<?php
-return $foo ||
-    $bar ||
-    ($bar2 || $bar3) ||
-    $baz;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    || $bar
+                    || ($bar2 || $bar3)
+                    || $baz;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo ||
+                    $bar ||
+                    ($bar2 || $bar3) ||
+                    $baz;
+
+                EOD,
         ];
 
         yield 'handle operator when no whitespace is before' => [
-            '<?php
-function foo() {
-    return $a
-        ||$b;
-}
-',
-            '<?php
-function foo() {
-    return $a||
-        $b;
-}
-',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return $a
+                        ||$b;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return $a||
+                        $b;
+                }
+
+                EOD,
         ];
 
         yield 'handle operator with one-line comments' => [
-            '<?php
-function getNewCuyamaTotal() {
-    return 562 // Population
-        + 2150 // Ft. above sea level
-        + 1951; // Established
-}
-',
-            '<?php
-function getNewCuyamaTotal() {
-    return 562 + // Population
-        2150 + // Ft. above sea level
-        1951; // Established
-}
-',
+            <<<'EOD'
+                <?php
+                function getNewCuyamaTotal() {
+                    return 562 // Population
+                        + 2150 // Ft. above sea level
+                        + 1951; // Established
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function getNewCuyamaTotal() {
+                    return 562 + // Population
+                        2150 + // Ft. above sea level
+                        1951; // Established
+                }
+
+                EOD,
         ];
 
         yield 'handle operator with PHPDoc comments' => [
-            '<?php
-function getNewCuyamaTotal() {
-    return 562 /** Population */
-        + 2150 /** Ft. above sea level */
-        + 1951; /** Established */
-}
-',
-            '<?php
-function getNewCuyamaTotal() {
-    return 562 + /** Population */
-        2150 + /** Ft. above sea level */
-        1951; /** Established */
-}
-',
+            <<<'EOD'
+                <?php
+                function getNewCuyamaTotal() {
+                    return 562 /** Population */
+                        + 2150 /** Ft. above sea level */
+                        + 1951; /** Established */
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function getNewCuyamaTotal() {
+                    return 562 + /** Population */
+                        2150 + /** Ft. above sea level */
+                        1951; /** Established */
+                }
+
+                EOD,
         ];
 
         yield 'handle operator with multiple comments next to each other' => [
-            '<?php
-function foo() {
-    return isThisTheRealLife() // First comment
-        // Second comment
-        // Third comment
-        || isThisJustFantasy();
-}
-',
-            '<?php
-function foo() {
-    return isThisTheRealLife() || // First comment
-        // Second comment
-        // Third comment
-        isThisJustFantasy();
-}
-',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return isThisTheRealLife() // First comment
+                        // Second comment
+                        // Third comment
+                        || isThisJustFantasy();
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return isThisTheRealLife() || // First comment
+                        // Second comment
+                        // Third comment
+                        isThisJustFantasy();
+                }
+
+                EOD,
         ];
 
         yield 'handle nested operators' => [
-            '<?php
-function foo() {
-    return $a
-        && (
-            $b
-            || $c
-        )
-        && $d;
-}
-',
-            '<?php
-function foo() {
-    return $a &&
-        (
-            $b ||
-            $c
-        ) &&
-        $d;
-}
-',
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return $a
+                        && (
+                            $b
+                            || $c
+                        )
+                        && $d;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo() {
+                    return $a &&
+                        (
+                            $b ||
+                            $c
+                        ) &&
+                        $d;
+                }
+
+                EOD,
         ];
 
         yield 'handle Elvis operator' => [
-            '<?php
-return $foo
-    ?: $bar;
-',
-            '<?php
-return $foo ?:
-    $bar;
-',
+            <<<'EOD'
+                <?php
+                return $foo
+                    ?: $bar;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                return $foo ?:
+                    $bar;
+
+                EOD,
         ];
 
         yield 'handle ternary operator inside of switch' => [
-            '<?php
-switch ($foo) {
-    case 1:
-        return $isOK ? 1 : -1;
-    case (
-            $a
-            ? 2
-            : 3
-        ) :
-        return 23;
-    case $b[
-            $a
-            ? 4
-            : 5
-        ]
-        : return 45;
-}
-',
-            '<?php
-switch ($foo) {
-    case 1:
-        return $isOK ? 1 : -1;
-    case (
-            $a ?
-            2 :
-            3
-        ) :
-        return 23;
-    case $b[
-            $a ?
-            4 :
-            5
-        ]
-        : return 45;
-}
-',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        return $isOK ? 1 : -1;
+                    case (
+                            $a
+                            ? 2
+                            : 3
+                        ) :
+                        return 23;
+                    case $b[
+                            $a
+                            ? 4
+                            : 5
+                        ]
+                        : return 45;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case 1:
+                        return $isOK ? 1 : -1;
+                    case (
+                            $a ?
+                            2 :
+                            3
+                        ) :
+                        return 23;
+                    case $b[
+                            $a ?
+                            4 :
+                            5
+                        ]
+                        : return 45;
+                }
+
+                EOD,
         ];
 
         yield 'handle ternary operator with switch inside' => [
-            '<?php
-                $a
-                    ? array_map(
-                        function () {
-                            switch (true) {
-                                case 1:
-                                    return true;
-                            }
-                        },
-                        [1, 2, 3]
-                    )
-                    : false;'."\n            ",
-            '<?php
-                $a ?
-                    array_map(
-                        function () {
-                            switch (true) {
-                                case 1:
-                                    return true;
-                            }
-                        },
-                        [1, 2, 3]
-                    ) :
-                    false;'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a
+                                    ? array_map(
+                                        function () {
+                                            switch (true) {
+                                                case 1:
+                                                    return true;
+                                            }
+                                        },
+                                        [1, 2, 3]
+                                    )
+                                    : false;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a ?
+                                    array_map(
+                                        function () {
+                                            switch (true) {
+                                                case 1:
+                                                    return true;
+                                            }
+                                        },
+                                        [1, 2, 3]
+                                    ) :
+                                    false;
+                EOD."\n            ",
         ];
 
         $operators = [
@@ -515,35 +621,47 @@ switch ($foo) {
 
         foreach ($operators as $operator) {
             yield sprintf('handle %s operator', $operator) => [
-                sprintf('<?php
-                    $foo
-                        %s $bar;'."\n                ", $operator),
-                sprintf('<?php
-                    $foo %s
-                        $bar;'."\n                ", $operator),
+                sprintf(<<<'EOD'
+                    <?php
+                                        $foo
+                                            %s $bar;
+                    EOD."\n                ", $operator),
+                sprintf(<<<'EOD'
+                    <?php
+                                        $foo %s
+                                            $bar;
+                    EOD."\n                ", $operator),
             ];
         }
 
         yield 'handle => operator' => [
-            '<?php
-[$foo
-    => $bar];
-',
-            '<?php
-[$foo =>
-    $bar];
-',
+            <<<'EOD'
+                <?php
+                [$foo
+                    => $bar];
+
+                EOD,
+            <<<'EOD'
+                <?php
+                [$foo =>
+                    $bar];
+
+                EOD,
         ];
 
         yield 'handle & operator with constant' => [
-            '<?php
-\Foo::bar
-    & $baz;
-',
-            '<?php
-\Foo::bar &
-    $baz;
-',
+            <<<'EOD'
+                <?php
+                \Foo::bar
+                    & $baz;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                \Foo::bar &
+                    $baz;
+
+                EOD,
         ];
     }
 }

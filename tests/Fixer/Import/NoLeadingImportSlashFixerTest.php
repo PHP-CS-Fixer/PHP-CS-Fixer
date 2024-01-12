@@ -36,160 +36,202 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                use A\B;'."\n                ",
-            '<?php
-                use \A\B;'."\n                ",
+            <<<'EOD'
+                <?php
+                                use A\B;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                use \A\B;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                use/*1*/A\C;'."\n                ",
-            '<?php
-                use/*1*/\A\C;'."\n                ",
+            <<<'EOD'
+                <?php
+                                use/*1*/A\C;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                use/*1*/\A\C;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                $a = function(\B\C $a) use ($b){
+            <<<'EOD'
+                <?php
+                                $a = function(\B\C $a) use ($b){
 
-                };'."\n                ",
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                namespace NS;
-                use A\B;'."\n                ",
-            '<?php
-                namespace NS;
-                use \A\B;'."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace NS;
+                                use A\B;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace NS;
+                                use \A\B;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                namespace NS{
-                    use A\B;
-                }
-                namespace NS2{
-                    use C\D;
-                }'."\n                ",
-            '<?php
-                namespace NS{
-                    use \A\B;
-                }
-                namespace NS2{
-                    use \C\D;
-                }'."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace NS{
+                                    use A\B;
+                                }
+                                namespace NS2{
+                                    use C\D;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace NS{
+                                    use \A\B;
+                                }
+                                namespace NS2{
+                                    use \C\D;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                namespace Foo {
-                    use A;
-                    use A\X;
+            <<<'EOD'
+                <?php
+                                namespace Foo {
+                                    use A;
+                                    use A\X;
 
-                    new X();
-                }
+                                    new X();
+                                }
 
-                namespace Bar {
-                    use B;
-                    use B\X;
+                                namespace Bar {
+                                    use B;
+                                    use B\X;
 
-                    new X();
-                }'."\n                ",
-            '<?php
-                namespace Foo {
-                    use \A;
-                    use \A\X;
+                                    new X();
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace Foo {
+                                    use \A;
+                                    use \A\X;
 
-                    new X();
-                }
+                                    new X();
+                                }
 
-                namespace Bar {
-                    use \B;
-                    use \B\X;
+                                namespace Bar {
+                                    use \B;
+                                    use \B\X;
 
-                    new X();
-                }'."\n                ",
+                                    new X();
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                namespace Foo\Bar;
-                use Baz;
-                class Foo implements Baz {}'."\n                ",
-            '<?php
-                namespace Foo\Bar;
-                use \Baz;
-                class Foo implements Baz {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace Foo\Bar;
+                                use Baz;
+                                class Foo implements Baz {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace Foo\Bar;
+                                use \Baz;
+                                class Foo implements Baz {}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                trait SomeTrait {
-                    use \A;
-                }'."\n                ",
+            <<<'EOD'
+                <?php
+                                trait SomeTrait {
+                                    use \A;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                namespace NS{
-                    use A\B;
-                    trait Tr8A{
-                        use \B, \C;
-                    }
-                }
-                namespace NS2{
-                    use C\D;
-                }'."\n                ",
-            '<?php
-                namespace NS{
-                    use \A\B;
-                    trait Tr8A{
-                        use \B, \C;
-                    }
-                }
-                namespace NS2{
-                    use \C\D;
-                }'."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace NS{
+                                    use A\B;
+                                    trait Tr8A{
+                                        use \B, \C;
+                                    }
+                                }
+                                namespace NS2{
+                                    use C\D;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace NS{
+                                    use \A\B;
+                                    trait Tr8A{
+                                        use \B, \C;
+                                    }
+                                }
+                                namespace NS2{
+                                    use \C\D;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                trait Foo {}
-                class Bar {
-                    use \Foo;
-                }'."\n                ",
+            <<<'EOD'
+                <?php
+                                trait Foo {}
+                                class Bar {
+                                    use \Foo;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    use function a\b;
-                    use const d\e;'."\n                ",
-            '<?php
-                    use function \a\b;
-                    use const \d\e;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    use function a\b;
+                                    use const d\e;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    use function \a\b;
+                                    use const \d\e;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-namespace AAA;
-use some\a\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA,ConstB,ConstC
-,
-};
-use const some\Z\{ConstX,ConstY,ConstZ,};
-',
-            '<?php
-namespace AAA;
-use \some\a\{ClassA, ClassB, ClassC as C,};
-use function \some\a\{fn_a, fn_b, fn_c,};
-use const \some\a\{ConstA,ConstB,ConstC
-,
-};
-use const \some\Z\{ConstX,ConstY,ConstZ,};
-',
+            <<<'EOD'
+                <?php
+                namespace AAA;
+                use some\a\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{fn_a, fn_b, fn_c,};
+                use const some\a\{ConstA,ConstB,ConstC
+                ,
+                };
+                use const some\Z\{ConstX,ConstY,ConstZ,};
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace AAA;
+                use \some\a\{ClassA, ClassB, ClassC as C,};
+                use function \some\a\{fn_a, fn_b, fn_c,};
+                use const \some\a\{ConstA,ConstB,ConstC
+                ,
+                };
+                use const \some\Z\{ConstX,ConstY,ConstZ,};
+
+                EOD,
         ];
     }
 
@@ -211,49 +253,57 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
         ];
 
         yield 'no space case' => [
-            '<?php
-                use Events\Payment\Base as PaymentEvent;
-                use const d\e;'."\n            ",
-            '<?php
-                use\Events\Payment\Base as PaymentEvent;
-                use const\d\e;'."\n            ",
+            <<<'EOD'
+                <?php
+                                use Events\Payment\Base as PaymentEvent;
+                                use const d\e;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                use\Events\Payment\Base as PaymentEvent;
+                                use const\d\e;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-            use C;
-            use C\X;
+            <<<'EOD'
+                <?php
+                            use C;
+                            use C\X;
 
-            namespace Foo {
-                use A;
-                use A\X;
+                            namespace Foo {
+                                use A;
+                                use A\X;
 
-                new X();
-            }
+                                new X();
+                            }
 
-            namespace Bar {
-                use B;
-                use B\X;
+                            namespace Bar {
+                                use B;
+                                use B\X;
 
-                new X();
-            }'."\n            ",
-            '<?php
-            use \C;
-            use \C\X;
+                                new X();
+                            }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            use \C;
+                            use \C\X;
 
-            namespace Foo {
-                use \A;
-                use \A\X;
+                            namespace Foo {
+                                use \A;
+                                use \A\X;
 
-                new X();
-            }
+                                new X();
+                            }
 
-            namespace Bar {
-                use \B;
-                use \B\X;
+                            namespace Bar {
+                                use \B;
+                                use \B\X;
 
-                new X();
-            }'."\n            ",
+                                new X();
+                            }
+                EOD."\n            ",
         ];
     }
 }

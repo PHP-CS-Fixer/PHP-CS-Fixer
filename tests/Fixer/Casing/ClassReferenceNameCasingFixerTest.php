@@ -34,61 +34,75 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                $a = new Exception;
-                $b = new \Exception;
-                $c = new Exception();
-                $d = new \Exception();
-                $e = "a".Exception::class;
-                $f = "a".\Exception::class;
-                $g .= "exception";
-                echo \Exception::class;
-                print(Exception::class);
-                // $a = new exception();
-                /** $a = new exception(); */'."\n            ",
-            '<?php
-                $a = new exception;
-                $b = new \exception;
-                $c = new exception();
-                $d = new \exception();
-                $e = "a".exception::class;
-                $f = "a".\exception::class;
-                $g .= "exception";
-                echo \exception::class;
-                print(exception::class);
-                // $a = new exception();
-                /** $a = new exception(); */'."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = new Exception;
+                                $b = new \Exception;
+                                $c = new Exception();
+                                $d = new \Exception();
+                                $e = "a".Exception::class;
+                                $f = "a".\Exception::class;
+                                $g .= "exception";
+                                echo \Exception::class;
+                                print(Exception::class);
+                                // $a = new exception();
+                                /** $a = new exception(); */
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $a = new exception;
+                                $b = new \exception;
+                                $c = new exception();
+                                $d = new \exception();
+                                $e = "a".exception::class;
+                                $f = "a".\exception::class;
+                                $g .= "exception";
+                                echo \exception::class;
+                                print(exception::class);
+                                // $a = new exception();
+                                /** $a = new exception(); */
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php namespace Foo {
-                $a = new exception;
-                $b = new \Exception;
-            }',
-            '<?php namespace Foo {
-                $a = new exception;
-                $b = new \exception;
-            }',
+            <<<'EOD'
+                <?php namespace Foo {
+                                $a = new exception;
+                                $b = new \Exception;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php namespace Foo {
+                                $a = new exception;
+                                $b = new \exception;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php namespace Foo;
-                $a = new exception;
-                $b = new \Exception;'."\n            ",
-            '<?php namespace Foo;
-                $a = new exception;
-                $b = new \EXCEPTION;'."\n            ",
+            <<<'EOD'
+                <?php namespace Foo;
+                                $a = new exception;
+                                $b = new \Exception;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php namespace Foo;
+                                $a = new exception;
+                                $b = new \EXCEPTION;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                $a = exception();
-                $b = new A\exception;
-                $c = new A\B\C\exception;
+            <<<'EOD'
+                <?php
+                                $a = exception();
+                                $b = new A\exception;
+                                $c = new A\B\C\exception;
 
-                $a1 = \exception();
-                $b1 = new \A\exception;
-                $c1 = new \A\B\C\exception;'."\n            ",
+                                $a1 = \exception();
+                                $b1 = new \A\exception;
+                                $c1 = new \A\B\C\exception;
+                EOD."\n            ",
         ];
 
         yield [
@@ -137,38 +151,42 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-namespace {
-    $a = new Exception;
-    $b = new \Exception;
-}
+            <<<'EOD'
+                <?php
+                namespace {
+                    $a = new Exception;
+                    $b = new \Exception;
+                }
 
-namespace Bar {
-    $a = new exception;
-    $b = new \Exception;
-}
+                namespace Bar {
+                    $a = new exception;
+                    $b = new \Exception;
+                }
 
-namespace Foo {
-    $a = new exception;
-    $b = new \Exception;
-    $c = new foO();
-}',
-            '<?php
-namespace {
-    $a = new exception;
-    $b = new \exception;
-}
+                namespace Foo {
+                    $a = new exception;
+                    $b = new \Exception;
+                    $c = new foO();
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace {
+                    $a = new exception;
+                    $b = new \exception;
+                }
 
-namespace Bar {
-    $a = new exception;
-    $b = new \exception;
-}
+                namespace Bar {
+                    $a = new exception;
+                    $b = new \exception;
+                }
 
-namespace Foo {
-    $a = new exception;
-    $b = new \exception;
-    $c = new foO();
-}',
+                namespace Foo {
+                    $a = new exception;
+                    $b = new \exception;
+                    $c = new foO();
+                }
+                EOD,
         ];
 
         yield [
@@ -187,51 +205,61 @@ namespace Foo {
         ];
 
         yield [
-            '<?php
-                Closure::bind(fn () => null, null, new class {});
-                \Closure::bind(fn () => null, null, new class {});
+            <<<'EOD'
+                <?php
+                                Closure::bind(fn () => null, null, new class {});
+                                \Closure::bind(fn () => null, null, new class {});
 
-                Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});'."\n            ",
-            '<?php
-                CLOSURE::bind(fn () => null, null, new class {});
-                \CLOSURE::bind(fn () => null, null, new class {});
+                                Foo\Bar::bind(fn () => null, null, new class {});
+                                \A\B\Bar::bind(fn () => null, null, new class {});
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                CLOSURE::bind(fn () => null, null, new class {});
+                                \CLOSURE::bind(fn () => null, null, new class {});
 
-                Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});'."\n            ",
+                                Foo\Bar::bind(fn () => null, null, new class {});
+                                \A\B\Bar::bind(fn () => null, null, new class {});
+                EOD."\n            ",
         ];
 
         yield [
-            "<?php
-declare(strict_types=1);
-use Sonata\\Exporter\\Writer\\EXCEPTION;
-\$services->set('sonata.exporter.writer.xml', EXCEPTION::class);
-",
+            <<<'EOD'
+                <?php
+                declare(strict_types=1);
+                use Sonata\Exporter\Writer\EXCEPTION;
+                $services->set('sonata.exporter.writer.xml', EXCEPTION::class);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-                const error = 1;
-                foo(error);
-                $b2 = $a[error];
-                $b21 = [1,error];
-                $b22 = [error,2];
-                $b23 = [1,error,2];
-                $b24 = [1,error,2,];
-                $b3 = [error];
-                $b4 = $a->{error};'."\n            ",
+            <<<'EOD'
+                <?php
+                                const error = 1;
+                                foo(error);
+                                $b2 = $a[error];
+                                $b21 = [1,error];
+                                $b22 = [error,2];
+                                $b23 = [1,error,2];
+                                $b24 = [1,error,2,];
+                                $b3 = [error];
+                                $b4 = $a->{error};
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                foo(\error);
-                $b2 = $a[\error];
-                $b21 = [1,\error];
-                $b22 = [\error,2];
-                $b23 = [1,\error,2];
-                $b24 = [1,\error,2,];
-                $b3 = [\error];
-                $b4 = $a->{\error};'."\n            ",
+            <<<'EOD'
+                <?php
+                                foo(\error);
+                                $b2 = $a[\error];
+                                $b21 = [1,\error];
+                                $b22 = [\error,2];
+                                $b23 = [1,\error,2];
+                                $b24 = [1,\error,2,];
+                                $b3 = [\error];
+                                $b4 = $a->{\error};
+                EOD."\n            ",
         ];
 
         yield ['<?php echo error ?><?php echo error;'];
@@ -274,9 +302,11 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         ];
 
         yield [
-            '<?php enum Foo {
-                case exception;
-            }',
+            <<<'EOD'
+                <?php enum Foo {
+                                case exception;
+                            }
+                EOD,
         ];
 
         yield 'multiple type catch with variable' => [

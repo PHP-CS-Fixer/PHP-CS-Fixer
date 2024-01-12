@@ -169,16 +169,20 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
         ];
 
         yield [
-            '<?php function bFunction($foo#
- #
- #
- ,#
-$bar) {}',
-            '<?php function bFunction($foo#
- =#
- null#
- ,#
-$bar) {}',
+            <<<'EOD'
+                <?php function bFunction($foo#
+                 #
+                 #
+                 ,#
+                $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php function bFunction($foo#
+                 =#
+                 null#
+                 ,#
+                $bar) {}
+                EOD,
         ];
 
         yield [
@@ -221,29 +225,37 @@ $bar) {}',
         ];
 
         yield 'handle attributes without arguments' => [
-            '<?php function foo(
-                #[Attribute1] $x,
-                #[Attribute2] $y,
-                #[Attribute3] $z
-            ) {}',
-            '<?php function foo(
-                #[Attribute1] $x,
-                #[Attribute2] $y = 42,
-                #[Attribute3] $z
-            ) {}',
+            <<<'EOD'
+                <?php function foo(
+                                #[Attribute1] $x,
+                                #[Attribute2] $y,
+                                #[Attribute3] $z
+                            ) {}
+                EOD,
+            <<<'EOD'
+                <?php function foo(
+                                #[Attribute1] $x,
+                                #[Attribute2] $y = 42,
+                                #[Attribute3] $z
+                            ) {}
+                EOD,
         ];
 
         yield 'handle attributes with arguments' => [
-            '<?php function foo(
-                #[Attribute1(1, 2)] $x,
-                #[Attribute2(3, 4)] $y,
-                #[Attribute3(5, 6)] $z
-            ) {}',
-            '<?php function foo(
-                #[Attribute1(1, 2)] $x,
-                #[Attribute2(3, 4)] $y = 42,
-                #[Attribute3(5, 6)] $z
-            ) {}',
+            <<<'EOD'
+                <?php function foo(
+                                #[Attribute1(1, 2)] $x,
+                                #[Attribute2(3, 4)] $y,
+                                #[Attribute3(5, 6)] $z
+                            ) {}
+                EOD,
+            <<<'EOD'
+                <?php function foo(
+                                #[Attribute1(1, 2)] $x,
+                                #[Attribute2(3, 4)] $y = 42,
+                                #[Attribute3(5, 6)] $z
+                            ) {}
+                EOD,
         ];
     }
 

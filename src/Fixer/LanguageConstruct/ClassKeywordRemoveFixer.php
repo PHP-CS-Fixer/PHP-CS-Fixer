@@ -42,12 +42,14 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
             'Converts `::class` keywords to FQCN strings.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-use Foo\Bar\Baz;
+                        use Foo\Bar\Baz;
 
-$className = Baz::class;
-'
+                        $className = Baz::class;
+
+                        EOD
                 ),
             ]
         );

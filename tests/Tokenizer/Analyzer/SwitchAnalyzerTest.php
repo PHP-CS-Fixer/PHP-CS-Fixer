@@ -64,22 +64,26 @@ final class SwitchAnalyzerTest extends TestCase
         ];
 
         yield 'switch' => [
-            '<?php
-                switch ($value1) {
-                    case 1: return 2;
-                    case 3: return 4;
-                    default: return 5;
-                }'."\n            ",
+            <<<'EOD'
+                <?php
+                                switch ($value1) {
+                                    case 1: return 2;
+                                    case 3: return 4;
+                                    default: return 5;
+                                }
+                EOD."\n            ",
             [13, 23, 31],
         ];
 
         yield 'switch with alternative syntax' => [
-            '<?php
-                switch ($value1):
-                    case 1: return 2;
-                    default: return 3;
-                    case 4: return 5;
-                endswitch;'."\n            ",
+            <<<'EOD'
+                <?php
+                                switch ($value1):
+                                    case 1: return 2;
+                                    default: return 3;
+                                    case 4: return 5;
+                                endswitch;
+                EOD."\n            ",
             [7, 12, 20, 30],
         ];
     }

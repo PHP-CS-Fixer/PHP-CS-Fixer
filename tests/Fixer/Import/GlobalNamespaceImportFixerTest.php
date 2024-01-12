@@ -1059,40 +1059,44 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'key in PHPDoc\'s array shape matching class name' => [
-            '<?php
-                namespace Foo;
-                use Exception;
-                class Bar {
-                    /**
-                     * @return array{code: int, exception: \Exception}
-                     */
-                    public function f1(): array {}
-                    /**
-                     * @return array{exception: \Exception}
-                     */
-                    public function f2(): array {}
-                    /**
-                     * @return array{exceptions: array<\Exception>}
-                     */
-                    public function f3(): array {}
-                }',
-            '<?php
-                namespace Foo;
-                use Exception;
-                class Bar {
-                    /**
-                     * @return array{code: int, exception: Exception}
-                     */
-                    public function f1(): array {}
-                    /**
-                     * @return array{exception: Exception}
-                     */
-                    public function f2(): array {}
-                    /**
-                     * @return array{exceptions: array<Exception>}
-                     */
-                    public function f3(): array {}
-                }',
+            <<<'EOD'
+                <?php
+                                namespace Foo;
+                                use Exception;
+                                class Bar {
+                                    /**
+                                     * @return array{code: int, exception: \Exception}
+                                     */
+                                    public function f1(): array {}
+                                    /**
+                                     * @return array{exception: \Exception}
+                                     */
+                                    public function f2(): array {}
+                                    /**
+                                     * @return array{exceptions: array<\Exception>}
+                                     */
+                                    public function f3(): array {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                namespace Foo;
+                                use Exception;
+                                class Bar {
+                                    /**
+                                     * @return array{code: int, exception: Exception}
+                                     */
+                                    public function f1(): array {}
+                                    /**
+                                     * @return array{exception: Exception}
+                                     */
+                                    public function f2(): array {}
+                                    /**
+                                     * @return array{exceptions: array<Exception>}
+                                     */
+                                    public function f3(): array {}
+                                }
+                EOD,
         ];
     }
 
@@ -1224,27 +1228,31 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             'import_functions' => true,
         ]);
         $this->doTest(
-            '<?php
-namespace Foo;
-use AnAttribute1;
-use AnAttribute2;
-use AnAttribute3;
-class Bar
-{
-    #[AnAttribute1]
-    public function f1() {}
-    #[AnAttribute2, AnAttribute3]
-    public function f2() {}
-}',
-            '<?php
-namespace Foo;
-class Bar
-{
-    #[\AnAttribute1]
-    public function f1() {}
-    #[\AnAttribute2, \AnAttribute3]
-    public function f2() {}
-}'
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use AnAttribute1;
+                use AnAttribute2;
+                use AnAttribute3;
+                class Bar
+                {
+                    #[AnAttribute1]
+                    public function f1() {}
+                    #[AnAttribute2, AnAttribute3]
+                    public function f2() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                class Bar
+                {
+                    #[\AnAttribute1]
+                    public function f1() {}
+                    #[\AnAttribute2, \AnAttribute3]
+                    public function f2() {}
+                }
+                EOD
         );
     }
 

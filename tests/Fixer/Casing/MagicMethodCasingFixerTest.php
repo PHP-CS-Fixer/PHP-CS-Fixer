@@ -136,125 +136,133 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield '(un)serialize' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo extends Bar
-{
-    public function __serialize() {
-        $this->__serialize();
-    }
+                class Foo extends Bar
+                {
+                    public function __serialize() {
+                        $this->__serialize();
+                    }
 
-    public function __unserialize($payload) {
-        $this->__unserialize($this->$a);
-    }
-}
-',
-            '<?php
+                    public function __unserialize($payload) {
+                        $this->__unserialize($this->$a);
+                    }
+                }
 
-class Foo extends Bar
-{
-    public function __SERIALIZE() {
-        $this->__SERIALIZE();
-    }
+                EOD,
+            <<<'EOD'
+                <?php
 
-    public function __unSERIALIZE($payload) {
-        $this->__unSERIALIZE($this->$a);
-    }
-}
-',
+                class Foo extends Bar
+                {
+                    public function __SERIALIZE() {
+                        $this->__SERIALIZE();
+                    }
+
+                    public function __unSERIALIZE($payload) {
+                        $this->__unSERIALIZE($this->$a);
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'PHP 7 syntax' => [
-            '<?php
-            function __TOSTRING(){} // do not fix
+            <<<'EOD'
+                <?php
+                            function __TOSTRING(){} // do not fix
 
-            trait FooTrait
-            {
-                public function __invoke($a){} // fix
-            }
+                            trait FooTrait
+                            {
+                                public function __invoke($a){} // fix
+                            }
 
-            function __GET($a){} // do not fix
+                            function __GET($a){} // do not fix
 
-            interface Foo
-            {
-                public function __sleep(); // fix
-            }
+                            interface Foo
+                            {
+                                public function __sleep(); // fix
+                            }
 
-            final class Foo
-            {
-                private function __construct($a, $b, $c, $d = null, $e = 1) // fix
-                {
-                }
+                            final class Foo
+                            {
+                                private function __construct($a, $b, $c, $d = null, $e = 1) // fix
+                                {
+                                }
 
-                public function __isset($a) // fix
-                {
-                    return $b->__isset($b); // fix
-                }
+                                public function __isset($a) // fix
+                                {
+                                    return $b->__isset($b); // fix
+                                }
 
-                private function bar()
-                {
-                    new class {
-                        public function __unset($a) // fix
-                        {
-                            $b = null === $a
-                                ? $b->__unset($a) // fix
-                                : $a->__unset($a) // fix
-                            ;
+                                private function bar()
+                                {
+                                    new class {
+                                        public function __unset($a) // fix
+                                        {
+                                            $b = null === $a
+                                                ? $b->__unset($a) // fix
+                                                : $a->__unset($a) // fix
+                                            ;
 
-                            return $b;
-                        }
-                    };
-                }
-            }
+                                            return $b;
+                                        }
+                                    };
+                                }
+                            }
 
-            function __ISSET($bar){} // do not fix
+                            function __ISSET($bar){} // do not fix
 
-            $a->__unset($foo); // fix'."\n            ",
-            '<?php
-            function __TOSTRING(){} // do not fix
+                            $a->__unset($foo); // fix
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            function __TOSTRING(){} // do not fix
 
-            trait FooTrait
-            {
-                public function __INVOKE($a){} // fix
-            }
+                            trait FooTrait
+                            {
+                                public function __INVOKE($a){} // fix
+                            }
 
-            function __GET($a){} // do not fix
+                            function __GET($a){} // do not fix
 
-            interface Foo
-            {
-                public function __SlEeP(); // fix
-            }
+                            interface Foo
+                            {
+                                public function __SlEeP(); // fix
+                            }
 
-            final class Foo
-            {
-                private function __consTRUCT($a, $b, $c, $d = null, $e = 1) // fix
-                {
-                }
+                            final class Foo
+                            {
+                                private function __consTRUCT($a, $b, $c, $d = null, $e = 1) // fix
+                                {
+                                }
 
-                public function __ISSET($a) // fix
-                {
-                    return $b->__IsseT($b); // fix
-                }
+                                public function __ISSET($a) // fix
+                                {
+                                    return $b->__IsseT($b); // fix
+                                }
 
-                private function bar()
-                {
-                    new class {
-                        public function __UnSet($a) // fix
-                        {
-                            $b = null === $a
-                                ? $b->__UnSet($a) // fix
-                                : $a->__UnSet($a) // fix
-                            ;
+                                private function bar()
+                                {
+                                    new class {
+                                        public function __UnSet($a) // fix
+                                        {
+                                            $b = null === $a
+                                                ? $b->__UnSet($a) // fix
+                                                : $a->__UnSet($a) // fix
+                                            ;
 
-                            return $b;
-                        }
-                    };
-                }
-            }
+                                            return $b;
+                                        }
+                                    };
+                                }
+                            }
 
-            function __ISSET($bar){} // do not fix
+                            function __ISSET($bar){} // do not fix
 
-            $a->__UnSet($foo); // fix'."\n            ",
+                            $a->__UnSet($foo); // fix
+                EOD."\n            ",
         ];
 
         yield [
@@ -263,61 +271,79 @@ class Foo extends Bar
         ];
 
         yield [
-            '<?php
-__Tostring();',
+            <<<'EOD'
+                <?php
+                __Tostring();
+                EOD,
         ];
 
         yield [
-            '<?php
-function __Tostring() {}',
+            <<<'EOD'
+                <?php
+                function __Tostring() {}
+                EOD,
         ];
 
         yield [
-            '<?php
-                    #->__sleep()
-                    /** ->__sleep() */
-                    echo $a->__sleep;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    #->__sleep()
+                                    /** ->__sleep() */
+                                    echo $a->__sleep;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    class B
-                    {
-                        public function _not_magic()
-                        {
-                        }
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class B
+                                    {
+                                        public function _not_magic()
+                                        {
+                                        }
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    function __alsoNotMagic()
-                    {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    function __alsoNotMagic()
+                                    {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    function __()
-                    {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    function __()
+                                    {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    function a()
-                    {
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    function a()
+                                    {
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a->__not_magic();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a->__not_magic();
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    $a->a();'."\n                ",
+            <<<'EOD'
+                <?php
+                                    $a->a();
+                EOD."\n                ",
         ];
 
         yield [
@@ -359,18 +385,22 @@ function __Tostring() {}',
         ];
 
         yield 'enum' => [
-            '<?php
-enum Foo
-{
-    public static function __callStatic(string $method, array $parameters){ echo $method;}
-}
-Foo::test();',
-            '<?php
-enum Foo
-{
-    public static function __CALLStatic(string $method, array $parameters){ echo $method;}
-}
-Foo::test();',
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    public static function __callStatic(string $method, array $parameters){ echo $method;}
+                }
+                Foo::test();
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    public static function __CALLStatic(string $method, array $parameters){ echo $method;}
+                }
+                Foo::test();
+                EOD,
         ];
     }
 }

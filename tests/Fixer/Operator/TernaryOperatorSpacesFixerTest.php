@@ -36,45 +36,61 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'handle goto labels 1' => [
-            '<?php
-beginning:
-echo $guard ? 1 : 2;',
-            '<?php
-beginning:
-echo $guard?1:2;',
+            <<<'EOD'
+                <?php
+                beginning:
+                echo $guard ? 1 : 2;
+                EOD,
+            <<<'EOD'
+                <?php
+                beginning:
+                echo $guard?1:2;
+                EOD,
         ];
 
         yield 'handle goto labels 2' => [
-            '<?php
-function A(){}
-beginning:
-echo $guard ? 1 : 2;',
-            '<?php
-function A(){}
-beginning:
-echo $guard?1:2;',
+            <<<'EOD'
+                <?php
+                function A(){}
+                beginning:
+                echo $guard ? 1 : 2;
+                EOD,
+            <<<'EOD'
+                <?php
+                function A(){}
+                beginning:
+                echo $guard?1:2;
+                EOD,
         ];
 
         yield 'handle goto labels 3' => [
-            '<?php
-;
-beginning:
-echo $guard ? 1 : 2;',
-            '<?php
-;
-beginning:
-echo $guard?1:2;',
+            <<<'EOD'
+                <?php
+                ;
+                beginning:
+                echo $guard ? 1 : 2;
+                EOD,
+            <<<'EOD'
+                <?php
+                ;
+                beginning:
+                echo $guard?1:2;
+                EOD,
         ];
 
         yield 'handle goto labels 4' => [
-            '<?php
-{
-beginning:
-echo $guard ? 1 : 2;}',
-            '<?php
-{
-beginning:
-echo $guard?1:2;}',
+            <<<'EOD'
+                <?php
+                {
+                beginning:
+                echo $guard ? 1 : 2;}
+                EOD,
+            <<<'EOD'
+                <?php
+                {
+                beginning:
+                echo $guard?1:2;}
+                EOD,
         ];
 
         yield [
@@ -83,16 +99,22 @@ echo $guard?1:2;}',
         ];
 
         yield [
-            '<?php $a = $a ?
-#
-: $b;',
+            <<<'EOD'
+                <?php $a = $a ?
+                #
+                : $b;
+                EOD,
         ];
 
         yield [
-            '<?php $a = $a#
- ?'.' '.'
-#
-1 : 0;',
+            <<<'EOD'
+                <?php $a = $a#
+                 ?
+                EOD.' '.<<<'EOD'
+
+                #
+                1 : 0;
+                EOD,
         ];
 
         yield [
@@ -106,12 +128,16 @@ echo $guard?1:2;}',
         ];
 
         yield [
-            '<?php
-$a = $b ? 2 : ($bc ? 2 : 3);
-$a = $bc ? 2 : 3;',
-            '<?php
-$a = $b   ?   2  :    ($bc?2:3);
-$a = $bc?2:3;',
+            <<<'EOD'
+                <?php
+                $a = $b ? 2 : ($bc ? 2 : 3);
+                $a = $bc ? 2 : 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = $b   ?   2  :    ($bc?2:3);
+                $a = $bc?2:3;
+                EOD,
         ];
 
         yield [
@@ -120,91 +146,117 @@ $a = $bc?2:3;',
         ];
 
         yield [
-            '<?php
-$a = $b ? (
-        $c + 1
-    ) : (
-        $d + 1
-    );',
+            <<<'EOD'
+                <?php
+                $a = $b ? (
+                        $c + 1
+                    ) : (
+                        $d + 1
+                    );
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = $b
-    ? $c
-    : $d;',
-            '<?php
-$a = $b
-    ?$c
-    :$d;',
+            <<<'EOD'
+                <?php
+                $a = $b
+                    ? $c
+                    : $d;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = $b
+                    ?$c
+                    :$d;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = $b  //
-    ? $c  /**/
-    : $d;',
-            '<?php
-$a = $b  //
-    ?$c  /**/
-    :$d;',
+            <<<'EOD'
+                <?php
+                $a = $b  //
+                    ? $c  /**/
+                    : $d;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = $b  //
+                    ?$c  /**/
+                    :$d;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = ($b
-    ? $c
-    : ($d
-        ? $e
-        : $f
-    )
-);',
+            <<<'EOD'
+                <?php
+                $a = ($b
+                    ? $c
+                    : ($d
+                        ? $e
+                        : $f
+                    )
+                );
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = ($b
-    ? ($c1 ? $c2 : ($c3a ?: $c3b))
-    : ($d1 ? $d2 : $d3)
-);',
-            '<?php
-$a = ($b
-    ? ($c1?$c2:($c3a? :$c3b))
-    : ($d1?$d2:$d3)
-);',
+            <<<'EOD'
+                <?php
+                $a = ($b
+                    ? ($c1 ? $c2 : ($c3a ?: $c3b))
+                    : ($d1 ? $d2 : $d3)
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = ($b
+                    ? ($c1?$c2:($c3a? :$c3b))
+                    : ($d1?$d2:$d3)
+                );
+                EOD,
         ];
 
         yield [
-            '<?php
-                $foo = $isBar ? 1 : 2;
-                switch ($foo) {
-                    case 1: return 3;
-                    case 2: return 4;
-                }'."\n                ",
-            '<?php
-                $foo = $isBar? 1 : 2;
-                switch ($foo) {
-                    case 1: return 3;
-                    case 2: return 4;
-                }'."\n                ",
+            <<<'EOD'
+                <?php
+                                $foo = $isBar ? 1 : 2;
+                                switch ($foo) {
+                                    case 1: return 3;
+                                    case 2: return 4;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                $foo = $isBar? 1 : 2;
+                                switch ($foo) {
+                                    case 1: return 3;
+                                    case 2: return 4;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                return $isBar ? array_sum(array_map(function ($x) { switch ($x) { case 1: return $y ? 2 : 3; case 4: return 5; } }, [1, 2, 3])) : 128;'."\n                ",
-            '<?php
-                return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;'."\n                ",
+            <<<'EOD'
+                <?php
+                                return $isBar ? array_sum(array_map(function ($x) { switch ($x) { case 1: return $y ? 2 : 3; case 4: return 5; } }, [1, 2, 3])) : 128;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                declare(ticks=1):enddeclare;
-                for ($i = 0; $i < 100; $i++): echo "."; endfor;
-                foreach ($foo as $bar): $i++; endforeach;
-                if ($x === 1): echo "One"; elseif ($x === 2): echo "Two"; else: echo "Three"; endif;
-                switch (true): default: return 0; endswitch;
-                while ($i > 10): $i--; endwhile;
-                /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;'."\n                ",
+            <<<'EOD'
+                <?php
+                                declare(ticks=1):enddeclare;
+                                for ($i = 0; $i < 100; $i++): echo "."; endfor;
+                                foreach ($foo as $bar): $i++; endforeach;
+                                if ($x === 1): echo "One"; elseif ($x === 2): echo "Two"; else: echo "Three"; endif;
+                                switch (true): default: return 0; endswitch;
+                                while ($i > 10): $i--; endwhile;
+                                /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
+                EOD."\n                ",
         ];
     }
 
@@ -221,18 +273,20 @@ $a = ($b
     public static function provideFix80Cases(): iterable
     {
         yield 'nullable types in constructor property promotion' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    public function __construct(
-        private ?string $foo = null,
-        protected ?string $bar = null,
-        public ?string $xyz = null,
-    ) {
-        /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
-    }
-}',
+                class Foo
+                {
+                    public function __construct(
+                        private ?string $foo = null,
+                        protected ?string $bar = null,
+                        public ?string $xyz = null,
+                    ) {
+                        /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
+                    }
+                }
+                EOD,
         ];
     }
 

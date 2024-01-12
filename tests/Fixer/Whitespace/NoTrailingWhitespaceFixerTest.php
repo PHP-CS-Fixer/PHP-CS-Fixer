@@ -36,24 +36,36 @@ final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-$a = 1;',
-            '<?php
-$a = 1;'.'   ',
+            <<<'EOD'
+                <?php
+                $a = 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1;
+                EOD.'   ',
         ];
 
         yield [
-            '<?php
-$a = 1  ;',
-            '<?php
-$a = 1  ;'.'   ',
+            <<<'EOD'
+                <?php
+                $a = 1  ;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = 1  ;
+                EOD.'   ',
         ];
 
         yield [
-            '<?php
-$b = 1;',
-            '<?php
-$b = 1;'.'		',
+            <<<'EOD'
+                <?php
+                $b = 1;
+                EOD,
+            <<<'EOD'
+                <?php
+                $b = 1;
+                EOD.'		',
         ];
 
         yield [
@@ -71,8 +83,10 @@ $b = 1;'.'		',
         ];
 
         yield [
-            '<?php
-	$b = 1;'."\n	",
+            <<<'EOD'
+                <?php
+                	$b = 1;
+                EOD."\n	",
         ];
 
         yield [
@@ -88,14 +102,16 @@ $b = 1;'.'		',
         ];
 
         yield [
-            "<?php
-<<<'EOT'
-Il y eut un rire éclatant des écoliers qui décontenança le pauvre
-garçon, si bien qu'il ne savait s'il fallait garder sa casquette à
-la main, la laisser par terre ou la mettre sur sa tête. Il se
-rassit et la posa sur ses genoux.
-EOT;
-",
+            <<<'EOD'
+                <?php
+                <<<'EOT'
+                Il y eut un rire éclatant des écoliers qui décontenança le pauvre
+                garçon, si bien qu'il ne savait s'il fallait garder sa casquette à
+                la main, la laisser par terre ou la mettre sur sa tête. Il se
+                rassit et la posa sur ses genoux.
+                EOT;
+
+                EOD,
         ];
 
         yield [
@@ -168,14 +184,20 @@ EOT;
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php class Foo {
-    #[Required]
-    public $bar;
-}',
-            '<?php class Foo {
-    #[Required]'.'     '.'
-    public $bar;
-}',
+            <<<'EOD'
+                <?php class Foo {
+                    #[Required]
+                    public $bar;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                    #[Required]
+                EOD.'     '.<<<'EOD'
+
+                    public $bar;
+                }
+                EOD,
         ];
     }
 }

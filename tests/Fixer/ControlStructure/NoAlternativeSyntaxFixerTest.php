@@ -40,50 +40,62 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                declare(ticks = 1) {
-                }'."\n            ",
-            '<?php
-                declare(ticks = 1) :
-                enddeclare;'."\n            ",
+            <<<'EOD'
+                <?php
+                                declare(ticks = 1) {
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                declare(ticks = 1) :
+                                enddeclare;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-    switch ($foo) {
-        case 1:
-    }
-
-    switch ($foo)   {
-        case 1:
-    }    ?>',
-            '<?php
-    switch ($foo):
-        case 1:
-    endswitch;
-
-    switch ($foo)   :
-        case 1:
-    endswitch    ?>',
-        ];
-
-        yield [
-            '<?php
-                if ($some1) {
-                    if ($some2) {
-                        if ($some3) {
-                            $test = true;
-                        }
+            <<<'EOD'
+                <?php
+                    switch ($foo) {
+                        case 1:
                     }
-                }'."\n            ",
-            '<?php
-                if ($some1) :
-                    if ($some2) :
-                        if ($some3) :
-                            $test = true;
-                        endif;
-                    endif;
-                endif;'."\n            ",
+
+                    switch ($foo)   {
+                        case 1:
+                    }    ?>
+                EOD,
+            <<<'EOD'
+                <?php
+                    switch ($foo):
+                        case 1:
+                    endswitch;
+
+                    switch ($foo)   :
+                        case 1:
+                    endswitch    ?>
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                                if ($some1) {
+                                    if ($some2) {
+                                        if ($some3) {
+                                            $test = true;
+                                        }
+                                    }
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                if ($some1) :
+                                    if ($some2) :
+                                        if ($some3) :
+                                            $test = true;
+                                        endif;
+                                    endif;
+                                endif;
+                EOD."\n            ",
         ];
 
         yield [

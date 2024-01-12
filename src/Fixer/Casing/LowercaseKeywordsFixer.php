@@ -39,18 +39,20 @@ final class LowercaseKeywordsFixer extends AbstractFixer
             'PHP keywords MUST be in lower case.',
             [
                 new CodeSample(
-                    '<?php
-    FOREACH($a AS $B) {
-        TRY {
-            NEW $C($a, ISSET($B));
-            WHILE($B) {
-                INCLUDE "test.php";
-            }
-        } CATCH(\Exception $e) {
-            EXIT(1);
-        }
-    }
-'
+                    <<<'EOD'
+                        <?php
+                            FOREACH($a AS $B) {
+                                TRY {
+                                    NEW $C($a, ISSET($B));
+                                    WHILE($B) {
+                                        INCLUDE "test.php";
+                                    }
+                                } CATCH(\Exception $e) {
+                                    EXIT(1);
+                                }
+                            }
+
+                        EOD
                 ),
             ]
         );

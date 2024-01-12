@@ -74,10 +74,14 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php //
-@Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
-            '<?php //
-Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>',
+            <<<'EOD'
+                <?php //
+                @Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>
+                EOD,
+            <<<'EOD'
+                <?php //
+                Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>
+                EOD,
         ];
 
         yield [

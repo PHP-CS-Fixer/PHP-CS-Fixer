@@ -85,70 +85,90 @@ final class ImplodeCallFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                implode(
-                    "",
-                    $foo
-                );',
-            '<?php
-                implode(
-                    $foo,
-                    ""
-                );',
+            <<<'EOD'
+                <?php
+                                implode(
+                                    "",
+                                    $foo
+                                );
+                EOD,
+            <<<'EOD'
+                <?php
+                                implode(
+                                    $foo,
+                                    ""
+                                );
+                EOD,
         ];
 
         yield [
-            '<?php
-                implode(
-                    \'\', $foo
-                );',
-            '<?php
-                implode(
-                    $foo
-                );',
+            <<<'EOD'
+                <?php
+                                implode(
+                                    '', $foo
+                                );
+                EOD,
+            <<<'EOD'
+                <?php
+                                implode(
+                                    $foo
+                                );
+                EOD,
         ];
 
         yield [
-            '<?php
-implode(# 1
-""/* 2.1 */,# 2.2
-$foo# 3
-);',
-            '<?php
-implode(# 1
-$foo/* 2.1 */,# 2.2
-""# 3
-);',
+            <<<'EOD'
+                <?php
+                implode(# 1
+                ""/* 2.1 */,# 2.2
+                $foo# 3
+                );
+                EOD,
+            <<<'EOD'
+                <?php
+                implode(# 1
+                $foo/* 2.1 */,# 2.2
+                ""# 3
+                );
+                EOD,
         ];
 
         yield [
-            '<?php
-implode(# 1
-# 2
-\'\', $foo# 3
-# 4
-)# 5
-;',
-            '<?php
-implode(# 1
-# 2
-$foo# 3
-# 4
-)# 5
-;',
+            <<<'EOD'
+                <?php
+                implode(# 1
+                # 2
+                '', $foo# 3
+                # 4
+                )# 5
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+                implode(# 1
+                # 2
+                $foo# 3
+                # 4
+                )# 5
+                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);
-// comment for testing
-implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);
-',
-            '<?php
-implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
-// comment for testing
-implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
-',
+            <<<'EOD'
+                <?php
+                implode('', $a);implode('', $a);implode('', $a);implode('', $a);implode('', $a);implode('', $a);
+                // comment for testing
+                implode('', $a);implode('', $a);implode('', $a);implode('', $a);implode('', $a);implode('', $a);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
+                // comment for testing
+                implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
+
+                EOD,
         ];
 
         yield [
@@ -162,16 +182,20 @@ implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
         ];
 
         yield [
-            '<?php
-                implode(
-                    "",
-                    $foo,
-                );',
-            '<?php
-                implode(
-                    $foo,
-                    "",
-                );',
+            <<<'EOD'
+                <?php
+                                implode(
+                                    "",
+                                    $foo,
+                                );
+                EOD,
+            <<<'EOD'
+                <?php
+                                implode(
+                                    $foo,
+                                    "",
+                                );
+                EOD,
         ];
     }
 }

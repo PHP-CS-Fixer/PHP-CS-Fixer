@@ -53,37 +53,45 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
         yield ["<?php \$x = array(array('foo',\n), \n);"];
 
         yield [
-            '<?php
-    $test = array("foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array("foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = array(
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array(
+                        "foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array("foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = array(
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array(
+                        "foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
         ];
 
         // Short syntax
@@ -106,37 +114,45 @@ TWIG
         yield ['<?php $x = [$y[""]];', '<?php $x = [$y[""],];'];
 
         yield [
-            '<?php
-    $test = ["foo", <<<TWIG
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = ["foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = [
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = [
+                        "foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = ["foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
         ];
 
         yield [
-            '<?php
-    $test = [
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = [
+                        "foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
         ];
 
         yield [

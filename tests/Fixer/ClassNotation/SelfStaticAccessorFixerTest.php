@@ -34,136 +34,160 @@ final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
-            '<?php
-final class Sample
-{
-    public function getBar()
-    {
-        return self::class.self::test();
-    }
+            <<<'EOD'
+                <?php
+                final class Sample
+                {
+                    public function getBar()
+                    {
+                        return self::class.self::test();
+                    }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-',
-            '<?php
-final class Sample
-{
-    public function getBar()
-    {
-        return static::class.static::test();
-    }
+                    private static function test()
+                    {
+                        return 'test';
+                    }
+                }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                final class Sample
+                {
+                    public function getBar()
+                    {
+                        return static::class.static::test();
+                    }
+
+                    private static function test()
+                    {
+                        return 'test';
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'multiple' => [
-            '<?php
-                    final class Foo0 { public function A(){ return self::A; }}
-                    final class Foo1 { public function A(){ return self::A; }}
-                    final class Foo2 { public function A(){ return self::A; }}
-                    final class Foo3 { public function A(){ return self::A; }}
-                    final class Foo4{public function A(){return self::A;}}final class Foo5{public function A(){return self::A;}}'."\n                ",
-            '<?php
-                    final class Foo0 { public function A(){ return static::A; }}
-                    final class Foo1 { public function A(){ return static::A; }}
-                    final class Foo2 { public function A(){ return static::A; }}
-                    final class Foo3 { public function A(){ return static::A; }}
-                    final class Foo4{public function A(){return static::A;}}final class Foo5{public function A(){return static::A;}}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    final class Foo0 { public function A(){ return self::A; }}
+                                    final class Foo1 { public function A(){ return self::A; }}
+                                    final class Foo2 { public function A(){ return self::A; }}
+                                    final class Foo3 { public function A(){ return self::A; }}
+                                    final class Foo4{public function A(){return self::A;}}final class Foo5{public function A(){return self::A;}}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    final class Foo0 { public function A(){ return static::A; }}
+                                    final class Foo1 { public function A(){ return static::A; }}
+                                    final class Foo2 { public function A(){ return static::A; }}
+                                    final class Foo3 { public function A(){ return static::A; }}
+                                    final class Foo4{public function A(){return static::A;}}final class Foo5{public function A(){return static::A;}}
+                EOD."\n                ",
         ];
 
         yield 'comments and casing' => [
-            '<?php
-FINAL CLASS Sample
-{
-    public function getBar()
-    {
-        return/* 0 */self/* 1 */::/* 2 */CLASS/* 3 */;
-    }
-}
-',
-            '<?php
-FINAL CLASS Sample
-{
-    public function getBar()
-    {
-        return/* 0 */STATIC/* 1 */::/* 2 */CLASS/* 3 */;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                FINAL CLASS Sample
+                {
+                    public function getBar()
+                    {
+                        return/* 0 */self/* 1 */::/* 2 */CLASS/* 3 */;
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                FINAL CLASS Sample
+                {
+                    public function getBar()
+                    {
+                        return/* 0 */STATIC/* 1 */::/* 2 */CLASS/* 3 */;
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'not final' => [
-            '<?php
-class Sample
-{
-    public function getBar()
-    {
-        return static::class;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                class Sample
+                {
+                    public function getBar()
+                    {
+                        return static::class;
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'abstract' => [
-            '<?php
-abstract class Sample
-{
-    public function getBar()
-    {
-        return static::class;
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                abstract class Sample
+                {
+                    public function getBar()
+                    {
+                        return static::class;
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-final class Foo
-{
-    public function bar()
-    {
-        $a = new Foo();
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function bar()
+                    {
+                        $a = new Foo();
 
-        return new self();
-    }
-}'."\n                ",
-            '<?php
-final class Foo
-{
-    public function bar()
-    {
-        $a = new Foo();
+                        return new self();
+                    }
+                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function bar()
+                    {
+                        $a = new Foo();
 
-        return new static();
-    }
-}'."\n                ",
+                        return new static();
+                    }
+                }
+                EOD."\n                ",
         ];
 
         yield 'instance of' => [
-            '<?php
-final class Foo
-{
-    public function isBar($foo)
-    {
-        return $foo instanceof self;
-    }
-}'."\n                ",
-            '<?php
-final class Foo
-{
-    public function isBar($foo)
-    {
-        return $foo instanceof static;
-    }
-}'."\n                ",
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function isBar($foo)
+                    {
+                        return $foo instanceof self;
+                    }
+                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function isBar($foo)
+                    {
+                        return $foo instanceof static;
+                    }
+                }
+                EOD."\n                ",
         ];
 
         yield 'in method as new' => [
@@ -182,166 +206,178 @@ final class Foo
         ];
 
         yield 'simple anonymous class' => [
-            '<?php
-$a = new class {
-    public function getBar()
-    {
-        return self::class;
-    }
-};',
-            '<?php
-$a = new class {
-    public function getBar()
-    {
-        return static::class;
-    }
-};',
+            <<<'EOD'
+                <?php
+                $a = new class {
+                    public function getBar()
+                    {
+                        return self::class;
+                    }
+                };
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = new class {
+                    public function getBar()
+                    {
+                        return static::class;
+                    }
+                };
+                EOD,
         ];
 
         yield 'nested anonymous class' => [
-            '<?php
-final class Foo
-{
-    public function Foo()
-    {
-        return self::class;
-    }
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function Foo()
+                    {
+                        return self::class;
+                    }
 
-    public function getClass()
-    {
-        $a = new class() {
-            public function getBar()
-            {
-                return self::class;
-            }
-        };
-    }
+                    public function getClass()
+                    {
+                        $a = new class() {
+                            public function getBar()
+                            {
+                                return self::class;
+                            }
+                        };
+                    }
 
-    public function Foo2()
-    {
-        return self::class;
-    }
-}
-',
-            '<?php
-final class Foo
-{
-    public function Foo()
-    {
-        return static::class;
-    }
+                    public function Foo2()
+                    {
+                        return self::class;
+                    }
+                }
 
-    public function getClass()
-    {
-        $a = new class() {
-            public function getBar()
-            {
-                return static::class;
-            }
-        };
-    }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function Foo()
+                    {
+                        return static::class;
+                    }
 
-    public function Foo2()
-    {
-        return static::class;
-    }
-}
-',
+                    public function getClass()
+                    {
+                        $a = new class() {
+                            public function getBar()
+                            {
+                                return static::class;
+                            }
+                        };
+                    }
+
+                    public function Foo2()
+                    {
+                        return static::class;
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'anonymous classes inside lambda' => [
-            '<?php
-final class Foo
-{
-    public function bar()
-    {
-        echo self::class; // do fix
-
-        return function () {
-            echo static::class; // do not fix
-
-            $a = new class {
-                public function bar2()
+            <<<'EOD'
+                <?php
+                final class Foo
                 {
-                    echo self::class; // do fix
+                    public function bar()
+                    {
+                        echo self::class; // do fix
 
-                    return function () {
-                        echo static::class; // do not fix
+                        return function () {
+                            echo static::class; // do not fix
 
-                        $a = new class {
-                            public function bar2()
-                            {
-                                echo self::class; // do fix
-                            }
+                            $a = new class {
+                                public function bar2()
+                                {
+                                    echo self::class; // do fix
+
+                                    return function () {
+                                        echo static::class; // do not fix
+
+                                        $a = new class {
+                                            public function bar2()
+                                            {
+                                                echo self::class; // do fix
+                                            }
+                                        };
+                                        echo static::class; // do not fix
+
+                                        return $a;
+                                    };
+                                }
+                            };
+                            echo static::class; // do not fix
+
+                            $b = new class {
+                                public function test()
+                                {
+                                    echo self::class; // do fix
+                                }
+                            };
+
+                            return $a;
                         };
-                        echo static::class; // do not fix
 
-                        return $a;
-                    };
+                        echo self::class; // do fix
+                    }
                 }
-            };
-            echo static::class; // do not fix
 
-            $b = new class {
-                public function test()
+                EOD,
+            <<<'EOD'
+                <?php
+                final class Foo
                 {
-                    echo self::class; // do fix
-                }
-            };
+                    public function bar()
+                    {
+                        echo static::class; // do fix
 
-            return $a;
-        };
+                        return function () {
+                            echo static::class; // do not fix
 
-        echo self::class; // do fix
-    }
-}
-',
-            '<?php
-final class Foo
-{
-    public function bar()
-    {
-        echo static::class; // do fix
+                            $a = new class {
+                                public function bar2()
+                                {
+                                    echo static::class; // do fix
 
-        return function () {
-            echo static::class; // do not fix
+                                    return function () {
+                                        echo static::class; // do not fix
 
-            $a = new class {
-                public function bar2()
-                {
-                    echo static::class; // do fix
+                                        $a = new class {
+                                            public function bar2()
+                                            {
+                                                echo static::class; // do fix
+                                            }
+                                        };
+                                        echo static::class; // do not fix
 
-                    return function () {
-                        echo static::class; // do not fix
+                                        return $a;
+                                    };
+                                }
+                            };
+                            echo static::class; // do not fix
 
-                        $a = new class {
-                            public function bar2()
-                            {
-                                echo static::class; // do fix
-                            }
+                            $b = new class {
+                                public function test()
+                                {
+                                    echo static::class; // do fix
+                                }
+                            };
+
+                            return $a;
                         };
-                        echo static::class; // do not fix
 
-                        return $a;
-                    };
+                        echo static::class; // do fix
+                    }
                 }
-            };
-            echo static::class; // do not fix
 
-            $b = new class {
-                public function test()
-                {
-                    echo static::class; // do fix
-                }
-            };
-
-            return $a;
-        };
-
-        echo static::class; // do fix
-    }
-}
-',
+                EOD,
         ];
 
         yield 'no scope' => [
@@ -349,20 +385,22 @@ final class Foo
         ];
 
         yield 'do not fix inside lambda' => [
-            '<?php
-final class Foo
-{
-    public function Bar()
-    {
-        return function() {
-            return static::class;
-        };
-    }
-}
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public function Bar()
+                    {
+                        return function() {
+                            return static::class;
+                        };
+                    }
+                }
 
-$a = static function() { return static::class; };
-$b = function() { return static::class; };
-',
+                $a = static function() { return static::class; };
+                $b = function() { return static::class; };
+
+                EOD,
         ];
     }
 
@@ -379,93 +417,101 @@ $b = function() { return static::class; };
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
-            '<?php
-enum Foo
-{
-    case Baz;
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    case Baz;
 
-    private const BAR = \'foo\';
+                    private const BAR = 'foo';
 
-    public static function bar(): Foo
-    {
-        return self::Baz;
-    }
+                    public static function bar(): Foo
+                    {
+                        return self::Baz;
+                    }
 
-    public static function baz(mixed $other): void
-    {
-        if ($other instanceof self) {
-            echo self::BAR;
-        }
-    }
-}
-',
-            '<?php
-enum Foo
-{
-    case Baz;
+                    public static function baz(mixed $other): void
+                    {
+                        if ($other instanceof self) {
+                            echo self::BAR;
+                        }
+                    }
+                }
 
-    private const BAR = \'foo\';
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Foo
+                {
+                    case Baz;
 
-    public static function bar(): Foo
-    {
-        return static::Baz;
-    }
+                    private const BAR = 'foo';
 
-    public static function baz(mixed $other): void
-    {
-        if ($other instanceof static) {
-            echo static::BAR;
-        }
-    }
-}
-',
+                    public static function bar(): Foo
+                    {
+                        return static::Baz;
+                    }
+
+                    public static function baz(mixed $other): void
+                    {
+                        if ($other instanceof static) {
+                            echo static::BAR;
+                        }
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'enum with nested anonymous class' => [
-            '<?php
-                enum Suit: int implements SomeIntInterface, Z
-                {
-                    case Hearts = 1;
-                    case Clubs = 3;
-                    public const HEARTS = self::Hearts;
+            <<<'EOD'
+                <?php
+                                enum Suit: int implements SomeIntInterface, Z
+                                {
+                                    case Hearts = 1;
+                                    case Clubs = 3;
+                                    public const HEARTS = self::Hearts;
 
-                    public function Foo(): string
-                    {
-                        return self::Hearts->Bar()->getBar() . self::class . self::Clubs->value;
-                    }
+                                    public function Foo(): string
+                                    {
+                                        return self::Hearts->Bar()->getBar() . self::class . self::Clubs->value;
+                                    }
 
-                    public function Bar(): object
-                    {
-                        return new class {
-                            public function getBar()
-                            {
-                                return self::class;
-                            }
-                        };
-                    }
-                }'."\n            ",
-            '<?php
-                enum Suit: int implements SomeIntInterface, Z
-                {
-                    case Hearts = 1;
-                    case Clubs = 3;
-                    public const HEARTS = self::Hearts;
+                                    public function Bar(): object
+                                    {
+                                        return new class {
+                                            public function getBar()
+                                            {
+                                                return self::class;
+                                            }
+                                        };
+                                    }
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                enum Suit: int implements SomeIntInterface, Z
+                                {
+                                    case Hearts = 1;
+                                    case Clubs = 3;
+                                    public const HEARTS = self::Hearts;
 
-                    public function Foo(): string
-                    {
-                        return static::Hearts->Bar()->getBar() . static::class . static::Clubs->value;
-                    }
+                                    public function Foo(): string
+                                    {
+                                        return static::Hearts->Bar()->getBar() . static::class . static::Clubs->value;
+                                    }
 
-                    public function Bar(): object
-                    {
-                        return new class {
-                            public function getBar()
-                            {
-                                return static::class;
-                            }
-                        };
-                    }
-                }'."\n            ",
+                                    public function Bar(): object
+                                    {
+                                        return new class {
+                                            public function getBar()
+                                            {
+                                                return static::class;
+                                            }
+                                        };
+                                    }
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -482,34 +528,38 @@ enum Foo
     public static function provideFix82Cases(): iterable
     {
         yield 'simple' => [
-            '<?php
-final readonly class Sample
-{
-    public function getBar()
-    {
-        return self::class.self::test();
-    }
+            <<<'EOD'
+                <?php
+                final readonly class Sample
+                {
+                    public function getBar()
+                    {
+                        return self::class.self::test();
+                    }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-',
-            '<?php
-final readonly class Sample
-{
-    public function getBar()
-    {
-        return static::class.static::test();
-    }
+                    private static function test()
+                    {
+                        return 'test';
+                    }
+                }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                final readonly class Sample
+                {
+                    public function getBar()
+                    {
+                        return static::class.static::test();
+                    }
+
+                    private static function test()
+                    {
+                        return 'test';
+                    }
+                }
+
+                EOD,
         ];
     }
 }

@@ -40,375 +40,417 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestCase
         yield ['<?php /** foo */'];
 
         yield [
-            '<?php
-/**
- * Do not indent
- */
+            <<<'EOD'
+                <?php
+                /**
+                 * Do not indent
+                 */
 
-/**
- * Do not indent this
- */
-class DocBlocks
-{
-    /**
-     *Test that attribute docblocks are indented
-     */
-    protected $indent = false;
+                /**
+                 * Do not indent this
+                 */
+                class DocBlocks
+                {
+                    /**
+                     *Test that attribute docblocks are indented
+                     */
+                    protected $indent = false;
 
-    /**
-     * Test that method docblocks are indented.
-     */
-    public function test() {}
-}',
-            '<?php
-/**
- * Do not indent
- */
+                    /**
+                     * Test that method docblocks are indented.
+                     */
+                    public function test() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * Do not indent
+                 */
 
-/**
- * Do not indent this
- */
-class DocBlocks
-{
-/**
- *Test that attribute docblocks are indented
- */
-    protected $indent = false;
+                /**
+                 * Do not indent this
+                 */
+                class DocBlocks
+                {
+                /**
+                 *Test that attribute docblocks are indented
+                 */
+                    protected $indent = false;
 
-/**
- * Test that method docblocks are indented.
- */
-    public function test() {}
-}',
+                /**
+                 * Test that method docblocks are indented.
+                 */
+                    public function test() {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-class DocBlocks
-{
-    /**
-     * Test constants
-     */
-    const INDENT = 1;
+            <<<'EOD'
+                <?php
+                class DocBlocks
+                {
+                    /**
+                     * Test constants
+                     */
+                    const INDENT = 1;
 
-    /**
-     * Test with var keyword
-     */
-    var $oldStyle = false;
+                    /**
+                     * Test with var keyword
+                     */
+                    var $oldStyle = false;
 
-    /**
-     * Test static
-     */
-    public static function test1() {}
+                    /**
+                     * Test static
+                     */
+                    public static function test1() {}
 
-    /**
-     * Test static first.
-     */
-    static public function test2() {}
+                    /**
+                     * Test static first.
+                     */
+                    static public function test2() {}
 
-    /**
-     * Test final first.
-     */
-    final public function test3() {}
+                    /**
+                     * Test final first.
+                     */
+                    final public function test3() {}
 
-    /**
-     * Test no keywords
-     */
-    function test4() {}
-}',
-            '<?php
-class DocBlocks
-{
-/**
- * Test constants
- */
-    const INDENT = 1;
+                    /**
+                     * Test no keywords
+                     */
+                    function test4() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class DocBlocks
+                {
+                /**
+                 * Test constants
+                 */
+                    const INDENT = 1;
 
-/**
- * Test with var keyword
- */
-    var $oldStyle = false;
+                /**
+                 * Test with var keyword
+                 */
+                    var $oldStyle = false;
 
-/**
- * Test static
- */
-    public static function test1() {}
+                /**
+                 * Test static
+                 */
+                    public static function test1() {}
 
-/**
- * Test static first.
- */
-    static public function test2() {}
+                /**
+                 * Test static first.
+                 */
+                    static public function test2() {}
 
-/**
- * Test final first.
- */
-    final public function test3() {}
+                /**
+                 * Test final first.
+                 */
+                    final public function test3() {}
 
-/**
- * Test no keywords
- */
-    function test4() {}
-}',
+                /**
+                 * Test no keywords
+                 */
+                    function test4() {}
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * Final class should also not be indented
- */
-final class DocBlocks
-{
-    /**
-     * Test with var keyword
-     */
-    var $oldStyle = false;
-}',
-            '<?php
-/**
- * Final class should also not be indented
- */
-final class DocBlocks
-{
-/**
- * Test with var keyword
- */
-    var $oldStyle = false;
-}',
+            <<<'EOD'
+                <?php
+                /**
+                 * Final class should also not be indented
+                 */
+                final class DocBlocks
+                {
+                    /**
+                     * Test with var keyword
+                     */
+                    var $oldStyle = false;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * Final class should also not be indented
+                 */
+                final class DocBlocks
+                {
+                /**
+                 * Test with var keyword
+                 */
+                    var $oldStyle = false;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    if (1) {
-        class Foo {
-            /**
-             * Foo
-             */
-            function foo() {}
+            <<<'EOD'
+                <?php
+                    if (1) {
+                        class Foo {
+                            /**
+                             * Foo
+                             */
+                            function foo() {}
 
-            /**
-             * Bar
-             */
-            function bar() {}
-        }
-    }',
-            '<?php
-    if (1) {
-        class Foo {
-/**
- * Foo
- */
-            function foo() {}
+                            /**
+                             * Bar
+                             */
+                            function bar() {}
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    if (1) {
+                        class Foo {
+                /**
+                 * Foo
+                 */
+                            function foo() {}
 
+                                        /**
+                                         * Bar
+                                         */
+                            function bar() {}
+                        }
+                    }
+                EOD,
+        ];
+
+        yield [
+            <<<'EOD'
+                <?php
+                /**
+                 * Variable
+                 */
+                $variable = true;
+
+                /**
+                 * Partial docblock fix
+                 */
+                $partialFix = true;
+
+                    /**
+                     * Other partial docblock fix
+                     */
+                    $otherPartial = true;
+
+                    /** Single line */
+                    $single = true;
+
+                    /**
+                     * Function
+                     */
+                    function something()
+                    {
                         /**
-                         * Bar
+                         * Inside functions
                          */
-            function bar() {}
-        }
-    }',
+                        return;
+                    }
+
+                    /**
+                     * function call
+                     */
+                    something();
+
+                    /**
+                     * Control structure
+                     * @var \Sqlite3 $sqlite
+                     */
+                    foreach($connections as $sqlite) {
+                        $sqlite->open();
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * Variable
+                     */
+                $variable = true;
+
+                /**
+                 * Partial docblock fix
+                 */
+                $partialFix = true;
+
+                    /**
+                    * Other partial docblock fix
+                    */
+                    $otherPartial = true;
+
+                /** Single line */
+                    $single = true;
+
+                /**
+                 * Function
+                 */
+                    function something()
+                    {
+                /**
+                 * Inside functions
+                 */
+                        return;
+                    }
+
+                /**
+                 * function call
+                 */
+                    something();
+
+                /**
+                 * Control structure
+                 * @var \Sqlite3 $sqlite
+                 */
+                    foreach($connections as $sqlite) {
+                        $sqlite->open();
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * Variable
- */
-$variable = true;
-
-/**
- * Partial docblock fix
- */
-$partialFix = true;
-
-    /**
-     * Other partial docblock fix
-     */
-    $otherPartial = true;
-
-    /** Single line */
-    $single = true;
-
-    /**
-     * Function
-     */
-    function something()
-    {
-        /**
-         * Inside functions
-         */
-        return;
-    }
-
-    /**
-     * function call
-     */
-    something();
-
-    /**
-     * Control structure
-     * @var \Sqlite3 $sqlite
-     */
-    foreach($connections as $sqlite) {
-        $sqlite->open();
-    }',
-            '<?php
-    /**
-     * Variable
-     */
-$variable = true;
-
-/**
- * Partial docblock fix
- */
-$partialFix = true;
-
-    /**
-    * Other partial docblock fix
-    */
-    $otherPartial = true;
-
-/** Single line */
-    $single = true;
-
-/**
- * Function
- */
-    function something()
-    {
-/**
- * Inside functions
- */
-        return;
-    }
-
-/**
- * function call
- */
-    something();
-
-/**
- * Control structure
- * @var \Sqlite3 $sqlite
- */
-    foreach($connections as $sqlite) {
-        $sqlite->open();
-    }',
+            <<<'EOD'
+                <?php
+                    $user = $event->getForm()->getData();  /** @var User $user */
+                    echo "Success";
+                EOD,
         ];
 
         yield [
-            '<?php
-    $user = $event->getForm()->getData();  /** @var User $user */
-    echo "Success";',
+            <<<'EOD'
+                <?php
+                    $user = $event->getForm()->getData();/** @var User $user */
+                    echo "Success";
+                EOD,
         ];
 
         yield [
-            '<?php
-    $user = $event->getForm()->getData();/** @var User $user */
-    echo "Success";',
+            <<<EOD
+                <?php
+                class DocBlocks
+                {
+                \t/**
+                \t *Test that attribute docblocks are indented
+                \t */
+                \tprotected \$indent = false;
+
+                \t/**
+                \t * Test that method docblocks are indented.
+                \t */
+                \tpublic function test() {}
+                }
+                EOD,
+            <<<EOD
+                <?php
+                class DocBlocks
+                {
+                /**
+                 *Test that attribute docblocks are indented
+                 */
+                \tprotected \$indent = false;
+
+                /**
+                 * Test that method docblocks are indented.
+                 */
+                \tpublic function test() {}
+                }
+                EOD,
         ];
 
         yield [
-            "<?php
-class DocBlocks
-{
-\t/**
-\t *Test that attribute docblocks are indented
-\t */
-\tprotected \$indent = false;
+            <<<'EOD'
+                <?php
+                /**
+                 * Used to write a value to a session key.
+                 *
+                 * ...
+                 */
+                function write($name) {}
 
-\t/**
-\t * Test that method docblocks are indented.
-\t */
-\tpublic function test() {}
-}",
-            "<?php
-class DocBlocks
-{
-/**
- *Test that attribute docblocks are indented
- */
-\tprotected \$indent = false;
+                EOD,
+            <<<EOD
+                <?php
+                \t/**
+                 * Used to write a value to a session key.
+                 *
+                 * ...
+                 */
+                function write(\$name) {}
 
-/**
- * Test that method docblocks are indented.
- */
-\tpublic function test() {}
-}",
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * Used to write a value to a session key.
- *
- * ...
- */
-function write($name) {}
-',
-            "<?php
-\t/**
- * Used to write a value to a session key.
- *
- * ...
- */
-function write(\$name) {}
-",
+            <<<'EOD'
+                <?php
+                    class Foo
+                    {
+                        public function bar()
+                        {
+                            /**
+                             * baz
+                             */
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    class Foo
-    {
-        public function bar()
-        {
-            /**
-             * baz
-             */
-        }
-    }',
+            <<<'EOD'
+                <?php
+                /**
+                 * docs
+                 */
+
+                // comment
+                $foo = $bar;
+
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * docs
- */
-
-// comment
-$foo = $bar;
-',
+            <<<'EOD'
+                <?php
+                function foo()
+                {
+                    $foo->bar(/** oops */$baz);
+                    $foo->bar($a,/** oops */$baz);
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo()
-{
-    $foo->bar(/** oops */$baz);
-    $foo->bar($a,/** oops */$baz);
-}',
+            <<<'EOD'
+                <?php
+
+                /**
+                 * Foo
+                       Bar
+                 */
+                class Foo
+                {
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
+                class Application
+                {
+                }/**
+                 */
+                class Dispatcher
+                {
+                }
 
-/**
- * Foo
-       Bar
- */
-class Foo
-{
-}',
-        ];
-
-        yield [
-            '<?php
-class Application
-{
-}/**
- */
-class Dispatcher
-{
-}
-',
+                EOD,
         ];
     }
 }

@@ -42,367 +42,415 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->expectException(\'RuntimeException\');
-            $this->expectExceptionMessage(\'msg\'/*B*/);
-            $this->expectExceptionCode(/*C*/123);
-            zzz();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->setExpectedException(\'RuntimeException\', \'msg\'/*B*/, /*C*/123);
-            zzz();
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->expectException('RuntimeException');
+                            $this->expectExceptionMessage('msg'/*B*/);
+                            $this->expectExceptionCode(/*C*/123);
+                            zzz();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->setExpectedException('RuntimeException', 'msg'/*B*/, /*C*/123);
+                            zzz();
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->expectException(\'RuntimeException\'/*B*/  /*B2*/);
-            $this->expectExceptionCode(/*C*/123);
-            zzz();
-        }
-        function testFnc2()
-        {
-            aaa();
-            $this->expectException(\'RuntimeException\');
-            $this->expectExceptionMessage(/*B*/ null /*B2*/ + 1);
-            $this->expectExceptionCode(/*C*/123);
-            zzz();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->setExpectedException(\'RuntimeException\',/*B*/ null /*B2*/,/*C*/123);
-            zzz();
-        }
-        function testFnc2()
-        {
-            aaa();
-            $this->setExpectedException(\'RuntimeException\',/*B*/ null /*B2*/ + 1,/*C*/123);
-            zzz();
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->expectException('RuntimeException'/*B*/  /*B2*/);
+                            $this->expectExceptionCode(/*C*/123);
+                            zzz();
+                        }
+                        function testFnc2()
+                        {
+                            aaa();
+                            $this->expectException('RuntimeException');
+                            $this->expectExceptionMessage(/*B*/ null /*B2*/ + 1);
+                            $this->expectExceptionCode(/*C*/123);
+                            zzz();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->setExpectedException('RuntimeException',/*B*/ null /*B2*/,/*C*/123);
+                            zzz();
+                        }
+                        function testFnc2()
+                        {
+                            aaa();
+                            $this->setExpectedException('RuntimeException',/*B*/ null /*B2*/ + 1,/*C*/123);
+                            zzz();
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            $this->expectException(
-                \Exception::class
-            );
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            $this->setExpectedException(
-                \Exception::class
-            );
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            $this->expectException(
+                                \Exception::class
+                            );
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            $this->setExpectedException(
+                                \Exception::class
+                            );
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            $this->expectException(
-                \Exception::class
-            );
-            $this->expectExceptionMessage(
-                "foo"
-            );
-            $this->expectExceptionCode(
-                123
-            );
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            $this->setExpectedException(
-                \Exception::class,
-                "foo",
-                123
-            );
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            $this->expectException(
+                                \Exception::class
+                            );
+                            $this->expectExceptionMessage(
+                                "foo"
+                            );
+                            $this->expectExceptionCode(
+                                123
+                            );
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            $this->setExpectedException(
+                                \Exception::class,
+                                "foo",
+                                123
+                            );
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessage("Msg");
-        $this->expectExceptionCode(123);
-        foo();
-    }
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessage("Msg");
+                        $this->expectExceptionCode(123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
-        bar();
-    }
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->setExpectedException("RuntimeException", "Msg", 123);
-        foo();
-    }
+                    public function testBar()
+                    {
+                        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+                        bar();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->setExpectedException("RuntimeException", "Msg", 123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
-        bar();
-    }
-}',
+                    public function testBar()
+                    {
+                        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+                        bar();
+                    }
+                }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_5_2],
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessage("Msg");
-        $this->expectExceptionCode(123);
-        foo();
-    }
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessage("Msg");
+                        $this->expectExceptionCode(123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessageRegExp("/Msg.*/");
-        $this->expectExceptionCode(123);
-        bar();
-    }
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->setExpectedException("RuntimeException", "Msg", 123);
-        foo();
-    }
+                    public function testBar()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessageRegExp("/Msg.*/");
+                        $this->expectExceptionCode(123);
+                        bar();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->setExpectedException("RuntimeException", "Msg", 123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
-        bar();
-    }
-}',
+                    public function testBar()
+                    {
+                        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+                        bar();
+                    }
+                }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_5_6],
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessage("Msg");
-        $this->expectExceptionCode(123);
-        foo();
-    }
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessage("Msg");
+                        $this->expectExceptionCode(123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessageMatches("/Msg.*/");
-        $this->expectExceptionCode(123);
-        bar();
-    }
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->setExpectedException("RuntimeException", "Msg", 123);
-        foo();
-    }
+                    public function testBar()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessageMatches("/Msg.*/");
+                        $this->expectExceptionCode(123);
+                        bar();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->setExpectedException("RuntimeException", "Msg", 123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
-        bar();
-    }
-}',
+                    public function testBar()
+                    {
+                        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+                        bar();
+                    }
+                }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_8_4],
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->expectExceptionMessageMatches("/Msg.*/");
-        foo();
-    }
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->expectExceptionMessageRegExp("/Msg.*/");
-        foo();
-    }
-}',
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->expectExceptionMessageMatches("/Msg.*/");
+                        foo();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->expectExceptionMessageRegExp("/Msg.*/");
+                        foo();
+                    }
+                }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_8_4],
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        // turns wrong into wrong: has a single argument only, but ...
-        $this->expectExceptionMessageMatches("/Msg.*/");
-        $this->expectExceptionMessageMatches("fail-case");
-        foo();
-    }
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        // turns wrong into wrong: has a single argument only, but ...
-        $this->expectExceptionMessageRegExp("/Msg.*/", "fail-case");
-        foo();
-    }
-}',
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        // turns wrong into wrong: has a single argument only, but ...
+                        $this->expectExceptionMessageMatches("/Msg.*/");
+                        $this->expectExceptionMessageMatches("fail-case");
+                        foo();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        // turns wrong into wrong: has a single argument only, but ...
+                        $this->expectExceptionMessageRegExp("/Msg.*/", "fail-case");
+                        foo();
+                    }
+                }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_8_4],
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessage("Msg");
-        $this->expectExceptionCode(123);
-        foo();
-    }
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessage("Msg");
+                        $this->expectExceptionCode(123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->expectException("RuntimeException");
-        $this->expectExceptionMessageMatches("/Msg.*/");
-        $this->expectExceptionCode(123);
-        bar();
-    }
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $this->setExpectedException("RuntimeException", "Msg", 123);
-        foo();
-    }
+                    public function testBar()
+                    {
+                        $this->expectException("RuntimeException");
+                        $this->expectExceptionMessageMatches("/Msg.*/");
+                        $this->expectExceptionCode(123);
+                        bar();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this->setExpectedException("RuntimeException", "Msg", 123);
+                        foo();
+                    }
 
-    public function testBar()
-    {
-        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
-        bar();
-    }
-}',
+                    public function testBar()
+                    {
+                        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+                        bar();
+                    }
+                }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->expectException("RuntimeException");
-            $this->expectExceptionMessage("msg"/*B*/);
-            $this->expectExceptionCode(/*C*/123);
-            zzz();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, );
-            zzz();
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->expectException("RuntimeException");
+                            $this->expectExceptionMessage("msg"/*B*/);
+                            $this->expectExceptionCode(/*C*/123);
+                            zzz();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, );
+                            zzz();
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->expectException("RuntimeException");
-            $this->expectExceptionMessage("msg"/*B*/);
-            $this->expectExceptionCode(/*C*/123/*D*/);
-            zzz();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, /*D*/);
-            zzz();
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->expectException("RuntimeException");
+                            $this->expectExceptionMessage("msg"/*B*/);
+                            $this->expectExceptionCode(/*C*/123/*D*/);
+                            zzz();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, /*D*/);
+                            zzz();
+                        }
+                    }
+                EOD,
         ];
     }
 
@@ -424,28 +472,34 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         $expectedTemplate =
-'
-        function testFnc%d()
-        {
-            aaa();
-            $this->expectException(\'RuntimeException\');
-            $this->expectExceptionMessage(\'msg\'/*B*/);
-            $this->expectExceptionCode(/*C*/123);
-            zzz();
-        }
-';
+<<<'EOD'
+
+            function testFnc%d()
+            {
+                aaa();
+                $this->expectException('RuntimeException');
+                $this->expectExceptionMessage('msg'/*B*/);
+                $this->expectExceptionCode(/*C*/123);
+                zzz();
+            }
+
+    EOD;
         $inputTemplate =
-'
-        function testFnc%d()
-        {
-            aaa();
-            $this->setExpectedException(\'RuntimeException\', \'msg\'/*B*/, /*C*/123);
-            zzz();
-        }
-';
-        $input = $expected = '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {'."\n    ";
+<<<'EOD'
+
+            function testFnc%d()
+            {
+                aaa();
+                $this->setExpectedException('RuntimeException', 'msg'/*B*/, /*C*/123);
+                zzz();
+            }
+
+    EOD;
+        $input = $expected = <<<'EOD'
+            <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+            EOD."\n    ";
 
         for ($i = 0; $i < 8; ++$i) {
             $expected .= sprintf($expectedTemplate, $i);
@@ -464,28 +518,32 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFix80(): void
     {
         $this->doTest(
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this?->expectException("RuntimeException");
-            $this->expectExceptionMessage("message");
-            $this->expectExceptionCode(123);
-            zzz();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this?->setExpectedException("RuntimeException", "message", 123);
-            zzz();
-        }
-    }'
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this?->expectException("RuntimeException");
+                            $this->expectExceptionMessage("message");
+                            $this->expectExceptionCode(123);
+                            zzz();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        function testFnc()
+                        {
+                            aaa();
+                            $this?->setExpectedException("RuntimeException", "message", 123);
+                            zzz();
+                        }
+                    }
+                EOD
         );
     }
 }

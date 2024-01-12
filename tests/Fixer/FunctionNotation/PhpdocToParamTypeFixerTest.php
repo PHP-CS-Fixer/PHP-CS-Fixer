@@ -69,19 +69,23 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid - phpdoc param with hint for next method' => [
-            '<?php
-                    /**
-                    * @param string $bar
-                    */
-                    function my_foo() {}
-                    function my_foo2($bar) {}'."\n                    ",
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    */
+                                    function my_foo() {}
+                                    function my_foo2($bar) {}
+                EOD."\n                    ",
         ];
 
         yield 'invalid - phpdoc param with keyword' => [
-            '<?php
-                    /** @param Break $foo */ function foo_break($foo) {}
-                    /** @param __CLASS__ $foo */ function foo_class($foo) {}
-                    /** @param I\Want\To\Break\\\\Free $foo */ function foo_queen($foo) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @param Break $foo */ function foo_break($foo) {}
+                                    /** @param __CLASS__ $foo */ function foo_class($foo) {}
+                                    /** @param I\Want\To\Break\\Free $foo */ function foo_queen($foo) {}
+                EOD."\n                ",
         ];
 
         yield 'non-root class with single int param' => [
@@ -95,90 +99,110 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'non-root class with multiple string params' => [
-            '<?php
-                    /**
-                    * @param string $bar
-                    * @param string $baz
-                    */
-                    function my_foo(string $bar, string $baz) {}',
-            '<?php
-                    /**
-                    * @param string $bar
-                    * @param string $baz
-                    */
-                    function my_foo($bar, $baz) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    * @param string $baz
+                                    */
+                                    function my_foo(string $bar, string $baz) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    * @param string $baz
+                                    */
+                                    function my_foo($bar, $baz) {}
+                EOD,
         ];
 
         yield 'non-root class with not sorted multiple string params' => [
-            '<?php
-                    /**
-                    * @param int $foo
-                    * @param string $bar
-                    */
-                    function my_foo(string $bar, int $foo) {}',
-            '<?php
-                    /**
-                    * @param int $foo
-                    * @param string $bar
-                    */
-                    function my_foo($bar, $foo) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param int $foo
+                                    * @param string $bar
+                                    */
+                                    function my_foo(string $bar, int $foo) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param int $foo
+                                    * @param string $bar
+                                    */
+                                    function my_foo($bar, $foo) {}
+                EOD,
         ];
 
         yield 'non-root class with not sorted multiple params and different types' => [
-            '<?php
-                    /**
-                    * @param int $foo
-                    * @param string $bar
-                    * @param Baz $hey
-                    * @param float $tab
-                    * @param bool $baz
-                    */
-                    function my_foo(string $bar, int $foo, bool $baz, float $tab, Baz $hey) {}',
-            '<?php
-                    /**
-                    * @param int $foo
-                    * @param string $bar
-                    * @param Baz $hey
-                    * @param float $tab
-                    * @param bool $baz
-                    */
-                    function my_foo($bar, $foo, $baz, $tab, $hey) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param int $foo
+                                    * @param string $bar
+                                    * @param Baz $hey
+                                    * @param float $tab
+                                    * @param bool $baz
+                                    */
+                                    function my_foo(string $bar, int $foo, bool $baz, float $tab, Baz $hey) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param int $foo
+                                    * @param string $bar
+                                    * @param Baz $hey
+                                    * @param float $tab
+                                    * @param bool $baz
+                                    */
+                                    function my_foo($bar, $foo, $baz, $tab, $hey) {}
+                EOD,
         ];
 
         yield 'non-root class with massive string params' => [
-            '<?php
-                    /**
-                    * @param string $bar
-                    * @param string $baz
-                    * @param string $tab
-                    * @param string $foo
-                    */
-                    function my_foo(string $bar, string $baz, string $tab, string $foo) {}',
-            '<?php
-                    /**
-                    * @param string $bar
-                    * @param string $baz
-                    * @param string $tab
-                    * @param string $foo
-                    */
-                    function my_foo($bar, $baz, $tab, $foo) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    * @param string $baz
+                                    * @param string $tab
+                                    * @param string $foo
+                                    */
+                                    function my_foo(string $bar, string $baz, string $tab, string $foo) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    * @param string $baz
+                                    * @param string $tab
+                                    * @param string $foo
+                                    */
+                                    function my_foo($bar, $baz, $tab, $foo) {}
+                EOD,
         ];
 
         yield 'non-root class with different types of params' => [
-            '<?php
-                    /**
-                    * @param string $bar
-                    * @param int $baz
-                    * @param float $tab
-                    */
-                    function my_foo(string $bar, int $baz, float $tab) {}',
-            '<?php
-                    /**
-                    * @param string $bar
-                    * @param int $baz
-                    * @param float $tab
-                    */
-                    function my_foo($bar, $baz, $tab) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    * @param int $baz
+                                    * @param float $tab
+                                    */
+                                    function my_foo(string $bar, int $baz, float $tab) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param string $bar
+                                    * @param int $baz
+                                    * @param float $tab
+                                    */
+                                    function my_foo($bar, $baz, $tab) {}
+                EOD,
         ];
 
         yield 'non-root namespaced class' => [
@@ -212,25 +236,33 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'self accessor' => [
-            '<?php
-                    class Foo {
-                        /** @param self $foo */ function my_foo(self $foo) {}
-                    }'."\n                ",
-            '<?php
-                    class Foo {
-                        /** @param self $foo */ function my_foo($foo) {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @param self $foo */ function my_foo(self $foo) {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @param self $foo */ function my_foo($foo) {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'report static as self' => [
-            '<?php
-                    class Foo {
-                        /** @param static $foo */ function my_foo(self $foo) {}
-                    }'."\n                ",
-            '<?php
-                    class Foo {
-                        /** @param static $foo */ function my_foo($foo) {}
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @param static $foo */ function my_foo(self $foo) {}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class Foo {
+                                        /** @param static $foo */ function my_foo($foo) {}
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'skip resource special type' => [
@@ -369,42 +401,54 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'array and traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     /** @param array|Traversable $foo */
-                     function my_foo($foo) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     /** @param array|Traversable $foo */
+                                     function my_foo($foo) {}
+                EOD."\n                ",
         ];
 
         yield 'array and traversable with leading slash in a namespace' => [
-            '<?php
-                     namespace App;
-                     /** @param array|\Traversable $foo */
-                     function my_foo(iterable $foo) {}'."\n                ",
-            '<?php
-                     namespace App;
-                     /** @param array|\Traversable $foo */
-                     function my_foo($foo) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     /** @param array|\Traversable $foo */
+                                     function my_foo(iterable $foo) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     /** @param array|\Traversable $foo */
+                                     function my_foo($foo) {}
+                EOD."\n                ",
         ];
 
         yield 'array and imported traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     use Traversable;
-                     /** @param array|Traversable $foo */
-                     function my_foo(iterable $foo) {}'."\n                ",
-            '<?php
-                     namespace App;
-                     use Traversable;
-                     /** @param array|Traversable $foo */
-                     function my_foo($foo) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Traversable;
+                                     /** @param array|Traversable $foo */
+                                     function my_foo(iterable $foo) {}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Traversable;
+                                     /** @param array|Traversable $foo */
+                                     function my_foo($foo) {}
+                EOD."\n                ",
         ];
 
         yield 'array and object aliased as traversable in a namespace' => [
-            '<?php
-                     namespace App;
-                     use Foo as Traversable;
-                     /** @param array|Traversable $foo */
-                     function my_foo($foo) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                     namespace App;
+                                     use Foo as Traversable;
+                                     /** @param array|Traversable $foo */
+                                     function my_foo($foo) {}
+                EOD."\n                ",
         ];
 
         yield 'array of object and traversable' => [
@@ -435,62 +479,76 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'do not fix function call' => [
-            '<?php
-                    /** @param string $foo */
-                    function bar($notFoo) {
-                        return baz($foo);
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @param string $foo */
+                                    function bar($notFoo) {
+                                        return baz($foo);
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'do not fix function call when no parameter' => [
-            '<?php
-                    /** @param string $foo */
-                    function bar() {
-                        return baz($foo);
-                    }'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @param string $foo */
+                                    function bar() {
+                                        return baz($foo);
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'intersection types' => [
-            '<?php
-                    /** @param Bar&Baz $x */
-                    function bar($x) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @param Bar&Baz $x */
+                                    function bar($x) {}
+                EOD."\n                ",
         ];
 
         yield 'very long class name before ampersand' => [
-            '<?php
-                    /** @param Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz $x */
-                    function bar($x) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @param Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz $x */
+                                    function bar($x) {}
+                EOD."\n                ",
         ];
 
         yield 'very long class name after ampersand' => [
-            '<?php
-                    /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
-                    function bar($x) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
+                                    function bar($x) {}
+                EOD."\n                ",
         ];
 
         yield 'support for arrow function' => [
-            '<?php
-            Utils::stableSort(
-                $elements,
-                /**
-                 * @param int $a
-                 *
-                 * @return array
-                 */
-                static fn(int $a) => [$a],
-                fn($a, $b) => 1,
-            );',
-            '<?php
-            Utils::stableSort(
-                $elements,
-                /**
-                 * @param int $a
-                 *
-                 * @return array
-                 */
-                static fn($a) => [$a],
-                fn($a, $b) => 1,
-            );',
+            <<<'EOD'
+                <?php
+                            Utils::stableSort(
+                                $elements,
+                                /**
+                                 * @param int $a
+                                 *
+                                 * @return array
+                                 */
+                                static fn(int $a) => [$a],
+                                fn($a, $b) => 1,
+                            );
+                EOD,
+            <<<'EOD'
+                <?php
+                            Utils::stableSort(
+                                $elements,
+                                /**
+                                 * @param int $a
+                                 *
+                                 * @return array
+                                 */
+                                static fn($a) => [$a],
+                                fn($a, $b) => 1,
+                            );
+                EOD,
         ];
     }
 
@@ -507,11 +565,13 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield 'skip mixed type of param' => [
-            '<?php
-                    /**
-                    * @param mixed $bar
-                    */
-                    function my_foo($bar) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param mixed $bar
+                                    */
+                                    function my_foo($bar) {}
+                EOD,
         ];
 
         yield 'skip union types' => [
@@ -544,16 +604,20 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'non-root class with mixed type of param for php >= 8' => [
-            '<?php
-                    /**
-                    * @param mixed $bar
-                    */
-                    function my_foo(mixed $bar) {}',
-            '<?php
-                    /**
-                    * @param mixed $bar
-                    */
-                    function my_foo($bar) {}',
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param mixed $bar
+                                    */
+                                    function my_foo(mixed $bar) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                                    /**
+                                    * @param mixed $bar
+                                    */
+                                    function my_foo($bar) {}
+                EOD,
         ];
 
         yield 'union types' => [

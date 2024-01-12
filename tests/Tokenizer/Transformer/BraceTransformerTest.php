@@ -107,10 +107,12 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'array index curly brace open/close' => [
-            '<?php
-                    echo $arr{$index};
-                    echo $arr[$index];
-                    if (1) {}'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo $arr{$index};
+                                    echo $arr[$index];
+                                    if (1) {}
+                EOD."\n                ",
             [
                 5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
                 7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
@@ -126,8 +128,10 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'array index curly brace open/close, nested' => [
-            '<?php
-                    echo $nestedArray{$index}{$index2}[$index3]{$index4};'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo $nestedArray{$index}{$index2}[$index3]{$index4};
+                EOD."\n                ",
             [
                 5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
                 7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
@@ -139,9 +143,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'array index curly brace open/close, repeated' => [
-            '<?php
-                    echo $array{0}->foo;
-                    echo $collection->items{1}->property;'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo $array{0}->foo;
+                                    echo $collection->items{1}->property;
+                EOD."\n                ",
             [
                 5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
                 7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
@@ -151,9 +157,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'array index curly brace open/close, minimal' => [
-            '<?php
-                    echo [1]{0};
-                    echo array(1){0};'."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo [1]{0};
+                                    echo array(1){0};
+                EOD."\n                ",
             [
                 7 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
                 9 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
@@ -163,9 +171,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'mixed' => [
-            '<?php echo "This is {$great}";
-                    $a = "a{$b->c()}d";
-                    echo "I\'d like an {${beers::$ale}}\n";'."\n                ",
+            <<<'EOD'
+                <?php echo "This is {$great}";
+                                    $a = "a{$b->c()}d";
+                                    echo "I'd like an {${beers::$ale}}\n";
+                EOD."\n                ",
             [
                 5 => T_CURLY_OPEN,
                 7 => CT::T_CURLY_CLOSE,
@@ -274,22 +284,24 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     public static function provideNotDynamicClassConstantFetchCases(): iterable
     {
         yield 'negatives' => [
-            '<?php
-                namespace B {$b = Z::B;};
+            <<<'EOD'
+                <?php
+                                namespace B {$b = Z::B;};
 
-                echo $c::{$static_method}();
-                echo Foo::{$static_method}();
+                                echo $c::{$static_method}();
+                                echo Foo::{$static_method}();
 
-                echo Foo::${static_property};
-                echo Foo::${$static_property};
+                                echo Foo::${static_property};
+                                echo Foo::${$static_property};
 
-                echo Foo::class;
+                                echo Foo::class;
 
-                echo $foo::$bar;
-                echo $foo::bar();
-                echo foo()::A();
+                                echo $foo::$bar;
+                                echo $foo::bar();
+                                echo foo()::A();
 
-                {$z = A::C;}'."\n            ",
+                                {$z = A::C;}
+                EOD."\n            ",
         ];
     }
 
@@ -363,18 +375,20 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 55 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
                 57 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
             ],
-            '<?php
-                class Foo
-                {
-                    private const X = 1;
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    private const X = 1;
 
-                    public function Bar($var): void
-                    {
-                        echo self::{$var};
-                        echo static::{$var};
-                        echo static::{"X"};
-                    }
-                }'."\n            ",
+                                    public function Bar($var): void
+                                    {
+                                        echo self::{$var};
+                                        echo static::{$var};
+                                        echo static::{"X"};
+                                    }
+                                }
+                EOD."\n            ",
         ];
 
         yield 'chained' => [

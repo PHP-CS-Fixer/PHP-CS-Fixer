@@ -69,29 +69,35 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php namespace Foo {
-                function sprintf($foo) {
-                    echo $foo;
-                }
-            }',
+            <<<'EOD'
+                <?php namespace Foo {
+                                function sprintf($foo) {
+                                    echo $foo;
+                                }
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php namespace Foo;
-                function sprintf($foo) {
-                    echo $foo;
-                }'."\n            ",
+            <<<'EOD'
+                <?php namespace Foo;
+                                function sprintf($foo) {
+                                    echo $foo;
+                                }
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                echo \Foo\sprintf("abc");
-                echo $bar->sprintf($foo);
-                echo Bar::sprintf($foo);
-                echo sprint(...$foo);
-                echo sprint("%d", 1);
-                echo sprint("%d%d%d", 1, 2, 3);
-                echo sprint();'."\n            ",
+            <<<'EOD'
+                <?php
+                                echo \Foo\sprintf("abc");
+                                echo $bar->sprintf($foo);
+                                echo Bar::sprintf($foo);
+                                echo sprint(...$foo);
+                                echo sprint("%d", 1);
+                                echo sprint("%d%d%d", 1, 2, 3);
+                                echo sprint();
+                EOD."\n            ",
         ];
 
         yield [

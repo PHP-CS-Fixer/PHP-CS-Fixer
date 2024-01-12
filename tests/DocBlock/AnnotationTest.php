@@ -36,22 +36,24 @@ final class AnnotationTest extends TestCase
      *
      * @var string
      */
-    private static $sample = '/**
-     * Test docblock.
-     *
-     * @param string $hello
-     * @param bool $test Description
-     *        extends over many lines
-     *
-     * @param adkjbadjasbdand $asdnjkasd
-     *
-     * @throws \Exception asdnjkasd
-     *
-     * asdasdasdasdasdasdasdasd
-     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
-     *
-     * @return void
-     */';
+    private static $sample = <<<'EOD'
+        /**
+             * Test docblock.
+             *
+             * @param string $hello
+             * @param bool $test Description
+             *        extends over many lines
+             *
+             * @param adkjbadjasbdand $asdnjkasd
+             *
+             * @throws \Exception asdnjkasd
+             *
+             * asdasdasdasdasdasdasdasd
+             * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
+             *
+             * @return void
+             */
+        EOD;
 
     /**
      * This represents the content of each annotation.
@@ -204,32 +206,48 @@ final class AnnotationTest extends TestCase
 
         // Multi line, annotation on start line
         yield [
-            '/**
-                 */',
-            '/** @return null
-                 */',
+            <<<'EOD'
+                /**
+                                 */
+                EOD,
+            <<<'EOD'
+                /** @return null
+                                 */
+                EOD,
         ];
 
         yield [
-            '/**
-                 */',
-            '/** @return null '.'
-                 */',
+            <<<'EOD'
+                /**
+                                 */
+                EOD,
+            '/** @return null '.<<<'EOD'
+
+                                 */
+                EOD,
         ];
 
         // Multi line, annotation on end line
         yield [
-            '/**
-                 */',
-            '/**
-                 * @return null*/',
+            <<<'EOD'
+                /**
+                                 */
+                EOD,
+            <<<'EOD'
+                /**
+                                 * @return null*/
+                EOD,
         ];
 
         yield [
-            '/**
-                 */',
-            '/**
-                 * @return null */',
+            <<<'EOD'
+                /**
+                                 */
+                EOD,
+            <<<'EOD'
+                /**
+                                 * @return null */
+                EOD,
         ];
     }
 

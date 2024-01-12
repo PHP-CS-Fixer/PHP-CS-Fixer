@@ -39,49 +39,65 @@ final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                use A\B\C  , D\E\F as G;
-                use const X\Y\Z as Z1, U\V\W  ;
-                use function U\V\W\FX  , U\V\W\FY  ;'."\n            ",
-            '<?php
-                use A\B\C as C, D\E\F as G;
-                use const X\Y\Z as Z1, U\V\W as W;
-                use function U\V\W\FX as FX, U\V\W\FY as FY;'."\n            ",
+            <<<'EOD'
+                <?php
+                                use A\B\C  , D\E\F as G;
+                                use const X\Y\Z as Z1, U\V\W  ;
+                                use function U\V\W\FX  , U\V\W\FY  ;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                use A\B\C as C, D\E\F as G;
+                                use const X\Y\Z as Z1, U\V\W as W;
+                                use function U\V\W\FX as FX, U\V\W\FY as FY;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-use F  ;
-use X as x;
-use const CA  ;
-use function FW  ;'."\n            ",
-            '<?php
-use F as F;
-use X as x;
-use const CA as CA;
-use function FW as FW;'."\n            ",
+            <<<'EOD'
+                <?php
+                use F  ;
+                use X as x;
+                use const CA  ;
+                use function FW  ;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use F as F;
+                use X as x;
+                use const CA as CA;
+                use function FW as FW;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-use /* 1 */\F  ;
-use const \CA/* 2 */  /* 3 */;
-use /* 4 */ function/* 5 */  \FW /* 6 */  /* 7 */ ;'."\n            ",
-            '<?php
-use /* 1 */\F as F;
-use const \CA/* 2 */ as CA/* 3 */;
-use /* 4 */ function/* 5 */  \FW /* 6 */ as /* 7 */ FW;'."\n            ",
+            <<<'EOD'
+                <?php
+                use /* 1 */\F  ;
+                use const \CA/* 2 */  /* 3 */;
+                use /* 4 */ function/* 5 */  \FW /* 6 */  /* 7 */ ;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use /* 1 */\F as F;
+                use const \CA/* 2 */ as CA/* 3 */;
+                use /* 4 */ function/* 5 */  \FW /* 6 */ as /* 7 */ FW;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-use \F\B\C  ;
-use const \X\Y\CA  ;
-use function \U\V\FW  ;'."\n            ",
-            '<?php
-use \F\B\C as C;
-use const \X\Y\CA as CA;
-use function \U\V\FW as FW;'."\n            ",
+            <<<'EOD'
+                <?php
+                use \F\B\C  ;
+                use const \X\Y\CA  ;
+                use function \U\V\FW  ;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                use \F\B\C as C;
+                use const \X\Y\CA as CA;
+                use function \U\V\FW as FW;
+                EOD."\n            ",
         ];
 
         yield [

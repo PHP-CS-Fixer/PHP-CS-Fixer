@@ -1382,12 +1382,14 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         ];
 
         // test with no candidate
-        $template = '<?php
-class TestClass
-{
-    public function %s(){}
-    public function %s(){}
-}';
+        $template = <<<'EOD'
+            <?php
+            class TestClass
+            {
+                public function %s(){}
+                public function %s(){}
+            }
+            EOD;
 
         foreach (['__construct', '__destruct', '__sleep', 'abc'] as $methodName) {
             yield [
@@ -1413,37 +1415,45 @@ class TestClass
     public static function provideFixPre80Cases(): iterable
     {
         yield [
-            '<?php
-            class Foo {
-                public iterable $baz;
-                var ? Foo\Bar $qux;
-                protected string $bar;
-                private ?int $foo;
-            }',
-            '<?php
-            class Foo {
-                private ?int $foo;
-                protected string $bar;
-                public iterable $baz;
-                var ? Foo\Bar $qux;
-            }',
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                public iterable $baz;
+                                var ? Foo\Bar $qux;
+                                protected string $bar;
+                                private ?int $foo;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                private ?int $foo;
+                                protected string $bar;
+                                public iterable $baz;
+                                var ? Foo\Bar $qux;
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-            class Foo {
-                public string $bar;
-                public array $baz;
-                public ?int $foo;
-                public ? Foo\Bar $qux;
-            }',
-            '<?php
-            class Foo {
-                public array $baz;
-                public ? Foo\Bar $qux;
-                public string $bar;
-                public ?int $foo;
-            }',
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                public string $bar;
+                                public array $baz;
+                                public ?int $foo;
+                                public ? Foo\Bar $qux;
+                            }
+                EOD,
+            <<<'EOD'
+                <?php
+                            class Foo {
+                                public array $baz;
+                                public ? Foo\Bar $qux;
+                                public string $bar;
+                                public ?int $foo;
+                            }
+                EOD,
             [
                 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
@@ -1471,61 +1481,69 @@ class TestClass
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-trait TestTrait
-{
-    abstract static public function abstractStaticPublic();
-    abstract private function abstractPrivate();
-    abstract static private function abstractStaticPrivate();
-}
-',
-            '<?php
+                trait TestTrait
+                {
+                    abstract static public function abstractStaticPublic();
+                    abstract private function abstractPrivate();
+                    abstract static private function abstractStaticPrivate();
+                }
 
-trait TestTrait
-{
-    abstract private function abstractPrivate();
-    abstract static private function abstractStaticPrivate();
-    abstract static public function abstractStaticPublic();
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                trait TestTrait
+                {
+                    abstract private function abstractPrivate();
+                    abstract static private function abstractStaticPrivate();
+                    abstract static public function abstractStaticPublic();
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php class Foo
-            {
+            <<<'EOD'
+                <?php class Foo
+                            {
 
-                #[PublicBarAttribute0]
-                public int $bar = 1;
+                                #[PublicBarAttribute0]
+                                public int $bar = 1;
 
-                #[PublicAttribute0]
-                #[PublicAttribute1]
-                #[PublicAttribute2]
-                public function fooPublic()
-                {
-                }
-                #[PrivateAttribute0]
-                private function fooPrivate()
-                {
-                }
-            }',
-            '<?php class Foo
-            {
-                #[PrivateAttribute0]
-                private function fooPrivate()
-                {
-                }
+                                #[PublicAttribute0]
+                                #[PublicAttribute1]
+                                #[PublicAttribute2]
+                                public function fooPublic()
+                                {
+                                }
+                                #[PrivateAttribute0]
+                                private function fooPrivate()
+                                {
+                                }
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo
+                            {
+                                #[PrivateAttribute0]
+                                private function fooPrivate()
+                                {
+                                }
 
-                #[PublicBarAttribute0]
-                public int $bar = 1;
+                                #[PublicBarAttribute0]
+                                public int $bar = 1;
 
-                #[PublicAttribute0]
-                #[PublicAttribute1]
-                #[PublicAttribute2]
-                public function fooPublic()
-                {
-                }
-            }',
+                                #[PublicAttribute0]
+                                #[PublicAttribute1]
+                                #[PublicAttribute2]
+                                public function fooPublic()
+                                {
+                                }
+                            }
+                EOD,
         ];
     }
 
@@ -1546,62 +1564,70 @@ trait TestTrait
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class A
-{
-    readonly public string $publicProp0;
-    public readonly string $publicProp1;
-    public string $pubProp2;
-    protected readonly string $protectedProp0;
-    readonly protected string $protectedProp1;
-    readonly private string $privateProp0;
-    private readonly string $privateProp1;
-}
-',
-            '<?php
+                class A
+                {
+                    readonly public string $publicProp0;
+                    public readonly string $publicProp1;
+                    public string $pubProp2;
+                    protected readonly string $protectedProp0;
+                    readonly protected string $protectedProp1;
+                    readonly private string $privateProp0;
+                    private readonly string $privateProp1;
+                }
 
-class A
-{
-    public string $pubProp2;
-    readonly public string $publicProp0;
-    public readonly string $publicProp1;
-    private readonly string $privateProp1;
-    readonly private string $privateProp0;
-    protected readonly string $protectedProp0;
-    readonly protected string $protectedProp1;
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+
+                class A
+                {
+                    public string $pubProp2;
+                    readonly public string $publicProp0;
+                    public readonly string $publicProp1;
+                    private readonly string $privateProp1;
+                    readonly private string $privateProp0;
+                    protected readonly string $protectedProp0;
+                    readonly protected string $protectedProp1;
+                }
+
+                EOD,
             ['order' => ['property_public_readonly', 'property_public', 'property_protected_readonly', 'property_private_readonly'], 'sort_algorithm' => 'alpha'],
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
- enum A: int
- {
-     case Foo = 1;
-     case Bar = 2;
-     private const C1 = 1;
-     function qux() {
-         switch (true) {
-             case 1: break;
-         }
-     }
- }'."\n ",
-            '<?php
+                 enum A: int
+                 {
+                     case Foo = 1;
+                     case Bar = 2;
+                     private const C1 = 1;
+                     function qux() {
+                         switch (true) {
+                             case 1: break;
+                         }
+                     }
+                 }
+                EOD."\n ",
+            <<<'EOD'
+                <?php
 
- enum A: int
- {
-     private const C1 = 1;
-     case Foo = 1;
-     function qux() {
-         switch (true) {
-             case 1: break;
-         }
-     }
-     case Bar = 2;
- }'."\n ",
+                 enum A: int
+                 {
+                     private const C1 = 1;
+                     case Foo = 1;
+                     function qux() {
+                         switch (true) {
+                             case 1: break;
+                         }
+                     }
+                     case Bar = 2;
+                 }
+                EOD."\n ",
         ];
     }
 

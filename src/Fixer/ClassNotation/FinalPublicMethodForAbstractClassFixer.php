@@ -53,14 +53,16 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
             'All `public` methods of `abstract` classes should be `final`.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-abstract class AbstractMachine
-{
-    public function start()
-    {}
-}
-'
+                        abstract class AbstractMachine
+                        {
+                            public function start()
+                            {}
+                        }
+
+                        EOD
                 ),
             ],
             'Enforce API encapsulation in an inheritance architecture. '

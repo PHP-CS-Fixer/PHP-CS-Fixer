@@ -76,22 +76,28 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'minimal case add whitespace comments, single' => [
-            '<?php declare(ticks#
-= #
-1#
-);',
-            '<?php declare(ticks#
-=#
-1#
-);',
+            <<<'EOD'
+                <?php declare(ticks#
+                = #
+                1#
+                );
+                EOD,
+            <<<'EOD'
+                <?php declare(ticks#
+                =#
+                1#
+                );
+                EOD,
             ['space' => 'single'],
         ];
 
         yield 'minimal case add whitespace comments, none' => [
-            '<?php declare(ticks#
-=#
-1#
-);',
+            <<<'EOD'
+                <?php declare(ticks#
+                =#
+                1#
+                );
+                EOD,
             null,
             ['space' => 'none'],
         ];

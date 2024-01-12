@@ -43,19 +43,23 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixe
         ];
 
         yield [
-            '<?php
-$this
-    ->setName(\'readme1\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-;',
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme1')
+                    ->setDescription('Generates the README content, based on the fix command help')
+                ;
+                EOD,
         ];
 
         yield [
-            '<?php
-$this
-    ->setName(\'readme2\')
-    ->setDescription(\'Generates the README content, based on the fix command help\')
-    ;',
+            <<<'EOD'
+                <?php
+                $this
+                    ->setName('readme2')
+                    ->setDescription('Generates the README content, based on the fix command help')
+                    ;
+                EOD,
         ];
 
         yield [
@@ -84,19 +88,23 @@ $this
         ];
 
         yield [
-            '<?php
-    $foo
-        ->bar(1)
-        ->baz(2)
-    ;',
+            <<<'EOD'
+                <?php
+                    $foo
+                        ->bar(1)
+                        ->baz(2)
+                    ;
+                EOD,
         ];
 
         yield [
-            '<?php
-    $foo
-        ->bar(1)
-        //->baz(2)
-    ;',
+            <<<'EOD'
+                <?php
+                    $foo
+                        ->bar(1)
+                        //->baz(2)
+                    ;
+                EOD,
         ];
 
         yield [

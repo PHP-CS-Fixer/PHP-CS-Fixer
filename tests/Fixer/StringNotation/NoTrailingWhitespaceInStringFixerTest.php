@@ -86,63 +86,95 @@ final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '
-<?php
-$a = <<<EOD
-  foo
-bar
-  $a
-$b
+            <<<'EOD_'
 
-   baz
-EOD;'."\n                ",
-            '
-<?php
-$a = <<<EOD
-  foo'.'  '.'
-bar
-  $a'.' '.'
-$b'."\n    ".'
-   baz'.'  '.'
-EOD;'."\n                ",
+                <?php
+                $a = <<<EOD
+                  foo
+                bar
+                  $a
+                $b
+
+                   baz
+                EOD;
+                EOD_."\n                ",
+            <<<'EOD'
+
+                <?php
+                $a = <<<EOD
+                  foo
+                EOD.'  '.<<<'EOD'
+
+                bar
+                  $a
+                EOD.' '.<<<'EOD'
+
+                $b
+                EOD."\n    ".<<<'EOD'
+
+                   baz
+                EOD.'  '.<<<'EOD_'
+
+                EOD;
+                EOD_."\n                ",
         ];
 
         yield [
-            '
-<?php
-$a = <<<\'EOD\'
-  foo
-bar
+            <<<'EOD_'
 
-   baz
-EOD;'."\n                ",
-            '
-<?php
-$a = <<<\'EOD\'
-  foo'.'  '.'
-bar'."\n    ".'
-   baz'.'  '.'
-EOD;'."\n                ",
+                <?php
+                $a = <<<'EOD'
+                  foo
+                bar
+
+                   baz
+                EOD;
+                EOD_."\n                ",
+            <<<'EOD'
+
+                <?php
+                $a = <<<'EOD'
+                  foo
+                EOD.'  '.<<<'EOD'
+
+                bar
+                EOD."\n    ".<<<'EOD'
+
+                   baz
+                EOD.'  '.<<<'EOD_'
+
+                EOD;
+                EOD_."\n                ",
         ];
 
         yield [
-            '
-<?php
-    $a = <<<\'EOD\'
-      foo
-    bar
+            <<<'EOD_'
 
-       baz
-    EOD;
-',
-            '
-<?php
-    $a = <<<\'EOD\'
-      foo'.'  '.'
-    bar'."\n        ".'
-       baz'.'  '.'
-    EOD;
-',
+                <?php
+                    $a = <<<'EOD'
+                      foo
+                    bar
+
+                       baz
+                    EOD;
+
+                EOD_,
+            <<<'EOD'
+
+                <?php
+                    $a = <<<'EOD'
+                      foo
+                EOD.'  '.<<<'EOD'
+
+                    bar
+                EOD."\n        ".<<<'EOD'
+
+                       baz
+                EOD.'  '.<<<'EOD_'
+
+                    EOD;
+
+                EOD_,
         ];
 
         yield 'binary string' => [
