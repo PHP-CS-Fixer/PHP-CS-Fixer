@@ -405,26 +405,22 @@ foo#
             '<?php
                     $b = static function ($a) {
                         echo $a;
-                    };
-                ',
+                    };'."\n                ",
             '<?php
                     $b = static     function( $a )   {
                         echo $a;
-                    };
-                ',
+                    };'."\n                ",
         ];
 
         yield [
             '<?php
                     $b = static function($a) {
                         echo $a;
-                    };
-                ',
+                    };'."\n                ",
             '<?php
                     $b = static     function ( $a )   {
                         echo $a;
-                    };
-                ',
+                    };'."\n                ",
             self::$configurationClosureSpacingNone,
         ];
 
@@ -558,13 +554,11 @@ foo#
             '<?php
                     $b = static function ($a,$b) {
                         echo $a;
-                    };
-                ',
+                    };'."\n                ",
             '<?php
                     $b = static     function(  $a,$b,   )   {
                         echo $a;
-                    };
-                ',
+                    };'."\n                ",
         ];
 
         yield [
@@ -579,15 +573,13 @@ foo#
                 function ($y) use (
                     $b,
                     $c,
-                ) {};
-            ',
+                ) {};'."\n            ",
             '<?php
                 function ($a) use ($b  ,  )     {};
                 function ($y) use (
                     $b,
                     $c,
-                ) {};
-            ',
+                ) {};'."\n            ",
         ];
 
         yield [

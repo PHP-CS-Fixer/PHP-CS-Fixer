@@ -135,14 +135,12 @@ return $foo
                 $a
                     = $b;
                 $c =&
-                     $d;
-            ',
+                     $d;'."\n            ",
             '<?php
                 $a =
                     $b;
                 $c =&
-                     $d;
-            ',
+                     $d;'."\n            ",
         ];
 
         yield 'passing by reference' => [
@@ -185,8 +183,7 @@ return $foo
 
         yield 'go to' => ['<?php
                 prepare_value:
-                $objectsPool[$value] = [$id = \count($objectsPool)];
-        '];
+                $objectsPool[$value] = [$id = \count($objectsPool)];'."\n        "];
 
         yield 'alternative syntax' => [
             '<?php
@@ -234,12 +231,10 @@ endwhile;
         yield 'handle ?-> operator' => [
             '<?php
                     $foo
-                        ?-> $bar;
-                ',
+                        ?-> $bar;'."\n                ",
             '<?php
                     $foo ?->
-                        $bar;
-                ',
+                        $bar;'."\n                ",
         ];
     }
 
@@ -487,8 +482,7 @@ switch ($foo) {
                         },
                         [1, 2, 3]
                     )
-                    : false;
-            ',
+                    : false;'."\n            ",
             '<?php
                 $a ?
                     array_map(
@@ -500,8 +494,7 @@ switch ($foo) {
                         },
                         [1, 2, 3]
                     ) :
-                    false;
-            ',
+                    false;'."\n            ",
         ];
 
         $operators = [
@@ -524,12 +517,10 @@ switch ($foo) {
             yield sprintf('handle %s operator', $operator) => [
                 sprintf('<?php
                     $foo
-                        %s $bar;
-                ', $operator),
+                        %s $bar;'."\n                ", $operator),
                 sprintf('<?php
                     $foo %s
-                        $bar;
-                ', $operator),
+                        $bar;'."\n                ", $operator),
             ];
         }
 

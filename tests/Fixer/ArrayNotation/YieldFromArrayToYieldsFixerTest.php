@@ -71,11 +71,9 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function f() {
-                 '.'
+            '<?php function f() {'."\n                 ".'
                     yield [1, 2];
-                    yield [3, 4];
-                '.'
+                    yield [3, 4];'."\n                ".'
             }',
             '<?php function f() {
                 yield from [
@@ -86,11 +84,9 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function f() {
-                 '.'
+            '<?php function f() {'."\n                 ".'
                     yield array(1, 2);
-                    yield array(3, 4);
-                '.'
+                    yield array(3, 4);'."\n                ".'
             }',
             '<?php function f() {
                 yield from [
@@ -101,12 +97,10 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function f() {
-                 '.'
+            '<?php function f() {'."\n                 ".'
                     yield 1;
                     yield 2;
-                    yield 3;
-                '.'
+                    yield 3;'."\n                ".'
             }',
             '<?php function f() {
                 yield from [
@@ -118,15 +112,13 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function f() {
-                 '.'
+            '<?php function f() {'."\n                 ".'
                     // uno
                     yield 1;
                     // dos
                     yield 2;
                     // tres
-                    yield 3;
-                '.'
+                    yield 3;'."\n                ".'
             }',
             '<?php function f() {
                 yield from [
@@ -141,13 +133,11 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function f() {
-                 '.'
+            '<?php function f() {'."\n                 ".'
                     yield random_key() => true;
                     yield "foo" => foo(1, 2);
                     yield "bar" => function ($x, $y) { return max($x, $y); };
-                    yield "baz" => function () { yield [1, 2]; };
-                '.'
+                    yield "baz" => function () { yield [1, 2]; };'."\n                ".'
             }',
             '<?php function f() {
                 yield from [
@@ -163,13 +153,11 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
             '<?php
                 function f1() {  yield 0; yield 1; yield 2; }
                 function f2() {  yield 3; yield 4; yield 5; }
-                function f3() {  yield 6; yield 7; yield 8; }
-            ',
+                function f3() {  yield 6; yield 7; yield 8; }'."\n            ",
             '<?php
                 function f1() { yield from [0, 1, 2]; }
                 function f2() { yield from [3, 4, 5]; }
-                function f3() { yield from [6, 7, 8]; }
-            ',
+                function f3() { yield from [6, 7, 8]; }'."\n            ",
         ];
 
         yield [
@@ -178,15 +166,13 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                 function f2() {  yield 2; yield 3; }
                 function f3() {  yield 4; yield 5; }
                 function f4() {  yield 6; yield 7; }
-                function f5() {  yield 8; yield 9; }
-            ',
+                function f5() {  yield 8; yield 9; }'."\n            ",
             '<?php
                 function f1() { yield from array(0, 1); }
                 function f2() { yield from [2, 3]; }
                 function f3() { yield from array(4, 5); }
                 function f4() { yield from [6, 7]; }
-                function f5() { yield from array(8, 9); }
-            ',
+                function f5() { yield from array(8, 9); }'."\n            ",
         ];
 
         yield [
@@ -197,8 +183,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                         yield from [2, 3],
                         4,
                     ];
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -212,8 +197,7 @@ final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
                         fn() => [yield from [1, 2], yield 3],
                         fn() => [yield from array(1, 2), yield 3]
                     ];
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [

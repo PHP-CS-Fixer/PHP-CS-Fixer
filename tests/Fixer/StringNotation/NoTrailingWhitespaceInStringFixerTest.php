@@ -95,19 +95,16 @@ bar
 $b
 
    baz
-EOD;
-                ',
+EOD;'."\n                ",
             '
 <?php
 $a = <<<EOD
-  foo  '.'
+  foo'."  ".'
 bar
-  $a '.'
-$b
-    '.'
-   baz  '.'
-EOD;
-                ',
+  $a'." ".'
+$b'."\n    ".'
+   baz'."  ".'
+EOD;'."\n                ",
         ];
 
         yield [
@@ -118,17 +115,14 @@ $a = <<<\'EOD\'
 bar
 
    baz
-EOD;
-                ',
+EOD;'."\n                ",
             '
 <?php
 $a = <<<\'EOD\'
-  foo  '.'
-bar
-    '.'
-   baz  '.'
-EOD;
-                ',
+  foo'."  ".'
+bar'."\n    ".'
+   baz'."  ".'
+EOD;'."\n                ",
         ];
 
         yield [
@@ -144,10 +138,9 @@ EOD;
             '
 <?php
     $a = <<<\'EOD\'
-      foo  '.'
-    bar
-        '.'
-       baz  '.'
+      foo'."  ".'
+    bar'."\n        ".'
+       baz'."  ".'
     EOD;
 ',
         ];

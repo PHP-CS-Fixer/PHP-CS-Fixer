@@ -37,39 +37,32 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
-                use A\B;
-                ',
+                use A\B;'."\n                ",
             '<?php
-                use \A\B;
-                ',
+                use \A\B;'."\n                ",
         ];
 
         yield [
             '<?php
-                use/*1*/A\C;
-                ',
+                use/*1*/A\C;'."\n                ",
             '<?php
-                use/*1*/\A\C;
-                ',
+                use/*1*/\A\C;'."\n                ",
         ];
 
         yield [
             '<?php
                 $a = function(\B\C $a) use ($b){
 
-                };
-                ',
+                };'."\n                ",
         ];
 
         yield [
             '<?php
                 namespace NS;
-                use A\B;
-                ',
+                use A\B;'."\n                ",
             '<?php
                 namespace NS;
-                use \A\B;
-                ',
+                use \A\B;'."\n                ",
         ];
 
         yield [
@@ -79,16 +72,14 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 namespace NS2{
                     use C\D;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 namespace NS{
                     use \A\B;
                 }
                 namespace NS2{
                     use \C\D;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -105,8 +96,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use B\X;
 
                     new X();
-                }
-                ',
+                }'."\n                ",
             '<?php
                 namespace Foo {
                     use \A;
@@ -120,29 +110,25 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \B\X;
 
                     new X();
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
             '<?php
                 namespace Foo\Bar;
                 use Baz;
-                class Foo implements Baz {}
-                ',
+                class Foo implements Baz {}'."\n                ",
             '<?php
                 namespace Foo\Bar;
                 use \Baz;
-                class Foo implements Baz {}
-                ',
+                class Foo implements Baz {}'."\n                ",
         ];
 
         yield [
             '<?php
                 trait SomeTrait {
                     use \A;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -155,8 +141,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 namespace NS2{
                     use C\D;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 namespace NS{
                     use \A\B;
@@ -166,8 +151,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 namespace NS2{
                     use \C\D;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -175,19 +159,16 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 trait Foo {}
                 class Bar {
                     use \Foo;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
             '<?php
                     use function a\b;
-                    use const d\e;
-                ',
+                    use const d\e;'."\n                ",
             '<?php
                     use function \a\b;
-                    use const \d\e;
-                ',
+                    use const \d\e;'."\n                ",
         ];
 
         yield [
@@ -232,12 +213,10 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
         yield 'no space case' => [
             '<?php
                 use Events\Payment\Base as PaymentEvent;
-                use const d\e;
-            ',
+                use const d\e;'."\n            ",
             '<?php
                 use\Events\Payment\Base as PaymentEvent;
-                use const\d\e;
-            ',
+                use const\d\e;'."\n            ",
         ];
 
         yield [
@@ -257,8 +236,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
                 use B\X;
 
                 new X();
-            }
-            ',
+            }'."\n            ",
             '<?php
             use \C;
             use \C\X;
@@ -275,8 +253,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
                 use \B\X;
 
                 new X();
-            }
-            ',
+            }'."\n            ",
         ];
     }
 }

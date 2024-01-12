@@ -117,24 +117,21 @@ final class FunctionsAnalyzerTest extends TestCase
                 namespace B {
                     use function D;
                     A();
-                }
-            ',
+                }'."\n            ",
             [30],
         ];
 
         yield [
             '<?php
                 function A(){}
-                A();
-            ',
+                A();'."\n            ",
             [10],
         ];
 
         yield [
             '<?php
                 function A(){}
-                a();
-            ',
+                a();'."\n            ",
             [10],
         ];
 
@@ -143,8 +140,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 namespace {
                     function A(){}
                     A();
-                }
-            ',
+                }'."\n            ",
             [14],
         ];
 
@@ -153,8 +149,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 namespace Z {
                     function A(){}
                     A();
-                }
-            ',
+                }'."\n            ",
             [],
         ];
 
@@ -163,16 +158,14 @@ final class FunctionsAnalyzerTest extends TestCase
             namespace Z;
 
             function A(){}
-            A();
-            ',
+            A();'."\n            ",
             [],
         ];
 
         yield 'function signature ref. return, calls itself' => [
             '<?php
                 function & A(){}
-                A();
-            ',
+                A();'."\n            ",
             [12],
         ];
 
@@ -182,8 +175,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 {
                     public function A(){}
                 }
-                A();
-            ',
+                A();'."\n            ",
             [20],
         ];
 
@@ -194,40 +186,35 @@ final class FunctionsAnalyzerTest extends TestCase
                 }
                 namespace B {
                     A();
-                }
-            ',
+                }'."\n            ",
             [24],
         ];
 
         yield [
             '<?php
                 use function X\a;
-                A();
-            ',
+                A();'."\n            ",
             [],
         ];
 
         yield [
             '<?php
                 use A;
-                A();
-            ',
+                A();'."\n            ",
             [7],
         ];
 
         yield [
             '<?php
                 use const A;
-                A();
-            ',
+                A();'."\n            ",
             [9],
         ];
 
         yield [
             '<?php
                 use function A;
-                str_repeat($a, $b);
-            ',
+                str_repeat($a, $b);'."\n            ",
             [9],
         ];
 
@@ -237,8 +224,7 @@ final class FunctionsAnalyzerTest extends TestCase
                     function A(){}
                     A();
                     $b = function(){};
-                }
-            ',
+                }'."\n            ",
             [14],
         ];
 
@@ -255,8 +241,7 @@ $z = new class(
     public function A() {}
 };
 
-A();
-                ',
+A();'."\n                ",
             [46],
         ];
 
@@ -291,8 +276,7 @@ A();
         yield [
             '<?php
                     use function \  str_repeat;
-                    str_repeat($a, $b);
-                ',
+                    str_repeat($a, $b);'."\n                ",
             [11],
         ];
     }
@@ -337,8 +321,7 @@ class Foo {}
         yield [
             '<?php
                 #[Foo(), Bar(), Baz()]
-                class Foo {}
-            ',
+                class Foo {}'."\n            ",
             [],
         ];
     }
@@ -705,8 +688,7 @@ class(){};
                 public function methodOne() {
                     $x = %sotherMethod(1, 2, 3);
                 }
-            }
-        ';
+            }'."\n        ";
 
         yield [
             false,
@@ -786,8 +768,7 @@ class(){};
                     public function methodOne() {
                         $x = $this?->otherMethod(1, 2, 3);
                     }
-                }
-            ',
+                }'."\n            ",
             24,
         ];
     }

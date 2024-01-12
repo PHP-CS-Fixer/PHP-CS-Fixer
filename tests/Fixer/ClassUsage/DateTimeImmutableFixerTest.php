@@ -194,8 +194,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
                 new \DateTimeImmutable();
                 new \DateTimeImmutable();
                 new \DateTimeImmutable();
-                new \DateTimeImmutable();
-                ',
+                new \DateTimeImmutable();'."\n                ",
             '<?php
                 namespace Foo;
                 use DateTime\Bar;
@@ -204,8 +203,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
                 new DateTime();
                 new DateTime();
                 new DateTime();
-                new DateTime();
-                ',
+                new DateTime();'."\n                ",
         ];
     }
 

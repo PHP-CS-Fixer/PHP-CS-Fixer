@@ -424,14 +424,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                      * something
                      * @param mixed $numbers
                      */
-                    function add(&$numbers) {}
-                ',
+                    function add(&$numbers) {}'."\n                ",
             '<?php
                     /**
                      * something
                      */
-                    function add(&$numbers) {}
-                ',
+                    function add(&$numbers) {}'."\n                ",
         ];
 
         yield [
@@ -440,14 +438,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                      * something
                      * @param null|array $numbers
                      */
-                    function add(array &$numbers = null) {}
-                ',
+                    function add(array &$numbers = null) {}'."\n                ",
             '<?php
                     /**
                      * something
                      */
-                    function add(array &$numbers = null) {}
-                ',
+                    function add(array &$numbers = null) {}'."\n                ",
         ];
     }
 
@@ -468,14 +464,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                      * something
                      * @param array $numbers
                      */
-                    function sum(...$numbers) {}
-                ',
+                    function sum(...$numbers) {}'."\n                ",
             '<?php
                     /**
                      * something
                      */
-                    function sum(...$numbers) {}
-                ',
+                    function sum(...$numbers) {}'."\n                ",
         ];
 
         yield [
@@ -484,14 +478,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                      * @param int $a
                      * @param array $numbers
                      */
-                    function sum($a, ...$numbers) {}
-                ',
+                    function sum($a, ...$numbers) {}'."\n                ",
             '<?php
                     /**
                      * @param int $a
                      */
-                    function sum($a, ...$numbers) {}
-                ',
+                    function sum($a, ...$numbers) {}'."\n                ",
         ];
 
         yield [
@@ -499,13 +491,11 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                     /**
                      * @param \Date[] $numbers
                      */
-                    function sum(\Date ...$numbers) {}
-                ',
+                    function sum(\Date ...$numbers) {}'."\n                ",
             '<?php
                     /**
                      */
-                    function sum(\Date ...$numbers) {}
-                ',
+                    function sum(\Date ...$numbers) {}'."\n                ",
         ];
     }
 

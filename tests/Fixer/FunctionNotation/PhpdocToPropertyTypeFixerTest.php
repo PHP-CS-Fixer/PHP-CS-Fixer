@@ -62,8 +62,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                          * @var Baz
                          */
                         private $foo;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'non-root class' => [
@@ -215,16 +214,14 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                         // comment 0
                         /** @var Foo */ # comment 1
                         public/**/Foo $foo/**/;# comment 2
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class Foo
                     {
                         // comment 0
                         /** @var Foo */ # comment 1
                         public/**/$foo/**/;# comment 2
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'array and traversable' => [
@@ -243,8 +240,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                      class Foo {
                          /** @var array|Traversable */
                          private $foo;
-                     }
-                ',
+                     }'."\n                ",
         ];
 
         yield 'array and traversable with leading slash in a namespace' => [
@@ -253,15 +249,13 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                      class Foo {
                          /** @var array|\Traversable */
                          private iterable $foo;
-                     }
-                ',
+                     }'."\n                ",
             '<?php
                      namespace App;
                      class Foo {
                          /** @var array|\Traversable */
                          private $foo;
-                     }
-                ',
+                     }'."\n                ",
         ];
 
         yield 'array and imported traversable in a namespace' => [
@@ -271,16 +265,14 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                      class Foo {
                          /** @var array|Traversable */
                          private iterable $foo;
-                     }
-                ',
+                     }'."\n                ",
             '<?php
                      namespace App;
                      use Traversable;
                      class Foo {
                          /** @var array|Traversable */
                          private $foo;
-                     }
-                ',
+                     }'."\n                ",
         ];
 
         yield 'array and object aliased as traversable in a namespace' => [
@@ -290,8 +282,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                      class Foo {
                          /** @var array|Traversable */
                          private $foo;
-                     }
-                ',
+                     }'."\n                ",
             null,
         ];
 

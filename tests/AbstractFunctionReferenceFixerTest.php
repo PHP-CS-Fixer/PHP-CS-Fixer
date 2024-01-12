@@ -75,8 +75,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
             null,
             '<?php
                     foo();
-                    bar();
-                ',
+                    bar();'."\n                ",
             'foo',
             5,
         ];
@@ -88,8 +87,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
                     foo();
                     foo();
                     foo();
-                    foo();
-                ',
+                    foo();'."\n                ",
             'foo',
         ];
 

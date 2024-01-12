@@ -68,8 +68,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 /**
                  * @return array
                  */
-                function foo($param) {}
-            '];
+                function foo($param) {}'."\n            "];
 
         yield ['<?php
                 interface Test {
@@ -77,8 +76,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                      * @return array
                      */
                     public function foo($param);
-                }
-            '];
+                }'."\n            "];
 
         yield [
             '<?php function foo($param): void { return; }',
@@ -311,8 +309,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                  */
                 #[\ReturnTypeWillChange]
                 public function test() {}
-            }
-            ',
+            }'."\n            ",
         ];
 
         yield [
@@ -322,16 +319,14 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
              * @return void
              */
             #[\Deprecated]
-            function test(): void {};
-            ',
+            function test(): void {};'."\n            ",
             '<?php
 
             /**
              * @return void
              */
             #[\Deprecated]
-            function test() {};
-            ',
+            function test() {};'."\n            ",
         ];
     }
 

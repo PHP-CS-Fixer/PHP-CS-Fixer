@@ -64,14 +64,12 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
             '<?php
                 $a=#
 ! #
-$b;
-                ',
+$b;'."\n                ",
             '<?php
                 $a=#
 !
 #
-$b;
-                ',
+$b;'."\n                ",
         ];
     }
 }

@@ -64,8 +64,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             '<?php
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
-                    $c = 1 ?: [];
-                ',
+                    $c = 1 ?: [];'."\n                ",
         ];
 
         yield [
@@ -156,8 +155,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                         public ?string $xyz = null,
                     ) {
                     }
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -165,8 +163,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                 10 => CT::T_NULLABLE_TYPE,
             ],
             '<?php
-                function test(#[TestAttribute] ?User $user) {}
-            ',
+                function test(#[TestAttribute] ?User $user) {}'."\n            ",
         ];
     }
 
@@ -205,8 +202,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                         public readonly ?string $xyz = null,
                     ) {
                     }
-                }
-            ',
+                }'."\n            ",
         ];
     }
 
@@ -238,8 +234,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                 class Foo
                 {
                     public const ?string FOO = null;
-                }
-            ',
+                }'."\n            ",
         ];
     }
 }

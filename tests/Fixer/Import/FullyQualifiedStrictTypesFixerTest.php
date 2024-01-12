@@ -392,8 +392,7 @@ namespace Z\B\C\D
             echo A::class;
             foo(A::B,A::C);
             echo $a[A::class];
-            echo A::class?>
-            ',
+            echo A::class?>'."\n            ",
             '<?php
             use ZXY\A;
             echo \ZXY\A::class;
@@ -401,15 +400,13 @@ namespace Z\B\C\D
             echo \ZXY\A::class;
             foo(\ZXY\A::B,\ZXY\A::C);
             echo $a[\ZXY\A::class];
-            echo \ZXY\A::class?>
-            ',
+            echo \ZXY\A::class?>'."\n            ",
         ];
 
         yield [
             '<?php
             namespace Foo\Test;
-            $this->assertSame($names, \Foo\TestMyThing::zxy(1,2));
-            ',
+            $this->assertSame($names, \Foo\TestMyThing::zxy(1,2));'."\n            ",
             null,
         ];
 
@@ -421,8 +418,7 @@ namespace Z\B\C\D
             echo parent::CONST_VALUE;
             echo self::$abc;
             echo Z::F;
-            echo X\Z::F;
-            ',
+            echo X\Z::F;'."\n            ",
             null,
         ];
 
@@ -456,8 +452,7 @@ class Foo extends BaseClass implements Interface1, Interface2
 
 new NewClass();
 
-if ($a instanceof InstanceOfClass) { return false; }
-            ',
+if ($a instanceof InstanceOfClass) { return false; }'."\n            ",
             '<?php
 
 namespace Foo\Test;
@@ -477,8 +472,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
 new \Other\NewClass();
 
-if ($a instanceof \Other\InstanceOfClass) { return false; }
-            ',
+if ($a instanceof \Other\InstanceOfClass) { return false; }'."\n            ",
             ['import_symbols' => true],
         ];
 
@@ -1361,8 +1355,7 @@ namespace {
                     public function __construct(
                         \Foo\TheClass $x
                     ) {}
-                }
-            ',
+                }'."\n            ",
         ];
     }
 
@@ -2033,8 +2026,7 @@ class Foo
 
     #[MethodAttr]
     public function foo(): void {}
-}
-            ',
+}'."\n            ",
             '<?php
 
 namespace Foo\Test;
@@ -2053,8 +2045,7 @@ class Foo
 
     #[\Other\MethodAttr]
     public function foo(): void {}
-}
-            ',
+}'."\n            ",
             ['import_symbols' => true],
         ];
     }

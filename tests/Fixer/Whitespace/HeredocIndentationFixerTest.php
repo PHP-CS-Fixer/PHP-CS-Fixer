@@ -179,22 +179,16 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
         yield [
             /* EXPECTED */ '
 <?php
-    foo(<<<EOD
-          '.'
-        abc
-          '.'
-        def
-          '.'
+    foo(<<<EOD'."\n          ".'
+        abc'."\n          ".'
+        def'."\n          ".'
         EOD
     );',
             /* INPUT */ '
 <?php
-    foo(<<<EOD
-        '.'
-      abc
-        '.'
-      def
-        '.'
+    foo(<<<EOD'."\n        ".'
+      abc'."\n        ".'
+      def'."\n        ".'
       EOD
     );',
         ];
@@ -212,12 +206,9 @@ final class HeredocIndentationFixerTest extends AbstractFixerTestCase
     );',
             /* INPUT */ '
 <?php
-    foo(<<<EOD
-  '.'
-      abc
-  '.'
-      def
-  '.'
+    foo(<<<EOD'."\n  ".'
+      abc'."\n  ".'
+      def'."\n  ".'
       EOD
     );',
         ];

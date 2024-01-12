@@ -232,8 +232,7 @@ private $d = 123;
 
                                 public $e = 5;
 };}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {public function getFilter()
@@ -246,8 +245,7 @@ private $d = 123;
 
 
 
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield ['<?php
@@ -272,8 +270,7 @@ public function echoA()
     {
         echo "a";
     }
-}
-            ',
+}'."\n            ",
             '<?php
 class SomeClass2
 {
@@ -282,8 +279,7 @@ class SomeClass2
     {
         echo "a";
     }
-}
-            ',
+}'."\n            ",
         ];
 
         yield [
@@ -708,7 +704,7 @@ abstract class MethodTest3
     {
     }
 
-    abstract protected function method221();	'.'
+    abstract protected function method221();'."	".'
 
     final private function method321a()
     {
@@ -729,8 +725,7 @@ abstract class MethodTest3
     abstract protected function method221();
 
 
-
-	'.'
+'."\n	".'
 
 
 
@@ -821,8 +816,7 @@ public function B1(); // allowed comment
 
                     /**  2 */
                     function B2() {}
-                }
-            ',
+                }'."\n            ",
             '<?php
                 class A
                 {
@@ -831,8 +825,7 @@ public function B1(); // allowed comment
                     function A2() {}
                     /**  2 */
                     function B2() {}
-                }
-            ',
+                }'."\n            ",
         ];
 
         // do not touch well formatted traits
@@ -924,7 +917,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */           '.'
+     */'."           ".'
     public function someInterfaceMethod6();
 
     public function someInterfaceMethod7();
@@ -939,7 +932,7 @@ interface TestInterface
 
     /**
      * {@link}
-     */           '.'
+     */'."           ".'
     public function someInterfaceMethod6();
 
 
@@ -1257,8 +1250,7 @@ abstract class Example
 
 
                         function A() {}
-                     }
-                ',
+                     }'."\n                ",
             '<?php
                     class A
                     {
@@ -1268,8 +1260,7 @@ abstract class Example
 
 
                         function A() {}
-                     }
-                ',
+                     }'."\n                ",
             ['elements' => ['property' => 'one']],
         ];
 
@@ -1281,8 +1272,7 @@ abstract class Example
                         public $b = 1;
 
                         function A() {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
@@ -1291,8 +1281,7 @@ abstract class Example
                         public $b = 1;
 
                         function A() {}
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['property' => 'none']],
         ];
 
@@ -1305,8 +1294,7 @@ abstract class Example
                         const THREE = ONE + self::TWO; /* test */ # test
 
                         const B = 2;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
@@ -1314,8 +1302,7 @@ abstract class Example
                         const A = 1;
                         const THREE = ONE + self::TWO; /* test */ # test
                         const B = 2;
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['const' => 'one']],
         ];
 
@@ -1326,8 +1313,7 @@ abstract class Example
                         const A = 1;
                         const THREE = ONE + self::TWO;
                         const B = 2;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
@@ -1336,8 +1322,7 @@ abstract class Example
                         const THREE = ONE + self::TWO;
 
                         const B = 2;
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['const' => 'none']],
         ];
 
@@ -1348,15 +1333,13 @@ abstract class Example
                         function D() {}
 
                         function B4() {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
                         function D() {}
                         function B4() {}
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['method' => 'one']],
         ];
 
@@ -1366,16 +1349,14 @@ abstract class Example
                     {
                         function A() {}
                         function B() {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
                         function A() {}
 
                         function B() {}
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['method' => 'none']],
         ];
 
@@ -1389,8 +1370,7 @@ abstract class Example
                         final function f1() {}
 
                         final function f2() {}
-                     }
-                ',
+                     }'."\n                ",
             '<?php
                     class A
                     {
@@ -1398,8 +1378,7 @@ abstract class Example
                         private $y;
                         final function f1() {}
                         final function f2() {}
-                     }
-                ',
+                     }'."\n                ",
             ['elements' => ['property' => 'none', 'method' => 'one']],
         ];
 
@@ -1413,8 +1392,7 @@ abstract class Example
                         function f1() {}
 
                         function f2() {}
-                     }
-                ',
+                     }'."\n                ",
             '<?php
                     class A
                     {
@@ -1422,8 +1400,7 @@ abstract class Example
                         const BAR = 2;
                         function f1() {}
                         function f2() {}
-                     }
-                ',
+                     }'."\n                ",
             ['elements' => ['const' => 'none', 'method' => 'one']],
         ];
 
@@ -1437,8 +1414,7 @@ abstract class Example
                         public function f1() {}
 
                         public function f2() {}
-                     }
-                ',
+                     }'."\n                ",
             '<?php
                     class A
                     {
@@ -1446,8 +1422,7 @@ abstract class Example
                         const BAR = 2;
                         public function f1() {}
                         public function f2() {}
-                     }
-                ',
+                     }'."\n                ",
             ['elements' => ['const' => 'none', 'method' => 'one']],
         ];
 
@@ -1467,8 +1442,7 @@ abstract class Example
 
                         /** @var int */
                         const A = 5;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
@@ -1483,8 +1457,7 @@ abstract class Example
                         const NEW = 4;
                         /** @var int */
                         const A = 5;
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['const' => 'only_if_meta']],
         ];
 
@@ -1497,8 +1470,7 @@ abstract class Example
                         /** @var string */
                         public $bar;
                         public $baz;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class B
                     {
@@ -1507,8 +1479,7 @@ abstract class Example
                         public $bar;
 
                         public $baz;
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['property' => 'only_if_meta']],
         ];
 
@@ -1522,8 +1493,7 @@ abstract class Example
 
                         /** @return string */
                         public function f4() {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class C
                     {
@@ -1534,8 +1504,7 @@ abstract class Example
                         public function f3() {}
                         /** @return string */
                         public function f4() {}
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['method' => 'only_if_meta']],
         ];
 
@@ -1561,8 +1530,7 @@ abstract class Example
                      */
                     public function __construct($a, $b, $c) {}
                     public function __destruct() {}
-                }
-                ',
+                }'."\n                ",
             '<?php
                 class Sample
                 {
@@ -1585,8 +1553,7 @@ abstract class Example
                     public function __construct($a, $b, $c) {}
 
                     public function __destruct() {}
-                }
-                ',
+                }'."\n                ",
             ['elements' => ['const' => 'only_if_meta', 'property' => 'only_if_meta', 'method' => 'only_if_meta']],
         ];
 
@@ -1599,8 +1566,7 @@ abstract class Example
 
                         private $a = null;
                         public $b = 1;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
@@ -1611,8 +1577,7 @@ abstract class Example
                         private $a = null;
 
                         public $b = 1;
-                    }
-                ',
+                    }'."\n                ",
             ['elements' => ['property' => 'none', 'trait_import' => 'none']],
         ];
 
@@ -2078,8 +2043,7 @@ enum Cards: string
     protected function test2() {
         echo 2;
     }
-}
-            ';
+}'."\n            ";
 
         yield [
             '<?php
@@ -2104,8 +2068,7 @@ enum Cards: string
     protected function test2() {
         echo 2;
     }
-}
-            ',
+}'."\n            ",
             $input,
             ['elements' => [
                 'const' => 'one',
@@ -2133,8 +2096,7 @@ enum Cards: string
     protected function test2() {
         echo 2;
     }
-}
-            ',
+}'."\n            ",
             $input,
             ['elements' => [
                 'const' => 'none',
@@ -2248,8 +2210,7 @@ enum Cards: string
                     //ui
 
                     //j1
-                    //k2
-                ',
+                    //k2'."\n                ",
             6,
         ];
 
@@ -2259,8 +2220,7 @@ enum Cards: string
                     //ui
 
                     //j1
-                    //k2
-                ',
+                    //k2'."\n                ",
             5,
         ];
 
@@ -2270,8 +2230,7 @@ enum Cards: string
                     /**/
 
                     //j1
-                    //k2
-                ',
+                    //k2'."\n                ",
             6,
         ];
 
@@ -2279,16 +2238,14 @@ enum Cards: string
             4,
             '<?php
                     $a;//j
-                    //k
-                ',
+                    //k'."\n                ",
             6,
         ];
 
         yield [
             2,
             '<?php
-                    //a
-                ',
+                    //a'."\n                ",
             2,
         ];
 
@@ -2296,8 +2253,7 @@ enum Cards: string
             2,
             '<?php
                     //b
-                    //c
-                ',
+                    //c'."\n                ",
             2,
         ];
 
@@ -2305,8 +2261,7 @@ enum Cards: string
             2,
             '<?php
                     //d
-                    //e
-                ',
+                    //e'."\n                ",
             4,
         ];
 
@@ -2316,8 +2271,7 @@ enum Cards: string
                     /**/
                     //f
                     //g
-                    //h
-                ',
+                    //h'."\n                ",
             8,
         ];
     }

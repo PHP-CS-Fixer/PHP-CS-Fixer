@@ -196,15 +196,13 @@ function B($b0, $b1, $b2)
                     function A()
                     {
                         return 15;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     {
                         $a = 15;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -212,14 +210,12 @@ function B($b0, $b1, $b2)
                     function A()
                     {
                         /*0*/return /*1*//*2*/15;/*3*//*4*/ /*5*/ /*6*//*7*//*8*/
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     {
                         /*0*/$a/*1*/=/*2*/15;/*3*//*4*/ /*5*/ return/*6*/$a/*7*/;/*8*/
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'comments with leading space' => [
@@ -240,8 +236,7 @@ function B($b0, $b1, $b2)
  #13
    #14
  #15
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     { #1
@@ -259,8 +254,7 @@ function B($b0, $b1, $b2)
  #13
  ;  #14
  #15
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -271,8 +265,7 @@ function B($b0, $b1, $b2)
                         {
                             return 16;
                         }
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     abstract class B
                     {
@@ -280,8 +273,7 @@ function B($b0, $b1, $b2)
                         {
                             $a = 16; return $a;
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -291,8 +283,7 @@ function B($b0, $b1, $b2)
                             return 0;
                         }
                         return testFunction(654+1);
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function b() {
                         if ($c) {
@@ -301,8 +292,7 @@ function B($b0, $b1, $b2)
                         }
                         $a = testFunction(654+1);
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'minimal notation' => [
@@ -314,7 +304,7 @@ function B($b0, $b1, $b2)
             '<?php
                     function A()
                     {#1
-#2                    '.'
+#2'."                    ".'
 return #3
 #4
 #5
@@ -328,12 +318,11 @@ return #3
 #13
 #14
 #15
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     {#1
-#2                    '.'
+#2'."                    ".'
 $a#3
 #4
 =#5
@@ -347,8 +336,7 @@ $a#12
 #13
 ;#14
 #15
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -385,14 +373,12 @@ function A($b)
                     function a() {
                         return 4563;
                           ?> <?php
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function a() {
                         $a = 4563;
                         return $a ?> <?php
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -400,14 +386,12 @@ function A($b)
                     function a()
                     {
                         return $c + 1; /*
-var names are case-insensitive */ }
-                ',
+var names are case-insensitive */ }'."\n                ",
             '<?php
                     function a()
                     {
                         $A = $c + 1; /*
-var names are case-insensitive */ return $a   ;}
-                ',
+var names are case-insensitive */ return $a   ;}'."\n                ",
         ];
 
         yield [
@@ -415,15 +399,13 @@ var names are case-insensitive */ return $a   ;}
                     function A()
                     {
                         return $f[1]->a();
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     {
                         $a = $f[1]->a();
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
             [
                 '<?php
                     function a($foos) {
@@ -496,8 +478,7 @@ var names are case-insensitive */ return $a   ;}
                     function E()
                     {
                         return new class extends Y implements A\O,P {};
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     {
@@ -527,8 +508,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         $c = new class extends Y implements A\O,P {};
                         return $c;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'lambda' => [
@@ -568,8 +548,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         $v = static function ($a, $b) use ($z) {};
                         return 15;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function A()
                     {
@@ -615,23 +594,20 @@ var names are case-insensitive */ return $a   ;}
                         $v = static function ($a, $b) use ($z) {};
                         $a = 15;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'arrow functions' => [
             '<?php
                     function Foo() {
                         return fn($x) => $x + $y;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     function Foo() {
                         $fn1 = fn($x) => $x + $y;
 
                         return $fn1;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'try catch' => [
@@ -649,8 +625,7 @@ var names are case-insensitive */ return $a   ;}
                     } catch (\Throwable $exception) {
                         baz($result ?? null);
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 function foo()
                 {
@@ -667,8 +642,7 @@ var names are case-insensitive */ return $a   ;}
                     } catch (\Throwable $exception) {
                         baz($result ?? null);
                     }
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield 'multiple try/catch blocks separated with conditional return' => [
@@ -691,8 +665,7 @@ var names are case-insensitive */ return $a   ;}
                     } catch (\Throwable $th) {
                         var_dump($result ?? null);
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 function foo()
                 {
@@ -714,8 +687,7 @@ var names are case-insensitive */ return $a   ;}
                     } catch (\Throwable $th) {
                         var_dump($result ?? null);
                     }
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield 'try/catch/finally' => [
@@ -735,8 +707,7 @@ var names are case-insensitive */ return $a   ;}
                     } finally {
                         baz($result);
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 function foo()
                 {
@@ -755,8 +726,7 @@ var names are case-insensitive */ return $a   ;}
                     } finally {
                         baz($result);
                     }
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield 'multiple try/catch separated with conditional return, with finally block' => [
@@ -781,8 +751,7 @@ var names are case-insensitive */ return $a   ;}
                     } finally {
                         echo "result:", $result, \PHP_EOL;
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 function foo()
                 {
@@ -806,8 +775,7 @@ var names are case-insensitive */ return $a   ;}
                     } finally {
                         echo "result:", $result, \PHP_EOL;
                     }
-                }
-                ',
+                }'."\n                ",
         ];
     }
 
@@ -835,8 +803,7 @@ var names are case-insensitive */ return $a   ;}
                         static $a;
                         $a = time();
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'global' => [
@@ -845,8 +812,7 @@ var names are case-insensitive */ return $a   ;}
                         global $a;
                         $a = time();
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'passed by reference' => [
@@ -855,15 +821,13 @@ var names are case-insensitive */ return $a   ;}
                     {
                         $var = 1;
                         return $var;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'not in function scope' => [
             '<?php
                     $a = 1; // var might be global here
-                    return $a;
-                ',
+                    return $a;'."\n                ",
         ];
 
         yield 'open-close with ;' => [
@@ -875,8 +839,7 @@ var names are case-insensitive */ return $a   ;}
                         <?php
                         ;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'open-close single line' => [
@@ -895,8 +858,7 @@ var names are case-insensitive */ return $a   ;}
                         ?>
                         <?php
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'open-close before function' => [
@@ -906,8 +868,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         ;
                         return $zz;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'return complex statement' => [
@@ -916,8 +877,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         $a = 1;
                         return $a + $c;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'array assign' => [
@@ -926,8 +886,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         $_SERVER["abc"] = 3;
                         return $_SERVER;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'if assign' => [
@@ -938,8 +897,7 @@ var names are case-insensitive */ return $a   ;}
                         if ($bar)
                             $a = 12345;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'else assign' => [
@@ -952,8 +910,7 @@ var names are case-insensitive */ return $a   ;}
                         else
                             $a = 12345;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'elseif assign' => [
@@ -966,8 +923,7 @@ var names are case-insensitive */ return $a   ;}
                         elseif($b)
                             $a = 12345;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'echo $a = N / comment $a = N;' => [
@@ -992,8 +948,7 @@ var names are case-insensitive */ return $a   ;}
                         echo $a;
                         // $a =1;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'if ($a = N)' => [
@@ -1002,8 +957,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         if ($a = 1)
                             return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'changed after declaration' => [
@@ -1020,8 +974,7 @@ var names are case-insensitive */ return $a   ;}
                         $a = 1;
                         $a -= 1;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'complex statement' => [
@@ -1030,8 +983,7 @@ var names are case-insensitive */ return $a   ;}
                     {
                         $d = $c && $a = 1;
                         return $a;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'PHP close tag within function' => [
@@ -1041,8 +993,7 @@ var names are case-insensitive */ return $a   ;}
                         $zz = 1 ?><?php
                         ;
                         return $zz;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'import global using "require"' => [
@@ -1052,8 +1003,7 @@ var names are case-insensitive */ return $a   ;}
                         require __DIR__."/test3.php";
                         $b = 1;
                         return $b;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'import global using "require_once"' => [
@@ -1063,8 +1013,7 @@ var names are case-insensitive */ return $a   ;}
                         require_once __DIR__."/test3.php";
                         $b = 1;
                         return $b;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'import global using "include"' => [
@@ -1074,8 +1023,7 @@ var names are case-insensitive */ return $a   ;}
                         include __DIR__."/test3.php";
                         $b = 1;
                         return $b;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'import global using "include_once"' => [
@@ -1085,8 +1033,7 @@ var names are case-insensitive */ return $a   ;}
                         include_once __DIR__."/test3.php";
                         $b = 1;
                         return $b;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'eval' => [
@@ -1101,8 +1048,7 @@ var names are case-insensitive */ return $a   ;}
                         $x = eval($x);
                         $x = 1;
                         return $x;
-                    };
-                ',
+                    };'."\n                ",
         ];
 
         yield '${X}' => [
@@ -1112,8 +1058,7 @@ var names are case-insensitive */ return $a   ;}
                         $h = ${$g};
 
                         return $h;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield '$$' => [
@@ -1123,8 +1068,7 @@ var names are case-insensitive */ return $a   ;}
                         $b = $$c;
 
                         return $b;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -1191,8 +1135,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                     }; // keep this
 
                     return $a;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield 'try/catch/finally' => [
@@ -1208,8 +1151,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                     } finally {
                         echo \'result:\', $result, \PHP_EOL;
                     }
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield 'try with multiple catch blocks' => [
@@ -1246,8 +1188,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                     finally {
                         echo \'result:\', $result, \PHP_EOL;
                     }
-                }
-                ',
+                }'."\n                ",
         ];
     }
 
@@ -1278,8 +1219,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                     finally {
                         echo \'result:\', $result, \PHP_EOL;
                     }
-                }
-                ',
+                }'."\n                ",
         ];
     }
 
@@ -1353,8 +1293,7 @@ function foo(&$c) {
                     "apple" => "This food is an apple",
                     "cake" => "This food is a cake",
                 };
-            }
-            ',
+            }'."\n            ",
             '<?php
             function Foo($food) {
                 $return_value = match ($food) {
@@ -1363,8 +1302,7 @@ function foo(&$c) {
                 };
 
                 return $return_value;
-            }
-            ',
+            }'."\n            ",
         ];
 
         yield 'attribute before anonymous `class`' => [
@@ -1372,15 +1310,13 @@ function foo(&$c) {
                 function A()
                 {
                     return new #[Foo] class {};
-                }
-            ',
+                }'."\n            ",
             '<?php
                 function A()
                 {
                     $a = new #[Foo] class {};
                     return $a;
-                }
-            ',
+                }'."\n            ",
         ];
     }
 
@@ -1401,15 +1337,13 @@ function foo(&$c) {
                 function A()
                 {
                     return new readonly class {};
-                }
-            ',
+                }'."\n            ",
             '<?php
                 function A()
                 {
                     $a = new readonly class {};
                     return $a;
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'attribute before anonymous `readonly class`' => [
@@ -1417,15 +1351,13 @@ function foo(&$c) {
                 function A()
                 {
                     return new #[Foo] readonly class {};
-                }
-            ',
+                }'."\n            ",
             '<?php
                 function A()
                 {
                     $a = new #[Foo] readonly class {};
                     return $a;
-                }
-            ',
+                }'."\n            ",
         ];
     }
 }

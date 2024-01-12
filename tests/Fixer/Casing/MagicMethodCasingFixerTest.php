@@ -209,8 +209,7 @@ class Foo extends Bar
 
             function __ISSET($bar){} // do not fix
 
-            $a->__unset($foo); // fix
-            ',
+            $a->__unset($foo); // fix'."\n            ",
             '<?php
             function __TOSTRING(){} // do not fix
 
@@ -255,8 +254,7 @@ class Foo extends Bar
 
             function __ISSET($bar){} // do not fix
 
-            $a->__UnSet($foo); // fix
-            ',
+            $a->__UnSet($foo); // fix'."\n            ",
         ];
 
         yield [
@@ -278,8 +276,7 @@ function __Tostring() {}',
             '<?php
                     #->__sleep()
                     /** ->__sleep() */
-                    echo $a->__sleep;
-                ',
+                    echo $a->__sleep;'."\n                ",
         ];
 
         yield [
@@ -289,44 +286,38 @@ function __Tostring() {}',
                         public function _not_magic()
                         {
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     function __alsoNotMagic()
                     {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     function __()
                     {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     function a()
                     {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
-                    $a->__not_magic();
-                ',
+                    $a->__not_magic();'."\n                ",
         ];
 
         yield [
             '<?php
-                    $a->a();
-                ',
+                    $a->a();'."\n                ",
         ];
 
         yield [

@@ -90,7 +90,7 @@ echo $guard?1:2;}',
 
         yield [
             '<?php $a = $a#
- ? '.'
+ ?'." ".'
 #
 1 : 0;',
         ];
@@ -180,24 +180,20 @@ $a = ($b
                 switch ($foo) {
                     case 1: return 3;
                     case 2: return 4;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 $foo = $isBar? 1 : 2;
                 switch ($foo) {
                     case 1: return 3;
                     case 2: return 4;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
             '<?php
-                return $isBar ? array_sum(array_map(function ($x) { switch ($x) { case 1: return $y ? 2 : 3; case 4: return 5; } }, [1, 2, 3])) : 128;
-                ',
+                return $isBar ? array_sum(array_map(function ($x) { switch ($x) { case 1: return $y ? 2 : 3; case 4: return 5; } }, [1, 2, 3])) : 128;'."\n                ",
             '<?php
-                return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;
-                ',
+                return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;'."\n                ",
         ];
 
         yield [
@@ -208,8 +204,7 @@ $a = ($b
                 if ($x === 1): echo "One"; elseif ($x === 2): echo "Two"; else: echo "Three"; endif;
                 switch (true): default: return 0; endswitch;
                 while ($i > 10): $i--; endwhile;
-                /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
-                ',
+                /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;'."\n                ",
         ];
     }
 

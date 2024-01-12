@@ -177,8 +177,7 @@ class FooTest extends TestCase {
                          */
                         %s function testFoo() %s
                         public function provideFooCases(): iterable {}
-                    }
-                ', $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                    }'."\n                ", $modifier, 'abstract' === $modifier ? ';' : '{}'),
                 sprintf('<?php
                     abstract class FooTest extends TestCase {
                         /**
@@ -186,8 +185,7 @@ class FooTest extends TestCase {
                          */
                         %s function testFoo() %s
                         public function provideFooCases() {}
-                    }
-                ', $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                    }'."\n                ", $modifier, 'abstract' === $modifier ? ';' : '{}'),
             ];
         }
     }

@@ -179,10 +179,8 @@ class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")// a
             ->/* b */willReturn/* c */(/* d */ /** e */
-             // f
-            '.'
-            // g
-            '.'
+             // f'."\n            ".'
+            // g'."\n            ".'
             /* h */
             10 /* i */);
     }
@@ -221,8 +219,7 @@ class FooTest extends TestCase {
                 e
         */        (
                     // f g h i
-                    /* j */ '.'
-        '.'
+                    /* j */'." ".''."\n        ".'
             10
              /* k */
              /* l */);

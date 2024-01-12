@@ -83,7 +83,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
             '<?php
 
                 /**
-                 * @param '.pack('H*', 'e2808b').'string $p Param
+                 * @param'." ".pack('H*', 'e2808b').'string $p Param
                  */
                 function f(string $p)
                 {
@@ -147,7 +147,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
             '<?php
 
                 /**
-                 * @param '.pack('H*', 'e2808b').'string $p Param
+                 * @param'." ".pack('H*', 'e2808b').'string $p Param
                  */
                 function f(string $p)
                 {

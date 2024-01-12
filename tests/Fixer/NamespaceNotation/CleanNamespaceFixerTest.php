@@ -102,15 +102,13 @@ B # foo 3
                 namespace B\B\C\D\E /* 5.2 */{ }
                 namespace C\B\C\D\E /* 5.3 */{ }
                 namespace D\B\C\D\E /* 5.4 */{ }
-                namespace E\B\C\D\E /* 5.5 */{ }
-            ',
+                namespace E\B\C\D\E /* 5.5 */{ }'."\n            ",
             '<?php
                 namespace A /* 1 */ \ B \   /** 2 */ C \ /* 3 */ D   /* 4 */ \ E /* 5.1 */{ }
                 namespace B /* 1 */ \ B \      /* 2 */ C \ /** 3 */ D /* 4 */ \ E /* 5.2 */{ }
                 namespace C /* 1 */ \ B \  /* 2 */ C \ /* 3 */ D /** 4 */ \ E /* 5.3 */{ }
                 namespace D /* 1 */ \ B \ /* 2 */ C \    /* 3 */ D /* 4 */ \ E /* 5.4 */{ }
-                namespace E /* 1 */ \ B \ /* 2 */ C \ /* 3 */ D /* 4 */ \ E /* 5.5 */{ }
-            ',
+                namespace E /* 1 */ \ B \ /* 2 */ C \ /* 3 */ D /* 4 */ \ E /* 5.5 */{ }'."\n            ",
         ];
 
         yield [
@@ -126,8 +124,7 @@ if (
     !a instanceof \EventDispatcher\EventDispatcherInterface
 ) {
     foo();
-}
-            ',
+}'."\n            ",
             '<?php
 namespace A \ B;
 
@@ -140,8 +137,7 @@ if (
     !a instanceof \EventDispatcher\/* 1 */EventDispatcherInterface
 ) {
     foo();
-}
-            ',
+}'."\n            ",
         ];
 
         yield [

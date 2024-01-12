@@ -169,8 +169,7 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
                      * @var $bar
                      */
                     private $bar;
-                }
-            ',
+                }'."\n            ",
         ];
     }
 }

@@ -64,8 +64,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
                 }
 
                 $foo = new Bar();
-                $foo->a(foo: 1);
-            ',
+                $foo->a(foo: 1);'."\n            ",
             [
                 36 => CT::T_NAMED_ARGUMENT_NAME,
                 37 => CT::T_NAMED_ARGUMENT_COLON,
@@ -120,8 +119,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
 
                 foo(1 , $a3 ? BAR : 2);
                 $a1 = [1, BAR ? 1 : 2];
-                $a2 = [1, (BAR) ? 1 : 2];
-            ',
+                $a2 = [1, (BAR) ? 1 : 2];'."\n            ",
         ];
 
         yield 'goto' => [
@@ -133,8 +131,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
                     beginning:
                     echo $guard ? 1 + FOO : 2;
                     echo $guard ? 1 : 2;
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'return type' => ['<?php function foo(): array { return []; }'];

@@ -80,8 +80,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
             '<?php namespace Foo;
                 function sprintf($foo) {
                     echo $foo;
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -92,8 +91,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
                 echo sprint(...$foo);
                 echo sprint("%d", 1);
                 echo sprint("%d%d%d", 1, 2, 3);
-                echo sprint();
-            ',
+                echo sprint();'."\n            ",
         ];
 
         yield [

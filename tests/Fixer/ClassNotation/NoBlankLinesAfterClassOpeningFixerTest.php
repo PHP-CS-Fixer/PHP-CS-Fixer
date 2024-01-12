@@ -127,8 +127,7 @@ class Foo
 ',
             '<?php
 class Foo
-{
-    '.'
+{'."\n    ".'
     function bar() {}
 }
 ',
@@ -144,8 +143,7 @@ function bar() {}
 ',
             '<?php
 class Foo
-{
-    '.'
+{'."\n    ".'
 function bar() {}
 }
 ',

@@ -39,21 +39,21 @@ final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
             '<?php
 $a = 1;',
             '<?php
-$a = 1;   ',
+$a = 1;'."   ",
         ];
 
         yield [
             '<?php
 $a = 1  ;',
             '<?php
-$a = 1  ;   ',
+$a = 1  ;'."   ",
         ];
 
         yield [
             '<?php
 $b = 1;',
             '<?php
-$b = 1;		',
+$b = 1;'."		",
         ];
 
         yield [
@@ -72,8 +72,7 @@ $b = 1;		',
 
         yield [
             '<?php
-	$b = 1;
-	',
+	$b = 1;'."\n	",
         ];
 
         yield [
@@ -174,7 +173,7 @@ EOT;
     public $bar;
 }',
             '<?php class Foo {
-    #[Required]     '.'
+    #[Required]'."     ".'
     public $bar;
 }',
         ];

@@ -70,15 +70,13 @@ final class Sample
                     final class Foo1 { public function A(){ return self::A; }}
                     final class Foo2 { public function A(){ return self::A; }}
                     final class Foo3 { public function A(){ return self::A; }}
-                    final class Foo4{public function A(){return self::A;}}final class Foo5{public function A(){return self::A;}}
-                ',
+                    final class Foo4{public function A(){return self::A;}}final class Foo5{public function A(){return self::A;}}'."\n                ",
             '<?php
                     final class Foo0 { public function A(){ return static::A; }}
                     final class Foo1 { public function A(){ return static::A; }}
                     final class Foo2 { public function A(){ return static::A; }}
                     final class Foo3 { public function A(){ return static::A; }}
-                    final class Foo4{public function A(){return static::A;}}final class Foo5{public function A(){return static::A;}}
-                ',
+                    final class Foo4{public function A(){return static::A;}}final class Foo5{public function A(){return static::A;}}'."\n                ",
         ];
 
         yield 'comments and casing' => [
@@ -136,8 +134,7 @@ final class Foo
 
         return new self();
     }
-}
-                ',
+}'."\n                ",
             '<?php
 final class Foo
 {
@@ -147,8 +144,7 @@ final class Foo
 
         return new static();
     }
-}
-                ',
+}'."\n                ",
         ];
 
         yield 'instance of' => [
@@ -159,8 +155,7 @@ final class Foo
     {
         return $foo instanceof self;
     }
-}
-                ',
+}'."\n                ",
             '<?php
 final class Foo
 {
@@ -168,8 +163,7 @@ final class Foo
     {
         return $foo instanceof static;
     }
-}
-                ',
+}'."\n                ",
         ];
 
         yield 'in method as new' => [
@@ -449,8 +443,7 @@ enum Foo
                             }
                         };
                     }
-                }
-            ',
+                }'."\n            ",
             '<?php
                 enum Suit: int implements SomeIntInterface, Z
                 {
@@ -472,8 +465,7 @@ enum Foo
                             }
                         };
                     }
-                }
-            ',
+                }'."\n            ",
         ];
     }
 

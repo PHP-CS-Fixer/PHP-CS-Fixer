@@ -55,13 +55,11 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
             '<?php
                 for(;;){ if(foo()) {break;}}
                 while(false){ echo 1; }
-                while($a()) { echo 2; }
-            ',
+                while($a()) { echo 2; }'."\n            ",
             '<?php
                 while(true){ if(foo()) {break;}}
                 while(false){ echo 1; }
-                while($a()) { echo 2; }
-            ',
+                while($a()) { echo 2; }'."\n            ",
             ['style' => 'for'],
         ];
 

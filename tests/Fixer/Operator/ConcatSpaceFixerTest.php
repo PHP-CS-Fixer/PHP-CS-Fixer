@@ -104,7 +104,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                             ."dev"/**  */
                             ."baz"      //
                             ."cex"      /**/
-                            ."ewer23"           '.'
+                            ."ewer23"'."           ".'
                             ."dev"      /**  */
                     ;',
         ];
@@ -136,8 +136,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Comment about next line
                     .'*****'
                     // Other comment
-                    .'*****';
-                ",
+                    .'*****';"."\n                ",
             "<?php
                 \$longString = '*'
                     . '*****'
@@ -146,8 +145,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     // Comment about next line
                     .  '*****'
                     // Other comment
-                    .  '*****';
-                ",
+                    .  '*****';"."\n                ",
         ];
     }
 
@@ -169,16 +167,14 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                     $d     #
                     . $e   /**  */
                     . $f . //
-                    $z;
-                ',
+                    $z;'."\n                ",
             '<?php
                     $a =   //
                     $c   .   /**/
                     $d     #
                     .   $e   /**  */
                     .   $f   . //
-                    $z;
-                ',
+                    $z;'."\n                ",
         ];
 
         yield [
@@ -206,15 +202,13 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
                         $f;
                     echo $a . $b?>
                  <?php
-                    echo $c;
-                ',
+                    echo $c;'."\n                ",
             '<?php echo $a.$b;
                     echo $d    .            $e          .   //
                         $f;
                     echo $a   .                  $b?>
                  <?php
-                    echo $c;
-                ',
+                    echo $c;'."\n                ",
         ];
     }
 }

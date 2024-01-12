@@ -415,8 +415,7 @@ final class Foo81 {
     public readonly string $prop1;
     readonly public string $prop2;
     readonly string $prop3;
-}
-            ',
+}'."\n            ",
         ];
 
         yield [
@@ -425,8 +424,7 @@ class Foo81 {
     public readonly string $prop1;
     readonly public string $prop2;
     readonly string $prop3;
-}
-            ',
+}'."\n            ",
         ];
 
         yield [
@@ -438,8 +436,7 @@ final class Foo81 {
     public readonly string $prop81;
     final public const Y = "i81";
     final const XY = "i81";
-}
-            ',
+}'."\n            ",
             '<?php
 final class Foo81 {
     final public function foo81() {}
@@ -448,8 +445,7 @@ final class Foo81 {
     public readonly string $prop81;
     final public const Y = "i81";
     final const XY = "i81";
-}
-            ',
+}'."\n            ",
         ];
 
         yield 'enum' => [

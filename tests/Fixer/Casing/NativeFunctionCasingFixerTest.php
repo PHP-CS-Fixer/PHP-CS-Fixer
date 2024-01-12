@@ -48,49 +48,39 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    echo strtolower("hello 1");
-                ',
+                    echo strtolower("hello 1");'."\n                ",
             '<?php
-                    echo STRTOLOWER("hello 1");
-                ',
+                    echo STRTOLOWER("hello 1");'."\n                ",
         ];
 
         yield [
             '<?php
                     echo strtolower //a
-                        ("hello 2");
-                ',
+                        ("hello 2");'."\n                ",
             '<?php
                     echo STRTOLOWER //a
-                        ("hello 2");
-                ',
+                        ("hello 2");'."\n                ",
         ];
 
         yield [
             '<?php
-                    echo strtolower /**/   ("hello 3");
-                ',
+                    echo strtolower /**/   ("hello 3");'."\n                ",
             '<?php
-                    echo STRTOLOWER /**/   ("hello 3");
-                ',
+                    echo STRTOLOWER /**/   ("hello 3");'."\n                ",
         ];
 
         yield [
             '<?php
-                    echo \sqrt(4);
-                ',
+                    echo \sqrt(4);'."\n                ",
             '<?php
-                    echo \sQrT(4);
-                ',
+                    echo \sQrT(4);'."\n                ",
         ];
 
         yield [
             '<?php
-                    echo "1".\sqrt("hello 5");
-                ',
+                    echo "1".\sqrt("hello 5");'."\n                ",
             '<?php
-                    echo "1".\SQRT("hello 5");
-                ',
+                    echo "1".\SQRT("hello 5");'."\n                ",
         ];
 
         yield [
@@ -108,38 +98,32 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         function &END($a)
                         {
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
-                    new STRTOLOWER();
-                ',
+                    new STRTOLOWER();'."\n                ",
         ];
 
         yield [
             '<?php
-                    new \STRTOLOWER();
-                ',
+                    new \STRTOLOWER();'."\n                ",
         ];
 
         yield [
             '<?php
-                    new \A\B\STRTOLOWER();
-                ',
+                    new \A\B\STRTOLOWER();'."\n                ",
         ];
 
         yield [
             '<?php
-                    a::STRTOLOWER();
-                ',
+                    a::STRTOLOWER();'."\n                ",
         ];
 
         yield [
             '<?php
-                    $a->STRTOLOWER();
-                ',
+                    $a->STRTOLOWER();'."\n                ",
         ];
 
         yield [
@@ -158,12 +142,10 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     $next1 = & next($array1);
-                    $next2 = & \next($array2);
-                ',
+                    $next2 = & \next($array2);'."\n                ",
             '<?php
                     $next1 = & Next($array1);
-                    $next2 = & \Next($array2);
-                ',
+                    $next2 = & \Next($array2);'."\n                ",
         ];
 
         yield [
@@ -179,17 +161,14 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    echo \sqrt(4 , );
-                ',
+                    echo \sqrt(4 , );'."\n                ",
             '<?php
-                    echo \sQrT(4 , );
-                ',
+                    echo \sQrT(4 , );'."\n                ",
         ];
 
         yield [
             '<?php
-                    $a->STRTOLOWER(1,);
-                ',
+                    $a->STRTOLOWER(1,);'."\n                ",
         ];
     }
 
@@ -213,8 +192,7 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
             {
                 #[File(mimeTypes: ["application/pdf", "image/*"])]
                 public FileBlob $attachment;
-            }
-            ',
+            }'."\n            ",
         ];
     }
 }

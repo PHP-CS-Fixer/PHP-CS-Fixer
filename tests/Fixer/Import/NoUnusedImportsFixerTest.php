@@ -1544,8 +1544,7 @@ const D = new Foo7(1,2);
                     use Bar;
 
                     case Test1 = "a";
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -1555,8 +1554,7 @@ const D = new Foo7(1,2);
                 class C
                 {
                    public function t(Class1 | Class2 $fields) {}
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -1566,8 +1564,7 @@ const D = new Foo7(1,2);
                 class C
                 {
                    public function t(Class1 | Class2 ...$fields) {}
-                }
-            ',
+                }'."\n            ",
         ];
     }
 }

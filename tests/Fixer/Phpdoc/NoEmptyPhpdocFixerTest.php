@@ -36,20 +36,15 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     /** a */
-
-                    '.'
-
-                    '.'
-
-                    '.'
-
-                    '.'
+'."\n                    ".'
+'."\n                    ".'
+'."\n                    ".'
+'."\n                    ".'
                     /**
                      * test
                      */
 
-                     /** *test* */
-                ',
+                     /** *test* */'."\n                ",
             '<?php
                     /**  *//** a *//**  */
 
@@ -70,8 +65,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
                      * test
                      */
 
-                     /** *test* */
-                ',
+                     /** *test* */'."\n                ",
         ];
     }
 }

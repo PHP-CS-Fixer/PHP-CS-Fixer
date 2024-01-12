@@ -59,8 +59,7 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
             abstract class Foo {
                 abstract public function bar(): iterable;
                 public function baz(): array { return []; }
-            }
-        '];
+            }'."\n        "];
 
         yield [
             '<?php return [function(): iterable { yield from [1, 2, 3]; }];',
@@ -110,13 +109,11 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
             '<?php
                 function foo(): array { return [3, 4]; }
                 function bar(): iterable { yield from [1, 2]; }
-                function baz(): int { return 5; }
-            ',
+                function baz(): int { return 5; }'."\n            ",
             '<?php
                 function foo(): array { return [3, 4]; }
                 function bar(): iterable { return [1, 2]; }
-                function baz(): int { return 5; }
-            ',
+                function baz(): int { return 5; }'."\n            ",
         ];
     }
 

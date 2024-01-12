@@ -502,13 +502,11 @@ $b = 1;
         yield [
             '<?php use A\E;use A\Z;
                     use C;
-                return 1;
-                ',
+                return 1;'."\n                ",
             '<?php use A\E;use A\Z;
 
                     use C;
-                return 1;
-                ',
+                return 1;'."\n                ",
         ];
 
         yield [
@@ -524,8 +522,7 @@ $b = 1;
             '<?php
                     $example = function () use ($message) { var_dump($message); };
 
-                    $example = function () use ($message) { var_dump($message); };
-                ',
+                    $example = function () use ($message) { var_dump($message); };'."\n                ",
         ];
 
         yield [
@@ -552,8 +549,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
 
 use const some\a\{ConstA,ConstB,ConstC
 ,
-};
-  '.'
+};'."\n  ".'
 use const some\Z\{ConstX,ConstY,ConstZ,};
 ',
         ];
@@ -1051,11 +1047,9 @@ class Foo
                             return new ConstantNode($token->getValue());
 
                         case 7:
-                            return new ConstantNode($token->getValue());
-        '.'
+                            return new ConstantNode($token->getValue());'."\n        ".'
                         case 8:
-                            return 8;
-                        '.'
+                            return 8;'."\n                        ".'
                         default:
                             echo 1;
                     }',
@@ -1157,8 +1151,7 @@ class Foo {}'
 
                 $orOperator2 = $bar || throw new \Exception();
 
-                $orOperator3 = $bar || throw new \Exception();
-            ',
+                $orOperator3 = $bar || throw new \Exception();'."\n            ",
         ];
 
         yield [
@@ -1167,8 +1160,7 @@ class Foo {}'
                 $a = $bar ?? throw new \Exception();
 
                 // Now, we are going to use it!
-                var_dump($a);
-            ',
+                var_dump($a);'."\n            ",
         ];
 
         yield [
@@ -1177,8 +1169,7 @@ class Foo {}'
 #[Attr]
 #[AttrFoo1]
 #[AttrFoo2]
-function foo(){}
-            ',
+function foo(){}'."\n            ",
             '<?php
 #[Attr]
 
@@ -1189,8 +1180,7 @@ function foo(){}
 
 #[AttrFoo2]
 
-function foo(){}
-            ',
+function foo(){}'."\n            ",
         ];
 
         yield [

@@ -39,39 +39,31 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
     {
         yield 'missing "b"' => [
             '<?php
-                    $a = fopen($foo, \'rw+b\');
-                ',
+                    $a = fopen($foo, \'rw+b\');'."\n                ",
             '<?php
-                    $a = fopen($foo, \'rw+\');
-                ',
+                    $a = fopen($foo, \'rw+\');'."\n                ",
         ];
 
         yield 'has "t" and "b"' => [
             '<?php
-                    $a = \fopen($foo, "rw+b");
-                ',
+                    $a = \fopen($foo, "rw+b");'."\n                ",
             '<?php
-                    $a = \fopen($foo, "rw+bt");
-                ',
+                    $a = \fopen($foo, "rw+bt");'."\n                ",
         ];
 
         yield 'has "t" and no "b" and binary string mod' => [
             '<?php
-                    $a = fopen($foo, b\'rw+b\');
-                ',
+                    $a = fopen($foo, b\'rw+b\');'."\n                ",
             '<?php
-                    $a = fopen($foo, b\'trw+\');
-                ',
+                    $a = fopen($foo, b\'trw+\');'."\n                ",
         ];
 
         // configure remove b
         yield 'missing "b" but not configured' => [
             '<?php
-                    $a = fopen($foo, \'rw+\');
-                ',
+                    $a = fopen($foo, \'rw+\');'."\n                ",
             '<?php
-                    $a = fopen($foo, \'rw+t\');
-                ',
+                    $a = fopen($foo, \'rw+t\');'."\n                ",
             ['b_mode' => false],
         ];
 
@@ -80,26 +72,22 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
                     $a = fopen($foo, \'r+\');
                     $a = fopen($foo, \'w+r\');
                     $a = fopen($foo, \'r+\');
-                    $a = fopen($foo, \'w+r\');
-                ',
+                    $a = fopen($foo, \'w+r\');'."\n                ",
             '<?php
                     $a = fopen($foo, \'r+bt\');
                     $a = fopen($foo, \'btw+r\');
                     $a = fopen($foo, \'r+tb\');
-                    $a = fopen($foo, \'tbw+r\');
-                ',
+                    $a = fopen($foo, \'tbw+r\');'."\n                ",
             ['b_mode' => false],
         ];
 
         yield 'superfluous "b"' => [
             '<?php
                     $a = fopen($foo, \'r+\');
-                    $a = fopen($foo, \'w+r\');
-                ',
+                    $a = fopen($foo, \'w+r\');'."\n                ",
             '<?php
                     $a = fopen($foo, \'r+b\');
-                    $a = fopen($foo, \'bw+r\');
-                ',
+                    $a = fopen($foo, \'bw+r\');'."\n                ",
             ['b_mode' => false],
         ];
 
@@ -119,8 +107,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
 
         yield 'wrong # of arguments' => '<?php
                     $b = fopen("br+");
-                    $c = fopen($foo, "w+", 1, 2 , 3);
-                ';
+                    $c = fopen($foo, "w+", 1, 2 , 3);'."\n                ";
 
         yield '"flags" is too long (must be overridden)' => '<?php $d = fopen($foo, "r+w+a+x+c+etXY");';
 
@@ -133,8 +120,7 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
         yield 'comments, PHPDoc and literal' => '<?php
                     // fopen($foo, "rw");
                     /* fopen($foo, "rw"); */
-                    echo("fopen($foo, \"rw\")");
-                ';
+                    echo("fopen($foo, \"rw\")");'."\n                ";
 
         yield 'invalid flag values' => '<?php
                 $a = fopen($foo, \'\');
@@ -154,14 +140,12 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
                 $a = fopen($foo, \'ロ\');
                 $a = fopen($foo, \'ロ+\');
                 $a = fopen($foo, \'rロ\');
-                $a = \fopen($foo, \'w+ロ\');
-                ';
+                $a = \fopen($foo, \'w+ロ\');'."\n                ";
 
         yield 'second argument not string' => '<?php
                     echo "abc"; // to pass the candidate check
                     $a = fopen($foo, 1);
                     $a = fopen($foo, $a);
-                    $a = fopen($foo, null);
-                ';
+                    $a = fopen($foo, null);'."\n                ";
     }
 }

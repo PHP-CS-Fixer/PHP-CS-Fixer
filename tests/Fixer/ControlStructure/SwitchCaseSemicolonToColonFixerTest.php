@@ -38,14 +38,12 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch (1) {
                     case f(function () { return; }):
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch (1) {
                     case f(function () { return; });
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -53,14 +51,12 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case 42:
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch ($a) {
                     case 42;
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -68,14 +64,12 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case ["foo" => "bar"]:
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch ($a) {
                     case ["foo" => "bar"];
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -110,14 +104,12 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case 42:;;// NoEmptyStatementFixer should clean this up (partly)
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch ($a) {
                     case 42;;;// NoEmptyStatementFixer should clean this up (partly)
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -125,27 +117,23 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case $b ? "c" : "d" :
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch ($a) {
                     case $b ? "c" : "d" ;
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
             '<?php
                 switch ($a) {
                     case $b ? "c" : "d": break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch ($a) {
                     case $b ? "c" : "d"; break;
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -178,8 +166,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch($a) {
                     case (int) $a < 1; {
@@ -209,19 +196,16 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         echo "leave alone";
                         break;
                     }
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield 'nested switch in switch case' => [
             '<?php
                     switch (1) {
-                        case new class {public function A(){echo 1;switch(time()){case 1: echo 2;}}}:break;}
-                ',
+                        case new class {public function A(){echo 1;switch(time()){case 1: echo 2;}}}:break;}'."\n                ",
             '<?php
                     switch (1) {
-                        case new class {public function A(){echo 1;switch(time()){case 1; echo 2;}}};break;}
-                ',
+                        case new class {public function A(){echo 1;switch(time()){case 1; echo 2;}}};break;}'."\n                ",
         ];
 
         yield [
@@ -229,14 +213,12 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch (1) {
                     case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} :
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch (1) {
                     case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} ;
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
     }
 
@@ -257,14 +239,12 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly":
                         break;
-                }
-                ',
+                }'."\n                ",
             '<?php
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly";
                         break;
-                }
-                ',
+                }'."\n                ",
         ];
     }
 
@@ -284,8 +264,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             '<?php
                     echo match ($a) {
                         default => "foo",
-                    };
-                ',
+                    };'."\n                ",
         ];
 
         yield 'Match in switch' => [
@@ -296,8 +275,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                                 default => "foo",
                             };
                             break;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'Match in case value' => [
@@ -306,15 +284,13 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                         case match ($bar) {
                             default => "foo",
                         }: echo "It works!";
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     switch ($foo) {
                         case match ($bar) {
                             default => "foo",
                         }; echo "It works!";
-                    }
-                ',
+                    }'."\n                ",
         ];
     }
 

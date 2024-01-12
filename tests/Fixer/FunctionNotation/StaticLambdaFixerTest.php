@@ -92,8 +92,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             $a = fn () => var_dump($this);
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -146,8 +145,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             };
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -161,8 +159,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             };
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -178,8 +175,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
 
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -194,8 +190,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             };
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -210,8 +205,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             };
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -226,8 +220,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             };
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -243,8 +236,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             };
                             $a();
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -258,8 +250,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                                 var_dump(${$a[0]});
                             };
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -274,8 +265,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                     protected function test2(){}
                     protected abstract function test3();
                     private function test4(){}
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -324,8 +314,7 @@ $b->abc();
                                 []
                             );
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
     }
 }

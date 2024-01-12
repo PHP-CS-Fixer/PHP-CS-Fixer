@@ -37,15 +37,12 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
             '<?php //1
                     unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,  $foobar2);
                      //test
-                     /* more comment test*/
-                    '.'
-                ',
+                     /* more comment test*/'."\n                    ".''."\n                ",
             '<?php //1
                     unset($foo/*;*/);
                     unset(/*;*/$bar, $c ); //test
                     unset($foobar  ); /* more comment test*/
-                    unset(  $foobar2);
-                ',
+                    unset(  $foobar2);'."\n                ",
         ];
 
         yield [
@@ -63,8 +60,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
               $config = array();
               if ($config) {
               }
-              unset($config[\'autoescape_service\'], $config[\'autoescape_service_method\']);
-              ',
+              unset($config[\'autoescape_service\'], $config[\'autoescape_service_method\']);'."\n              ",
         ];
 
         yield [
@@ -73,34 +69,26 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     /*2*/
                     //3
                     /*4*/
-                    /*5*/ '.'
-                ',
+                    /*5*/'." ".''."\n                ",
             '<?php //2
                     unset($foo);/*1*/
                     unset($bar);/*2*/
                     unset($foobar);//3
                     unset($foobar2);/*4*/
-                    /*5*/ unset($foobar3);
-                ',
+                    /*5*/ unset($foobar3);'."\n                ",
         ];
 
         yield [
             '<?php
                     unset($foo3, $bar, $test,$test1);
-                        /* c1 */
-                        '.'
-                '.'
-                // c2
-                '.'
-                ',
+                        /* c1 */'."\n                        ".''."\n                ".'
+                // c2'."\n                ".''."\n                ",
             '<?php
                     unset($foo3);
                         /* c1 */
-                        unset($bar);
-                '.'
+                        unset($bar);'."\n                ".'
                 // c2
-                unset($test,$test1);
-                ',
+                unset($test,$test1);'."\n                ",
         ];
 
         yield [
@@ -119,21 +107,14 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    unset($a[0], $a[\'a\'], $a["b"], $a->b, $a->b->c, $a->b[0]->c[\'a\']);
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                ',
+                    unset($a[0], $a[\'a\'], $a["b"], $a->b, $a->b->c, $a->b[0]->c[\'a\']);'."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                ",
             '<?php
                     unset($a[0]);
                     unset($a[\'a\']);
                     unset($a["b"]);
                     unset($a->b);
                     unset($a->b->c);
-                    unset($a->b[0]->c[\'a\']);
-                ',
+                    unset($a->b[0]->c[\'a\']);'."\n                ",
         ];
     }
 

@@ -1449,8 +1449,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                      * @Foo(foo="foo")
                      */
                     %s
-                }
-            ', $element),
+                }'."\n            ", $element),
             sprintf('<?php
                 class Foo
                 {
@@ -1458,8 +1457,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                      * @Foo(foo = "foo")
                      */
                     %s
-                }
-            ', $element)
+                }'."\n            ", $element)
         );
     }
 

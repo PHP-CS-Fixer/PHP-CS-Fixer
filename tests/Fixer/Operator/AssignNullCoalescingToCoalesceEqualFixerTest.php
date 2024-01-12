@@ -123,13 +123,11 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
             '<?php
                 if ($a) $a ??= 1;
                 foreach ($d as $i) $a ??= 1;
-                while (foo()) $a ??= 1;
-            ',
+                while (foo()) $a ??= 1;'."\n            ",
             '<?php
                 if ($a) $a = $a ?? 1;
                 foreach ($d as $i) $a = $a ?? 1;
-                while (foo()) $a = $a ?? 1;
-            ',
+                while (foo()) $a = $a ?? 1;'."\n            ",
         ];
 
         yield 'simple, end' => [
@@ -145,9 +143,7 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
         yield 'simple, multi line' => [
             '<?php
             $a
-             ??=
-              '.'
-               '.'
+             ??='."\n              ".''."\n               ".'
                 1;',
             '<?php
             $a
@@ -176,8 +172,7 @@ final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTe
                 $d = $a + $c ; $c ?? $c;
                 $a = ($a ?? $b) && $c; // just to be sure
                 $a = (string) $a ?? 1;
-                $a = 1 ?? $a;
-            ',
+                $a = 1 ?? $a;'."\n            ",
         ];
 
         yield 'do not fix because of precedence 1' => [
@@ -267,13 +262,11 @@ class Foo
             '<?php
                 $a[1] ??= 1;
                 $a{2} ??= 1;
-                $a{2}[$f] ??= 1;
-            ',
+                $a{2}[$f] ??= 1;'."\n            ",
             '<?php
                 $a[1] = $a[1] ?? 1;
                 $a{2} = $a{2} ?? 1;
-                $a{2}[$f] = $a{2}[$f] ?? 1;
-            ',
+                $a{2}[$f] = $a{2}[$f] ?? 1;'."\n            ",
         ];
 
         yield 'same II' => [

@@ -152,7 +152,7 @@ You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/bl
 ';
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
-Current PHP version: '.PHP_VERSION.'.
+Current PHP version:'." ".PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 

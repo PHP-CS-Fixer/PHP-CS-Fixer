@@ -193,7 +193,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
     /*
-     | Test that tabs in comments are converted to spaces    '."\t".'.
+     | Test that tabs in comments are converted to spaces'."    "."\t".'.
      */',
             "<?php
 \t/*

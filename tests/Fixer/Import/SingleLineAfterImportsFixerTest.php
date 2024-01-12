@@ -101,15 +101,13 @@ $a = new DateTime();
         ];
 
         yield [
-            '<?php namespace Foo;
-              '.'
+            '<?php namespace Foo;'."\n              ".'
 use Bar\Baz;
 
 /**
  * Foo.
  */',
-            '<?php namespace Foo;
-              '.'
+            '<?php namespace Foo;'."\n              ".'
 use Bar\Baz;
 /**
  * Foo.

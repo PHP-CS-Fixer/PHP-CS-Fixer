@@ -3645,8 +3645,7 @@ final class Foo
     public function __construct(
         public readonly float $x = 0.0,
     ) {}
-}
-            ',
+}'."\n            ",
             '<?php
 final class Foo
 {
@@ -3655,8 +3654,7 @@ final class Foo
     public function __construct(
         public    readonly   float $x = 0.0,
     ) {}
-}
-            ',
+}'."\n            ",
         ];
 
         yield 'enum' => [
@@ -3733,12 +3731,10 @@ class    Test {
         yield [
             '<?php
                 switch ($a){ case 1: echo 123; }
-                switch ($b){ case 1: echo 123; }
-            ',
+                switch ($b){ case 1: echo 123; }'."\n            ",
             '<?php
                 switch($a){ case 1: echo 123; }
-                switch  ($b){ case 1: echo 123; }
-            ',
+                switch  ($b){ case 1: echo 123; }'."\n            ",
         ];
     }
 

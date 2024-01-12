@@ -1588,8 +1588,7 @@ class A
              case 1: break;
          }
      }
- }
- ',
+ }'."\n ",
             '<?php
 
  enum A: int
@@ -1602,8 +1601,7 @@ class A
          }
      }
      case Bar = 2;
- }
- ',
+ }'."\n ",
         ];
     }
 

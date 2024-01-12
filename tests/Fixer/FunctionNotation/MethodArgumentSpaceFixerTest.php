@@ -77,37 +77,35 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
-// space '.'
+// space'." ".'
 $var1 = $a->some_method(
     $var2
 );
 
-// space '.'
+// space'." ".'
 $var2 = some_function(
     $var2
 );
 
-    // space     '.'
+    // space'."     ".'
     $var2a = $z[1](
         $var2a
-    );
-    '.'
+    );'."\n    ".'
     $var3 = function(  $a, $b  ) { };
 ',
             '<?php
-// space '.'
+// space'." ".'
 $var1 = $a->some_method(
     $var2);
 
-// space '.'
+// space'." ".'
 $var2 = some_function(
     $var2);
 
-    // space     '.'
+    // space'."     ".'
     $var2a = $z[1](
         $var2a
-    );
-    '.'
+    );'."\n    ".'
     $var3 = function(  $a , $b  ) { };
 ',
             [
@@ -321,8 +319,7 @@ list(
         yield 'skip short array' => [
             '<?php
     $foo = ["a"=>"apple", "b"=>"bed" ,"c"=>"car"];
-    $bar = ["a" ,"b" ,"c"];
-    ',
+    $bar = ["a" ,"b" ,"c"];'."\n    ",
         ];
 
         yield 'don\'t change HEREDOC and NOWDOC' => [
@@ -966,13 +963,11 @@ $example = function () use ($message1,$message2) {
 foo(
     /* bar */
     "baz"
-);
-            ',
+);'."\n            ",
             '<?php
 foo(
     /* bar */ "baz"
-);
-            ',
+);'."\n            ",
         ];
     }
 

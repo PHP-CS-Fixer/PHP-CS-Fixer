@@ -41,8 +41,7 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
 
                         /** @var MyCass6 */
                         public $testB = 7;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A {
                         /**@var MyCass6 $a */
@@ -50,8 +49,7 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
 
                         /**@var MyCass6*/
                         public $testB = 7;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -74,8 +72,7 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
 
                         /** @var MyCass6 */
                         public $test6 = 6;
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     /**    @var   MyCass1 $test1      description   and more.*/
                     $test0 = 1;
@@ -95,8 +92,7 @@ final class PhpdocSingleLineVarSpacingFixerTest extends AbstractFixerTestCase
 
                         /**     @var		MyCass6*/
                         public $test6 = 6;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [

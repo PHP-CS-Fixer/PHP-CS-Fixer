@@ -933,8 +933,7 @@ switch ($a) {
         throw new \Exception("");
     case 6;
         throw new \Exception("");
-}
-                ',
+}'."\n                ",
         ];
 
         yield [
@@ -1031,8 +1030,7 @@ switch($a) {
         // no break
     default:
         echo 1;
-}
-                ',
+}'."\n                ",
             '<?php
 switch($a) {
     case 1:
@@ -1045,8 +1043,7 @@ switch($a) {
         echo 5;
     default:
         echo 1;
-}
-                ',
+}'."\n                ",
         ];
 
         yield [
@@ -1287,8 +1284,7 @@ switch ($foo) {
                         // no break
                     default:
                         echo "PHP8";
-                }
-            ',
+                }'."\n            ",
             '<?php
                 switch ($foo) {
                     case 1:
@@ -1301,8 +1297,7 @@ switch ($foo) {
                         $value = $falsableValue ?: throw new InvalidArgumentException();
                     default:
                         echo "PHP8";
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -1318,8 +1313,7 @@ switch ($foo) {
                 match ($baz) {
                     3 => "e",
                     default => "f"
-                };
-            ',
+                };'."\n            ",
         ];
 
         yield 'switch with break and nested match' => [

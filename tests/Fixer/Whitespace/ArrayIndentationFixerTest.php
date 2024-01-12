@@ -674,8 +674,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                     INPUT,
             ],
             [
-                '<?php
-    '.'
+                '<?php'."\n    ".'
 $foo = [
     "foo",
     "bar",

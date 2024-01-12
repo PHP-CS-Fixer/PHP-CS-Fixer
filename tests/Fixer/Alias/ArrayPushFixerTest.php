@@ -67,13 +67,11 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php
                 if ($c) $a[] = $b;
 
-                while (--$c > 0) $a[] = $c;
-            ',
+                while (--$c > 0) $a[] = $c;'."\n            ",
             '<?php
                 if ($c) array_push($a, $b);
 
-                while (--$c > 0) array_push($a, $c);
-            ',
+                while (--$c > 0) array_push($a, $c);'."\n            ",
         ];
 
         yield '} before' => [
@@ -102,15 +100,13 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 $a[] = ++$b;
                 $a[] = !$b;
                 $a[] = $b + $c;
-                $a[] = 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1];
-            ',
+                $a[] = 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1];'."\n            ",
             '<?php
                 array_push($a, $b--);
                 ARRAY_push($a, ++$b);
                 array_PUSH($a, !$b);
                 ARRAY_PUSH($a, $b + $c);
-                \array_push($a, 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1]);
-            ',
+                \array_push($a, 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1]);'."\n            ",
         ];
 
         yield 'simple traditional array' => [
@@ -222,8 +218,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php
                 A\array_push($a, $b17);
                 A::array_push($a, $b18);
-                $a->array_push($a, $b19);
-            ',
+                $a->array_push($a, $b19);'."\n            ",
         ];
 
         yield 'open echo' => [
@@ -254,14 +249,12 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 while (foo()) $a[] = $b;
                 foreach (foo() as $C) $a[] = $b;
                 if (foo()) $a[] = $b;
-                if ($b) {} elseif (foo()) $a[] = $b;
-            ',
+                if ($b) {} elseif (foo()) $a[] = $b;'."\n            ",
             '<?php
                 while (foo()) array_push($a, $b);
                 foreach (foo() as $C) array_push($a, $b);
                 if (foo()) array_push($a, $b);
-                if ($b) {} elseif (foo()) array_push($a, $b);
-            ',
+                if ($b) {} elseif (foo()) array_push($a, $b);'."\n            ",
         ];
     }
 
@@ -320,12 +313,10 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         yield 'simple 8.1' => [
             '<?php
                 $a[] = $b;
-                $a = array_push(...);
-            ',
+                $a = array_push(...);'."\n            ",
             '<?php
                 array_push($a, $b);
-                $a = array_push(...);
-            ',
+                $a = array_push(...);'."\n            ",
         ];
     }
 }

@@ -61,7 +61,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function A(){}
 
                     /**
-                     * '.'
+                     *'." ".'
                      */
                     public function B(){}
 
@@ -69,11 +69,10 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                      * Descr.
                      *
                      * @param int $c
-                     * '.'
+                     *'." ".'
                      */
                     public function C($c){}
-                }
-                ',
+                }'."\n                ",
             '<?php
                 class A
                 {
@@ -92,8 +91,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                      * @inheritdoc
                      */
                     public function C($c){}
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -102,15 +100,13 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                     /** */
                     public function B(){}
-                }
-                ',
+                }'."\n                ",
             '<?php
                 class B
                 {
                     /** {@INHERITDOC} */
                     public function B(){}
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -118,14 +114,12 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 /** D C */
                 class C
                 {
-                }
-                ',
+                }'."\n                ",
             '<?php
                 /** D {    @INHERITDOC   } C */
                 class C
                 {
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -133,14 +127,12 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 /** E */
                 class E
                 {
-                }
-                ',
+                }'."\n                ",
             '<?php
                 /**     {{@Inheritdoc}}   E */
                 class E
                 {
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -148,14 +140,12 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 /** F */
                 class F
                 {
-                }
-                ',
+                }'."\n                ",
             '<?php
                 /** F    @inheritdoc      */
                 class F
                 {
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -163,14 +153,12 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     /** */
                     class G1{}
                     /** */
-                    class G2{}
-                ',
+                    class G2{}'."\n                ",
             '<?php
                     /** @inheritdoc */
                     class G1{}
                     /** @inheritdoc */
-                    class G2{}
-                ',
+                    class G2{}'."\n                ",
         ];
 
         yield [
@@ -179,8 +167,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                     /* @inheritdoc comment, not PHPDoc */
                     public function H(){}
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -189,8 +176,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                     /** @inheritdoc */
                     public function H(){}
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -199,8 +185,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                     /** @inheritdoc */
                     public function H();
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -210,16 +195,14 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 {
                     /** */
                     public function H();
-                }
-                ',
+                }'."\n                ",
             '<?php
                 /** @{inheritdoc} */
                 interface K
                 {
                     /** {@Inheritdoc} */
                     public function H();
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [
@@ -252,8 +235,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function importFromTrait()
                     {
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 class B
                 {
@@ -272,8 +254,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function importFromTrait()
                     {
                     }
-                }
-                ',
+                }'."\n                ",
             '<?php
                 class B
                 {
@@ -292,8 +273,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     public function importFromTrait()
                     {
                     }
-                }
-                ',
+                }'."\n                ",
         ];
 
         yield [

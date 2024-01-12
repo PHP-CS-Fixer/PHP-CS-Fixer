@@ -1442,24 +1442,21 @@ class Foo {
                      * "Sponsored" by https://github.com/PrestaShop/PrestaShop/blob/1.6.1.24/tools/tcpdf/tcpdf.php (search for "Get page dimensions from format name")
                      * @see
                      * @param $number - it can be:
-                     * '.implode("\n                     * ", range(1, 1_000)).'
+                     *'." ".implode("\n                     * ", range(1, 1_000)).'
                      */
-                     function display($number) {}
-                ',
+                     function display($number) {}'."\n                ",
         ];
 
         yield 'return with @inheritDoc in description' => [
             '<?php
                     /**
                      */
-                    function foo(): bool {}
-                ',
+                    function foo(): bool {}'."\n                ",
             '<?php
                     /**
                      * @return bool @inheritDoc
                      */
-                    function foo(): bool {}
-                ',
+                    function foo(): bool {}'."\n                ",
             ['remove_inheritdoc' => true],
         ];
 

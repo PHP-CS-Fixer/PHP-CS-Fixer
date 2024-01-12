@@ -190,7 +190,6 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
             private static function f6(){}
             static public function f7(){}
             static protected function f8(){}
-            static private function f9(){}
-        ';
+            static private function f9(){}'."\n        ";
     }
 }

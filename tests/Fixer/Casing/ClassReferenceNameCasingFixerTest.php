@@ -45,8 +45,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
                 echo \Exception::class;
                 print(Exception::class);
                 // $a = new exception();
-                /** $a = new exception(); */
-            ',
+                /** $a = new exception(); */'."\n            ",
             '<?php
                 $a = new exception;
                 $b = new \exception;
@@ -58,8 +57,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
                 echo \exception::class;
                 print(exception::class);
                 // $a = new exception();
-                /** $a = new exception(); */
-            ',
+                /** $a = new exception(); */'."\n            ",
         ];
 
         yield [
@@ -76,12 +74,10 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         yield [
             '<?php namespace Foo;
                 $a = new exception;
-                $b = new \Exception;
-            ',
+                $b = new \Exception;'."\n            ",
             '<?php namespace Foo;
                 $a = new exception;
-                $b = new \EXCEPTION;
-            ',
+                $b = new \EXCEPTION;'."\n            ",
         ];
 
         yield [
@@ -92,8 +88,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
 
                 $a1 = \exception();
                 $b1 = new \A\exception;
-                $c1 = new \A\B\C\exception;
-            ',
+                $c1 = new \A\B\C\exception;'."\n            ",
         ];
 
         yield [
@@ -197,15 +192,13 @@ namespace Foo {
                 \Closure::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
-            ',
+                \A\B\\Bar::bind(fn () => null, null, new class {});'."\n            ",
             '<?php
                 CLOSURE::bind(fn () => null, null, new class {});
                 \CLOSURE::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
-            ',
+                \A\B\\Bar::bind(fn () => null, null, new class {});'."\n            ",
         ];
 
         yield [
@@ -226,8 +219,7 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
                 $b23 = [1,error,2];
                 $b24 = [1,error,2,];
                 $b3 = [error];
-                $b4 = $a->{error};
-            ',
+                $b4 = $a->{error};'."\n            ",
         ];
 
         yield [
@@ -239,8 +231,7 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
                 $b23 = [1,\error,2];
                 $b24 = [1,\error,2,];
                 $b3 = [\error];
-                $b4 = $a->{\error};
-            ',
+                $b4 = $a->{\error};'."\n            ",
         ];
 
         yield ['<?php echo error ?><?php echo error;'];

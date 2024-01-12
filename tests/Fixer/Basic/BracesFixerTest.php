@@ -184,8 +184,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern;
         self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
-    }
-                ',
+    }'."\n                ",
         ];
 
         yield [
@@ -210,8 +209,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -438,8 +436,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern;
         self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
-    }
-                ',
+    }'."\n                ",
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
@@ -469,8 +466,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
-                    }
-                ',
+                    }'."\n                ",
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
@@ -4463,8 +4459,7 @@ if (1) {
         public function use1(): string
         {
         }
-    }
-                ',
+    }'."\n                ",
             '<?php
     class Foo
     {
@@ -4473,8 +4468,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }'."\n                ",
         ];
 
         yield [
@@ -4489,8 +4483,7 @@ if (1) {
 
     function a()
     {
-    }
-                ',
+    }'."\n                ",
             '<?php
     $a = function (int $foo): string
     {
@@ -4503,8 +4496,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }'."\n                ",
         ];
 
         yield [
@@ -4866,8 +4858,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }'."\n                ",
             '<?php
     class Foo
     {
@@ -4876,8 +4867,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }'."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
@@ -4889,8 +4879,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }'."\n                ",
             '<?php
     class Foo
     {
@@ -4899,8 +4888,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }'."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
@@ -4915,8 +4903,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }'."\n                ",
             '<?php
     $a = function (int $foo): string
     {
@@ -4929,8 +4916,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }'."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
@@ -4947,8 +4933,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }'."\n                ",
             '<?php
     $a = function (int $foo): string
     {
@@ -4961,8 +4946,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }'."\n                ",
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 
@@ -5505,7 +5489,7 @@ function test()
 {
 //    $closure = function ($callback) use ($query) {
 //        doSomething();
-//        '.'
+//'."        ".'
 //        return true;
 //    };
     $a = 3;
@@ -5547,8 +5531,7 @@ if ($foo) {
 
 //    if ($bar === \'bar\') {
 //        return [];
-//    }
-    '.'
+//    }'."\n    ".'
     $bar = \'bar\';
 } else {
     bar();
@@ -5561,8 +5544,7 @@ if ($foo) {
 if ($foo) {
     foo();
 
-//    bar();
-    '.'
+//    bar();'."\n    ".'
     $bar = \'bar\';
 } else {
     bar();
@@ -5574,8 +5556,7 @@ if ($foo) {
             '<?php
 if ($foo) {
     foo();
-//    bar();
-    '.'
+//    bar();'."\n    ".'
     $bar = \'bar\';
 } else {
     bar();
@@ -5586,8 +5567,7 @@ if ($foo) {
         yield [
             '<?php
 if ($foo) {
-    foo();
-    '.'
+    foo();'."\n    ".'
 //    bar();
     $bar = \'bar\';
 } else {
@@ -5599,8 +5579,7 @@ if ($foo) {
         yield [
             '<?php
 if ($foo) {
-    foo();
-    '.'
+    foo();'."\n    ".'
 //    bar();
 } else {
     bar();
@@ -5631,8 +5610,7 @@ function foo()
             '<?php
 function foo()
 {
-    $a = 1;
-    '.'
+    $a = 1;'."\n    ".'
 //    bar();
     // we will return sth
     return $a;
@@ -5641,8 +5619,7 @@ function foo()
             '<?php
 function foo()
 {
-    $a = 1;
-    '.'
+    $a = 1;'."\n    ".'
 //    bar();
 // we will return sth
     return $a;
@@ -5713,8 +5690,7 @@ if (true) {
 \t/*
 \t \$i += 3;
 
-\t // 1
-  "."
+\t // 1"."\n  "."
 \t   return foo(\$i);
 \t */
 }",
@@ -5725,8 +5701,7 @@ if (true) {
 /*
  $i += 3;
 
- // 1
-  '.'
+ // 1'."\n  ".'
    return foo($i);
  */
 }',

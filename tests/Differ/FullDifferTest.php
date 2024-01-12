@@ -28,15 +28,13 @@ final class FullDifferTest extends AbstractDifferTestCase
         $diff = '--- Original
 +++ New
 @@ -1,10 +1,10 @@
- <?php
- '.'
+ <?php'."\n ".'
  function baz($options)
  {
 -    if (!array_key_exists("foo", $options)) {
 +    if (!\array_key_exists("foo", $options)) {
          throw new \InvalidArgumentException();
-     }
- '.'
+     }'."\n ".'
      return json_encode($options);
  }
 ';

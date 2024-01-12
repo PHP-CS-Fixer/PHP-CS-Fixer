@@ -550,8 +550,7 @@ class MyTest extends \PHPUnit_Framework_TestCase
                     {
                         $a = $this::assertTrue(...);
                     }
-                }
-            ',
+                }'."\n            ",
         ];
     }
 }

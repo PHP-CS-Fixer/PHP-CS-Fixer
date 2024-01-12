@@ -154,8 +154,7 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
                             echo 1;
                         }
                         $B = true;
-                    };
-                ',
+                    };'."\n                ",
         ];
 
         yield [

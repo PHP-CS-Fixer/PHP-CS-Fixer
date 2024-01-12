@@ -161,8 +161,7 @@ $foo#5
                     namespace A\B;             // comment
                     function settype($a, $b){} // "
 
-                    settype(1, "double");
-                ',
+                    settype(1, "double");'."\n                ",
         ];
 
         yield 'first argument is variable followed by operation' => [
@@ -170,8 +169,7 @@ $foo#5
                     namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
-                    settype($foo + 1, "integer"); // function must be overridden, so do not fix it
-                ',
+                    settype($foo + 1, "integer"); // function must be overridden, so do not fix it'."\n                ",
         ];
 
         yield 'wrong numbers of arguments' => [
@@ -223,8 +221,7 @@ $foo#5
                     settype(/*1*//*2*/($a), \'int\');
                     settype($b, (\'int\'));
                     settype(($c), (\'int\'));
-                    settype((($d)), ((\'int\')));
-                ',
+                    settype((($d)), ((\'int\')));'."\n                ",
         ];
 
         yield 'wrapped statements, not-fixable, even after removing the useless parenthesis brace' => [
@@ -235,15 +232,13 @@ $foo#5
                     settype($foo1, (("integer")."1"));
                     settype($foo2, ("1".("integer")));
                     settype($foo3, ((("integer")."1")));
-                    settype((($foo)+1), "integer");
-                ',
+                    settype((($foo)+1), "integer");'."\n                ",
         ];
 
         yield 'nested is not an issue for this fixer, as these non may be fixed' => [
             '<?php
                     settype($foo, settype($foo, "double"));
-                    settype(settype($foo, "double"), "double");
-                ',
+                    settype(settype($foo, "double"), "double");'."\n                ",
         ];
 
         yield 'unknown type II' => [

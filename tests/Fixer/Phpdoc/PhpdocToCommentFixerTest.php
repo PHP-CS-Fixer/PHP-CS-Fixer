@@ -533,8 +533,7 @@ class A
 echo 123;
 
 /** @var int $bar1 */
-(print($bar1 = 0));
-            ',
+(print($bar1 = 0));'."\n            ",
         ];
 
         yield [
@@ -680,8 +679,7 @@ foreach($connections as $key => $sqlite) {
         yield 'do not convert before fn' => [
             '<?php // needed because by default first comment is never fixed
             /** @param int $x */
-            fn ($x) => $x + 42;
-            ',
+            fn ($x) => $x + 42;'."\n            ",
         ];
 
         yield 'convert before return without option' => [
@@ -736,8 +734,7 @@ echo 123;
 ($bar3 = tmp())->doSomething();
 
 /** @var Session $session */ # test
-$session = new Session();
-                ',
+$session = new Session();'."\n                ",
         ];
 
         yield [
@@ -748,8 +745,7 @@ $first = true;// needed because by default first docblock is never fixed.
 [$a] = $b;
 
 /* @var int $c */
-[$a] = $c;
-                ',
+[$a] = $c;'."\n                ",
             '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
@@ -757,8 +753,7 @@ $first = true;// needed because by default first docblock is never fixed.
 [$a] = $b;
 
 /** @var int $c */
-[$a] = $c;
-                ',
+[$a] = $c;'."\n                ",
         ];
 
         yield [
@@ -768,8 +763,7 @@ $first = true;// needed because by default first docblock is never fixed.
 /**
  * @var int $a
  */
-[$a] = $b;
-                ',
+[$a] = $b;'."\n                ",
         ];
 
         yield [

@@ -136,8 +136,8 @@ $a = 1; /* after code */
             '<?php
     // one line',
             "<?php
-    /* \t "."
- \t   * one line ".'
+    /* \t"." "."
+ \t   * one line"." ".'
      *
      */',
         ];
@@ -257,11 +257,9 @@ second line*/',
 
         yield [
             '<?php
-                    // test
-                ',
+                    // test'."\n                ",
             '<?php
-                    # test
-                ',
+                    # test'."\n                ",
         ];
 
         yield [
@@ -269,14 +267,12 @@ second line*/',
                     // test1
                     //test2
                     // test3
-                    // test 4
-                ',
+                    // test 4'."\n                ",
             '<?php
                     # test1
                     #test2
                     # test3
-                    # test 4
-                ',
+                    # test 4'."\n                ",
         ];
 
         yield [
@@ -287,16 +283,14 @@ second line*/',
         // Untouched cases
         yield [
             '<?php
-                    //#test
-                ',
+                    //#test'."\n                ",
         ];
 
         yield [
             '<?php
                     /*
                         #test
-                    */
-                ',
+                    */'."\n                ",
         ];
 
         yield [

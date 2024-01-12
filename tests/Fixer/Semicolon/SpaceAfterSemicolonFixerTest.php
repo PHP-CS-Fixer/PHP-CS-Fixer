@@ -47,8 +47,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     test1();
-                    $a; // test
-                ',
+                    $a; // test'."\n                ",
         ];
 
         yield [
@@ -65,8 +64,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test5();     // test
-                ',
+                    test5();     // test'."\n                ",
         ];
 
         yield [
@@ -85,196 +83,160 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test8(); $a = 4;
-                ',
+                    test8(); $a = 4;'."\n                ",
             '<?php
-                    test8();     $a = 4;
-                ',
+                    test8();     $a = 4;'."\n                ",
         ];
 
         yield [
             '<?php
-                    test9(); $b = 7;
-                ',
+                    test9(); $b = 7;'."\n                ",
             '<?php
-                    test9();$b = 7;
-                ',
+                    test9();$b = 7;'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; ;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; ; ++$u1) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;;++$u1) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;$u2 < 0;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;$u3 < 3;++$u3) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u4 = 0; ;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u4 = 0;;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u5 = 0; ; ++$u5) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u5 = 0;;++$u5) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u6 = 0;$u6 < 6;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u7 = 0;$u7 < 7;++$u7) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; ;    ) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    ;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; ; ++$u1) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    ;    ++$u1) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;    ) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    $u2 < 0;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    $u3 < 3;    ++$u3) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($ui4 = 0; ;    ) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($ui4 = 0;    ;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u5 = 0; ; ++$u5) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u5 = 0;    ;    ++$u5) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;    ) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u6 = 0;    $u6 < 6;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -320,8 +282,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     test1();
-                    $a; // test
-                ',
+                    $a; // test'."\n                ",
         ];
 
         yield [
@@ -338,8 +299,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test5();     // test
-                ',
+                    test5();     // test'."\n                ",
         ];
 
         yield [
@@ -358,196 +318,160 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test8(); $a = 4;
-                ',
+                    test8(); $a = 4;'."\n                ",
             '<?php
-                    test8();     $a = 4;
-                ',
+                    test8();     $a = 4;'."\n                ",
         ];
 
         yield [
             '<?php
-                    test9(); $b = 7;
-                ',
+                    test9(); $b = 7;'."\n                ",
             '<?php
-                    test9();$b = 7;
-                ',
+                    test9();$b = 7;'."\n                ",
         ];
 
         yield [
             '<?php
                     for (;;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (; ;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (;; ++$u1) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;;++$u1) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;$u2 < 0;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;$u3 < 3;++$u3) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u4 = 0;;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u4 = 0; ;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u5 = 0;; ++$u5) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u5 = 0;;++$u5) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u6 = 0;$u6 < 6;) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u7 = 0;$u7 < 7;++$u7) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (;;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    ;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (;; ++$u1) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    ;    ++$u1) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    $u2 < 0;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for (;    $u3 < 3;    ++$u3) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($ui4 = 0;;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($ui4 = 0;    ;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u5 = 0;; ++$u5) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u5 = 0;    ;    ++$u5) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u6 = 0;    $u6 < 6;    ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -557,8 +481,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                         ;
                         ++$u7
                     ) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -569,7 +492,6 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
     public function testHaltCompiler(): void
     {
         $this->doTest('<?php
-            __HALT_COMPILER();
-        ');
+            __HALT_COMPILER();'."\n        ");
     }
 }

@@ -89,8 +89,7 @@ Fixing examples:
    +++ New
    @@ -1,1 +1,1 @@
    -<?php echo 'bad stuff and bad thing';
-   +<?php echo 'good stuff and bad thing';
-   "."
+   +<?php echo 'good stuff and bad thing';"."\n   "."
    ----------- end diff -----------
 
  * Example #2. Fixing with configuration: ['functions' => ['foo', 'bar']].
@@ -99,8 +98,7 @@ Fixing examples:
    +++ New
    @@ -1,1 +1,1 @@
    -<?php echo 'bad stuff and bad thing';
-   +<?php echo 'good stuff and good thing';
-   ".'
+   +<?php echo 'good stuff and good thing';"."\n   ".'
    ----------- end diff -----------
 
 ',
@@ -130,8 +128,7 @@ Fixing examples:
    \033[32m+++ New\033[39m
    \033[36m@@ -1,1 +1,1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
-   \033[32m+<?php echo 'good stuff and bad thing';\033[39m
-   "."
+   \033[32m+<?php echo 'good stuff and bad thing';\033[39m"."\n   "."
 \033[33m   ----------- end diff -----------\033[39m
 
  * Example #2. Fixing with configuration: \033[33m['functions' => ['foo', 'bar']]\033[39m.
@@ -140,8 +137,7 @@ Fixing examples:
    \033[32m+++ New\033[39m
    \033[36m@@ -1,1 +1,1 @@\033[39m
    \033[31m-<?php echo 'bad stuff and bad thing';\033[39m
-   \033[32m+<?php echo 'good stuff and good thing';\033[39m
-   "."
+   \033[32m+<?php echo 'good stuff and good thing';\033[39m"."\n   "."
 \033[33m   ----------- end diff -----------\033[39m
 
 ",
@@ -176,8 +172,7 @@ Fixing examples:
    +++ New
    @@ -1,1 +1,1 @@
    -<?php echo 'BEFORE';
-   +<?php echo 'AFTER';
-   "."
+   +<?php echo 'AFTER';"."\n   "."
    ----------- end diff -----------
 
  * Example #2.
@@ -186,8 +181,7 @@ Fixing examples:
    +++ New
    @@ -1,1 +1,1 @@
    -<?php echo 'BEFORE'.'-B';
-   +<?php echo 'AFTER'.'-B';
-   ".'
+   +<?php echo 'AFTER'.'-B';"."\n   ".'
    ----------- end diff -----------
 
 ',
@@ -216,8 +210,7 @@ Fixing examples:
    +++ New
    @@ -1,1 +1,1 @@
    -<?php echo 'BEFORE';
-   +<?php echo 'AFTER';
-   ".'
+   +<?php echo 'AFTER';"."\n   ".'
    ----------- end diff -----------
 
 ',
@@ -440,8 +433,7 @@ Fixing examples:
    @@ -1,2 +1,2 @@
     <?php
    -echo 'describe fixture';
-   +echo 'fixture for describe';
-   ".'
+   +echo 'fixture for describe';"."\n   ".'
    ----------- end diff -----------
 
 ';

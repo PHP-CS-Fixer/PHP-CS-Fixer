@@ -69,8 +69,7 @@ function foo($a, $b) {
     $c = (bool) $b;
     $e = (bool) $d1;
     return (bool) $a;
-}
-                ',
+}'."\n                ",
             '<?php
 function foo($a, $b) {
     $c = !!$a;
@@ -85,8 +84,7 @@ function foo($a, $b) {
 
     ! $d1;
     return !! $a;
-}
-                ',
+}'."\n                ",
         ];
     }
 }

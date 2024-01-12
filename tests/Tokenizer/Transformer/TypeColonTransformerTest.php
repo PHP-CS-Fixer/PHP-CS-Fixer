@@ -83,8 +83,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
             '<?php
                     $a = 1 ? [] : [];
                     $b = 1 ? fnc() : [];
-                    $c = 1 ?: [];
-                ',
+                    $c = 1 ?: [];'."\n                ",
         ];
 
         yield [

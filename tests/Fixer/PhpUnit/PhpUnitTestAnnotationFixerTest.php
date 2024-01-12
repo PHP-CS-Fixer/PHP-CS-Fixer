@@ -1052,8 +1052,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
                      *
                      */
                     public function testFooTest() {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
 
                     class FooTest extends \PHPUnit_Framework_TestCase {
@@ -1062,8 +1061,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
                      * @test
                      */
                     public function fooTest() {}
-                    }
-                ',
+                    }'."\n                ",
         ];
     }
 

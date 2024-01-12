@@ -29,16 +29,14 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
         $file = __FILE__;
 
         $diff = '--- '.$file.'
-+++ '.$file.'
-@@ -2,7 +2,7 @@
- '.'
++++'." ".$file.'
+@@ -2,7 +2,7 @@'."\n ".'
  function baz($options)
  {
 -    if (!array_key_exists("foo", $options)) {
 +    if (!\array_key_exists("foo", $options)) {
          throw new \InvalidArgumentException();
-     }
- '.'
+     }'."\n ".'
 ';
         self::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode(), new \SplFileInfo($file)));
     }

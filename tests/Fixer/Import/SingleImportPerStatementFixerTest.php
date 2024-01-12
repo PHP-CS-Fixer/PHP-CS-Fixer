@@ -39,11 +39,9 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     /**/use Foo;
-                    use FooB;
-                ',
+                    use FooB;'."\n                ",
             '<?php
-                    /**/use Foo,FooB;
-                ',
+                    /**/use Foo,FooB;'."\n                ",
         ];
 
         yield [
@@ -147,11 +145,9 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     use FooA;
-                    use FooB;
-                ',
+                    use FooB;'."\n                ",
             '<?php
-                    use FooA, FooB;
-                ',
+                    use FooA, FooB;'."\n                ",
         ];
 
         yield [
@@ -196,13 +192,13 @@ use B;
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
-use C  ; ',
+use C  ;'." ",
             '<?php
 use A,B,
 //,{} use ; :
 #,{} use ; :
 /*,{} use ; :*/
-C  ; ',
+C  ;'." ",
         ];
 
         yield [
@@ -347,17 +343,15 @@ use const some\c\// use.,{}
 ConstC;
 use A\{B};
 use D\E;
-use D\F;
-                ',
+use D\F;'."\n                ",
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use    function some\b\{fn_a, fn_b, fn_c};
-use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D, '.'
+use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D,'." ".'
 // use.,{}
 ConstC};
 use A\{B};
-use D\{E,F};
-                ',
+use D\{E,F};'."\n                ",
         ];
 
         yield 'messy comments' => [

@@ -371,27 +371,23 @@ A#
             '<?php
 interface Test extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
-    TestInterface2   ,   // test
-    '.'
+    TestInterface2   ,   // test'."\n    ".'
 
 // Note: PSR does not have a rule for multiple extends
 TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,     '.'
+      TestInterface5    ,'."     ".'
         /**/TestInterface65
-{}
-            ',
+{}'."\n            ",
             '<?php
 interface Test
 extends
   /*a*/    /*b*/TestInterface1   , \A\B\C  ,  /* test */
-    TestInterface2   ,   // test
-    '.'
+    TestInterface2   ,   // test'."\n    ".'
 
 // Note: PSR does not have a rule for multiple extends
 TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,     '.'
-        /**/TestInterface65    {}
-            ',
+      TestInterface5    ,'."     ".'
+        /**/TestInterface65    {}'."\n            ",
         ];
 
         yield from self::provideClassyCases('trait');
@@ -1099,13 +1095,12 @@ extends  /*
                 '<?php
 class Test extends TestInterface8 implements      /*a*/      /*b*/
     TestInterface1,  /* test */
-    TestInterface2,   // test
-    '.'
+    TestInterface2,   // test'."\n    ".'
 
 // test
 TestInterface3, /**/
     TestInterface4,
-      TestInterface5,    '.'
+      TestInterface5,'."    ".'
         /**/TestInterface6c
 {
 }',
@@ -1114,12 +1109,11 @@ class Test
 extends
     TestInterface8
   implements      /*a*/      /*b*/TestInterface1   ,  /* test */
-    TestInterface2   ,   // test
-    '.'
+    TestInterface2   ,   // test'."\n    ".'
 
 // test
 TestInterface3, /**/     TestInterface4   ,
-      TestInterface5    ,    '.'
+      TestInterface5    ,'."    ".'
         /**/TestInterface6c
 {
 }',

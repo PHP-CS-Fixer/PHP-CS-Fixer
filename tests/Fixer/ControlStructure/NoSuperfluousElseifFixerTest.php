@@ -138,8 +138,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                                 exit;
                             } else {#foo
                                 throw new \Exception();
-                            }
-                            '.'
+                            }'."\n                            ".'
                             continue;
 
 
@@ -149,8 +148,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                             return null;
                         } else {
                             return 1;
-                        }
-                        '.'
+                        }'."\n                        ".'
                         break;
                     }
                     /* bar */if (7)
@@ -170,8 +168,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                                 exit;
                             } else {#foo
                                 throw new \Exception();
-                            }
-                            '.'
+                            }'."\n                            ".'
                             continue;
 
 
@@ -180,8 +177,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                             return null;
                         } else {
                             return 1;
-                        }
-                        '.'
+                        }'."\n                        ".'
                         break;
                     } else/* bar */if (7)
                         return 2 + 3;
@@ -288,8 +284,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                 $a = $bar ?? throw new \Exception();
             } elseif ($bar) {
                 echo 1;
-            }
-            ',
+            }'."\n            ",
         ];
     }
 }

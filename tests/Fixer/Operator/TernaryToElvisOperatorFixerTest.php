@@ -160,8 +160,7 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 a($d) ? $d : 1;
-                $d ? a($d) : 1;
-            ',
+                $d ? a($d) : 1;'."\n            ",
         ];
 
         yield [
@@ -195,15 +194,13 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
                 $bar2[0] = $bar[0] ? $bar[0] + 1 : $bar[0];
 
                 $bar3[0][1] = $bar[0][1] ? ++$bar[0][1] : $bar[0][1];
-                $bar4[0] = $bar[0] ? --$bar[0] : $bar[0];
-            ',
+                $bar4[0] = $bar[0] ? --$bar[0] : $bar[0];'."\n            ",
         ];
 
         yield [
             '<?php
                 $foo77 = $foo ? "$foo" : $foo;
-                $foo77 = $foo ? \'$foo\' : $foo;
-            ',
+                $foo77 = $foo ? \'$foo\' : $foo;'."\n            ",
         ];
 
         yield 'comments 1' => [
@@ -229,27 +226,23 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 $foo = $bar
-                    ? '.'
-                    : $foo;
-            ',
+                    ?'." ".'
+                    : $foo;'."\n            ",
             '<?php
                 $foo = $bar
                     ? $bar
-                    : $foo;
-            ',
+                    : $foo;'."\n            ",
         ];
 
         yield [
             '<?php
                 $foo = $bar # 1
                     ?  # 2
-                    : $foo; # 3
-            ',
+                    : $foo; # 3'."\n            ",
             '<?php
                 $foo = $bar # 1
                     ? $bar # 2
-                    : $foo; # 3
-            ',
+                    : $foo; # 3'."\n            ",
         ];
 
         yield [
@@ -286,14 +279,14 @@ EOT;
 <<<EOT
 
 EOT
-? '.'
+?'." ".'
 : $a
 ;
 
 <<<\'EOT\'
 
 EOT
-? '.'
+?'." ".'
 : $a
 ;
 ',
@@ -337,14 +330,12 @@ EOT
                 $f = !foo() ?  : 1;
                 $f = !$a ?  : 1;
                 $f = $a[1][!$a][@foo()] ?  : 1;
-                $f = !foo() ?  : 1;
-            ',
+                $f = !foo() ?  : 1;'."\n            ",
             '<?php
                 $f = !foo() ? !foo() : 1;
                 $f = !$a ? !$a : 1;
                 $f = $a[1][!$a][@foo()] ? $a[1][!$a][@foo()] : 1;
-                $f = !foo() ? !foo() : 1;
-            ',
+                $f = !foo() ? !foo() : 1;'."\n            ",
         ];
 
         yield [
@@ -401,8 +392,7 @@ EOT
                 $c = (++$a) ? (++$a) : $b;
                 $c = ($a++) ? ($a++) : $b;
                 $c = fooBar(++$a) ? fooBar(++$a) : $b;
-                $c = [++$a] ? [++$a] : $b;
-            ',
+                $c = [++$a] ? [++$a] : $b;'."\n            ",
         ];
 
         yield [
@@ -411,8 +401,7 @@ EOT
                 $c = (--$a) ? (--$a) : $b;
                 $c = ($a--) ? ($a--) : $b;
                 $c = fooBar(--$a) ? fooBar(--$a) : $b;
-                $c = [--$a] ? [--$a] : $b;
-            ',
+                $c = [--$a] ? [--$a] : $b;'."\n            ",
         ];
 
         yield [

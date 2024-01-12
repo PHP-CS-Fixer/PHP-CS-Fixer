@@ -79,8 +79,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         function __destruct() {}
                         /** @return Bar */
                         function __clone() {}
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'multiple returns' => [
@@ -90,8 +89,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      * @return Bar
                      * @return Baz
                      */
-                    function xyz() {}
-                ',
+                    function xyz() {}'."\n                ",
         ];
 
         yield 'non-root class' => [
@@ -190,26 +188,22 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php
                     class Foo {
                         /** @return self */ function my_foo(): self {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class Foo {
                         /** @return self */ function my_foo() {}
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'nullable self accessor' => [
             '<?php
                     class Foo {
                         /** @return self|null */ function my_foo(): ?self {}
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class Foo {
                         /** @return self|null */ function my_foo() {}
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'skip resource special type' => [
@@ -268,8 +262,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         /** @return Foo */ # comment 1
                         final/**/public/**/static/**/function/**/bar/**/(/**/$var/**/=/**/1/**/): Foo/**/{# comment 2
                         } // comment 3
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     class A
                     {
@@ -277,8 +270,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         /** @return Foo */ # comment 1
                         final/**/public/**/static/**/function/**/bar/**/(/**/$var/**/=/**/1/**/)/**/{# comment 2
                         } // comment 3
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'array and traversable' => [
@@ -295,21 +287,18 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php
                      namespace App;
                      /** @return array|Traversable */
-                     function my_foo() {}
-                ',
+                     function my_foo() {}'."\n                ",
         ];
 
         yield 'array and traversable with leading slash in a namespace' => [
             '<?php
                      namespace App;
                      /** @return array|\Traversable */
-                     function my_foo(): iterable {}
-                ',
+                     function my_foo(): iterable {}'."\n                ",
             '<?php
                      namespace App;
                      /** @return array|\Traversable */
-                     function my_foo() {}
-                ',
+                     function my_foo() {}'."\n                ",
         ];
 
         yield 'array and imported traversable in a namespace' => [
@@ -317,14 +306,12 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      namespace App;
                      use Traversable;
                      /** @return array|Traversable */
-                     function my_foo(): iterable {}
-                ',
+                     function my_foo(): iterable {}'."\n                ",
             '<?php
                      namespace App;
                      use Traversable;
                      /** @return array|Traversable */
-                     function my_foo() {}
-                ',
+                     function my_foo() {}'."\n                ",
         ];
 
         yield 'array and object aliased as traversable in a namespace' => [
@@ -332,8 +319,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      namespace App;
                      use Foo as Traversable;
                      /** @return array|Traversable */
-                     function my_foo() {}
-                ',
+                     function my_foo() {}'."\n                ",
         ];
 
         yield 'array of object and traversable' => [
@@ -354,22 +340,19 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         yield 'intersection types' => [
             '<?php
                     /** @return Bar&Baz */
-                    function bar() {}
-                ',
+                    function bar() {}'."\n                ",
         ];
 
         yield 'very long class name before ampersand' => [
             '<?php
                     /** @return Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */
-                    function bar() {}
-                ',
+                    function bar() {}'."\n                ",
         ];
 
         yield 'very long class name after ampersand' => [
             '<?php
                     /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
-                    function bar() {}
-                ',
+                    function bar() {}'."\n                ",
         ];
 
         yield 'arrow function' => [
@@ -420,13 +403,11 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php
                 class Foo {
                     /** @return static */ function my_foo(): self {}
-                }
-            ',
+                }'."\n            ",
             '<?php
                 class Foo {
                     /** @return static */ function my_foo() {}
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'skip mixed special type' => [
@@ -467,14 +448,12 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 final class Foo {
                     /** @return static */
                     public function something(): static {}
-                }
-            ',
+                }'."\n            ",
             '<?php
                 final class Foo {
                     /** @return static */
                     public function something() {}
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'nullable static' => [
@@ -482,14 +461,12 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 final class Foo {
                     /** @return null|static */
                     public function something(): ?static {}
-                }
-            ',
+                }'."\n            ",
             '<?php
                 final class Foo {
                     /** @return null|static */
                     public function something() {}
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'mixed' => [
@@ -497,14 +474,12 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 final class Foo {
                     /** @return mixed */
                     public function something(): mixed {}
-                }
-            ',
+                }'."\n            ",
             '<?php
                 final class Foo {
                     /** @return mixed */
                     public function something() {}
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'union types' => [

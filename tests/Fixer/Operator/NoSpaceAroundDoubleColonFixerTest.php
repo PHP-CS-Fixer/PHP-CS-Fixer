@@ -47,13 +47,11 @@ final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
             '<?php
                 echo F\B::class;
                 echo A\B::     /**/ c;
-                echo C\B/**/::c;
-            ',
+                echo C\B/**/::c;'."\n            ",
             '<?php
                 echo F\B::    class;
                 echo A\B   ::     /**/ c;
-                echo C\B/**/::   c;
-            ',
+                echo C\B/**/::   c;'."\n            ",
         ];
 
         yield [

@@ -59,8 +59,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
     namespace Foo;
 ',
             '<?php
-    // Foo
-    '.'
+    // Foo'."\n    ".'
     namespace Foo;
 ',
         ];
@@ -71,8 +70,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 namespace Foo;
 ',
             '<?php
-// Foo
-    '.'
+// Foo'."\n    ".'
 namespace Foo;
 ',
         ];

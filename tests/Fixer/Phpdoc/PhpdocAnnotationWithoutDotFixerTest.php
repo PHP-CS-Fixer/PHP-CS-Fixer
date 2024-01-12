@@ -94,13 +94,13 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
             // invalid char inside line won't crash the fixer
             '<?php
     /**
-     * @var string this: '.\chr(174).' is an odd character
-     * @var string This: '.\chr(174).' is an odd character 2nd time。
+     * @var string this:'." ".\chr(174).' is an odd character
+     * @var string This:'." ".\chr(174).' is an odd character 2nd time。
      */',
             '<?php
     /**
-     * @var string This: '.\chr(174).' is an odd character.
-     * @var string This: '.\chr(174).' is an odd character 2nd time。
+     * @var string This:'." ".\chr(174).' is an odd character.
+     * @var string This:'." ".\chr(174).' is an odd character 2nd time。
      */',
         ];
 
@@ -152,7 +152,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      */',
             '<?php
     /**
-     * @throws \Exception having whitespaces after dot, yet I am fixed.   '.'
+     * @throws \Exception having whitespaces after dot, yet I am fixed.'."   ".'
      */',
         ];
 
@@ -163,7 +163,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      */',
             '<?php
     /**
-     * @throws \Exception having tabs after dot, yet I am fixed.		'.'
+     * @throws \Exception having tabs after dot, yet I am fixed.'."		".'
      */',
         ];
 
@@ -192,8 +192,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      *
      * @return null|object an object if things check out, null otherwise
      */
-    function extractObjectToPopulate($class, array $context, $key = null) {}
-                ',
+    function extractObjectToPopulate($class, array $context, $key = null) {}'."\n                ",
         ];
 
         yield [

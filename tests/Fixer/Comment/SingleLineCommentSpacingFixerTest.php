@@ -53,8 +53,7 @@ final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
 
                 // Matrix:
                 //   [1,2]
-                //   [3,4]
-            ',
+                //   [3,4]'."\n            ",
         ];
 
         yield [

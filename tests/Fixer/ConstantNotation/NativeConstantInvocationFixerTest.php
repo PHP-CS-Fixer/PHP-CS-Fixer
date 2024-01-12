@@ -483,13 +483,11 @@ try {
             '<?php
                 echo \PHP_VERSION . \PHP_EOL; // built-in constants to have backslash
                 echo MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
-                echo \Dont\Touch\Namespaced\CONSTANT;
-            ',
+                echo \Dont\Touch\Namespaced\CONSTANT;'."\n            ",
             '<?php
                 echo \PHP_VERSION . PHP_EOL; // built-in constants to have backslash
                 echo \MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
-                echo \Dont\Touch\Namespaced\CONSTANT;
-            '
+                echo \Dont\Touch\Namespaced\CONSTANT;'."\n            "
         );
     }
 

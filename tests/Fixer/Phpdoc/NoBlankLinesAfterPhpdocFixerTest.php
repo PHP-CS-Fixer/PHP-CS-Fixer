@@ -226,8 +226,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
             '<?php
                 /**
                  * PHPDoc with a line with space
-                 */
-                '.'
+                 */'."\n                ".'
                 class Foo {}'
         );
     }
@@ -243,8 +242,7 @@ class Foo {}',
             '<?php
     /**
      * PHPDoc with a line with space
-     */
-    '.'
+     */'."\n    ".'
 class Foo {}'
         );
     }

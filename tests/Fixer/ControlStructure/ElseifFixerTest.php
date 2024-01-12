@@ -71,13 +71,11 @@ final class ElseifFixerTest extends AbstractFixerTestCase
             '<?php
                     if ($a) {
                     } elseif/**/ ($b) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     if ($a) {
                     } else /**/ if ($b) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -85,14 +83,12 @@ final class ElseifFixerTest extends AbstractFixerTestCase
                     if ($a) {
                     } elseif//
                         ($b) {
-                    }
-                ',
+                    }'."\n                ",
             '<?php
                     if ($a) {
                     } else //
                         if ($b) {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [

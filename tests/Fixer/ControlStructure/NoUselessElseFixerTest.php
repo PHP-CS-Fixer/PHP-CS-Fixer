@@ -97,25 +97,21 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
                     else {
                         ?><?php
                         echo 4;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
             '<?php
                     if (true)
-                        echo 3;
-                    '.'
+                        echo 3;'."\n                    ".'
                     ?><?php
-                echo 4;
-                ',
+                echo 4;'."\n                ",
             '<?php
                     if (true)
                         echo 3;
                     else
                     ?><?php
-                echo 4;
-                ',
+                echo 4;'."\n                ",
         ];
 
         yield [
@@ -151,12 +147,10 @@ else?><?php echo 5;',
                             return 1;
                         } elseif($b) {
                             %s
-                        }  '.'
-                            echo 662;
-                        '.'
+                        }'."  ".'
+                            echo 662;'."\n                        ".'
                     }
-                }
-            ';
+                }'."\n            ";
 
         $input =
             '<?php
@@ -173,8 +167,7 @@ else?><?php echo 5;',
                             echo 662;
                         }
                     }
-                }
-            ';
+                }'."\n            ";
 
         yield from self::generateCases($expected, $input);
 
@@ -190,8 +183,7 @@ else?><?php echo 5;',
                             echo 3;
                         }
                     }
-                }
-            ';
+                }'."\n            ";
 
         yield from self::generateCases($expected);
 
@@ -211,8 +203,7 @@ else?><?php echo 5;',
                             echo 321;
                         }
                     }
-                }
-            ';
+                }'."\n            ";
 
         yield from self::generateCases($expected);
 
@@ -230,8 +221,7 @@ else?><?php echo 5;',
                         return 1;
                     }
                 else
-                    echo 4;
-            ',
+                    echo 4;'."\n            ",
         ];
 
         yield [
@@ -247,8 +237,7 @@ else?><?php echo 5;',
                     } elseif($e)
                         return 1;
                 } else
-                    echo 4;
-            ',
+                    echo 4;'."\n            ",
         ];
     }
 
@@ -267,12 +256,10 @@ else?><?php echo 5;',
                 while(true) {
                     if ($a) {
                         %s
-                    }  '.'
-                        echo 1;
-                    '.'
+                    }'."  ".'
+                        echo 1;'."\n                    ".'
                 }
-            }
-        ';
+            }'."\n        ";
 
         $input = '<?php
             while(true) {
@@ -283,8 +270,7 @@ else?><?php echo 5;',
                         echo 1;
                     }
                 }
-            }
-        ';
+            }'."\n        ";
 
         yield from self::generateCases($expected, $input);
 
@@ -292,12 +278,10 @@ else?><?php echo 5;',
             '<?php
                 if ($a) {
                     GOTO jump;
-                }  '.'
-                    echo 1789;
-                '.'
+                }'."  ".'
+                    echo 1789;'."\n                ".'
 
-                jump:
-            ',
+                jump:'."\n            ",
             '<?php
                 if ($a) {
                     GOTO jump;
@@ -305,8 +289,7 @@ else?><?php echo 5;',
                     echo 1789;
                 }
 
-                jump:
-            ',
+                jump:'."\n            ",
         ];
     }
 
@@ -325,13 +308,10 @@ else?><?php echo 5;',
                     if ($x) {
                         if ($y) {
                             return 1;
-                        }  '.'
-                            return 2;
-                        '.'
-                    }  '.'
-                        return 3;
-                    '.'
-                ',
+                        }'."  ".'
+                            return 2;'."\n                        ".'
+                    }'."  ".'
+                        return 3;'."\n                    ".''."\n                ",
             '<?php
                     if ($x) {
                         if ($y) {
@@ -341,8 +321,7 @@ else?><?php echo 5;',
                         }
                     } else {
                         return 3;
-                    }
-                ',
+                    }'."\n                ",
         ];
     }
 
@@ -359,14 +338,11 @@ else?><?php echo 5;',
         yield [
             '<?php
                     if (false)
-                        echo 1;
-                    '.'
-                ',
+                        echo 1;'."\n                    ".''."\n                ",
             '<?php
                     if (false)
                         echo 1;
-                    else{}
-                ',
+                    else{}'."\n                ",
         ];
 
         yield [
@@ -393,8 +369,7 @@ else?><?php echo 5;',
                     }/**/  /**/
                         /**/
                         //
-                    /**/
-                ',
+                    /**/'."\n                ",
             '<?php
                     if /**/($a) /**/{ //
                         /**/
@@ -403,8 +378,7 @@ else?><?php echo 5;',
                     }/**/ else /**/{
                         /**/
                         //
-                    }/**/
-                ',
+                    }/**/'."\n                ",
         ];
 
         yield [
@@ -421,8 +395,7 @@ else?><?php echo 5;',
                         //
                         return;
                     }  //
-                    //
-                ',
+                    //'."\n                ",
             '<?php
                     if ($a) {
                         if ($b) {
@@ -436,8 +409,7 @@ else?><?php echo 5;',
                         }//
                         return;
                     } else {//
-                    }//
-                ',
+                    }//'."\n                ",
         ];
     }
 
@@ -457,8 +429,7 @@ else?><?php echo 5;',
                         //
                     } else {
                         echo 0;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -467,8 +438,7 @@ else?><?php echo 5;',
                         echo "a";
                     else
 
-                    echo "a";
-                ',
+                    echo "a";'."\n                ",
         ];
 
         yield [
@@ -493,8 +463,7 @@ else?><?php echo 5;',
                         if ($b) return;
                     } else {
                         echo 1;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -503,8 +472,7 @@ else?><?php echo 5;',
                         if ($b) throw new \Exception();
                     } else {
                         echo 1;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -513,8 +481,7 @@ else?><?php echo 5;',
                         if ($b) { throw new \Exception(); }
                     } else {
                         echo 1;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -525,8 +492,7 @@ else?><?php echo 5;',
                     else
                         echo 40;
 
-                    echo "end";
-                ',
+                    echo "end";'."\n                ",
         ];
 
         yield [
@@ -537,8 +503,7 @@ else?><?php echo 5;',
                     else
                         echo 40;
 
-                    echo "end";
-                ',
+                    echo "end";'."\n                ",
         ];
 
         yield [
@@ -549,8 +514,7 @@ else?><?php echo 5;',
                     else
                         echo 4;
 
-                    echo "end";
-                ',
+                    echo "end";'."\n                ",
         ];
 
         yield [
@@ -564,8 +528,7 @@ else?><?php echo 5;',
                     elseif (false)
                         die;
                     else
-                        echo 7;
-                ',
+                        echo 7;'."\n                ",
         ];
 
         yield [
@@ -578,8 +541,7 @@ else?><?php echo 5;',
                         } else {
                             $a--;
                         }
-                    });
-                ',
+                    });'."\n                ",
         ];
 
         yield [
@@ -594,8 +556,7 @@ else?><?php echo 5;',
                         } else {
                             $a--;
                         }
-                    });
-                ',
+                    });'."\n                ",
         ];
 
         yield [
@@ -655,8 +616,7 @@ else?><?php echo 5;',
                     %s
                 } else {
                     echo 123;
-                }
-            ';
+                }'."\n            ";
 
         foreach ($cases as $index => $case) {
             yield [sprintf('PHP8 Negative case %d', $index) => sprintf($template, $case)];
@@ -690,8 +650,7 @@ else?><?php echo 5;',
                         echo 2;
                     else if ($b) /**/ echo 3;
                     else
-                        echo 4;
-                    ';
+                        echo 4;'."\n                    ";
 
         yield [[2, 11], $source, 13];
 
@@ -714,8 +673,7 @@ else?><?php echo 5;',
                     } elseif ($c) {
                         echo 4;
                     } else
-                        echo 1;
-                    ';
+                        echo 1;'."\n                    ";
 
         yield [[2, 25], $source, 27];
 
@@ -827,8 +785,7 @@ else?><?php echo 5;',
 
                     } else {
                         return 3;
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield [
@@ -839,8 +796,7 @@ else?><?php echo 5;',
             '<?php
                     if ($v) { $ret = "foo"; }
                     else
-                        if($a){}else{throw new Exception($i);}
-                ',
+                        if($a){}else{throw new Exception($i);}'."\n                ",
         ];
 
         yield [
@@ -851,8 +807,7 @@ else?><?php echo 5;',
             '<?php
                     if ($v) { $ret = "foo"; }
                     else
-                        for($i =0;$i < 1;++$i) throw new Exception($i);
-                ',
+                        for($i =0;$i < 1;++$i) throw new Exception($i);'."\n                ",
         ];
 
         yield [
@@ -865,8 +820,7 @@ else?><?php echo 5;',
             '<?php
                     if ($v) { $ret = "foo"; }
                     else
-                        while(false){throw new Exception($i);}
-                ',
+                        while(false){throw new Exception($i);}'."\n                ",
         ];
 
         yield [
@@ -879,8 +833,7 @@ else?><?php echo 5;',
             '<?php
                     if ($v) { $ret = "foo"; }
                     else
-                        foreach($a as $b){throw new Exception($i);}
-                ',
+                        foreach($a as $b){throw new Exception($i);}'."\n                ",
         ];
 
         yield [
@@ -893,8 +846,7 @@ else?><?php echo 5;',
             '<?php
                     if ($v) { $ret = "foo"; }
                     else
-                        while(false)throw new Exception($i);
-                ',
+                        while(false)throw new Exception($i);'."\n                ",
         ];
 
         yield [
@@ -904,8 +856,7 @@ else?><?php echo 5;',
             '<?php
                     if ($v) { $ret = "foo"; }
                     elseif($a)
-                        do{throw new Exception($i);}while(false);
-                ',
+                        do{throw new Exception($i);}while(false);'."\n                ",
         ];
 
         yield [
@@ -923,8 +874,7 @@ else?><?php echo 5;',
                     echo 1;
                     if ($a) if ($a) while(true)echo 1;
                     elseif($c) while(true){if($d){echo 2;}};
-                    echo 123;
-                ',
+                    echo 123;'."\n                ",
         ];
 
         yield [
@@ -938,8 +888,7 @@ else?><?php echo 5;',
             '<?php
                     echo 1;
                     if ($a) echo 2;
-                    else die; echo 3;
-                ',
+                    else die; echo 3;'."\n                ",
         ];
 
         yield [
@@ -952,8 +901,7 @@ else?><?php echo 5;',
                     if ($a)
                         die/**/;
                     else
-                        /**/die/**/;#
-                ',
+                        /**/die/**/;#'."\n                ",
         ];
 
         yield [
@@ -966,8 +914,7 @@ else?><?php echo 5;',
                     if ($a)
                         die/**/;
                     else
-                        /**/die/**/?>
-                ',
+                        /**/die/**/?>'."\n                ",
         ];
     }
 

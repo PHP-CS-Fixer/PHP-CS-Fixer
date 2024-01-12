@@ -63,56 +63,46 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
             '<?php /* header comment */ $foo = true;
                 /*** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
             '<?php /* header comment */ $foo = true;
                 // @var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
             '<?php /* header comment */ $foo = true;
                 //@var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
             '<?php /* header comment */ $foo = true;
                 # @var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
             '<?php /* header comment */ $foo = true;
                 #@var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";'."\n                ",
         ];
 
         yield [

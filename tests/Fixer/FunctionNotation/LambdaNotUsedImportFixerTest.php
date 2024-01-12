@@ -94,16 +94,14 @@ $f = function() use ($a) { return function() use ($a) { return function() use ($
 $f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
 
 // do fix
-$f = function() { return function() { return function() { return function() { }; }; }; };
-                ',
+$f = function() { return function() { return function() { return function() { }; }; }; };'."\n                ",
             '<?php
 // do not fix
 $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { echo $a; }; }; }; };
 $f = function() use ($b) { return function($b) { return function($b) { return function($b) { echo $b; }; }; }; };
 
 // do fix
-$f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { }; }; }; };
-                ',
+$f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { }; }; }; };'."\n                ",
         ];
 
         yield 'anonymous class' => [

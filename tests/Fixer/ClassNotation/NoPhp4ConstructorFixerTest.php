@@ -58,8 +58,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     $a = new class /**/ extends Bar1{};
                     $a = new class  extends Bar2 implements Foo{};
                     $a = new class    extends Bar3 implements Foo, Foo2{};
-                    $a = new class {}?>
-                ',
+                    $a = new class {}?>'."\n                ",
         ];
 
         yield 'simple class 1' => [

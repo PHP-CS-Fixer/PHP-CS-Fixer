@@ -69,8 +69,7 @@ final class SwitchAnalyzerTest extends TestCase
                     case 1: return 2;
                     case 3: return 4;
                     default: return 5;
-                }
-            ',
+                }'."\n            ",
             [13, 23, 31],
         ];
 
@@ -80,8 +79,7 @@ final class SwitchAnalyzerTest extends TestCase
                     case 1: return 2;
                     default: return 3;
                     case 4: return 5;
-                endswitch;
-            ',
+                endswitch;'."\n            ",
             [7, 12, 20, 30],
         ];
     }

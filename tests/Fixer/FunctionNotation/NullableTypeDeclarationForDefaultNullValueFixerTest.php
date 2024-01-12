@@ -305,8 +305,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield 'do not fix pre PHP 8.1' => [
             '<?php
                 function foo1(&/*comment*/$param = null) {}
-                function foo2(?string &/*comment*/$param2 = null) {}
-            ',
+                function foo2(?string &/*comment*/$param2 = null) {}'."\n            ",
         ];
 
         yield [

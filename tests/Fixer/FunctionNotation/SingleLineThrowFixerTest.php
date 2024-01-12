@@ -188,8 +188,7 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     throw new Exception("It is foo.", 1);
                 } else {
                     throw new \Exception("It is not foo.", 0);
-                }
-            ',
+                }'."\n            ",
             '<?php
                 if ($foo) {
                     throw new Exception(
@@ -200,8 +199,7 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     throw new \Exception(
                         "It is not foo.", 0
                     );
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield [
@@ -326,8 +324,7 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     1 => $function->one(),
                     2 => $function->two(),
                     default => throw new \NotOneOrTwo()
-                };
-            ',
+                };'."\n            ",
         ];
 
         yield [
@@ -337,8 +334,7 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     2 => throw new Exception("Number 2 is not allowed."),
                     1 => $function->three(),
                     default => throw new \NotOneOrTwo()
-                };
-            ',
+                };'."\n            ",
         ];
 
         yield [

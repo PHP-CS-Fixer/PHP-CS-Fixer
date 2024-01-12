@@ -35,7 +35,7 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 
         $input = '<?php
 /**
- * Test         '.'
+ * Test'."         ".'
  */';
         $this->doTest($expected, $input);
     }

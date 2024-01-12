@@ -38,8 +38,7 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
                     switch($foo):
                         case 3:
                             continue;
-                    endswitch?>
-                ',
+                    endswitch?>'."\n                ",
         ];
 
         yield 'alternative syntax ||' => [
@@ -413,15 +412,13 @@ case $b:
                 case "a":
                     echo __FILE__;
                     break;
-            }
-            ',
+            }'."\n            ",
             '<?php
             switch($a) {
                 case "a":
                     echo __FILE__;
                     continue;
-            }
-            ',
+            }'."\n            ",
             'numeric literal separator' => [
                 '<?php
 switch ($a) {

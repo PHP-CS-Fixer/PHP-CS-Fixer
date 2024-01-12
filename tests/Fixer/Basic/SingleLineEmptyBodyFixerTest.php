@@ -40,8 +40,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             '<?php class Foo
             {
                 public function bar () {}
-            }
-            ',
+            }'."\n            ",
         ];
 
         yield 'non-empty function body' => [
@@ -56,8 +55,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f4()
                 {
                     return true;
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'classes' => [
@@ -66,8 +64,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             class Bar extends BarParent {}
             class Baz implements BazInterface {}
             abstract class A {}
-            final class F {}
-            ',
+            final class F {}'."\n            ",
             '<?php
             class Foo
             {
@@ -80,8 +77,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             final class F
             {
 
-            }
-            ',
+            }'."\n            ",
         ];
 
         yield 'multiple functions' => [
@@ -90,8 +86,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f1() {}
                 function f2() {}
                 function f3() {}
-                function notThis2(){ return 1; }
-            ',
+                function notThis2(){ return 1; }'."\n            ",
             '<?php
                 function notThis1()    { return 1; }
                 function f1()
@@ -101,42 +96,36 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f3()
                 {
                 }
-                function notThis2(){ return 1; }
-            ',
+                function notThis2(){ return 1; }'."\n            ",
         ];
 
         yield 'remove spaces' => [
             '<?php
                 function f1() {}
                 function f2() {}
-                function f3() {}
-            ',
+                function f3() {}'."\n            ",
             '<?php
                 function f1() { }
                 function f2() {  }
-                function f3() {    }
-            ',
+                function f3() {    }'."\n            ",
         ];
 
         yield 'add spaces' => [
             '<?php
                 function f1() {}
                 function f2() {}
-                function f3() {}
-            ',
+                function f3() {}'."\n            ",
             '<?php
                 function f1(){}
                 function f2(){}
-                function f3(){}
-            ',
+                function f3(){}'."\n            ",
         ];
 
         yield 'with return types' => [
             '<?php
                 function f1(): void {}
                 function f2(): \Foo\Bar {}
-                function f3(): ?string {}
-            ',
+                function f3(): ?string {}'."\n            ",
             '<?php
                 function f1(): void
                 {}
@@ -144,8 +133,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f3(): ?string {
 
 
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'abstract functions' => [
@@ -154,15 +142,13 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f2() {}
                 abstract function f3();
             }
-            if (true)    {    }
-            ',
+            if (true)    {    }'."\n            ",
             '<?php abstract class C {
                 abstract function f1();
                 function f2()    {    }
                 abstract function f3();
             }
-            if (true)    {    }
-            ',
+            if (true)    {    }'."\n            ",
         ];
 
         yield 'every token in separate line' => [
@@ -172,8 +158,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 (
                 )
                 :
-                void {}
-            ',
+                void {}'."\n            ",
             '<?php
                 function
                 foo
@@ -182,8 +167,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 :
                 void
                 {
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'comments before body' => [
@@ -200,8 +184,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f4()
                 /** foo */
                 /** bar */
-                {}
-            ',
+                {}'."\n            ",
             '<?php
                 function f1()
                 // foo
@@ -219,46 +202,37 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                 function f4()
                 /** foo */
                 /** bar */
-                {    }
-            ',
+                {    }'."\n            ",
         ];
 
         yield 'anonymous class' => [
             '<?php
-                $o = new class() {};
-            ',
+                $o = new class() {};'."\n            ",
             '<?php
                 $o = new class() {
-                };
-            ',
+                };'."\n            ",
         ];
 
         yield 'anonymous function' => [
             '<?php
-                $x = function () {};
-            ',
+                $x = function () {};'."\n            ",
             '<?php
                 $x = function () {
-                };
-            ',
+                };'."\n            ",
         ];
 
         yield 'interface' => [
-            '<?php interface Foo {}
-            ',
+            '<?php interface Foo {}'."\n            ",
             '<?php interface Foo
                 {
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'trait' => [
-            '<?php trait Foo {}
-            ',
+            '<?php trait Foo {}'."\n            ",
             '<?php trait Foo
                 {
-                }
-            ',
+                }'."\n            ",
         ];
     }
 
@@ -281,15 +255,13 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             '<?php class Foo
                 {
                     public function __construct(private int $x, private int $y) {}
-                }
-            ',
+                }'."\n            ",
             '<?php class Foo
                 {
                     public function __construct(private int $x, private int $y)
                     {
                     }
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'multi-line promoted properties' => [
@@ -299,8 +271,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                         private int $x,
                         private int $y,
                     ) {}
-                }
-            ',
+                }'."\n            ",
             '<?php class Foo
                 {
                     public function __construct(
@@ -308,8 +279,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
                         private int $y,
                     ) {
                     }
-                }
-            ',
+                }'."\n            ",
         ];
     }
 
@@ -329,12 +299,10 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [
-            '<?php enum Foo {}
-            ',
+            '<?php enum Foo {}'."\n            ",
             '<?php enum Foo
                 {
-                }
-            ',
+                }'."\n            ",
         ];
     }
 }

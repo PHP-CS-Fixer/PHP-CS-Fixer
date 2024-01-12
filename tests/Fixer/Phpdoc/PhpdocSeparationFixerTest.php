@@ -632,7 +632,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
      *
      * @bar 123
      *
-     * {@inheritdoc}       '.'
+     * {@inheritdoc}'."       ".'
      *
      *   @param string $expected
      * @param string $input
@@ -643,7 +643,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
      * Foo
      * @bar 123
      *
-     * {@inheritdoc}       '.'
+     * {@inheritdoc}'."       ".'
      *   @param string $expected
      * @param string $input
      */';

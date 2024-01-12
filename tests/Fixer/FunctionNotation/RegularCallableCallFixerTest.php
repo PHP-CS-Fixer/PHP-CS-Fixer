@@ -66,19 +66,16 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func([$obj, "myCallbackMethod"], 1, 2);
                 call_user_func([$obj, $cb."Method"], 1, 2);
                 call_user_func(array(__NAMESPACE__ ."Foo", "test"), 1, 2);
-                call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`
-            ',
+                call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`'."\n            ",
         ];
 
         yield 'call by variable' => [
             '<?php
                 $c(1, 2);
-                $a["b"]["c"](1, 2);
-            ',
+                $a["b"]["c"](1, 2);'."\n            ",
             '<?php
                 call_user_func($c, 1, 2);
-                call_user_func($a["b"]["c"], 1, 2);
-            ',
+                call_user_func($a["b"]["c"], 1, 2);'."\n            ",
         ];
 
         yield 'call with comments' => [
@@ -126,25 +123,21 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 ($f->c)(1, 2);
                 ($f->{c})(1, 2);
                 ($x["y"]->c)(1, 2);
-                ($x["y"]->{"c"})(1, 2);
-            ',
+                ($x["y"]->{"c"})(1, 2);'."\n            ",
             '<?php
                 call_user_func($f->c, 1, 2);
                 call_user_func($f->{c}, 1, 2);
                 call_user_func($x["y"]->c, 1, 2);
-                call_user_func($x["y"]->{"c"}, 1, 2);
-            ',
+                call_user_func($x["y"]->{"c"}, 1, 2);'."\n            ",
         ];
 
         yield 'call by anon-function' => [
             '<?php
                 (function ($a, $b) { var_dump($a, $b); })(1, 2);
-                (static function ($a, $b) { var_dump($a, $b); })(1, 2);
-            ',
+                (static function ($a, $b) { var_dump($a, $b); })(1, 2);'."\n            ",
             '<?php
                 call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
-                call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
-            ',
+                call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);'."\n            ",
         ];
 
         yield 'complex cases' => [
@@ -154,16 +147,14 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 (function (){})();
                 ($a["b"]["c"]->a)(1, 2, 3, 4);
                 ($a::$b)(1, 2);
-                ($a[1]::$b[2][3])([&$c], array(&$d));
-            ',
+                ($a[1]::$b[2][3])([&$c], array(&$d));'."\n            ",
             '<?php
                 call_user_func(\'a\'.$a.$b, 1, 2);
                 call_user_func($a/**/.$b, 1, 2);
                 \call_user_func(function (){});
                 call_user_func($a["b"]["c"]->a, 1, 2, 3, 4);
                 call_user_func($a::$b, 1, 2);
-                call_user_func($a[1]::$b[2][3], [&$c], array(&$d));
-            ',
+                call_user_func($a[1]::$b[2][3], [&$c], array(&$d));'."\n            ",
         ];
 
         yield [
@@ -175,8 +166,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php
                 if (!function_exists("call_user_func")) {
                     function call_user_func($foo){}
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'function name with escaped slash' => [
@@ -247,11 +237,9 @@ class Foo {
     {
         yield 'call by variable' => [
             '<?php
-                $a{"b"}{"c"}(1, 2);
-            ',
+                $a{"b"}{"c"}(1, 2);'."\n            ",
             '<?php
-                call_user_func($a{"b"}{"c"}, 1, 2);
-            ',
+                call_user_func($a{"b"}{"c"}, 1, 2);'."\n            ",
         ];
     }
 

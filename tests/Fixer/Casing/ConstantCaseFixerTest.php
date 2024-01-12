@@ -230,16 +230,14 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
                     final const TRUE = 1;
                     public final const FALSE = true;
                     final public const NULL = null;
-                }
-            ',
+                }'."\n            ",
             '<?php
                 class Foo
                 {
                     final const TRUE = 1;
                     public final const FALSE = TRUE;
                     final public const NULL = NULL;
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'enum and switch' => [
@@ -259,8 +257,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
                                 break;
                         }
                     }
-                }
-            ',
+                }'."\n            ",
             '<?php
                 enum Foo
                 {
@@ -277,21 +274,18 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
                                 break;
                         }
                     }
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'enum' => [
             '<?php
                 $y = false;
                 enum Foo: string { case FALSE = "false"; }
-                $x = true;
-            ',
+                $x = true;'."\n            ",
             '<?php
                 $y = FALSE;
                 enum Foo: string { case FALSE = "false"; }
-                $x = TRUE;
-            ',
+                $x = TRUE;'."\n            ",
         ];
     }
 }

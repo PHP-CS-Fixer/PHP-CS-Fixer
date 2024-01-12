@@ -55,11 +55,9 @@ Files that were not fixed due to errors reported during %s:
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
             $startWith .= sprintf(
                 '
-
-                            '.'
-        [%s]  '.'
-        %s (%d)    '.'
-                            '.'
+'."\n                            ".'
+        [%s]'."  ".'
+        %s (%d)'."    ".''."\n                            ".'
 ',
                 \get_class($source),
                 $source->getMessage(),

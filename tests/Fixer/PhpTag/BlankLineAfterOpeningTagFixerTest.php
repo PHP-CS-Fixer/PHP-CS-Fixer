@@ -57,8 +57,7 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    '.'
+            '<?php'."\n    ".'
     $c = 4;
     echo 5;',
         ];

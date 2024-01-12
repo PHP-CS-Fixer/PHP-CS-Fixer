@@ -112,8 +112,7 @@ class Point {
                 private $foo3;
 
                 public function __construct(/* public */ $foo){} public $foo4;
-            }
-        ';
+            }'."\n        ";
 
         Tokens::clearCache();
 

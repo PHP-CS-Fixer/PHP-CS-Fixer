@@ -108,8 +108,7 @@ $a, $b,$c, $d#3
   #8
   #9
  /*10*/     /**11
-*/
- '.'
+*/'."\n ".'
 ;',
             '<?php
 
@@ -137,16 +136,14 @@ isset
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    $a = isset($a, $b)  ;
-                ',
+                    $a = isset($a, $b)  ;'."\n                ",
             '<?php
                     $a = isset($a) && isset($b) && isset($c) && isset($d) && isset($e) && isset($f);
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    $a = isset($a) && isset($b);
-                ',
+                    $a = isset($a) && isset($b);'."\n                ",
         ];
 
         yield [
@@ -158,13 +155,11 @@ isset
             '<?php
                     $a = isset($a, $b)   && isset($c) === false;
                     $a = isset($a, $b)   && isset($c) | false;
-                    $a = isset($a, $b)   && isset($c) ^ false;
-                ',
+                    $a = isset($a, $b)   && isset($c) ^ false;'."\n                ",
             '<?php
                     $a = isset($a) && isset($b) && isset($c) === false;
                     $a = isset($a) && isset($b) && isset($c) | false;
-                    $a = isset($a) && isset($b) && isset($c) ^ false;
-                ',
+                    $a = isset($a) && isset($b) && isset($c) ^ false;'."\n                ",
         ];
 
         // don't fix cases
@@ -184,8 +179,7 @@ isset
                     //
                     $a = false === isset($b) && isset($c);
                     $a = false | isset($b) && isset($c);
-                    $a = false ^ isset($b) && isset($c);
-                ',
+                    $a = false ^ isset($b) && isset($c);'."\n                ",
         ];
 
         yield [
@@ -196,8 +190,7 @@ isset
             '<?php
                 class A {function isset(){}} // isset($b) && isset($c)
                 $a = new A(); /** isset($b) && isset($c) */
-                if (isset($b) && $a->isset()) {}
-            ',
+                if (isset($b) && $a->isset()) {}'."\n            ",
         ];
     }
 }

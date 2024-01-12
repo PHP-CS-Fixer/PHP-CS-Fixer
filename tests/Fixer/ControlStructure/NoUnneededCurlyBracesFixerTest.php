@@ -50,16 +50,14 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     switch($a) {
                         case 2: echo 3; break;
                     }
-                    echo 4;  echo 5; //
-                ',
+                    echo 4;  echo 5; //'."\n                ",
             '<?php
                     { { echo 0; } } //
                     {echo 1;}
                     switch($a) {
                         case 2: {echo 3; break;}
                     }
-                    echo 4; { echo 5; }//
-                ',
+                    echo 4; { echo 5; }//'."\n                ",
         ];
 
         yield 'no fixes' => [
@@ -80,8 +78,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
                     class A extends B {}
                     interface D {}
-                    trait E {}
-                ',
+                    trait E {}'."\n                ",
         ];
 
         yield 'no fixes II' => [
@@ -100,8 +97,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
                     } finally {
 
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'no fix namespace block' => [
@@ -111,8 +107,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     namespace A {
                     }
                     namespace A\B {
-                    }
-                ',
+                    }'."\n                ",
         ];
 
         yield 'provideNoFix7Cases' => [
@@ -126,8 +121,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                         public function getBar(): array
                         {
                         }
-                    }
-                ',
+                    }'."\n                ",
         ];
     }
 
@@ -146,8 +140,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         yield 'no fixes, offset access syntax with curly braces' => [
             '<?php
                     echo ${$a};
-                    echo $a{1};
-                ',
+                    echo $a{1};'."\n                ",
         ];
     }
 
@@ -188,8 +181,7 @@ namespace Foo {
         yield [
             '<?php
             namespace Foo7;
-                function Bar(){}
-            ',
+                function Bar(){}'."\n            ",
             '<?php
             namespace Foo7 {
                 function Bar(){}

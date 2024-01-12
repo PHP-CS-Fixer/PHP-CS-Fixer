@@ -107,13 +107,11 @@ abstract class A
             '<?php
                 $a = rtrim($b);
                 $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-            ',
+                mbereg_search_getregs();'."\n            ",
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-            ',
+                mbereg_search_getregs();'."\n            ",
             ['sets' => ['@internal']],
         ];
 
@@ -121,13 +119,11 @@ abstract class A
             '<?php
                 $a = chop($b);
                 $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();
-            ',
+                mb_ereg_search_getregs();'."\n            ",
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
-                mb_ereg_search_getregs();
-            ',
+                mb_ereg_search_getregs();'."\n            ",
             ['sets' => ['@IMAP']],
         ];
 
@@ -136,14 +132,12 @@ abstract class A
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
                 mb_ereg_search_getregs();
-                mktime();
-            ',
+                mktime();'."\n            ",
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
                 mbereg_search_getregs();
-                mktime();
-            ',
+                mktime();'."\n            ",
             ['sets' => ['@mbreg']],
         ];
 
@@ -157,8 +151,7 @@ abstract class A
                 $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
                 mktime($a);
-                echo gmmktime(1, 2, 3, 4, 5, 6);
-            ',
+                echo gmmktime(1, 2, 3, 4, 5, 6);'."\n            ",
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
@@ -168,8 +161,7 @@ abstract class A
                 $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
                 mktime($a);
-                echo gmmktime(1, 2, 3, 4, 5, 6);
-            ',
+                echo gmmktime(1, 2, 3, 4, 5, 6);'."\n            ",
             ['sets' => ['@all']],
         ];
 
@@ -177,13 +169,11 @@ abstract class A
             '<?php
                 $a = chop($b);
                 $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();
-            ',
+                mb_ereg_search_getregs();'."\n            ",
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-            ',
+                mbereg_search_getregs();'."\n            ",
             ['sets' => ['@IMAP', '@mbreg']],
         ];
 
@@ -193,25 +183,21 @@ abstract class A
                 time();
 
                 MKTIME($A);
-                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
-            ',
+                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);'."\n            ",
             '<?php
                 MKTIME();
                 GMMKTIME();
 
                 MKTIME($A);
-                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
-            ',
+                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);'."\n            ",
             ['sets' => ['@time']],
         ];
 
         yield '@exif' => [
             '<?php
-                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
-            ',
+                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);'."\n            ",
             '<?php
-                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
-            ',
+                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);'."\n            ",
             ['sets' => ['@exif']],
         ];
 
@@ -277,22 +263,21 @@ abstract class A
                 $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
                 $cases[] = [
                     '<?php
-    class '.ucfirst($alias).'ing
+    class'." ".ucfirst($alias).'ing
     {
-        const '.$alias.' = 1;
+        const'." ".$alias.' = 1;
 
-        public function '.$alias.'($'.$alias.')
+        public function'." ".$alias.'($'.$alias.')
         {
             if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
-                echo '.$alias.';
+                echo'." ".$alias.';
             }
         }
     }
 
-    class '.$alias.' extends '.ucfirst($alias).'ing{
-        const '.$alias.' = "'.$alias.'";
-    }
-    ',
+    class'." ".$alias.' extends '.ucfirst($alias).'ing{
+        const'." ".$alias.' = "'.$alias.'";
+    }'."\n    ",
                 ];
 
                 // cases to be fixed

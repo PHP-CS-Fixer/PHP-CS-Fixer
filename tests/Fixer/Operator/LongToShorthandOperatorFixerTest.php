@@ -224,12 +224,10 @@ EOD
         yield [
             '<?php
                 $a1 /= +$b1;
-                $a2 /= -$b2;
-            ',
+                $a2 /= -$b2;'."\n            ",
             '<?php
                 $a1 = $a1 / +$b1;
-                $a2 = $a2 / -$b2;
-            ',
+                $a2 = $a2 / -$b2;'."\n            ",
         ];
 
         // do not fix
@@ -266,8 +264,7 @@ EOD
             $a = $d / $a + $b;
             $d + $a = $a - $e;
             $a = $a >= $b;
-            $a[1] = $a[1] instanceof \Foo & $b;
-        '];
+            $a[1] = $a[1] instanceof \Foo & $b;'."\n        "];
 
         yield ['<?php $a = 123 + $a + $c ?>'];
 
@@ -334,8 +331,7 @@ EOD
                 $z = true;
 
                 $a = $a + $b || $z;
-                var_dump($a);
-            ',
+                var_dump($a);'."\n            ",
         ];
 
         yield ['<?php {echo 1;} $a = new class{} & $a;'];
@@ -382,15 +378,13 @@ EOD
         yield 'do bother with to much mess' => [
             '<?php
                 $a = 1 + $a + 2 + $a;
-                $a = $a + 1 + $a + 2;
-            ',
+                $a = $a + 1 + $a + 2;'."\n            ",
         ];
 
         yield [
             '<?php
                 $r[1] = [&$r[1]];
-                $r[1] = [$r[1],&$r[1]];
-            ',
+                $r[1] = [$r[1],&$r[1]];'."\n            ",
         ];
 
         yield 'switch case & default' => [
@@ -401,8 +395,7 @@ EOD
                         break;
                     default:
                         $pY -= $b5;
-                }
-            ',
+                }'."\n            ",
             '<?php
                 switch(foo()) {
                     case \'X\':
@@ -410,8 +403,7 @@ EOD
                         break;
                     default:
                         $pY = $pY - $b5;
-                }
-            ',
+                }'."\n            ",
         ];
 
         yield 'operator precedence' => [
