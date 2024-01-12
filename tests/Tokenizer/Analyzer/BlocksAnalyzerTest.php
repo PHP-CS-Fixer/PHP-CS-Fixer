@@ -82,9 +82,9 @@ final class BlocksAnalyzerTest extends TestCase
 
         yield ['<?php foo(1);', 2, null];
 
-        yield ['<?php foo(1);', 1000, 4];
+        yield ['<?php foo(1);', 1_000, 4];
 
-        yield ['<?php foo(1);', 2, 1000];
+        yield ['<?php foo(1);', 2, 1_000];
 
         yield ['<?php foo(1);', 1, 4];
 

@@ -1442,7 +1442,7 @@ class Foo {
                      * "Sponsored" by https://github.com/PrestaShop/PrestaShop/blob/1.6.1.24/tools/tcpdf/tcpdf.php (search for "Get page dimensions from format name")
                      * @see
                      * @param $number - it can be:
-                     * '.implode("\n                     * ", range(1, 1000)).'
+                     * '.implode("\n                     * ", range(1, 1_000)).'
                      */
                      function display($number) {}
                 ',

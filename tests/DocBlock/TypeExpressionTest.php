@@ -894,7 +894,7 @@ final class TypeExpressionTest extends TestCase
         // on https://www.php.net/manual/en/intro.pcre.php there are 4096 cache slots
         // pruned in FIFO fashion, so to clear the cache, replace all existing
         // cache slots with dummy regexes
-        for ($i = 0; $i < 4096; ++$i) {
+        for ($i = 0; $i < 4_096; ++$i) {
             preg_match('/^'.$i.'/', '');
         }
     }

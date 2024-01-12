@@ -171,8 +171,8 @@ abstract class AbstractReporterTestCase extends TestCase
                     ],
                 ],
                 10,
-                1234,
-                2621440, // 2.5 * 1024 * 1024
+                1_234,
+                2_621_440, // 2.5 * 1024 * 1024
                 false,
                 false,
                 false
@@ -193,8 +193,8 @@ abstract class AbstractReporterTestCase extends TestCase
                     ],
                 ],
                 10,
-                1234,
-                2621440, // 2.5 * 1024 * 1024
+                1_234,
+                2_621_440, // 2.5 * 1024 * 1024
                 true,
                 true,
                 true

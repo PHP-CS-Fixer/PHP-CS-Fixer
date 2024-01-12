@@ -36,7 +36,7 @@ final class UnavailableLinterExceptionTest extends TestCase
     public function testConstructorSetsValues(): void
     {
         $message = 'Never heard of that one, sorry!';
-        $code = 9001;
+        $code = 9_001;
         $previous = new \RuntimeException();
 
         $exception = new UnavailableLinterException(

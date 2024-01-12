@@ -48,7 +48,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
     public function testConstructorSetsValues(): void
     {
         $message = 'I cannot do that, Dave.';
-        $code = 9000;
+        $code = 9_000;
         $previous = new \RuntimeException();
 
         $exception = new InvalidConfigurationException(
