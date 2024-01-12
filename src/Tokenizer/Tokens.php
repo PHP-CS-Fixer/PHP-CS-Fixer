@@ -591,8 +591,7 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
-            if (!$this->offsetExists($index)) {
+            if (0 > $index || \count($this) <= $index) {
                 return null;
             }
 
@@ -646,8 +645,7 @@ class Tokens extends \SplFixedArray
 
         while (true) {
             $index += $direction;
-
-            if (!$this->offsetExists($index)) {
+            if (0 > $index || \count($this) <= $index) {
                 return null;
             }
 
@@ -714,8 +712,7 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
-            if (!$this->offsetExists($index)) {
+            if (0 > $index || \count($this) <= $index) {
                 return null;
             }
 
@@ -1446,8 +1443,7 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
-            if (!$this->offsetExists($index)) {
+            if (0 > $index || \count($this) <= $index) {
                 return null;
             }
 
