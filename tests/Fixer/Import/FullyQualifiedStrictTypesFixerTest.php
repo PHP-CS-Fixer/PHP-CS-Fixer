@@ -1520,6 +1520,49 @@ namespace Ns;
 function foo($v) {}',
         ];
 
+        yield 'Test PHPDoc union with imports' => [
+            '<?php
+
+namespace Ns;
+use Other\Foo;
+use Other\FooŇ;
+
+/**
+ * @param \Exception|\Exception2|int|Foo|FooŇ|null $v
+ */
+function foo($v) {}',
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|\Exception2|int|\Other\Foo|\Other\FooŇ|null $v
+ */
+function foo($v) {}',
+            ['import_symbols' => true],
+        ];
+
+        yield 'Test PHPDoc string must be kept as is' => [
+            '<?php
+
+namespace Ns;
+use Other\Foo;
+
+/**
+ * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ */
+function foo($v) {}',
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Other\Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ */
+function foo($v) {}',
+            ['import_symbols' => true],
+        ];
+
         yield 'Test PHPDoc in interface' => [
             '<?php
 

@@ -26,7 +26,7 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {
     /**
-     * @var null|\PhpCsFixer\Fixer\ConfigurableFixerInterface
+     * @var null|ConfigurableFixerInterface
      */
     private $fixerWithAliasedConfig;
 

@@ -519,20 +519,26 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            // @TODO parse the complex type using TypeExpression and fix all names inside (like `int|string` or `list<int|string>`)
-            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[4])) {
-                return $matches[0];
-            }
+            /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
+            $unsupported = false;
 
-            $shortTokens = $this->determineShortType($matches[4], $uses, $namespaceName);
-            if (null === $shortTokens) {
-                return $matches[0];
-            }
+            return $matches[1].$matches[2].$matches[3].implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
+                if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
+                    $unsupported = true;
 
-            return $matches[1].$matches[2].$matches[3].implode('', array_map(
-                static fn (Token $token) => $token->getContent(),
-                $shortTokens
-            ));
+                    return $v;
+                }
+
+                $shortTokens = $this->determineShortType($v, $uses, $namespaceName);
+                if (null === $shortTokens) {
+                    return $v;
+                }
+
+                return implode('', array_map(
+                    static fn (Token $token) => $token->getContent(),
+                    $shortTokens
+                ));
+            }, explode('|', $matches[4])));
         }, $phpDocContent);
 
         if ($phpDocContentNew !== $phpDocContent) {
