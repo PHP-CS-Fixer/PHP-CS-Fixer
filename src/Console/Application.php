@@ -21,6 +21,7 @@ use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
+use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\PharChecker;
@@ -63,6 +64,7 @@ final class Application extends BaseApplication
             $this->toolInfo,
             new PharChecker()
         ));
+        $this->add(new WorkerCommand());
     }
 
     public static function getMajorVersion(): int
