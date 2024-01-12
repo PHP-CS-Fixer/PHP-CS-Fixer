@@ -34,9 +34,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
+ *
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
  */
 final class Runner
 {
+    private RunnerConfig $runnerConfig;
+
     private DifferInterface $differ;
 
     private ?DirectoryInterface $directory;
@@ -46,8 +51,6 @@ final class Runner
     private ErrorsManager $errorsManager;
 
     private CacheManagerInterface $cacheManager;
-
-    private bool $isDryRun;
 
     private LinterInterface $linter;
 
@@ -61,40 +64,54 @@ final class Runner
      */
     private array $fixers;
 
-    private bool $stopOnViolation;
-
     /**
      * @param \Traversable<\SplFileInfo> $finder
      * @param list<FixerInterface>       $fixers
      */
     public function __construct(
+        RunnerConfig $runnerConfig,
         \Traversable $finder,
         array $fixers,
         DifferInterface $differ,
         ?EventDispatcherInterface $eventDispatcher,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
-        bool $isDryRun,
         CacheManagerInterface $cacheManager,
-        ?DirectoryInterface $directory = null,
-        bool $stopOnViolation = false
+        ?DirectoryInterface $directory = null
     ) {
+        $this->runnerConfig = $runnerConfig;
         $this->finder = $finder;
         $this->fixers = $fixers;
         $this->differ = $differ;
         $this->eventDispatcher = $eventDispatcher;
         $this->errorsManager = $errorsManager;
         $this->linter = $linter;
-        $this->isDryRun = $isDryRun;
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?? new Directory('');
-        $this->stopOnViolation = $stopOnViolation;
     }
 
     /**
-     * @return array<string, array{appliedFixers: list<string>, diff: string}>
+     * @return _RunResult
      */
     public function fix(): array
+    {
+        return $this->runnerConfig->getParallelConfig()->getMaxProcesses() > 1
+            ? $this->fixParallel()
+            : $this->fixSequential();
+    }
+
+    /**
+     * @return _RunResult
+     */
+    private function fixParallel(): array
+    {
+        throw new \RuntimeException('NOT IMPLEMENTED YET');
+    }
+
+    /**
+     * @return _RunResult
+     */
+    private function fixSequential(): array
     {
         $changed = [];
 
@@ -120,7 +137,7 @@ final class Runner
                 $name = $this->directory->getRelativePathTo($file->__toString());
                 $changed[$name] = $fixInfo;
 
-                if ($this->stopOnViolation) {
+                if ($this->runnerConfig->shouldStopOnViolation()) {
                     break;
                 }
             }
@@ -223,7 +240,7 @@ final class Runner
                 return null;
             }
 
-            if (!$this->isDryRun) {
+            if (!$this->runnerConfig->isDryRun()) {
                 $fileName = $file->getRealPath();
 
                 if (!file_exists($fileName)) {
