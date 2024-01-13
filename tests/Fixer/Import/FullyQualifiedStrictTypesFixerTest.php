@@ -946,7 +946,33 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        yield 'import even if party already imported' => [
+        yield 'import even if party already imported - global' => [
+            <<<'EOD'
+                <?php
+
+                use Ns\Foo;
+                use Ns\Foo\M;
+                use Ns\Foo\M\N;
+
+                new M();
+                new N();
+                new Exception();
+                new Exception();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use Ns\Foo;
+
+                new Foo\M();
+                new Foo\M\N();
+                new \Exception();
+                new Exception();
+                EOD,
+            ['import_symbols' => true, 'import_relative_symbols' => true],
+        ];
+
+        yield 'import even if party already imported - namespaced' => [
             <<<'EOD'
                 <?php
 
