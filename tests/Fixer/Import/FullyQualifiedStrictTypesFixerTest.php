@@ -945,6 +945,30 @@ class Foo extends \A\A implements \B\A, \C\A
                 new Y\Z\e\f();
                 EOD,
         ];
+
+        yield 'add import even if partly importable using namespace' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns\A\B;
+                use Ns\A\B\C;
+
+                new A();
+                new B();
+                new C();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns\A();
+                new \Ns\A\B();
+                new \Ns\A\B\C();
+                EOD,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
