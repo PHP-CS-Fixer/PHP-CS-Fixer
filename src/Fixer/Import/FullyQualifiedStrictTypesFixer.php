@@ -316,7 +316,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         $this->determineShortType($matches[1], $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-                        Preg::matchAll('/\*\h*@template\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/', $tokens[$index]->getContent(), $matches);
+                        Preg::matchAll('/\*\h*@(?:psalm-|phpstan-)?(?:template(?:-covariant|-contravariant)?|(?:import-)?type)\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/i', $tokens[$index]->getContent(), $matches);
                         foreach ($matches[1] as $reservedIdentifier) {
                             $this->reservedIdentifiers[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
                         }

@@ -965,6 +965,102 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'prevent import if implicitly used by local type' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns2\Bar;
+                use Ns2\Foo;
+
+                /**
+                 * @phpstan-type Foo array{int, int}
+                 * @phpstan-import-type Bar from OtherCl
+                 */
+                class Cl
+                {
+                    /**
+                     * @param \Ns2\Foo $v
+                     *
+                     * @return Foo
+                     */
+                    public function foo($v)
+                    {
+                        return [1, 2];
+                    }
+
+                    /**
+                     * @param \Ns2\Bar $v
+                     *
+                     * @return Bar
+                     */
+                    public function bar($v)
+                    {
+                        return null;
+                    }
+                }
+
+                class Cl2
+                {
+                    /**
+                     * @param Foo $v
+                     */
+                    public function foo($v): void {}
+
+                    /**
+                     * @param Bar $v
+                     */
+                    public function bar($v): void {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                /**
+                 * @phpstan-type Foo array{int, int}
+                 * @phpstan-import-type Bar from OtherCl
+                 */
+                class Cl
+                {
+                    /**
+                     * @param \Ns2\Foo $v
+                     *
+                     * @return Foo
+                     */
+                    public function foo($v)
+                    {
+                        return [1, 2];
+                    }
+
+                    /**
+                     * @param \Ns2\Bar $v
+                     *
+                     * @return Bar
+                     */
+                    public function bar($v)
+                    {
+                        return null;
+                    }
+                }
+
+                class Cl2
+                {
+                    /**
+                     * @param \Ns2\Foo $v
+                     */
+                    public function foo($v): void {}
+
+                    /**
+                     * @param \Ns2\Bar $v
+                     */
+                    public function bar($v): void {}
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'import with relative and absolute symbols - global' => [
             <<<'EOD'
                 <?php
