@@ -618,6 +618,9 @@ final class FixerFactoryTest extends TestCase
             'no_short_bool_cast' => [
                 'cast_spaces',
             ],
+            'no_space_around_double_colon' => [
+                'method_chaining_indentation',
+            ],
             'no_spaces_after_function_name' => [
                 'function_to_constant',
                 'get_class_to_class_keyword',
