@@ -167,6 +167,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 ',
                     ['import_symbols' => true]
                 ),
+                new CodeSample(
+                    '<?php
+
+use Foo\Bar;
+
+$bar = new Bar();
+$baz = new Bar\Baz();
+',
+                    ['import_symbols' => true, 'import_relative_symbols' => true]
+                ),
             ]
         );
     }
@@ -211,7 +221,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCNs found during analysis should be automatically imported.'
+                'Whether FQCNs should be automatically imported.'
+            ))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder(
+                'import_relative_symbols',
+                'Whether non-FQCNs containing backslash should be automatically imported. Applicable only with `import_symbols` enabled.'
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -448,7 +465,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             foreach ($discoveredSymbols as $symbol) {
                 $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
                 if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
-                    if ('' !== $namespaceName && !str_starts_with($symbol, '\\') && str_contains($symbol, '\\')) { // @TODO add option to force all classes to be imported
+                    if ('' !== $namespaceName
+                        && !str_starts_with($symbol, '\\') && false === $this->configuration['import_relative_symbols']
+                        && str_contains($symbol, '\\')
+                    ) {
                         continue;
                     }
 

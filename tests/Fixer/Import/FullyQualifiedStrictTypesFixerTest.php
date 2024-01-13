@@ -946,7 +946,37 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        yield 'add import even if partly importable using namespace' => [
+        yield 'import even if party already imported' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+                use Ns2\Foo\M;
+                use Ns2\Foo\M\N;
+
+                new M();
+                new N();
+                new \Exception();
+                new Exception();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+
+                new Foo\M();
+                new Foo\M\N();
+                new \Exception();
+                new Exception();
+                EOD,
+            ['import_symbols' => true, 'import_relative_symbols' => true],
+        ];
+
+        yield 'import even if partly importable using namespace' => [
             <<<'EOD'
                 <?php
 
@@ -968,6 +998,48 @@ class Foo extends \A\A implements \B\A, \C\A
                 new \Ns\A\B\C();
                 EOD,
             ['import_symbols' => true],
+        ];
+
+        yield 'import even if partly already imported using namespace - without import_relative_symbols' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import even if partly already imported using namespace - with import_relative_symbols' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+                use Ns\A\B;
+                use Ns\A\B\C;
+
+                new A();
+                new B();
+                new C();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                EOD,
+            ['import_symbols' => true, 'import_relative_symbols' => true],
         ];
     }
 
