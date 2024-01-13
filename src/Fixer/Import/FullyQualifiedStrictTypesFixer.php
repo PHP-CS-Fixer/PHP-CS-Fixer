@@ -412,7 +412,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $iMin = 0;
         if (str_starts_with($fqcn, $namespaceName.'\\')) {
             $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
-            if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])])) {
+            if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])]) && !$this->isReservedIdentifier($tmpRes)) {
                 $res = $tmpRes;
                 $iMin = substr_count($namespaceName, '\\') + 1;
             }
@@ -422,9 +422,12 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $tmp = $fqcn;
         for ($i = substr_count($fqcn, '\\'); $i >= $iMin; --$i) {
             if (isset($this->cacheUseShortNameByNameLower[strtolower($tmp)])) {
-                $res = $this->cacheUseShortNameByNameLower[strtolower($tmp)].substr($fqcn, \strlen($tmp));
+                $tmpRes = $this->cacheUseShortNameByNameLower[strtolower($tmp)].substr($fqcn, \strlen($tmp));
+                if (!$this->isReservedIdentifier($tmpRes)) {
+                    $res = $tmpRes;
 
-                break;
+                    break;
+                }
             }
 
             if ($i > 0) {
