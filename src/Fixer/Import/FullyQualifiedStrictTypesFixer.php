@@ -354,6 +354,19 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
     }
 
+    private function isReservedIdentifier(string $symbol): bool
+    {
+        if (str_contains($symbol, '\\')) { // optimization only
+            return false;
+        }
+
+        if ((new TypeAnalysis($symbol))->isReservedType()) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Resolve absolute or relative symbol to normalized FQCN.
      *
@@ -363,6 +376,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         if (str_starts_with($symbol, '\\')) {
             return substr($symbol, 1);
+        }
+
+        if ($this->isReservedIdentifier($symbol)) {
+            return $symbol;
         }
 
         $this->refreshUsesCache($uses);
@@ -383,6 +400,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function shortenSymbol(string $fqcn, array $uses, string $namespaceName): string
     {
+        if ($this->isReservedIdentifier($fqcn)) {
+            return $fqcn;
+        }
+
         $this->refreshUsesCache($uses);
 
         $res = null;
@@ -741,12 +762,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function determineShortType(string $typeName, array $uses, string $namespaceName): ?array
     {
-        if ((new TypeAnalysis($typeName))->isReservedType()) {
-            return null;
-        }
-
         if (null !== $this->discoveredSymbols) {
-            $this->discoveredSymbols['class'][] = $typeName;
+            if (!$this->isReservedIdentifier($typeName)) {
+                $this->discoveredSymbols['class'][] = $typeName;
+            }
 
             return null;
         }
