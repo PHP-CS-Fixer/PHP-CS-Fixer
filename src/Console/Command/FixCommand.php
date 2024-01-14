@@ -251,9 +251,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             : ('txt' === $reporter->getFormat() ? $output : null);
 
         if (null !== $stdErr) {
-            if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                $stdErr->writeln($this->getApplication()->getLongVersion());
-            }
+            $stdErr->writeln($this->getApplication()->getLongVersion());
 
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));

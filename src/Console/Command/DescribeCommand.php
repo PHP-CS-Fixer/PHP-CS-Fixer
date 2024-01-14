@@ -94,7 +94,7 @@ final class DescribeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity() && $output instanceof ConsoleOutputInterface) {
+        if ($output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
             $stdErr->writeln($this->getApplication()->getLongVersion());
         }

@@ -40,6 +40,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
+    public const APP_NAME = 'PHP CS Fixer';
     public const VERSION = '3.46.1-DEV';
     public const VERSION_CODENAME = 'Three Keys';
 
@@ -47,7 +48,7 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        parent::__construct('PHP CS Fixer', self::VERSION);
+        parent::__construct(self::APP_NAME, self::VERSION);
 
         $this->toolInfo = new ToolInfo();
 
@@ -109,8 +110,10 @@ final class Application extends BaseApplication
         return $result;
     }
 
-    public function getLongVersion(): string
+    public static function getAppAbout(): string
     {
+        $longVersion = sprintf('%s <info>%s</info>', self::APP_NAME, self::VERSION);
+
         $commit = '@git-commit@';
         $versionCommit = '';
 
@@ -119,12 +122,16 @@ final class Application extends BaseApplication
         }
 
         return implode('', [
-            parent::getLongVersion(),
+            $longVersion,
             $versionCommit ? sprintf(' <info>(%s)</info>', $versionCommit) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             ' by <comment>Fabien Potencier</comment>, <comment>Dariusz Ruminski</comment> and <comment>contributors</comment>.',
-            "\nPHP runtime: <info>".PHP_VERSION.'</info>',
         ]);
+    }
+
+    public function getLongVersion(): string
+    {
+        return self::getAppAbout()."\nPHP runtime: <info>".PHP_VERSION.'</info>';
     }
 
     protected function getDefaultCommands(): array
