@@ -211,7 +211,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCNs found during analysis should be automatically imported.'
+                'Whether FQCNs should be automatically imported.'
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -444,15 +444,21 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $discoveredFqcnByShortNameLower[strtolower($useShortName)] = $useLongName;
             }
 
+            $useByShortNameLower = [];
+            foreach ($uses as $useShortName) {
+                $useByShortNameLower[strtolower($useShortName)] = true;
+            }
+
             uasort($discoveredSymbols, static fn ($a, $b) => substr_count($a, '\\') <=> substr_count($b, '\\'));
             foreach ($discoveredSymbols as $symbol) {
                 $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
                 if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
-                    if ('' !== $namespaceName && !str_starts_with($symbol, '\\') && str_contains($symbol, '\\')) { // @TODO add option to force all classes to be imported
-                        continue;
+                    $shortStartNameLower = strtolower(explode('\\', ltrim($symbol, '\\'), 2)[0]);
+                    if (str_starts_with($symbol, '\\') || ('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
+                        || !str_contains($symbol, '\\')
+                    ) {
+                        $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
                     }
-
-                    $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
                 }
                 // else short name collision - keep unimported
             }

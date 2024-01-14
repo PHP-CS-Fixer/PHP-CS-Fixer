@@ -946,7 +946,7 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        yield 'add import even if partly importable using namespace' => [
+        yield 'import even if partly importable using namespace' => [
             <<<'EOD'
                 <?php
 
@@ -966,6 +966,45 @@ class Foo extends \A\A implements \B\A, \C\A
                 new \Ns\A();
                 new \Ns\A\B();
                 new \Ns\A\B\C();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import relative symbols if not configured so - namespaced' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import relative symbols if not configured so - global with use' => [
+            <<<'EOD'
+                <?php
+
+                use A;
+                use B\B2\C2;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                new C2();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use A;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                new B\B2\C2();
                 EOD,
             ['import_symbols' => true],
         ];
