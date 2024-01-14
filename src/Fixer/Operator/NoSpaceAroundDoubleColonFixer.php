@@ -30,6 +30,16 @@ final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before MethodChainingIndentationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 1;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOUBLE_COLON);
