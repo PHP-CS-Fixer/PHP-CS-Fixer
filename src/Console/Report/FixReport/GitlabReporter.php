@@ -53,7 +53,7 @@ final class GitlabReporter implements ReporterInterface
             $firstChunk = array_shift($firstChunk);
             foreach ($change['appliedFixers'] as $fixerName) {
                 $report[] = [
-                    'check_name' => $fixerName,
+                    'check_name' => 'PHP-CS-Fixer.'.$fixerName,
                     'description' => $fixerName,
                     'categories' => ['Style'],
                     'fingerprint' => md5($fileName.$fixerName),
