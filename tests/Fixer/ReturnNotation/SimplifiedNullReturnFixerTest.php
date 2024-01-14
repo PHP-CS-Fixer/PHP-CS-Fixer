@@ -33,6 +33,9 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFixCases(): iterable
     {
         // check correct statements aren't changed
@@ -88,6 +91,49 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php function foo(): void { return; }',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php
+            function test(): null|int
+            {
+                if (true) { return null; }
+                return 42;
+            }',
+        ];
+
+        yield [
+            '<?php
+            function test(): null|array
+            {
+                if (true) { return null; }
+                return [];
+            }',
+        ];
+
+        yield [
+            '<?php
+            function test(): array|null
+            {
+                if (true) { return null; }
+                return [];
+            }',
         ];
     }
 }
