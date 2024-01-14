@@ -33,6 +33,9 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFixCases(): iterable
     {
         // check correct statements aren't changed
@@ -101,6 +104,9 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
