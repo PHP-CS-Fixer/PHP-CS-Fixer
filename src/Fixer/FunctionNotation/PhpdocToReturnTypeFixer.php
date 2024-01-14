@@ -105,7 +105,7 @@ final class Foo {
                 ),
             ],
             null,
-            '[1] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [2] Manual actions are required if inherited signatures are not properly documented.'
+            'The `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.'
         );
     }
 

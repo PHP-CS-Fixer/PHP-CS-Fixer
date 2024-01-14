@@ -77,7 +77,7 @@ class Foo {
                 ),
             ],
             null,
-            '[1] `@var` annotation is mandatory for the fixer to make changes, signatures of properties without it (no docblock) will not be fixed. [2] Manual actions might be required for newly typed properties that are read before initialization.'
+            'The `@var` annotation is mandatory for the fixer to make changes, signatures of properties without it (no docblock) will not be fixed. Manual actions might be required for newly typed properties that are read before initialization.'
         );
     }
 

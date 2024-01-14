@@ -17,10 +17,9 @@ or unexpected results.
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-[1] ``@return`` annotation is mandatory for the fixer to make changes,
+The ``@return`` annotation is mandatory for the fixer to make changes,
 signatures of methods without it (no docblock, inheritdocs) will not be fixed.
-[2] Manual actions are required if inherited signatures are not properly
-documented.
+Manual actions are required if inherited signatures are not properly documented.
 
 Configuration
 -------------
