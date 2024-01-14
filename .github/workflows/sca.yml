@@ -55,6 +55,9 @@ jobs:
           retry_wait_seconds: 30
           command: ./dev-tools/install.sh
 
+      - name: Show PHPUnit version
+        run: vendor/bin/phpunit --version
+
       - name: Run AutoReview
         run: vendor/bin/paraunit run --testsuite auto-review
 
