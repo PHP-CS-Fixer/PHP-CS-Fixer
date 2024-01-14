@@ -89,7 +89,20 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         yield [
             '<?php function foo(): void { return; }',
         ];
+    }
 
+    /**
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
         yield [
             '<?php
             function test(): null|int
