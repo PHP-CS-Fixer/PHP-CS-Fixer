@@ -110,7 +110,10 @@ final class Application extends BaseApplication
         return $result;
     }
 
-    public static function getAppAbout(): string
+    /**
+     * @internal
+     */
+    public static function getAppAbout(bool $decorated = false): string
     {
         $longVersion = sprintf('%s <info>%s</info>', self::APP_NAME, self::VERSION);
 
@@ -121,17 +124,23 @@ final class Application extends BaseApplication
             $versionCommit = substr($commit, 0, 7);
         }
 
-        return implode('', [
+        $about = implode('', [
             $longVersion,
             $versionCommit ? sprintf(' <info>(%s)</info>', $versionCommit) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             ' by <comment>Fabien Potencier</comment>, <comment>Dariusz Ruminski</comment> and <comment>contributors</comment>.',
         ]);
+
+        if (false === $decorated) {
+            return strip_tags($about);
+        }
+
+        return $about;
     }
 
     public function getLongVersion(): string
     {
-        return self::getAppAbout()."\nPHP runtime: <info>".PHP_VERSION.'</info>';
+        return self::getAppAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
     }
 
     protected function getDefaultCommands(): array
