@@ -2,8 +2,7 @@
 Rule ``class_keyword``
 ======================
 
-EXPERIMENTAL: Converts FQCN strings to ``*::class`` keywords. Do not use it,
-unless you know what you are doing.
+Converts FQCN strings to ``*::class`` keywords.
 
 Description
 -----------
@@ -16,10 +15,16 @@ context.
 Warning
 -------
 
+This rule is experimental
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is not covered with backward compatibility promise and may produce unstable
+or unexpected results.
+
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Risky as EXPERIMENTAL.
+Do not use it, unless you know what you are doing.
 
 Examples
 --------

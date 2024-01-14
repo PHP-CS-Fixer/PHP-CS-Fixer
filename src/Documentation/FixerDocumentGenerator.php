@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -89,6 +90,19 @@ final class FixerDocumentGenerator
             }
         }
 
+        $experimentalDescription = '';
+
+        if ($fixer instanceof ExperimentalFixerInterface) {
+            $experimentalDescriptionRaw = RstUtils::toRst('It is not covered with backward compatibility promise and may produce unstable or unexpected results.', 0);
+            $experimentalDescription = <<<RST
+
+                This rule is experimental
+                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                {$experimentalDescriptionRaw}
+                RST;
+        }
+
         $riskyDescription = '';
         $riskyDescriptionRaw = $definition->getRiskyDescription();
 
@@ -115,6 +129,7 @@ final class FixerDocumentGenerator
                 $warningsHeader,
                 $warningsHeaderLine,
                 $deprecationDescription,
+                $experimentalDescription,
                 $riskyDescription,
             ]));
         }
@@ -315,6 +330,10 @@ final class FixerDocumentGenerator
 
             if ($fixer instanceof DeprecatedFixerInterface) {
                 $attributes[] = 'deprecated';
+            }
+
+            if ($fixer instanceof ExperimentalFixerInterface) {
+                $attributes[] = 'experimental';
             }
 
             if ($fixer->isRisky()) {

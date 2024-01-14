@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -23,12 +24,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class ClassKeywordFixer extends AbstractFixer
+final class ClassKeywordFixer extends AbstractFixer implements ExperimentalFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'EXPERIMENTAL: Converts FQCN strings to `*::class` keywords. Do not use it, unless you know what you are doing.',
+            'Converts FQCN strings to `*::class` keywords.',
             [
                 new CodeSample(
                     '<?php
@@ -39,7 +40,7 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
                 ),
             ],
             'This rule does not have an understanding of whether a class exists in the scope of the codebase or not, relying on run-time and autoloaded classes to determine it, which makes the rule useless when running on a single file out of codebase context.',
-            'Risky as EXPERIMENTAL.'
+            'Do not use it, unless you know what you are doing.'
         );
     }
 

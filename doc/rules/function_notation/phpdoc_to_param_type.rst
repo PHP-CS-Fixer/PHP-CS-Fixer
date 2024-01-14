@@ -2,20 +2,24 @@
 Rule ``phpdoc_to_param_type``
 =============================
 
-EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts
-accordingly the function signature. Requires PHP >= 7.0.
+Takes ``@param`` annotations of non-mixed types and adjusts accordingly the
+function signature. Requires PHP >= 7.0.
 
 Warning
 -------
 
+This rule is experimental
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is not covered with backward compatibility promise and may produce unstable
+or unexpected results.
+
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This rule is EXPERIMENTAL and [1] is not covered with backward compatibility
-promise. [2] ``@param`` annotation is mandatory for the fixer to make changes,
-signatures of methods without it (no docblock, inheritdocs) will not be fixed.
-[3] Manual actions are required if inherited signatures are not properly
-documented.
+[1] ``@param`` annotation is mandatory for the fixer to make changes, signatures
+of methods without it (no docblock, inheritdocs) will not be fixed. [2] Manual
+actions are required if inherited signatures are not properly documented.
 
 Configuration
 -------------
