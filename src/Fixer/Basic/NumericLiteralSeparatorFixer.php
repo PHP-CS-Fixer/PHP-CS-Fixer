@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -36,7 +37,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  * @author Greg Korba <greg@codito.dev>
  */
-final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface, ExperimentalFixerInterface
 {
     public const STRATEGY_USE_SEPARATOR = 'use_separator';
     public const STRATEGY_NO_SEPARATOR = 'no_separator';
