@@ -23,7 +23,7 @@ Whether numeric literal should be separated by underscores or not.
 
 Allowed values: ``'no_separator'`` and ``'use_separator'``
 
-Default value: ``'no_separator'``
+Default value: ``'use_separator'``
 
 Examples
 --------
@@ -32,6 +32,19 @@ Example #1
 ~~~~~~~~~~
 
 *Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$integer = 1234567890;
+   +$integer = 1_234_567_890;
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'no_separator']``.
 
 .. code-block:: diff
 
@@ -47,7 +60,7 @@ Example #1
    +$binary = 0b00100100;
    +$hexadecimal = 0x3D458F4F;
 
-Example #2
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['strategy' => 'use_separator']``.
@@ -66,7 +79,7 @@ With configuration: ``['strategy' => 'use_separator']``.
    +$binary = 0b00100100_11011010;
    +$hexadecimal = 0x3D_45_8F_4F;
 
-Example #3
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['override_existing' => true]``.
@@ -76,7 +89,7 @@ With configuration: ``['override_existing' => true]``.
    --- Original
    +++ New
    -<?php $var = 24_40_21;
-   +<?php $var = 244021;
+   +<?php $var = 244_021;
 References
 ----------
 
