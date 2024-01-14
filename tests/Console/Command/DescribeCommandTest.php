@@ -75,7 +75,7 @@ DEPRECATED: use `Foo/baz` instead.
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer applying this rule is risky.
+Fixer applying this rule is RISKY.
 Can break stuff.
 
 Fixer is configurable using following options:
@@ -116,7 +116,7 @@ Fixing examples:
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-\033[37;41mFixer applying this rule is risky.\033[39;49m
+\033[37;41mFixer applying this rule is RISKY.\033[39;49m
 Can break stuff.
 
 Fixer is configurable using following options:
