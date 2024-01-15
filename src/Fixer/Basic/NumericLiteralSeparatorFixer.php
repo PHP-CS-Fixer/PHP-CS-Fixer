@@ -49,12 +49,22 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                 new CodeSample(
                     <<<'PHP'
                         <?php
+                        $integer = 1234567890;
+
+                        PHP
+                    ,
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
                         $integer = 1234_5678;
                         $octal = 01_234_56;
                         $binary = 0b00_10_01_00;
                         $hexadecimal = 0x3D45_8F4F;
 
                         PHP
+                    ,
+                    ['strategy' => self::STRATEGY_NO_SEPARATOR],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -96,7 +106,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                 'Whether numeric literal should be separated by underscores or not.'
             ))
                 ->setAllowedValues([self::STRATEGY_USE_SEPARATOR, self::STRATEGY_NO_SEPARATOR])
-                ->setDefault(self::STRATEGY_NO_SEPARATOR)
+                ->setDefault(self::STRATEGY_USE_SEPARATOR)
                 ->getOption(),
         ]);
     }
@@ -151,8 +161,8 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
             // Octal
             return $this->insertEveryRight($value, 3, 2);
         }
-        if (str_starts_with($lowerValue, '0')) {
-            // Octal prior PHP 8.1
+        if (str_starts_with($lowerValue, '0') && !str_contains($lowerValue, '.')) {
+            // Octal notation prior PHP 8.1 but still valid
             return $this->insertEveryRight($value, 3, 1);
         }
 
