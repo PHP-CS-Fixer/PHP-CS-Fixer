@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
 use PhpCsFixer\PharCheckerInterface;
 use PhpCsFixer\Preg;
@@ -83,7 +84,7 @@ final class SelfUpdateCommand extends Command
     {
         if ($output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
-            $stdErr->writeln($this->getApplication()->getLongVersion());
+            $stdErr->writeln(Application::getAppAboutWithRuntime(true));
         }
 
         if (!$this->toolInfo->isInstalledAsPhar()) {

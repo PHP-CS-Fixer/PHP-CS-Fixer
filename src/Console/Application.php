@@ -138,9 +138,22 @@ final class Application extends BaseApplication
         return $about;
     }
 
+    /**
+     * @internal
+     */
+    public static function getAppAboutWithRuntime(bool $decorated = false): string
+    {
+        $about = self::getAppAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
+        if (false === $decorated) {
+            return strip_tags($about);
+        }
+
+        return $about;
+    }
+
     public function getLongVersion(): string
     {
-        return self::getAppAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
+        return self::getAppAboutWithRuntime(true);
     }
 
     protected function getDefaultCommands(): array

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\FullDiffer;
@@ -96,7 +97,7 @@ final class DescribeCommand extends Command
     {
         if ($output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
-            $stdErr->writeln($this->getApplication()->getLongVersion());
+            $stdErr->writeln(Application::getAppAboutWithRuntime(true));
         }
 
         $resolver = new ConfigurationResolver(
