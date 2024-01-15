@@ -161,7 +161,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         /** If its a negative value we need an offset */
         $negativeOffset = static fn ($v) => str_contains($v, '-') ? 1 : 0;
 
-        Preg::matchAll('/([0-9-_]+)((\.)([0-9_]+))?((e)([0-9-_]+))?/i', $value, $result);
+        Preg::matchAll('/([0-9-_]+)?((\.)([0-9_]+))?((e)([0-9-_]+))?/i', $value, $result);
 
         $integer = $result[1][0];
         $joinedValue = $this->insertEveryRight($integer, 3, $negativeOffset($integer));
