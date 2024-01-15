@@ -401,15 +401,15 @@ Function Notation
 - `nullable_type_declaration_for_default_null_value <./function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 
   Adds or removes ``?`` before single type declarations or ``|null`` at the end of union types when parameters have a default ``null`` value.
-- `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*
+- `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
-- `phpdoc_to_property_type <./function_notation/phpdoc_to_property_type.rst>`_ *(risky)*
+  Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+- `phpdoc_to_property_type <./function_notation/phpdoc_to_property_type.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
-- `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
+  Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
+- `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
+  Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
 
   Callables must be called without using ``call_user_func*`` when possible.
@@ -463,9 +463,9 @@ Import
 Language Construct
 ------------------
 
-- `class_keyword <./language_construct/class_keyword.rst>`_ *(risky)*
+- `class_keyword <./language_construct/class_keyword.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Converts FQCN strings to ``*::class`` keywords. Do not use it, unless you know what you are doing.
+  Converts FQCN strings to ``*::class`` keywords.
 - `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_ *(deprecated)*
 
   Converts ``::class`` keywords to FQCN strings.
