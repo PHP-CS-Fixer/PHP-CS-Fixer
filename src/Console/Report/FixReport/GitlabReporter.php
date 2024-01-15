@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use SebastianBergmann\Diff\Chunk;
 use SebastianBergmann\Diff\Parser;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -46,6 +47,8 @@ final class GitlabReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary): string
     {
+        $about = Application::getAbout();
+
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {
             $diffs = $this->diffParser->parse($change['diff']);
@@ -53,8 +56,8 @@ final class GitlabReporter implements ReporterInterface
             $firstChunk = array_shift($firstChunk);
             foreach ($change['appliedFixers'] as $fixerName) {
                 $report[] = [
-                    'check_name' => $fixerName,
-                    'description' => $fixerName,
+                    'check_name' => 'PHP-CS-Fixer.'.$fixerName,
+                    'description' => 'PHP-CS-Fixer.'.$fixerName.' by '.$about,
                     'categories' => ['Style'],
                     'fingerprint' => md5($fileName.$fixerName),
                     'severity' => 'minor',
