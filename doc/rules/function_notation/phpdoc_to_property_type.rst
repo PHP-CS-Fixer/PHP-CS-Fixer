@@ -2,20 +2,27 @@
 Rule ``phpdoc_to_property_type``
 ================================
 
-EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts
-accordingly the property signature. Requires PHP >= 7.4.
+Takes ``@var`` annotation of non-mixed types and adjusts accordingly the
+property signature. Requires PHP >= 7.4.
 
 Warning
 -------
 
+This rule is experimental
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Rule is not covered with backward compatibility promise, use it at your own
+risk. Rule's behaviour may be changed at any point, including rule's name; its
+options' names, availability and allowed values; its default configuration. Rule
+may be even removed without prior notice. Feel free to provide feedback and help
+with determining final state of the rule.
+
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This rule is EXPERIMENTAL and [1] is not covered with backward compatibility
-promise. [2] ``@var`` annotation is mandatory for the fixer to make changes,
-signatures of properties without it (no docblock) will not be fixed. [3] Manual
-actions might be required for newly typed properties that are read before
-initialization.
+The ``@var`` annotation is mandatory for the fixer to make changes, signatures
+of properties without it (no docblock) will not be fixed. Manual actions might
+be required for newly typed properties that are read before initialization.
 
 Configuration
 -------------
