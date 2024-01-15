@@ -31,6 +31,9 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFixNestedFunctionsCases(): iterable
     {
         yield [
@@ -189,6 +192,9 @@ function B($b0, $b1, $b2)
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -819,6 +825,9 @@ var names are case-insensitive */ return $a   ;}
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideDoNotFixCases(): iterable
     {
         yield 'invalid reference stays invalid' => [
@@ -1261,6 +1270,9 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideDoNotFix80Cases(): iterable
     {
         yield 'try with non-capturing catch block' => [
@@ -1291,6 +1303,9 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideRepetitiveFixCases(): iterable
     {
         yield [
@@ -1344,6 +1359,9 @@ function foo(&$c) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'match' => [
@@ -1394,6 +1412,9 @@ function foo(&$c) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFixPhp83Cases(): iterable
     {
         yield 'anonymous readonly class' => [

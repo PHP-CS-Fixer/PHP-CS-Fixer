@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
+use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -27,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
+final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ExperimentalFixerInterface
 {
     private const TYPE_CHECK_TEMPLATE = '<?php function f(): %s {}';
 
@@ -51,7 +52,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
+            'Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
                     '<?php
@@ -104,7 +105,7 @@ final class Foo {
                 ),
             ],
             null,
-            'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented.'
+            'The `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.'
         );
     }
 

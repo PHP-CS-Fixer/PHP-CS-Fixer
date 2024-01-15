@@ -22,4 +22,4 @@ runs:
         php-version: ${{ inputs.version }}
         coverage: ${{ inputs.coverage }}
         tools: composer, ${{ inputs.tools }}
-        extensions: none, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+        extensions: none, ctype, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip

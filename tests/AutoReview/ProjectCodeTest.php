@@ -530,7 +530,7 @@ final class ProjectCodeTest extends TestCase
     {
         $methodId = $testClassName.'::'.$method->getName();
 
-        self::assertSame('iterable', $method->hasReturnType() ? $method->getReturnType()->__toString() : null, sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
+        self::assertSame('iterable', $method->hasReturnType() && $method->getReturnType() instanceof \ReflectionNamedType ? $method->getReturnType()->getName() : null, sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
 
         $doc = new DocBlock(false !== $method->getDocComment() ? $method->getDocComment() : '/** */');
 

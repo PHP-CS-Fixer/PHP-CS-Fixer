@@ -21,6 +21,7 @@ use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -179,8 +180,15 @@ final class DescribeCommand extends Command
 
         $output->writeln('');
 
+        if ($fixer instanceof ExperimentalFixerInterface) {
+            $output->writeln('<error>Fixer applying this rule is EXPERIMENTAL.</error>.');
+            $output->writeln('It is not covered with backward compatibility promise and may produce unstable or unexpected results.');
+
+            $output->writeln('');
+        }
+
         if ($fixer->isRisky()) {
-            $output->writeln('<error>Fixer applying this rule is risky.</error>');
+            $output->writeln('<error>Fixer applying this rule is RISKY.</error>');
 
             $riskyDescription = $definition->getRiskyDescription();
 

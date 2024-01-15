@@ -287,8 +287,6 @@ use Bar;
      *
      * @param _UseImportInfo $first
      * @param _UseImportInfo $second
-     *
-     * @internal
      */
     private function sortAlphabetically(array $first, array $second): int
     {
@@ -306,8 +304,6 @@ use Bar;
      *
      * @param _UseImportInfo $first
      * @param _UseImportInfo $second
-     *
-     * @internal
      */
     private function sortByLength(array $first, array $second): int
     {

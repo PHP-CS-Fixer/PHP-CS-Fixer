@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_space_around_double_colon,method_chaining_indentation.
+--RULESET--
+{"no_space_around_double_colon": true, "method_chaining_indentation": true}
+--EXPECT--
+<?php
+
+use Foo;
+
+Foo::bar()
+    ->baz()
+    ->cux();
+
+--INPUT--
+<?php
+
+use Foo;
+
+Foo
+        ::bar()
+    ->baz()
+->cux();

@@ -33,6 +33,12 @@ jobs:
 
     runs-on: "ubuntu-latest"
 
+    # See: https://github.com/actions/stale#recommended-permissions
+    permissions:
+      contents: write # only for delete-branch option
+      issues: write
+      pull-requests: write
+
     steps:
       # Config reference: https://github.com/actions/stale
       - name: "Handle stale issues and pull requests"
