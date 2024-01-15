@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -38,6 +39,8 @@ final class XmlReporter implements ReporterInterface
         // new nodes should be added to this or existing children
         $root = $dom->createElement('report');
         $dom->appendChild($root);
+
+        $root->appendChild($this->createAboutElement($dom, Application::getAbout()));
 
         $filesXML = $dom->createElement('files');
         $root->appendChild($filesXML);
@@ -119,5 +122,13 @@ final class XmlReporter implements ReporterInterface
         $memoryXML->setAttribute('unit', 'MB');
 
         return $memoryXML;
+    }
+
+    private function createAboutElement(\DOMDocument $dom, string $about): \DOMElement
+    {
+        $XML = $dom->createElement('about');
+        $XML->setAttribute('value', $about);
+
+        return $XML;
     }
 }
