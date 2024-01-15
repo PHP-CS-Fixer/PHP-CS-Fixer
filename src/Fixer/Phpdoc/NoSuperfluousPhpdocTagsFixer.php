@@ -102,6 +102,21 @@ class Foo {
      * @param Bar $bar
      * @param mixed $baz
      * @param string|int|null $qux
+     * @param mixed $foo
+     */
+    public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
+}
+',
+                    ['allow_future_params' => true],
+                ),
+                new CodeSample(
+                    '<?php
+class Foo {
+    /**
+     * @param Bar $bar
+     * @param mixed $baz
+     * @param string|int|null $qux
+     * @param mixed $foo
      */
     public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
 }
@@ -219,6 +234,10 @@ class Foo {
             (new FixerOptionBuilder('remove_inheritdoc', 'Remove `@inheritDoc` tags.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('allow_future_params', 'Whether `param` annotation for future method signature are allowed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true) // @TODO set to `true` on 4.0
                 ->getOption(),
             (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).'))
                 ->setAllowedTypes(['bool'])
@@ -442,6 +461,15 @@ class Foo {
             }
 
             $argumentsInfo[$token->getContent()] = $info;
+        }
+
+        // virtualise "future params" as if they would be regular ones
+        if (true === $this->configuration['allow_future_params']) {
+            $paramsString = $tokens->generatePartialCode($start, $end);
+            Preg::matchAll('|/\*[^$]*(\$\w+)[^*]*\*/|', $paramsString, $matches);
+            foreach ($matches[1] as $match) {
+                $argumentsInfo[$match] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for future param, for now we only indicate it's existence
+            }
         }
 
         return $argumentsInfo;
