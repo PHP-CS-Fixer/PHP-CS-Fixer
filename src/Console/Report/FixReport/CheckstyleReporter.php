@@ -36,6 +36,8 @@ final class CheckstyleReporter implements ReporterInterface
         }
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        /** @var \DOMElement $checkstyles */
         $checkstyles = $dom->appendChild($dom->createElement('checkstyle'));
         $checkstyles->setAttribute('version', Application::getAppAbout());
 
