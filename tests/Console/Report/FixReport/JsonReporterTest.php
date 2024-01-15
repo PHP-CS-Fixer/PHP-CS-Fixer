@@ -33,7 +33,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
         $diff = <<<'DIFF'
             --- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }
             DIFF;
@@ -57,7 +57,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createWithDiffReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
         $diff = <<<'DIFF'
             --- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }
             DIFF;
@@ -81,7 +81,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<JSON
             {
@@ -102,7 +102,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createWithTimeAndMemoryReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
         $diff = <<<'DIFF'
             --- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }
             DIFF;
@@ -126,7 +126,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<JSON
             {
@@ -163,7 +163,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createNoErrorReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<JSON
             {

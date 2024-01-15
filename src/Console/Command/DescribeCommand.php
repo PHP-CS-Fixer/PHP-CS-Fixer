@@ -98,7 +98,7 @@ final class DescribeCommand extends Command
     {
         if ($output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
-            $stdErr->writeln(Application::getAppAboutWithRuntime(true));
+            $stdErr->writeln(Application::getAboutWithRuntime(true));
         }
 
         $resolver = new ConfigurationResolver(

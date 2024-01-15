@@ -52,7 +52,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<JSON
                         [{
@@ -79,7 +79,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<JSON
                         [{
@@ -119,7 +119,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<JSON
                         [{

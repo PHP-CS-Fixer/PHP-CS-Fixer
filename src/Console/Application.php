@@ -113,7 +113,7 @@ final class Application extends BaseApplication
     /**
      * @internal
      */
-    public static function getAppAbout(bool $decorated = false): string
+    public static function getAbout(bool $decorated = false): string
     {
         $longVersion = sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
 
@@ -141,9 +141,9 @@ final class Application extends BaseApplication
     /**
      * @internal
      */
-    public static function getAppAboutWithRuntime(bool $decorated = false): string
+    public static function getAboutWithRuntime(bool $decorated = false): string
     {
-        $about = self::getAppAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
+        $about = self::getAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
         if (false === $decorated) {
             return strip_tags($about);
         }
@@ -153,7 +153,7 @@ final class Application extends BaseApplication
 
     public function getLongVersion(): string
     {
-        return self::getAppAboutWithRuntime(true);
+        return self::getAboutWithRuntime(true);
     }
 
     protected function getDefaultCommands(): array

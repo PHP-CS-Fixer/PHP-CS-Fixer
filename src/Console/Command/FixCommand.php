@@ -252,7 +252,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             : ('txt' === $reporter->getFormat() ? $output : null);
 
         if (null !== $stdErr) {
-            $stdErr->writeln(Application::getAppAboutWithRuntime(true));
+            $stdErr->writeln(Application::getAboutWithRuntime(true));
 
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));

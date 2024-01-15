@@ -84,7 +84,7 @@ final class SelfUpdateCommand extends Command
     {
         if ($output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
-            $stdErr->writeln(Application::getAppAboutWithRuntime(true));
+            $stdErr->writeln(Application::getAboutWithRuntime(true));
         }
 
         if (!$this->toolInfo->isInstalledAsPhar()) {

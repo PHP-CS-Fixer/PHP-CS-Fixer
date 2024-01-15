@@ -47,7 +47,7 @@ final class GitlabReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {

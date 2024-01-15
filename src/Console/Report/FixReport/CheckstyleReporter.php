@@ -39,7 +39,7 @@ final class CheckstyleReporter implements ReporterInterface
 
         /** @var \DOMElement $checkstyles */
         $checkstyles = $dom->appendChild($dom->createElement('checkstyle'));
-        $checkstyles->setAttribute('version', Application::getAppAbout());
+        $checkstyles->setAttribute('version', Application::getAbout());
 
         foreach ($reportSummary->getChanged() as $filePath => $fixResult) {
             /** @var \DOMElement $file */

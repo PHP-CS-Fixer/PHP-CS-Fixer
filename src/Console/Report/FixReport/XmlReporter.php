@@ -40,7 +40,7 @@ final class XmlReporter implements ReporterInterface
         $root = $dom->createElement('report');
         $dom->appendChild($root);
 
-        $root->appendChild($this->createAboutElement($dom, Application::getAppAbout()));
+        $root->appendChild($this->createAboutElement($dom, Application::getAbout()));
 
         $filesXML = $dom->createElement('files');
         $root->appendChild($filesXML);

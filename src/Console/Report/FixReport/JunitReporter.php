@@ -46,7 +46,7 @@ final class JunitReporter implements ReporterInterface
         $properties = $dom->createElement('properties');
         $property = $dom->createElement('property');
         $property->setAttribute('name', 'about');
-        $property->setAttribute('value', Application::getAppAbout());
+        $property->setAttribute('value', Application::getAbout());
         $properties->appendChild($property);
         $testsuite->appendChild($properties);
 

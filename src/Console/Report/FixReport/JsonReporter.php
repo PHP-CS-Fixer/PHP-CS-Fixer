@@ -48,7 +48,7 @@ final class JsonReporter implements ReporterInterface
         }
 
         $json = [
-            'about' => Application::getAppAbout(),
+            'about' => Application::getAbout(),
             'files' => $jsonFiles,
             'time' => [
                 'total' => round($reportSummary->getTime() / 1_000, 3),

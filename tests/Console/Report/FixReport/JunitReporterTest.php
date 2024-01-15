@@ -60,7 +60,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createNoErrorReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
@@ -77,7 +77,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
@@ -111,7 +111,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createWithDiffReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
@@ -145,7 +145,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
@@ -167,7 +167,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createWithTimeAndMemoryReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
@@ -201,7 +201,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        $about = Application::getAppAbout();
+        $about = Application::getAbout();
 
         return <<<XML
             <?xml version="1.0"?>
