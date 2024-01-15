@@ -180,7 +180,6 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected function assertFormat(string $expected, string $input): void
     {
-        // var_dump($expected);
         self::assertJsonSchema(__DIR__.'/../../../../doc/schemas/fix/schema.json', $input);
         self::assertJsonStringEqualsJsonString($expected, $input);
     }
