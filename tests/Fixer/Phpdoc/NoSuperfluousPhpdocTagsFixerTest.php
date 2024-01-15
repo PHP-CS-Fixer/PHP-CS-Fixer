@@ -2566,6 +2566,46 @@ static fn ($foo): int => 1;',
                 }
                 EOD,
         ];
+
+        yield '@param for future parameter with option disabled' => [
+            <<<'EOD'
+                <?php
+                /**
+                 */
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @param array   $bundleConfig
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 */
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                EOD,
+            ['allow_future_params' => false],
+        ];
+
+        yield '@param for future parameter with option enabled' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 */
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @param array   $bundleConfig
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 */
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                EOD,
+            ['allow_future_params' => true],
+        ];
     }
 
     /**
