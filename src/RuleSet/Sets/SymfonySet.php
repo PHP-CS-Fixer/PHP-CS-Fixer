@@ -109,6 +109,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => [
                 'remove_inheritdoc' => true,
+                'allow_future_params' => true,
             ],
             'no_trailing_comma_in_singleline' => true,
             'no_unneeded_braces' => [
