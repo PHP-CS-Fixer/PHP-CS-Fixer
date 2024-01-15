@@ -40,7 +40,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const APP_NAME = 'PHP CS Fixer';
+    public const NAME = 'PHP CS Fixer';
     public const VERSION = '3.46.1-DEV';
     public const VERSION_CODENAME = 'Three Keys';
 
@@ -48,7 +48,7 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        parent::__construct(self::APP_NAME, self::VERSION);
+        parent::__construct(self::NAME, self::VERSION);
 
         $this->toolInfo = new ToolInfo();
 
@@ -115,7 +115,7 @@ final class Application extends BaseApplication
      */
     public static function getAppAbout(bool $decorated = false): string
     {
-        $longVersion = sprintf('%s <info>%s</info>', self::APP_NAME, self::VERSION);
+        $longVersion = sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
 
         $commit = '@git-commit@';
         $versionCommit = '';
