@@ -93,7 +93,7 @@ final class FixerDocumentGenerator
         $experimentalDescription = '';
 
         if ($fixer instanceof ExperimentalFixerInterface) {
-            $experimentalDescriptionRaw = RstUtils::toRst('It is not covered with backward compatibility promise and may produce unstable or unexpected results.', 0);
+            $experimentalDescriptionRaw = RstUtils::toRst('Rule is not covered with backward compatibility promise, use it at your own risk. Rule\'s behaviour may be changed at any point, including rule\'s name; its options\' names, availability and allowed values; its default configuration. Rule may be even removed without prior notice. Feel free to provide feedback and help with determining final state of the rule.', 0);
             $experimentalDescription = <<<RST
 
                 This rule is experimental
