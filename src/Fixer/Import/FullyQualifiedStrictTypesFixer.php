@@ -167,6 +167,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 ',
                     ['import_symbols' => true]
                 ),
+                new CodeSample(
+                    '<?php
+
+use Foo\Bar;
+
+$bar = new Bar();
+$baz = new Bar\Baz();
+',
+                    ['import_symbols' => true, 'import_relative_symbols' => true]
+                ),
             ]
         );
     }
@@ -211,7 +221,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCNs found during analysis should be automatically imported.'
+                'Whether FQCNs should be automatically imported.'
+            ))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder(
+                'import_relative_symbols',
+                'Whether non-FQCNs containing backslash should be automatically imported. Applicable only with `import_symbols` enabled.'
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -390,7 +407,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
             if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])])) {
                 $res = $tmpRes;
-                $iMin = substr_count($namespaceName, '\\') - 1;
+                $iMin = substr_count($namespaceName, '\\') + 1;
             }
         }
 
@@ -448,7 +465,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             foreach ($discoveredSymbols as $symbol) {
                 $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
                 if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
-                    if ('' !== $namespaceName && !str_starts_with($symbol, '\\') && str_contains($symbol, '\\')) { // @TODO add option to force all classes to be imported
+                    if ('' !== $namespaceName
+                        && !str_starts_with($symbol, '\\') && false === $this->configuration['import_relative_symbols']
+                        && str_contains($symbol, '\\')
+                    ) {
                         continue;
                     }
 
@@ -519,20 +539,26 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            // @TODO parse the complex type using TypeExpression and fix all names inside (like `int|string` or `list<int|string>`)
-            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[4])) {
-                return $matches[0];
-            }
+            /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
+            $unsupported = false;
 
-            $shortTokens = $this->determineShortType($matches[4], $uses, $namespaceName);
-            if (null === $shortTokens) {
-                return $matches[0];
-            }
+            return $matches[1].$matches[2].$matches[3].implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
+                if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
+                    $unsupported = true;
 
-            return $matches[1].$matches[2].$matches[3].implode('', array_map(
-                static fn (Token $token) => $token->getContent(),
-                $shortTokens
-            ));
+                    return $v;
+                }
+
+                $shortTokens = $this->determineShortType($v, $uses, $namespaceName);
+                if (null === $shortTokens) {
+                    return $v;
+                }
+
+                return implode('', array_map(
+                    static fn (Token $token) => $token->getContent(),
+                    $shortTokens
+                ));
+            }, explode('|', $matches[4])));
         }, $phpDocContent);
 
         if ($phpDocContentNew !== $phpDocContent) {

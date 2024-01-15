@@ -875,6 +875,198 @@ class Foo extends \A\A implements \B\A, \C\A
                 new R\T();
                 EOD,
         ];
+
+        yield 'shortening - namespace with shorter import' => [
+            <<<'EOD'
+                <?php
+
+                namespace U\V\W;
+
+                use U\V;
+
+                new \U();
+                new V();
+                new V\W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with same import' => [
+            <<<'EOD'
+                <?php
+
+                namespace U\V\W;
+
+                use U\V\W;
+
+                new \U();
+                new \U\V();
+                new W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with useless import' => [
+            <<<'EOD'
+                <?php
+
+                namespace U\V\W;
+
+                use U\V\W\X;
+
+                new \U();
+                new \U\V();
+                new \U\V\W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with longer import' => [
+            <<<'EOD'
+                <?php
+
+                namespace U\V\W;
+
+                use U\V\W\X\Y;
+
+                new \U();
+                new \U\V();
+                new \U\V\W();
+                new X();
+                new Y();
+                new Y\Z();
+                new Y\Z\e();
+                new Y\Z\e\f();
+                EOD,
+        ];
+
+        yield 'import even if party already imported - global' => [
+            <<<'EOD'
+                <?php
+
+                use Ns\Foo;
+                use Ns\Foo\M;
+                use Ns\Foo\M\N;
+
+                new M();
+                new N();
+                new Exception();
+                new Exception();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use Ns\Foo;
+
+                new Foo\M();
+                new Foo\M\N();
+                new \Exception();
+                new Exception();
+                EOD,
+            ['import_symbols' => true, 'import_relative_symbols' => true],
+        ];
+
+        yield 'import even if party already imported - namespaced' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+                use Ns2\Foo\M;
+                use Ns2\Foo\M\N;
+
+                new M();
+                new N();
+                new \Exception();
+                new Exception();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+
+                new Foo\M();
+                new Foo\M\N();
+                new \Exception();
+                new Exception();
+                EOD,
+            ['import_symbols' => true, 'import_relative_symbols' => true],
+        ];
+
+        yield 'import even if partly importable using namespace' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns\A\B;
+                use Ns\A\B\C;
+
+                new A();
+                new B();
+                new C();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns\A();
+                new \Ns\A\B();
+                new \Ns\A\B\C();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import even if partly already imported using namespace - without import_relative_symbols' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import even if partly already imported using namespace - with import_relative_symbols' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+                use Ns\A\B;
+                use Ns\A\B\C;
+
+                new A();
+                new B();
+                new C();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                use Ns2\Foo;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                EOD,
+            ['import_symbols' => true, 'import_relative_symbols' => true],
+        ];
     }
 
     /**
@@ -1518,6 +1710,49 @@ namespace Ns;
  * @param \Exception|\Exception2|int|null $v
  */
 function foo($v) {}',
+        ];
+
+        yield 'Test PHPDoc union with imports' => [
+            '<?php
+
+namespace Ns;
+use Other\Foo;
+use Other\FooŇ;
+
+/**
+ * @param \Exception|\Exception2|int|Foo|FooŇ|null $v
+ */
+function foo($v) {}',
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|\Exception2|int|\Other\Foo|\Other\FooŇ|null $v
+ */
+function foo($v) {}',
+            ['import_symbols' => true],
+        ];
+
+        yield 'Test PHPDoc string must be kept as is' => [
+            '<?php
+
+namespace Ns;
+use Other\Foo;
+
+/**
+ * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ */
+function foo($v) {}',
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Other\Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ */
+function foo($v) {}',
+            ['import_symbols' => true],
         ];
 
         yield 'Test PHPDoc in interface' => [

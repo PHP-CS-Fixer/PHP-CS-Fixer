@@ -8,10 +8,20 @@ is imported or belongs to the current namespace.
 Configuration
 -------------
 
+``import_relative_symbols``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether non-FQCNs containing backslash should be automatically imported.
+Applicable only with ``import_symbols`` enabled.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``import_symbols``
 ~~~~~~~~~~~~~~~~~~
 
-Whether FQCNs found during analysis should be automatically imported.
+Whether FQCNs should be automatically imported.
 
 Allowed types: ``bool``
 
@@ -178,6 +188,24 @@ With configuration: ``['import_symbols' => true]``.
    +        } catch (CaughtThrowable $e) {}
         }
     }
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['import_symbols' => true, 'import_relative_symbols' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    use Foo\Bar;
+   +use Foo\Bar\Baz;
+
+    $bar = new Bar();
+   -$baz = new Bar\Baz();
+   +$baz = new Baz();
 
 Rule sets
 ---------
