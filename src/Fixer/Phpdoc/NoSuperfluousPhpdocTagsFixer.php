@@ -59,7 +59,8 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Removes `@param`, `@return` and `@var` tags that don\'t provide any useful information.',
             [
-                new CodeSample('<?php
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -69,8 +70,10 @@ class Foo {
      */
     public function doFoo(Bar $bar, $baz): Baz {}
 }
-'),
-                new CodeSample('<?php
+',
+                ),
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -78,16 +81,22 @@ class Foo {
      */
     public function doFoo(Bar $bar, $baz) {}
 }
-', ['allow_mixed' => true]),
-                new CodeSample('<?php
+',
+                    ['allow_mixed' => true],
+                ),
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     public function doFoo(Bar $bar, $baz) {}
 }
-', ['remove_inheritdoc' => true]),
-                new CodeSample('<?php
+',
+                    ['remove_inheritdoc' => true],
+                ),
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -96,7 +105,9 @@ class Foo {
      */
     public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
 }
-', ['allow_unused_params' => true]),
+',
+                    ['allow_unused_params' => true],
+                ),
             ]
         );
     }
