@@ -40,6 +40,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
+    public const NAME = 'PHP CS Fixer';
     public const VERSION = '3.46.1-DEV';
     public const VERSION_CODENAME = 'Three Keys';
 
@@ -47,7 +48,7 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        parent::__construct('PHP CS Fixer', self::VERSION);
+        parent::__construct(self::NAME, self::VERSION);
 
         $this->toolInfo = new ToolInfo();
 
@@ -109,8 +110,13 @@ final class Application extends BaseApplication
         return $result;
     }
 
-    public function getLongVersion(): string
+    /**
+     * @internal
+     */
+    public static function getAbout(bool $decorated = false): string
     {
+        $longVersion = sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
+
         $commit = '@git-commit@';
         $versionCommit = '';
 
@@ -118,13 +124,36 @@ final class Application extends BaseApplication
             $versionCommit = substr($commit, 0, 7);
         }
 
-        return implode('', [
-            parent::getLongVersion(),
+        $about = implode('', [
+            $longVersion,
             $versionCommit ? sprintf(' <info>(%s)</info>', $versionCommit) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             ' by <comment>Fabien Potencier</comment>, <comment>Dariusz Ruminski</comment> and <comment>contributors</comment>.',
-            "\nPHP runtime: <info>".PHP_VERSION.'</info>',
         ]);
+
+        if (false === $decorated) {
+            return strip_tags($about);
+        }
+
+        return $about;
+    }
+
+    /**
+     * @internal
+     */
+    public static function getAboutWithRuntime(bool $decorated = false): string
+    {
+        $about = self::getAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
+        if (false === $decorated) {
+            return strip_tags($about);
+        }
+
+        return $about;
+    }
+
+    public function getLongVersion(): string
+    {
+        return self::getAboutWithRuntime(true);
     }
 
     protected function getDefaultCommands(): array
