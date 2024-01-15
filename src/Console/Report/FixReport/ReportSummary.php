@@ -50,7 +50,7 @@ final class ReportSummary
         int $memory,
         bool $addAppliedFixers,
         bool $isDryRun,
-        bool $isDecoratedOutput,
+        bool $isDecoratedOutput
     ) {
         $this->changed = $changed;
         $this->filesCount = $filesCount;
