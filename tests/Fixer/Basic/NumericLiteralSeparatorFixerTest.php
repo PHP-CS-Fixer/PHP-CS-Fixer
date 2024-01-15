@@ -86,7 +86,10 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 '0b110001000' => '0b1_10001000',
             ],
             'float' => [
+                '.001' => null,
                 '.1001' => '.100_1',
+                '0.0001' => '0.000_1',
+                '0.001' => null,
                 '1234.5' => '1_234.5',
                 '1.2345' => '1.234_5',
                 '1234e5' => '1_234e5',
@@ -168,14 +171,26 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
     {
         foreach ($cases as $pairsType => $pairs) {
             foreach ($pairs as $withoutSeparator => $withSeparator) {
-                yield "add separator to {$pairsType} {$withoutSeparator}" => [
-                    sprintf('<?php echo %s;', $withSeparator),
-                    sprintf('<?php echo %s;', $withoutSeparator),
-                    ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR],
-                ];
+                if (null === $withSeparator) {
+                    yield "do not modify valid {$pairsType} {$withoutSeparator}" => [
+                        sprintf('<?php echo %s;', $withoutSeparator),
+                        null,
+                        ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR],
+                    ];
+                } else {
+                    yield "add separator to {$pairsType} {$withoutSeparator}" => [
+                        sprintf('<?php echo %s;', $withSeparator),
+                        sprintf('<?php echo %s;', $withoutSeparator),
+                        ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR],
+                    ];
+                }
             }
 
             foreach ($pairs as $withoutSeparator => $withSeparator) {
+                if (null === $withSeparator) {
+                    continue;
+                }
+
                 yield "remove separator from {$pairsType} {$withoutSeparator}" => [
                     sprintf('<?php echo %s;', $withoutSeparator),
                     sprintf('<?php echo %s;', $withSeparator),
