@@ -171,7 +171,7 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
     {
         foreach ($cases as $pairsType => $pairs) {
             foreach ($pairs as $withoutSeparator => $withSeparator) {
-                if ($withSeparator === null) {
+                if (null === $withSeparator) {
                     yield "do not modify valid {$pairsType} {$withoutSeparator}" => [
                         sprintf('<?php echo %s;', $withoutSeparator),
                         null,
@@ -187,9 +187,10 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
             }
 
             foreach ($pairs as $withoutSeparator => $withSeparator) {
-                if ($withSeparator === null) {
+                if (null === $withSeparator) {
                     continue;
                 }
+
                 yield "remove separator from {$pairsType} {$withoutSeparator}" => [
                     sprintf('<?php echo %s;', $withoutSeparator),
                     sprintf('<?php echo %s;', $withSeparator),
