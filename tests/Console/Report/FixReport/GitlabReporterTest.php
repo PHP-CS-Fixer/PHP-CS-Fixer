@@ -30,11 +30,6 @@ final class GitlabReporterTest extends AbstractReporterTestCase
 {
     use AssertJsonSchemaTrait;
 
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-    }
-
     protected function createReporter(): ReporterInterface
     {
         return new GitlabReporter();
