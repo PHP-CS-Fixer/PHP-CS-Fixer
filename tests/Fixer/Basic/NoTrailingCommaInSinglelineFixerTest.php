@@ -145,14 +145,18 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'static function call' => [
-            '<?php
-unset($foo->bar);
-$b = isset($foo->bar);
-',
-            '<?php
-unset($foo->bar,);
-$b = isset($foo->bar,);
-',
+            <<<'EOD'
+                <?php
+                unset($foo->bar);
+                $b = isset($foo->bar);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                unset($foo->bar,);
+                $b = isset($foo->bar,);
+
+                EOD,
             ['elements' => ['arguments']],
         ];
 
@@ -169,70 +173,76 @@ $b = isset($foo->bar,);
         ];
 
         yield 'array/property access call' => [
-            '<?php
-$a = [
-    "e" => static function(int $a): void{ echo $a;},
-    "d" => [
-        [2 => static function(int $a): void{ echo $a;}]
-    ]
-];
+            <<<'EOD'
+                <?php
+                $a = [
+                    "e" => static function(int $a): void{ echo $a;},
+                    "d" => [
+                        [2 => static function(int $a): void{ echo $a;}]
+                    ]
+                ];
 
-$a["e"](1);
-$a["d"][0][2](1);
+                $a["e"](1);
+                $a["d"][0][2](1);
 
-$z = new class { public static function b(int $a): void {echo $a; }};
-$z::b(1);
+                $z = new class { public static function b(int $a): void {echo $a; }};
+                $z::b(1);
 
-${$e}(1);
-$$e(2);
-$f(0)(1);
-$g["e"](1); // foo',
-            '<?php
-$a = [
-    "e" => static function(int $a): void{ echo $a;},
-    "d" => [
-        [2 => static function(int $a): void{ echo $a;}]
-    ]
-];
+                ${$e}(1);
+                $$e(2);
+                $f(0)(1);
+                $g["e"](1); // foo
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = [
+                    "e" => static function(int $a): void{ echo $a;},
+                    "d" => [
+                        [2 => static function(int $a): void{ echo $a;}]
+                    ]
+                ];
 
-$a["e"](1,);
-$a["d"][0][2](1,);
+                $a["e"](1,);
+                $a["d"][0][2](1,);
 
-$z = new class { public static function b(int $a): void {echo $a; }};
-$z::b(1,);
+                $z = new class { public static function b(int $a): void {echo $a; }};
+                $z::b(1,);
 
-${$e}(1,);
-$$e(2,);
-$f(0,)(1,);
-$g["e"](1,); // foo',
+                ${$e}(1,);
+                $$e(2,);
+                $f(0,)(1,);
+                $g["e"](1,); // foo
+                EOD,
             ['elements' => ['arguments']],
         ];
 
         yield 'do not fix' => [
-            '<?php
-                function someFunction ($p1){}
-                function & foo($a,$b): array { return []; }
+            <<<'EOD'
+                <?php
+                                function someFunction ($p1){}
+                                function & foo($a,$b): array { return []; }
 
-                foo (
-                    1,
-                    2,
-                );
+                                foo (
+                                    1,
+                                    2,
+                                );
 
-                $a = new class (
-                    $a,
-                ) {};
+                                $a = new class (
+                                    $a,
+                                ) {};
 
-                isset($a, $b);
-                unset($a,$b);
-                list($a,$b) = $a;
+                                isset($a, $b);
+                                unset($a,$b);
+                                list($a,$b) = $a;
 
-                $a = [1,2,3,];
-                $a = array(1,2,3,);
+                                $a = [1,2,3,];
+                                $a = array(1,2,3,);
 
-                function foo1(string $param = null ): void
-                {
-                }
-            ;',
+                                function foo1(string $param = null ): void
+                                {
+                                }
+                            ;
+                EOD,
             null,
             ['elements' => ['arguments']],
         ];
@@ -280,43 +290,51 @@ $g["e"](1,); // foo',
         ];
 
         yield [
-            '<?php
-    $test = array("foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array("foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
             null,
             ['elements' => ['array']],
         ];
 
         yield [
-            '<?php
-    $test = array(
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array(
+                        "foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
             null,
             ['elements' => ['array']],
         ];
 
         yield [
-            '<?php
-    $test = array("foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array("foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
             null,
             ['elements' => ['array']],
         ];
 
         yield [
-            '<?php
-    $test = array(
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, );',
+            <<<'EOD'
+                <?php
+                    $test = array(
+                        "foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, );
+                EOD,
             null,
             ['elements' => ['array']],
         ];
@@ -377,43 +395,51 @@ TWIG
         ];
 
         yield [
-            '<?php
-    $test = ["foo", <<<TWIG
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = ["foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
             null,
             ['elements' => ['array']],
         ];
 
         yield [
-            '<?php
-    $test = [
-        "foo", <<<TWIG
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = [
+                        "foo", <<<TWIG
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
             null,
             ['elements' => ['array']],
         ];
 
         yield [
-            '<?php
-    $test = ["foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = ["foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
             null,
             ['elements' => ['array']],
         ];
 
         yield [
-            '<?php
-    $test = [
-        "foo", <<<\'TWIG\'
-        foo
-TWIG
-        , $twig, ];',
+            <<<'EOD'
+                <?php
+                    $test = [
+                        "foo", <<<'TWIG'
+                        foo
+                TWIG
+                        , $twig, ];
+                EOD,
             null,
             ['elements' => ['array']],
         ];
@@ -431,53 +457,63 @@ TWIG
         ];
 
         yield [
-            '<?php
-list($a1, $b) = foo();
-list($a2, , $c, $d) = foo();
-list($a3, , $c) = foo();
-list($a4) = foo();
-list($a5 , $b) = foo();
-list($a6, /* $b */, $c) = foo();
-',
-            '<?php
-list($a1, $b) = foo();
-list($a2, , $c, $d, ) = foo();
-list($a3, , $c, , ) = foo();
-list($a4, , , , , ) = foo();
-list($a5 , $b , ) = foo();
-list($a6, /* $b */, $c, ) = foo();
-',
+            <<<'EOD'
+                <?php
+                list($a1, $b) = foo();
+                list($a2, , $c, $d) = foo();
+                list($a3, , $c) = foo();
+                list($a4) = foo();
+                list($a5 , $b) = foo();
+                list($a6, /* $b */, $c) = foo();
+
+                EOD,
+            <<<'EOD'
+                <?php
+                list($a1, $b) = foo();
+                list($a2, , $c, $d, ) = foo();
+                list($a3, , $c, , ) = foo();
+                list($a4, , , , , ) = foo();
+                list($a5 , $b , ) = foo();
+                list($a6, /* $b */, $c, ) = foo();
+
+                EOD,
             ['elements' => ['array_destructuring']],
         ];
 
         yield [
-            '<?php
-list(
-$a#
-,#
-#
-) = $a;',
+            <<<'EOD'
+                <?php
+                list(
+                $a#
+                ,#
+                #
+                ) = $a;
+                EOD,
             null,
             ['elements' => ['array_destructuring']],
         ];
 
         yield [
-            '<?php
-[$a7, $b] = foo();
-[$a8, , $c, $d] = foo();
-[$a9, , $c] = foo();
-[$a10] = foo();
-[$a11 , $b] = foo();
-[$a12, /* $b */, $c] = foo();
-',
-            '<?php
-[$a7, $b] = foo();
-[$a8, , $c, $d, ] = foo();
-[$a9, , $c, , ] = foo();
-[$a10, , , , , ] = foo();
-[$a11 , $b , ] = foo();
-[$a12, /* $b */, $c, ] = foo();
-',
+            <<<'EOD'
+                <?php
+                [$a7, $b] = foo();
+                [$a8, , $c, $d] = foo();
+                [$a9, , $c] = foo();
+                [$a10] = foo();
+                [$a11 , $b] = foo();
+                [$a12, /* $b */, $c] = foo();
+
+                EOD,
+            <<<'EOD'
+                <?php
+                [$a7, $b] = foo();
+                [$a8, , $c, $d, ] = foo();
+                [$a9, , $c, , ] = foo();
+                [$a10, , , , , ] = foo();
+                [$a11 , $b , ] = foo();
+                [$a12, /* $b */, $c, ] = foo();
+
+                EOD,
             ['elements' => ['array_destructuring']],
         ];
     }
@@ -495,12 +531,14 @@ $a#
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php function foo(
-    #[MyAttr(1, 2,)] Type $myParam,
-) {}
+            <<<'EOD'
+                <?php function foo(
+                    #[MyAttr(1, 2,)] Type $myParam,
+                ) {}
 
-$foo1b = function() use ($bar, ) {};
-',
+                $foo1b = function() use ($bar, ) {};
+
+                EOD,
         ];
     }
 

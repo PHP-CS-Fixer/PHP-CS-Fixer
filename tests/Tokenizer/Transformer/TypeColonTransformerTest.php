@@ -80,11 +80,12 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php
-                    $a = 1 ? [] : [];
-                    $b = 1 ? fnc() : [];
-                    $c = 1 ?: [];
-                ',
+            <<<'EOD'
+                <?php
+                                    $a = 1 ? [] : [];
+                                    $b = 1 ? fnc() : [];
+                                    $c = 1 ?: [];
+                EOD."\n                ",
         ];
 
         yield [

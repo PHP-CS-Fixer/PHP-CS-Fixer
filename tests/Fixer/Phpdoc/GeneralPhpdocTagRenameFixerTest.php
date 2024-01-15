@@ -39,60 +39,70 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritDoc
-     * @inheritDoc
-     * {@inheritDoc}
-     * {@inheritDoc}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritDoc
+                     * @inheritDoc
+                     * {@inheritDoc}
+                     * {@inheritDoc}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
             [
                 'replacements' => ['inheritDocs' => 'inheritDoc'],
             ],
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritdoc
-     * @inheritdoc
-     * {@inheritdoc}
-     * {@inheritdoc}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdoc
+                     * @inheritdoc
+                     * {@inheritdoc}
+                     * {@inheritdoc}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
             [
                 'fix_annotation' => true,
                 'fix_inline' => true,
@@ -102,24 +112,28 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritDoc
-     * @inheritDoc
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritDoc
+                     * @inheritDoc
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
             [
                 'fix_inline' => false,
                 'replacements' => ['inheritDocs' => 'inheritDoc'],
@@ -127,24 +141,28 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritDoc}
-     * {@inheritDoc}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritDoc}
+                     * {@inheritDoc}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
             [
                 'fix_annotation' => false,
                 'replacements' => ['inheritDocs' => 'inheritDoc'],
@@ -152,24 +170,28 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDoc
-     * {@inheritdocs}
-     * {@inheritDoc}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDoc
+                     * {@inheritdocs}
+                     * {@inheritDoc}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
             [
                 'case_sensitive' => true,
                 'replacements' => ['inheritDocs' => 'inheritDoc'],
@@ -177,24 +199,28 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * @inheritdoc
-     * @inheritdoc
-     * {@inheritdoc}
-     * {@inheritdoc}
-     * @see Foo::bar()
-     * {@see Foo::bar()}
-     */',
-            '<?php
-    /**
-     * @inheritdocs
-     * @inheritDocs
-     * {@inheritdocs}
-     * {@inheritDocs}
-     * @link Foo::bar()
-     * {@link Foo::bar()}
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdoc
+                     * @inheritdoc
+                     * {@inheritdoc}
+                     * {@inheritdoc}
+                     * @see Foo::bar()
+                     * {@see Foo::bar()}
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @inheritdocs
+                     * @inheritDocs
+                     * {@inheritdocs}
+                     * {@inheritDocs}
+                     * @link Foo::bar()
+                     * {@link Foo::bar()}
+                     */
+                EOD,
             [
                 'replacements' => [
                     'inheritdocs' => 'inheritdoc',
@@ -204,16 +230,20 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * @var int $foo
-     * @Annotation("@type")
-     */',
-            '<?php
-    /**
-     * @type int $foo
-     * @Annotation("@type")
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @var int $foo
+                     * @Annotation("@type")
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @type int $foo
+                     * @Annotation("@type")
+                     */
+                EOD,
             [
                 'fix_annotation' => true,
                 'fix_inline' => true,
@@ -224,16 +254,20 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * @var int $foo
-     * @Annotation("@type")
-     */',
-            '<?php
-    /**
-     * @type int $foo
-     * @Annotation("@type")
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @var int $foo
+                     * @Annotation("@type")
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @type int $foo
+                     * @Annotation("@type")
+                     */
+                EOD,
             [
                 'fix_annotation' => true,
                 'fix_inline' => false,

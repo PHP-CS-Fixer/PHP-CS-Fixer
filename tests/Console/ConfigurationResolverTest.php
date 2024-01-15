@@ -1005,26 +1005,34 @@ final class ConfigurationResolverTest extends TestCase
     public static function provideResolveRenamedRulesWithUnknownRulesCases(): iterable
     {
         yield 'with config' => [
-            'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            <<<'EOD'
+                The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "['statements' => ['return']]")).
+                For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.
+                EOD,
             ['blank_line_before_return'],
         ];
 
         yield 'without config' => [
-            'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            <<<'EOD'
+                The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?).
+                For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.
+                EOD,
             ['final_static_access'],
         ];
 
         yield [
-            'The rules contain unknown fixers: "hash_to_slash_comment" is renamed (did you mean "single_line_comment_style"? (note: use configuration "[\'comment_types\' => [\'hash\']]")).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            <<<'EOD'
+                The rules contain unknown fixers: "hash_to_slash_comment" is renamed (did you mean "single_line_comment_style"? (note: use configuration "['comment_types' => ['hash']]")).
+                For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.
+                EOD,
             ['hash_to_slash_comment'],
         ];
 
         yield 'both renamed and unknown' => [
-            'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?), "binary_operator_space" (did you mean "binary_operator_spaces"?).
-For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            <<<'EOD'
+                The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?), "binary_operator_space" (did you mean "binary_operator_spaces"?).
+                For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.
+                EOD,
             ['final_static_access', 'binary_operator_space'],
         ];
     }

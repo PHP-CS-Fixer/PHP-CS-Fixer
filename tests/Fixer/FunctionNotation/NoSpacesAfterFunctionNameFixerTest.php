@@ -46,40 +46,42 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'test function-like constructs' => [
-            '<?php
-    include("something.php");
-    include_once("something.php");
-    require("something.php");
-    require_once("something.php");
-    print("hello");
-    unset($hello);
-    isset($hello);
-    empty($hello);
-    die($hello);
-    echo("hello");
-    array("hello");
-    list($a, $b) = $c;
-    eval("a");
-    foo();
-    $foo = &ref();
-    ',
-            '<?php
-    include ("something.php");
-    include_once ("something.php");
-    require ("something.php");
-    require_once ("something.php");
-    print ("hello");
-    unset ($hello);
-    isset ($hello);
-    empty ($hello);
-    die ($hello);
-    echo ("hello");
-    array ("hello");
-    list ($a, $b) = $c;
-    eval ("a");
-    foo ();
-    $foo = &ref ();
-    ',
+            <<<'EOD'
+                <?php
+                    include("something.php");
+                    include_once("something.php");
+                    require("something.php");
+                    require_once("something.php");
+                    print("hello");
+                    unset($hello);
+                    isset($hello);
+                    empty($hello);
+                    die($hello);
+                    echo("hello");
+                    array("hello");
+                    list($a, $b) = $c;
+                    eval("a");
+                    foo();
+                    $foo = &ref();
+                EOD."\n    ",
+            <<<'EOD'
+                <?php
+                    include ("something.php");
+                    include_once ("something.php");
+                    require ("something.php");
+                    require_once ("something.php");
+                    print ("hello");
+                    unset ($hello);
+                    isset ($hello);
+                    empty ($hello);
+                    die ($hello);
+                    echo ("hello");
+                    array ("hello");
+                    list ($a, $b) = $c;
+                    eval ("a");
+                    foo ();
+                    $foo = &ref ();
+                EOD."\n    ",
         ];
 
         yield [
@@ -115,21 +117,24 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'don\'t touch function declarations' => [
-            '<?php
-                function TisMy ($p1)
-                {
-                    print $p1;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                function TisMy ($p1)
+                                {
+                                    print $p1;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php class A {
-                    function TisMy    ($p1)
-                    {
-                        print $p1;
-                    }
-                }',
+            <<<'EOD'
+                <?php class A {
+                                    function TisMy    ($p1)
+                                    {
+                                        print $p1;
+                                    }
+                                }
+                EOD,
         ];
 
         yield 'test dynamic by array' => [
@@ -138,14 +143,16 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'test variable variable' => [
-            '<?php
-${$e}(1);
-$$e(2);
-                ',
-            "<?php
-\${\$e}\t(1);
-\$\$e    (2);
-                ",
+            <<<'EOD'
+                <?php
+                ${$e}(1);
+                $$e(2);
+                EOD."\n                ",
+            <<<EOD
+                <?php
+                \${\$e}\t(1);
+                \$\$e    (2);
+                EOD."\n                ",
         ];
 
         yield 'test dynamic function and method calls' => [
@@ -154,8 +161,10 @@ $$e(2);
         ];
 
         yield 'test function call comment' => [
-            '<?php abc#
- ($a);',
+            <<<'EOD'
+                <?php abc#
+                 ($a);
+                EOD,
         ];
 
         yield [
@@ -169,52 +178,57 @@ $$e(2);
         ];
 
         yield [
-            '<?php
-                echo (function () {})();
-                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
-                echo(FUNCTION_1);
-                echo (EXPRESSION + CONST_1), CONST_2;
-            ',
-            '<?php
-                echo (function () {})();
-                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
-                echo (FUNCTION_1);
-                echo (EXPRESSION + CONST_1), CONST_2;
-            ',
+            <<<'EOD'
+                <?php
+                                echo (function () {})();
+                                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                                echo(FUNCTION_1);
+                                echo (EXPRESSION + CONST_1), CONST_2;
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                echo (function () {})();
+                                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                                echo (FUNCTION_1);
+                                echo (EXPRESSION + CONST_1), CONST_2;
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                include(SOME_PATH_1);
-                include_once(SOME_PATH_2);
-                require(SOME_PATH_3);
-                require_once(SOME_PATH_4);
-                print(SOME_VALUE);
-                print(FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
-                print((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
-            ',
-            '<?php
-                include         (SOME_PATH_1);
-                include_once    (SOME_PATH_2);
-                require         (SOME_PATH_3);
-                require_once    (SOME_PATH_4);
-                print           (SOME_VALUE);
-                print           (FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
-                print           ((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
-            ',
+            <<<'EOD'
+                <?php
+                                include(SOME_PATH_1);
+                                include_once(SOME_PATH_2);
+                                require(SOME_PATH_3);
+                                require_once(SOME_PATH_4);
+                                print(SOME_VALUE);
+                                print(FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
+                                print((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                include         (SOME_PATH_1);
+                                include_once    (SOME_PATH_2);
+                                require         (SOME_PATH_3);
+                                require_once    (SOME_PATH_4);
+                                print           (SOME_VALUE);
+                                print           (FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
+                                print           ((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
+                EOD."\n            ",
         ];
 
         yield [
-            '<?php
-                include         (DIR) . FILENAME_1;
-                include_once    (DIR) . (FILENAME_2);
-                require         (DIR) . FILENAME_3;
-                require_once    (DIR) . (FILENAME_4);
-                print           (FIRST_HALF_OF_STRING_1) . SECOND_HALF_OF_STRING_1;
-                print           (FIRST_HALF_OF_STRING_2) . ((((SECOND_HALF_OF_STRING_2))));
-                print           ((FIRST_HALF_OF_STRING_3)) . ((SECOND_HALF_OF_STRING_3));
-                print           ((((FIRST_HALF_OF_STRING_4)))) . ((((SECOND_HALF_OF_STRING_4))));
-            ',
+            <<<'EOD'
+                <?php
+                                include         (DIR) . FILENAME_1;
+                                include_once    (DIR) . (FILENAME_2);
+                                require         (DIR) . FILENAME_3;
+                                require_once    (DIR) . (FILENAME_4);
+                                print           (FIRST_HALF_OF_STRING_1) . SECOND_HALF_OF_STRING_1;
+                                print           (FIRST_HALF_OF_STRING_2) . ((((SECOND_HALF_OF_STRING_2))));
+                                print           ((FIRST_HALF_OF_STRING_3)) . ((SECOND_HALF_OF_STRING_3));
+                                print           ((((FIRST_HALF_OF_STRING_4)))) . ((((SECOND_HALF_OF_STRING_4))));
+                EOD."\n            ",
         ];
     }
 

@@ -37,56 +37,68 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
             'Sorts PHPDoc types.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @param string|null $bar
- */
-'
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param string|null $bar
+                         */
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string $bar
- */
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param null|string $bar
+                         */
+
+                        EOD,
                     ['null_adjustment' => 'always_last']
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string|int|\Foo $bar
- */
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param null|string|int|\Foo $bar
+                         */
+
+                        EOD,
                     ['sort_algorithm' => 'alpha']
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string|int|\Foo $bar
- */
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param null|string|int|\Foo $bar
+                         */
+
+                        EOD,
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'always_last',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string|int|\Foo $bar
- */
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param null|string|int|\Foo $bar
+                         */
+
+                        EOD,
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'none',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param Aaa|AA $bar
- */
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param Aaa|AA $bar
+                         */
+
+                        EOD,
                     ['case_sensitive' => true]
                 ),
             ]

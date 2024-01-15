@@ -36,164 +36,230 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-    in_array(1, $a, true);
-    in_array(1, $a, false);
-    in_array(1, $a, $useStrict);',
+            <<<'EOD'
+                <?php
+                    in_array(1, $a, true);
+                    in_array(1, $a, false);
+                    in_array(1, $a, $useStrict);
+                EOD,
         ];
 
         yield [
-            '<?php class Foo
-                {
-                    public function in_array($needle, $haystack) {}
-                }',
+            <<<'EOD'
+                <?php class Foo
+                                {
+                                    public function in_array($needle, $haystack) {}
+                                }
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_array(1, $a, true);',
-            '<?php
-    in_array(1, $a);',
+            <<<'EOD'
+                <?php
+                    in_array(1, $a, true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_array(1, $a);
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_array(1, foo(), true);',
-            '<?php
-    in_array(1, foo());',
+            <<<'EOD'
+                <?php
+                    in_array(1, foo(), true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_array(1, foo());
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_array(1, array(1, 2, 3), true);',
-            '<?php
-    in_array(1, array(1, 2, 3));',
+            <<<'EOD'
+                <?php
+                    in_array(1, array(1, 2, 3), true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_array(1, array(1, 2, 3));
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_array(1, [1, 2, 3], true);',
-            '<?php
-    in_array(1, [1, 2, 3]);',
+            <<<'EOD'
+                <?php
+                    in_array(1, [1, 2, 3], true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_array(1, [1, 2, 3]);
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_array(in_array(1, [1, in_array(1, [1, 2, 3], true) ? 21 : 22, 3], true) ? 111 : 222, [1, in_array(1, [1, 2, 3], true) ? 21 : 22, 3], true);',
-            '<?php
-    in_array(in_array(1, [1, in_array(1, [1, 2, 3]) ? 21 : 22, 3]) ? 111 : 222, [1, in_array(1, [1, 2, 3]) ? 21 : 22, 3]);',
+            <<<'EOD'
+                <?php
+                    in_array(in_array(1, [1, in_array(1, [1, 2, 3], true) ? 21 : 22, 3], true) ? 111 : 222, [1, in_array(1, [1, 2, 3], true) ? 21 : 22, 3], true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_array(in_array(1, [1, in_array(1, [1, 2, 3]) ? 21 : 22, 3]) ? 111 : 222, [1, in_array(1, [1, 2, 3]) ? 21 : 22, 3]);
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_Array(1, $a, true);',
-            '<?php
-    in_Array(1, $a);',
+            <<<'EOD'
+                <?php
+                    in_Array(1, $a, true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_Array(1, $a);
+                EOD,
         ];
 
         yield [
-            '<?php
-    base64_decode($foo, true);
-    base64_decode($foo, false);
-    base64_decode($foo, $useStrict);',
+            <<<'EOD'
+                <?php
+                    base64_decode($foo, true);
+                    base64_decode($foo, false);
+                    base64_decode($foo, $useStrict);
+                EOD,
         ];
 
         yield [
-            '<?php
-    base64_decode($foo, true);',
-            '<?php
-    base64_decode($foo);',
+            <<<'EOD'
+                <?php
+                    base64_decode($foo, true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    base64_decode($foo);
+                EOD,
         ];
 
         yield [
-            '<?php
-    array_search($foo, $bar, true);
-    array_search($foo, $bar, false);
-    array_search($foo, $bar, $useStrict);',
+            <<<'EOD'
+                <?php
+                    array_search($foo, $bar, true);
+                    array_search($foo, $bar, false);
+                    array_search($foo, $bar, $useStrict);
+                EOD,
         ];
 
         yield [
-            '<?php
-    array_search($foo, $bar, true);',
-            '<?php
-    array_search($foo, $bar);',
+            <<<'EOD'
+                <?php
+                    array_search($foo, $bar, true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    array_search($foo, $bar);
+                EOD,
         ];
 
         yield [
-            '<?php
-    array_keys($foo);
-    array_keys($foo, $bar, true);
-    array_keys($foo, $bar, false);
-    array_keys($foo, $bar, $useStrict);',
+            <<<'EOD'
+                <?php
+                    array_keys($foo);
+                    array_keys($foo, $bar, true);
+                    array_keys($foo, $bar, false);
+                    array_keys($foo, $bar, $useStrict);
+                EOD,
         ];
 
         yield [
-            '<?php
-    array_keys($foo, $bar, true);',
-            '<?php
-    array_keys($foo, $bar);',
+            <<<'EOD'
+                <?php
+                    array_keys($foo, $bar, true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    array_keys($foo, $bar);
+                EOD,
         ];
 
         yield [
-            '<?php
-    mb_detect_encoding($foo, $bar, true);
-    mb_detect_encoding($foo, $bar, false);
-    mb_detect_encoding($foo, $bar, $useStrict);',
+            <<<'EOD'
+                <?php
+                    mb_detect_encoding($foo, $bar, true);
+                    mb_detect_encoding($foo, $bar, false);
+                    mb_detect_encoding($foo, $bar, $useStrict);
+                EOD,
         ];
 
         yield [
-            '<?php
-    mb_detect_encoding($foo, mb_detect_order(), true);',
-            '<?php
-    mb_detect_encoding($foo);',
+            <<<'EOD'
+                <?php
+                    mb_detect_encoding($foo, mb_detect_order(), true);
+                EOD,
+            <<<'EOD'
+                <?php
+                    mb_detect_encoding($foo);
+                EOD,
         ];
 
         yield [
-            '<?php
-    use function in_array;
+            <<<'EOD'
+                <?php
+                    use function in_array;
 
-    class Foo
-    {
-        public function __construct($foo, $bar) {}
-    }',
+                    class Foo
+                    {
+                        public function __construct($foo, $bar) {}
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    namespace Foo {
-        array_keys($foo, $bar, true);
-    }
-    namespace Bar {
-        use function Foo\LoremIpsum;
-        array_keys($foo, $bar, true);
-    }',
-            '<?php
-    namespace Foo {
-        array_keys($foo, $bar);
-    }
-    namespace Bar {
-        use function Foo\LoremIpsum;
-        array_keys($foo, $bar);
-    }',
+            <<<'EOD'
+                <?php
+                    namespace Foo {
+                        array_keys($foo, $bar, true);
+                    }
+                    namespace Bar {
+                        use function Foo\LoremIpsum;
+                        array_keys($foo, $bar, true);
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    namespace Foo {
+                        array_keys($foo, $bar);
+                    }
+                    namespace Bar {
+                        use function Foo\LoremIpsum;
+                        array_keys($foo, $bar);
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    use function \base64_decode;
-    foo($bar);',
+            <<<'EOD'
+                <?php
+                    use function \base64_decode;
+                    foo($bar);
+                EOD,
         ];
 
         yield [
-            '<?php
-    use function Baz\base64_decode;
-    foo($bar);',
+            <<<'EOD'
+                <?php
+                    use function Baz\base64_decode;
+                    foo($bar);
+                EOD,
         ];
 
         yield [
-            '<?php
-    in_array(1, foo(), true /* 1 *//* 2 *//* 3 */);',
-            '<?php
-    in_array(1, foo() /* 1 *//* 2 *//* 3 */);',
+            <<<'EOD'
+                <?php
+                    in_array(1, foo(), true /* 1 *//* 2 *//* 3 */);
+                EOD,
+            <<<'EOD'
+                <?php
+                    in_array(1, foo() /* 1 *//* 2 *//* 3 */);
+                EOD,
         ];
 
         yield [

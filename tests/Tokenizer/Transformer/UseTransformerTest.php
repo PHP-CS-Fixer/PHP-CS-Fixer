@@ -80,17 +80,19 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php
-                namespace A {
-                    class Foo {}
-                    echo Foo::class;
-                }
+            <<<'EOD'
+                <?php
+                                namespace A {
+                                    class Foo {}
+                                    echo Foo::class;
+                                }
 
-                namespace B {
-                    use \stdClass;
+                                namespace B {
+                                    use \stdClass;
 
-                    echo 123;
-                }',
+                                    echo 123;
+                                }
+                EOD,
             [
                 30 => T_USE,
             ],
@@ -104,30 +106,32 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield 'nested anonymous classes' => [
-            '<?php
+            <<<'EOD'
+                <?php
 
-namespace SomeWhereOverTheRainbow;
+                namespace SomeWhereOverTheRainbow;
 
-trait Foo {
-public function test()
-{
-    $a = time();
-    return function() use ($a) { echo $a; };
-}
-};
+                trait Foo {
+                public function test()
+                {
+                    $a = time();
+                    return function() use ($a) { echo $a; };
+                }
+                };
 
-$a = new class(
-new class() {
-    use Foo;
-}
-) {
-public function __construct($bar)
-{
-    $a = $bar->test();
-    $a();
-}
-};
-',
+                $a = new class(
+                new class() {
+                    use Foo;
+                }
+                ) {
+                public function __construct($bar)
+                {
+                    $a = $bar->test();
+                    $a();
+                }
+                };
+
+                EOD,
             [
                 38 => CT::T_USE_LAMBDA,
                 76 => CT::T_USE_TRAIT,
@@ -135,11 +139,13 @@ public function __construct($bar)
         ];
 
         yield [
-            '<?php
-use A\{B,};
-use function D;
-use C\{D,E,};
-',
+            <<<'EOD'
+                <?php
+                use A\{B,};
+                use function D;
+                use C\{D,E,};
+
+                EOD,
             [
                 1 => T_USE,
                 11 => T_USE,
@@ -166,13 +172,15 @@ use C\{D,E,};
     public static function provideProcessPhp81Cases(): iterable
     {
         yield [
-            '<?php enum Foo: string
-{
-    use Bar;
+            <<<'EOD'
+                <?php enum Foo: string
+                {
+                    use Bar;
 
-    case Test1 = "a";
-}
-',
+                    case Test1 = "a";
+                }
+
+                EOD,
             [
                 10 => CT::T_USE_TRAIT,
             ],

@@ -191,16 +191,20 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
             'Ensures a single space after language constructs.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-throw  new  \Exception();
-'
+                        throw  new  \Exception();
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-function foo() { yield  from  baz(); }
-',
+                        function foo() { yield  from  baz(); }
+
+                        EOD,
                     [
                         'constructs_contain_a_single_space' => [
                             'yield_from',
@@ -212,11 +216,13 @@ function foo() { yield  from  baz(); }
                 ),
 
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-$foo = function& ()use($bar) {
-};
-',
+                        $foo = function& ()use($bar) {
+                        };
+
+                        EOD,
                     [
                         'constructs_preceded_by_a_single_space' => [
                             'use_lambda',
@@ -227,10 +233,12 @@ $foo = function& ()use($bar) {
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-echo  "Hello!";
-',
+                        echo  "Hello!";
+
+                        EOD,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'echo',
@@ -238,10 +246,12 @@ echo  "Hello!";
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-yield  from  baz();
-',
+                        yield  from  baz();
+
+                        EOD,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',

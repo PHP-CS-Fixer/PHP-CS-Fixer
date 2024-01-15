@@ -161,33 +161,41 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
         yield ['<?= ++$a;'];
 
         yield [
-            '<?php class Test {
-    public function foo() {
-        $a = 123;
-        ++self::$st;
-    }
-}',
-            '<?php class Test {
-    public function foo() {
-        $a = 123;
-        self::$st++;
-    }
-}',
+            <<<'EOD'
+                <?php class Test {
+                    public function foo() {
+                        $a = 123;
+                        ++self::$st;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Test {
+                    public function foo() {
+                        $a = 123;
+                        self::$st++;
+                    }
+                }
+                EOD,
         ];
 
         yield [
-            '<?php class Test {
-    public function foo() {
-        $a = 123;
-        ++static::$st;
-    }
-}',
-            '<?php class Test {
-    public function foo() {
-        $a = 123;
-        static::$st++;
-    }
-}',
+            <<<'EOD'
+                <?php class Test {
+                    public function foo() {
+                        $a = 123;
+                        ++static::$st;
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php class Test {
+                    public function foo() {
+                        $a = 123;
+                        static::$st++;
+                    }
+                }
+                EOD,
         ];
 
         yield [

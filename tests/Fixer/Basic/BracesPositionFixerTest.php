@@ -38,680 +38,864 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'if (default)' => [
-            '<?php
-                if ($foo) {
-                    foo();
-                }',
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'if (next line)' => [
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }',
-            '<?php
-                if ($foo) {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'else (default)' => [
-            '<?php
-                if ($foo) {
-                    foo();
-                }
-                else {
-                    bar();
-                }',
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }
-                else
-                {
-                    bar();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                                else {
+                                    bar();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                                else
+                                {
+                                    bar();
+                                }
+                EOD,
         ];
 
         yield 'else (next line)' => [
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }
-                else
-                {
-                    bar();
-                }',
-            '<?php
-                if ($foo) {
-                    foo();
-                }
-                else {
-                    bar();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                                else
+                                {
+                                    bar();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                                else {
+                                    bar();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'elseif (default)' => [
-            '<?php
-                if ($foo) {
-                    foo();
-                }
-                elseif ($bar) {
-                    bar();
-                }',
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }
-                elseif ($bar)
-                {
-                    bar();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                                elseif ($bar) {
+                                    bar();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                                elseif ($bar)
+                                {
+                                    bar();
+                                }
+                EOD,
         ];
 
         yield 'elseif (next line)' => [
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }
-                elseif ($bar)
-                {
-                    bar();
-                }',
-            '<?php
-                if ($foo) {
-                    foo();
-                }
-                elseif ($bar) {
-                    bar();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                                elseif ($bar)
+                                {
+                                    bar();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                                elseif ($bar) {
+                                    bar();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'else if (default)' => [
-            '<?php
-                if ($foo) {
-                    foo();
-                }
-                else if ($bar) {
-                    bar();
-                }',
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }
-                else if ($bar)
-                {
-                    bar();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                                else if ($bar) {
+                                    bar();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                                else if ($bar)
+                                {
+                                    bar();
+                                }
+                EOD,
         ];
 
         yield 'else if (next line)' => [
-            '<?php
-                if ($foo)
-                {
-                    foo();
-                }
-                else if ($bar)
-                {
-                    bar();
-                }',
-            '<?php
-                if ($foo) {
-                    foo();
-                }
-                else if ($bar) {
-                    bar();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo)
+                                {
+                                    foo();
+                                }
+                                else if ($bar)
+                                {
+                                    bar();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo) {
+                                    foo();
+                                }
+                                else if ($bar) {
+                                    bar();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'for (default)' => [
-            '<?php
-                for (;;) {
-                    foo();
-                }',
-            '<?php
-                for (;;)
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                for (;;) {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                for (;;)
+                                {
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'for (next line)' => [
-            '<?php
-                for (;;)
-                {
-                    foo();
-                }',
-            '<?php
-                for (;;) {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                for (;;)
+                                {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                for (;;) {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'foreach (default)' => [
-            '<?php
-                foreach ($foo as $bar) {
-                    foo();
-                }',
-            '<?php
-                foreach ($foo as $bar)
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                foreach ($foo as $bar) {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                foreach ($foo as $bar)
+                                {
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'foreach (next line)' => [
-            '<?php
-                foreach ($foo as $bar)
-                {
-                    foo();
-                }',
-            '<?php
-                foreach ($foo as $bar) {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                foreach ($foo as $bar)
+                                {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                foreach ($foo as $bar) {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'while (default)' => [
-            '<?php
-                while ($foo) {
-                    foo();
-                }',
-            '<?php
-                while ($foo)
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                while ($foo) {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                while ($foo)
+                                {
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'while (next line)' => [
-            '<?php
-                while ($foo)
-                {
-                    foo();
-                }',
-            '<?php
-                while ($foo) {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                while ($foo)
+                                {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                while ($foo) {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'do while (default)' => [
-            '<?php
-                do {
-                    foo();
-                } while ($foo);',
-            '<?php
-                do
-                {
-                    foo();
-                } while ($foo);',
+            <<<'EOD'
+                <?php
+                                do {
+                                    foo();
+                                } while ($foo);
+                EOD,
+            <<<'EOD'
+                <?php
+                                do
+                                {
+                                    foo();
+                                } while ($foo);
+                EOD,
         ];
 
         yield 'do while (next line)' => [
-            '<?php
-                do
-                {
-                    foo();
-                } while ($foo);',
-            '<?php
-                do {
-                    foo();
-                } while ($foo);',
+            <<<'EOD'
+                <?php
+                                do
+                                {
+                                    foo();
+                                } while ($foo);
+                EOD,
+            <<<'EOD'
+                <?php
+                                do {
+                                    foo();
+                                } while ($foo);
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'switch (default)' => [
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo();
-                }',
-            '<?php
-                switch ($foo)
-                {
-                    case 1:
-                        foo();
-                }',
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                switch ($foo)
+                                {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
         ];
 
         yield 'switch (next line)' => [
-            '<?php
-                switch ($foo)
-                {
-                    case 1:
-                        foo();
-                }',
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo();
-                }',
+            <<<'EOD'
+                <?php
+                                switch ($foo)
+                                {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'try catch finally (default)' => [
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo();
-                }',
-            '<?php
-                switch ($foo)
-                {
-                    case 1:
-                        foo();
-                }',
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                switch ($foo)
+                                {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
         ];
 
         yield 'try catch finally (next line)' => [
-            '<?php
-                switch ($foo)
-                {
-                    case 1:
-                        foo();
-                }',
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo();
-                }',
+            <<<'EOD'
+                <?php
+                                switch ($foo)
+                                {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                switch ($foo) {
+                                    case 1:
+                                        foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'class (default)' => [
-            '<?php
-                class Foo
-                {
-                }',
-            '<?php
-                class Foo {
-                }',
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo {
+                                }
+                EOD,
         ];
 
         yield 'class (same line)' => [
-            '<?php
-                class Foo {
-                }',
-            '<?php
-                class Foo
-                {
-                }',
+            <<<'EOD'
+                <?php
+                                class Foo {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                }
+                EOD,
             ['classes_opening_brace' => 'same_line'],
         ];
 
         yield 'function (default)' => [
-            '<?php
-                function foo()
-                {
-                }',
-            '<?php
-                function foo() {
-                }',
+            <<<'EOD'
+                <?php
+                                function foo()
+                                {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                }
+                EOD,
         ];
 
         yield 'function (same line)' => [
-            '<?php
-                function foo() {
-                }',
-            '<?php
-                function foo()
-                {
-                }',
+            <<<'EOD'
+                <?php
+                                function foo() {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo()
+                                {
+                                }
+                EOD,
             ['functions_opening_brace' => 'same_line'],
         ];
 
         yield 'anonymous function (default)' => [
-            '<?php
-                $foo = function () {
-                };',
-            '<?php
-                $foo = function ()
-                {
-                };',
+            <<<'EOD'
+                <?php
+                                $foo = function () {
+                                };
+                EOD,
+            <<<'EOD'
+                <?php
+                                $foo = function ()
+                                {
+                                };
+                EOD,
         ];
 
         yield 'anonymous function (next line)' => [
-            '<?php
-                $foo = function ()
-                {
-                };',
-            '<?php
-                $foo = function () {
-                };',
+            <<<'EOD'
+                <?php
+                                $foo = function ()
+                                {
+                                };
+                EOD,
+            <<<'EOD'
+                <?php
+                                $foo = function () {
+                                };
+                EOD,
             ['anonymous_functions_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'with blank lines inside braces' => [
-            '<?php
-                class Foo
-                {
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
 
-                    public function foo()
-                    {
+                                    public function foo()
+                                    {
 
-                        if (true) {
+                                        if (true) {
 
-                            echo "foo";
+                                            echo "foo";
 
-                        }
+                                        }
 
-                    }
+                                    }
 
-                }',
-            '<?php
-                class Foo {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo {
 
-                    public function foo() {
+                                    public function foo() {
 
-                        if (true)
-                        {
+                                        if (true)
+                                        {
 
-                            echo "foo";
+                                            echo "foo";
 
-                        }
+                                        }
 
-                    }
+                                    }
 
-                }',
+                                }
+                EOD,
         ];
 
         yield 'with comment after opening brace (default)' => [
-            '<?php
-                function foo() /* foo */ // foo
-                {
-                }',
-            '<?php
-                function foo() /* foo */ { // foo
-                }',
+            <<<'EOD'
+                <?php
+                                function foo() /* foo */ // foo
+                                {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() /* foo */ { // foo
+                                }
+                EOD,
         ];
 
         yield 'with comment after opening brace (same line)' => [
-            '<?php
-                function foo() { // foo
-                /* foo */
-                }',
-            '<?php
-                function foo() // foo
-                { /* foo */
-                }',
+            <<<'EOD'
+                <?php
+                                function foo() { // foo
+                                /* foo */
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo() // foo
+                                { /* foo */
+                                }
+                EOD,
             ['functions_opening_brace' => 'same_line'],
         ];
 
         yield 'next line with multiline signature' => [
-            '<?php
-                if (
-                    $foo
-                ) {
-                    foo();
-                }',
-            '<?php
-                if (
-                    $foo
-                )
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if (
+                                    $foo
+                                ) {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if (
+                                    $foo
+                                )
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with newline before closing parenthesis' => [
-            '<?php
-                if ($foo
-                ) {
-                    foo();
-                }',
-            '<?php
-                if ($foo
-                )
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if ($foo
+                                ) {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if ($foo
+                                )
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with newline in signature but not before closing parenthesis' => [
-            '<?php
-                if (
-                    $foo)
-                {
-                    foo();
-                }',
-            '<?php
-                if (
-                    $foo) {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if (
+                                    $foo)
+                                {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if (
+                                    $foo) {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'anonymous class (same line)' => [
-            '<?php
-                $foo = new class() {
-                };',
-            '<?php
-                $foo = new class()
-                {
-                };',
+            <<<'EOD'
+                <?php
+                                $foo = new class() {
+                                };
+                EOD,
+            <<<'EOD'
+                <?php
+                                $foo = new class()
+                                {
+                                };
+                EOD,
         ];
 
         yield 'anonymous class (next line)' => [
-            '<?php
-                $foo = new class()
-                {
-                };',
-            '<?php
-                $foo = new class() {
-                };',
+            <<<'EOD'
+                <?php
+                                $foo = new class()
+                                {
+                                };
+                EOD,
+            <<<'EOD'
+                <?php
+                                $foo = new class() {
+                                };
+                EOD,
             ['anonymous_classes_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with multiline signature and return type' => [
-            '<?php
-                function foo(
-                    $foo
-                ): int {
-                    foo();
-                }',
-            '<?php
-                function foo(
-                    $foo
-                ): int
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): int {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): int
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with multiline signature and return type (nullable)' => [
-            '<?php
-                function foo(
-                    $foo
-                ): ?int {
-                    foo();
-                }',
-            '<?php
-                function foo(
-                    $foo
-                ): ?int
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): ?int {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): ?int
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with multiline signature and return type (array)' => [
-            '<?php
-                function foo(
-                    $foo
-                ): array {
-                    foo();
-                }',
-            '<?php
-                function foo(
-                    $foo
-                ): array
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): array {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): array
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with multiline signature and return type (class name)' => [
-            '<?php
-                function foo(
-                    $foo
-                ): \Foo\Bar {
-                    foo();
-                }',
-            '<?php
-                function foo(
-                    $foo
-                ): \Foo\Bar
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): \Foo\Bar {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo
+                                ): \Foo\Bar
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with newline before closing parenthesis and return type' => [
-            '<?php
-                function foo($foo
-                ): int {
-                    foo();
-                }',
-            '<?php
-                function foo($foo
-                ): int
-                {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo($foo
+                                ): int {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo($foo
+                                ): int
+                                {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with newline before closing parenthesis and callable type' => [
-            '<?php
-                function foo($foo
-                ): callable {
-                    return function (): void {};
-                }',
-            '<?php
-                function foo($foo
-                ): callable
-                {
-                    return function (): void {};
-                }',
+            <<<'EOD'
+                <?php
+                                function foo($foo
+                                ): callable {
+                                    return function (): void {};
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo($foo
+                                ): callable
+                                {
+                                    return function (): void {};
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'next line with newline in signature but not before closing parenthesis and return type' => [
-            '<?php
-                function foo(
-                    $foo): int
-                {
-                    foo();
-                }',
-            '<?php
-                function foo(
-                    $foo): int {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo): int
+                                {
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    $foo): int {
+                                    foo();
+                                }
+                EOD,
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
         yield 'multiple elseifs' => [
-            '<?php if ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                } elseif ($foo) {
-                }',
-            '<?php if ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                } elseif ($foo){
-                }',
+            <<<'EOD'
+                <?php if ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                } elseif ($foo) {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php if ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                } elseif ($foo){
+                                }
+                EOD,
         ];
 
         yield 'open brace preceded by comment and whitespace' => [
-            '<?php
-                if (true) { /* foo */
-                    foo();
-                }',
-            '<?php
-                if (true) /* foo */ {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if (true) { /* foo */
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if (true) /* foo */ {
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'open brace surrounded by comment and whitespace' => [
-            '<?php
-                if (true) { /* foo */ /* bar */
-                    foo();
-                }',
-            '<?php
-                if (true) /* foo */ { /* bar */
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                if (true) { /* foo */ /* bar */
+                                    foo();
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                if (true) /* foo */ { /* bar */
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'open brace not preceded by space and followed by a comment' => [
-            '<?php class test
-{
-    public function example()// example
-    {
-    }
-}
-',
-            '<?php class test
-{
-    public function example(){// example
-    }
-}
-',
+            <<<'EOD'
+                <?php class test
+                {
+                    public function example()// example
+                    {
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php class test
+                {
+                    public function example(){// example
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'open brace not preceded by space and followed by a space and comment' => [
-            '<?php class test
-{
-    public function example() // example
-    {
-    }
-}
-',
-            '<?php class test
-{
-    public function example(){ // example
-    }
-}
-',
+            <<<'EOD'
+                <?php class test
+                {
+                    public function example() // example
+                    {
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php class test
+                {
+                    public function example(){ // example
+                    }
+                }
+
+                EOD,
         ];
     }
 
@@ -728,55 +912,67 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'function (multiline + union return)' => [
-            '<?php
-                function sum(
-                    int|float $first,
-                    int|float $second,
-                ): int|float {
-                }',
-            '<?php
-                function sum(
-                    int|float $first,
-                    int|float $second,
-                ): int|float
-                {
-                }',
+            <<<'EOD'
+                <?php
+                                function sum(
+                                    int|float $first,
+                                    int|float $second,
+                                ): int|float {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function sum(
+                                    int|float $first,
+                                    int|float $second,
+                                ): int|float
+                                {
+                                }
+                EOD,
         ];
 
         yield 'function (multiline + union return with whitespace)' => [
-            '<?php
-                function sum(
-                    int|float $first,
-                    int|float $second,
-                ): int | float {
-                }',
-            '<?php
-                function sum(
-                    int|float $first,
-                    int|float $second,
-                ): int | float
-                {
-                }',
+            <<<'EOD'
+                <?php
+                                function sum(
+                                    int|float $first,
+                                    int|float $second,
+                                ): int | float {
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                function sum(
+                                    int|float $first,
+                                    int|float $second,
+                                ): int | float
+                                {
+                                }
+                EOD,
         ];
 
         yield 'method with static return type' => [
-            '<?php
-                class Foo
-                {
-                    function sum(
-                        $foo
-                    ): static {
-                    }
-                }',
-            '<?php
-                class Foo
-                {
-                    function sum(
-                        $foo
-                    ): static
-                    {
-                    }
-                }',
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    function sum(
+                                        $foo
+                                    ): static {
+                                    }
+                                }
+                EOD,
+            <<<'EOD'
+                <?php
+                                class Foo
+                                {
+                                    function sum(
+                                        $foo
+                                    ): static
+                                    {
+                                    }
+                                }
+                EOD,
         ];
     }
 
@@ -793,12 +989,14 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'function (multiline + intersection return)' => [
-            '<?php
-                function foo(
-                    mixed $bar,
-                    mixed $baz,
-                ): Foo&Bar {
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    mixed $bar,
+                                    mixed $baz,
+                                ): Foo&Bar {
+                                }
+                EOD,
         ];
     }
 
@@ -815,12 +1013,14 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     public static function provideFix82Cases(): iterable
     {
         yield 'function (multiline + DNF return)' => [
-            '<?php
-                function foo(
-                    mixed $bar,
-                    mixed $baz,
-                ): (Foo&Bar)|int|null {
-                }',
+            <<<'EOD'
+                <?php
+                                function foo(
+                                    mixed $bar,
+                                    mixed $baz,
+                                ): (Foo&Bar)|int|null {
+                                }
+                EOD,
         ];
     }
 }

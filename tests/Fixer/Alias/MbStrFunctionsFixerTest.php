@@ -67,12 +67,14 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
         yield ['<?php $x = mb_substr("bar", 2, 1);', '<?php $x = substr("bar", 2, 1);'];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function &strlen($a);
-                    public function strtolower($a);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function &strlen($a);
+                                    public function strtolower($a);
+                                }
+                EOD,
         ];
 
         yield [

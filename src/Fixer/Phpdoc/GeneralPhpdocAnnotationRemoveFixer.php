@@ -39,37 +39,43 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
             'Configured annotations should be omitted from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @author John Doe
- * @AuThOr Jane Doe
- */
-function foo() {}
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @internal
+                         * @author John Doe
+                         * @AuThOr Jane Doe
+                         */
+                        function foo() {}
+
+                        EOD,
                     ['annotations' => ['author']]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @author John Doe
- * @AuThOr Jane Doe
- */
-function foo() {}
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @internal
+                         * @author John Doe
+                         * @AuThOr Jane Doe
+                         */
+                        function foo() {}
+
+                        EOD,
                     ['annotations' => ['author'], 'case_sensitive' => false]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @author John Doe
- * @package ACME API
- * @subpackage Authorization
- * @version 1.0
- */
-function foo() {}
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @author John Doe
+                         * @package ACME API
+                         * @subpackage Authorization
+                         * @version 1.0
+                         */
+                        function foo() {}
+
+                        EOD,
                     ['annotations' => ['package', 'subpackage']]
                 ),
             ]

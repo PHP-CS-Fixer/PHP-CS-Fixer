@@ -37,228 +37,250 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'non-empty class' => [
-            '<?php class Foo
-            {
-                public function bar () {}
-            }
-            ',
+            <<<'EOD'
+                <?php class Foo
+                            {
+                                public function bar () {}
+                            }
+                EOD."\n            ",
         ];
 
         yield 'non-empty function body' => [
-            '<?php
-                function f1()
-                { /* foo */ }
-                function f2()
-                { /** foo */ }
-                function f3()
-                { // foo
-                }
-                function f4()
-                {
-                    return true;
-                }
-            ',
+            <<<'EOD'
+                <?php
+                                function f1()
+                                { /* foo */ }
+                                function f2()
+                                { /** foo */ }
+                                function f3()
+                                { // foo
+                                }
+                                function f4()
+                                {
+                                    return true;
+                                }
+                EOD."\n            ",
         ];
 
         yield 'classes' => [
-            '<?php
-            class Foo {}
-            class Bar extends BarParent {}
-            class Baz implements BazInterface {}
-            abstract class A {}
-            final class F {}
-            ',
-            '<?php
-            class Foo
-            {
-            }
-            class Bar extends BarParent
-            {}
-            class Baz implements BazInterface    {}
-            abstract class A
-            {}
-            final class F
-            {
+            <<<'EOD'
+                <?php
+                            class Foo {}
+                            class Bar extends BarParent {}
+                            class Baz implements BazInterface {}
+                            abstract class A {}
+                            final class F {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                            class Foo
+                            {
+                            }
+                            class Bar extends BarParent
+                            {}
+                            class Baz implements BazInterface    {}
+                            abstract class A
+                            {}
+                            final class F
+                            {
 
-            }
-            ',
+                            }
+                EOD."\n            ",
         ];
 
         yield 'multiple functions' => [
-            '<?php
-                function notThis1()    { return 1; }
-                function f1() {}
-                function f2() {}
-                function f3() {}
-                function notThis2(){ return 1; }
-            ',
-            '<?php
-                function notThis1()    { return 1; }
-                function f1()
-                {}
-                function f2() {
-                }
-                function f3()
-                {
-                }
-                function notThis2(){ return 1; }
-            ',
+            <<<'EOD'
+                <?php
+                                function notThis1()    { return 1; }
+                                function f1() {}
+                                function f2() {}
+                                function f3() {}
+                                function notThis2(){ return 1; }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function notThis1()    { return 1; }
+                                function f1()
+                                {}
+                                function f2() {
+                                }
+                                function f3()
+                                {
+                                }
+                                function notThis2(){ return 1; }
+                EOD."\n            ",
         ];
 
         yield 'remove spaces' => [
-            '<?php
-                function f1() {}
-                function f2() {}
-                function f3() {}
-            ',
-            '<?php
-                function f1() { }
-                function f2() {  }
-                function f3() {    }
-            ',
+            <<<'EOD'
+                <?php
+                                function f1() {}
+                                function f2() {}
+                                function f3() {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function f1() { }
+                                function f2() {  }
+                                function f3() {    }
+                EOD."\n            ",
         ];
 
         yield 'add spaces' => [
-            '<?php
-                function f1() {}
-                function f2() {}
-                function f3() {}
-            ',
-            '<?php
-                function f1(){}
-                function f2(){}
-                function f3(){}
-            ',
+            <<<'EOD'
+                <?php
+                                function f1() {}
+                                function f2() {}
+                                function f3() {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function f1(){}
+                                function f2(){}
+                                function f3(){}
+                EOD."\n            ",
         ];
 
         yield 'with return types' => [
-            '<?php
-                function f1(): void {}
-                function f2(): \Foo\Bar {}
-                function f3(): ?string {}
-            ',
-            '<?php
-                function f1(): void
-                {}
-                function f2(): \Foo\Bar    {    }
-                function f3(): ?string {
+            <<<'EOD'
+                <?php
+                                function f1(): void {}
+                                function f2(): \Foo\Bar {}
+                                function f3(): ?string {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function f1(): void
+                                {}
+                                function f2(): \Foo\Bar    {    }
+                                function f3(): ?string {
 
 
-                }
-            ',
+                                }
+                EOD."\n            ",
         ];
 
         yield 'abstract functions' => [
-            '<?php abstract class C {
-                abstract function f1();
-                function f2() {}
-                abstract function f3();
-            }
-            if (true)    {    }
-            ',
-            '<?php abstract class C {
-                abstract function f1();
-                function f2()    {    }
-                abstract function f3();
-            }
-            if (true)    {    }
-            ',
+            <<<'EOD'
+                <?php abstract class C {
+                                abstract function f1();
+                                function f2() {}
+                                abstract function f3();
+                            }
+                            if (true)    {    }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php abstract class C {
+                                abstract function f1();
+                                function f2()    {    }
+                                abstract function f3();
+                            }
+                            if (true)    {    }
+                EOD."\n            ",
         ];
 
         yield 'every token in separate line' => [
-            '<?php
-                function
-                foo
-                (
-                )
-                :
-                void {}
-            ',
-            '<?php
-                function
-                foo
-                (
-                )
-                :
-                void
-                {
-                }
-            ',
+            <<<'EOD'
+                <?php
+                                function
+                                foo
+                                (
+                                )
+                                :
+                                void {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function
+                                foo
+                                (
+                                )
+                                :
+                                void
+                                {
+                                }
+                EOD."\n            ",
         ];
 
         yield 'comments before body' => [
-            '<?php
-                function f1()
-                // foo
-                {}
-                function f2()
-                /* foo */
-                {}
-                function f3()
-                /** foo */
-                {}
-                function f4()
-                /** foo */
-                /** bar */
-                {}
-            ',
-            '<?php
-                function f1()
-                // foo
-                {
-                }
-                function f2()
-                /* foo */
-                {
+            <<<'EOD'
+                <?php
+                                function f1()
+                                // foo
+                                {}
+                                function f2()
+                                /* foo */
+                                {}
+                                function f3()
+                                /** foo */
+                                {}
+                                function f4()
+                                /** foo */
+                                /** bar */
+                                {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function f1()
+                                // foo
+                                {
+                                }
+                                function f2()
+                                /* foo */
+                                {
 
-                }
-                function f3()
-                /** foo */
-                {
-                }
-                function f4()
-                /** foo */
-                /** bar */
-                {    }
-            ',
+                                }
+                                function f3()
+                                /** foo */
+                                {
+                                }
+                                function f4()
+                                /** foo */
+                                /** bar */
+                                {    }
+                EOD."\n            ",
         ];
 
         yield 'anonymous class' => [
-            '<?php
-                $o = new class() {};
-            ',
-            '<?php
-                $o = new class() {
-                };
-            ',
+            <<<'EOD'
+                <?php
+                                $o = new class() {};
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $o = new class() {
+                                };
+                EOD."\n            ",
         ];
 
         yield 'anonymous function' => [
-            '<?php
-                $x = function () {};
-            ',
-            '<?php
-                $x = function () {
-                };
-            ',
+            <<<'EOD'
+                <?php
+                                $x = function () {};
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                $x = function () {
+                                };
+                EOD."\n            ",
         ];
 
         yield 'interface' => [
-            '<?php interface Foo {}
-            ',
-            '<?php interface Foo
-                {
-                }
-            ',
+            '<?php interface Foo {}'."\n            ",
+            <<<'EOD'
+                <?php interface Foo
+                                {
+                                }
+                EOD."\n            ",
         ];
 
         yield 'trait' => [
-            '<?php trait Foo {}
-            ',
-            '<?php trait Foo
-                {
-                }
-            ',
+            '<?php trait Foo {}'."\n            ",
+            <<<'EOD'
+                <?php trait Foo
+                                {
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -278,38 +300,42 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'single-line promoted properties' => [
-            '<?php class Foo
-                {
-                    public function __construct(private int $x, private int $y) {}
-                }
-            ',
-            '<?php class Foo
-                {
-                    public function __construct(private int $x, private int $y)
-                    {
-                    }
-                }
-            ',
+            <<<'EOD'
+                <?php class Foo
+                                {
+                                    public function __construct(private int $x, private int $y) {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php class Foo
+                                {
+                                    public function __construct(private int $x, private int $y)
+                                    {
+                                    }
+                                }
+                EOD."\n            ",
         ];
 
         yield 'multi-line promoted properties' => [
-            '<?php class Foo
-                {
-                    public function __construct(
-                        private int $x,
-                        private int $y,
-                    ) {}
-                }
-            ',
-            '<?php class Foo
-                {
-                    public function __construct(
-                        private int $x,
-                        private int $y,
-                    ) {
-                    }
-                }
-            ',
+            <<<'EOD'
+                <?php class Foo
+                                {
+                                    public function __construct(
+                                        private int $x,
+                                        private int $y,
+                                    ) {}
+                                }
+                EOD."\n            ",
+            <<<'EOD'
+                <?php class Foo
+                                {
+                                    public function __construct(
+                                        private int $x,
+                                        private int $y,
+                                    ) {
+                                    }
+                                }
+                EOD."\n            ",
         ];
     }
 
@@ -329,12 +355,12 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [
-            '<?php enum Foo {}
-            ',
-            '<?php enum Foo
-                {
-                }
-            ',
+            '<?php enum Foo {}'."\n            ",
+            <<<'EOD'
+                <?php enum Foo
+                                {
+                                }
+                EOD."\n            ",
         ];
     }
 }

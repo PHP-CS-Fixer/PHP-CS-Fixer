@@ -37,32 +37,36 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer implements Configur
             'Removes `final` from methods where possible.',
             [
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    final public function foo1() {}
-    final protected function bar() {}
-    final private function baz() {}
-}
+                    <<<'EOD'
+                        <?php
+                        final class Foo
+                        {
+                            final public function foo1() {}
+                            final protected function bar() {}
+                            final private function baz() {}
+                        }
 
-class Bar
-{
-    final private function bar1() {}
-}
-'
+                        class Bar
+                        {
+                            final private function bar1() {}
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    final private function baz() {}
-}
+                    <<<'EOD'
+                        <?php
+                        final class Foo
+                        {
+                            final private function baz() {}
+                        }
 
-class Bar
-{
-    final private function bar1() {}
-}
-',
+                        class Bar
+                        {
+                            final private function bar1() {}
+                        }
+
+                        EOD,
                     ['private_methods' => false]
                 ),
             ],

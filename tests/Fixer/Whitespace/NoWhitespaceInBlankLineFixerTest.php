@@ -45,83 +45,104 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-',
-            '<?php
-  ',
+            <<<'EOD'
+                <?php
+
+                EOD,
+            '<?php'."\n  ",
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-',
-            '<?php
-     '.'
-  ',
+
+                EOD,
+            '<?php'."\n     ".''."\n  ",
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$a = 1; ',
-            '<?php
-     '.'
-$a = 1; ',
+                $a = 1;
+                EOD.' ',
+            '<?php'."\n     ".<<<'EOD'
+
+                $a = 1;
+                EOD.' ',
         ];
 
         yield [
-            '<?php
-$r = 5 +6;                   '.'
+            <<<'EOD'
+                <?php
+                $r = 5 +6;
+                EOD.'                   '.<<<'EOD'
 
-$t = true> 9;       '.'
-',
+
+                $t = true> 9;
+                EOD.'       '.<<<'EOD'
+
+
+                EOD,
         ];
 
         yield [
-            '<?php
-    $a = 1;   ',
+            <<<'EOD'
+                <?php
+                    $a = 1;
+                EOD.'   ',
         ];
 
         yield [
-            "<?php
-\t\$b = 1;\t\t",
+            <<<EOD
+                <?php
+                \t\$b = 1;\t\t
+                EOD,
         ];
 
         yield [
-            '<?php
-    $b = 2;
-',
-            '<?php
-    $b = 2;
-    ',
+            <<<'EOD'
+                <?php
+                    $b = 2;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    $b = 2;
+                EOD."\n    ",
         ];
 
         yield [
-            '<?php
-    $b = 3;
+            <<<'EOD'
+                <?php
+                    $b = 3;
 
 
-',
-            '<?php
-    $b = 3;
-    '.'
-    '.'
-    ',
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    $b = 3;
+                EOD."\n    ".''."\n    ".''."\n    ",
         ];
 
         yield [
-            '<?php
-    $b = 4;
+            <<<'EOD'
+                <?php
+                    $b = 4;
 
 
 
-    $b += 4;',
-            '<?php
-    $b = 4;
-    '.'
-    '.'
-    '.'
-    $b += 4;',
+                    $b += 4;
+                EOD,
+            <<<'EOD'
+                <?php
+                    $b = 4;
+                EOD."\n    ".''."\n    ".''."\n    ".<<<'EOD'
+
+                    $b += 4;
+                EOD,
         ];
 
         yield [
@@ -142,12 +163,14 @@ $t = true> 9;       '.'
         ];
 
         yield [
-            '<?php
-    /**
-     * @const Foo.
-     */
-    const FOO = "BAR";
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @const Foo.
+                     */
+                    const FOO = "BAR";
+
+                EOD,
         ];
 
         yield [

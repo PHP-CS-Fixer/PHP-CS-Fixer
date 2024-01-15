@@ -33,21 +33,23 @@ final class DocBlockTest extends TestCase
      *
      * @var string
      */
-    private static $sample = '/**
-     * Test docblock.
-     *
-     * @param string $hello
-     * @param bool $test Description
-     *        extends over many lines
-     *
-     * @param adkjbadjasbdand $asdnjkasd
-     *
-     * @throws \Exception asdnjkasd
-     * asdasdasdasdasdasdasdasd
-     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
-     *
-     * @return void
-     */';
+    private static $sample = <<<'EOD'
+        /**
+             * Test docblock.
+             *
+             * @param string $hello
+             * @param bool $test Description
+             *        extends over many lines
+             *
+             * @param adkjbadjasbdand $asdnjkasd
+             *
+             * @throws \Exception asdnjkasd
+             * asdasdasdasdasdasdasdasd
+             * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
+             *
+             * @return void
+             */
+        EOD;
 
     public function testContent(): void
     {
@@ -101,13 +103,19 @@ final class DocBlockTest extends TestCase
 
         self::assertCount(3, $annotations);
 
-        $first = '     * @param string $hello
-';
-        $second = '     * @param bool $test Description
-     *        extends over many lines
-';
-        $third = '     * @param adkjbadjasbdand $asdnjkasd
-';
+        $first = <<<'EOD'
+                 * @param string $hello
+
+            EOD;
+        $second = <<<'EOD'
+                 * @param bool $test Description
+                 *        extends over many lines
+
+            EOD;
+        $third = <<<'EOD'
+                 * @param adkjbadjasbdand $asdnjkasd
+
+            EOD;
 
         self::assertSame($first, $annotations[0]->getContent());
         self::assertSame($second, $annotations[1]->getContent());
@@ -121,10 +129,12 @@ final class DocBlockTest extends TestCase
 
         self::assertCount(1, $annotations);
 
-        $content = '     * @throws \Exception asdnjkasd
-     * asdasdasdasdasdasdasdasd
-     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
-';
+        $content = <<<'EOD'
+                 * @throws \Exception asdnjkasd
+                 * asdasdasdasdasdasdasdasd
+                 * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
+
+            EOD;
 
         self::assertSame($content, $annotations[0]->getContent());
     }
@@ -136,8 +146,10 @@ final class DocBlockTest extends TestCase
 
         self::assertCount(1, $annotations);
 
-        $content = '     * @return void
-';
+        $content = <<<'EOD'
+                 * @return void
+
+            EOD;
 
         self::assertSame($content, $annotations[0]->getContent());
     }

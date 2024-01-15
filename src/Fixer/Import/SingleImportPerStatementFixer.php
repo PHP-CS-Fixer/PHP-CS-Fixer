@@ -42,18 +42,22 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
             'There MUST be one use keyword per declaration.',
             [
                 new CodeSample(
-                    '<?php
-use Foo, Sample, Sample\Sample as Sample2;
-'
+                    <<<'EOD'
+                        <?php
+                        use Foo, Sample, Sample\Sample as Sample2;
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-use Space\Models\ {
-    TestModelA,
-    TestModelB,
-    TestModel,
-};
-',
+                    <<<'EOD'
+                        <?php
+                        use Space\Models\ {
+                            TestModelA,
+                            TestModelB,
+                            TestModel,
+                        };
+
+                        EOD,
                     ['group_to_single_imports' => true]
                 ),
             ]

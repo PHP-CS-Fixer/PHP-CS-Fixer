@@ -53,12 +53,16 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
 
         // old style array with comments
         yield [
-            '<?php $x = array(1#
-,#
-"2", 3);',
-            '<?php $x = array(1#
-,#
-"2"  , 3);',
+            <<<'EOD'
+                <?php $x = array(1#
+                ,#
+                "2", 3);
+                EOD,
+            <<<'EOD'
+                <?php $x = array(1#
+                ,#
+                "2"  , 3);
+                EOD,
         ];
 
         // short array
@@ -111,69 +115,87 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
 
         // multi line array
         yield [
-            '<?php $x = [  "a" =>$a,
-                    "b"=>
-                "b",
-                    3 => $this->foo(),
-                    "d" => 30  ];',
-            '<?php $x = [  "a" =>$a ,
-                    "b"=>
-                "b",
-                    3 => $this->foo()  ,
-                    "d" => 30  ];',
+            <<<'EOD'
+                <?php $x = [  "a" =>$a,
+                                    "b"=>
+                                "b",
+                                    3 => $this->foo(),
+                                    "d" => 30  ];
+                EOD,
+            <<<'EOD'
+                <?php $x = [  "a" =>$a ,
+                                    "b"=>
+                                "b",
+                                    3 => $this->foo()  ,
+                                    "d" => 30  ];
+                EOD,
         ];
 
         // multi line array
         yield [
-            '<?php $a = [
-                            "foo",
-                            "bar",
-                        ];',
-            '<?php $a = [
-                            "foo" ,
-                            "bar"
-                            ,
-                        ];',
+            <<<'EOD'
+                <?php $a = [
+                                            "foo",
+                                            "bar",
+                                        ];
+                EOD,
+            <<<'EOD'
+                <?php $a = [
+                                            "foo" ,
+                                            "bar"
+                                            ,
+                                        ];
+                EOD,
         ];
 
         // nested multiline
         yield [
-            '<?php $a = array(array(
-                                    array(T_OPEN_TAG),
-                                    array(T_VARIABLE, "$x"),
-                        ), 1);',
+            <<<'EOD'
+                <?php $a = array(array(
+                                                    array(T_OPEN_TAG),
+                                                    array(T_VARIABLE, "$x"),
+                                        ), 1);
+                EOD,
         ];
 
         yield [
-            '<?php $a = array( // comment
-                    123,
-                );',
+            <<<'EOD'
+                <?php $a = array( // comment
+                                    123,
+                                );
+                EOD,
         ];
 
         yield [
-            "<?php \$x = array(<<<'EOF'
-<?php \$a = '\\foo\\bar\\\\';
-EOF
-                , <<<'EOF'
-<?php \$a = \"\\foo\\bar\\\\\";
-EOF
-                    );",
+            <<<'EOD'
+                <?php $x = array(<<<'EOF'
+                <?php $a = '\foo\bar\\';
+                EOF
+                                , <<<'EOF'
+                <?php $a = "\foo\bar\\";
+                EOF
+                                    );
+                EOD,
         ];
 
         yield [
-            "<?php \$x = array(<<<'EOF'
-<?php \$a = '\\foo\\bar\\\\';
-EOF, <<<'EOF'
-<?php \$a = \"\\foo\\bar\\\\\";
-EOF
-                    );",
-            "<?php \$x = array(<<<'EOF'
-<?php \$a = '\\foo\\bar\\\\';
-EOF
-                , <<<'EOF'
-<?php \$a = \"\\foo\\bar\\\\\";
-EOF
-                    );",
+            <<<'EOD'
+                <?php $x = array(<<<'EOF'
+                <?php $a = '\foo\bar\\';
+                EOF, <<<'EOF'
+                <?php $a = "\foo\bar\\";
+                EOF
+                                    );
+                EOD,
+            <<<'EOD'
+                <?php $x = array(<<<'EOF'
+                <?php $a = '\foo\bar\\';
+                EOF
+                                , <<<'EOF'
+                <?php $a = "\foo\bar\\";
+                EOF
+                                    );
+                EOD,
             ['after_heredoc' => true],
         ];
 

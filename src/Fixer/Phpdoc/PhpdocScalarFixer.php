@@ -48,31 +48,35 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
         return new FixerDefinition(
             'Scalar types should always be written in the same form. `int` not `integer`, `bool` not `boolean`, `float` not `real` or `double`.',
             [
-                new CodeSample('<?php
-/**
- * @param integer $a
- * @param boolean $b
- * @param real $c
- *
- * @return double
- */
-function sample($a, $b, $c)
-{
-    return sample2($a, $b, $c);
-}
-'),
+                new CodeSample(<<<'EOD'
+                    <?php
+                    /**
+                     * @param integer $a
+                     * @param boolean $b
+                     * @param real $c
+                     *
+                     * @return double
+                     */
+                    function sample($a, $b, $c)
+                    {
+                        return sample2($a, $b, $c);
+                    }
+
+                    EOD),
                 new CodeSample(
-                    '<?php
-/**
- * @param integer $a
- * @param boolean $b
- * @param real $c
- */
-function sample($a, $b, $c)
-{
-    return sample2($a, $b, $c);
-}
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param integer $a
+                         * @param boolean $b
+                         * @param real $c
+                         */
+                        function sample($a, $b, $c)
+                        {
+                            return sample2($a, $b, $c);
+                        }
+
+                        EOD,
                     ['types' => ['boolean']]
                 ),
             ]

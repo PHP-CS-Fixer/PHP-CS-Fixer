@@ -74,10 +74,14 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a = \'foo
-                    bar\';',
-            '<?php $a = "foo
-                    bar";',
+            <<<'EOD'
+                <?php $a = 'foo
+                                    bar';
+                EOD,
+            <<<'EOD'
+                <?php $a = "foo
+                                    bar";
+                EOD,
         ];
 
         yield [

@@ -104,26 +104,30 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                     ['case_sensitive' => true]
                 ),
                 new CodeSample(
-                    '<?php
-use Acme\Bar;
-use Bar1;
-use Acme;
-use Bar;
-',
+                    <<<'EOD'
+                        <?php
+                        use Acme\Bar;
+                        use Bar1;
+                        use Acme;
+                        use Bar;
+
+                        EOD,
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new CodeSample(
-                    '<?php
-use const AAAA;
-use const BBB;
+                    <<<'EOD'
+                        <?php
+                        use const AAAA;
+                        use const BBB;
 
-use Bar;
-use AAC;
-use Acme;
+                        use Bar;
+                        use AAC;
+                        use Acme;
 
-use function CCC\AA;
-use function DDD;
-',
+                        use function CCC\AA;
+                        use function DDD;
+
+                        EOD,
                     [
                         'sort_algorithm' => self::SORT_LENGTH,
                         'imports_order' => [
@@ -134,17 +138,19 @@ use function DDD;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
+                    <<<'EOD'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
 
-use Acme;
-use AAC;
-use Bar;
+                        use Acme;
+                        use AAC;
+                        use Bar;
 
-use function DDD;
-use function CCC\AA;
-',
+                        use function DDD;
+                        use function CCC\AA;
+
+                        EOD,
                     [
                         'sort_algorithm' => self::SORT_ALPHA,
                         'imports_order' => [
@@ -155,17 +161,19 @@ use function CCC\AA;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
+                    <<<'EOD'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
 
-use function DDD;
-use function CCC\AA;
+                        use function DDD;
+                        use function CCC\AA;
 
-use Acme;
-use AAC;
-use Bar;
-',
+                        use Acme;
+                        use AAC;
+                        use Bar;
+
+                        EOD,
                     [
                         'sort_algorithm' => self::SORT_NONE,
                         'imports_order' => [

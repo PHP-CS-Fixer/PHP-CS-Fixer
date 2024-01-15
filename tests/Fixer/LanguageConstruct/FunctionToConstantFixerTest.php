@@ -53,16 +53,20 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'With multi line whitespace.' => [
-            '<?php echo
-                PHP_VERSION
-                '.'
-                '.'
-                ;',
-            '<?php echo
-                phpversion
-                (
-                )
-                ;',
+            <<<'EOD'
+                <?php echo
+                                PHP_VERSION
+                EOD."\n                ".''."\n                ".<<<'EOD'
+
+                                ;
+                EOD,
+            <<<'EOD'
+                <?php echo
+                                phpversion
+                                (
+                                )
+                                ;
+                EOD,
         ];
 
         yield 'Global namespaced.' => [
@@ -119,16 +123,20 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'multi line pi' => [
-            '<?php
-$a =
-    $b
-    || $c < M_PI
-;',
-            '<?php
-$a =
-    $b
-    || $c < pi()
-;',
+            <<<'EOD'
+                <?php
+                $a =
+                    $b
+                    || $c < M_PI
+                ;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a =
+                    $b
+                    || $c < pi()
+                ;
+                EOD,
             ['functions' => ['pi']],
         ];
 
@@ -139,46 +147,49 @@ $a =
         ];
 
         yield 'diff argument count than native allows' => [
-            '<?php
-                    echo phpversion(1);
-                    echo php_sapi_name(1,2);
-                    echo pi(1);
-                ',
+            <<<'EOD'
+                <?php
+                                    echo phpversion(1);
+                                    echo php_sapi_name(1,2);
+                                    echo pi(1);
+                EOD."\n                ",
         ];
 
         yield 'get_class => T_CLASS' => [
-            '<?php
-                    class A
-                    {
-                        public function echoClassName($notMe)
-                        {
-                            echo get_class($notMe);
-                            echo __CLASS__/** 1 *//* 2 */;
-                            echo __CLASS__;
-                        }
-                    }
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        public function echoClassName($notMe)
+                                        {
+                                            echo get_class($notMe);
+                                            echo __CLASS__/** 1 *//* 2 */;
+                                            echo __CLASS__;
+                                        }
+                                    }
 
-                    class B
-                    {
-                        use A;
-                    }
-                ',
-            '<?php
-                    class A
-                    {
-                        public function echoClassName($notMe)
-                        {
-                            echo get_class($notMe);
-                            echo get_class(/** 1 *//* 2 */);
-                            echo GET_Class();
-                        }
-                    }
+                                    class B
+                                    {
+                                        use A;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    class A
+                                    {
+                                        public function echoClassName($notMe)
+                                        {
+                                            echo get_class($notMe);
+                                            echo get_class(/** 1 *//* 2 */);
+                                            echo GET_Class();
+                                        }
+                                    }
 
-                    class B
-                    {
-                        use A;
-                    }
-                ',
+                                    class B
+                                    {
+                                        use A;
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'get_class with leading backslash' => [
@@ -193,30 +204,32 @@ $a =
         ];
 
         yield [
-            '<?php class A { function B(){
-echo#.
-#0
-static::class#1
-#2
-#3
-#4
-#5
-#6
-;#7
-}}
-                ',
-            '<?php class A { function B(){
-echo#.
-#0
-get_called_class#1
-#2
-(#3
-#4
-)#5
-#6
-;#7
-}}
-                ',
+            <<<'EOD'
+                <?php class A { function B(){
+                echo#.
+                #0
+                static::class#1
+                #2
+                #3
+                #4
+                #5
+                #6
+                ;#7
+                }}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php class A { function B(){
+                echo#.
+                #0
+                get_called_class#1
+                #2
+                (#3
+                #4
+                )#5
+                #6
+                ;#7
+                }}
+                EOD."\n                ",
             ['functions' => ['get_called_class']],
         ];
 
@@ -257,10 +270,11 @@ get_called_class#1
         ];
 
         yield [
-            '<?php
-                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this->extension)); }}
-                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this() )); }}
-                ',
+            <<<'EOD'
+                <?php
+                                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this->extension)); }}
+                                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this() )); }}
+                EOD."\n                ",
             null,
             ['functions' => ['get_class_this']],
         ];

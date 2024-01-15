@@ -123,12 +123,13 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         // do not fix
 
         yield [
-            '<?php
-                $x = 1;
-                $x = "strpos";
-                // if (false === strpos($haystack12, $needle)) {}
-                /** if (false === strpos($haystack13, $needle)) {} */
-            ',
+            <<<'EOD'
+                <?php
+                                $x = 1;
+                                $x = "strpos";
+                                // if (false === strpos($haystack12, $needle)) {}
+                                /** if (false === strpos($haystack13, $needle)) {} */
+                EOD."\n            ",
         ];
 
         yield 'different namespace' => [

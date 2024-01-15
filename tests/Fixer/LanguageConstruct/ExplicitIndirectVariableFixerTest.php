@@ -59,18 +59,22 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'variable variable with comments between dollar signs' => [
-            '<?php echo $
-/* C1 */
-// C2
-{$foo}
-// C3
-;',
-            '<?php echo $
-/* C1 */
-// C2
-$foo
-// C3
-;',
+            <<<'EOD'
+                <?php echo $
+                /* C1 */
+                // C2
+                {$foo}
+                // C3
+                ;
+                EOD,
+            <<<'EOD'
+                <?php echo $
+                /* C1 */
+                // C2
+                $foo
+                // C3
+                ;
+                EOD,
         ];
 
         yield 'dynamic static property access using variable variable' => [

@@ -43,47 +43,55 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
             'Sort union types and intersection types using configured order.',
             [
                 new CodeSample(
-                    '<?php
-try {
-    cache()->save($foo);
-} catch (\RuntimeException|CacheException $e) {
-    logger($e);
+                    <<<'EOD'
+                        <?php
+                        try {
+                            cache()->save($foo);
+                        } catch (\RuntimeException|CacheException $e) {
+                            logger($e);
 
-    throw $e;
-}
-'
+                            throw $e;
+                        }
+
+                        EOD
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-interface Foo
-{
-    public function bar(\Aaa|\AA $foo): string|int;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        interface Foo
+                        {
+                            public function bar(\Aaa|\AA $foo): string|int;
+                        }
+
+                        EOD,
                     new VersionSpecification(8_00_00),
                     [
                         'case_sensitive' => true,
                     ]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-interface Foo
-{
-    public function bar(null|string|int $foo): string|int;
+                    <<<'EOD'
+                        <?php
+                        interface Foo
+                        {
+                            public function bar(null|string|int $foo): string|int;
 
-    public function foo(\Stringable&\Countable $obj): int;
-}
-',
+                            public function foo(\Stringable&\Countable $obj): int;
+                        }
+
+                        EOD,
                     new VersionSpecification(8_01_00),
                     ['null_adjustment' => 'always_last']
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-interface Bar
-{
-    public function bar(null|string|int $foo): string|int;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        interface Bar
+                        {
+                            public function bar(null|string|int $foo): string|int;
+                        }
+
+                        EOD,
                     new VersionSpecification(8_00_00),
                     [
                         'sort_algorithm' => 'none',

@@ -51,15 +51,17 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configurable
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        $codeSample = '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomething()
-    {
-        PHPUnit_Framework_Assert::assertTrue(true);
-    }
-}
-';
+        $codeSample = <<<'EOD'
+            <?php
+            final class MyTest extends \PHPUnit_Framework_TestCase
+            {
+                public function testSomething()
+                {
+                    PHPUnit_Framework_Assert::assertTrue(true);
+                }
+            }
+
+            EOD;
 
         return new FixerDefinition(
             'PHPUnit classes MUST be used in namespaced version, e.g. `\PHPUnit\Framework\TestCase` instead of `\PHPUnit_Framework_TestCase`.',

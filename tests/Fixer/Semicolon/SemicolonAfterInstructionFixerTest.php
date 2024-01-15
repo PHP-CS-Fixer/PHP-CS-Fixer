@@ -67,26 +67,32 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
         yield ['<?php while($a > $b){}'];
 
         yield [
-            '<?php if ($a == 5): ?>
-A is equal to 5
-<?php endif; ?>
-<?php switch ($foo): ?>
-<?php case 1: ?>
-...
-<?php endswitch; ?>',
-            '<?php if ($a == 5): ?>
-A is equal to 5
-<?php endif; ?>
-<?php switch ($foo): ?>
-<?php case 1: ?>
-...
-<?php endswitch ?>',
+            <<<'EOD'
+                <?php if ($a == 5): ?>
+                A is equal to 5
+                <?php endif; ?>
+                <?php switch ($foo): ?>
+                <?php case 1: ?>
+                ...
+                <?php endswitch; ?>
+                EOD,
+            <<<'EOD'
+                <?php if ($a == 5): ?>
+                A is equal to 5
+                <?php endif; ?>
+                <?php switch ($foo): ?>
+                <?php case 1: ?>
+                ...
+                <?php endswitch ?>
+                EOD,
         ];
 
         yield [
-            '<?php if ($a == 5) { ?>
-A is equal to 5
-<?php } ?>',
+            <<<'EOD'
+                <?php if ($a == 5) { ?>
+                A is equal to 5
+                <?php } ?>
+                EOD,
         ];
     }
 

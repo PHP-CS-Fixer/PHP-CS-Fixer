@@ -56,15 +56,17 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
                     ['syntax' => self::OPTION_SYNTAX_UNION]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-class ValueObject
-{
-    public null|string $name;
-    public ?int $count;
-    public null|bool $internal;
-    public null|\Closure $callback;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class ValueObject
+                        {
+                            public null|string $name;
+                            public ?int $count;
+                            public null|bool $internal;
+                            public null|\Closure $callback;
+                        }
+
+                        EOD,
                     new VersionSpecification(8_00_00),
                     ['syntax' => self::OPTION_SYNTAX_QUESTION_MARK]
                 ),

@@ -74,30 +74,34 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
             'Add leading `\` before function invocation to speed up resolving.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-function baz($options)
-{
-    if (!array_key_exists("foo", $options)) {
-        throw new \InvalidArgumentException();
-    }
+                        function baz($options)
+                        {
+                            if (!array_key_exists("foo", $options)) {
+                                throw new \InvalidArgumentException();
+                            }
 
-    return json_encode($options);
-}
-'
+                            return json_encode($options);
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-function baz($options)
-{
-    if (!array_key_exists("foo", $options)) {
-        throw new \InvalidArgumentException();
-    }
+                        function baz($options)
+                        {
+                            if (!array_key_exists("foo", $options)) {
+                                throw new \InvalidArgumentException();
+                            }
 
-    return json_encode($options);
-}
-',
+                            return json_encode($options);
+                        }
+
+                        EOD,
                     [
                         'exclude' => [
                             'json_encode',
@@ -105,53 +109,65 @@ function baz($options)
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-namespace space1 {
-    echo count([1]);
-}
-namespace {
-    echo count([1]);
-}
-',
+                    <<<'EOD'
+                        <?php
+                        namespace space1 {
+                            echo count([1]);
+                        }
+                        namespace {
+                            echo count([1]);
+                        }
+
+                        EOD,
                     ['scope' => 'all']
                 ),
                 new CodeSample(
-                    '<?php
-namespace space1 {
-    echo count([1]);
-}
-namespace {
-    echo count([1]);
-}
-',
+                    <<<'EOD'
+                        <?php
+                        namespace space1 {
+                            echo count([1]);
+                        }
+                        namespace {
+                            echo count([1]);
+                        }
+
+                        EOD,
                     ['scope' => 'namespaced']
                 ),
                 new CodeSample(
-                    '<?php
-myGlobalFunction();
-count();
-',
+                    <<<'EOD'
+                        <?php
+                        myGlobalFunction();
+                        count();
+
+                        EOD,
                     ['include' => ['myGlobalFunction']]
                 ),
                 new CodeSample(
-                    '<?php
-myGlobalFunction();
-count();
-',
+                    <<<'EOD'
+                        <?php
+                        myGlobalFunction();
+                        count();
+
+                        EOD,
                     ['include' => ['@all']]
                 ),
                 new CodeSample(
-                    '<?php
-myGlobalFunction();
-count();
-',
+                    <<<'EOD'
+                        <?php
+                        myGlobalFunction();
+                        count();
+
+                        EOD,
                     ['include' => ['@internal']]
                 ),
                 new CodeSample(
-                    '<?php
-$a .= str_repeat($a, 4);
-$c = get_class($d);
-',
+                    <<<'EOD'
+                        <?php
+                        $a .= str_repeat($a, 4);
+                        $c = get_class($d);
+
+                        EOD,
                     ['include' => ['@compiler_optimized']]
                 ),
             ],

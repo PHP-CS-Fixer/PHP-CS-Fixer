@@ -41,39 +41,45 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
             'Ensure single space between a variable and its type declaration in function arguments and properties.',
             [
                 new CodeSample(
-                    '<?php
-class Bar
-{
-    private string    $a;
-    private bool   $b;
+                    <<<'EOD'
+                        <?php
+                        class Bar
+                        {
+                            private string    $a;
+                            private bool   $b;
 
-    public function __invoke(array   $c) {}
-}
-'
+                            public function __invoke(array   $c) {}
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public int   $bar;
+                    <<<'EOD'
+                        <?php
+                        class Foo
+                        {
+                            public int   $bar;
 
-    public function baz(string     $a)
-    {
-        return fn(bool    $c): string => (string) $c;
-    }
-}
-',
+                            public function baz(string     $a)
+                            {
+                                return fn(bool    $c): string => (string) $c;
+                            }
+                        }
+
+                        EOD,
                     ['elements' => ['function']]
                 ),
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public int   $bar;
+                    <<<'EOD'
+                        <?php
+                        class Foo
+                        {
+                            public int   $bar;
 
-    public function baz(string     $a) {}
-}
-',
+                            public function baz(string     $a) {}
+                        }
+
+                        EOD,
                     ['elements' => ['property']]
                 ),
             ]

@@ -39,10 +39,12 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
             'The namespace declaration line shouldn\'t contain leading whitespace.',
             [
                 new CodeSample(
-                    '<?php
- namespace Test8a;
-    namespace Test8b;
-'
+                    <<<'EOD'
+                        <?php
+                         namespace Test8a;
+                            namespace Test8b;
+
+                        EOD
                 ),
             ]
         );

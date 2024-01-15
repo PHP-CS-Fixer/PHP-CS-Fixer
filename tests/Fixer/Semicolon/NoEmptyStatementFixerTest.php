@@ -36,178 +36,204 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     public static function provideNoEmptyStatementsCases(): iterable
     {
         yield [
-            '<?php
-                abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
-                {
-                }
-                ',
-            '<?php
-                abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
-                {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
+                                {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                abstract class TestClass1 EXTENDS Test implements TestInterface
-                {
-                }
-                ',
-            '<?php
-                abstract class TestClass1 EXTENDS Test implements TestInterface
-                {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                abstract class TestClass1 EXTENDS Test implements TestInterface
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                abstract class TestClass1 EXTENDS Test implements TestInterface
+                                {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                CLASS TestClass2 extends Test
-                {
-                }
-                ',
-            '<?php
-                CLASS TestClass2 extends Test
-                {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                CLASS TestClass2 extends Test
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                CLASS TestClass2 extends Test
+                                {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                class TestClass3 implements TestInterface1
-                {
-                }
-                ',
-            '<?php
-                class TestClass3 implements TestInterface1
-                {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                class TestClass3 implements TestInterface1
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class TestClass3 implements TestInterface1
+                                {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                class TestClass4
-                {
-                }
-                ',
-            '<?php
-                class TestClass4
-                {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                class TestClass4
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                class TestClass4
+                                {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                interface TestInterface1
-                {
-                }
-                ',
-            '<?php
-                interface TestInterface1
-                {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                interface TestInterface1
+                                {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                interface TestInterface1
+                                {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                interface TestExtendingInterface extends TestInterface2, TestInterface3 {
-                }
-                ',
-            '<?php
-                interface TestExtendingInterface extends TestInterface2, TestInterface3 {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                interface TestExtendingInterface extends TestInterface2, TestInterface3 {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                interface TestExtendingInterface extends TestInterface2, TestInterface3 {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                namespace Two {
-                    $a = 1; {
-                    }
-                }
-                ',
-            '<?php
-                namespace Two {;;
-                    $a = 1; {
-                    };
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                namespace Two {
+                                    $a = 1; {
+                                    }
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace Two {;;
+                                    $a = 1; {
+                                    };
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                {
-                    '.'
-                }
-                echo 1;
-                ',
-            '<?php
-                {
-                    ;
-                };
-                echo 1;
-                ',
+            <<<'EOD'
+                <?php
+                                {
+                EOD."\n                    ".<<<'EOD'
+
+                                }
+                                echo 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                {
+                                    ;
+                                };
+                                echo 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                while($time < $a)
-                    ;
-                echo "done waiting.";
-                $b = \Test;
-                ',
+            <<<'EOD'
+                <?php
+                                while($time < $a)
+                                    ;
+                                echo "done waiting.";
+                                $b = \Test;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if($a>1){
+            <<<'EOD'
+                <?php
+                                    if($a>1){
 
-                    }
-                ',
-            '<?php
-                    if($a>1){
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if($a>1){
 
-                    };
-                ',
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    if($a>1) {
+            <<<'EOD'
+                <?php
+                                    if($a>1) {
 
-                    } else {
+                                    } else {
 
-                    }
-                ',
-            '<?php
-                    if($a>1) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    if($a>1) {
 
-                    } else {
+                                    } else {
 
-                    };
-                ',
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    try{
+            <<<'EOD'
+                <?php
+                                    try{
 
-                    }catch (\Exception $e) {
+                                    }catch (\Exception $e) {
 
-                    }
-                ',
-            '<?php
-                    try{
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    try{
 
-                    }catch (\Exception $e) {
+                                    }catch (\Exception $e) {
 
-                    };
-                ',
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
@@ -216,18 +242,20 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    function foo()
-                    {
-                         // a
-                    }
-                ',
-            '<?php
-                    function foo()
-                    {
-                        ; // a
-                    }
-                ',
+            <<<'EOD'
+                <?php
+                                    function foo()
+                                    {
+                                         // a
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    function foo()
+                                    {
+                                        ; // a
+                                    }
+                EOD."\n                ",
         ];
 
         yield [
@@ -241,177 +269,202 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    for(;;) {
-                    }
-                ',
-            '<?php
-                    for(;;) {
-                    };
-                ',
+            <<<'EOD'
+                <?php
+                                    for(;;) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    for(;;) {
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    foreach($a as $b) {
-                    }
-                    foreach($a as $b => $c) {
-                    }
-                ',
-            '<?php
-                    foreach($a as $b) {
-                    };
-                    foreach($a as $b => $c) {
-                    };
-                ',
+            <<<'EOD'
+                <?php
+                                    foreach($a as $b) {
+                                    }
+                                    foreach($a as $b => $c) {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    foreach($a as $b) {
+                                    };
+                                    foreach($a as $b => $c) {
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    while($a > 1){
-                    }
-                    do {
-                    } while($a>1);  // 1
-                ',
-            '<?php
-                    while($a > 1){
-                    };
-                    do {
-                    } while($a>1); 1; // 1
-                ',
+            <<<'EOD'
+                <?php
+                                    while($a > 1){
+                                    }
+                                    do {
+                                    } while($a>1);  // 1
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    while($a > 1){
+                                    };
+                                    do {
+                                    } while($a>1); 1; // 1
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    switch($a) {
-                        default : {echo 1;}
-                    }
-                ',
-            '<?php
-                    switch($a) {
-                        default : {echo 1;}
-                    };
-                ',
+            <<<'EOD'
+                <?php
+                                    switch($a) {
+                                        default : {echo 1;}
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    switch($a) {
+                                        default : {echo 1;}
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                function test($a, $b) {
-                }
-                ',
-            '<?php
-                function test($a, $b) {
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                function test($a, $b) {
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                function test($a, $b) {
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                function foo($n)
-                {
-                    '.'
-                    $a = function(){};
-                    $b = function() use ($a) {};
-                    ++${"a"};
-                    switch(fooBar()) {
-                        case 5;{
-                        }
-                    }
-                    return $n->{$o};
-                }
-                ',
-            '<?php
-                function foo($n)
-                {
-                    ;
-                    $a = function(){};
-                    $b = function() use ($a) {};
-                    ++${"a"};
-                    switch(fooBar()) {
-                        case 5;{
-                        }
-                    };
-                    return $n->{$o};
-                };
-                ',
+            <<<'EOD'
+                <?php
+                                function foo($n)
+                                {
+                EOD."\n                    ".<<<'EOD'
+
+                                    $a = function(){};
+                                    $b = function() use ($a) {};
+                                    ++${"a"};
+                                    switch(fooBar()) {
+                                        case 5;{
+                                        }
+                                    }
+                                    return $n->{$o};
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                function foo($n)
+                                {
+                                    ;
+                                    $a = function(){};
+                                    $b = function() use ($a) {};
+                                    ++${"a"};
+                                    switch(fooBar()) {
+                                        case 5;{
+                                        }
+                                    };
+                                    return $n->{$o};
+                                };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                declare(ticks=1) {
-                // entire script here
-                }
-                declare(ticks=1);
-                ',
-            '<?php
-                declare(ticks=1) {
-                // entire script here
-                };
-                declare(ticks=1);
-                ',
+            <<<'EOD'
+                <?php
+                                declare(ticks=1) {
+                                // entire script here
+                                }
+                                declare(ticks=1);
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                declare(ticks=1) {
+                                // entire script here
+                                };
+                                declare(ticks=1);
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    namespace A\B\C;
-                    use D;
-                ',
-            '<?php
-                    namespace A\B\C;;;;
-                    use D;;;;
-                ',
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C;
+                                    use D;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C;;;;
+                                    use D;;;;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    namespace A\B\C;
-                    use D;
-                ',
-            '<?php
-                    namespace A\B\C;
-                    use D;;;;
-                ',
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C;
+                                    use D;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C;
+                                    use D;;;;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    namespace A\B\C;use D;
-                ',
-            '<?php
-                    namespace A\B\C;;use D;
-                ',
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C;use D;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C;;use D;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    trait TestTrait
-                    {
-                    }
-                ',
-            '<?php
-                    trait TestTrait
-                    {
-                    };
-                ',
+            <<<'EOD'
+                <?php
+                                    trait TestTrait
+                                    {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    trait TestTrait
+                                    {
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    try {
-                        throw new \Exception("Foo.");
-                    } catch (\Exception $e){
-                        //
-                    } finally {
-                    }  '.'
-                ',
-            '<?php
-                    try {
-                        throw new \Exception("Foo.");
-                    } catch (\Exception $e){
-                        //
-                    } finally {
-                    }  ;
-                ',
+            <<<'EOD'
+                <?php
+                                    try {
+                                        throw new \Exception("Foo.");
+                                    } catch (\Exception $e){
+                                        //
+                                    } finally {
+                                    }
+                EOD.'  '.''."\n                ",
+            <<<'EOD'
+                <?php
+                                    try {
+                                        throw new \Exception("Foo.");
+                                    } catch (\Exception $e){
+                                        //
+                                    } finally {
+                                    }  ;
+                EOD."\n                ",
         ];
 
         foreach (['break', 'continue'] as $ops) {
@@ -434,10 +487,11 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                while(true) {while(true) {break 2;}}
-                while(true) {continue;}
-            ',
+            <<<'EOD'
+                <?php
+                                while(true) {while(true) {break 2;}}
+                                while(true) {continue;}
+                EOD."\n            ",
         ];
 
         yield [
@@ -462,45 +516,50 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                    use function Functional\map;
-                    $a = new class {
-                        public function log($msg)
-                        {
-                        }
-                    };
-                    ',
+            <<<'EOD'
+                <?php
+                                    use function Functional\map;
+                                    $a = new class {
+                                        public function log($msg)
+                                        {
+                                        }
+                                    };
+                EOD."\n                    ",
         ];
 
         yield [
-            '<?php
-                    use function Functional\map;
-                    $a = new class extends A {
-                    };
-                    ',
+            <<<'EOD'
+                <?php
+                                    use function Functional\map;
+                                    $a = new class extends A {
+                                    };
+                EOD."\n                    ",
         ];
 
         yield [
-            '<?php
-                    use function Functional\map;
-                    $a = new class implements B {
-                    };
-                    ',
+            <<<'EOD'
+                <?php
+                                    use function Functional\map;
+                                    $a = new class implements B {
+                                    };
+                EOD."\n                    ",
         ];
 
         yield [
-            '<?php
-                    use function Functional\map;
-                    $a = new class extends A implements B {
-                    };
-                    ',
+            <<<'EOD'
+                <?php
+                                    use function Functional\map;
+                                    $a = new class extends A implements B {
+                                    };
+                EOD."\n                    ",
         ];
 
         yield [
-            '<?php
-                    $a = new class extends \A implements B\C {
-                    };
-                    ',
+            <<<'EOD'
+                <?php
+                                    $a = new class extends \A implements B\C {
+                                    };
+                EOD."\n                    ",
         ];
 
         yield [
@@ -509,42 +568,48 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    namespace A\B\C {
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C {
 
-                    }
-                ',
-            '<?php
-                    namespace A\B\C {
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace A\B\C {
 
-                    };
-                ',
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    namespace A{
+            <<<'EOD'
+                <?php
+                                    namespace A{
 
-                    }
-                ',
-            '<?php
-                    namespace A{
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace A{
 
-                    };
-                ',
+                                    };
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    namespace{
+            <<<'EOD'
+                <?php
+                                    namespace{
 
-                    }
-                ',
-            '<?php
-                    namespace{
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    namespace{
 
-                    };
-                ',
+                                    };
+                EOD."\n                ",
         ];
     }
 
@@ -579,14 +644,15 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     public static function provideFixMultipleSemicolonsCases(): iterable
     {
         yield [
-            '<?php $foo = 2 ; //
-                    '.'
+            '<?php $foo = 2 ; //'."\n                    ".<<<'EOD'
 
-                ',
-            '<?php $foo = 2 ; //
-                    ;
 
-                ',
+                EOD."\n                ",
+            <<<'EOD'
+                <?php $foo = 2 ; //
+                                    ;
+
+                EOD."\n                ",
         ];
 
         yield [
@@ -605,12 +671,15 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = 5;
+            <<<'EOD'
+                <?php $foo = 5;
 
-    ',
-            '<?php $foo = 5;;
-;
-    ;',
+                EOD."\n    ",
+            <<<'EOD'
+                <?php $foo = 5;;
+                ;
+                    ;
+                EOD,
         ];
 
         yield [
@@ -623,18 +692,20 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    switch($a){
-                        case 8;
-                            echo 9;
-                    }
-                ',
-            '<?php
-                    switch($a){
-                        case 8;;
-                            echo 9;
-                    }
-                ',
+            <<<'EOD'
+                <?php
+                                    switch($a){
+                                        case 8;
+                                            echo 9;
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    switch($a){
+                                        case 8;;
+                                            echo 9;
+                                    }
+                EOD."\n                ",
         ];
     }
 

@@ -36,133 +36,145 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
     {
         // fix cases
         yield [
-            '<?php
-                    echo 0;
-echo 1;
-                ',
-            '<?php
-                    echo 0;//
-echo 1;
-                ',
+            <<<'EOD'
+                <?php
+                                    echo 0;
+                echo 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 0;//
+                echo 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo 0;
-    echo 1;
-                ',
-            '<?php
-                    echo 0;//
-    echo 1;
-                ',
-        ];
-
-        yield [
-            '<?php
+            <<<'EOD'
+                <?php
+                                    echo 0;
                     echo 1;
-                ',
-            '<?php
-                    echo 1;//
-                ',
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 0;//
+                    echo 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                echo 2;
-                    '.'
-echo 1;
-                ',
-            '<?php
-                echo 2;
-                    //
-echo 1;
-                ',
+            <<<'EOD'
+                <?php
+                                    echo 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 1;//
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
+                                echo 2;
+                EOD."\n                    ".<<<'EOD'
 
-                ?>',
-            '<?php
-
-                //?>',
+                echo 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                echo 2;
+                                    //
+                echo 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    '.'
-                ',
-            '<?php
-                    //
-                ',
+            <<<'EOD'
+                <?php
+
+                                ?>
+                EOD,
+            <<<'EOD'
+                <?php
+
+                                //?>
+                EOD,
         ];
 
         yield [
-            '<?php
-                    '.'
-                ',
-            '<?php
-                    #
-                ',
+            '<?php'."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    //
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    '.'
-                ',
-            '<?php
-                    /**/
-                ',
+            '<?php'."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    #
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo 0;echo 1;
-                ',
-            '<?php
-                    echo 0;/**/echo 1;
-                ',
+            '<?php'."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    /**/
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    echo 0;echo 1;
-                ',
-            '<?php
-                    echo 0;/**//**//**/echo 1/**/;
-                ',
+            <<<'EOD'
+                <?php
+                                    echo 0;echo 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 0;/**/echo 1;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                ',
-            '<?php
-                //',
+            <<<'EOD'
+                <?php
+                                    echo 0;echo 1;
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    echo 0;/**//**//**/echo 1/**/;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                ',
-            '<?php
-                /*
-
-
-                */',
+            '<?php'."\n                ",
+            <<<'EOD'
+                <?php
+                                //
+                EOD,
         ];
 
         yield [
-            '<?php
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                ',
-            '<?php
-                    //
-                    //
-                    //
-                    /**///
-                ',
+            '<?php'."\n                ",
+            <<<'EOD'
+                <?php
+                                /*
+
+
+                                */
+                EOD,
+        ];
+
+        yield [
+            '<?php'."\n                    ".''."\n                    ".''."\n                    ".''."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    //
+                                    //
+                                    //
+                                    /**///
+                EOD."\n                ",
         ];
 
         yield [
@@ -187,66 +199,67 @@ echo 1;
 
         // do not fix cases
         yield [
-            '<?php
-                // a
-            // /**/
-              // #
-/* b */ // s
-          #                        c',
+            <<<'EOD'
+                <?php
+                                // a
+                            // /**/
+                              // #
+                /* b */ // s
+                          #                        c
+                EOD,
         ];
 
         yield [
-            '<?php
-                    // This comment could be nicely formatted.
-                    //
-                    //
-                    // For that, it could have some empty comment lines inside.
-                    //
+            <<<'EOD'
+                <?php
+                                    // This comment could be nicely formatted.
+                                    //
+                                    //
+                                    // For that, it could have some empty comment lines inside.
+                                    //
 
-                    ## A 1
-                    ##
-                    ##
-                    ## A 2
-                    ##
+                                    ## A 1
+                                    ##
+                                    ##
+                                    ## A 2
+                                    ##
 
-                    // B 1
-                    //
-                    // B 2
+                                    // B 1
+                                    //
+                                    // B 2
 
-                    ## C 1
-                    ##
-                    ## C 2
+                                    ## C 1
+                                    ##
+                                    ## C 2
 
-                    $foo = 1;
+                                    $foo = 1;
 
-                    //
-                    // a
-                    //
+                                    //
+                                    // a
+                                    //
 
-                    $bar = 2;
-                ',
+                                    $bar = 2;
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    '.'
-                ',
-            '<?php
-                    /*
-                     *
-                     */
-                ',
+            '<?php'."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    /*
+                                     *
+                                     */
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    '.'
-                ',
-            '<?php
-                    /********
-                     *
-                     ********/
-                ',
+            '<?php'."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    /********
+                                     *
+                                     ********/
+                EOD."\n                ",
         ];
 
         yield [
@@ -255,16 +268,16 @@ echo 1;
         ];
 
         yield [
-            '<?php
-                    '.'
-                    /* a */
-                    '.'
-                ',
-            '<?php
-                    //
-                    /* a */
-                    //
-                ',
+            '<?php'."\n                    ".<<<'EOD'
+
+                                    /* a */
+                EOD."\n                    ".''."\n                ",
+            <<<'EOD'
+                <?php
+                                    //
+                                    /* a */
+                                    //
+                EOD."\n                ",
         ];
     }
 
@@ -302,59 +315,69 @@ echo 1;
         ];
 
         yield [
-            '<?php
-                    // This comment could be nicely formatted.
-                    //
-                    //
-                    // For that, it could have some empty comment lines inside.
-                    //           ',
+            <<<'EOD'
+                <?php
+                                    // This comment could be nicely formatted.
+                                    //
+                                    //
+                                    // For that, it could have some empty comment lines inside.
+                                    //
+                EOD.'           ',
             2,
             11,
             false,
         ];
 
         yield [
-            '<?php
-/**///',
+            <<<'EOD'
+                <?php
+                /**///
+                EOD,
             1,
             1,
             true,
         ];
 
         yield [
-            '<?php
-//
-//
+            <<<'EOD'
+                <?php
+                //
+                //
 
-#
-#
-',
+                #
+                #
+
+                EOD,
             5,
             8,
             true,
         ];
 
         yield [
-            '<?php
-//
-//
+            <<<'EOD'
+                <?php
+                //
+                //
 
-//
-//
-',
+                //
+                //
+
+                EOD,
             5,
             8,
             true,
         ];
 
         yield [
-            '<?php
-//
-//
+            <<<'EOD'
+                <?php
+                //
+                //
 
-//
-//
-',
+                //
+                //
+
+                EOD,
             1,
             3,
             true,
@@ -375,40 +398,48 @@ echo 1;
         ];
 
         yield [
-            '<?php
-//
+            <<<'EOD'
+                <?php
+                //
 
-//
-',
+                //
+
+                EOD,
             1,
             1,
             true,
         ];
 
         yield [
-            '<?php
-//
-//
-              $a;  ',
+            <<<'EOD'
+                <?php
+                //
+                //
+                              $a;
+                EOD.'  ',
             1,
             4,
             true,
         ];
 
         yield [
-            '<?php
-//',
+            <<<'EOD'
+                <?php
+                //
+                EOD,
             1,
             1,
             true,
         ];
 
-        $src = '<?php
-                // a2
-            // /*4*/
-              // #6
-/* b8 */ // s10
-          #                        c12';
+        $src = <<<'EOD'
+            <?php
+                            // a2
+                        // /*4*/
+                          // #6
+            /* b8 */ // s10
+                      #                        c12
+            EOD;
 
         foreach ([2, 4, 6] as $i) {
             yield [$src, $i, 7, false];

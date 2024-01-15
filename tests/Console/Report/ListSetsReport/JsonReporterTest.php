@@ -47,19 +47,21 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        return '{
-    "sets": {
-        "@PhpCsFixer": {
-            "description": "Rule set as used by the PHP-CS-Fixer development team, highly opinionated.",
-            "isRisky": false,
-            "name": "@PhpCsFixer"
-        },
-        "@Symfony:risky": {
-            "description": "Rules that follow the official `Symfony Coding Standards <https:\/\/symfony.com\/doc\/current\/contributing\/code\/standards.html>`_.",
-            "isRisky": true,
-            "name": "@Symfony:risky"
-        }
-    }
-}';
+        return <<<'EOD'
+            {
+                "sets": {
+                    "@PhpCsFixer": {
+                        "description": "Rule set as used by the PHP-CS-Fixer development team, highly opinionated.",
+                        "isRisky": false,
+                        "name": "@PhpCsFixer"
+                    },
+                    "@Symfony:risky": {
+                        "description": "Rules that follow the official `Symfony Coding Standards <https:\/\/symfony.com\/doc\/current\/contributing\/code\/standards.html>`_.",
+                        "isRisky": true,
+                        "name": "@Symfony:risky"
+                    }
+                }
+            }
+            EOD;
     }
 }

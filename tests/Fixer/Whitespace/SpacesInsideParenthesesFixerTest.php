@@ -66,23 +66,25 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     {
         // default leaves new lines alone
         yield [
-            "<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    private function bar()
-    {
-        if (foo(
-            'foo' ,
-            'bar'    ,
-            [1, 2, 3],
-            'baz' // a comment just to mix things up
-        )) {
-            return 1;
-        };
-    }
-}
-",
+                class Foo
+                {
+                    private function bar()
+                    {
+                        if (foo(
+                            'foo' ,
+                            'bar'    ,
+                            [1, 2, 3],
+                            'baz' // a comment just to mix things up
+                        )) {
+                            return 1;
+                        };
+                    }
+                }
+
+                EOD,
         ];
 
         yield [
@@ -91,57 +93,77 @@ class Foo
         ];
 
         yield [
-            '<?php
-if (true) {
-    // if body
-}',
-            '<?php
-if ( true ) {
-    // if body
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ( true ) {
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    // if body
-}',
-            '<?php
-if (     true   ) {
-    // if body
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (     true   ) {
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
+            <<<'EOD'
+                <?php
+                function foo($bar, $baz)
+                {
+                    // function body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo( $bar, $baz )
+                {
+                    // function body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo->bar($arg1, $arg2);',
-            '<?php
-$foo->bar(  $arg1, $arg2   );',
+            <<<'EOD'
+                <?php
+                $foo->bar($arg1, $arg2);
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo->bar(  $arg1, $arg2   );
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = array( 1, 2, 3 );
-',
+            <<<'EOD'
+                <?php
+                $var = array( 1, 2, 3 );
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = [ 1, 2, 3 ];
-',
+            <<<'EOD'
+                <?php
+                $var = [ 1, 2, 3 ];
+
+                EOD,
         ];
 
         // list call with trailing comma - need to leave alone
@@ -154,92 +176,122 @@ $var = [ 1, 2, 3 ];
         ];
 
         yield [
-            '<?php
-$a = $b->test(  // do not remove space
-    $e          // between `(` and `)`
-                // and this comment
-);',
+            <<<'EOD'
+                <?php
+                $a = $b->test(  // do not remove space
+                    $e          // between `(` and `)`
+                                // and this comment
+                );
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
+            <<<'EOD'
+                <?php
+                function foo($bar, $baz)
+                {
+                    // function body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo( $bar, $baz )
+                {
+                    // function body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function hello($value) {
-    // code...
-}',
-            '<?php
-function hello( $value ) {
-    // code...
-}',
+            <<<'EOD'
+                <?php
+                function hello($value) {
+                    // code...
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function hello( $value ) {
+                    // code...
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$code = function ($hello, $there) use ($ami, $tumi) {
-    // code
-};
-',
-            '<?php
-$code = function ( $hello, $there   ) use ( $ami, $tumi ) {
-    // code
-};
-',
+            <<<'EOD'
+                <?php
+                $code = function ($hello, $there) use ($ami, $tumi) {
+                    // code
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $code = function ( $hello, $there   ) use ( $ami, $tumi ) {
+                    // code
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
-for ($i = 0; $i < 42; $i++) {
-    // code...
-}
-',
-            '<?php
-for (   $i = 0; $i < 42; $i++ ) {
-    // code...
-}
-',
+            <<<'EOD'
+                <?php
+                for ($i = 0; $i < 42; $i++) {
+                    // code...
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                for (   $i = 0; $i < 42; $i++ ) {
+                    // code...
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-explode($a, $b);
-',
-            '<?php
-explode( $a, $b );
-',
+            <<<'EOD'
+                <?php
+                explode($a, $b);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                explode( $a, $b );
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ($something) {
-    // code
-}
-',
-            '<?php
-if (  $something      ) {
-    // code
-}
-',
+            <<<'EOD'
+                <?php
+                if ($something) {
+                    // code
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if (  $something      ) {
+                    // code
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-multiply((2 + 3) * 4);
-',
-            '<?php
-multiply( (    2 + 3  ) * 4    );
-',
+            <<<'EOD'
+                <?php
+                multiply((2 + 3) * 4);
+
+                EOD,
+            <<<'EOD'
+                <?php
+                multiply( (    2 + 3  ) * 4    );
+
+                EOD,
         ];
 
         yield [
@@ -260,22 +312,24 @@ multiply( (    2 + 3  ) * 4    );
     {
         // Leaves new lines alone
         yield [
-            "<?php
+            <<<'EOD'
+                <?php
 
-class Foo
-{
-    private function bar()
-    {
-        if ( foo(
-            'foo' ,
-            'bar'    ,
-            [1, 2, 3],
-            'baz' // a comment just to mix things up
-        ) ) {
-            return 1;
-        };
-    }
-}",
+                class Foo
+                {
+                    private function bar()
+                    {
+                        if ( foo(
+                            'foo' ,
+                            'bar'    ,
+                            [1, 2, 3],
+                            'baz' // a comment just to mix things up
+                        ) ) {
+                            return 1;
+                        };
+                    }
+                }
+                EOD,
         ];
 
         yield [
@@ -284,60 +338,82 @@ class Foo
         ];
 
         yield [
-            '<?php
-if ( true ) {
-    // if body
-}',
-            '<?php
-if (true) {
-    // if body
-}',
+            <<<'EOD'
+                <?php
+                if ( true ) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if ( true ) {
-    // if body
-}',
-            '<?php
-if (     true   ) {
-    // if body
-}',
+            <<<'EOD'
+                <?php
+                if ( true ) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (     true   ) {
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
-            '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
+            <<<'EOD'
+                <?php
+                function foo( $bar, $baz )
+                {
+                    // function body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo($bar, $baz)
+                {
+                    // function body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo->bar( $arg1, $arg2 );',
-            '<?php
-$foo->bar(  $arg1, $arg2   );',
+            <<<'EOD'
+                <?php
+                $foo->bar( $arg1, $arg2 );
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo->bar(  $arg1, $arg2   );
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = array( 1, 2, 3 );
-',
-            '<?php
-$var = array(1, 2, 3);
-',
+            <<<'EOD'
+                <?php
+                $var = array( 1, 2, 3 );
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = array(1, 2, 3);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = [ 1, 2, 3 ];
-',
+            <<<'EOD'
+                <?php
+                $var = [ 1, 2, 3 ];
+
+                EOD,
         ];
 
         yield [
@@ -346,92 +422,122 @@ $var = [ 1, 2, 3 ];
         ];
 
         yield [
-            '<?php
-$a = $b->test(  // do not remove space
-    $e          // between `(` and `)`
-                // and this comment
- );',
+            <<<'EOD'
+                <?php
+                $a = $b->test(  // do not remove space
+                    $e          // between `(` and `)`
+                                // and this comment
+                 );
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
-            '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
+            <<<'EOD'
+                <?php
+                function foo( $bar, $baz )
+                {
+                    // function body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo($bar, $baz)
+                {
+                    // function body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function hello( $value ) {
-    // code...
-}',
-            '<?php
-function hello($value) {
-    // code...
-}',
+            <<<'EOD'
+                <?php
+                function hello( $value ) {
+                    // code...
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function hello($value) {
+                    // code...
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$code = function ( $hello, $there ) use ( $ami, $tumi ) {
-    // code
-};
-',
-            '<?php
-$code = function ($hello, $there) use ($ami, $tumi) {
-    // code
-};
-',
+            <<<'EOD'
+                <?php
+                $code = function ( $hello, $there ) use ( $ami, $tumi ) {
+                    // code
+                };
+
+                EOD,
+            <<<'EOD'
+                <?php
+                $code = function ($hello, $there) use ($ami, $tumi) {
+                    // code
+                };
+
+                EOD,
         ];
 
         yield [
-            '<?php
-for ( $i = 0; $i < 42; $i++ ) {
-    // code...
-}
-',
-            '<?php
-for ($i = 0; $i < 42; $i++) {
-    // code...
-}
-',
+            <<<'EOD'
+                <?php
+                for ( $i = 0; $i < 42; $i++ ) {
+                    // code...
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                for ($i = 0; $i < 42; $i++) {
+                    // code...
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-explode( $a, $b );
-',
-            '<?php
-explode($a, $b);
-',
+            <<<'EOD'
+                <?php
+                explode( $a, $b );
+
+                EOD,
+            <<<'EOD'
+                <?php
+                explode($a, $b);
+
+                EOD,
         ];
 
         yield [
-            '<?php
-if ( $something ) {
-    // code
-}
-',
-            '<?php
-if (    $something    ) {
-    // code
-}
-',
+            <<<'EOD'
+                <?php
+                if ( $something ) {
+                    // code
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                if (    $something    ) {
+                    // code
+                }
+
+                EOD,
         ];
 
         yield [
-            '<?php
-multiply( ( 2 + 3 ) * 4 );
-',
-            '<?php
-multiply((2 + 3) * 4);
-',
+            <<<'EOD'
+                <?php
+                multiply( ( 2 + 3 ) * 4 );
+
+                EOD,
+            <<<'EOD'
+                <?php
+                multiply((2 + 3) * 4);
+
+                EOD,
         ];
 
         yield [

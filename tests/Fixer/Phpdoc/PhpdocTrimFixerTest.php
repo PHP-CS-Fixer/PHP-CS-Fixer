@@ -48,25 +48,29 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @return int количество деактивированных
- */
-function deactivateCompleted()
-{
-    return 0;
-}',
+                /**
+                 * @return int количество деактивированных
+                 */
+                function deactivateCompleted()
+                {
+                    return 0;
+                }
+                EOD,
         ];
 
         yield [
-            mb_convert_encoding('
-<?php
-/**
- * Test à
- */
-function foo(){}
-', 'Windows-1252', 'UTF-8'),
+            mb_convert_encoding(<<<'EOD'
+
+                <?php
+                /**
+                 * Test à
+                 */
+                function foo(){}
+
+                EOD, 'Windows-1252', 'UTF-8'),
         ];
     }
 

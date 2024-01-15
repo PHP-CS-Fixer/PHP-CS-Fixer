@@ -171,12 +171,14 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                interface Test
-                {
-                    public function floatval($a);
-                    public function &doubleval($a);
-                }',
+            <<<'EOD'
+                <?php
+                                interface Test
+                                {
+                                    public function floatval($a);
+                                    public function &doubleval($a);
+                                }
+                EOD,
         ];
 
         yield [
@@ -228,25 +230,29 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a = #
-#
-#
-(int) #
- (
-#
- $b#
- )#
- ;#',
-            '<?php $a = #
-#
-\
-#
-intval#
- (
-#
- $b#
- )#
- ;#',
+            <<<'EOD'
+                <?php $a = #
+                #
+                #
+                (int) #
+                 (
+                #
+                 $b#
+                 )#
+                 ;#
+                EOD,
+            <<<'EOD'
+                <?php $a = #
+                #
+                \
+                #
+                intval#
+                 (
+                #
+                 $b#
+                 )#
+                 ;#
+                EOD,
         ];
     }
 

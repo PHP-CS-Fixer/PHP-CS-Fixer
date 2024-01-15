@@ -109,16 +109,20 @@ final class NoTrailingCommaInSinglelineFunctionCallFixerTest extends AbstractFix
         ];
 
         yield 'static function call' => [
-            '<?php
-unset($foo->bar);
-$b = isset($foo->bar);
-list($a,$b) = $a;
-',
-            '<?php
-unset($foo->bar,);
-$b = isset($foo->bar,);
-list($a,$b,) = $a;
-',
+            <<<'EOD'
+                <?php
+                unset($foo->bar);
+                $b = isset($foo->bar);
+                list($a,$b) = $a;
+
+                EOD,
+            <<<'EOD'
+                <?php
+                unset($foo->bar,);
+                $b = isset($foo->bar,);
+                list($a,$b,) = $a;
+
+                EOD,
         ];
 
         yield 'unset' => [
@@ -132,69 +136,75 @@ list($a,$b,) = $a;
         ];
 
         yield 'array/property access call' => [
-            '<?php
-$a = [
-    "e" => static function(int $a): void{ echo $a;},
-    "d" => [
-        [2 => static function(int $a): void{ echo $a;}]
-    ]
-];
+            <<<'EOD'
+                <?php
+                $a = [
+                    "e" => static function(int $a): void{ echo $a;},
+                    "d" => [
+                        [2 => static function(int $a): void{ echo $a;}]
+                    ]
+                ];
 
-$a["e"](1);
-$a["d"][0][2](1);
+                $a["e"](1);
+                $a["d"][0][2](1);
 
-$z = new class { public static function b(int $a): void {echo $a; }};
-$z::b(1);
+                $z = new class { public static function b(int $a): void {echo $a; }};
+                $z::b(1);
 
-${$e}(1);
-$$e(2);
-$f(0)(1);
-$g["e"](1); // foo',
-            '<?php
-$a = [
-    "e" => static function(int $a): void{ echo $a;},
-    "d" => [
-        [2 => static function(int $a): void{ echo $a;}]
-    ]
-];
+                ${$e}(1);
+                $$e(2);
+                $f(0)(1);
+                $g["e"](1); // foo
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = [
+                    "e" => static function(int $a): void{ echo $a;},
+                    "d" => [
+                        [2 => static function(int $a): void{ echo $a;}]
+                    ]
+                ];
 
-$a["e"](1,);
-$a["d"][0][2](1,);
+                $a["e"](1,);
+                $a["d"][0][2](1,);
 
-$z = new class { public static function b(int $a): void {echo $a; }};
-$z::b(1,);
+                $z = new class { public static function b(int $a): void {echo $a; }};
+                $z::b(1,);
 
-${$e}(1,);
-$$e(2,);
-$f(0,)(1,);
-$g["e"](1,); // foo',
+                ${$e}(1,);
+                $$e(2,);
+                $f(0,)(1,);
+                $g["e"](1,); // foo
+                EOD,
         ];
 
         yield 'do not fix' => [
-            '<?php
-                function someFunction ($p1){}
-                function & foo($a,$b): array { return []; }
+            <<<'EOD'
+                <?php
+                                function someFunction ($p1){}
+                                function & foo($a,$b): array { return []; }
 
-                foo (
-                    1,
-                    2,
-                );
+                                foo (
+                                    1,
+                                    2,
+                                );
 
-                $a = new class (
-                    $a,
-                ) {};
+                                $a = new class (
+                                    $a,
+                                ) {};
 
-                isset($a, $b);
-                unset($a,$b);
-                list($a,$b) = $a;
+                                isset($a, $b);
+                                unset($a,$b);
+                                list($a,$b) = $a;
 
-                $a = [1,2,3,];
-                $a = array(1,2,3,);
+                                $a = [1,2,3,];
+                                $a = array(1,2,3,);
 
-                function foo1(string $param = null ): void
-                {
-                }
-            ;',
+                                function foo1(string $param = null ): void
+                                {
+                                }
+                            ;
+                EOD,
         ];
     }
 
@@ -211,12 +221,14 @@ $g["e"](1,); // foo',
     public static function provideFix80Cases(): iterable
     {
         yield [
-            '<?php function foo(
-    #[MyAttr(1, 2,)] Type $myParam,
-) {}
+            <<<'EOD'
+                <?php function foo(
+                    #[MyAttr(1, 2,)] Type $myParam,
+                ) {}
 
-$foo1b = function() use ($bar, ) {};
-',
+                $foo1b = function() use ($bar, ) {};
+
+                EOD,
         ];
     }
 

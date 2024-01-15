@@ -54,17 +54,21 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'skip non phpunit methods' => [
-            '<?php class MyClass {
-                    public function testMyApp() {}
-                    public function test_my_app() {}
-                }',
+            <<<'EOD'
+                <?php class MyClass {
+                                    public function testMyApp() {}
+                                    public function test_my_app() {}
+                                }
+                EOD,
         ];
 
         yield 'skip non test methods' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function not_a_test() {}
-                    public function notATestEither() {}
-                }',
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function not_a_test() {}
+                                    public function notATestEither() {}
+                                }
+                EOD,
         ];
 
         yield 'default sample' => [
@@ -78,97 +82,113 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield '@depends annotation' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function testMyApp () {}
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function testMyApp () {}
 
-                    /**
-                     * @depends testMyApp
-                     */
-                    public function testMyAppToo() {}
-                }',
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function test_my_app () {}
+                                    /**
+                                     * @depends testMyApp
+                                     */
+                                    public function testMyAppToo() {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function test_my_app () {}
 
-                    /**
-                     * @depends test_my_app
-                     */
-                    public function test_my_app_too() {}
-                }',
+                                    /**
+                                     * @depends test_my_app
+                                     */
+                                    public function test_my_app_too() {}
+                                }
+                EOD,
         ];
 
         yield '@depends annotation with class name in PascalCase' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function testMyApp () {}
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function testMyApp () {}
 
-                    /**
-                     * @depends FooBarTest::testMyApp
-                     */
-                    public function testMyAppToo() {}
-                }',
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function test_my_app () {}
+                                    /**
+                                     * @depends FooBarTest::testMyApp
+                                     */
+                                    public function testMyAppToo() {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function test_my_app () {}
 
-                    /**
-                     * @depends FooBarTest::test_my_app
-                     */
-                    public function test_my_app_too() {}
-                }',
+                                    /**
+                                     * @depends FooBarTest::test_my_app
+                                     */
+                                    public function test_my_app_too() {}
+                                }
+                EOD,
         ];
 
         yield '@depends annotation with class name in Snake_Case' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function testMyApp () {}
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function testMyApp () {}
 
-                    /**
-                     * @depends Foo_Bar_Test::testMyApp
-                     */
-                    public function testMyAppToo() {}
-                }',
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    public function test_my_app () {}
+                                    /**
+                                     * @depends Foo_Bar_Test::testMyApp
+                                     */
+                                    public function testMyAppToo() {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    public function test_my_app () {}
 
-                    /**
-                     * @depends Foo_Bar_Test::test_my_app
-                     */
-                    public function test_my_app_too() {}
-                }',
+                                    /**
+                                     * @depends Foo_Bar_Test::test_my_app
+                                     */
+                                    public function test_my_app_too() {}
+                                }
+                EOD,
         ];
 
         yield '@depends and @test annotation' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    /**
-                     * @test
-                     */
-                    public function myApp () {}
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    /**
+                                     * @test
+                                     */
+                                    public function myApp () {}
 
-                    /**
-                     * @test
-                     * @depends myApp
-                     */
-                    public function myAppToo() {}
+                                    /**
+                                     * @test
+                                     * @depends myApp
+                                     */
+                                    public function myAppToo() {}
 
-                    /** not a test method */
-                    public function my_app_not() {}
+                                    /** not a test method */
+                                    public function my_app_not() {}
 
-                    public function my_app_not_2() {}
-                }',
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                    /**
-                     * @test
-                     */
-                    public function my_app () {}
+                                    public function my_app_not_2() {}
+                                }
+                EOD,
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                    /**
+                                     * @test
+                                     */
+                                    public function my_app () {}
 
-                    /**
-                     * @test
-                     * @depends my_app
-                     */
-                    public function my_app_too() {}
+                                    /**
+                                     * @test
+                                     * @depends my_app
+                                     */
+                                    public function my_app_too() {}
 
-                    /** not a test method */
-                    public function my_app_not() {}
+                                    /** not a test method */
+                                    public function my_app_not() {}
 
-                    public function my_app_not_2() {}
-                }',
+                                    public function my_app_not_2() {}
+                                }
+                EOD,
         ];
     }
 
@@ -188,47 +208,55 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     public static function provideFix80ToCamelCaseCases(): iterable
     {
         yield '@depends annotation with class name in Snake_Case' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                public function testMyApp () {}
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                public function testMyApp () {}
 
-                /**
-                 * @depends Foo_Bar_Test::testMyApp
-                 */
-                #[SimpleTest]
-                public function testMyAppToo() {}
-            }',
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                public function test_my_app () {}
+                                /**
+                                 * @depends Foo_Bar_Test::testMyApp
+                                 */
+                                #[SimpleTest]
+                                public function testMyAppToo() {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                public function test_my_app () {}
 
-                /**
-                 * @depends Foo_Bar_Test::test_my_app
-                 */
-                #[SimpleTest]
-                public function test_my_app_too() {}
-            }',
+                                /**
+                                 * @depends Foo_Bar_Test::test_my_app
+                                 */
+                                #[SimpleTest]
+                                public function test_my_app_too() {}
+                            }
+                EOD,
         ];
 
         yield '@depends annotation with class name in Snake_Case and attributes in between' => [
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                public function testMyApp () {}
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                public function testMyApp () {}
 
-                /**
-                 * @depends Foo_Bar_Test::testMyApp
-                 */
-                #[SimpleTest]
-                #[Deprecated]
-                public function testMyAppToo() {}
-            }',
-            '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
-                public function test_my_app () {}
+                                /**
+                                 * @depends Foo_Bar_Test::testMyApp
+                                 */
+                                #[SimpleTest]
+                                #[Deprecated]
+                                public function testMyAppToo() {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                                public function test_my_app () {}
 
-                /**
-                 * @depends Foo_Bar_Test::test_my_app
-                 */
-                #[SimpleTest]
-                #[Deprecated]
-                public function test_my_app_too() {}
-            }',
+                                /**
+                                 * @depends Foo_Bar_Test::test_my_app
+                                 */
+                                #[SimpleTest]
+                                #[Deprecated]
+                                public function test_my_app_too() {}
+                            }
+                EOD,
         ];
     }
 }

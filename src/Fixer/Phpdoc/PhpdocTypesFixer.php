@@ -86,22 +86,26 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
             'The correct case must be used for standard PHP types in PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @param STRING|String[] $bar
- *
- * @return inT[]
- */
-'
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param STRING|String[] $bar
+                         *
+                         * @return inT[]
+                         */
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param BOOL $foo
- *
- * @return MIXED
- */
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @param BOOL $foo
+                         *
+                         * @return MIXED
+                         */
+
+                        EOD,
                     ['groups' => ['simple', 'alias']]
                 ),
             ]

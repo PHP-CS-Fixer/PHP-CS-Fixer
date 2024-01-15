@@ -41,416 +41,472 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     public static function provideFixCases(): iterable
     {
         yield 'empty exception message' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class, \'\');
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class, '');
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessage
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessage
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting exception' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting rooted exception' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException \FooException
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException \FooException
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting exception with msg' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class, \'foo@bar\');
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class, 'foo@bar');
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessage foo@bar
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessage foo@bar
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting exception with code' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class, null, 123);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class, null, 123);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionCode 123
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionCode 123
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting exception with msg and code' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class, \'foo\', 123);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class, 'foo', 123);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessage foo
-         * @expectedExceptionCode 123
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessage foo
+                         * @expectedExceptionCode 123
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting exception with msg regex [but too low target]' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessageRegExp /foo.*$/
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessageRegExp /foo.*$/
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
             null,
             ['target' => PhpUnitTargetVersion::VERSION_3_2],
         ];
 
         yield 'expecting exception with msg regex' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedExceptionRegExp(\FooException::class, \'/foo.*$/\');
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedExceptionRegExp(\FooException::class, '/foo.*$/');
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessageRegExp /foo.*$/
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessageRegExp /foo.*$/
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
             ['target' => PhpUnitTargetVersion::VERSION_4_3],
         ];
 
         yield 'use_class_const=false' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\'FooException\');
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException('FooException');
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
             ['use_class_const' => false],
         ];
 
         yield 'keep rest of docblock' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * Summary.
-         *
-         * @param int $param
-         * @return void
-         */
-        public function testFnc($param)
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * Summary.
+                         *
+                         * @param int $param
+                         * @return void
+                         */
+                        public function testFnc($param)
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * Summary.
-         *
-         * @param int $param
-         * @expectedException FooException
-         * @return void
-         */
-        public function testFnc($param)
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * Summary.
+                         *
+                         * @param int $param
+                         * @expectedException FooException
+                         * @return void
+                         */
+                        public function testFnc($param)
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'fix method without visibility' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        function testFnc($param)
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        function testFnc($param)
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         */
-        function testFnc($param)
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         */
+                        function testFnc($param)
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'fix final method' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        final function testFnc($param)
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        final function testFnc($param)
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         */
-        final function testFnc($param)
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         */
+                        final function testFnc($param)
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'ignore when no docblock' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        final function testFoo($param)
-        {
-            aaa();
-        }
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        final function testFoo($param)
+                        {
+                            aaa();
+                        }
 
-        /**
-         */
-        final function testFnc($param)
-        {
-            $this->setExpectedException(\FooException::class);
+                        /**
+                         */
+                        final function testFnc($param)
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        final function testFoo($param)
-        {
-            aaa();
-        }
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        final function testFoo($param)
+                        {
+                            aaa();
+                        }
 
-        /**
-         * @expectedException FooException
-         */
-        final function testFnc($param)
-        {
-            aaa();
-        }
-    }',
+                        /**
+                         * @expectedException FooException
+                         */
+                        final function testFnc($param)
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'valid docblock but for property, not method' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionCode 123
-         */
-         public $foo;
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionCode 123
+                         */
+                         public $foo;
 
-         public function bar()
-         {
-             /**
-              * @expectedException FooException
-              * @expectedExceptionCode 123
-              */
-             $baz = 1;
+                         public function bar()
+                         {
+                             /**
+                              * @expectedException FooException
+                              * @expectedExceptionCode 123
+                              */
+                             $baz = 1;
 
-             /**
-              * @expectedException FooException
-              * @expectedExceptionCode 123
-              */
-             while (false) {}
-         }
-    }',
+                             /**
+                              * @expectedException FooException
+                              * @expectedExceptionCode 123
+                              */
+                             while (false) {}
+                         }
+                    }
+                EOD,
         ];
 
         yield 'respect \' and " in expected msg' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * Summary.
-         *
-         */
-        public function testFnc($param)
-        {
-            $this->setExpectedException(\FooException::class, \'Foo \\\' bar " baz\');
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * Summary.
+                         *
+                         */
+                        public function testFnc($param)
+                        {
+                            $this->setExpectedException(\FooException::class, 'Foo \' bar " baz');
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * Summary.
-         *
-         * @expectedException FooException
-         * @expectedExceptionMessage Foo \' bar " baz
-         */
-        public function testFnc($param)
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * Summary.
+                         *
+                         * @expectedException FooException
+                         * @expectedExceptionMessage Foo ' bar " baz
+                         */
+                        public function testFnc($param)
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'special \\ handling' => [
@@ -585,108 +641,124 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
         ];
 
         yield 'annotation with double @' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * Double "@" is/was below
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * Double "@" is/was below
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * Double "@" is/was below
-         * @@expectedException FooException
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * Double "@" is/was below
+                         * @@expectedException FooException
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'annotation with text before @' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * We are providing invalid input, for that we @expectedException FooException
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * We are providing invalid input, for that we @expectedException FooException
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-    abstract class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessage
-         */
-        abstract public function testFnc();
-    }',
+            <<<'EOD'
+                <?php
+                    abstract class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessage
+                         */
+                        abstract public function testFnc();
+                    }
+                EOD,
         ];
 
         yield 'expecting exception in single line comment' => [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /** */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /** */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /** @expectedException FooException */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /** @expectedException FooException */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield 'expecting exception with message below' => [
-            '<?php
-    class MyTest extends TestCase
-    {
-        /**
-         */
-        public function testSomething()
-        {
-            $this->setExpectedException(\Foo\Bar::class);
+            <<<'EOD'
+                <?php
+                    class MyTest extends TestCase
+                    {
+                        /**
+                         */
+                        public function testSomething()
+                        {
+                            $this->setExpectedException(\Foo\Bar::class);
 
-            $this->initialize();
-        }
-    }',
-            '<?php
-    class MyTest extends TestCase
-    {
-        /**
-         * @expectedException Foo\Bar
-         *
-         * Testing stuff.
-         */
-        public function testSomething()
-        {
-            $this->initialize();
-        }
-    }',
+                            $this->initialize();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    class MyTest extends TestCase
+                    {
+                        /**
+                         * @expectedException Foo\Bar
+                         *
+                         * Testing stuff.
+                         */
+                        public function testSomething()
+                        {
+                            $this->initialize();
+                        }
+                    }
+                EOD,
         ];
     }
 
@@ -708,59 +780,67 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         */
-        public function testFnc()
-        {
-            $this->setExpectedException(\FooException::class, \'foo\', 123);
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         */
+                        public function testFnc()
+                        {
+                            $this->setExpectedException(\FooException::class, 'foo', 123);
 
-            aaa();
-        }
-    }',
-            '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        /**
-         * @expectedException FooException
-         * @expectedExceptionMessage foo
-         * @expectedExceptionCode 123
-         */
-        public function testFnc()
-        {
-            aaa();
-        }
-    }',
+                            aaa();
+                        }
+                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException FooException
+                         * @expectedExceptionMessage foo
+                         * @expectedExceptionCode 123
+                         */
+                        public function testFnc()
+                        {
+                            aaa();
+                        }
+                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-/**
-*/
-public function testFnc()
-{
-    $this->setExpectedException(\FooException::class, \'foo\', 123);
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                /**
+                */
+                public function testFnc()
+                {
+                    $this->setExpectedException(\FooException::class, 'foo', 123);
 
-aaa();
-}
-}',
-            '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-/**
-* @expectedException FooException
-* @expectedExceptionMessage foo
-* @expectedExceptionCode 123
-*/
-public function testFnc()
-{
-aaa();
-}
-}',
+                aaa();
+                }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                final class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                /**
+                * @expectedException FooException
+                * @expectedExceptionMessage foo
+                * @expectedExceptionCode 123
+                */
+                public function testFnc()
+                {
+                aaa();
+                }
+                }
+                EOD,
         ];
     }
 }

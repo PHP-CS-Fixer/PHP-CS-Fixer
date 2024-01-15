@@ -39,105 +39,113 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-/**
- * @api
- * @author
- * @copyright
- * @deprecated
- * @example
- * @global
- * @inheritDoc
- * @internal
- * @license
- * @method
- * @package
- * @param
- * @property
- * @return
- * @see
- * @since
- * @throws
- * @todo
- * @uses
- * @var
- * @version
- */',
-            '<?php
-/**
- * {@api}
- * {@author}
- * {@copyright}
- * {@deprecated}
- * {@example}
- * {@global}
- * {@inheritDoc}
- * {@internal}
- * {@license}
- * {@method}
- * {@package}
- * {@param}
- * {@property}
- * {@return}
- * {@see}
- * {@since}
- * {@throws}
- * {@todo}
- * {@uses}
- * {@var}
- * {@version}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @api
+                 * @author
+                 * @copyright
+                 * @deprecated
+                 * @example
+                 * @global
+                 * @inheritDoc
+                 * @internal
+                 * @license
+                 * @method
+                 * @package
+                 * @param
+                 * @property
+                 * @return
+                 * @see
+                 * @since
+                 * @throws
+                 * @todo
+                 * @uses
+                 * @var
+                 * @version
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * {@api}
+                 * {@author}
+                 * {@copyright}
+                 * {@deprecated}
+                 * {@example}
+                 * {@global}
+                 * {@inheritDoc}
+                 * {@internal}
+                 * {@license}
+                 * {@method}
+                 * {@package}
+                 * {@param}
+                 * {@property}
+                 * {@return}
+                 * {@see}
+                 * {@since}
+                 * {@throws}
+                 * {@todo}
+                 * {@uses}
+                 * {@var}
+                 * {@version}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @api
- * @author
- * @copyright
- * @deprecated
- * @example
- * @global
- * @inheritDoc
- * @internal
- * @license
- * @method
- * @package
- * @param
- * @property
- * @return
- * @see
- * @since
- * @throws
- * @todo
- * @uses
- * @var
- * @version
- */',
-            '<?php
-/**
- * {@api}
- * {@author}
- * {@copyright}
- * {@deprecated}
- * {@example}
- * {@global}
- * {@inheritDoc}
- * {@internal}
- * {@license}
- * {@method}
- * {@package}
- * {@param}
- * {@property}
- * {@return}
- * {@see}
- * {@since}
- * {@throws}
- * {@todo}
- * {@uses}
- * {@var}
- * {@version}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @api
+                 * @author
+                 * @copyright
+                 * @deprecated
+                 * @example
+                 * @global
+                 * @inheritDoc
+                 * @internal
+                 * @license
+                 * @method
+                 * @package
+                 * @param
+                 * @property
+                 * @return
+                 * @see
+                 * @since
+                 * @throws
+                 * @todo
+                 * @uses
+                 * @var
+                 * @version
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * {@api}
+                 * {@author}
+                 * {@copyright}
+                 * {@deprecated}
+                 * {@example}
+                 * {@global}
+                 * {@inheritDoc}
+                 * {@internal}
+                 * {@license}
+                 * {@method}
+                 * {@package}
+                 * {@param}
+                 * {@property}
+                 * {@return}
+                 * {@see}
+                 * {@since}
+                 * {@throws}
+                 * {@todo}
+                 * {@uses}
+                 * {@var}
+                 * {@version}
+                 */
+                EOD,
             ['tags' => [
                 'api' => 'annotation',
                 'author' => 'annotation',
@@ -164,54 +172,58 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-/**
- * {@api}
- * {@author}
- * {@copyright}
- * {@deprecated}
- * {@example}
- * {@global}
- * {@inheritDoc}
- * {@internal}
- * {@license}
- * {@method}
- * {@package}
- * {@param}
- * {@property}
- * {@return}
- * {@see}
- * {@since}
- * {@throws}
- * {@todo}
- * {@uses}
- * {@var}
- * {@version}
- */',
-            '<?php
-/**
- * @api
- * @author
- * @copyright
- * @deprecated
- * @example
- * @global
- * @inheritDoc
- * @internal
- * @license
- * @method
- * @package
- * @param
- * @property
- * @return
- * @see
- * @since
- * @throws
- * @todo
- * @uses
- * @var
- * @version
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * {@api}
+                 * {@author}
+                 * {@copyright}
+                 * {@deprecated}
+                 * {@example}
+                 * {@global}
+                 * {@inheritDoc}
+                 * {@internal}
+                 * {@license}
+                 * {@method}
+                 * {@package}
+                 * {@param}
+                 * {@property}
+                 * {@return}
+                 * {@see}
+                 * {@since}
+                 * {@throws}
+                 * {@todo}
+                 * {@uses}
+                 * {@var}
+                 * {@version}
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @api
+                 * @author
+                 * @copyright
+                 * @deprecated
+                 * @example
+                 * @global
+                 * @inheritDoc
+                 * @internal
+                 * @license
+                 * @method
+                 * @package
+                 * @param
+                 * @property
+                 * @return
+                 * @see
+                 * @since
+                 * @throws
+                 * @todo
+                 * @uses
+                 * @var
+                 * @version
+                 */
+                EOD,
             ['tags' => [
                 'api' => 'inline',
                 'author' => 'inline',
@@ -238,168 +250,222 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-/** @api */',
-            '<?php
-/** {@api} */',
+            <<<'EOD'
+                <?php
+                /** @api */
+                EOD,
+            <<<'EOD'
+                <?php
+                /** {@api} */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @deprecated since version X
- */',
-            '<?php
-/**
- * {@deprecated since version X}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @deprecated since version X
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * {@deprecated since version X}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * {@deprecated since version X}
- */',
-            '<?php
-/**
- * @deprecated since version X
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * {@deprecated since version X}
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @deprecated since version X
+                 */
+                EOD,
             ['tags' => ['deprecated' => 'inline']],
         ];
 
         yield [
-            '<?php
-/** {@deprecated since version X} */',
-            '<?php
-/** @deprecated since version X */',
+            <<<'EOD'
+                <?php
+                /** {@deprecated since version X} */
+                EOD,
+            <<<'EOD'
+                <?php
+                /** @deprecated since version X */
+                EOD,
             ['tags' => ['deprecated' => 'inline']],
         ];
 
         yield [
-            '<?php
-/**
- * @inheritDoc
- */',
-            '<?php
-/**
- * {@inheritDoc}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @inheritDoc
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * {@inheritDoc}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @inheritdoc
- */',
-            '<?php
-/**
- * {@inheritdoc}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @inheritdoc
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * {@inheritdoc}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * {@inheritdoc}
- */',
-            '<?php
-/**
- * @inheritdoc
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * {@inheritdoc}
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @inheritdoc
+                 */
+                EOD,
             ['tags' => ['inheritDoc' => 'inline']],
         ];
 
         yield [
-            '<?php
-/**
- * Some summary.
- *
- * {@inheritdoc}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * Some summary.
+                 *
+                 * {@inheritdoc}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * Some summary.
- *
- * Some description.
- *
- * {@inheritdoc}
- *
- * More description.
- *
- * @param Foo $foo
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * Some summary.
+                 *
+                 * Some description.
+                 *
+                 * {@inheritdoc}
+                 *
+                 * More description.
+                 *
+                 * @param Foo $foo
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * {@inheritdoc}
- *
- * More description.
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * {@inheritdoc}
+                 *
+                 * More description.
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- *
- * @inheritdoc
- *
- */',
-            '<?php
-/**
- *
- * {@inheritdoc}
- *
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 *
+                 * @inheritdoc
+                 *
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 *
+                 * {@inheritdoc}
+                 *
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @return array{0: float, 1: int}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @return array{0: float, 1: int}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @internal Please use {@see Foo} instead */',
-            '<?php
-/** {@internal Please use {@see Foo} instead} */',
+            <<<'EOD'
+                <?php
+                /** @internal Please use {@see Foo} instead */
+                EOD,
+            <<<'EOD'
+                <?php
+                /** {@internal Please use {@see Foo} instead} */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * @internal Please use {@see Foo} instead
- */',
-            '<?php
-/**
- * {@internal Please use {@see Foo} instead}
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * @internal Please use {@see Foo} instead
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * {@internal Please use {@see Foo} instead}
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- *
- * @internal Please use {@see Foo} instead
- *
- */',
-            '<?php
-/**
- *
- * {@internal Please use {@see Foo} instead}
- *
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 *
+                 * @internal Please use {@see Foo} instead
+                 *
+                 */
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 *
+                 * {@internal Please use {@see Foo} instead}
+                 *
+                 */
+                EOD,
         ];
 
         yield [
-            '<?php
-/** @internal Foo Bar {@see JsonSerializable} */',
+            <<<'EOD'
+                <?php
+                /** @internal Foo Bar {@see JsonSerializable} */
+                EOD,
         ];
     }
 

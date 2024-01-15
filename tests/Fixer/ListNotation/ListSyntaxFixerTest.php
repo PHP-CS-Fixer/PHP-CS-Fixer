@@ -58,33 +58,39 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         // the reverse of this is different because of all the comments and white space,
         // therefore we override with a similar case here
         yield 'comment case' => [
-            '<?php
-#
-list(#
-$a#
-)#
-=#
-$a#
-;#',
-            '<?php
-#
-[#
-$a#
-]#
-=#
-$a#
-;#',
+            <<<'EOD'
+                <?php
+                #
+                list(#
+                $a#
+                )#
+                =#
+                $a#
+                ;#
+                EOD,
+            <<<'EOD'
+                <?php
+                #
+                [#
+                $a#
+                ]#
+                =#
+                $a#
+                ;#
+                EOD,
         ];
 
-        yield ['<?php
+        yield [<<<'EOD'
+            <?php
 
-class Test
-{
-    public function updateAttributeKey($key, $value)
-    {
-        $this->{camel_case($attributes)}[$key] = $value;
-    }
-}',
+            class Test
+            {
+                public function updateAttributeKey($key, $value)
+                {
+                    $this->{camel_case($attributes)}[$key] = $value;
+                }
+            }
+            EOD,
         ];
 
         yield ['<?php [$b[$a]] = $foo();'];
@@ -122,45 +128,53 @@ class Test
         ];
 
         yield [
-            '<?php
-#
-[//
-    $x] =/**/$a?>',
-            '<?php
-#
-list(//
-    $x) =/**/$a?>',
+            <<<'EOD'
+                <?php
+                #
+                [//
+                    $x] =/**/$a?>
+                EOD,
+            <<<'EOD'
+                <?php
+                #
+                list(//
+                    $x) =/**/$a?>
+                EOD,
         ];
 
         yield 'messy comments case' => [
-            '<?php
-#a
-#g
-[#h
-#f
-$a#
-#e
-]#
-#
-=#c
-#
-$a;#
-#
-',
-            '<?php
-#a
-list#g
-(#h
-#f
-$a#
-#e
-)#
-#
-=#c
-#
-$a;#
-#
-',
+            <<<'EOD'
+                <?php
+                #a
+                #g
+                [#h
+                #f
+                $a#
+                #e
+                ]#
+                #
+                =#c
+                #
+                $a;#
+                #
+
+                EOD,
+            <<<'EOD'
+                <?php
+                #a
+                list#g
+                (#h
+                #f
+                $a#
+                #e
+                )#
+                #
+                =#c
+                #
+                $a;#
+                #
+
+                EOD,
         ];
 
         yield [

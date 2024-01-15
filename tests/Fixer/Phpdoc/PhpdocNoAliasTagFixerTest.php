@@ -102,21 +102,27 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public static function providePropertyFixCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     *
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     *
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @property string $foo
-     */',
-            '<?php
-    /**
-     * @property-read string $foo
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @property string $foo
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @property-read string $foo
+                     */
+                EOD,
         ];
 
         yield [
@@ -140,21 +146,27 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public static function provideTypeToVarFixCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     *
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     *
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @var string Hello!
-     */',
-            '<?php
-    /**
-     * @type string Hello!
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @var string Hello!
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @type string Hello!
+                     */
+                EOD,
         ];
 
         yield [
@@ -163,24 +175,28 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * Initializes this class with the given options.
-     *
-     * @param array $options {
-     *     @var bool   $required Whether this element is required
-     *     @var string $label    The display name for this element
-     * }
-     */',
-            '<?php
-    /**
-     * Initializes this class with the given options.
-     *
-     * @param array $options {
-     *     @type bool   $required Whether this element is required
-     *     @type string $label    The display name for this element
-     * }
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Initializes this class with the given options.
+                     *
+                     * @param array $options {
+                     *     @var bool   $required Whether this element is required
+                     *     @var string $label    The display name for this element
+                     * }
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * Initializes this class with the given options.
+                     *
+                     * @param array $options {
+                     *     @type bool   $required Whether this element is required
+                     *     @type string $label    The display name for this element
+                     * }
+                     */
+                EOD,
         ];
     }
 
@@ -199,21 +215,27 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public static function provideVarToTypeFixCases(): iterable
     {
         yield [
-            '<?php
-    /**
-     *
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     *
+                     */
+                EOD,
         ];
 
         yield [
-            '<?php
-    /**
-     * @type string Hello!
-     */',
-            '<?php
-    /**
-     * @var string Hello!
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @type string Hello!
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @var string Hello!
+                     */
+                EOD,
         ];
 
         yield [
@@ -222,24 +244,28 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-    /**
-     * Initializes this class with the given options.
-     *
-     * @param array $options {
-     *     @type bool   $required Whether this element is required
-     *     @type string $label    The display name for this element
-     * }
-     */',
-            '<?php
-    /**
-     * Initializes this class with the given options.
-     *
-     * @param array $options {
-     *     @var bool   $required Whether this element is required
-     *     @var string $label    The display name for this element
-     * }
-     */',
+            <<<'EOD'
+                <?php
+                    /**
+                     * Initializes this class with the given options.
+                     *
+                     * @param array $options {
+                     *     @type bool   $required Whether this element is required
+                     *     @type string $label    The display name for this element
+                     * }
+                     */
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * Initializes this class with the given options.
+                     *
+                     * @param array $options {
+                     *     @var bool   $required Whether this element is required
+                     *     @var string $label    The display name for this element
+                     * }
+                     */
+                EOD,
         ];
     }
 

@@ -75,22 +75,28 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
     public static function provideCommentsCases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-$withComments[0] // here is a comment
-    [1] // and here is another
-    [2] = 3;',
+                $withComments[0] // here is a comment
+                    [1] // and here is another
+                    [2] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = $b[# z
- 1#z
- ];',
-            '<?php
-$a = $b[ # z
- 1#z
- ];',
+            <<<'EOD'
+                <?php
+                $a = $b[# z
+                 1#z
+                 ];
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = $b[ # z
+                 1#z
+                 ];
+                EOD,
         ];
     }
 
@@ -117,167 +123,251 @@ $a = $b[ # z
     public static function provideFixSpaceOutsideOffsetCases(): iterable
     {
         yield [
-            '<?php
-$a = $b[0]    ;',
-            '<?php
-$a = $b   [0]    ;',
+            <<<'EOD'
+                <?php
+                $a = $b[0]    ;
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = $b   [0]    ;
+                EOD,
         ];
 
         yield [
-            '<?php
-$a = array($b[0]     ,   $b[0]  );',
-            '<?php
-$a = array($b      [0]     ,   $b [0]  );',
+            <<<'EOD'
+                <?php
+                $a = array($b[0]     ,   $b[0]  );
+                EOD,
+            <<<'EOD'
+                <?php
+                $a = array($b      [0]     ,   $b [0]  );
+                EOD,
         ];
 
         yield [
-            '<?php
-$withComments[0] // here is a comment
-    [1] // and here is another
-    [2][3] = 4;',
-            '<?php
-$withComments [0] // here is a comment
-    [1] // and here is another
-    [2] [3] = 4;',
+            <<<'EOD'
+                <?php
+                $withComments[0] // here is a comment
+                    [1] // and here is another
+                    [2][3] = 4;
+                EOD,
+            <<<'EOD'
+                <?php
+                $withComments [0] // here is a comment
+                    [1] // and here is another
+                    [2] [3] = 4;
+                EOD,
         ];
 
         yield [
-            '<?php
-$c = SOME_CONST[0][1][2];',
-            '<?php
-$c = SOME_CONST [0] [1]   [2];',
+            <<<'EOD'
+                <?php
+                $c = SOME_CONST[0][1][2];
+                EOD,
+            <<<'EOD'
+                <?php
+                $c = SOME_CONST [0] [1]   [2];
+                EOD,
         ];
 
         yield [
-            '<?php
-$f = someFunc()[0][1][2];',
-            '<?php
-$f = someFunc() [0] [1]   [2];',
+            <<<'EOD'
+                <?php
+                $f = someFunc()[0][1][2];
+                EOD,
+            <<<'EOD'
+                <?php
+                $f = someFunc() [0] [1]   [2];
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo[][0][1][2] = 3;',
-            '<?php
-$foo [] [0] [1]   [2] = 3;',
+            <<<'EOD'
+                <?php
+                $foo[][0][1][2] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo [] [0] [1]   [2] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo[0][1][2] = 3;',
-            '<?php
-$foo [0] [1]   [2] = 3;',
+            <<<'EOD'
+                <?php
+                $foo[0][1][2] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo [0] [1]   [2] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$bar = $foo[0][1][2];',
-            '<?php
-$bar = $foo [0] [1]   [2];',
+            <<<'EOD'
+                <?php
+                $bar = $foo[0][1][2];
+                EOD,
+            <<<'EOD'
+                <?php
+                $bar = $foo [0] [1]   [2];
+                EOD,
         ];
 
         yield [
-            '<?php
-$baz[0][1][2] = 3;',
-            '<?php
-$baz [0]
-     [1]
-     [2] = 3;',
+            <<<'EOD'
+                <?php
+                $baz[0][1][2] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $baz [0]
+                     [1]
+                     [2] = 3;
+                EOD,
         ];
     }
 
     public static function provideFixSpaceInsideOffsetCases(): iterable
     {
         yield [
-            '<?php
-$foo = array(1, 2, 3);
-$var = $foo[1];',
-            '<?php
-$foo = array(1, 2, 3);
-$var = $foo[ 1 ];',
+            <<<'EOD'
+                <?php
+                $foo = array(1, 2, 3);
+                $var = $foo[1];
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo = array(1, 2, 3);
+                $var = $foo[ 1 ];
+                EOD,
         ];
 
         yield [
-            '<?php
-$arr = [2,   2 , ];
-$var = $arr[0];',
-            '<?php
-$arr = [2,   2 , ];
-$var = $arr[ 0 ];',
+            <<<'EOD'
+                <?php
+                $arr = [2,   2 , ];
+                $var = $arr[0];
+                EOD,
+            <<<'EOD'
+                <?php
+                $arr = [2,   2 , ];
+                $var = $arr[ 0 ];
+                EOD,
         ];
 
         yield [
-            '<?php
-$arr[2] = 3;',
-            '<?php
-$arr[ 2    ] = 3;',
+            <<<'EOD'
+                <?php
+                $arr[2] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $arr[ 2    ] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$arr[] = 3;',
-            '<?php
-$arr[  ] = 3;',
+            <<<'EOD'
+                <?php
+                $arr[] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $arr[  ] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$arr[]["some_offset"][] = 3;',
-            '<?php
-$arr[  ][ "some_offset"   ][     ] = 3;',
+            <<<'EOD'
+                <?php
+                $arr[]["some_offset"][] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $arr[  ][ "some_offset"   ][     ] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$arr[]["some  offset with  spaces"][] = 3;',
-            '<?php
-$arr[  ][ "some  offset with  spaces"   ][     ] = 3;',
+            <<<'EOD'
+                <?php
+                $arr[]["some  offset with  spaces"][] = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $arr[  ][ "some  offset with  spaces"   ][     ] = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[0];',
-            '<?php
-$var = $arr[     0   ];',
+            <<<'EOD'
+                <?php
+                $var = $arr[0];
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[     0   ];
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[0][0];',
-            '<?php
-$var = $arr[    0        ][ 0  ];',
+            <<<'EOD'
+                <?php
+                $var = $arr[0][0];
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[    0        ][ 0  ];
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[$a[$b]];',
-            '<?php
-$var = $arr[    $a    [ $b    ]  ];',
+            <<<'EOD'
+                <?php
+                $var = $arr[$a[$b]];
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[    $a    [ $b    ]  ];
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[$a[$b]];',
-            '<?php
-$var = $arr[	$a	[	$b	]	];',
+            <<<'EOD'
+                <?php
+                $var = $arr[$a[$b]];
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[	$a	[	$b	]	];
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[0][
-     0];',
-            '<?php
-$var = $arr[0][
-     0 ];',
+            <<<'EOD'
+                <?php
+                $var = $arr[0][
+                     0];
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[0][
+                     0 ];
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[0][0
-         ];',
-            '<?php
-$var = $arr[0][     0
-         ];',
+            <<<'EOD'
+                <?php
+                $var = $arr[0][0
+                         ];
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[0][     0
+                         ];
+                EOD,
         ];
     }
 
@@ -298,20 +388,24 @@ $var = $arr[0][     0
     public static function provideFixWithConfigurationCases(): iterable
     {
         yield 'Config "default".' => [
-            '<?php [ $a ] = $a;
-if ($controllerName = $request->attributes->get(1)) {
-    return false;
-}
-[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
-$a = $b[0];
-',
-            '<?php [ $a ] = $a;
-if ($controllerName = $request->attributes->get(1)) {
-    return false;
-}
-[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
-$a = $b   [0];
-',
+            <<<'EOD'
+                <?php [ $a ] = $a;
+                if ($controllerName = $request->attributes->get(1)) {
+                    return false;
+                }
+                [  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+                $a = $b[0];
+
+                EOD,
+            <<<'EOD'
+                <?php [ $a ] = $a;
+                if ($controllerName = $request->attributes->get(1)) {
+                    return false;
+                }
+                [  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+                $a = $b   [0];
+
+                EOD,
             ['positions' => ['inside', 'outside']],
         ];
     }
@@ -332,26 +426,38 @@ $a = $b   [0];
     public static function provideFixPre80Cases(): iterable
     {
         yield [
-            '<?php
-$foo{0}{1}{2} = 3;',
-            '<?php
-$foo {0} {1}   {2} = 3;',
+            <<<'EOD'
+                <?php
+                $foo{0}{1}{2} = 3;
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo {0} {1}   {2} = 3;
+                EOD,
         ];
 
         yield [
-            '<?php
-$foobar = $foo{0}[1]{2};',
-            '<?php
-$foobar = $foo {0} [1]   {2};',
+            <<<'EOD'
+                <?php
+                $foobar = $foo{0}[1]{2};
+                EOD,
+            <<<'EOD'
+                <?php
+                $foobar = $foo {0} [1]   {2};
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = $arr[0]{0
-         };',
-            '<?php
-$var = $arr[0]{     0
-         };',
+            <<<'EOD'
+                <?php
+                $var = $arr[0]{0
+                         };
+                EOD,
+            <<<'EOD'
+                <?php
+                $var = $arr[0]{     0
+                         };
+                EOD,
         ];
 
         yield from self::provideMultiDimensionalArrayCases();

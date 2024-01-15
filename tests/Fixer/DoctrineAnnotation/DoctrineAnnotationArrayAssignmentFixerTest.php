@@ -45,67 +45,91 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     public static function provideFixCases(): iterable
     {
         yield from self::createTestCases([
-            ['
-/**
- * @Foo
- */'],
-            ['
-/**
- * @Foo()
- */'],
-            ['
-/**
- * @Foo(bar="baz")
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(bar="baz")
+                 */
+                EOD],
             [
-                '
-/**
- * @Foo(bar="baz")
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo(bar="baz")
+                     */
+                    EOD,
             ],
             [
-                '
-/**
- * @Foo({bar="baz"})
- */',
-                '
-/**
- * @Foo({bar:"baz"})
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar="baz"})
+                     */
+                    EOD,
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar:"baz"})
+                     */
+                    EOD,
             ],
             [
-                '
-/**
- * @Foo({bar="baz"})
- */',
-                '
-/**
- * @Foo({bar:"baz"})
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar="baz"})
+                     */
+                    EOD,
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar:"baz"})
+                     */
+                    EOD,
             ],
             [
-                '
-/**
- * @Foo({bar = "baz"})
- */',
-                '
-/**
- * @Foo({bar : "baz"})
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar = "baz"})
+                     */
+                    EOD,
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar : "baz"})
+                     */
+                    EOD,
             ],
-            ['
-/**
- * See {@link https://help Help} or {@see BarClass} for details.
- */'],
+            [<<<'EOD'
+
+                /**
+                 * See {@link https://help Help} or {@see BarClass} for details.
+                 */
+                EOD],
         ]);
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
-* @see \User getId()
-*/
-',
+                /**
+                * @see \User getId()
+                */
+
+                EOD,
         ];
     }
 
@@ -121,58 +145,80 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     public static function provideFixWithColonCases(): iterable
     {
         yield from self::createTestCases([
-            ['
-/**
- * @Foo
- */'],
-            ['
-/**
- * @Foo()
- */'],
-            ['
-/**
- * @Foo(bar:"baz")
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(bar:"baz")
+                 */
+                EOD],
             [
-                '
-/**
- * @Foo(bar:"baz")
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo(bar:"baz")
+                     */
+                    EOD,
             ],
             [
-                '
-/**
- * @Foo({bar:"baz"})
- */',
-                '
-/**
- * @Foo({bar="baz"})
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar:"baz"})
+                     */
+                    EOD,
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar="baz"})
+                     */
+                    EOD,
             ],
             [
-                '
-/**
- * @Foo({bar : "baz"})
- */',
-                '
-/**
- * @Foo({bar = "baz"})
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar : "baz"})
+                     */
+                    EOD,
+                <<<'EOD'
+
+                    /**
+                     * @Foo({bar = "baz"})
+                     */
+                    EOD,
             ],
             [
-                '
-/**
- * @Foo(foo="bar", {bar:"baz"})
- */',
-                '
-/**
- * @Foo(foo="bar", {bar="baz"})
- */',
+                <<<'EOD'
+
+                    /**
+                     * @Foo(foo="bar", {bar:"baz"})
+                     */
+                    EOD,
+                <<<'EOD'
+
+                    /**
+                     * @Foo(foo="bar", {bar="baz"})
+                     */
+                    EOD,
             ],
-            ['
-/**
- * See {@link https://help Help} or {@see BarClass} for details.
- */'],
+            [<<<'EOD'
+
+                /**
+                 * See {@link https://help Help} or {@see BarClass} for details.
+                 */
+                EOD],
         ]);
     }
 
@@ -189,48 +235,60 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php class FooClass{
-    /**
-     * @Foo({bar = "baz"})
-     */
-    private readonly Foo $foo;
-}',
-            '<?php class FooClass{
-    /**
-     * @Foo({bar : "baz"})
-     */
-    private readonly Foo $foo;
-}',
+            <<<'EOD'
+                <?php class FooClass{
+                    /**
+                     * @Foo({bar = "baz"})
+                     */
+                    private readonly Foo $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class FooClass{
+                    /**
+                     * @Foo({bar : "baz"})
+                     */
+                    private readonly Foo $foo;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php class FooClass{
-    /**
-     * @Foo({bar = "baz"})
-     */
-    readonly private Foo $foo;
-}',
-            '<?php class FooClass{
-    /**
-     * @Foo({bar : "baz"})
-     */
-    readonly private Foo $foo;
-}',
+            <<<'EOD'
+                <?php class FooClass{
+                    /**
+                     * @Foo({bar = "baz"})
+                     */
+                    readonly private Foo $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class FooClass{
+                    /**
+                     * @Foo({bar : "baz"})
+                     */
+                    readonly private Foo $foo;
+                }
+                EOD,
         ];
 
         yield [
-            '<?php class FooClass{
-    /**
-     * @Foo({bar = "baz"})
-     */
-    readonly Foo $foo;
-}',
-            '<?php class FooClass{
-    /**
-     * @Foo({bar : "baz"})
-     */
-    readonly Foo $foo;
-}',
+            <<<'EOD'
+                <?php class FooClass{
+                    /**
+                     * @Foo({bar = "baz"})
+                     */
+                    readonly Foo $foo;
+                }
+                EOD,
+            <<<'EOD'
+                <?php class FooClass{
+                    /**
+                     * @Foo({bar : "baz"})
+                     */
+                    readonly Foo $foo;
+                }
+                EOD,
         ];
     }
 }

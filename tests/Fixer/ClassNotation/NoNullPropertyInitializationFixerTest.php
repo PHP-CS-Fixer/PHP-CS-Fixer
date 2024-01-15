@@ -119,36 +119,40 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class#1
-Foo#2
-{#3
-protected#4
-$bar#5
-#6
-,#7
-$baz#8
-#9
-,#10
-$qux#11
-#12
-;#13
-}
-',
-            '<?php class#1
-Foo#2
-{#3
-protected#4
-$bar#5
-=#6
-null,#7
-$baz#8
-=#9
-null,#10
-$qux#11
-=#12
-null;#13
-}
-',
+            <<<'EOD'
+                <?php class#1
+                Foo#2
+                {#3
+                protected#4
+                $bar#5
+                #6
+                ,#7
+                $baz#8
+                #9
+                ,#10
+                $qux#11
+                #12
+                ;#13
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php class#1
+                Foo#2
+                {#3
+                protected#4
+                $bar#5
+                =#6
+                null,#7
+                $baz#8
+                =#9
+                null,#10
+                $qux#11
+                =#12
+                null;#13
+                }
+
+                EOD,
         ];
 
         yield [
@@ -235,38 +239,42 @@ null;#13
         ];
 
         yield [
-            '<?php class#1
-Foo#2
-{#3
-protected#4
-static#4.5
-$bar#5
-#6
-,#7
-$baz#8
-#9
-,#10
-$qux#11
-#12
-;#13
-}
-',
-            '<?php class#1
-Foo#2
-{#3
-protected#4
-static#4.5
-$bar#5
-=#6
-null,#7
-$baz#8
-=#9
-null,#10
-$qux#11
-=#12
-null;#13
-}
-',
+            <<<'EOD'
+                <?php class#1
+                Foo#2
+                {#3
+                protected#4
+                static#4.5
+                $bar#5
+                #6
+                ,#7
+                $baz#8
+                #9
+                ,#10
+                $qux#11
+                #12
+                ;#13
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php class#1
+                Foo#2
+                {#3
+                protected#4
+                static#4.5
+                $bar#5
+                =#6
+                null,#7
+                $baz#8
+                =#9
+                null,#10
+                $qux#11
+                =#12
+                null;#13
+                }
+
+                EOD,
         ];
 
         yield [
@@ -386,15 +394,17 @@ null;#13
      */
     public function testFix80(): void
     {
-        $this->doTest('<?php
-class Point {
-    public function __construct(
-        public ?float $x = null,
-        protected ?float $y = null,
-        private ?float $z = null,
-    ) {}
-}
-');
+        $this->doTest(<<<'EOD'
+            <?php
+            class Point {
+                public function __construct(
+                    public ?float $x = null,
+                    protected ?float $y = null,
+                    private ?float $z = null,
+                ) {}
+            }
+
+            EOD);
     }
 
     /**
@@ -410,11 +420,13 @@ class Point {
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly - cannot have default value, fixer should not crash' => [
-            '<?php
-final class Foo
-{
-    public readonly string $prop;
-}',
+            <<<'EOD'
+                <?php
+                final class Foo
+                {
+                    public readonly string $prop;
+                }
+                EOD,
         ];
     }
 }

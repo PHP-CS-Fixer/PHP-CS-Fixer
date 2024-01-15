@@ -314,11 +314,13 @@ final class FixerFactoryTest extends TestCase
         $method = new \ReflectionMethod($factory, 'generateConflictMessage');
         $method->setAccessible(true);
         self::assertSame(
-            'Rule contains conflicting fixers:
-- "a" with "b"
-- "c" with "d", "e" and "f"
-- "d" with "g" and "h"
-- "e" with "a"',
+            <<<'EOD'
+                Rule contains conflicting fixers:
+                - "a" with "b"
+                - "c" with "d", "e" and "f"
+                - "d" with "g" and "h"
+                - "e" with "a"
+                EOD,
             $method->invoke(
                 $factory,
                 [

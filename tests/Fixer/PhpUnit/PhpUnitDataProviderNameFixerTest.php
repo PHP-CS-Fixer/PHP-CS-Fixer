@@ -40,275 +40,315 @@ final class PhpUnitDataProviderNameFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'data provider named with different casing' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    public function provideFooCases() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    public function PROVIDEFOOCASES() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    public function testFoo() {}
+                    public function provideFooCases() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    public function testFoo() {}
+                    public function PROVIDEFOOCASES() {}
+                }
+                EOD,
         ];
 
         yield 'fixing simple scenario with test class prefixed' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    public function provideFooCases() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider fooDataProvider
-     */
-    public function testFoo() {}
-    public function fooDataProvider() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    public function testFoo() {}
+                    public function provideFooCases() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider fooDataProvider
+                     */
+                    public function testFoo() {}
+                    public function fooDataProvider() {}
+                }
+                EOD,
         ];
 
         yield 'fixing simple scenario with test class annotated' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @test
-     * @dataProvider provideFooCases
-     */
-    public function foo() {}
-    public function provideFooCases() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @test
-     * @dataProvider fooDataProvider
-     */
-    public function foo() {}
-    public function fooDataProvider() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @test
+                     * @dataProvider provideFooCases
+                     */
+                    public function foo() {}
+                    public function provideFooCases() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @test
+                     * @dataProvider fooDataProvider
+                     */
+                    public function foo() {}
+                    public function fooDataProvider() {}
+                }
+                EOD,
         ];
 
         yield 'data provider not found' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider notExistingFunction
-     */
-    public function testFoo() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider notExistingFunction
+                     */
+                    public function testFoo() {}
+                }
+                EOD,
         ];
 
         yield 'data provider used multiple times' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider reusedDataProvider
-     */
-    public function testFoo() {}
-    /**
-     * @dataProvider reusedDataProvider
-     */
-    public function testBar() {}
-    public function reusedDataProvider() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider reusedDataProvider
+                     */
+                    public function testFoo() {}
+                    /**
+                     * @dataProvider reusedDataProvider
+                     */
+                    public function testBar() {}
+                    public function reusedDataProvider() {}
+                }
+                EOD,
         ];
 
         yield 'data provider call without function' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider fooDataProvider
-     */
-    private $prop;
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider fooDataProvider
+                     */
+                    private $prop;
+                }
+                EOD,
         ];
 
         yield 'data provider target name already used' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testFoo() {}
-    public function dataProvider() {}
-    public function provideFooCases() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider dataProvider
+                     */
+                    public function testFoo() {}
+                    public function dataProvider() {}
+                    public function provideFooCases() {}
+                }
+                EOD,
         ];
 
         yield 'data provider defined for anonymous function' => [
-            '<?php
-class FooTest extends TestCase {
-    public function testFoo()
-    {
-        /**
-         * @dataProvider notDataProvider
-         */
-        function () { return true; };
-    }
-    public function notDataProvider() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    public function testFoo()
+                    {
+                        /**
+                         * @dataProvider notDataProvider
+                         */
+                        function () { return true; };
+                    }
+                    public function notDataProvider() {}
+                }
+                EOD,
         ];
 
         yield 'multiple data providers for one test function' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider foo1DataProvider
-     * @dataProvider foo2DataProvider
-     */
-    public function testFoo() {}
-    public function foo1DataProvider() {}
-    public function foo2DataProvider() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider foo1DataProvider
+                     * @dataProvider foo2DataProvider
+                     */
+                    public function testFoo() {}
+                    public function foo1DataProvider() {}
+                    public function foo2DataProvider() {}
+                }
+                EOD,
         ];
 
         yield 'data provider with new name being part of FQCN used in the code' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {
-        $x = Foo\ProvideFooCases::X_DEFAULT;
-    }
-    public function provideFooCases() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider foo
-     */
-    public function testFoo() {
-        $x = Foo\ProvideFooCases::X_DEFAULT;
-    }
-    public function foo() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    public function testFoo() {
+                        $x = Foo\ProvideFooCases::X_DEFAULT;
+                    }
+                    public function provideFooCases() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider foo
+                     */
+                    public function testFoo() {
+                        $x = Foo\ProvideFooCases::X_DEFAULT;
+                    }
+                    public function foo() {}
+                }
+                EOD,
         ];
 
         yield 'complex example' => [
-            '<?php
-class FooTest extends TestCase {
-    /** @dataProvider notExistingFunction */
-    public function testClosure()
-    {
-        /** Preparing data */
-        $x = 0;
-        /** @dataProvider notDataProvider */
-        function () { return true; };
-    }
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /** @dataProvider notExistingFunction */
+                    public function testClosure()
+                    {
+                        /** Preparing data */
+                        $x = 0;
+                        /** @dataProvider notDataProvider */
+                        function () { return true; };
+                    }
 
-    /**
-     * @dataProvider reusedDataProvider
-     * @dataProvider testFooProvider
-     */
-    public function testFoo() {}
+                    /**
+                     * @dataProvider reusedDataProvider
+                     * @dataProvider testFooProvider
+                     */
+                    public function testFoo() {}
 
-    /**
-     * @dataProvider reusedDataProvider
-     * @dataProvider testBarProvider
-     */
-    public function testBar() {}
+                    /**
+                     * @dataProvider reusedDataProvider
+                     * @dataProvider testBarProvider
+                     */
+                    public function testBar() {}
 
-    public function reusedDataProvider() {}
+                    public function reusedDataProvider() {}
 
-    /** @dataProvider provideBazCases */
-    public function testBaz() {}
-    public function provideBazCases() {}
+                    /** @dataProvider provideBazCases */
+                    public function testBaz() {}
+                    public function provideBazCases() {}
 
-    /** @dataProvider provideSomethingCases */
-    public function testSomething() {}
-    public function provideSomethingCases() {}
-    public function testFooProvider() {}
-    public function testBarProvider() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /** @dataProvider notExistingFunction */
-    public function testClosure()
-    {
-        /** Preparing data */
-        $x = 0;
-        /** @dataProvider notDataProvider */
-        function () { return true; };
-    }
+                    /** @dataProvider provideSomethingCases */
+                    public function testSomething() {}
+                    public function provideSomethingCases() {}
+                    public function testFooProvider() {}
+                    public function testBarProvider() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /** @dataProvider notExistingFunction */
+                    public function testClosure()
+                    {
+                        /** Preparing data */
+                        $x = 0;
+                        /** @dataProvider notDataProvider */
+                        function () { return true; };
+                    }
 
-    /**
-     * @dataProvider reusedDataProvider
-     * @dataProvider testFooProvider
-     */
-    public function testFoo() {}
+                    /**
+                     * @dataProvider reusedDataProvider
+                     * @dataProvider testFooProvider
+                     */
+                    public function testFoo() {}
 
-    /**
-     * @dataProvider reusedDataProvider
-     * @dataProvider testBarProvider
-     */
-    public function testBar() {}
+                    /**
+                     * @dataProvider reusedDataProvider
+                     * @dataProvider testBarProvider
+                     */
+                    public function testBar() {}
 
-    public function reusedDataProvider() {}
+                    public function reusedDataProvider() {}
 
-    /** @dataProvider provideBazCases */
-    public function testBaz() {}
-    public function provideBazCases() {}
+                    /** @dataProvider provideBazCases */
+                    public function testBaz() {}
+                    public function provideBazCases() {}
 
-    /** @dataProvider someDataProvider */
-    public function testSomething() {}
-    public function someDataProvider() {}
-    public function testFooProvider() {}
-    public function testBarProvider() {}
-}',
+                    /** @dataProvider someDataProvider */
+                    public function testSomething() {}
+                    public function someDataProvider() {}
+                    public function testFooProvider() {}
+                    public function testBarProvider() {}
+                }
+                EOD,
         ];
 
         yield 'fixing when string like expected data provider name is present' => [
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {
-        $foo->provideFooCases(); // do not get fooled that data provider name is already taken
-    }
-    public function provideFooCases() {}
-}',
-            '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider fooDataProvider
-     */
-    public function testFoo() {
-        $foo->provideFooCases(); // do not get fooled that data provider name is already taken
-    }
-    public function fooDataProvider() {}
-}',
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    public function testFoo() {
+                        $foo->provideFooCases(); // do not get fooled that data provider name is already taken
+                    }
+                    public function provideFooCases() {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider fooDataProvider
+                     */
+                    public function testFoo() {
+                        $foo->provideFooCases(); // do not get fooled that data provider name is already taken
+                    }
+                    public function fooDataProvider() {}
+                }
+                EOD,
         ];
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
             yield sprintf('test function with %s modifier', $modifier) => [
-                sprintf('<?php
-                abstract class FooTest extends TestCase {
-                    /**
-                     * @dataProvider provideFooCases
-                     */
-                    %s function testFoo() %s
-                    public function provideFooCases() {}
-                }', $modifier, 'abstract' === $modifier ? ';' : '{}'),
-                sprintf('<?php
-                abstract class FooTest extends TestCase {
-                    /**
-                     * @dataProvider fooDataProvider
-                     */
-                    %s function testFoo() %s
-                    public function fooDataProvider() {}
-                }', $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                sprintf(<<<'EOD'
+                    <?php
+                                    abstract class FooTest extends TestCase {
+                                        /**
+                                         * @dataProvider provideFooCases
+                                         */
+                                        %s function testFoo() %s
+                                        public function provideFooCases() {}
+                                    }
+                    EOD, $modifier, 'abstract' === $modifier ? ';' : '{}'),
+                sprintf(<<<'EOD'
+                    <?php
+                                    abstract class FooTest extends TestCase {
+                                        /**
+                                         * @dataProvider fooDataProvider
+                                         */
+                                        %s function testFoo() %s
+                                        public function fooDataProvider() {}
+                                    }
+                    EOD, $modifier, 'abstract' === $modifier ? ';' : '{}'),
             ];
         }
 
@@ -377,22 +417,26 @@ class FooTest extends TestCase {
             ] as $name => [$dataProvider, $testFunction, $config]
         ) {
             yield $name => [
-                sprintf('<?php
-                    class FooTest extends TestCase {
-                        /**
-                         * @dataProvider %s
-                         */
-                        public function %s() {}
-                        public function %s() {}
-                    }', $dataProvider, $testFunction, $dataProvider),
-                sprintf('<?php
-                    class FooTest extends TestCase {
-                        /**
-                         * @dataProvider dtPrvdr
-                         */
-                        public function %s() {}
-                        public function dtPrvdr() {}
-                    }', $testFunction),
+                sprintf(<<<'EOD'
+                    <?php
+                                        class FooTest extends TestCase {
+                                            /**
+                                             * @dataProvider %s
+                                             */
+                                            public function %s() {}
+                                            public function %s() {}
+                                        }
+                    EOD, $dataProvider, $testFunction, $dataProvider),
+                sprintf(<<<'EOD'
+                    <?php
+                                        class FooTest extends TestCase {
+                                            /**
+                                             * @dataProvider dtPrvdr
+                                             */
+                                            public function %s() {}
+                                            public function dtPrvdr() {}
+                                        }
+                    EOD, $testFunction),
                 $config,
             ];
         }

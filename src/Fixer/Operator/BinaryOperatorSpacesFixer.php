@@ -193,112 +193,134 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                     "<?php\n\$a= 1  + \$b^ \$d !==  \$e or   \$f;\n"
                 ),
                 new CodeSample(
-                    '<?php
-$aa=  1;
-$b=2;
+                    <<<'EOD'
+                        <?php
+                        $aa=  1;
+                        $b=2;
 
-$c = $d    xor    $e;
-$f    -=  1;
-',
+                        $c = $d    xor    $e;
+                        $f    -=  1;
+
+                        EOD,
                     ['operators' => ['=' => 'align', 'xor' => null]]
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b +=$c;
-$d = $ee+=$f;
+                    <<<'EOD'
+                        <?php
+                        $a = $b +=$c;
+                        $d = $ee+=$f;
 
-$g = $b     +=$c;
-$h = $ee+=$f;
-',
+                        $g = $b     +=$c;
+                        $h = $ee+=$f;
+
+                        EOD,
                     ['operators' => ['+=' => 'align_single_space']]
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b===$c;
-$d = $f   ===  $g;
-$h = $i===  $j;
-',
+                    <<<'EOD'
+                        <?php
+                        $a = $b===$c;
+                        $d = $f   ===  $g;
+                        $h = $i===  $j;
+
+                        EOD,
                     ['operators' => ['===' => 'align_single_space_minimal']]
                 ),
                 new CodeSample(
-                    '<?php
-$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
-',
+                    <<<'EOD'
+                        <?php
+                        $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
+
+                        EOD,
                     ['operators' => ['|' => 'no_space']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo"            =>   1,
-    "baaaaaaaaaaar"  =>  11,
-];
-',
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo"            =>   1,
+                            "baaaaaaaaaaar"  =>  11,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'single_space']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'align']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'align_by_scope']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'align_single_space']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'align_single_space_by_scope']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'align_single_space_minimal']]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'EOD'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        EOD,
                     ['operators' => ['=>' => 'align_single_space_minimal_by_scope']]
                 ),
             ]

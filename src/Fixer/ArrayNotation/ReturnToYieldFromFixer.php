@@ -31,10 +31,12 @@ final class ReturnToYieldFromFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'If the function explicitly returns an array, and has the return type `iterable`, then `yield from` must be used instead of `return`.',
-            [new CodeSample('<?php function giveMeData(): iterable {
-    return [1, 2, 3];
-}
-')],
+            [new CodeSample(<<<'EOD'
+                <?php function giveMeData(): iterable {
+                    return [1, 2, 3];
+                }
+
+                EOD)],
         );
     }
 

@@ -52,19 +52,23 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
     {
         yield 'two cases' => [
             [1 => new SwitchAnalysis(1, 7, 46, [new CaseAnalysis(9, 12), new CaseAnalysis(36, 39)], null)],
-            '<?php switch ($foo) {
-                case 1: $x = bar() ? 1 : 0; return true;
-                case 2: return false;
-            }',
+            <<<'EOD'
+                <?php switch ($foo) {
+                                case 1: $x = bar() ? 1 : 0; return true;
+                                case 2: return false;
+                            }
+                EOD,
         ];
 
         yield 'case without code' => [
             [1 => new SwitchAnalysis(1, 7, 34, [new CaseAnalysis(9, 12), new CaseAnalysis(19, 22), new CaseAnalysis(24, 27)], null)],
-            '<?php switch ($foo) {
-                case 1: return true;
-                case 2:
-                case 3: return false;
-            }',
+            <<<'EOD'
+                <?php switch ($foo) {
+                                case 1: return true;
+                                case 2:
+                                case 3: return false;
+                            }
+                EOD,
         ];
 
         yield 'advanced cases' => [
@@ -83,14 +87,16 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
                     new DefaultAnalysis(9, 10)
                 ),
             ],
-            '<?php switch (true) {
-                default: return 0;
-                case ("a"): return 1;
-                case [1, 2, 3]: return 2;
-                case getValue($foo): return 3;
-                case getValue2($foo)["key"]->bar: return 4;
-                case $a->$b::$c->${$d}->${$e}::foo(function ($x) { return $x * 2 + 2; })->$g::$h: return 5;
-            }',
+            <<<'EOD'
+                <?php switch (true) {
+                                default: return 0;
+                                case ("a"): return 1;
+                                case [1, 2, 3]: return 2;
+                                case getValue($foo): return 3;
+                                case getValue2($foo)["key"]->bar: return 4;
+                                case $a->$b::$c->${$d}->${$e}::foo(function ($x) { return $x * 2 + 2; })->$g::$h: return 5;
+                            }
+                EOD,
         ];
 
         yield 'two case and default' => [
@@ -113,10 +119,12 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
                 1 => new SwitchAnalysis(1, 7, 67, [new CaseAnalysis(9, 12), new CaseAnalysis(57, 60)], null),
                 14 => new SwitchAnalysis(14, 20, 52, [new CaseAnalysis(22, 25), new CaseAnalysis(32, 35), new CaseAnalysis(42, 45)], null),
             ],
-            '<?php switch ($foo) { case 10:
-                switch ($bar) { case "a": return "b"; case "c": return "d"; case "e": return "f"; }
-                return;
-                case 100: return false; }',
+            <<<'EOD'
+                <?php switch ($foo) { case 10:
+                                switch ($bar) { case "a": return "b"; case "c": return "d"; case "e": return "f"; }
+                                return;
+                                case 100: return false; }
+                EOD,
         ];
 
         yield 'switch in case' => [
@@ -124,16 +132,18 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
                 1 => new SwitchAnalysis(1, 7, 98, [new CaseAnalysis(9, 81), new CaseAnalysis(88, 91)], null),
                 25 => new SwitchAnalysis(25, 31, 63, [new CaseAnalysis(33, 36), new CaseAnalysis(43, 46), new CaseAnalysis(53, 56)], null),
             ],
-            '<?php
-switch ($foo) {
-    case (
-        array_sum(array_map(function ($x) { switch ($bar) { case "a": return "b"; case "c": return "d"; case "e": return "f"; } }, [1, 2, 3]))
-    ):
-        return true;
-    case 100:
-        return false;
-}
-',
+            <<<'EOD'
+                <?php
+                switch ($foo) {
+                    case (
+                        array_sum(array_map(function ($x) { switch ($bar) { case "a": return "b"; case "c": return "d"; case "e": return "f"; } }, [1, 2, 3]))
+                    ):
+                        return true;
+                    case 100:
+                        return false;
+                }
+
+                EOD,
         ];
 
         yield 'alternative syntax' => [
@@ -151,10 +161,12 @@ switch ($foo) {
                 1 => new SwitchAnalysis(1, 7, 69, [new CaseAnalysis(9, 12), new CaseAnalysis(58, 61)], null),
                 14 => new SwitchAnalysis(14, 20, 53, [new CaseAnalysis(22, 25), new CaseAnalysis(32, 35), new CaseAnalysis(42, 45)], null),
             ],
-            '<?php switch ($foo) : case 10:
-                switch ($bar) : case "a": return "b"; case "c": return "d"; case "e": return "f"; endswitch;
-                return;
-                case 100: return false; endswitch;',
+            <<<'EOD'
+                <?php switch ($foo) : case 10:
+                                switch ($bar) : case "a": return "b"; case "c": return "d"; case "e": return "f"; endswitch;
+                                return;
+                                case 100: return false; endswitch;
+                EOD,
         ];
 
         yield 'alternative syntax nested with mixed colon/semicolon' => [
@@ -162,10 +174,12 @@ switch ($foo) {
                 1 => new SwitchAnalysis(1, 7, 69, [new CaseAnalysis(9, 12), new CaseAnalysis(58, 61)], null),
                 14 => new SwitchAnalysis(14, 20, 53, [new CaseAnalysis(22, 25), new CaseAnalysis(32, 35), new CaseAnalysis(42, 45)], null),
             ],
-            '<?php switch ($foo) : case 10;
-                switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
-                return;
-                case 100: return false; endswitch;',
+            <<<'EOD'
+                <?php switch ($foo) : case 10;
+                                switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
+                                return;
+                                case 100: return false; endswitch;
+                EOD,
         ];
 
         yield 'alternative syntax nested with closing tab and mixed colon/semicolon' => [
@@ -173,10 +187,12 @@ switch ($foo) {
                 1 => new SwitchAnalysis(1, 7, 70, [new CaseAnalysis(9, 12), new CaseAnalysis(58, 61)], null),
                 14 => new SwitchAnalysis(14, 20, 53, [new CaseAnalysis(22, 25), new CaseAnalysis(32, 35), new CaseAnalysis(42, 45)], null),
             ],
-            '<?php switch ($foo) : case 10;
-                switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
-                return;
-                case 100: return false; endswitch ?>  <?php echo 1;',
+            <<<'EOD'
+                <?php switch ($foo) : case 10;
+                                switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
+                                return;
+                                case 100: return false; endswitch ?>  <?php echo 1;
+                EOD,
             1,
         ];
 
@@ -192,12 +208,14 @@ switch ($foo) {
             ),
         ];
 
-        $code = '<?php switch($a) {
-case 1:
-    break;
-default:
-    break;
-}';
+        $code = <<<'EOD'
+            <?php switch($a) {
+            case 1:
+                break;
+            default:
+                break;
+            }
+            EOD;
 
         yield 'case :' => [$expected, $code];
 
@@ -218,10 +236,12 @@ default:
                     null
                 ),
             ],
-            '<?php switch($a) {
-case 1/* 1 */:
-    break;
-/* 2 */}',
+            <<<'EOD'
+                <?php switch($a) {
+                case 1/* 1 */:
+                    break;
+                /* 2 */}
+                EOD,
         ];
 
         yield 'ternary case' => [
@@ -236,11 +256,13 @@ case 1/* 1 */:
                     null
                 ),
             ],
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d" ;
-                        break;
-                }',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d" ;
+                                        break;
+                                }
+                EOD,
         ];
 
         yield 'nested' => [
@@ -266,22 +288,24 @@ case 1/* 1 */:
                     null
                 ),
             ],
-            '<?php
-switch(foo()) {
-    CASE 1:
+            <<<'EOD'
+                <?php
+                switch(foo()) {
+                    CASE 1:
 
-        break;
-    case 2:
-        switch(bar()) {
-            case 1:
-                echo 1;
-        }
+                        break;
+                    case 2:
+                        switch(bar()) {
+                            case 1:
+                                echo 1;
+                        }
 
-        break;
-    case 3:
-        break;
-}
-',
+                        break;
+                    case 3:
+                        break;
+                }
+
+                EOD,
         ];
 
         yield 'alternative syntax 2' => [
@@ -296,11 +320,13 @@ switch(foo()) {
                     null
                 ),
             ],
-            '<?php /* */ switch ($foo):
-case 1:
-    $foo = new class {};
-    break;
-endswitch ?>',
+            <<<'EOD'
+                <?php /* */ switch ($foo):
+                case 1:
+                    $foo = new class {};
+                    break;
+                endswitch ?>
+                EOD,
         ];
 
         yield [
@@ -345,25 +371,27 @@ endswitch ?>',
         $enumAnalysis = new EnumAnalysis(28, 35, 51, [new CaseAnalysis(37, 41), new CaseAnalysis(46, 49)]);
         $matchAnalysis = new MatchAnalysis(57, 63, 98, new DefaultAnalysis(89, 91));
 
-        $code = '<?php
-switch($a) {
-    case 1:
-        echo 2;
-    default:
-        echo 1;
-}
+        $code = <<<'EOD'
+            <?php
+            switch($a) {
+                case 1:
+                    echo 2;
+                default:
+                    echo 1;
+            }
 
-enum Suit: string {
-    case Hearts = "foo";
-    case Hearts2;
-}
+            enum Suit: string {
+                case Hearts = "foo";
+                case Hearts2;
+            }
 
-$expressionResult = match ($condition) {
-    1, 2 => foo(),
-    3, 4 => bar(),
-    default => baz(),
-};
-';
+            $expressionResult = match ($condition) {
+                1, 2 => foo(),
+                3, 4 => bar(),
+                default => baz(),
+            };
+
+            EOD;
 
         yield [
             [

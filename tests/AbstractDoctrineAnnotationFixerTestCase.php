@@ -78,44 +78,52 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
 
     private static function withClassDocBlock(string $comment): string
     {
-        return self::with('<?php
+        return self::with(<<<'EOD'
+            <?php
 
-%s
-class FooClass
-{
-}', $comment, false);
+            %s
+            class FooClass
+            {
+            }
+            EOD, $comment, false);
     }
 
     private static function withPropertyDocBlock(string $comment): string
     {
-        return self::with('<?php
+        return self::with(<<<'EOD'
+            <?php
 
-class FooClass
-{
-    %s
-    private $foo;
-}', $comment, true);
+            class FooClass
+            {
+                %s
+                private $foo;
+            }
+            EOD, $comment, true);
     }
 
     private static function withMethodDocBlock(string $comment): string
     {
-        return self::with('<?php
+        return self::with(<<<'EOD'
+            <?php
 
-class FooClass
-{
-    %s
-    public function foo()
-    {
-    }
-}', $comment, true);
+            class FooClass
+            {
+                %s
+                public function foo()
+                {
+                }
+            }
+            EOD, $comment, true);
     }
 
     private static function withWrongElementDocBlock(string $comment): string
     {
-        return self::with('<?php
+        return self::with(<<<'EOD'
+            <?php
 
-%s
-$foo = bar();', $comment, false);
+            %s
+            $foo = bar();
+            EOD, $comment, false);
     }
 
     private static function with(string $php, string $comment, bool $indent): string

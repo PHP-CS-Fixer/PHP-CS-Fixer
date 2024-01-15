@@ -160,11 +160,15 @@ final class TypeDeclarationSpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = function(array $a,
-                    array $b, array $c, array $d) {};',
-            '<?php $foo = function(array $a,
-                    array$b, array     $c, array
-                    $d) {};',
+            <<<'EOD'
+                <?php $foo = function(array $a,
+                                    array $b, array $c, array $d) {};
+                EOD,
+            <<<'EOD'
+                <?php $foo = function(array $a,
+                                    array$b, array     $c, array
+                                    $d) {};
+                EOD,
         ];
 
         yield [
@@ -198,11 +202,15 @@ final class TypeDeclarationSpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = fn(array $a,
-                    array $b, array $c, array $d) => null;',
-            '<?php $foo = fn(array $a,
-                    array$b, array     $c, array
-                    $d) => null;',
+            <<<'EOD'
+                <?php $foo = fn(array $a,
+                                    array $b, array $c, array $d) => null;
+                EOD,
+            <<<'EOD'
+                <?php $foo = fn(array $a,
+                                    array$b, array     $c, array
+                                    $d) => null;
+                EOD,
         ];
 
         yield [
@@ -242,33 +250,39 @@ final class TypeDeclarationSpacesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php class Foo { private array $x; }',
-            '<?php class Foo { private array
-$x; }',
+            <<<'EOD'
+                <?php class Foo { private array
+                $x; }
+                EOD,
         ];
 
         yield [
-            '<?php
-class Point
-{
-    public \DateTime $x;
-    protected bool $y = true;
-    private array $z = [];
-    public int $a = 0;
-    protected string $b = \'\';
-    private float $c = 0.0;
-}
-',
-            '<?php
-class Point
-{
-    public \DateTime    $x;
-    protected bool      $y = true;
-    private array       $z = [];
-    public int          $a = 0;
-    protected string    $b = \'\';
-    private float       $c = 0.0;
-}
-',
+            <<<'EOD'
+                <?php
+                class Point
+                {
+                    public \DateTime $x;
+                    protected bool $y = true;
+                    private array $z = [];
+                    public int $a = 0;
+                    protected string $b = '';
+                    private float $c = 0.0;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Point
+                {
+                    public \DateTime    $x;
+                    protected bool      $y = true;
+                    private array       $z = [];
+                    public int          $a = 0;
+                    protected string    $b = '';
+                    private float       $c = 0.0;
+                }
+
+                EOD,
         ];
 
         yield [
@@ -296,17 +310,21 @@ class Point
         ];
 
         yield [
-            '<?php $foo = function(
-                    array $a,
-                    $b
-                ) {};',
+            <<<'EOD'
+                <?php $foo = function(
+                                    array $a,
+                                    $b
+                                ) {};
+                EOD,
         ];
 
         yield [
-            '<?php $foo = function(
-                    $a,
-                    array $b
-                ) {};',
+            <<<'EOD'
+                <?php $foo = function(
+                                    $a,
+                                    array $b
+                                ) {};
+                EOD,
         ];
 
         yield [
@@ -326,17 +344,21 @@ class Point
         ];
 
         yield [
-            '<?php $foo = fn(
-                    array $a,
-                    $b
-                ) => null;',
+            <<<'EOD'
+                <?php $foo = fn(
+                                    array $a,
+                                    $b
+                                ) => null;
+                EOD,
         ];
 
         yield [
-            '<?php $foo = fn(
-                    $a,
-                    array $b
-                ) => null;',
+            <<<'EOD'
+                <?php $foo = fn(
+                                    $a,
+                                    array $b
+                                ) => null;
+                EOD,
         ];
 
         yield [
@@ -378,26 +400,30 @@ class Point
         ];
 
         yield [
-            '<?php
-class Foo
-{
-    public function __construct(
-        public int $a,
-        protected bool $b,
-        private Bar\Baz $c,
-    ) {}
-}
-',
-            '<?php
-class Foo
-{
-    public function __construct(
-        public int  $a,
-        protected bool$b,
-        private Bar\Baz     $c,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function __construct(
+                        public int $a,
+                        protected bool $b,
+                        private Bar\Baz $c,
+                    ) {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function __construct(
+                        public int  $a,
+                        protected bool$b,
+                        private Bar\Baz     $c,
+                    ) {}
+                }
+
+                EOD,
         ];
     }
 

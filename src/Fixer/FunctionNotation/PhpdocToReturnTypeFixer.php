@@ -54,52 +54,60 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
             'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-/** @return \My\Bar */
-function f1()
-{}
+                        /** @return \My\Bar */
+                        function f1()
+                        {}
 
-/** @return void */
-function f2()
-{}
+                        /** @return void */
+                        function f2()
+                        {}
 
-/** @return object */
-function my_foo()
-{}
-',
+                        /** @return object */
+                        function my_foo()
+                        {}
+
+                        EOD,
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-/** @return Foo */
-function foo() {}
-/** @return string */
-function bar() {}
-',
+                        /** @return Foo */
+                        function foo() {}
+                        /** @return string */
+                        function bar() {}
+
+                        EOD,
                     ['scalar_types' => false]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-/** @return Foo */
-function foo() {}
-/** @return int|string */
-function bar() {}
-',
+                        /** @return Foo */
+                        function foo() {}
+                        /** @return int|string */
+                        function bar() {}
+
+                        EOD,
                     ['union_types' => false]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-final class Foo {
-    /**
-     * @return static
-     */
-    public function create($prototype) {
-        return new static($prototype);
-    }
-}
-',
+                    <<<'EOD'
+                        <?php
+                        final class Foo {
+                            /**
+                             * @return static
+                             */
+                            public function create($prototype) {
+                                return new static($prototype);
+                            }
+                        }
+
+                        EOD,
                     new VersionSpecification(8_00_00)
                 ),
             ],

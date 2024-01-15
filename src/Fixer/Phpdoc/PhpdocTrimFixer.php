@@ -31,15 +31,17 @@ final class PhpdocTrimFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHPDoc should start and end with content, excluding the very first and last line of the docblocks.',
-            [new CodeSample('<?php
-/**
- *
- * Foo must be final class.
- *
- *
- */
-final class Foo {}
-')]
+            [new CodeSample(<<<'EOD'
+                <?php
+                /**
+                 *
+                 * Foo must be final class.
+                 *
+                 *
+                 */
+                final class Foo {}
+
+                EOD)]
         );
     }
 
@@ -81,14 +83,16 @@ final class Foo {}
     private function fixStart(string $content): string
     {
         return Preg::replace(
-            '~
-                (^/\*\*)            # DocComment begin
-                (?:
-                    \R\h*(?:\*\h*)? # lines without useful content
-                    (?!\R\h*\*/)    # not followed by a DocComment end
-                )+
-                (\R\h*(?:\*\h*)?\S) # first line with useful content
-            ~x',
+            <<<'EOD'
+                ~
+                                (^/\*\*)            # DocComment begin
+                                (?:
+                                    \R\h*(?:\*\h*)? # lines without useful content
+                                    (?!\R\h*\*/)    # not followed by a DocComment end
+                                )+
+                                (\R\h*(?:\*\h*)?\S) # first line with useful content
+                            ~x
+                EOD,
             '$1$2',
             $content
         );
@@ -100,14 +104,16 @@ final class Foo {}
     private function fixEnd(string $content): string
     {
         return Preg::replace(
-            '~
-                (\R\h*(?:\*\h*)?\S.*?) # last line with useful content
-                (?:
-                    (?<!/\*\*)         # not preceded by a DocComment start
-                    \R\h*(?:\*\h*)?    # lines without useful content
-                )+
-                (\R\h*\*/$)            # DocComment end
-            ~xu',
+            <<<'EOD'
+                ~
+                                (\R\h*(?:\*\h*)?\S.*?) # last line with useful content
+                                (?:
+                                    (?<!/\*\*)         # not preceded by a DocComment start
+                                    \R\h*(?:\*\h*)?    # lines without useful content
+                                )+
+                                (\R\h*\*/$)            # DocComment end
+                            ~xu
+                EOD,
             '$1$2',
             $content
         );

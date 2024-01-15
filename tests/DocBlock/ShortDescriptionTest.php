@@ -38,35 +38,41 @@ final class ShortDescriptionTest extends TestCase
 
     public static function provideGetEndCases(): iterable
     {
-        yield [1, '/**
-     * Test docblock.
-     *
-     * @param string $hello
-     * @param bool $test Description
-     *        extends over many lines
-     *
-     * @param adkjbadjasbdand $asdnjkasd
-     *
-     * @throws \Exception asdnjkasd
-     * asdasdasdasdasdasdasdasd
-     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
-     *
-     * @return void
-     */'];
+        yield [1, <<<'EOD'
+            /**
+                 * Test docblock.
+                 *
+                 * @param string $hello
+                 * @param bool $test Description
+                 *        extends over many lines
+                 *
+                 * @param adkjbadjasbdand $asdnjkasd
+                 *
+                 * @throws \Exception asdnjkasd
+                 * asdasdasdasdasdasdasdasd
+                 * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
+                 *
+                 * @return void
+                 */
+            EOD];
 
-        yield [2, '/**
-                  * This is a multi-line
-                  * short description.
-                  */'];
+        yield [2, <<<'EOD'
+            /**
+                              * This is a multi-line
+                              * short description.
+                              */
+            EOD];
 
-        yield [3, '/**
-                  *
-                  *
-                  * There might be extra blank lines.
-                  *
-                  *
-                  * And here is description...
-                  */'];
+        yield [3, <<<'EOD'
+            /**
+                              *
+                              *
+                              * There might be extra blank lines.
+                              *
+                              *
+                              * And here is description...
+                              */
+            EOD];
 
         yield [null, '/** */'];
 

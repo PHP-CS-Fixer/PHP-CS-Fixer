@@ -182,84 +182,86 @@ final class StringLengthToEmptyFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'do not fix' => [
-            '<?php
-//-----------------------------------
-// operator precedence
+            <<<'EOD'
+                <?php
+                //-----------------------------------
+                // operator precedence
 
-$a01 = 0 === strlen($b) ** $c;
-$a03 = 0 === strlen($b) % $c;
-$a04 = 0 === strlen($b) / $c;
-$a05 = 0 === strlen($b) * $c;
-$a06 = 0 === strlen($b) + $c;
-$a07 = 0 === strlen($b) - $c;
-$a08 = 0 === strlen($b) . $c;
-$a09 = 0 === strlen($b) >> $c;
-$a10 = 0 === strlen($b) << $c;
+                $a01 = 0 === strlen($b) ** $c;
+                $a03 = 0 === strlen($b) % $c;
+                $a04 = 0 === strlen($b) / $c;
+                $a05 = 0 === strlen($b) * $c;
+                $a06 = 0 === strlen($b) + $c;
+                $a07 = 0 === strlen($b) - $c;
+                $a08 = 0 === strlen($b) . $c;
+                $a09 = 0 === strlen($b) >> $c;
+                $a10 = 0 === strlen($b) << $c;
 
-$a01n = strlen($b) === 0 ** $c;
-$a03n = strlen($b) === 0 % $c;
-$a04n = strlen($b) === 0 / $c;
-$a05n = strlen($b) === 0 * $c;
-$a06n = strlen($b) === 0 + $c;
-$a07n = strlen($b) === 0 - $c;
-$a08n = strlen($b) === 0 . $c;
-$a09n = strlen($b) === 0 >> $c;
-$a10n = strlen($b) === 0 << $c;
+                $a01n = strlen($b) === 0 ** $c;
+                $a03n = strlen($b) === 0 % $c;
+                $a04n = strlen($b) === 0 / $c;
+                $a05n = strlen($b) === 0 * $c;
+                $a06n = strlen($b) === 0 + $c;
+                $a07n = strlen($b) === 0 - $c;
+                $a08n = strlen($b) === 0 . $c;
+                $a09n = strlen($b) === 0 >> $c;
+                $a10n = strlen($b) === 0 << $c;
 
-$b = "a";
+                $b = "a";
 
-$c = 0 === strlen($b) - 1;
-var_dump($c);
+                $c = 0 === strlen($b) - 1;
+                var_dump($c);
 
-$c = "" === $b - 1;
-var_dump($c);
+                $c = "" === $b - 1;
+                var_dump($c);
 
-//-----------------------------------
-// type juggle
+                //-----------------------------------
+                // type juggle
 
-$d = false;
+                $d = false;
 
-$e = 0 === strlen($d) ? -1 : 0;
-var_dump($e);
+                $e = 0 === strlen($d) ? -1 : 0;
+                var_dump($e);
 
-$e = "" === $d ? -1 : 0;
-var_dump($e);
+                $e = "" === $d ? -1 : 0;
+                var_dump($e);
 
-//-----------------------------------
-// wrong argument count
+                //-----------------------------------
+                // wrong argument count
 
-$f = strlen(1,2);
-$g = \strlen(1,2,3);
+                $f = strlen(1,2);
+                $g = \strlen(1,2,3);
 
-//-----------------------------------
-// others
+                //-----------------------------------
+                // others
 
-$h = 0 === (string) strlen($b);
-$i = 0 === @strlen($b);
-$j = 0 === !strlen($b);
+                $h = 0 === (string) strlen($b);
+                $i = 0 === @strlen($b);
+                $j = 0 === !strlen($b);
 
-$jj = 2 === strlen($b);
-$jk = __DIR__ === strlen($b);
-$jl = \'X\' !== strlen($b);
+                $jj = 2 === strlen($b);
+                $jk = __DIR__ === strlen($b);
+                $jl = 'X' !== strlen($b);
 
-$jj = strlen($b) === 2;
-$jk = strlen($b) === __DIR__;
-$jl = strlen($b) !== \'X\';
+                $jj = strlen($b) === 2;
+                $jk = strlen($b) === __DIR__;
+                $jl = strlen($b) !== 'X';
 
-//-----------------------------------
-// not global calls
+                //-----------------------------------
+                // not global calls
 
-$k = 0 === $a->strlen($b);
-$l = 0 === Foo::strlen($b);
+                $k = 0 === $a->strlen($b);
+                $l = 0 === Foo::strlen($b);
 
-//-----------------------------------
-// comments
+                //-----------------------------------
+                // comments
 
-// $a = 0 === strlen($b);
-# $a = 0 === strlen($b);
-/* $a = 0 === strlen($b); */
-/** $a = 0 === strlen($b); */
-',
+                // $a = 0 === strlen($b);
+                # $a = 0 === strlen($b);
+                /* $a = 0 === strlen($b); */
+                /** $a = 0 === strlen($b); */
+
+                EOD,
         ];
 
         // cases where `(` and `)` must be kept
@@ -275,9 +277,11 @@ $l = 0 === Foo::strlen($b);
         ];
 
         yield [
-            '<?php
-                $a02 = 0 === strlen($b) instanceof stdClass;
-                $a02n = strlen($b) === 0 instanceof stdClass;',
+            <<<'EOD'
+                <?php
+                                $a02 = 0 === strlen($b) instanceof stdClass;
+                                $a02n = strlen($b) === 0 instanceof stdClass;
+                EOD,
         ];
     }
 }

@@ -104,15 +104,17 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield [
-            '<?php
-                class Bar
-                {
-                    const __line__ = "foo";
-                }
+            <<<'EOD'
+                <?php
+                                class Bar
+                                {
+                                    const __line__ = "foo";
+                                }
 
-                namespace {
-                    echo \Bar::__line__;
-                }',
+                                namespace {
+                                    echo \Bar::__line__;
+                                }
+                EOD,
         ];
     }
 }

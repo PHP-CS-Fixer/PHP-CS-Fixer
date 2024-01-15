@@ -38,15 +38,19 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer implements Configurab
             [
                 new CodeSample("<?php\n\$sample ++;\n-- \$sample;\n\$sample = ! ! \$a;\n\$sample = ~  \$c;\nfunction & foo(){}\n"),
                 new CodeSample(
-                    '<?php
-function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
-',
+                    <<<'EOD'
+                        <?php
+                        function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
+
+                        EOD,
                     ['only_dec_inc' => false]
                 ),
                 new CodeSample(
-                    '<?php
-function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
-',
+                    <<<'EOD'
+                        <?php
+                        function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
+
+                        EOD,
                     ['only_dec_inc' => true]
                 ),
             ]

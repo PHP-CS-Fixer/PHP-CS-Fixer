@@ -246,15 +246,17 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-class Test
-{
-    public function updateAttributeKey($key, $value)
-    {
-        $this->{camel_case($attributes)}[$key] = $value;
-    }
-}',
+                class Test
+                {
+                    public function updateAttributeKey($key, $value)
+                    {
+                        $this->{camel_case($attributes)}[$key] = $value;
+                    }
+                }
+                EOD,
         ];
 
         yield [

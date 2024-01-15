@@ -186,26 +186,28 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                namespace Foo;
-                use DateTime\Bar;
-                use DateTime;
-                use Baz\DateTime as BazDateTime;
-                new \DateTimeImmutable();
-                new \DateTimeImmutable();
-                new \DateTimeImmutable();
-                new \DateTimeImmutable();
-                ',
-            '<?php
-                namespace Foo;
-                use DateTime\Bar;
-                use DateTime;
-                use Baz\DateTime as BazDateTime;
-                new DateTime();
-                new DateTime();
-                new DateTime();
-                new DateTime();
-                ',
+            <<<'EOD'
+                <?php
+                                namespace Foo;
+                                use DateTime\Bar;
+                                use DateTime;
+                                use Baz\DateTime as BazDateTime;
+                                new \DateTimeImmutable();
+                                new \DateTimeImmutable();
+                                new \DateTimeImmutable();
+                                new \DateTimeImmutable();
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                namespace Foo;
+                                use DateTime\Bar;
+                                use DateTime;
+                                use Baz\DateTime as BazDateTime;
+                                new DateTime();
+                                new DateTime();
+                                new DateTime();
+                                new DateTime();
+                EOD."\n                ",
         ];
     }
 

@@ -344,14 +344,16 @@ final class ArgumentsAnalyzerTest extends TestCase
     public static function provideArgumentInfo81Cases(): iterable
     {
         yield [
-            '<?php
-class Foo
-{
-    public function __construct(
-        protected readonly ?bool $nullable = true,
-    ) {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function __construct(
+                        protected readonly ?bool $nullable = true,
+                    ) {}
+                }
+
+                EOD,
             13,
             25,
             new ArgumentAnalysis(

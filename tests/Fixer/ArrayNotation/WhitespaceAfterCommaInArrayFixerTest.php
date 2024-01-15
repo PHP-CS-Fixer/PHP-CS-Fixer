@@ -103,36 +103,46 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
 
         // multi line array
         yield [
-            '<?php $x = ["a" =>$a,
-                    "b"=> "b",
-                    3 => $this->foo(),
-                    "d" => 30];',
+            <<<'EOD'
+                <?php $x = ["a" =>$a,
+                                    "b"=> "b",
+                                    3 => $this->foo(),
+                                    "d" => 30];
+                EOD,
         ];
 
         // multi line array
         yield [
-            '<?php $a = [
-                            "foo" ,
-                            "bar",
-                        ];',
+            <<<'EOD'
+                <?php $a = [
+                                            "foo" ,
+                                            "bar",
+                                        ];
+                EOD,
         ];
 
         // nested multiline
         yield [
-            '<?php $a = array(array(
-                                    array(T_OPEN_TAG),
-                                    array(T_VARIABLE, "$x"),
-                        ), 1, );',
-            '<?php $a = array(array(
-                                    array(T_OPEN_TAG),
-                                    array(T_VARIABLE,"$x"),
-                        ),1,);',
+            <<<'EOD'
+                <?php $a = array(array(
+                                                    array(T_OPEN_TAG),
+                                                    array(T_VARIABLE, "$x"),
+                                        ), 1, );
+                EOD,
+            <<<'EOD'
+                <?php $a = array(array(
+                                                    array(T_OPEN_TAG),
+                                                    array(T_VARIABLE,"$x"),
+                                        ),1,);
+                EOD,
         ];
 
         yield [
-            '<?php $a = array( // comment
-                    123,
-                );',
+            <<<'EOD'
+                <?php $a = array( // comment
+                                    123,
+                                );
+                EOD,
         ];
 
         yield [
@@ -158,12 +168,14 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php [
-                    0,                    # less than one
-                    1,                    // one
-                    42,                   /* more than one */
-                    1000500100900,        /** much more than one */
-                ];',
+            <<<'EOD'
+                <?php [
+                                    0,                    # less than one
+                                    1,                    // one
+                                    42,                   /* more than one */
+                                    1000500100900,        /** much more than one */
+                                ];
+                EOD,
             null,
             ['ensure_single_space' => true],
         ];

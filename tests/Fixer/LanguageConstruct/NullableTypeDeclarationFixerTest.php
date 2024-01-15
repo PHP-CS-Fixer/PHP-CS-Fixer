@@ -51,18 +51,22 @@ final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'static null' => [
-            '<?php
-class Foo
-{
-    public function bar(?array $config = null): ?static {}
-}
-',
-            '<?php
-class Foo
-{
-    public function bar(null|array $config = null): null|static {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar(?array $config = null): ?static {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar(null|array $config = null): null|static {}
+                }
+
+                EOD,
         ];
 
         yield 'multiple parameters' => [
@@ -71,24 +75,28 @@ class Foo
         ];
 
         yield 'class properties' => [
-            '<?php
-class Dto
-{
-    public ?string $name;
-    public ?array $parameters;
-    public ?int $count;
-    public ?Closure $callable;
-}
-',
-            '<?php
-class Dto
-{
-    public null|string $name;
-    public array|null $parameters;
-    public int|null $count;
-    public null|Closure $callable;
-}
-',
+            <<<'EOD'
+                <?php
+                class Dto
+                {
+                    public ?string $name;
+                    public ?array $parameters;
+                    public ?int $count;
+                    public ?Closure $callable;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Dto
+                {
+                    public null|string $name;
+                    public array|null $parameters;
+                    public int|null $count;
+                    public null|Closure $callable;
+                }
+
+                EOD,
         ];
 
         yield 'skips more than two atomic types' => [
@@ -128,18 +136,22 @@ class Dto
         ];
 
         yield 'static null' => [
-            '<?php
-class Foo
-{
-    public function bar(null|array $config = null): null|static {}
-}
-',
-            '<?php
-class Foo
-{
-    public function bar(?array $config = null): ?static {}
-}
-',
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar(null|array $config = null): null|static {}
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    public function bar(?array $config = null): ?static {}
+                }
+
+                EOD,
         ];
 
         yield 'multiple parameters' => [
@@ -148,43 +160,51 @@ class Foo
         ];
 
         yield 'class properties' => [
-            '<?php
-class Dto
-{
-    public null|\Closure $callable;
-    public null|string $name;
-    public null|array $parameters;
-    public null|int $count;
-}
-',
-            '<?php
-class Dto
-{
-    public ?\Closure $callable;
-    public ?string $name;
-    public ?array $parameters;
-    public ?int $count;
-}
-',
+            <<<'EOD'
+                <?php
+                class Dto
+                {
+                    public null|\Closure $callable;
+                    public null|string $name;
+                    public null|array $parameters;
+                    public null|int $count;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Dto
+                {
+                    public ?\Closure $callable;
+                    public ?string $name;
+                    public ?array $parameters;
+                    public ?int $count;
+                }
+
+                EOD,
         ];
 
         yield 'space after ?' => [
-            '<?php
-class Foo
-{
-    private null|int $x;
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private null|int $x;
 
-    public static function from(null|int $x): null|static {}
-}
-',
-            '<?php
-class Foo
-{
-    private ? int $x;
+                    public static function from(null|int $x): null|static {}
+                }
 
-    public static function from(?  int $x): ? static {}
-}
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                class Foo
+                {
+                    private ? int $x;
+
+                    public static function from(?  int $x): ? static {}
+                }
+
+                EOD,
         ];
 
         yield 'skips already fixed' => [
@@ -214,33 +234,41 @@ class Foo
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly property' => [
-            '<?php
-class Qux
-{
-    public readonly ?int $baz;
-}
-',
-            '<?php
-class Qux
-{
-    public readonly int|null $baz;
-}
-',
+            <<<'EOD'
+                <?php
+                class Qux
+                {
+                    public readonly ?int $baz;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Qux
+                {
+                    public readonly int|null $baz;
+                }
+
+                EOD,
         ];
 
         yield 'readonly property with union syntax expected' => [
-            '<?php
-class Qux
-{
-    public readonly null|int $baz;
-}
-',
-            '<?php
-class Qux
-{
-    public readonly ?int $baz;
-}
-',
+            <<<'EOD'
+                <?php
+                class Qux
+                {
+                    public readonly null|int $baz;
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Qux
+                {
+                    public readonly ?int $baz;
+                }
+
+                EOD,
             ['syntax' => 'union'],
         ];
     }
@@ -267,12 +295,14 @@ class Qux
     public static function provideFix82Cases(): iterable
     {
         yield 'skips DNF types' => [
-            '<?php
-class Infinite
-{
-    private static (A&B)|null $dft;
-}
-',
+            <<<'EOD'
+                <?php
+                class Infinite
+                {
+                    private static (A&B)|null $dft;
+                }
+
+                EOD,
         ];
     }
 }

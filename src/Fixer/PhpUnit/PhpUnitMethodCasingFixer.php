@@ -51,20 +51,24 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
             'Enforce camel (or snake) case for PHPUnit test methods, following configuration.',
             [
                 new CodeSample(
-                    '<?php
-class MyTest extends \\PhpUnit\\FrameWork\\TestCase
-{
-    public function test_my_code() {}
-}
-'
+                    <<<'EOD'
+                        <?php
+                        class MyTest extends \PhpUnit\FrameWork\TestCase
+                        {
+                            public function test_my_code() {}
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-class MyTest extends \\PhpUnit\\FrameWork\\TestCase
-{
-    public function testMyCode() {}
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class MyTest extends \PhpUnit\FrameWork\TestCase
+                        {
+                            public function testMyCode() {}
+                        }
+
+                        EOD,
                     ['case' => self::SNAKE_CASE]
                 ),
             ]

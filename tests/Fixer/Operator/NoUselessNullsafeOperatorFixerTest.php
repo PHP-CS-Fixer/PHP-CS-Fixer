@@ -36,31 +36,39 @@ final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'simple case + comment' => [
-            '<?php $a = new class extends foo {
-                public function bar() {
-                    $this->g();
-                    // $this?->g();
-                }
-            };',
-            '<?php $a = new class extends foo {
-                public function bar() {
-                    $this?->g();
-                    // $this?->g();
-                }
-            };',
+            <<<'EOD'
+                <?php $a = new class extends foo {
+                                public function bar() {
+                                    $this->g();
+                                    // $this?->g();
+                                }
+                            };
+                EOD,
+            <<<'EOD'
+                <?php $a = new class extends foo {
+                                public function bar() {
+                                    $this?->g();
+                                    // $this?->g();
+                                }
+                            };
+                EOD,
         ];
 
         yield 'multiple casing cases + comment + no candidate' => [
-            '<?php $a = new class extends foo {
-                public function bar() {
-                    return $THIS /*1*/ -> g().$THis->g().$this->do()?->o();
-                }
-            };',
-            '<?php $a = new class extends foo {
-                public function bar() {
-                    return $THIS /*1*/ ?-> g().$THis?->g().$this->do()?->o();
-                }
-            };',
+            <<<'EOD'
+                <?php $a = new class extends foo {
+                                public function bar() {
+                                    return $THIS /*1*/ -> g().$THis->g().$this->do()?->o();
+                                }
+                            };
+                EOD,
+            <<<'EOD'
+                <?php $a = new class extends foo {
+                                public function bar() {
+                                    return $THIS /*1*/ ?-> g().$THis?->g().$this->do()?->o();
+                                }
+                            };
+                EOD,
         ];
     }
 }

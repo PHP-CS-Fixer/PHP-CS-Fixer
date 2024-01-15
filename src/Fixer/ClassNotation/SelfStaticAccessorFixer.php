@@ -34,67 +34,77 @@ final class SelfStaticAccessorFixer extends AbstractFixer
             'Inside an enum or `final`/anonymous class, `self` should be preferred over `static`.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
-    private static $A = 1;
+                    <<<'EOD'
+                        <?php
+                        final class Sample
+                        {
+                            private static $A = 1;
 
-    public function getBar()
-    {
-        return static::class.static::test().static::$A;
-    }
+                            public function getBar()
+                            {
+                                return static::class.static::test().static::$A;
+                            }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-'
+                            private static function test()
+                            {
+                                return 'test';
+                            }
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    public function bar()
-    {
-        return new static();
-    }
-}
-'
+                    <<<'EOD'
+                        <?php
+                        final class Foo
+                        {
+                            public function bar()
+                            {
+                                return new static();
+                            }
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    public function isBar()
-    {
-        return $foo instanceof static;
-    }
-}
-'
+                    <<<'EOD'
+                        <?php
+                        final class Foo
+                        {
+                            public function isBar()
+                            {
+                                return $foo instanceof static;
+                            }
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-$a = new class() {
-    public function getBar()
-    {
-        return static::class;
-    }
-};
-'
+                    <<<'EOD'
+                        <?php
+                        $a = new class() {
+                            public function getBar()
+                            {
+                                return static::class;
+                            }
+                        };
+
+                        EOD
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-enum Foo
-{
-    public const A = 123;
+                    <<<'EOD'
+                        <?php
+                        enum Foo
+                        {
+                            public const A = 123;
 
-    public static function bar(): void
-    {
-        echo static::A;
-    }
-}
-',
+                            public static function bar(): void
+                            {
+                                echo static::A;
+                            }
+                        }
+
+                        EOD,
                     new VersionSpecification(8_01_00)
                 ),
             ]

@@ -51,14 +51,16 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
             [
                 new CodeSample("<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n"),
                 new CodeSample(
-                    '<?php
-namespace space1 {
-    echo PHP_VERSION;
-}
-namespace {
-    echo M_PI;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        namespace space1 {
+                            echo PHP_VERSION;
+                        }
+                        namespace {
+                            echo M_PI;
+                        }
+
+                        EOD,
                     ['scope' => 'namespaced']
                 ),
                 new CodeSample(

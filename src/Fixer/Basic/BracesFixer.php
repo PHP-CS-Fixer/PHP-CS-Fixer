@@ -66,70 +66,76 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
             'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-class Foo {
-    public function bar($baz) {
-        if ($baz = 900) echo "Hello!";
+                        class Foo {
+                            public function bar($baz) {
+                                if ($baz = 900) echo "Hello!";
 
-        if ($baz = 9000)
-            echo "Wait!";
+                                if ($baz = 9000)
+                                    echo "Wait!";
 
-        if ($baz == true)
-        {
-            echo "Why?";
-        }
-        else
-        {
-            echo "Ha?";
-        }
+                                if ($baz == true)
+                                {
+                                    echo "Why?";
+                                }
+                                else
+                                {
+                                    echo "Ha?";
+                                }
 
-        if (is_array($baz))
-            foreach ($baz as $b)
-            {
-                echo $b;
-            }
-    }
-}
-'
+                                if (is_array($baz))
+                                    foreach ($baz as $b)
+                                    {
+                                        echo $b;
+                                    }
+                            }
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-$positive = function ($item) { return $item >= 0; };
-$negative = function ($item) {
-                return $item < 0; };
-',
+                    <<<'EOD'
+                        <?php
+                        $positive = function ($item) { return $item >= 0; };
+                        $negative = function ($item) {
+                                        return $item < 0; };
+
+                        EOD,
                     ['allow_single_line_closure' => true]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-class Foo
-{
-    public function bar($baz)
-    {
-        if ($baz = 900) echo "Hello!";
+                        class Foo
+                        {
+                            public function bar($baz)
+                            {
+                                if ($baz = 900) echo "Hello!";
 
-        if ($baz = 9000)
-            echo "Wait!";
+                                if ($baz = 9000)
+                                    echo "Wait!";
 
-        if ($baz == true)
-        {
-            echo "Why?";
-        }
-        else
-        {
-            echo "Ha?";
-        }
+                                if ($baz == true)
+                                {
+                                    echo "Why?";
+                                }
+                                else
+                                {
+                                    echo "Ha?";
+                                }
 
-        if (is_array($baz))
-            foreach ($baz as $b)
-            {
-                echo $b;
-            }
-    }
-}
-',
+                                if (is_array($baz))
+                                    foreach ($baz as $b)
+                                    {
+                                        echo $b;
+                                    }
+                            }
+                        }
+
+                        EOD,
                     ['position_after_functions_and_oop_constructs' => self::LINE_SAME]
                 ),
             ]

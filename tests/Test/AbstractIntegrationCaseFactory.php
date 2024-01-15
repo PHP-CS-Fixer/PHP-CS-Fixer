@@ -28,15 +28,17 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     {
         try {
             if (!preg_match(
-                '/^
-                            --TEST--           \r?\n(?<title>          .*?)
-                       \s   --RULESET--        \r?\n(?<ruleset>        .*?)
-                    (?:\s   --CONFIG--         \r?\n(?<config>         .*?))?
-                    (?:\s   --SETTINGS--       \r?\n(?<settings>       .*?))?
-                    (?:\s   --REQUIREMENTS--   \r?\n(?<requirements>   .*?))?
-                    (?:\s   --EXPECT--         \r?\n(?<expect>         .*?\r?\n*))?
-                    (?:\s   --INPUT--          \r?\n(?<input>          .*))?
-                $/sx',
+                <<<'EOD'
+                    /^
+                                                --TEST--           \r?\n(?<title>          .*?)
+                                           \s   --RULESET--        \r?\n(?<ruleset>        .*?)
+                                        (?:\s   --CONFIG--         \r?\n(?<config>         .*?))?
+                                        (?:\s   --SETTINGS--       \r?\n(?<settings>       .*?))?
+                                        (?:\s   --REQUIREMENTS--   \r?\n(?<requirements>   .*?))?
+                                        (?:\s   --EXPECT--         \r?\n(?<expect>         .*?\r?\n*))?
+                                        (?:\s   --INPUT--          \r?\n(?<input>          .*))?
+                                    $/sx
+                    EOD,
                 $file->getContents(),
                 $match
             )) {

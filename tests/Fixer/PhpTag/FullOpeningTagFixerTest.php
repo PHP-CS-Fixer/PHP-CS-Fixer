@@ -45,16 +45,20 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";', '<? $query = "SELECT .... FROM my_table WHERE id <? LIMIT 1";'];
 
-        yield ['<?php
+        yield [<<<'EOD'
+            <?php
 
-echo \'Foo\';
+            echo 'Foo';
 
-',
-            '<?
 
-echo \'Foo\';
+            EOD,
+            <<<'EOD'
+                <?
 
-',
+                echo 'Foo';
+
+
+                EOD,
         ];
 
         yield [
@@ -68,27 +72,35 @@ echo \'Foo\';
         ];
 
         yield [
-            "<?php
-'<?
-';",
+            <<<'EOD'
+                <?php
+                '<?
+                ';
+                EOD,
         ];
 
         yield [
-            '<?php
-// Replace all <? with <?php !',
+            <<<'EOD'
+                <?php
+                // Replace all <? with <?php !
+                EOD,
         ];
 
         yield [
-            '<?php
-// Replace all <? with <?pHp !',
+            <<<'EOD'
+                <?php
+                // Replace all <? with <?pHp !
+                EOD,
         ];
 
         yield [
-            '<?php
-/**
- * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
- *
- */',
+            <<<'EOD'
+                <?php
+                /**
+                 * Convert <?= ?> to long-form <?php echo ?> and <?php ?> to <?php ?>
+                 *
+                 */
+                EOD,
         ];
 
         yield [
@@ -100,20 +112,22 @@ echo \'Foo\';
         ];
 
         yield [
-            '<?php
-$a = <<<           "TEST"
-<?Php <?
-TEST;?>
-TEST;
+            <<<'EOD'
+                <?php
+                $a = <<<           "TEST"
+                <?Php <?
+                TEST;?>
+                TEST;
 
-?>
-<?php $a = <<<           \'TEST\'
-<?PHP <?
-TEST;?>
-TEST;
+                ?>
+                <?php $a = <<<           'TEST'
+                <?PHP <?
+                TEST;?>
+                TEST;
 
-?>
-',
+                ?>
+
+                EOD,
         ];
 
         yield 'binary string' => [

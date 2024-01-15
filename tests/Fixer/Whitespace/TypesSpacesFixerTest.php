@@ -59,32 +59,34 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
-            '<?php
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
             ['space' => 'single'],
         ];
     }
@@ -125,15 +127,19 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function foo(TypeA
-                |
-                TypeB $x) {}',
+            <<<'EOD'
+                <?php function foo(TypeA
+                                |
+                                TypeB $x) {}
+                EOD,
         ];
 
         yield [
-            '<?php function foo(TypeA
-                |
-                TypeB $x) {}',
+            <<<'EOD'
+                <?php function foo(TypeA
+                                |
+                                TypeB $x) {}
+                EOD,
             null,
             ['space' => 'single'],
         ];
@@ -149,47 +155,59 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function foo(TypeA// not a space
-|//not a space
-TypeB $x) {}',
+            <<<'EOD'
+                <?php function foo(TypeA// not a space
+                |//not a space
+                TypeB $x) {}
+                EOD,
         ];
 
         yield [
-            '<?php function foo(TypeA// not a space
-| //not a space
-TypeB $x) {}',
-            '<?php function foo(TypeA// not a space
-|//not a space
-TypeB $x) {}',
+            <<<'EOD'
+                <?php function foo(TypeA// not a space
+                | //not a space
+                TypeB $x) {}
+                EOD,
+            <<<'EOD'
+                <?php function foo(TypeA// not a space
+                |//not a space
+                TypeB $x) {}
+                EOD,
             ['space' => 'single'],
         ];
 
         yield [
-            '<?php class Foo {
-                public function __construct(
-                    public int|string $a,
-                    protected int|string $b,
-                    private int|string $c
-                ) {}
-            }',
-            '<?php class Foo {
-                public function __construct(
-                    public int    |    string $a,
-                    protected int | string $b,
-                    private int   |   string $c
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public int|string $a,
+                                    protected int|string $b,
+                                    private int|string $c
+                                ) {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public int    |    string $a,
+                                    protected int | string $b,
+                                    private int   |   string $c
+                                ) {}
+                            }
+                EOD,
         ];
 
         yield [
-            '<?php
-                function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
-            '<?php
-                function foo(TypeA |TypeB $x) {}
-                try {} catch (ErrorA| ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                function foo(TypeA | TypeB $x) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(TypeA |TypeB $x) {}
+                                try {} catch (ErrorA| ErrorB $e) {}
+                EOD."\n            ",
             [
                 'space' => 'single',
                 'space_multiple_catch' => 'none',
@@ -197,14 +215,16 @@ TypeB $x) {}',
         ];
 
         yield [
-            '<?php
-                function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
-            '<?php
-                function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                function foo(TypeA|TypeB $x) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(TypeA | TypeB $x) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
             [
                 'space' => 'none',
                 'space_multiple_catch' => 'single',
@@ -212,14 +232,16 @@ TypeB $x) {}',
         ];
 
         yield [
-            '<?php
-                function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
-            '<?php
-                function foo(TypeA| TypeB $x) {}
-                try {} catch (ErrorA |ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                function foo(TypeA|TypeB $x) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(TypeA| TypeB $x) {}
+                                try {} catch (ErrorA |ErrorB $e) {}
+                EOD."\n            ",
             [
                 'space' => 'none',
                 'space_multiple_catch' => 'none',
@@ -227,14 +249,16 @@ TypeB $x) {}',
         ];
 
         yield [
-            '<?php
-                function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
-            '<?php
-                function foo(TypeA |TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                function foo(TypeA | TypeB $x) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(TypeA |TypeB $x) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
             [
                 'space' => 'single',
                 'space_multiple_catch' => 'single',
@@ -242,28 +266,32 @@ TypeB $x) {}',
         ];
 
         yield [
-            '<?php
-                function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
-            '<?php
-                function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                function foo(TypeA | TypeB $x) {}
+                                try {} catch (ErrorA | ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(TypeA|TypeB $x) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
             [
                 'space' => 'single',
             ],
         ];
 
         yield [
-            '<?php
-                function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
-            '<?php
-                function foo(TypeA  | TypeB $x) {}
-                try {} catch (ErrorA  | ErrorB $e) {}
-            ',
+            <<<'EOD'
+                <?php
+                                function foo(TypeA|TypeB $x) {}
+                                try {} catch (ErrorA|ErrorB $e) {}
+                EOD."\n            ",
+            <<<'EOD'
+                <?php
+                                function foo(TypeA  | TypeB $x) {}
+                                try {} catch (ErrorA  | ErrorB $e) {}
+                EOD."\n            ",
             [
                 'space' => 'none',
             ],
@@ -283,20 +311,24 @@ TypeB $x) {}',
     public static function provideFix81Cases(): iterable
     {
         yield [
-            '<?php class Foo {
-                public function __construct(
-                    public readonly int|string $a,
-                    protected    readonly       int|string $b,
-                    private  readonly int|string $c
-                ) {}
-            }',
-            '<?php class Foo {
-                public function __construct(
-                    public readonly int    |    string $a,
-                    protected    readonly       int | string $b,
-                    private  readonly int   |   string $c
-                ) {}
-            }',
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public readonly int|string $a,
+                                    protected    readonly       int|string $b,
+                                    private  readonly int|string $c
+                                ) {}
+                            }
+                EOD,
+            <<<'EOD'
+                <?php class Foo {
+                                public function __construct(
+                                    public readonly int    |    string $a,
+                                    protected    readonly       int | string $b,
+                                    private  readonly int   |   string $c
+                                ) {}
+                            }
+                EOD,
         ];
 
         yield [

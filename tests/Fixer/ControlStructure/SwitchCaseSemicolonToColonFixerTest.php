@@ -34,209 +34,231 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-                switch (1) {
-                    case f(function () { return; }):
-                        break;
-                }
-                ',
-            '<?php
-                switch (1) {
-                    case f(function () { return; });
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch (1) {
+                                    case f(function () { return; }):
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch (1) {
+                                    case f(function () { return; });
+                                        break;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                switch ($a) {
-                    case 42:
-                        break;
-                }
-                ',
-            '<?php
-                switch ($a) {
-                    case 42;
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42:
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42;
+                                        break;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                switch ($a) {
-                    case ["foo" => "bar"]:
-                        break;
-                }
-                ',
-            '<?php
-                switch ($a) {
-                    case ["foo" => "bar"];
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case ["foo" => "bar"]:
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case ["foo" => "bar"];
+                                        break;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                    switch ($a) {
-                        case 42:
-                            break;
-                        case 1:
-                            switch ($a) {
-                                case 42:
-                                    break;
-                                default :
-                                    echo 1;
-                            }
-                    }',
-            '<?php
-                    switch ($a) {
-                        case 42;
-                            break;
-                        case 1:
-                            switch ($a) {
-                                case 42;
-                                    break;
-                                default ;
-                                    echo 1;
-                            }
-                    }',
+            <<<'EOD'
+                <?php
+                                    switch ($a) {
+                                        case 42:
+                                            break;
+                                        case 1:
+                                            switch ($a) {
+                                                case 42:
+                                                    break;
+                                                default :
+                                                    echo 1;
+                                            }
+                                    }
+                EOD,
+            <<<'EOD'
+                <?php
+                                    switch ($a) {
+                                        case 42;
+                                            break;
+                                        case 1:
+                                            switch ($a) {
+                                                case 42;
+                                                    break;
+                                                default ;
+                                                    echo 1;
+                                            }
+                                    }
+                EOD,
         ];
 
         yield [
-            '<?php
-                switch ($a) {
-                    case 42:;;// NoEmptyStatementFixer should clean this up (partly)
-                        break;
-                }
-                ',
-            '<?php
-                switch ($a) {
-                    case 42;;;// NoEmptyStatementFixer should clean this up (partly)
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42:;;// NoEmptyStatementFixer should clean this up (partly)
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case 42;;;// NoEmptyStatementFixer should clean this up (partly)
+                                        break;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d" :
-                        break;
-                }
-                ',
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d" ;
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d" :
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d" ;
+                                        break;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d": break;
-                }
-                ',
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "d"; break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d": break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "d"; break;
+                                }
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                switch($a) {
-                    case (int) $a < 1: {
-                        echo "leave ; alone";
-                        break;
-                    }
-                    case ($a < 2)/* test */ : {
-                        echo "fix 1";
-                        break;
-                    }
-                    case (3):{
-                        echo "fix 2";
-                        break;
-                    }
-                    case /**/(/**/ // test
-                        4
-                        /**/)//
-                        /**/: {
-                        echo "fix 3";
-                        break;
-                    }
-                    case (((int)$b) + 4.1) : {
-                        echo "fix 4";
-                        break;
-                    }
-                    case ($b + 1) * 2 : {;;
-                        echo "leave alone";
-                        break;
-                    }
-                }
-                ',
-            '<?php
-                switch($a) {
-                    case (int) $a < 1; {
-                        echo "leave ; alone";
-                        break;
-                    }
-                    case ($a < 2)/* test */ ; {
-                        echo "fix 1";
-                        break;
-                    }
-                    case (3);{
-                        echo "fix 2";
-                        break;
-                    }
-                    case /**/(/**/ // test
-                        4
-                        /**/)//
-                        /**/; {
-                        echo "fix 3";
-                        break;
-                    }
-                    case (((int)$b) + 4.1) ; {
-                        echo "fix 4";
-                        break;
-                    }
-                    case ($b + 1) * 2 ; {;;
-                        echo "leave alone";
-                        break;
-                    }
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch($a) {
+                                    case (int) $a < 1: {
+                                        echo "leave ; alone";
+                                        break;
+                                    }
+                                    case ($a < 2)/* test */ : {
+                                        echo "fix 1";
+                                        break;
+                                    }
+                                    case (3):{
+                                        echo "fix 2";
+                                        break;
+                                    }
+                                    case /**/(/**/ // test
+                                        4
+                                        /**/)//
+                                        /**/: {
+                                        echo "fix 3";
+                                        break;
+                                    }
+                                    case (((int)$b) + 4.1) : {
+                                        echo "fix 4";
+                                        break;
+                                    }
+                                    case ($b + 1) * 2 : {;;
+                                        echo "leave alone";
+                                        break;
+                                    }
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch($a) {
+                                    case (int) $a < 1; {
+                                        echo "leave ; alone";
+                                        break;
+                                    }
+                                    case ($a < 2)/* test */ ; {
+                                        echo "fix 1";
+                                        break;
+                                    }
+                                    case (3);{
+                                        echo "fix 2";
+                                        break;
+                                    }
+                                    case /**/(/**/ // test
+                                        4
+                                        /**/)//
+                                        /**/; {
+                                        echo "fix 3";
+                                        break;
+                                    }
+                                    case (((int)$b) + 4.1) ; {
+                                        echo "fix 4";
+                                        break;
+                                    }
+                                    case ($b + 1) * 2 ; {;;
+                                        echo "leave alone";
+                                        break;
+                                    }
+                                }
+                EOD."\n                ",
         ];
 
         yield 'nested switch in switch case' => [
-            '<?php
-                    switch (1) {
-                        case new class {public function A(){echo 1;switch(time()){case 1: echo 2;}}}:break;}
-                ',
-            '<?php
-                    switch (1) {
-                        case new class {public function A(){echo 1;switch(time()){case 1; echo 2;}}};break;}
-                ',
+            <<<'EOD'
+                <?php
+                                    switch (1) {
+                                        case new class {public function A(){echo 1;switch(time()){case 1: echo 2;}}}:break;}
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    switch (1) {
+                                        case new class {public function A(){echo 1;switch(time()){case 1; echo 2;}}};break;}
+                EOD."\n                ",
         ];
 
         yield [
-            '<?php
-                switch (1) {
-                    case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} :
-                        break;
-                }
-                ',
-            '<?php
-                switch (1) {
-                    case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} ;
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch (1) {
+                                    case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} :
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch (1) {
+                                    case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} ;
+                                        break;
+                                }
+                EOD."\n                ",
         ];
     }
 
@@ -253,18 +275,20 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield [
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }
-                ',
-            '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly";
-                        break;
-                }
-                ',
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "this" ? "is" : "ugly":
+                                        break;
+                                }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                switch ($a) {
+                                    case $b ? "c" : "this" ? "is" : "ugly";
+                                        break;
+                                }
+                EOD."\n                ",
         ];
     }
 
@@ -281,40 +305,44 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'Simple match' => [
-            '<?php
-                    echo match ($a) {
-                        default => "foo",
-                    };
-                ',
+            <<<'EOD'
+                <?php
+                                    echo match ($a) {
+                                        default => "foo",
+                                    };
+                EOD."\n                ",
         ];
 
         yield 'Match in switch' => [
-            '<?php
-                    switch ($foo) {
-                        case "bar":
-                            echo match ($a) {
-                                default => "foo",
-                            };
-                            break;
-                    }
-                ',
+            <<<'EOD'
+                <?php
+                                    switch ($foo) {
+                                        case "bar":
+                                            echo match ($a) {
+                                                default => "foo",
+                                            };
+                                            break;
+                                    }
+                EOD."\n                ",
         ];
 
         yield 'Match in case value' => [
-            '<?php
-                    switch ($foo) {
-                        case match ($bar) {
-                            default => "foo",
-                        }: echo "It works!";
-                    }
-                ',
-            '<?php
-                    switch ($foo) {
-                        case match ($bar) {
-                            default => "foo",
-                        }; echo "It works!";
-                    }
-                ',
+            <<<'EOD'
+                <?php
+                                    switch ($foo) {
+                                        case match ($bar) {
+                                            default => "foo",
+                                        }: echo "It works!";
+                                    }
+                EOD."\n                ",
+            <<<'EOD'
+                <?php
+                                    switch ($foo) {
+                                        case match ($bar) {
+                                            default => "foo",
+                                        }; echo "It works!";
+                                    }
+                EOD."\n                ",
         ];
     }
 
@@ -331,84 +359,88 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [
-            '<?php
-enum Suit {
-    case Hearts; // do not fix
-}
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts; // do not fix
+                }
 
-enum UserStatus: string {
-  case Pending = "P"; // do not fix
+                enum UserStatus: string {
+                  case Pending = "P"; // do not fix
 
-  public function label(): string {
-    switch (foo()) {
-        case 42: // do fix
-            bar();
-
-            $a = new class() {
-                public function bar() {
+                  public function label(): string {
                     switch (foo()) {
-                        case 43: // do fix
-                        bar();
+                        case 42: // do fix
+                            bar();
+
+                            $a = new class() {
+                                public function bar() {
+                                    switch (foo()) {
+                                        case 43: // do fix
+                                        bar();
+                                    }
+
+                                    $expressionResult = match ($condition) {
+                                        default => baz(),
+                                    };
+                                }
+                            };
+
+                            $a->bar();
+
+                            break;
                     }
 
-                    $expressionResult = match ($condition) {
-                        default => baz(),
-                    };
+                    return "label";
+                  }
                 }
-            };
 
-            $a->bar();
+                $expressionResult = match ($condition) {
+                    default => baz(),
+                };
 
-            break;
-    }
+                EOD,
+            <<<'EOD'
+                <?php
+                enum Suit {
+                    case Hearts; // do not fix
+                }
 
-    return "label";
-  }
-}
+                enum UserStatus: string {
+                  case Pending = "P"; // do not fix
 
-$expressionResult = match ($condition) {
-    default => baz(),
-};
-',
-            '<?php
-enum Suit {
-    case Hearts; // do not fix
-}
-
-enum UserStatus: string {
-  case Pending = "P"; // do not fix
-
-  public function label(): string {
-    switch (foo()) {
-        case 42; // do fix
-            bar();
-
-            $a = new class() {
-                public function bar() {
+                  public function label(): string {
                     switch (foo()) {
-                        case 43; // do fix
-                        bar();
+                        case 42; // do fix
+                            bar();
+
+                            $a = new class() {
+                                public function bar() {
+                                    switch (foo()) {
+                                        case 43; // do fix
+                                        bar();
+                                    }
+
+                                    $expressionResult = match ($condition) {
+                                        default => baz(),
+                                    };
+                                }
+                            };
+
+                            $a->bar();
+
+                            break;
                     }
 
-                    $expressionResult = match ($condition) {
-                        default => baz(),
-                    };
+                    return "label";
+                  }
                 }
-            };
 
-            $a->bar();
+                $expressionResult = match ($condition) {
+                    default => baz(),
+                };
 
-            break;
-    }
-
-    return "label";
-  }
-}
-
-$expressionResult = match ($condition) {
-    default => baz(),
-};
-',
+                EOD,
         ];
     }
 }

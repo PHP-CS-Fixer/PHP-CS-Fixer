@@ -31,10 +31,12 @@ final class PhpdocVarAnnotationCorrectOrderFixer extends AbstractFixer
     {
         return new FixerDefinition(
             '`@var` and `@type` annotations must have type and name in the correct order.',
-            [new CodeSample('<?php
-/** @var $foo int */
-$foo = 2 + 2;
-')]
+            [new CodeSample(<<<'EOD'
+                <?php
+                /** @var $foo int */
+                $foo = 2 + 2;
+
+                EOD)]
         );
     }
 

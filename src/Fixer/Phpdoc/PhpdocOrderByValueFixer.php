@@ -41,24 +41,28 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
             'Order PHPDoc tags by value.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @covers Foo
- * @covers Bar
- */
-final class MyTest extends \PHPUnit_Framework_TestCase
-{}
-'
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @covers Foo
+                         * @covers Bar
+                         */
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {}
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @author Bob
- * @author Alice
- */
-final class MyTest extends \PHPUnit_Framework_TestCase
-{}
-',
+                    <<<'EOD'
+                        <?php
+                        /**
+                         * @author Bob
+                         * @author Alice
+                         */
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {}
+
+                        EOD,
                     [
                         'annotations' => [
                             'author',

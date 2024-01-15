@@ -54,27 +54,29 @@ final class DocumentationTest extends TestCase
         $actual = file_get_contents($path);
 
         $expected = preg_replace_callback(
-            '/
-                # an example
-                (?<before>
-                    Example\ \#\d\n
-                    ~+\n
-                    \n
-                    (?:\*Default\*\ configuration\.\n\n)?
-                    (?:With\ configuration:.*?\n\n)?
-                )
-                # with a diff that could not be generated
-                \.\.\ error::\n
-                \ \ \ Cannot\ generate\ diff\ for\ code\ sample\ \#\d\ of\ rule\ .+?:\n
-                \ \ \ the\ sample\ is\ not\ suitable\ for\ current\ version\ of\ PHP\ \(.+?\).\n
-                # followed by another title or end of file
-                (?<after>
-                    \n
-                    [^ \n].*?
-                    \n
-                    |$
-                )
-            /x',
+            <<<'EOD'
+                /
+                                # an example
+                                (?<before>
+                                    Example\ \#\d\n
+                                    ~+\n
+                                    \n
+                                    (?:\*Default\*\ configuration\.\n\n)?
+                                    (?:With\ configuration:.*?\n\n)?
+                                )
+                                # with a diff that could not be generated
+                                \.\.\ error::\n
+                                \ \ \ Cannot\ generate\ diff\ for\ code\ sample\ \#\d\ of\ rule\ .+?:\n
+                                \ \ \ the\ sample\ is\ not\ suitable\ for\ current\ version\ of\ PHP\ \(.+?\).\n
+                                # followed by another title or end of file
+                                (?<after>
+                                    \n
+                                    [^ \n].*?
+                                    \n
+                                    |$
+                                )
+                            /x
+                EOD,
             static function (array $matches) use ($actual): string {
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');

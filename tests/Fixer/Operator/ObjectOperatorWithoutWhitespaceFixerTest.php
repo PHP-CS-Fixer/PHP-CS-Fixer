@@ -71,16 +71,20 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
 
         // Ensure that doesn't break chained multi-line statements
         yield [
-            '<?php $object->method()
-                        ->method2()
-                        ->method3();',
+            <<<'EOD'
+                <?php $object->method()
+                                        ->method2()
+                                        ->method3();
+                EOD,
         ];
 
         yield [
-            '<?php $this
-             ->add()
-             // Some comment
-             ->delete();',
+            <<<'EOD'
+                <?php $this
+                             ->add()
+                             // Some comment
+                             ->delete();
+                EOD,
         ];
     }
 

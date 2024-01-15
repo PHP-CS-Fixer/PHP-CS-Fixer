@@ -34,23 +34,31 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
-            '<?php
-                foo();
-                bar();',
-            '<?php
-                foo(); bar();',
+            <<<'EOD'
+                <?php
+                                foo();
+                                bar();
+                EOD,
+            <<<'EOD'
+                <?php
+                                foo(); bar();
+                EOD,
         ];
 
         yield 'for loop' => [
-            '<?php
-                for ($i = 0; $i < 10; ++$i) {
-                    foo();
-                }',
+            <<<'EOD'
+                <?php
+                                for ($i = 0; $i < 10; ++$i) {
+                                    foo();
+                                }
+                EOD,
         ];
 
         yield 'mixed `;` and close tag' => [
-            '<?php ++$a;
-++$b ?>',
+            <<<'EOD'
+                <?php ++$a;
+                ++$b ?>
+                EOD,
             '<?php ++$a; ++$b ?>',
         ];
 

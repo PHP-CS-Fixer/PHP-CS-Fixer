@@ -66,13 +66,15 @@ final class ReferenceAnalyzerTest extends TestCase
 
         yield ['<?php function &() {};'];
 
-        yield ['<?php
-class Foo {
-    public $value = 42;
-    public function &getValue() {
-        return $this->value;
-    }
-}'];
+        yield [<<<'EOD'
+            <?php
+            class Foo {
+                public $value = 42;
+                public function &getValue() {
+                    return $this->value;
+                }
+            }
+            EOD];
 
         yield ['<?php function foo(\Bar\Baz &$qux) {};'];
 

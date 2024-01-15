@@ -46,9 +46,11 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         ];
 
         yield [
-            '<?php function foo(? // foo
-                    int $param): ? // foo
-                    int {}',
+            <<<'EOD'
+                <?php function foo(? // foo
+                                    int $param): ? // foo
+                                    int {}
+                EOD,
         ];
 
         yield [
@@ -107,12 +109,16 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         ];
 
         yield [
-            '<?php $foo = function(?array $a,
-                    ?array $b): ?Bar\Baz {};',
-            '<?php $foo = function(?
-                    array $a,
-                    ? array $b): ?
-                    Bar\Baz {};',
+            <<<'EOD'
+                <?php $foo = function(?array $a,
+                                    ?array $b): ?Bar\Baz {};
+                EOD,
+            <<<'EOD'
+                <?php $foo = function(?
+                                    array $a,
+                                    ? array $b): ?
+                                    Bar\Baz {};
+                EOD,
         ];
 
         yield [
@@ -151,12 +157,16 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         ];
 
         yield [
-            '<?php $foo = fn(?array $a,
-                    ?array $b): ?Bar\Baz => null;',
-            '<?php $foo = fn(?
-                    array $a,
-                    ? array $b): ?
-                    Bar\Baz => null;',
+            <<<'EOD'
+                <?php $foo = fn(?array $a,
+                                    ?array $b): ?Bar\Baz => null;
+                EOD,
+            <<<'EOD'
+                <?php $foo = fn(?
+                                    array $a,
+                                    ? array $b): ?
+                                    Bar\Baz => null;
+                EOD,
         ];
     }
 

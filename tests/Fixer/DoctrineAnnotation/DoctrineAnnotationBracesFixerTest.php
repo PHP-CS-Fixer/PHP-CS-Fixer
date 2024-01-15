@@ -37,244 +37,292 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithBracesCases(): iterable
     {
         yield from self::createTestCases([
-            ['
-/**
- * @Foo()
- */'],
-            ['
-/**
- * @Foo   ()
- */'],
-            ['
-/**
- * @Foo
- * (
- * )
- */'],
-            ['
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo()
- */', '
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Foo
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo   ()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 * (
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo()
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Foo
+                 */
+                EOD],
             [
                 '/** @Foo() */',
                 '/** @Foo */',
             ],
-            ['
-/**
- * @Foo(@Bar())
- */', '
-/**
- * @Foo(@Bar)
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar()
- * )
- */', '
-/**
- * @Foo(
- *     @Bar
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar(),
- *     "baz"
- * )
- */', '
-/**
- * @Foo(
- *     @Bar,
- *     "baz"
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar\Baz()
- * )
- */', '
-/**
- * @Foo(
- *     @Bar\Baz
- * )
- */'],
-            ['
-/**
- * @Foo() @Bar\Baz()
- */', '
-/**
- * @Foo @Bar\Baz
- */'],
-            ['
-/**
- * @Foo("@Bar")
- */'],
-            ['
-/**
- * Description with a single " character.
- *
- * @Foo("string "" with inner quote")
- *
- * @param mixed description with a single " character.
- */'],
-            ['
-/**
- * @Foo(@Bar
- */'],
-            ['
-/**
- * @Foo())@Bar)
- */', '
-/**
- * @Foo)@Bar)
- */'],
-            ['
-/**
- * See {@link https://help Help} or {@see BarClass} for details.
- */'],
-            ['
-/**
- * @var int
- */'],
-            ['
-/**
- * // PHPDocumentor 1
- * @abstract
- * @access
- * @code
- * @deprec
- * @encode
- * @exception
- * @final
- * @ingroup
- * @inheritdoc
- * @inheritDoc
- * @magic
- * @name
- * @toc
- * @tutorial
- * @private
- * @static
- * @staticvar
- * @staticVar
- * @throw
- *
- * // PHPDocumentor 2
- * @api
- * @author
- * @category
- * @copyright
- * @deprecated
- * @example
- * @filesource
- * @global
- * @ignore
- * @internal
- * @license
- * @link
- * @method
- * @package
- * @param
- * @property
- * @property-read
- * @property-write
- * @return
- * @see
- * @since
- * @source
- * @subpackage
- * @throws
- * @todo
- * @TODO
- * @usedBy
- * @uses
- * @var
- * @version
- *
- * // PHPUnit
- * @after
- * @afterClass
- * @backupGlobals
- * @backupStaticAttributes
- * @before
- * @beforeClass
- * @codeCoverageIgnore
- * @codeCoverageIgnoreStart
- * @codeCoverageIgnoreEnd
- * @covers
- * @coversDefaultClass
- * @coversNothing
- * @dataProvider
- * @depends
- * @expectedException
- * @expectedExceptionCode
- * @expectedExceptionMessage
- * @expectedExceptionMessageRegExp
- * @group
- * @large
- * @medium
- * @preserveGlobalState
- * @requires
- * @runTestsInSeparateProcesses
- * @runInSeparateProcess
- * @small
- * @test
- * @testdox
- * @ticket
- * @uses
- *
- * // PHPCheckStyle
- * @SuppressWarnings
- *
- * // PHPStorm
- * @noinspection
- *
- * // PEAR
- * @package_version
- *
- * // PlantUML
- * @enduml
- * @startuml
- *
- * // Psalm
- * @psalm
- * @psalm-param
- *
- * // PHPStan
- * @phpstan
- * @phpstan-param
- *
- * // other
- * @fix
- * @FIXME
- * @fixme
- * @fixme: foo
- * @override
- * @todo: foo
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(@Bar())
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(@Bar)
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar()
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar(),
+                 *     "baz"
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar,
+                 *     "baz"
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar\Baz()
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar\Baz
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo() @Bar\Baz()
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo @Bar\Baz
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("@Bar")
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo("string "" with inner quote")
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(@Bar
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo())@Bar)
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo)@Bar)
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * See {@link https://help Help} or {@see BarClass} for details.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @var int
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * // PHPDocumentor 1
+                 * @abstract
+                 * @access
+                 * @code
+                 * @deprec
+                 * @encode
+                 * @exception
+                 * @final
+                 * @ingroup
+                 * @inheritdoc
+                 * @inheritDoc
+                 * @magic
+                 * @name
+                 * @toc
+                 * @tutorial
+                 * @private
+                 * @static
+                 * @staticvar
+                 * @staticVar
+                 * @throw
+                 *
+                 * // PHPDocumentor 2
+                 * @api
+                 * @author
+                 * @category
+                 * @copyright
+                 * @deprecated
+                 * @example
+                 * @filesource
+                 * @global
+                 * @ignore
+                 * @internal
+                 * @license
+                 * @link
+                 * @method
+                 * @package
+                 * @param
+                 * @property
+                 * @property-read
+                 * @property-write
+                 * @return
+                 * @see
+                 * @since
+                 * @source
+                 * @subpackage
+                 * @throws
+                 * @todo
+                 * @TODO
+                 * @usedBy
+                 * @uses
+                 * @var
+                 * @version
+                 *
+                 * // PHPUnit
+                 * @after
+                 * @afterClass
+                 * @backupGlobals
+                 * @backupStaticAttributes
+                 * @before
+                 * @beforeClass
+                 * @codeCoverageIgnore
+                 * @codeCoverageIgnoreStart
+                 * @codeCoverageIgnoreEnd
+                 * @covers
+                 * @coversDefaultClass
+                 * @coversNothing
+                 * @dataProvider
+                 * @depends
+                 * @expectedException
+                 * @expectedExceptionCode
+                 * @expectedExceptionMessage
+                 * @expectedExceptionMessageRegExp
+                 * @group
+                 * @large
+                 * @medium
+                 * @preserveGlobalState
+                 * @requires
+                 * @runTestsInSeparateProcesses
+                 * @runInSeparateProcess
+                 * @small
+                 * @test
+                 * @testdox
+                 * @ticket
+                 * @uses
+                 *
+                 * // PHPCheckStyle
+                 * @SuppressWarnings
+                 *
+                 * // PHPStorm
+                 * @noinspection
+                 *
+                 * // PEAR
+                 * @package_version
+                 *
+                 * // PlantUML
+                 * @enduml
+                 * @startuml
+                 *
+                 * // Psalm
+                 * @psalm
+                 * @psalm-param
+                 *
+                 * // PHPStan
+                 * @phpstan
+                 * @phpstan-param
+                 *
+                 * // other
+                 * @fix
+                 * @FIXME
+                 * @fixme
+                 * @fixme: foo
+                 * @override
+                 * @todo: foo
+                 */
+                EOD],
         ]);
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @see \User getId()
- */
-',
+                /**
+                 * @see \User getId()
+                 */
+
+                EOD,
         ];
     }
 
@@ -292,262 +340,316 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFixWithoutBracesCases(): iterable
     {
         yield from self::createTestCases([
-            ['
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Baz\Bar
- */', '
-/**
- * Foo.
- *
- * @author John Doe
- *
- * @Baz\Bar ( )
- */'],
+            [<<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Baz\Bar
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * Foo.
+                 *
+                 * @author John Doe
+                 *
+                 * @Baz\Bar ( )
+                 */
+                EOD],
             [
                 '/** @Foo */',
                 '/** @Foo   () */',
             ],
-            ['
-/**
- * @Foo("bar")
- */'],
-            ['
-/**
- * @Foo
- */', '
-/**
- * @Foo
- * (
- * )
- */'],
-            ['
-/**
- * @Foo(@Bar)
- */', '
-/**
- * @Foo(@Bar())
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar
- * )
- */', '
-/**
- * @Foo(
- *     @Bar()
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar,
- *     "baz"
- * )
- */', '
-/**
- * @Foo(
- *     @Bar(),
- *     "baz"
- * )
- */'],
-            ['
-/**
- * @Foo(
- *     @Bar\Baz
- * )
- */', '
-/**
- * @Foo(
- *     @Bar\Baz()
- * )
- */'],
-            ['
-/**
- * @Foo @Bar\Baz
- */', '
-/**
- * @Foo() @Bar\Baz()
- */'],
-            ['
-/**
- * @\Foo @\Bar\Baz
- */', '
-/**
- * @\Foo() @\Bar\Baz()
- */'],
-            ['
-/**
- * @Foo("@Bar()")
- */'],
-            ['
-/**
- * Description with a single " character.
- *
- * @Foo("string "" with inner quote")
- *
- * @param mixed description with a single " character.
- */'],
-            ['
-/**
- * @Foo(
- */'],
-            ['
-/**
- * @Foo)
- */'],
-            ['
-/**
- * @Foo(@Bar()
- */'],
-            ['
-/**
- * @Foo
- * @Bar
- * @Baz
- */', '
-/**
- * @Foo()
- * @Bar()
- * @Baz()
- */'],
-            ['
-/**
- * @FIXME ()
- * @fixme ()
- * @TODO ()
- * @todo ()
- */'],
-            ['
-/**
- * // PHPDocumentor 1
- * @abstract()
- * @access()
- * @code()
- * @deprec()
- * @encode()
- * @exception()
- * @final()
- * @ingroup()
- * @inheritdoc()
- * @inheritDoc()
- * @magic()
- * @name()
- * @toc()
- * @tutorial()
- * @private()
- * @static()
- * @staticvar()
- * @staticVar()
- * @throw()
- *
- * // PHPDocumentor 2
- * @api()
- * @author()
- * @category()
- * @copyright()
- * @deprecated()
- * @example()
- * @filesource()
- * @global()
- * @ignore()
- * @internal()
- * @license()
- * @link()
- * @method()
- * @package()
- * @param()
- * @property()
- * @property-read()
- * @property-write()
- * @return()
- * @see()
- * @since()
- * @source()
- * @subpackage()
- * @throws()
- * @todo()
- * @TODO()
- * @usedBy()
- * @uses()
- * @var()
- * @version()
- *
- * // PHPUnit
- * @after()
- * @afterClass()
- * @backupGlobals()
- * @backupStaticAttributes()
- * @before()
- * @beforeClass()
- * @codeCoverageIgnore()
- * @codeCoverageIgnoreStart()
- * @codeCoverageIgnoreEnd()
- * @covers()
- * @coversDefaultClass()
- * @coversNothing()
- * @dataProvider()
- * @depends()
- * @expectedException()
- * @expectedExceptionCode()
- * @expectedExceptionMessage()
- * @expectedExceptionMessageRegExp()
- * @group()
- * @large()
- * @medium()
- * @preserveGlobalState()
- * @requires()
- * @runTestsInSeparateProcesses()
- * @runInSeparateProcess()
- * @small()
- * @test()
- * @testdox()
- * @ticket()
- * @uses()
- *
- * // PHPCheckStyle
- * @SuppressWarnings()
- *
- * // PHPStorm
- * @noinspection()
- *
- * // PEAR
- * @package_version()
- *
- * // PlantUML
- * @enduml()
- * @startuml()
- *
- * // Psalm
- * @psalm()
- * @psalm-param()
- *
- * // PHPStan
- * @phpstan()
- * @psalm-param()
- *
- *
- * // other
- * @fix()
- * @FIXME()
- * @fixme()
- * @fixme: foo()
- * @override()
- * @todo: foo()
- */'],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("bar")
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo
+                 * (
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(@Bar)
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(@Bar())
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar()
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar,
+                 *     "baz"
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar(),
+                 *     "baz"
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar\Baz
+                 * )
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo(
+                 *     @Bar\Baz()
+                 * )
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo @Bar\Baz
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo() @Bar\Baz()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @\Foo @\Bar\Baz
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @\Foo() @\Bar\Baz()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo("@Bar()")
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * Description with a single " character.
+                 *
+                 * @Foo("string "" with inner quote")
+                 *
+                 * @param mixed description with a single " character.
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo)
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo(@Bar()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @Foo
+                 * @Bar
+                 * @Baz
+                 */
+                EOD, <<<'EOD'
+
+                /**
+                 * @Foo()
+                 * @Bar()
+                 * @Baz()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * @FIXME ()
+                 * @fixme ()
+                 * @TODO ()
+                 * @todo ()
+                 */
+                EOD],
+            [<<<'EOD'
+
+                /**
+                 * // PHPDocumentor 1
+                 * @abstract()
+                 * @access()
+                 * @code()
+                 * @deprec()
+                 * @encode()
+                 * @exception()
+                 * @final()
+                 * @ingroup()
+                 * @inheritdoc()
+                 * @inheritDoc()
+                 * @magic()
+                 * @name()
+                 * @toc()
+                 * @tutorial()
+                 * @private()
+                 * @static()
+                 * @staticvar()
+                 * @staticVar()
+                 * @throw()
+                 *
+                 * // PHPDocumentor 2
+                 * @api()
+                 * @author()
+                 * @category()
+                 * @copyright()
+                 * @deprecated()
+                 * @example()
+                 * @filesource()
+                 * @global()
+                 * @ignore()
+                 * @internal()
+                 * @license()
+                 * @link()
+                 * @method()
+                 * @package()
+                 * @param()
+                 * @property()
+                 * @property-read()
+                 * @property-write()
+                 * @return()
+                 * @see()
+                 * @since()
+                 * @source()
+                 * @subpackage()
+                 * @throws()
+                 * @todo()
+                 * @TODO()
+                 * @usedBy()
+                 * @uses()
+                 * @var()
+                 * @version()
+                 *
+                 * // PHPUnit
+                 * @after()
+                 * @afterClass()
+                 * @backupGlobals()
+                 * @backupStaticAttributes()
+                 * @before()
+                 * @beforeClass()
+                 * @codeCoverageIgnore()
+                 * @codeCoverageIgnoreStart()
+                 * @codeCoverageIgnoreEnd()
+                 * @covers()
+                 * @coversDefaultClass()
+                 * @coversNothing()
+                 * @dataProvider()
+                 * @depends()
+                 * @expectedException()
+                 * @expectedExceptionCode()
+                 * @expectedExceptionMessage()
+                 * @expectedExceptionMessageRegExp()
+                 * @group()
+                 * @large()
+                 * @medium()
+                 * @preserveGlobalState()
+                 * @requires()
+                 * @runTestsInSeparateProcesses()
+                 * @runInSeparateProcess()
+                 * @small()
+                 * @test()
+                 * @testdox()
+                 * @ticket()
+                 * @uses()
+                 *
+                 * // PHPCheckStyle
+                 * @SuppressWarnings()
+                 *
+                 * // PHPStorm
+                 * @noinspection()
+                 *
+                 * // PEAR
+                 * @package_version()
+                 *
+                 * // PlantUML
+                 * @enduml()
+                 * @startuml()
+                 *
+                 * // Psalm
+                 * @psalm()
+                 * @psalm-param()
+                 *
+                 * // PHPStan
+                 * @phpstan()
+                 * @psalm-param()
+                 *
+                 *
+                 * // other
+                 * @fix()
+                 * @FIXME()
+                 * @fixme()
+                 * @fixme: foo()
+                 * @override()
+                 * @todo: foo()
+                 */
+                EOD],
         ]);
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @see \User getId()
- */
-',
+                /**
+                 * @see \User getId()
+                 */
+
+                EOD,
         ];
     }
 
@@ -564,22 +666,26 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     public static function provideFix82Cases(): iterable
     {
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-/**
- * @author John Doe
- *
- * @Baz\Bar
- */
-readonly class FooClass{}',
-            '<?php
+                /**
+                 * @author John Doe
+                 *
+                 * @Baz\Bar
+                 */
+                readonly class FooClass{}
+                EOD,
+            <<<'EOD'
+                <?php
 
-/**
- * @author John Doe
- *
- * @Baz\Bar ( )
- */
-readonly class FooClass{}',
+                /**
+                 * @author John Doe
+                 *
+                 * @Baz\Bar ( )
+                 */
+                readonly class FooClass{}
+                EOD,
         ];
     }
 }

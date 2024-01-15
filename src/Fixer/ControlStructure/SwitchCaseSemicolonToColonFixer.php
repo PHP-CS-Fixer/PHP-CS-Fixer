@@ -34,14 +34,16 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
             'A case should be followed by a colon and not a semicolon.',
             [
                 new CodeSample(
-                    '<?php
-    switch ($a) {
-        case 1;
-            break;
-        default;
-            break;
-    }
-'
+                    <<<'EOD'
+                        <?php
+                            switch ($a) {
+                                case 1;
+                                    break;
+                                default;
+                                    break;
+                            }
+
+                        EOD
                 ),
             ]
         );

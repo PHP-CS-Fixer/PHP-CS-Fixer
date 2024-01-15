@@ -657,14 +657,16 @@ final class TokensTest extends TestCase
         bool $caseSensitive = true
     ): void {
         $source =
-            '<?php
-                $a = function ($b) {
-                    return $b;
-                };
+            <<<'EOD'
+                <?php
+                                $a = function ($b) {
+                                    return $b;
+                                };
 
-                echo $a(1);
-                // test
-                return 123;';
+                                echo $a(1);
+                                // test
+                                return 123;
+                EOD;
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -765,10 +767,12 @@ final class TokensTest extends TestCase
     {
         yield [
             9,
-            '<?php class Foo {
-                    #[Required]
-                    public $bar;
-                }',
+            <<<'EOD'
+                <?php class Foo {
+                                    #[Required]
+                                    public $bar;
+                                }
+                EOD,
             Tokens::BLOCK_TYPE_ATTRIBUTE,
             7,
         ];
@@ -1075,30 +1079,40 @@ final class TokensTest extends TestCase
         ];
 
         yield [
-            '<?php
-//
- echo $a;',
-            '<?php
-//
-echo $a;',
+            <<<'EOD'
+                <?php
+                //
+                 echo $a;
+                EOD,
+            <<<'EOD'
+                <?php
+                //
+                echo $a;
+                EOD,
             2,
             1,
             "\n ",
         ];
 
         yield [
-            '<?php
- echo $a;',
-            '<?php
-echo $a;',
+            <<<'EOD'
+                <?php
+                 echo $a;
+                EOD,
+            <<<'EOD'
+                <?php
+                echo $a;
+                EOD,
             0,
             1,
             "\n ",
         ];
 
         yield [
-            '<?php
-echo $a;',
+            <<<'EOD'
+                <?php
+                echo $a;
+                EOD,
             '<?php echo $a;',
             0,
             1,
@@ -1117,14 +1131,16 @@ echo $a;',
     public function testAssertTokensAfterChanging(): void
     {
         $template =
-            '<?php class SomeClass {
-                    %s//
+            <<<'EOD'
+                <?php class SomeClass {
+                                    %s//
 
-                    public function __construct($name)
-                    {
-                        $this->name = $name;
-                    }
-            }';
+                                    public function __construct($name)
+                                    {
+                                        $this->name = $name;
+                                    }
+                            }
+                EOD;
 
         $tokens = Tokens::fromCode(sprintf($template, ''));
         $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);
@@ -1271,18 +1287,22 @@ echo $a;',
      */
     public function testRemovingLeadingWhitespaceWillNotIncreaseTokensCount(): void
     {
-        $tokens = Tokens::fromCode('<?php
-                                    // Foo
-                                    $bar;');
+        $tokens = Tokens::fromCode(<<<'EOD'
+            <?php
+                                                // Foo
+                                                $bar;
+            EOD);
         $originalCount = $tokens->count();
 
         $tokens->removeLeadingWhitespace(4);
 
         self::assertCount($originalCount, $tokens);
         self::assertSame(
-            '<?php
-                                    // Foo
-$bar;',
+            <<<'EOD'
+                <?php
+                                                    // Foo
+                $bar;
+                EOD,
             $tokens->generateCode()
         );
     }
@@ -1292,18 +1312,22 @@ $bar;',
      */
     public function testRemovingTrailingWhitespaceWillNotIncreaseTokensCount(): void
     {
-        $tokens = Tokens::fromCode('<?php
-                                    // Foo
-                                    $bar;');
+        $tokens = Tokens::fromCode(<<<'EOD'
+            <?php
+                                                // Foo
+                                                $bar;
+            EOD);
         $originalCount = $tokens->count();
 
         $tokens->removeTrailingWhitespace(2);
 
         self::assertCount($originalCount, $tokens);
         self::assertSame(
-            '<?php
-                                    // Foo
-$bar;',
+            <<<'EOD'
+                <?php
+                                                    // Foo
+                $bar;
+                EOD,
             $tokens->generateCode()
         );
     }

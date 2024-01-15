@@ -32,21 +32,23 @@ final class LineTest extends TestCase
      *
      * @var string
      */
-    private static $sample = '/**
-     * Test docblock.
-     *
-     * @param string $hello
-     * @param bool $test Description
-     *        extends over many lines
-     *
-     * @param adkjbadjasbdand $asdnjkasd
-     *
-     * @throws \Exception asdnjkasd
-     * asdasdasdasdasdasdasdasd
-     * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
-     *
-     * @return void
-     */';
+    private static $sample = <<<'EOD'
+        /**
+             * Test docblock.
+             *
+             * @param string $hello
+             * @param bool $test Description
+             *        extends over many lines
+             *
+             * @param adkjbadjasbdand $asdnjkasd
+             *
+             * @throws \Exception asdnjkasd
+             * asdasdasdasdasdasdasdasd
+             * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
+             *
+             * @return void
+             */
+        EOD;
 
     /**
      * This represents the content of each line.

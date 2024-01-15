@@ -61,12 +61,14 @@ final class ModernizeStrposFixer extends AbstractFixer
             'Replace `strpos()` calls with `str_starts_with()` or `str_contains()` if possible.',
             [
                 new CodeSample(
-                    '<?php
-if (strpos($haystack, $needle) === 0) {}
-if (strpos($haystack, $needle) !== 0) {}
-if (strpos($haystack, $needle) !== false) {}
-if (strpos($haystack, $needle) === false) {}
-'
+                    <<<'EOD'
+                        <?php
+                        if (strpos($haystack, $needle) === 0) {}
+                        if (strpos($haystack, $needle) !== 0) {}
+                        if (strpos($haystack, $needle) !== false) {}
+                        if (strpos($haystack, $needle) === false) {}
+
+                        EOD
                 ),
             ],
             null,

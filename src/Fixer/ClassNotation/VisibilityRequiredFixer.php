@@ -41,25 +41,29 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
             'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
             [
                 new CodeSample(
-                    '<?php
-class Sample
-{
-    var $a;
-    static protected $var_foo2;
+                    <<<'EOD'
+                        <?php
+                        class Sample
+                        {
+                            var $a;
+                            static protected $var_foo2;
 
-    function A()
-    {
-    }
-}
-'
+                            function A()
+                            {
+                            }
+                        }
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
-class Sample
-{
-    const SAMPLE = 1;
-}
-',
+                    <<<'EOD'
+                        <?php
+                        class Sample
+                        {
+                            const SAMPLE = 1;
+                        }
+
+                        EOD,
                     ['elements' => ['const']]
                 ),
             ]

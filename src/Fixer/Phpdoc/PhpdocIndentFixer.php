@@ -33,15 +33,17 @@ final class PhpdocIndentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Docblocks should have the same indentation as the documented subject.',
-            [new CodeSample('<?php
-class DocBlocks
-{
-/**
- * Test constants
- */
-    const INDENT = 1;
-}
-')]
+            [new CodeSample(<<<'EOD'
+                <?php
+                class DocBlocks
+                {
+                /**
+                 * Test constants
+                 */
+                    const INDENT = 1;
+                }
+
+                EOD)]
         );
     }
 

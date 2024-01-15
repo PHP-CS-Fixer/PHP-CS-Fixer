@@ -36,6 +36,14 @@ Example #2
    +line1
    +{$obj->getName()}
    +EOD;
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
 References
 ----------
 

@@ -38,13 +38,17 @@ final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
-            '<?php
-$a = function(){
-                    echo 1;
-                };',
-            '<?php $a = function(){
-                    echo 1;
-                };',
+            <<<'EOD'
+                <?php
+                $a = function(){
+                                    echo 1;
+                                };
+                EOD,
+            <<<'EOD'
+                <?php $a = function(){
+                                    echo 1;
+                                };
+                EOD,
         ];
 
         yield [
@@ -52,44 +56,58 @@ $a = function(){
         ];
 
         yield [
-            '<?php $foo = true; ?>
-',
+            <<<'EOD'
+                <?php $foo = true; ?>
+
+                EOD,
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
 
-$foo = true;
-?>',
+                $foo = true;
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo = true;
-$bar = false;
-?>',
-            '<?php $foo = true;
-$bar = false;
-?>',
+            <<<'EOD'
+                <?php
+                $foo = true;
+                $bar = false;
+                ?>
+                EOD,
+            <<<'EOD'
+                <?php $foo = true;
+                $bar = false;
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php $foo = true; ?>
-Html here
-<?php $bar = false; ?>',
+            <<<'EOD'
+                <?php $foo = true; ?>
+                Html here
+                <?php $bar = false; ?>
+                EOD,
         ];
 
         yield [
-            '<?= $bar;
-$foo = $bar;
-?>',
+            <<<'EOD'
+                <?= $bar;
+                $foo = $bar;
+                ?>
+                EOD,
         ];
 
         yield [
-            str_replace("\n", "\r\n", '<?php
-// linebreak already present in file with Windows line endings
-'),
+            str_replace("\n", "\r\n", <<<'EOD'
+                <?php
+                // linebreak already present in file with Windows line endings
+
+                EOD),
         ];
     }
 

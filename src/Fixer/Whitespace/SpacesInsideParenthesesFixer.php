@@ -41,10 +41,12 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
             [
                 new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
-                    "<?php
-function foo( \$bar, \$baz )
-{
-}\n",
+                    <<<EOD
+                        <?php
+                        function foo( \$bar, \$baz )
+                        {
+                        }\n
+                        EOD,
                     ['space' => 'none']
                 ),
                 new CodeSample(
@@ -52,10 +54,12 @@ function foo( \$bar, \$baz )
                     ['space' => 'single']
                 ),
                 new CodeSample(
-                    "<?php
-function foo(\$bar, \$baz)
-{
-}\n",
+                    <<<EOD
+                        <?php
+                        function foo(\$bar, \$baz)
+                        {
+                        }\n
+                        EOD,
                     ['space' => 'single']
                 ),
             ],

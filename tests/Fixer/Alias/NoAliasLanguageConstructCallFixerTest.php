@@ -49,14 +49,15 @@ final class NoAliasLanguageConstructCallFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-                    echo "die";
-                    // die;
-                    /* die(1); */
-                    echo $die;
-                    echo $die(1);
-                    echo $$die;
-                ',
+            <<<'EOD'
+                <?php
+                                    echo "die";
+                                    // die;
+                                    /* die(1); */
+                                    echo $die;
+                                    echo $die(1);
+                                    echo $$die;
+                EOD."\n                ",
         ];
     }
 }

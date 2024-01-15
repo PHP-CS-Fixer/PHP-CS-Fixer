@@ -48,246 +48,306 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'conversion' => [
-            '<?php
-    /**
-     * @param boolean|array|Foo $bar
-     *
-     * @return int|float
-     */
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param boolean|array|Foo $bar
+                     *
+                     * @return int|float
+                     */
 
-',
-            '<?php
-    /**
-     * @param Boolean|Array|Foo $bar
-     *
-     * @return inT|Float
-     */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param Boolean|Array|Foo $bar
+                     *
+                     * @return inT|Float
+                     */
+
+
+                EOD,
         ];
 
         yield 'array stuff' => [
-            '<?php
-    /**
-     * @param string|string[] $bar
-     *
-     * @return int[]
-     */
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param string|string[] $bar
+                     *
+                     * @return int[]
+                     */
 
-',
-            '<?php
-    /**
-     * @param STRING|String[] $bar
-     *
-     * @return inT[]
-     */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param STRING|String[] $bar
+                     *
+                     * @return inT[]
+                     */
+
+
+                EOD,
         ];
 
         yield 'nested array stuff' => [
-            '<?php
-    /**
-     * @return int[][][]
-     */
-',
-            '<?php
-    /**
-     * @return INT[][][]
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @return int[][][]
+                     */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @return INT[][][]
+                     */
+
+                EOD,
         ];
 
         yield 'mixed and void' => [
-            '<?php
-    /**
-     * @param mixed $foo
-     *
-     * @return void
-     */
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param mixed $foo
+                     *
+                     * @return void
+                     */
 
-',
-            '<?php
-    /**
-     * @param Mixed $foo
-     *
-     * @return Void
-     */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param Mixed $foo
+                     *
+                     * @return Void
+                     */
+
+
+                EOD,
         ];
 
         yield 'iterable' => [
-            '<?php
-    /**
-     * @param iterable $foo
-     *
-     * @return Itter
-     */
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param iterable $foo
+                     *
+                     * @return Itter
+                     */
 
-',
-            '<?php
-    /**
-     * @param Iterable $foo
-     *
-     * @return Itter
-     */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param Iterable $foo
+                     *
+                     * @return Itter
+                     */
+
+
+                EOD,
         ];
 
         yield 'method and property' => [
-            '<?php
-/**
- * @method self foo()
- * @property int $foo
- * @property-read boolean $bar
- * @property-write mixed $baz
- */
+            <<<'EOD'
+                <?php
+                /**
+                 * @method self foo()
+                 * @property int $foo
+                 * @property-read boolean $bar
+                 * @property-write mixed $baz
+                 */
 
-',
-            '<?php
-/**
- * @method Self foo()
- * @property Int $foo
- * @property-read Boolean $bar
- * @property-write MIXED $baz
- */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @method Self foo()
+                 * @property Int $foo
+                 * @property-read Boolean $bar
+                 * @property-write MIXED $baz
+                 */
+
+
+                EOD,
         ];
 
         yield 'throws' => [
-            '<?php
-/**
- * @throws static
- */
+            <<<'EOD'
+                <?php
+                /**
+                 * @throws static
+                 */
 
-',
-            '<?php
-/**
- * @throws STATIC
- */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @throws STATIC
+                 */
+
+
+                EOD,
         ];
 
         yield 'inline doc' => [
-            '<?php
-    /**
-     * Does stuff with stuffs.
-     *
-     * @param array $stuffs {
-     *     @var bool $foo
-     *     @var int  $bar
-     * }
-     */
+            <<<'EOD'
+                <?php
+                    /**
+                     * Does stuff with stuffs.
+                     *
+                     * @param array $stuffs {
+                     *     @var bool $foo
+                     *     @var int  $bar
+                     * }
+                     */
 
-',
-            '<?php
-    /**
-     * Does stuff with stuffs.
-     *
-     * @param array $stuffs {
-     *     @var Bool $foo
-     *     @var INT  $bar
-     * }
-     */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * Does stuff with stuffs.
+                     *
+                     * @param array $stuffs {
+                     *     @var Bool $foo
+                     *     @var INT  $bar
+                     * }
+                     */
+
+
+                EOD,
         ];
 
         yield 'with config' => [
-            '<?php
-    /**
-     * @param self|array|Foo $bar
-     *
-     * @return int|float|boolean|Double
-     */
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param self|array|Foo $bar
+                     *
+                     * @return int|float|boolean|Double
+                     */
 
-',
-            '<?php
-    /**
-     * @param SELF|Array|Foo $bar
-     *
-     * @return inT|Float|boolean|Double
-     */
 
-',
+                EOD,
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param SELF|Array|Foo $bar
+                     *
+                     * @return inT|Float|boolean|Double
+                     */
+
+
+                EOD,
             ['groups' => ['simple', 'meta']],
         ];
 
         yield 'generics' => [
-            '<?php
-            /**
-             * @param array<int, object> $a
-             * @param array<iterable> $b
-             * @param array<parent|$this|self> $c
-             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
-             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
-             *
-             * @return array<int, array<string, array<int, DoNotChangeThisAsThisIsAClass>>>
-             */',
-            '<?php
-            /**
-             * @param ARRAY<INT, OBJECT> $a
-             * @param ARRAY<ITERABLE> $b
-             * @param array<Parent|$This|Self> $c
-             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
-             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
-             *
-             * @return ARRAY<INT, ARRAY<STRING, ARRAY<INT, DoNotChangeThisAsThisIsAClass>>>
-             */',
+            <<<'EOD'
+                <?php
+                            /**
+                             * @param array<int, object> $a
+                             * @param array<iterable> $b
+                             * @param array<parent|$this|self> $c
+                             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
+                             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
+                             *
+                             * @return array<int, array<string, array<int, DoNotChangeThisAsThisIsAClass>>>
+                             */
+                EOD,
+            <<<'EOD'
+                <?php
+                            /**
+                             * @param ARRAY<INT, OBJECT> $a
+                             * @param ARRAY<ITERABLE> $b
+                             * @param array<Parent|$This|Self> $c
+                             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
+                             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
+                             *
+                             * @return ARRAY<INT, ARRAY<STRING, ARRAY<INT, DoNotChangeThisAsThisIsAClass>>>
+                             */
+                EOD,
             ['groups' => ['simple', 'meta']],
         ];
 
         yield 'callable' => [
-            '<?php /**
-                    * @param callable() $a
-                    * @param callable(): void $b
-                    * @param callable(bool, int, string): float $c
-                    */',
-            '<?php /**
-                    * @param CALLABLE() $a
-                    * @param Callable(): VOID $b
-                    * @param CALLABLE(BOOL, INT, STRING): FLOAT $c
-                    */',
+            <<<'EOD'
+                <?php /**
+                                    * @param callable() $a
+                                    * @param callable(): void $b
+                                    * @param callable(bool, int, string): float $c
+                                    */
+                EOD,
+            <<<'EOD'
+                <?php /**
+                                    * @param CALLABLE() $a
+                                    * @param Callable(): VOID $b
+                                    * @param CALLABLE(BOOL, INT, STRING): FLOAT $c
+                                    */
+                EOD,
         ];
 
         yield 'array shape with key name being also type name' => [
-            '<?php /**
-                    * @return array{FOO: bool, NULL: null|int, BAR: string|BAZ}
-                    */',
-            '<?php /**
-                    * @return ARRAY{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
-                    */',
+            <<<'EOD'
+                <?php /**
+                                    * @return array{FOO: bool, NULL: null|int, BAR: string|BAZ}
+                                    */
+                EOD,
+            <<<'EOD'
+                <?php /**
+                                    * @return ARRAY{FOO: BOOL, NULL: NULL|INT, BAR: STRING|BAZ}
+                                    */
+                EOD,
         ];
 
         yield 'union with \'NULL\'' => [
-            '<?php /**
-                    * @return \'NULL\'|null|false
-                    */',
-            '<?php /**
-                    * @return \'NULL\'|NULL|false
-                    */',
+            <<<'EOD'
+                <?php /**
+                                    * @return 'NULL'|null|false
+                                    */
+                EOD,
+            <<<'EOD'
+                <?php /**
+                                    * @return 'NULL'|NULL|false
+                                    */
+                EOD,
         ];
 
         yield 'union with "NULL"' => [
-            '<?php /**
-                    * @return null|"NULL"|false
-                    */',
-            '<?php /**
-                    * @return NULL|"NULL"|false
-                    */',
+            <<<'EOD'
+                <?php /**
+                                    * @return null|"NULL"|false
+                                    */
+                EOD,
+            <<<'EOD'
+                <?php /**
+                                    * @return NULL|"NULL"|false
+                                    */
+                EOD,
         ];
 
         yield 'method with reserved identifier' => [
-            '<?php /**
-                    * @method bool BOOL(): void
-                    */',
-            '<?php /**
-                    * @method BOOL BOOL(): void
-                    */',
+            <<<'EOD'
+                <?php /**
+                                    * @method bool BOOL(): void
+                                    */
+                EOD,
+            <<<'EOD'
+                <?php /**
+                                    * @method BOOL BOOL(): void
+                                    */
+                EOD,
         ];
 
         yield 'no space between type and variable' => [
@@ -296,13 +356,15 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         ];
 
         yield '"Callback" class in phpdoc must not be lowered' => [
-            '<?php
-    /**
-     * @param Callback $foo
-     *
-     * @return Callback
-     */
-',
+            <<<'EOD'
+                <?php
+                    /**
+                     * @param Callback $foo
+                     *
+                     * @return Callback
+                     */
+
+                EOD,
         ];
 
         yield 'param with extra chevrons' => [

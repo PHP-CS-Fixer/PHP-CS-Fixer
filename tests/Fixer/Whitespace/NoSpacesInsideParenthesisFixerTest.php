@@ -64,57 +64,77 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
-if (true) {
-    // if body
-}',
-            '<?php
-if ( true ) {
-    // if body
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if ( true ) {
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    // if body
-}',
-            '<?php
-if (     true   ) {
-    // if body
-}',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    // if body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (     true   ) {
+                    // if body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
+            <<<'EOD'
+                <?php
+                function foo($bar, $baz)
+                {
+                    // function body
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function foo( $bar, $baz )
+                {
+                    // function body
+                }
+                EOD,
         ];
 
         yield [
-            '<?php
-$foo->bar($arg1, $arg2);',
-            '<?php
-$foo->bar(  $arg1, $arg2   );',
+            <<<'EOD'
+                <?php
+                $foo->bar($arg1, $arg2);
+                EOD,
+            <<<'EOD'
+                <?php
+                $foo->bar(  $arg1, $arg2   );
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = array( 1, 2, 3 );
-',
+            <<<'EOD'
+                <?php
+                $var = array( 1, 2, 3 );
+
+                EOD,
         ];
 
         yield [
-            '<?php
-$var = [ 1, 2, 3 ];
-',
+            <<<'EOD'
+                <?php
+                $var = [ 1, 2, 3 ];
+
+                EOD,
         ];
 
         // list call with trailing comma - need to leave alone
@@ -127,11 +147,13 @@ $var = [ 1, 2, 3 ];
         ];
 
         yield [
-            '<?php
-$a = $b->test(  // do not remove space
-    $e          // between `(` and `)`
-                // and this comment
-);',
+            <<<'EOD'
+                <?php
+                $a = $b->test(  // do not remove space
+                    $e          // between `(` and `)`
+                                // and this comment
+                );
+                EOD,
         ];
     }
 

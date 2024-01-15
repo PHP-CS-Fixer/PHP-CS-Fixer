@@ -167,169 +167,217 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [ // namespace with wrong casing
-            '<?php
-namespace PhpCsFixer\Fixer;
-class FixerInterface {}
-',
-            '<?php
-namespace PhpCsFixer\fixer;
-class FixerInterface {}
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Fixer;
+                class FixerInterface {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\fixer;
+                class FixerInterface {}
+
+                EOD,
             __DIR__.'/../../../src/Fixer/FixerInterface.php',
             __DIR__.'/../../../src',
         ];
 
         yield [ // class with wrong casing (2 levels namespace)
-            '<?php
-class Fixer_Basic_PsrAutoloadingFixer {}
-',
-            '<?php
-class Fixer_bASIc_PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                class Fixer_Basic_PsrAutoloadingFixer {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                class Fixer_bASIc_PsrAutoloadingFixer {}
+
+                EOD,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src',
         ];
 
         yield [ // namespaced class with wrong casing
-            '<?php
-namespace PhpCsFixer\Fixer;
-class FixerInterface {}
-',
-            '<?php
-namespace PhpCsFixer\Fixer;
-class fixerinterface {}
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Fixer;
+                class FixerInterface {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Fixer;
+                class fixerinterface {}
+
+                EOD,
             __DIR__.'/../../../src/Fixer/FixerInterface.php',
             __DIR__.'/../../../src',
         ];
 
         yield [ // multiple classy elements in file
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-interface SomeInterfaceToBeUsedInTests {}
-class blah {}
-/* class foo */',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                interface SomeInterfaceToBeUsedInTests {}
+                class blah {}
+                /* class foo */
+                EOD,
         ];
 
         yield [ // multiple namespaces in file
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-interface SomeInterfaceToBeUsedInTests {}
-namespace AnotherNamespace;
-class blah {}
-/* class foo */',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                interface SomeInterfaceToBeUsedInTests {}
+                namespace AnotherNamespace;
+                class blah {}
+                /* class foo */
+                EOD,
         ];
 
         yield [ // fix class
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-class PsrAutoloadingFixerTest {}
-/* class foo */
-',
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-class blah {}
-/* class foo */
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                class PsrAutoloadingFixerTest {}
+                /* class foo */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                class blah {}
+                /* class foo */
+
+                EOD,
         ];
 
         yield [ // abstract class
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-abstract class PsrAutoloadingFixerTest {}
-/* class foo */
-',
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-abstract class blah {}
-/* class foo */
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                abstract class PsrAutoloadingFixerTest {}
+                /* class foo */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                abstract class blah {}
+                /* class foo */
+
+                EOD,
         ];
 
         yield [ // final class
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-final class PsrAutoloadingFixerTest {}
-/* class foo */
-',
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-final class blah {}
-/* class foo */
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                final class PsrAutoloadingFixerTest {}
+                /* class foo */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                final class blah {}
+                /* class foo */
+
+                EOD,
         ];
 
         yield [ // namespace and class with comments
-            '<?php
-namespace /* namespace here */ PhpCsFixer\Fixer\Psr;
-class /* hi there */ PsrAutoloadingFixerTest /* why hello */ {}
-/* class foo */
-',
-            '<?php
-namespace /* namespace here */ PhpCsFixer\Fixer\Psr;
-class /* hi there */ blah /* why hello */ {}
-/* class foo */
-',
+            <<<'EOD'
+                <?php
+                namespace /* namespace here */ PhpCsFixer\Fixer\Psr;
+                class /* hi there */ PsrAutoloadingFixerTest /* why hello */ {}
+                /* class foo */
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace /* namespace here */ PhpCsFixer\Fixer\Psr;
+                class /* hi there */ blah /* why hello */ {}
+                /* class foo */
+
+                EOD,
         ];
 
         yield [ // namespace partially matching directory structure
-            '<?php
-namespace Foo\Bar\Baz\FIXER\Basic;
-class PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz\FIXER\Basic;
+                class PsrAutoloadingFixer {}
+
+                EOD,
             null,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
         ];
 
         yield [ // namespace partially matching directory structure with comment
-            '<?php
-namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
-class /* hi there */ PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
+                class /* hi there */ PsrAutoloadingFixer {}
+
+                EOD,
             null,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
         ];
 
         yield [ // namespace not matching directory structure
-            '<?php
-namespace Foo\Bar\Baz;
-class PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+                class PsrAutoloadingFixer {}
+
+                EOD,
             null,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
         ];
 
         yield [ // namespace partially matching directory structure with configured directory
-            '<?php
-namespace Foo\Bar\Baz\Fixer\Basic;
-class PsrAutoloadingFixer {}
-',
-            '<?php
-namespace Foo\Bar\Baz\FIXER\Basic;
-class PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz\Fixer\Basic;
+                class PsrAutoloadingFixer {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz\FIXER\Basic;
+                class PsrAutoloadingFixer {}
+
+                EOD,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src/',
         ];
 
         yield [ // namespace partially matching directory structure with comment and configured directory
-            '<?php
-namespace /* hi there */ Foo\Bar\Baz\Fixer\Basic;
-class /* hi there */ PsrAutoloadingFixer {}
-',
-            '<?php
-namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
-class /* hi there */ PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                namespace /* hi there */ Foo\Bar\Baz\Fixer\Basic;
+                class /* hi there */ PsrAutoloadingFixer {}
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
+                class /* hi there */ PsrAutoloadingFixer {}
+
+                EOD,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src/',
         ];
 
         yield [ // namespace not matching directory structure with configured directory
-            '<?php
-namespace Foo\Bar\Baz;
-class PsrAutoloadingFixer {}
-',
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+                class PsrAutoloadingFixer {}
+
+                EOD,
             null,
             __DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php',
             __DIR__.'/../../../src/Fixer/Basic',
@@ -370,53 +418,65 @@ class PsrAutoloadingFixer {}
         }
 
         yield from array_map(static fn ($case): array => [
-            '<?php
-namespace Aaa;
-class Bar {}',
+            <<<'EOD'
+                <?php
+                namespace Aaa;
+                class Bar {}
+                EOD,
             null,
             $case,
         ], $cases);
 
         yield 'class with anonymous class' => [
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-class PsrAutoloadingFixerTest {
-    public function foo() {
-        return new class() implements FooInterface {};
-    }
-}
-',
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-class stdClass {
-    public function foo() {
-        return new class() implements FooInterface {};
-    }
-}
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                class PsrAutoloadingFixerTest {
+                    public function foo() {
+                        return new class() implements FooInterface {};
+                    }
+                }
+
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                class stdClass {
+                    public function foo() {
+                        return new class() implements FooInterface {};
+                    }
+                }
+
+                EOD,
         ];
 
         yield 'ignore anonymous class implementing interface' => [
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-new class implements Countable {};
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                new class implements Countable {};
+
+                EOD,
         ];
 
         yield 'ignore anonymous class extending other class' => [
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-new class extends stdClass {};
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                new class extends stdClass {};
+
+                EOD,
         ];
 
         yield 'ignore multiple classy in file with anonymous class between them' => [
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-class ClassOne {};
-new class extends stdClass {};
-class ClassTwo {};
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                class ClassOne {};
+                new class extends stdClass {};
+                class ClassTwo {};
+
+                EOD,
         ];
     }
 
@@ -433,12 +493,14 @@ class ClassTwo {};
     public static function provideFix80Cases(): iterable
     {
         yield 'anonymous + annotation' => [
-            '<?php
-namespace PhpCsFixer\Tests\Fixer\Basic;
-new
-#[Foo]
-class extends stdClass {};
-',
+            <<<'EOD'
+                <?php
+                namespace PhpCsFixer\Tests\Fixer\Basic;
+                new
+                #[Foo]
+                class extends stdClass {};
+
+                EOD,
         ];
     }
 

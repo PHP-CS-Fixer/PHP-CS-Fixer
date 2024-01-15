@@ -32,20 +32,22 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractPhpUnitFixer
         return new FixerDefinition(
             'PHPUnit annotations should be a FQCNs including a root namespace.',
             [new CodeSample(
-                '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @expectedException InvalidArgumentException
-     * @covers Project\NameSpace\Something
-     * @coversDefaultClass Project\Default
-     * @uses Project\Test\Util
-     */
-    public function testSomeTest()
-    {
-    }
-}
-'
+                <<<'EOD'
+                    <?php
+                    final class MyTest extends \PHPUnit_Framework_TestCase
+                    {
+                        /**
+                         * @expectedException InvalidArgumentException
+                         * @covers Project\NameSpace\Something
+                         * @coversDefaultClass Project\Default
+                         * @uses Project\Test\Util
+                         */
+                        public function testSomeTest()
+                        {
+                        }
+                    }
+
+                    EOD
             )]
         );
     }

@@ -121,131 +121,153 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
             'Removes extra blank lines and/or blank lines following configuration.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-$foo = array("foo");
+                        $foo = array("foo");
 
 
-$bar = "bar";
-'
+                        $bar = "bar";
+
+                        EOD
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-switch ($foo) {
-    case 41:
-        echo "foo";
-        break;
+                        switch ($foo) {
+                            case 41:
+                                echo "foo";
+                                break;
 
-    case 42:
-        break;
-}
-',
+                            case 42:
+                                break;
+                        }
+
+                        EOD,
                     ['tokens' => ['break']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-for ($i = 0; $i < 9000; ++$i) {
-    if (true) {
-        continue;
+                        for ($i = 0; $i < 9000; ++$i) {
+                            if (true) {
+                                continue;
 
-    }
-}
-',
+                            }
+                        }
+
+                        EOD,
                     ['tokens' => ['continue']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-for ($i = 0; $i < 9000; ++$i) {
+                        for ($i = 0; $i < 9000; ++$i) {
 
-    echo $i;
+                            echo $i;
 
-}
-',
+                        }
+
+                        EOD,
                     ['tokens' => ['curly_brace_block']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-$foo = array("foo");
+                        $foo = array("foo");
 
 
-$bar = "bar";
-',
+                        $bar = "bar";
+
+                        EOD,
                     ['tokens' => ['extra']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-$foo = array(
+                        $foo = array(
 
-    "foo"
+                            "foo"
 
-);
-',
+                        );
+
+                        EOD,
                     ['tokens' => ['parenthesis_brace_block']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-function foo($bar)
-{
-    return $bar;
+                        function foo($bar)
+                        {
+                            return $bar;
 
-}
-',
+                        }
+
+                        EOD,
                     ['tokens' => ['return']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-$foo = [
+                        $foo = [
 
-    "foo"
+                            "foo"
 
-];
-',
+                        ];
+
+                        EOD,
                     ['tokens' => ['square_brace_block']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-function foo($bar)
-{
-    throw new \Exception("Hello!");
+                        function foo($bar)
+                        {
+                            throw new \Exception("Hello!");
 
-}
-',
+                        }
+
+                        EOD,
                     ['tokens' => ['throw']]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'EOD'
+                        <?php
 
-namespace Foo;
+                        namespace Foo;
 
-use Bar\Baz;
+                        use Bar\Baz;
 
-use Baz\Bar;
+                        use Baz\Bar;
 
-class Bar
-{
-}
-',
+                        class Bar
+                        {
+                        }
+
+                        EOD,
                     ['tokens' => ['use']]
                 ),
                 new CodeSample(
-                    '<?php
-switch($a) {
+                    <<<'EOD'
+                        <?php
+                        switch($a) {
 
-    case 1:
+                            case 1:
 
-    default:
+                            default:
 
-        echo 3;
-}
-',
+                                echo 3;
+                        }
+
+                        EOD,
                     ['tokens' => ['switch', 'case', 'default']]
                 ),
             ]

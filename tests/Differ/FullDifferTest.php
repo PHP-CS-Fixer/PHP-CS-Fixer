@@ -25,21 +25,25 @@ final class FullDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff(): void
     {
-        $diff = '--- Original
-+++ New
-@@ -1,10 +1,10 @@
- <?php
- '.'
- function baz($options)
- {
--    if (!array_key_exists("foo", $options)) {
-+    if (!\array_key_exists("foo", $options)) {
-         throw new \InvalidArgumentException();
-     }
- '.'
-     return json_encode($options);
- }
-';
+        $diff = <<<'EOD'
+            --- Original
+            +++ New
+            @@ -1,10 +1,10 @@
+             <?php
+            EOD."\n ".<<<'EOD'
+
+             function baz($options)
+             {
+            -    if (!array_key_exists("foo", $options)) {
+            +    if (!\array_key_exists("foo", $options)) {
+                     throw new \InvalidArgumentException();
+                 }
+            EOD."\n ".<<<'EOD'
+
+                 return json_encode($options);
+             }
+
+            EOD;
         $differ = new FullDiffer();
 
         self::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));

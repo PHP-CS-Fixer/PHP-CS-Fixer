@@ -36,16 +36,18 @@ final class ProtectedToPrivateFixer extends AbstractFixer
             'Converts `protected` variables and methods to `private` where possible.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
-    protected $a;
+                    <<<'EOD'
+                        <?php
+                        final class Sample
+                        {
+                            protected $a;
 
-    protected function test()
-    {
-    }
-}
-'
+                            protected function test()
+                            {
+                            }
+                        }
+
+                        EOD
                 ),
             ]
         );

@@ -64,20 +64,26 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php
+            <<<'EOD'
+                <?php
 
-echo \'Foo\';',
-            '<?php
+                echo 'Foo';
+                EOD,
+            <<<'EOD'
+                <?php
 
-echo \'Foo\';
+                echo 'Foo';
 
-?>',
+                ?>
+                EOD,
         ];
 
         yield [
-            '<?php echo \'Foo\'; ?>
-<p><?php echo \'this is a template\'; ?></p>
-<?php echo \'Foo\'; ?>',
+            <<<'EOD'
+                <?php echo 'Foo'; ?>
+                <p><?php echo 'this is a template'; ?></p>
+                <?php echo 'Foo'; ?>
+                EOD,
         ];
 
         yield [
@@ -86,46 +92,58 @@ echo \'Foo\';
         ];
 
         yield [
-            '<?php
-class foo
-{
-    public function bar()
-    {
-        echo "Here I am!";
-    }
-}',
-            '<?php
-class foo
-{
-    public function bar()
-    {
-        echo "Here I am!";
-    }
-}?>',
+            <<<'EOD'
+                <?php
+                class foo
+                {
+                    public function bar()
+                    {
+                        echo "Here I am!";
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                class foo
+                {
+                    public function bar()
+                    {
+                        echo "Here I am!";
+                    }
+                }?>
+                EOD,
         ];
 
         yield [
-            '<?php
-function bar()
-{
-    echo "Here I am!";
-}',
-            '<?php
-function bar()
-{
-    echo "Here I am!";
-}?>',
+            <<<'EOD'
+                <?php
+                function bar()
+                {
+                    echo "Here I am!";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                function bar()
+                {
+                    echo "Here I am!";
+                }?>
+                EOD,
         ];
 
         yield [
-            '<?php
-if (true) {
-    echo "Here I am!";
-}',
-            '<?php
-if (true) {
-    echo "Here I am!";
-}?>',
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo "Here I am!";
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+                if (true) {
+                    echo "Here I am!";
+                }?>
+                EOD,
         ];
 
         yield 'Trailing linebreak, priority issue with SingleBlankLineAtEofFixer.' => [
@@ -166,9 +184,11 @@ if (true) {
         ];
 
         yield [
-            '<? echo \'Foo\'; ?>
-<p><? echo \'this is a template\'; ?></p>
-<? echo \'Foo\'; ?>',
+            <<<'EOD'
+                <? echo 'Foo'; ?>
+                <p><? echo 'this is a template'; ?></p>
+                <? echo 'Foo'; ?>
+                EOD,
         ];
 
         yield [

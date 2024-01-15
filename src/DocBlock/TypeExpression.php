@@ -38,143 +38,151 @@ final class TypeExpression
      *
      * @internal
      */
-    public const REGEX_TYPES = '(?<types>(?x) # one or several types separated by `|` or `&`
-'.self::REGEX_TYPE.'
-        (?:
-            \h*(?<glue>[|&])\h*
-            (?&type)
-        )*+
-    )';
+    public const REGEX_TYPES = <<<'EOD'
+        (?<types>(?x) # one or several types separated by `|` or `&`
 
-    private const REGEX_TYPE = '(?<type>(?x) # single type
-            (?<nullable>\??\h*)
-            (?:
-                (?<array_shape>
-                    (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
-                    (?<array_shape_inners>
-                        (?<array_shape_inner>
-                            (?<array_shape_inner_key>(?:(?&constant)|(?&identifier))\h*\??\h*:\h*|)
-                            (?<array_shape_inner_value>(?&types_inner))
-                        )
-                        (?:
-                            \h*,\h*
-                            (?&array_shape_inner)
-                        )*
-                        (?:\h*,\h*)?
-                    |)
-                    \h*\}
-                )
-                |
-                (?<callable> # callable syntax, e.g. `callable(string, int...): bool`
-                    (?<callable_start>(?&name)\h*\(\h*)
-                    (?<callable_arguments>
-                        (?<callable_argument>
-                            (?<callable_argument_type>(?&types_inner))
-                            (?<callable_argument_is_reference>\h*&|)
-                            (?<callable_argument_is_variadic>\h*\.\.\.|)
-                            (?<callable_argument_name>\h*\$(?&identifier)|)
-                            (?<callable_argument_is_optional>\h*=|)
-                        )
-                        (?:
-                            \h*,\h*
-                            (?&callable_argument)
-                        )*
-                        (?:\h*,\h*)?
-                    |)
-                    \h*\)
+        EOD.self::REGEX_TYPE.<<<'EOD'
+
+                (?:
+                    \h*(?<glue>[|&])\h*
+                    (?&type)
+                )*+
+            )
+        EOD;
+
+    private const REGEX_TYPE = <<<'EOD'
+        (?<type>(?x) # single type
+                    (?<nullable>\??\h*)
                     (?:
-                        \h*\:\h*
-                        (?<callable_return>(?&type))
-                    )?
-                )
-                |
-                (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
-                    (?<generic_start>(?&name)\h*<\h*)
-                    (?<generic_types>
-                        (?&types_inner)
-                        (?:
-                            \h*,\h*
-                            (?&types_inner)
-                        )*
-                        (?:\h*,\h*)?
-                    )
-                    \h*>
-                )
-                |
-                (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
-                    (?&name)::\*?(?:(?&identifier)\*?)*
-                )
-                |
-                (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
-                    (?i)
-                    # all sorts of numbers: with or without sign, supports literal separator and several numeric systems,
-                    # e.g.: 1, +1.1, 1., .1, -1, 123E+8, 123_456_789, 0x7Fb4, 0b0110, 0o777
-                    [+-]?(?:
-                        (?:0b[01]++(?:_[01]++)*+)
-                        | (?:0o[0-7]++(?:_[0-7]++)*+)
-                        | (?:0x[\da-f]++(?:_[\da-f]++)*+)
-                        | (?:(?<constant_digits>\d++(?:_\d++)*+)|(?=\.\d))
-                          (?:\.(?&constant_digits)|(?<=\d)\.)?+
-                          (?:e[+-]?(?&constant_digits))?+
-                    )
-                    | \'(?:[^\'\\\\]|\\\\.)*+\'
-                    | "(?:[^"\\\\]|\\\\.)*+"
-                    (?-i)
-                )
-                |
-                (?<this> # self reference, e.g.: $this, $self, @static
-                    (?i)
-                    [@$](?:this | self | static)
-                    (?-i)
-                )
-                |
-                (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`, `positive-int`
-                    \\\\?+
-                    (?<identifier>'.self::REGEX_IDENTIFIER.')
-                    (?:[\\\\\-](?&identifier))*+
-                )
-                |
-                (?<parenthesized> # parenthesized type, e.g.: `(int)`, `(int|\stdClass)`
-                    (?<parenthesized_start>
-                        \(\h*
-                    )
-                    (?:
-                        (?<parenthesized_types>
-                            (?&types_inner)
+                        (?<array_shape>
+                            (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
+                            (?<array_shape_inners>
+                                (?<array_shape_inner>
+                                    (?<array_shape_inner_key>(?:(?&constant)|(?&identifier))\h*\??\h*:\h*|)
+                                    (?<array_shape_inner_value>(?&types_inner))
+                                )
+                                (?:
+                                    \h*,\h*
+                                    (?&array_shape_inner)
+                                )*
+                                (?:\h*,\h*)?
+                            |)
+                            \h*\}
                         )
                         |
-                        (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
-                            (?<conditional_cond_left>
-                                (?:\$(?&identifier))
+                        (?<callable> # callable syntax, e.g. `callable(string, int...): bool`
+                            (?<callable_start>(?&name)\h*\(\h*)
+                            (?<callable_arguments>
+                                (?<callable_argument>
+                                    (?<callable_argument_type>(?&types_inner))
+                                    (?<callable_argument_is_reference>\h*&|)
+                                    (?<callable_argument_is_variadic>\h*\.\.\.|)
+                                    (?<callable_argument_name>\h*\$(?&identifier)|)
+                                    (?<callable_argument_is_optional>\h*=|)
+                                )
+                                (?:
+                                    \h*,\h*
+                                    (?&callable_argument)
+                                )*
+                                (?:\h*,\h*)?
+                            |)
+                            \h*\)
+                            (?:
+                                \h*\:\h*
+                                (?<callable_return>(?&type))
+                            )?
+                        )
+                        |
+                        (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
+                            (?<generic_start>(?&name)\h*<\h*)
+                            (?<generic_types>
+                                (?&types_inner)
+                                (?:
+                                    \h*,\h*
+                                    (?&types_inner)
+                                )*
+                                (?:\h*,\h*)?
+                            )
+                            \h*>
+                        )
+                        |
+                        (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
+                            (?&name)::\*?(?:(?&identifier)\*?)*
+                        )
+                        |
+                        (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `'a'`
+                            (?i)
+                            # all sorts of numbers: with or without sign, supports literal separator and several numeric systems,
+                            # e.g.: 1, +1.1, 1., .1, -1, 123E+8, 123_456_789, 0x7Fb4, 0b0110, 0o777
+                            [+-]?(?:
+                                (?:0b[01]++(?:_[01]++)*+)
+                                | (?:0o[0-7]++(?:_[0-7]++)*+)
+                                | (?:0x[\da-f]++(?:_[\da-f]++)*+)
+                                | (?:(?<constant_digits>\d++(?:_\d++)*+)|(?=\.\d))
+                                  (?:\.(?&constant_digits)|(?<=\d)\.)?+
+                                  (?:e[+-]?(?&constant_digits))?+
+                            )
+                            | '(?:[^'\\]|\\.)*+'
+                            | "(?:[^"\\]|\\.)*+"
+                            (?-i)
+                        )
+                        |
+                        (?<this> # self reference, e.g.: $this, $self, @static
+                            (?i)
+                            [@$](?:this | self | static)
+                            (?-i)
+                        )
+                        |
+                        (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`, `positive-int`
+                            \\?+
+                            (?<identifier>
+        EOD.self::REGEX_IDENTIFIER.<<<'EOD'
+        )
+                            (?:[\\\-](?&identifier))*+
+                        )
+                        |
+                        (?<parenthesized> # parenthesized type, e.g.: `(int)`, `(int|\stdClass)`
+                            (?<parenthesized_start>
+                                \(\h*
+                            )
+                            (?:
+                                (?<parenthesized_types>
+                                    (?&types_inner)
+                                )
                                 |
-                                (?<conditional_cond_left_types>(?&types_inner))
+                                (?<conditional> # conditional type, e.g.: `$foo is \Throwable ? false : $foo`
+                                    (?<conditional_cond_left>
+                                        (?:\$(?&identifier))
+                                        |
+                                        (?<conditional_cond_left_types>(?&types_inner))
+                                    )
+                                    (?<conditional_cond_middle>
+                                        \h+(?i)is(?:\h+not)?(?-i)\h+
+                                    )
+                                    (?<conditional_cond_right_types>(?&types_inner))
+                                    (?<conditional_true_start>\h*\?\h*)
+                                    (?<conditional_true_types>(?&types_inner))
+                                    (?<conditional_false_start>\h*:\h*)
+                                    (?<conditional_false_types>(?&types_inner))
+                                )
                             )
-                            (?<conditional_cond_middle>
-                                \h+(?i)is(?:\h+not)?(?-i)\h+
-                            )
-                            (?<conditional_cond_right_types>(?&types_inner))
-                            (?<conditional_true_start>\h*\?\h*)
-                            (?<conditional_true_types>(?&types_inner))
-                            (?<conditional_false_start>\h*:\h*)
-                            (?<conditional_false_types>(?&types_inner))
+                            \h*\)
                         )
                     )
-                    \h*\)
+                    (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
+                        (\h*\[\h*\])*
+                    )
+                    (?:(?=1)0
+                        (?<types_inner>
+                            (?&type)
+                            (?:
+                                \h*[|&]\h*
+                                (?&type)
+                            )*+
+                        )
+                    |)
                 )
-            )
-            (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
-                (\h*\[\h*\])*
-            )
-            (?:(?=1)0
-                (?<types_inner>
-                    (?&type)
-                    (?:
-                        \h*[|&]\h*
-                        (?&type)
-                    )*+
-                )
-            |)
-        )';
+        EOD;
 
     private string $value;
 
