@@ -617,6 +617,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         while (true) {
             $index = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$index]->isObjectOperator()) {
+                break;
+            }
 
             if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
                 $typeStartIndex = $index;
