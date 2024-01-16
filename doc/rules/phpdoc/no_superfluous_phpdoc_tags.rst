@@ -15,7 +15,7 @@ Whether ``param`` annotation for future method signature are allowed.
 
 Allowed types: ``bool``
 
-Default value: ``true``
+Default value: ``false``
 
 ``allow_mixed``
 ~~~~~~~~~~~~~~~

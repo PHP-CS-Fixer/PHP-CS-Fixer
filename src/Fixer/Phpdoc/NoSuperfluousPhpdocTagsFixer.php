@@ -237,7 +237,7 @@ class Foo {
                 ->getOption(),
             (new FixerOptionBuilder('allow_future_params', 'Whether `param` annotation for future method signature are allowed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(true) // @TODO set to `true` on 4.0
+                ->setDefault(false) // @TODO set to `true` on 4.0
                 ->getOption(),
             (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).'))
                 ->setAllowedTypes(['bool'])
