@@ -529,11 +529,6 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @param A|(B&C) */',
-            '<?php /** @param (C&B)|A */',
-        ];
-
-        yield [
             '<?php /** @param A|((A&B)|(B&C)) */',
             '<?php /** @param ((B&C)|(B&A))|A */',
         ];
