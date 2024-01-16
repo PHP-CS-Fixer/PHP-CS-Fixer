@@ -845,6 +845,29 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'shorten relative reference to already imported, direct short name' => [
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+
+                use Foo\Bar;
+                use Foo\Bar\A\B;
+
+                final class Buzz extends Bar implements B {}
+                final class Fuzz extends Bar implements B {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+
+                use Foo\Bar;
+                use Foo\Bar\A\B;
+
+                final class Buzz extends Bar implements Bar\A\B {}
+                final class Fuzz extends Bar implements B {}
+                EOD,
+        ];
+
         yield 'fix to longest imported name' => [
             <<<'EOD'
                 <?php
