@@ -133,17 +133,25 @@ class Tokens extends \SplFixedArray
      */
     public static function detectBlockType(Token $token): ?array
     {
-        foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
-            if ($token->equals($definition['start'])) {
-                return ['type' => $type, 'isStart' => true];
-            }
+        static $blockEdgeKinds = null;
 
-            if ($token->equals($definition['end'])) {
-                return ['type' => $type, 'isStart' => false];
+        if (null === $blockEdgeKinds) {
+            $blockEdgeKinds = [];
+            foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
+                $blockEdgeKinds[
+                    \is_string($definition['start']) ? $definition['start'] : $definition['start'][0]
+                ] = ['type' => $type, 'isStart' => true];
+                $blockEdgeKinds[
+                    \is_string($definition['end']) ? $definition['end'] : $definition['end'][0]
+                ] = ['type' => $type, 'isStart' => false];
             }
         }
 
-        return null;
+        // inlined extractTokenKind() call on the hot path
+        /** @var int|non-empty-string */
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+
+        return $blockEdgeKinds[$tokenKind] ?? null;
     }
 
     /**
@@ -209,63 +217,66 @@ class Tokens extends \SplFixedArray
      */
     public static function getBlockEdgeDefinitions(): array
     {
-        $definitions = [
-            self::BLOCK_TYPE_CURLY_BRACE => [
-                'start' => '{',
-                'end' => '}',
-            ],
-            self::BLOCK_TYPE_PARENTHESIS_BRACE => [
-                'start' => '(',
-                'end' => ')',
-            ],
-            self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
-                'start' => '[',
-                'end' => ']',
-            ],
-            self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
-                'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
-            ],
-            self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
-                'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => [
-                'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
-                'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
-                'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
-                'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
-                'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
-            ],
-            self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
-                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
-                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
-            ],
-            self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
-                'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
-                'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
-            ],
-            self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
-                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
-            ],
-        ];
-
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
-            $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
-                'start' => [T_ATTRIBUTE, '#['],
-                'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
+        static $definitions = null;
+        if (null === $definitions) {
+            $definitions = [
+                self::BLOCK_TYPE_CURLY_BRACE => [
+                    'start' => '{',
+                    'end' => '}',
+                ],
+                self::BLOCK_TYPE_PARENTHESIS_BRACE => [
+                    'start' => '(',
+                    'end' => ')',
+                ],
+                self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
+                    'start' => '[',
+                    'end' => ']',
+                ],
+                self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
+                    'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
+                    'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
+                ],
+                self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
+                    'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
+                    'end' => [CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => [
+                    'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
+                    'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
+                    'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
+                    'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
+                    'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
+                    'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
+                    'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
+                    'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
+                ],
+                self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
+                    'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
+                    'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+                ],
+                self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
+                    'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
+                    'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
+                ],
+                self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
+                    'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
+                    'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
+                ],
             ];
+
+            // @TODO: drop condition when PHP 8.0+ is required
+            if (\defined('T_ATTRIBUTE')) {
+                $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
+                    'start' => [T_ATTRIBUTE, '#['],
+                    'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
+                ];
+            }
         }
 
         return $definitions;

@@ -53,7 +53,7 @@ jobs:
         with:
           flavor: |
             latest=false
-            suffix=-${{ matrix.php-version }}
+            suffix=-php${{ matrix.php-version }}
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
           tags: |
             type=semver,pattern={{version}}

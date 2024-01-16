@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -47,6 +48,7 @@ final class JsonReporter implements ReporterInterface
         }
 
         $json = [
+            'about' => Application::getAbout(),
             'files' => $jsonFiles,
             'time' => [
                 'total' => round($reportSummary->getTime() / 1_000, 3),

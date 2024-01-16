@@ -876,6 +876,38 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
+        yield 'do not fix class named the same as imported function' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Request;
+                use function Baz\request;
+                class Test
+                {
+                    public function request(Request $request = null)
+                    {
+                        $request = $request ?? Request::create('/docs.json');
+                    }
+                }
+                $request = new Request();
+                EOD,
+        ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service;
+                class Baz {
+                    public function getValue()
+                    {
+                        return $this->service::getValueFromService();
+                    }
+
+                }
+                EOD,
+        ];
+
         yield 'shortening - namespace with shorter import' => [
             <<<'EOD'
                 <?php
@@ -2232,6 +2264,15 @@ class Foo
 }
             ',
             ['import_symbols' => true],
+        ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Baz;
+                echo $x?->baz::CONSTANT_1;
+                EOD,
         ];
     }
 

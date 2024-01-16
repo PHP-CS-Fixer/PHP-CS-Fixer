@@ -3,6 +3,57 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.47.0
+---------------------
+
+* chore: better identify EXPERIMENTAL rules (#7729)
+* chore: fix issue detected by unlocked PHPStan + upgrade dev-tools (#7678)
+* chore: handle extract() (#7684)
+* chore: Mention contributors in app info (#7668)
+* chore: no need to mark private methods as internal (#7715)
+* chore: ProjectCodeTests - dry for function usage extractions (#7690)
+* chore: reduce PHPStan baseline (#7644)
+* chore: use numeric literal separator for PHP version IDs (#7712)
+* chore: use numeric_literal_separator for project (#7713)
+* chore: Utils::sortElements - better typing (#7646)
+* CI: Allow running Stale Bot on demand (#7711)
+* CI: Fix PHP 8.4 (#7702)
+* CI: Give write permissions to Stale Bot (#7716)
+* CI: Use `actions/stale` v9 (#7710)
+* docs: Add information about allowing maintainers to update PRs (#7683)
+* docs: CONTRIBUTING.md - update Opening a PR (#7691)
+* docs: Display/include tool info/version by default in commands and reports (#7733)
+* DX: fix deprecation tests warnings for PHP 7.4 (#7725)
+* DX: update `host.docker.internal` in Compose override template (#7661)
+* DX: `NumericLiteralSeparatorFixer` - change default strategy to `use_separator` (#7730)
+* feat: Add support for official Docker images of Fixer (#7555)
+* feat: Add `spacing` option to `PhpdocAlignFixer` (#6505)
+* feat: Add `union_types` option to `phpdoc_to_param_type`, `phpdoc_to_property_type`, and `phpdoc_to_return_type` fixers (#7672)
+* feat: Introduce `heredoc_closing_marker` fixer (#7660)
+* feat: Introduce `multiline_string_to_heredoc` fixer (#7665)
+* feat: Introduce `NumericLiteralSeparatorFixer` (#6761)
+* feat: no_superfluous_phpdoc_tags - support for arrow function (#7666)
+* feat: Simplify closing marker when possible in `heredoc_closing_marker` fixer (#7676)
+* feat: Support typed properties and attributes in `fully_qualified_strict_types` (#7659)
+* feat: `@PhpCsFixer` ruleset - enable no_whitespace_before_comma_in_array.after_heredoc (#7670)
+* fix: Improve progress bar visual layer (#7708)
+* fix: indentation of control structure body without braces (#7663)
+* fix: make sure all PHP extensions required by PHPUnit are installed (#7727)
+* fix: PhpdocToReturnTypeFixerTest - support for arrow functions (#7645)
+* fix: Several improvements for `fully_qualified_strict_types` (respect declared symbols, relative imports, leading backslash in global namespace) (#7679)
+* fix: SimplifiedNullReturnFixer - support array return typehint (#7728)
+* fix: Support numeric values without leading zero in `numeric_literal_separator` (#7735)
+* fix: `BinaryOperatorSpacesFixer` - align correctly when multiple shifts occurs in single line (#7593)
+* fix: `ClassReferenceNameCasingFixer` capitalizes the property name after the nullsafe operator (#7696)
+* fix: `fully_qualified_strict_types` with `leading_backslash_in_global_namespace` enabled - handle reserved types in phpDoc (#7648)
+* fix: `NoSpaceAroundDoubleColonFixer` must run before `MethodChainingIndentationFixer` (#7723)
+* fix: `no_superfluous_phpdoc_tags` must honor multiline docs (#7697)
+* fix: `numeric_literal_separator` - Handle zero-leading floats properly (#7737)
+* refactor: increase performance by ~7% thanks to `Tokens::block*Cache` hit increased by ~12% (#6176)
+* refactor: Tokens - fast check for non-block in 'detectBlockType', evaluate definitions only once in 'getBlockEdgeDefinitions' (#7655)
+* refactor: `Tokens::clearEmptyTokens` - play defensive with cache clearing (#7658)
+* test: ensure we do not forget to test any short_open_tag test (#7638)
+
 Changelog for v3.46.0
 ---------------------
 
