@@ -876,6 +876,23 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
+        yield 'do not fix class named the same as imported function' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Request;
+                use function Baz\request;
+                class Test
+                {
+                    public function request(Request $request = null)
+                    {
+                        $request = $request ?? Request::create('/docs.json');
+                    }
+                }
+                $request = new Request();
+                EOD,
+        ];
+
         yield 'do not fix property named the same as class' => [
             <<<'EOD'
                 <?php
