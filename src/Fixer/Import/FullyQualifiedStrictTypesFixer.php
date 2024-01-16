@@ -723,7 +723,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         $fqcn = $this->resolveSymbol($typeName, $uses, $namespaceName);
-
         $shortenedType = $this->shortenSymbol($fqcn, $uses, $namespaceName);
         if ($shortenedType === $typeName) {
             return null;
