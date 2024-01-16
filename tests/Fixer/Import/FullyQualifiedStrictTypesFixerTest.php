@@ -907,6 +907,17 @@ class Foo extends \A\A implements \B\A, \C\A
                 }
                 EOD,
         ];
+
+        yield 'do not override short name with "shortened" relative name' => [
+            <<<'EOD'
+                <?php
+                namespace ApiPlatform\Metadata\Operation\Factory;
+
+                use ApiPlatform\Metadata\Operation;
+
+                final class OperationMetadataFactory implements OperationMetadataFactoryInterface {}
+                EOD,
+        ];
     }
 
     /**
