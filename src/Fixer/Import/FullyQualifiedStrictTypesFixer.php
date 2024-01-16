@@ -262,6 +262,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $lastUse = null;
 
             foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace) as $use) {
+                if (!$use->isClass()) {
+                    continue;
+                }
                 $uses[ltrim($use->getFullName(), '\\')] = $use->getShortName();
                 $lastUse = $use;
             }
