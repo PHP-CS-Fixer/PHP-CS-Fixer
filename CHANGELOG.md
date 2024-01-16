@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.47.1
+---------------------
+
+* fix: Do not override short name with relative reference (#7752)
+* fix: make `BinaryOperatorSpacesFixer` work as pre-v3.47 (#7751)
+* fix: Proper Docker image name suffix (#7739)
+* fix: `FullyQualifiedStrictTypesFixer` - do not change case of the symbol when there's name collision between imported class and imported function (#7750)
+* fix: `FullyQualifiedStrictTypesFixer` - do not modify statements with property fetch and `::` (#7749)
+
 Changelog for v3.47.0
 ---------------------
 
