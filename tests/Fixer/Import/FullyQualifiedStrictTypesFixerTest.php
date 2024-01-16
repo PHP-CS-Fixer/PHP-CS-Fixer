@@ -875,6 +875,21 @@ class Foo extends \A\A implements \B\A, \C\A
                 new R\T();
                 EOD,
         ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service;
+                class Baz {
+                    public function getValue()
+                    {
+                        return $this->service::getValueFromService();
+                    }
+
+                }
+                EOD,
+        ];
     }
 
     /**
@@ -2056,6 +2071,15 @@ class Foo
 }
             ',
             ['import_symbols' => true],
+        ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Baz;
+                echo $x?->baz::CONSTANT_1;
+                EOD,
         ];
     }
 
