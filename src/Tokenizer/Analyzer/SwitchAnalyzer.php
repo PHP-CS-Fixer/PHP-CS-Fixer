@@ -31,7 +31,7 @@ final class SwitchAnalyzer
             return false;
         }
 
-        $tokensHash = $tokens->getCodeHash();
+        $tokensHash = md5(serialize($tokens->toArray()));
 
         if (!\array_key_exists($tokensHash, self::$cache)) {
             self::$cache[$tokensHash] = self::getColonIndicesForSwitch(clone $tokens);
