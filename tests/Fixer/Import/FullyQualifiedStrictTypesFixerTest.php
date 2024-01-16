@@ -55,6 +55,22 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'namespace === non global type name' => [
+            '<?php
+namespace App {
+    class Foo {}
+}
+namespace App\View {
+    use App\View;
+
+    class HasView {}
+
+    class ViewFactory {
+        public function make(HasView $view): View {}
+    }
+}'
+        ];
+
         yield 'namespace === type name' => [
             '<?php
 namespace Foo\Bar;
