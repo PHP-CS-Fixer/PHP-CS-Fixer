@@ -393,7 +393,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
             if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])])) {
                 $res = $tmpRes;
-                $iMin = substr_count($namespaceName, '\\') - 1;
+                $iMin = substr_count($namespaceName, '\\') + 1;
             }
         }
 
@@ -723,10 +723,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         $fqcn = $this->resolveSymbol($typeName, $uses, $namespaceName);
-
-        if ($fqcn === "{$namespaceName}\\{$typeName}") {
-            return null;
-        }
 
         $shortenedType = $this->shortenSymbol($fqcn, $uses, $namespaceName);
         if ($shortenedType === $typeName) {
