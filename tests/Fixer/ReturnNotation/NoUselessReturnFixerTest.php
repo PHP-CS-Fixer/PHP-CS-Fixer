@@ -252,16 +252,14 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
                      '.'
            /* a */   //
                     '.'
-                };
-                ',
+                };',
             '<?php
                 $a = function() {
                     return  ; /**/
                     return ;
            /* a */  return; //
                     return;
-                };
-                ',
+                };',
         ];
     }
 }

@@ -700,8 +700,7 @@ class Foo
                      */
                     #[Attribute1, Attribute2]
                     public function hello3() {}
-                }
-            ',
+                }',
             '<?php
                 class Foo
                 {
@@ -717,8 +716,7 @@ class Foo
                     /** @return void */
                     #[Attribute1, Attribute2]
                     public function hello3() {}
-                }
-            ',
+                }',
         ];
     }
 
@@ -826,15 +824,13 @@ class Foo
                      * @return void
                      */
                     public function hello() {}
-                }
-            ',
+                }',
             '<?php
                 enum Foo
                 {
                     /** @return void */
                     public function hello() {}
-                }
-            ',
+                }',
         ];
 
         yield 'It handles enum function with attributes correctly' => [
@@ -859,8 +855,7 @@ class Foo
                      */
                     #[Attribute1, Attribute2]
                     public function hello3() {}
-                }
-            ',
+                }',
             '<?php
                 enum Foo
                 {
@@ -876,8 +871,7 @@ class Foo
                     /** @return void */
                     #[Attribute1, Attribute2]
                     public function hello3() {}
-                }
-            ',
+                }',
         ];
     }
 

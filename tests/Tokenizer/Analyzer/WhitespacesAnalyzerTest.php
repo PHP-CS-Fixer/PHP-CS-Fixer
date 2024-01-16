@@ -41,16 +41,14 @@ final class WhitespacesAnalyzerTest extends TestCase
 
         yield [
             '<?php
-                        function foo() { return true; }
-            ',
+                        function foo() { return true; }',
             '                        ',
             8,
         ];
 
         $code = '<?php
             // wrong indent
-                function foo() { /* foo */ return    true; }
-            ';
+                function foo() { /* foo */ return    true; }';
         $tokens = Tokens::fromCode($code);
 
         foreach (range(4, $tokens->count() - 2) as $index) {

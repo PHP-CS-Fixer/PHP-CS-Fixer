@@ -47,8 +47,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     test1();
-                    $a; // test
-                ',
+                    $a; // test',
         ];
 
         yield [
@@ -65,8 +64,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test5();     // test
-                ',
+                    test5();     // test',
         ];
 
         yield [
@@ -85,196 +83,160 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test8(); $a = 4;
-                ',
+                    test8(); $a = 4;',
             '<?php
-                    test8();     $a = 4;
-                ',
+                    test8();     $a = 4;',
         ];
 
         yield [
             '<?php
-                    test9(); $b = 7;
-                ',
+                    test9(); $b = 7;',
             '<?php
-                    test9();$b = 7;
-                ',
+                    test9();$b = 7;',
         ];
 
         yield [
             '<?php
                     for (; ;) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; ; ++$u1) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;;++$u1) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;$u2 < 0;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;$u3 < 3;++$u3) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u4 = 0; ;) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u4 = 0;;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u5 = 0; ; ++$u5) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u5 = 0;;++$u5) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u6 = 0;$u6 < 6;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u7 = 0;$u7 < 7;++$u7) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; ;    ) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    ;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; ; ++$u1) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    ;    ++$u1) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;    ) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    $u2 < 0;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    $u3 < 3;    ++$u3) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($ui4 = 0; ;    ) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($ui4 = 0;    ;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u5 = 0; ; ++$u5) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u5 = 0;    ;    ++$u5) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;    ) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u6 = 0;    $u6 < 6;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -320,8 +282,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     test1();
-                    $a; // test
-                ',
+                    $a; // test',
         ];
 
         yield [
@@ -338,8 +299,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test5();     // test
-                ',
+                    test5();     // test',
         ];
 
         yield [
@@ -358,196 +318,160 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    test8(); $a = 4;
-                ',
+                    test8(); $a = 4;',
             '<?php
-                    test8();     $a = 4;
-                ',
+                    test8();     $a = 4;',
         ];
 
         yield [
             '<?php
-                    test9(); $b = 7;
-                ',
+                    test9(); $b = 7;',
             '<?php
-                    test9();$b = 7;
-                ',
+                    test9();$b = 7;',
         ];
 
         yield [
             '<?php
                     for (;;) {
-                    }
-                ',
+                    }',
             '<?php
                     for (; ;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (;; ++$u1) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;;++$u1) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;$u2 < 0;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;$u3 < 3;++$u3) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u4 = 0;;) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u4 = 0; ;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u5 = 0;; ++$u5) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u5 = 0;;++$u5) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u6 = 0;$u6 < 6;) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u7 = 0;$u7 < 7;++$u7) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (;;) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    ;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (;; ++$u1) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    ;    ++$u1) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u2 < 0;) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    $u2 < 0;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for (; $u3 < 3; ++$u3) {
-                    }
-                ',
+                    }',
             '<?php
                     for (;    $u3 < 3;    ++$u3) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($ui4 = 0;;) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($ui4 = 0;    ;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u5 = 0;; ++$u5) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u5 = 0;    ;    ++$u5) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u6 = 0; $u6 < 6;) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u6 = 0;    $u6 < 6;    ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
             '<?php
                     for ($u7 = 0; $u7 < 7; ++$u7) {
-                    }
-                ',
+                    }',
             '<?php
                     for ($u7 = 0;    $u7 < 7;    ++$u7) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -557,8 +481,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
                         ;
                         ++$u7
                     ) {
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -569,7 +492,6 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
     public function testHaltCompiler(): void
     {
         $this->doTest('<?php
-            __HALT_COMPILER();
-        ');
+            __HALT_COMPILER();');
     }
 }

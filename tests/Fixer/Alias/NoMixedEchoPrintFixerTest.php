@@ -45,24 +45,21 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
-                print "test";
-                ',
+                print "test";',
             null,
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print ("test");
-                ',
+                print ("test");',
             null,
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print("test");
-                ',
+                print("test");',
             null,
             ['use' => 'print'],
         ];
@@ -71,69 +68,56 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         // @see https://php.net/manual/en/function.echo.php and @see https://php.net/manual/en/function.print.php
         yield [
             '<?php
-                echo "This ", "string ", "was ", "made ", "with multiple parameters.";
-                ',
+                echo "This ", "string ", "was ", "made ", "with multiple parameters.";',
             null,
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print "test";
-                ',
+                print "test";',
             '<?php
-                echo "test";
-                ',
+                echo "test";',
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print ("test");
-                ',
+                print ("test");',
             '<?php
-                echo ("test");
-                ',
+                echo ("test");',
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print("test");
-                ',
+                print("test");',
             '<?php
-                echo("test");
-                ',
+                echo("test");',
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print foo(1, 2);
-                ',
+                print foo(1, 2);',
             '<?php
-                echo foo(1, 2);
-                ',
+                echo foo(1, 2);',
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print ["foo", "bar", "baz"][$x];
-                ',
+                print ["foo", "bar", "baz"][$x];',
             '<?php
-                echo ["foo", "bar", "baz"][$x];
-                ',
+                echo ["foo", "bar", "baz"][$x];',
             ['use' => 'print'],
         ];
 
         yield [
             '<?php
-                print $foo ? "foo" : "bar";
-                ',
+                print $foo ? "foo" : "bar";',
             '<?php
-                echo $foo ? "foo" : "bar";
-                ',
+                echo $foo ? "foo" : "bar";',
             ['use' => 'print'],
         ];
 
@@ -148,14 +132,12 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 if ($foo) {
                     print "foo";
                 }
-                print "bar";
-                ',
+                print "bar";',
             '<?php
                 if ($foo) {
                     echo "foo";
                 }
-                echo "bar";
-                ',
+                echo "bar";',
             ['use' => 'print'],
         ];
 
@@ -175,24 +157,21 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                echo "test";
-                ',
+                echo "test";',
             null,
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo ("test");
-                ',
+                echo ("test");',
             null,
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo("test");
-                ',
+                echo("test");',
             null,
             ['use' => 'echo'],
         ];
@@ -200,8 +179,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/1502#issuecomment-156436229
         yield [
             '<?php
-                ($some_var) ? print "true" : print "false";
-                ',
+                ($some_var) ? print "true" : print "false";',
             null,
             ['use' => 'echo'],
         ];
@@ -210,16 +188,14 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         // https://www.w3schools.com/php/php_echo_print.asp
         yield [
             '<?php
-                $ret = print "test";
-                ',
+                $ret = print "test";',
             null,
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                @print foo();
-                ',
+                @print foo();',
             null,
             ['use' => 'echo'],
         ];
@@ -236,8 +212,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 $c .= $b.print($a);
                 $d = print($c) > 0 ? \'a\' : \'b\';
                 switch(print(\'a\')) {}
-                if (1 === print($a)) {}
-                ',
+                if (1 === print($a)) {}',
             null,
             ['use' => 'echo'],
         ];
@@ -245,62 +220,50 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 some_function_call();
-                echo "test";
-                ',
+                echo "test";',
             '<?php
                 some_function_call();
-                print "test";
-                ',
+                print "test";',
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo "test";
-                ',
+                echo "test";',
             '<?php
-                print "test";
-                ',
+                print "test";',
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo ("test");
-                ',
+                echo ("test");',
             '<?php
-                print ("test");
-                ',
+                print ("test");',
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo("test");
-                ',
+                echo("test");',
             '<?php
-                print("test");
-                ',
+                print("test");',
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo foo(1, 2);
-                ',
+                echo foo(1, 2);',
             '<?php
-                print foo(1, 2);
-                ',
+                print foo(1, 2);',
             ['use' => 'echo'],
         ];
 
         yield [
             '<?php
-                echo $foo ? "foo" : "bar";
-                ',
+                echo $foo ? "foo" : "bar";',
             '<?php
-                print $foo ? "foo" : "bar";
-                ',
+                print $foo ? "foo" : "bar";',
             ['use' => 'echo'],
         ];
 
@@ -309,14 +272,12 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 if ($foo) {
                     echo "foo";
                 }
-                echo "bar";
-                ',
+                echo "bar";',
             '<?php
                 if ($foo) {
                     print "foo";
                 }
-                print "bar";
-                ',
+                print "bar";',
             ['use' => 'echo'],
         ];
 
@@ -391,8 +352,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             %1$s "There will be foos: ";
             foreach ($foos as $foo)
                 %1$s $foo;
-            %1$s "End of foos";
-        ';
+            %1$s "End of foos";';
 
         yield 'if and else without curly brackets' => '<?php
             if ($foo)
@@ -400,7 +360,6 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
             elseif ($bar)
                 %1$s "Two";
             else
-                %1$s "Three";
-        ';
+                %1$s "Three";';
     }
 }

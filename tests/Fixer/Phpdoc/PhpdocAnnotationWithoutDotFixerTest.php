@@ -192,8 +192,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      *
      * @return null|object an object if things check out, null otherwise
      */
-    function extractObjectToPopulate($class, array $context, $key = null) {}
-                ',
+    function extractObjectToPopulate($class, array $context, $key = null) {}',
         ];
 
         yield [

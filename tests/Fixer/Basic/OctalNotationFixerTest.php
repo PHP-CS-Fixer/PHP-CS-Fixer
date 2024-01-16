@@ -50,8 +50,7 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
                 $foo = 0B0;
                 $foo = 0X0;
                 $foo = 1;
-                $foo = 10;
-            ',
+                $foo = 10;',
         ];
 
         yield [
@@ -62,12 +61,10 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 $foo = 0o123;
-                $foo = 0o1;
-            ',
+                $foo = 0o1;',
             '<?php
                 $foo = 0123;
-                $foo = 01;
-            ',
+                $foo = 01;',
         ];
 
         yield [

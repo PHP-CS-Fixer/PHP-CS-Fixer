@@ -290,8 +290,7 @@ return new static();
         yield 'arrow functions' => [
             '<?php
                 $f1 = fn (): A|(B&C) => new Foo();
-                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();
-            ',
+                $f2 = fn ((A&B)|C $x, A|(B&C) $y): (A&B&C)|D|(E&F) => new Bar();',
             [
                 14 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 18 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,
@@ -316,8 +315,7 @@ return new static();
                         }
                     }
 
-                return (new A())(new class implements Foo, Bar {});
-            ',
+                return (new A())(new class implements Foo, Bar {});',
             [
                 14 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN,
                 18 => CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE,

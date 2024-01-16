@@ -42,12 +42,10 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 declare(ticks = 1) {
-                }
-            ',
+                }',
             '<?php
                 declare(ticks = 1) :
-                enddeclare;
-            ',
+                enddeclare;',
         ];
 
         yield [
@@ -77,8 +75,7 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
                             $test = true;
                         }
                     }
-                }
-            ',
+                }',
             '<?php
                 if ($some1) :
                     if ($some2) :
@@ -86,8 +83,7 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
                             $test = true;
                         endif;
                     endif;
-                endif;
-            ',
+                endif;',
         ];
 
         yield [

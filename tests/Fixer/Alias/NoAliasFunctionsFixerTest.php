@@ -107,13 +107,11 @@ abstract class A
             '<?php
                 $a = rtrim($b);
                 $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-            ',
+                mbereg_search_getregs();',
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-            ',
+                mbereg_search_getregs();',
             ['sets' => ['@internal']],
         ];
 
@@ -121,13 +119,11 @@ abstract class A
             '<?php
                 $a = chop($b);
                 $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();
-            ',
+                mb_ereg_search_getregs();',
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
-                mb_ereg_search_getregs();
-            ',
+                mb_ereg_search_getregs();',
             ['sets' => ['@IMAP']],
         ];
 
@@ -136,14 +132,12 @@ abstract class A
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
                 mb_ereg_search_getregs();
-                mktime();
-            ',
+                mktime();',
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
                 mbereg_search_getregs();
-                mktime();
-            ',
+                mktime();',
             ['sets' => ['@mbreg']],
         ];
 
@@ -157,8 +151,7 @@ abstract class A
                 $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
                 mktime($a);
-                echo gmmktime(1, 2, 3, 4, 5, 6);
-            ',
+                echo gmmktime(1, 2, 3, 4, 5, 6);',
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
@@ -168,8 +161,7 @@ abstract class A
                 $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
                 mktime($a);
-                echo gmmktime(1, 2, 3, 4, 5, 6);
-            ',
+                echo gmmktime(1, 2, 3, 4, 5, 6);',
             ['sets' => ['@all']],
         ];
 
@@ -177,13 +169,11 @@ abstract class A
             '<?php
                 $a = chop($b);
                 $a = imap_headerinfo($imap_stream, 1);
-                mb_ereg_search_getregs();
-            ',
+                mb_ereg_search_getregs();',
             '<?php
                 $a = chop($b);
                 $a = imap_header($imap_stream, 1);
-                mbereg_search_getregs();
-            ',
+                mbereg_search_getregs();',
             ['sets' => ['@IMAP', '@mbreg']],
         ];
 
@@ -193,25 +183,21 @@ abstract class A
                 time();
 
                 MKTIME($A);
-                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
-            ',
+                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);',
             '<?php
                 MKTIME();
                 GMMKTIME();
 
                 MKTIME($A);
-                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
-            ',
+                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);',
             ['sets' => ['@time']],
         ];
 
         yield '@exif' => [
             '<?php
-                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
-            ',
+                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);',
             '<?php
-                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
-            ',
+                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);',
             ['sets' => ['@exif']],
         ];
 
@@ -291,8 +277,7 @@ abstract class A
 
     class '.$alias.' extends '.ucfirst($alias).'ing{
         const '.$alias.' = "'.$alias.'";
-    }
-    ',
+    }',
                 ];
 
                 // cases to be fixed

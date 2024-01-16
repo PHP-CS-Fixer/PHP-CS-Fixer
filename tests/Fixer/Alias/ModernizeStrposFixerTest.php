@@ -127,8 +127,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
                 $x = 1;
                 $x = "strpos";
                 // if (false === strpos($haystack12, $needle)) {}
-                /** if (false === strpos($haystack13, $needle)) {} */
-            ',
+                /** if (false === strpos($haystack13, $needle)) {} */',
         ];
 
         yield 'different namespace' => [

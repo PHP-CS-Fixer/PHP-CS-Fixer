@@ -70,8 +70,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
                 try {} catch (ErrorA | ErrorB $e) {}
                 try {} catch (ErrorA | ErrorB $e) {}
                 try {} catch (ErrorA | ErrorB $e) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
+                try {} catch (ErrorA | ErrorB $e) {}',
             '<?php
                 try {} catch (ErrorA|ErrorB $e) {}
                 try {} catch (ErrorA|ErrorB $e) {}
@@ -83,8 +82,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
                 try {} catch (ErrorA|ErrorB $e) {}
                 try {} catch (ErrorA|ErrorB $e) {}
                 try {} catch (ErrorA|ErrorB $e) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             ['space' => 'single'],
         ];
     }
@@ -184,12 +182,10 @@ TypeB $x) {}',
         yield [
             '<?php
                 function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             '<?php
                 function foo(TypeA |TypeB $x) {}
-                try {} catch (ErrorA| ErrorB $e) {}
-            ',
+                try {} catch (ErrorA| ErrorB $e) {}',
             [
                 'space' => 'single',
                 'space_multiple_catch' => 'none',
@@ -199,12 +195,10 @@ TypeB $x) {}',
         yield [
             '<?php
                 function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
+                try {} catch (ErrorA | ErrorB $e) {}',
             '<?php
                 function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             [
                 'space' => 'none',
                 'space_multiple_catch' => 'single',
@@ -214,12 +208,10 @@ TypeB $x) {}',
         yield [
             '<?php
                 function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             '<?php
                 function foo(TypeA| TypeB $x) {}
-                try {} catch (ErrorA |ErrorB $e) {}
-            ',
+                try {} catch (ErrorA |ErrorB $e) {}',
             [
                 'space' => 'none',
                 'space_multiple_catch' => 'none',
@@ -229,12 +221,10 @@ TypeB $x) {}',
         yield [
             '<?php
                 function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
+                try {} catch (ErrorA | ErrorB $e) {}',
             '<?php
                 function foo(TypeA |TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             [
                 'space' => 'single',
                 'space_multiple_catch' => 'single',
@@ -244,12 +234,10 @@ TypeB $x) {}',
         yield [
             '<?php
                 function foo(TypeA | TypeB $x) {}
-                try {} catch (ErrorA | ErrorB $e) {}
-            ',
+                try {} catch (ErrorA | ErrorB $e) {}',
             '<?php
                 function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             [
                 'space' => 'single',
             ],
@@ -258,12 +246,10 @@ TypeB $x) {}',
         yield [
             '<?php
                 function foo(TypeA|TypeB $x) {}
-                try {} catch (ErrorA|ErrorB $e) {}
-            ',
+                try {} catch (ErrorA|ErrorB $e) {}',
             '<?php
                 function foo(TypeA  | TypeB $x) {}
-                try {} catch (ErrorA  | ErrorB $e) {}
-            ',
+                try {} catch (ErrorA  | ErrorB $e) {}',
             [
                 'space' => 'none',
             ],

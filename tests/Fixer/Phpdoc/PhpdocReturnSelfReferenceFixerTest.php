@@ -209,8 +209,7 @@ class F
                             public function a() {}
                         };
                     }
-                }
-            ',
+                }',
             '<?php
                 $a = new class() {
 
@@ -228,8 +227,7 @@ class F
                             public function a() {}
                         };
                     }
-                }
-            '
+                }'
         );
     }
 

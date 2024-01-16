@@ -55,8 +55,7 @@ final class NoAliasLanguageConstructCallFixerTest extends AbstractFixerTestCase
                     /* die(1); */
                     echo $die;
                     echo $die(1);
-                    echo $$die;
-                ',
+                    echo $$die;',
         ];
     }
 }

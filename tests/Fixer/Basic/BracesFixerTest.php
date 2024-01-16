@@ -184,8 +184,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern;
         self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
-    }
-                ',
+    }',
         ];
 
         yield [
@@ -210,8 +209,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -438,8 +436,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
         self::${$type}[$rule] = $pattern;
         self::${$type}[$rule] = array_merge($pattern, self::${$type}[$rule]);
         self::${$type}[$rule] = $pattern + self::${$type}["rules"];
-    }
-                ',
+    }',
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
@@ -469,8 +466,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
                     if (1) {
                         echo $items{0}->foo;
                         echo $collection->items{1}->property;
-                    }
-                ',
+                    }',
             null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
@@ -4463,8 +4459,7 @@ if (1) {
         public function use1(): string
         {
         }
-    }
-                ',
+    }',
             '<?php
     class Foo
     {
@@ -4473,8 +4468,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }',
         ];
 
         yield [
@@ -4489,8 +4483,7 @@ if (1) {
 
     function a()
     {
-    }
-                ',
+    }',
             '<?php
     $a = function (int $foo): string
     {
@@ -4503,8 +4496,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }',
         ];
 
         yield [
@@ -4866,8 +4858,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }',
             '<?php
     class Foo
     {
@@ -4876,8 +4867,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
@@ -4889,8 +4879,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }',
             '<?php
     class Foo
     {
@@ -4899,8 +4888,7 @@ if (1) {
 
         public function use1(): string {
         }
-    }
-                ',
+    }',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
         ];
 
@@ -4915,8 +4903,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }',
             '<?php
     $a = function (int $foo): string
     {
@@ -4929,8 +4916,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 
@@ -4947,8 +4933,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }',
             '<?php
     $a = function (int $foo): string
     {
@@ -4961,8 +4946,7 @@ if (1) {
     };
 
     function a() {
-    }
-                ',
+    }',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
         ];
 

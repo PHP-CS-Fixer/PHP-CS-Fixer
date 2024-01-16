@@ -468,8 +468,7 @@ $bar->doSomething(2);
 /**
  * @var User $bar
  */
-list($bar) = a();
-                ',
+list($bar) = a();',
         ];
 
         yield 'const are not handled by this fixer' => [

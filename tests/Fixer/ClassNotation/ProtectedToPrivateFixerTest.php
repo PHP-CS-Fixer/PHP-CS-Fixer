@@ -189,19 +189,16 @@ final class Foo2 {
     {
         yield [
             '<?php
-                final class Foo { private readonly int $d; }
-            ',
+                final class Foo { private readonly int $d; }',
             '<?php
-                final class Foo { protected readonly int $d; }
-            ',
+                final class Foo { protected readonly int $d; }',
         ];
 
         yield 'protected final const' => [
             // '<?php final class Foo { final private const Y = "i"; }', 'Fatal error: Private constant Foo::Y cannot be final as it is not visible to other classes on line 1.
             '<?php
                 final class Foo1 { final protected const Y = "abc"; }
-                final class Foo2 { protected final const Y = "def"; }
-            ',
+                final class Foo2 { protected final const Y = "def"; }',
         ];
 
         yield [
@@ -230,8 +227,7 @@ enum Foo: string
     }
 }
 
-Foo::Hearts->test();
-            ',
+Foo::Hearts->test();',
             '<?php
 enum Foo: string
 {
@@ -244,8 +240,7 @@ enum Foo: string
     }
 }
 
-Foo::Hearts->test();
-            ',
+Foo::Hearts->test();',
         ];
 
         yield 'enum with trait' => [

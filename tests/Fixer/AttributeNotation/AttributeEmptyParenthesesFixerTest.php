@@ -143,8 +143,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
             ) {}
 
             $anon = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;
-            ',
+            $short = #[\A\B\Foo] #[\Bar      ] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;',
             '<?php
             namespace Test;
 
@@ -246,8 +245,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
             ) {}
 
             $anon = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;
-            ',
+            $short = #[\A\B\Foo()] #[\Bar(      )] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;',
         ];
 
         yield 'With parentheses on various declarations' => [
@@ -352,8 +350,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
             ) {}
 
             $anon = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;
-            ',
+            $short = #[\A\B\Foo()] #[\Bar()] #[Baz()] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;',
             '<?php
             namespace Test;
 
@@ -455,8 +452,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
             ) {}
 
             $anon = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] function () {};
-            $short = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;
-            ',
+            $short = #[\A\B\Foo()] #[\Bar] #[Baz] #[Corge(4, \'baz qux\')] #[A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] fn () => null;',
             ['use_parentheses' => true],
         ];
     }
@@ -491,8 +487,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
                 A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
             ]
             class X
-            {}
-            ',
+            {}',
             '<?php
             namespace Test;
 
@@ -506,8 +501,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
                 A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
             ]
             class X
-            {}
-            ',
+            {}',
         ];
 
         yield 'With parentheses' => [
@@ -524,8 +518,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
                 A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
             ]
             class X
-            {}
-            ',
+            {}',
             '<?php
             namespace Test;
 
@@ -539,8 +532,7 @@ final class AttributeEmptyParenthesesFixerTest extends AbstractFixerTestCase
                 A\B\Qux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\', prop4: new P\R()),
             ]
             class X
-            {}
-            ',
+            {}',
             ['use_parentheses' => true],
         ];
     }

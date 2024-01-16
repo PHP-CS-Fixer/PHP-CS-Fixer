@@ -38,45 +38,37 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     echo 0;
-echo 1;
-                ',
+echo 1;',
             '<?php
                     echo 0;//
-echo 1;
-                ',
+echo 1;',
         ];
 
         yield [
             '<?php
                     echo 0;
-    echo 1;
-                ',
+    echo 1;',
             '<?php
                     echo 0;//
-    echo 1;
-                ',
+    echo 1;',
         ];
 
         yield [
             '<?php
-                    echo 1;
-                ',
+                    echo 1;'."\n",
             '<?php
-                    echo 1;//
-                ',
+                    echo 1;//'."\n",
         ];
 
         yield [
             '<?php
                 echo 2;
                     '.'
-echo 1;
-                ',
+echo 1;',
             '<?php
                 echo 2;
                     //
-echo 1;
-                ',
+echo 1;',
         ];
 
         yield [
@@ -90,79 +82,61 @@ echo 1;
 
         yield [
             '<?php
-                    '.'
-                ',
+                    ',
             '<?php
-                    //
-                ',
+                    //',
         ];
 
         yield [
             '<?php
-                    '.'
-                ',
+                    ',
             '<?php
-                    #
-                ',
+                    #',
         ];
 
         yield [
             '<?php
-                    '.'
-                ',
+                    ',
             '<?php
-                    /**/
-                ',
+                    /**/',
         ];
 
         yield [
             '<?php
-                    echo 0;echo 1;
-                ',
+                    echo 0;echo 1;',
             '<?php
-                    echo 0;/**/echo 1;
-                ',
+                    echo 0;/**/echo 1;',
         ];
 
         yield [
             '<?php
-                    echo 0;echo 1;
-                ',
+                    echo 0;echo 1;',
             '<?php
-                    echo 0;/**//**//**/echo 1/**/;
-                ',
+                    echo 0;/**//**//**/echo 1/**/;',
         ];
 
         yield [
+            '<?php'."\n  ",
             '<?php
-                ',
-            '<?php
-                //',
+  //',
         ];
 
         yield [
+            '<?php'."\n  ",
             '<?php
-                ',
-            '<?php
-                /*
+  /*
 
 
-                */',
+  */',
         ];
 
         yield [
+            '<?php'."\n    \n    \n    \n    ",
             '<?php
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                ',
-            '<?php
-                    //
-                    //
-                    //
-                    /**///
-                ',
+    //
+    //
+    //
+    /**///',
         ];
 
         yield [
@@ -223,30 +197,25 @@ echo 1;
                     // a
                     //
 
-                    $bar = 2;
-                ',
+                    $bar = 2;',
         ];
 
         yield [
             '<?php
-                    '.'
-                ',
+                    ',
             '<?php
                     /*
                      *
-                     */
-                ',
+                     */',
         ];
 
         yield [
             '<?php
-                    '.'
-                ',
+                    ',
             '<?php
                     /********
                      *
-                     ********/
-                ',
+                     ********/',
         ];
 
         yield [
@@ -258,13 +227,11 @@ echo 1;
             '<?php
                     '.'
                     /* a */
-                    '.'
-                ',
+                    ',
             '<?php
                     //
                     /* a */
-                    //
-                ',
+                    //',
         ];
     }
 

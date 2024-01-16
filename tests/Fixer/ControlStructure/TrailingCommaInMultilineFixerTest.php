@@ -519,14 +519,12 @@ $a
                     $obj->method(
                         1,
                         2,
-                    );
-                ',
+                    );',
             '<?php
                     $obj->method(
                         1,
                         2
-                    );
-                ',
+                    );',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
@@ -543,8 +541,7 @@ $a
                     foo(
                         5,
                         6,
-                    );
-                ',
+                    );',
             '<?php
                     array(
                         1,
@@ -557,8 +554,7 @@ $a
                     foo(
                         5,
                         6
-                    );
-                ',
+                    );',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
@@ -689,8 +685,7 @@ $z = match ($a) {
     2 => 1,
 };
 
-$b = match($c) {19 => 28, default => 333};
-            ',
+$b = match($c) {19 => 28, default => 333};',
             '<?php
 $m = match ($a) {
     200, 300 => null,
@@ -705,16 +700,14 @@ $z = match ($a) {
     2 => 1
 };
 
-$b = match($c) {19 => 28, default => 333};
-            ',
+$b = match($c) {19 => 28, default => 333};',
             ['elements' => ['match']],
         ];
 
         yield 'match with last comma in the same line as closing brace' => [
             '<?php
 $x = match ($a) { 1 => 0,
-                  2 => 1 };
-            ',
+                  2 => 1 };',
             null,
             ['elements' => ['match']],
         ];

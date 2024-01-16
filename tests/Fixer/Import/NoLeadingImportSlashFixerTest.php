@@ -37,39 +37,32 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
-                use A\B;
-                ',
+                use A\B;',
             '<?php
-                use \A\B;
-                ',
+                use \A\B;',
         ];
 
         yield [
             '<?php
-                use/*1*/A\C;
-                ',
+                use/*1*/A\C;',
             '<?php
-                use/*1*/\A\C;
-                ',
+                use/*1*/\A\C;',
         ];
 
         yield [
             '<?php
                 $a = function(\B\C $a) use ($b){
 
-                };
-                ',
+                };',
         ];
 
         yield [
             '<?php
                 namespace NS;
-                use A\B;
-                ',
+                use A\B;',
             '<?php
                 namespace NS;
-                use \A\B;
-                ',
+                use \A\B;',
         ];
 
         yield [
@@ -79,16 +72,14 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 namespace NS2{
                     use C\D;
-                }
-                ',
+                }',
             '<?php
                 namespace NS{
                     use \A\B;
                 }
                 namespace NS2{
                     use \C\D;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -105,8 +96,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use B\X;
 
                     new X();
-                }
-                ',
+                }',
             '<?php
                 namespace Foo {
                     use \A;
@@ -120,29 +110,25 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \B\X;
 
                     new X();
-                }
-                ',
+                }',
         ];
 
         yield [
             '<?php
                 namespace Foo\Bar;
                 use Baz;
-                class Foo implements Baz {}
-                ',
+                class Foo implements Baz {}',
             '<?php
                 namespace Foo\Bar;
                 use \Baz;
-                class Foo implements Baz {}
-                ',
+                class Foo implements Baz {}',
         ];
 
         yield [
             '<?php
                 trait SomeTrait {
                     use \A;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -155,8 +141,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 namespace NS2{
                     use C\D;
-                }
-                ',
+                }',
             '<?php
                 namespace NS{
                     use \A\B;
@@ -166,8 +151,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 namespace NS2{
                     use \C\D;
-                }
-                ',
+                }',
         ];
 
         yield [
@@ -175,19 +159,16 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 trait Foo {}
                 class Bar {
                     use \Foo;
-                }
-                ',
+                }',
         ];
 
         yield [
             '<?php
                     use function a\b;
-                    use const d\e;
-                ',
+                    use const d\e;',
             '<?php
                     use function \a\b;
-                    use const \d\e;
-                ',
+                    use const \d\e;',
         ];
 
         yield [
@@ -232,12 +213,10 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
         yield 'no space case' => [
             '<?php
                 use Events\Payment\Base as PaymentEvent;
-                use const d\e;
-            ',
+                use const d\e;',
             '<?php
                 use\Events\Payment\Base as PaymentEvent;
-                use const\d\e;
-            ',
+                use const\d\e;',
         ];
 
         yield [
@@ -257,8 +236,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
                 use B\X;
 
                 new X();
-            }
-            ',
+            }',
             '<?php
             use \C;
             use \C\X;
@@ -275,8 +253,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
                 use \B\X;
 
                 new X();
-            }
-            ',
+            }',
         ];
     }
 }

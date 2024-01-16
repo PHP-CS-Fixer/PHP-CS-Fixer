@@ -63,56 +63,46 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";',
             '<?php /* header comment */ $foo = true;
                 /*** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";',
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";',
             '<?php /* header comment */ $foo = true;
                 // @var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";',
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";',
             '<?php /* header comment */ $foo = true;
                 //@var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";',
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";',
             '<?php /* header comment */ $foo = true;
                 # @var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";',
         ];
 
         yield [
             '<?php /* header comment */ $foo = true;
                 /** @var string $bar */
-                $bar = "baz";
-                ',
+                $bar = "baz";',
             '<?php /* header comment */ $foo = true;
                 #@var string $bar
-                $bar = "baz";
-                ',
+                $bar = "baz";',
         ];
 
         yield [

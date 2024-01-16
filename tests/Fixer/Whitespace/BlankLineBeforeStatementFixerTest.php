@@ -493,12 +493,10 @@ if ($foo === $bar) {
             '<?php
                     echo 1;
 
-                    for(;;){break;}
-                ',
+                    for(;;){break;}',
             '<?php
                     echo 1;
-                    for(;;){break;}
-                ',
+                    for(;;){break;}',
         ];
     }
 
@@ -621,12 +619,10 @@ if ($foo) { }',
             '<?php
                     echo 1;
 
-                    foreach($a as $b){break;}
-                ',
+                    foreach($a as $b){break;}',
             '<?php
                     echo 1;
-                    foreach($a as $b){break;}
-                ',
+                    foreach($a as $b){break;}',
         ];
     }
 
@@ -1408,8 +1404,7 @@ function foo() {
                                     return 0;
                             }
                         }
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -1431,8 +1426,7 @@ function foo() {
                                     return 0;
                             }
                         }
-                    }
-                ',
+                    }',
         ];
 
         yield [
@@ -1490,8 +1484,7 @@ do {
 
 
                     default => "b2"
-                };
-            ',
+                };',
         ];
     }
 

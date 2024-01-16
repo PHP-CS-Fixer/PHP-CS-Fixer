@@ -502,13 +502,11 @@ $b = 1;
         yield [
             '<?php use A\E;use A\Z;
                     use C;
-                return 1;
-                ',
+                return 1;',
             '<?php use A\E;use A\Z;
 
                     use C;
-                return 1;
-                ',
+                return 1;',
         ];
 
         yield [
@@ -524,8 +522,7 @@ $b = 1;
             '<?php
                     $example = function () use ($message) { var_dump($message); };
 
-                    $example = function () use ($message) { var_dump($message); };
-                ',
+                    $example = function () use ($message) { var_dump($message); };',
         ];
 
         yield [
@@ -1157,8 +1154,7 @@ class Foo {}'
 
                 $orOperator2 = $bar || throw new \Exception();
 
-                $orOperator3 = $bar || throw new \Exception();
-            ',
+                $orOperator3 = $bar || throw new \Exception();',
         ];
 
         yield [
@@ -1167,8 +1163,7 @@ class Foo {}'
                 $a = $bar ?? throw new \Exception();
 
                 // Now, we are going to use it!
-                var_dump($a);
-            ',
+                var_dump($a);',
         ];
 
         yield [
@@ -1177,8 +1172,7 @@ class Foo {}'
 #[Attr]
 #[AttrFoo1]
 #[AttrFoo2]
-function foo(){}
-            ',
+function foo(){}',
             '<?php
 #[Attr]
 
@@ -1189,8 +1183,7 @@ function foo(){}
 
 #[AttrFoo2]
 
-function foo(){}
-            ',
+function foo(){}',
         ];
 
         yield [

@@ -137,16 +137,14 @@ isset
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    $a = isset($a, $b)  ;
-                ',
+                    $a = isset($a, $b)  ;',
             '<?php
                     $a = isset($a) && isset($b) && isset($c) && isset($d) && isset($e) && isset($f);
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
                     echo 1; echo 1; echo 1; echo 1; echo 1; echo 1; echo 1;
-                    $a = isset($a) && isset($b);
-                ',
+                    $a = isset($a) && isset($b);',
         ];
 
         yield [
@@ -158,13 +156,11 @@ isset
             '<?php
                     $a = isset($a, $b)   && isset($c) === false;
                     $a = isset($a, $b)   && isset($c) | false;
-                    $a = isset($a, $b)   && isset($c) ^ false;
-                ',
+                    $a = isset($a, $b)   && isset($c) ^ false;',
             '<?php
                     $a = isset($a) && isset($b) && isset($c) === false;
                     $a = isset($a) && isset($b) && isset($c) | false;
-                    $a = isset($a) && isset($b) && isset($c) ^ false;
-                ',
+                    $a = isset($a) && isset($b) && isset($c) ^ false;',
         ];
 
         // don't fix cases
@@ -184,8 +180,7 @@ isset
                     //
                     $a = false === isset($b) && isset($c);
                     $a = false | isset($b) && isset($c);
-                    $a = false ^ isset($b) && isset($c);
-                ',
+                    $a = false ^ isset($b) && isset($c);',
         ];
 
         yield [
@@ -196,8 +191,7 @@ isset
             '<?php
                 class A {function isset(){}} // isset($b) && isset($c)
                 $a = new A(); /** isset($b) && isset($c) */
-                if (isset($b) && $a->isset()) {}
-            ',
+                if (isset($b) && $a->isset()) {}',
         ];
     }
 }

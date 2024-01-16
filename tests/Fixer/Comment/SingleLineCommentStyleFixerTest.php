@@ -257,11 +257,9 @@ second line*/',
 
         yield [
             '<?php
-                    // test
-                ',
+                    // test',
             '<?php
-                    # test
-                ',
+                    # test',
         ];
 
         yield [
@@ -269,14 +267,12 @@ second line*/',
                     // test1
                     //test2
                     // test3
-                    // test 4
-                ',
+                    // test 4',
             '<?php
                     # test1
                     #test2
                     # test3
-                    # test 4
-                ',
+                    # test 4',
         ];
 
         yield [
@@ -287,16 +283,14 @@ second line*/',
         // Untouched cases
         yield [
             '<?php
-                    //#test
-                ',
+                    //#test',
         ];
 
         yield [
             '<?php
                     /*
                         #test
-                    */
-                ',
+                    */',
         ];
 
         yield [

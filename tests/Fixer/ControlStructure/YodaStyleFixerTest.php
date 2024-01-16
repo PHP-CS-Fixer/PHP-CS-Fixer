@@ -110,11 +110,9 @@ if (($foo[0] !== 1) === true) {
 
         yield [
             '<?php
-                echo 3 === $a ? 2 : 4;
-                ',
+                echo 3 === $a ? 2 : 4;',
             '<?php
-                echo $a === 3 ? 2 : 4;
-                ',
+                echo $a === 3 ? 2 : 4;',
         ];
 
         yield [
@@ -480,23 +478,19 @@ $a#4
         yield [
             '<?php
                 function hello() {}
-                1 === $a ? b() : c();
-                ',
+                1 === $a ? b() : c();',
             '<?php
                 function hello() {}
-                $a === 1 ? b() : c();
-                ',
+                $a === 1 ? b() : c();',
         ];
 
         yield [
             '<?php
                 class A{}
-                1 === $a ? b() : c();
-                ',
+                1 === $a ? b() : c();',
             '<?php
                 class A{}
-                $a === 1 ? b() : c();
-                ',
+                $a === 1 ? b() : c();',
         ];
 
         yield [
@@ -925,13 +919,11 @@ switch ($a) {
             '<?php
                 $a = 1 === $b;
                 $b = $c != 1;
-                $c = $c > 3;
-            ',
+                $c = $c > 3;',
             '<?php
                 $a = $b === 1;
                 $b = $c != 1;
-                $c = $c > 3;
-            '
+                $c = $c > 3;'
         );
     }
 

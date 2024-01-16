@@ -51,8 +51,7 @@ final class GotoLabelAnalyzerTest extends TestCase
         yield 'no candidates' => [
             '<?php
                     $a = \InvalidArgumentException::class;
-                    $this->fixer->configure($legacy ? [$statement] : [1]);
-                ',
+                    $this->fixer->configure($legacy ? [$statement] : [1]);',
             [],
         ];
 
@@ -85,8 +84,7 @@ final class GotoLabelAnalyzerTest extends TestCase
                     {
                         beginning:
                         echo $guard?1:2;
-                    }
-                ',
+                    }',
             [10],
         ];
 

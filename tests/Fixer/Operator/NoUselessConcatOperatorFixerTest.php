@@ -132,8 +132,7 @@ $text2 = "intro:   "."   "." #a
                 $f202 = b"a"."b";
                 $f201 = b"a".b"b";
                 $f203 = "a".B"b";
-                echo b"He drank some juice made of {$fruit}s.".b" Sliced the {$fruit}s.";
-            ',
+                echo b"He drank some juice made of {$fruit}s.".b" Sliced the {$fruit}s.";',
         ];
 
         yield 'single quote concat single quote but with line break after' => [

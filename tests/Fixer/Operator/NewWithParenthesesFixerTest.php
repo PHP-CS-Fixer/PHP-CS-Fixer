@@ -76,8 +76,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     $bar1 = new $foo[0]->bar();
-                    $bar2 = new $foo[0][1]->bar();
-                ',
+                    $bar2 = new $foo[0][1]->bar();',
         ];
 
         yield [
@@ -183,15 +182,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new Foo() - 1;
                     $a = new Foo() * 1;
                     $a = new Foo() / 1;
-                    $a = new Foo() % 1;
-                ',
+                    $a = new Foo() % 1;',
             '<?php
                     $a = new Foo + 1;
                     $a = new Foo - 1;
                     $a = new Foo * 1;
                     $a = new Foo / 1;
-                    $a = new Foo % 1;
-                ',
+                    $a = new Foo % 1;',
         ];
 
         yield [
@@ -200,15 +197,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new Foo() | 1;
                     $a = new Foo() ^ 1;
                     $a = new Foo() << 1;
-                    $a = new Foo() >> 1;
-                ',
+                    $a = new Foo() >> 1;',
             '<?php
                     $a = new Foo & 1;
                     $a = new Foo | 1;
                     $a = new Foo ^ 1;
                     $a = new Foo << 1;
-                    $a = new Foo >> 1;
-                ',
+                    $a = new Foo >> 1;',
         ];
 
         yield [
@@ -217,15 +212,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new Foo() or 1;
                     $a = new Foo() xor 1;
                     $a = new Foo() && 1;
-                    $a = new Foo() || 1;
-                ',
+                    $a = new Foo() || 1;',
             '<?php
                     $a = new Foo and 1;
                     $a = new Foo or 1;
                     $a = new Foo xor 1;
                     $a = new Foo && 1;
-                    $a = new Foo || 1;
-                ',
+                    $a = new Foo || 1;',
         ];
 
         yield [
@@ -238,8 +231,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     if (new DateTime() != $this->startDate) {}
                     if (new DateTime() <> $this->startDate) {}
                     if (new DateTime() === $this->startDate) {}
-                    if (new DateTime() !== $this->startDate) {}
-                ',
+                    if (new DateTime() !== $this->startDate) {}',
             '<?php
                     if (new DateTime > $this->startDate) {}
                     if (new DateTime >= $this->startDate) {}
@@ -249,8 +241,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     if (new DateTime != $this->startDate) {}
                     if (new DateTime <> $this->startDate) {}
                     if (new DateTime === $this->startDate) {}
-                    if (new DateTime !== $this->startDate) {}
-                ',
+                    if (new DateTime !== $this->startDate) {}',
         ];
 
         yield [
@@ -280,20 +271,16 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    $a = new Foo() ** 1;
-                ',
+                    $a = new Foo() ** 1;',
             '<?php
-                    $a = new Foo ** 1;
-                ',
+                    $a = new Foo ** 1;',
         ];
 
         yield [
             '<?php
-                    $a = new Foo() <=> 1;
-                ',
+                    $a = new Foo() <=> 1;',
             '<?php
-                    $a = new Foo <=> 1;
-                ',
+                    $a = new Foo <=> 1;',
         ];
 
         yield [
@@ -474,15 +461,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new Foo - 1;
                     $a = new Foo * 1;
                     $a = new Foo / 1;
-                    $a = new Foo % 1;
-                ',
+                    $a = new Foo % 1;',
             '<?php
                     $a = new Foo() + 1;
                     $a = new Foo() - 1;
                     $a = new Foo() * 1;
                     $a = new Foo() / 1;
-                    $a = new Foo() % 1;
-                ',
+                    $a = new Foo() % 1;',
         ];
 
         yield [
@@ -491,15 +476,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new Foo | 1;
                     $a = new Foo ^ 1;
                     $a = new Foo << 1;
-                    $a = new Foo >> 1;
-                ',
+                    $a = new Foo >> 1;',
             '<?php
                     $a = new Foo() & 1;
                     $a = new Foo() | 1;
                     $a = new Foo() ^ 1;
                     $a = new Foo() << 1;
-                    $a = new Foo() >> 1;
-                ',
+                    $a = new Foo() >> 1;',
         ];
 
         yield [
@@ -508,15 +491,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new Foo or 1;
                     $a = new Foo xor 1;
                     $a = new Foo && 1;
-                    $a = new Foo || 1;
-                ',
+                    $a = new Foo || 1;',
             '<?php
                     $a = new Foo() and 1;
                     $a = new Foo() or 1;
                     $a = new Foo() xor 1;
                     $a = new Foo() && 1;
-                    $a = new Foo() || 1;
-                ',
+                    $a = new Foo() || 1;',
         ];
 
         yield [
@@ -529,8 +510,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     if (new DateTime != $this->startDate) {}
                     if (new DateTime <> $this->startDate) {}
                     if (new DateTime === $this->startDate) {}
-                    if (new DateTime !== $this->startDate) {}
-                ',
+                    if (new DateTime !== $this->startDate) {}',
             '<?php
                     if (new DateTime() > $this->startDate) {}
                     if (new DateTime() >= $this->startDate) {}
@@ -540,8 +520,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     if (new DateTime() != $this->startDate) {}
                     if (new DateTime() <> $this->startDate) {}
                     if (new DateTime() === $this->startDate) {}
-                    if (new DateTime() !== $this->startDate) {}
-                ',
+                    if (new DateTime() !== $this->startDate) {}',
         ];
 
         yield [
@@ -571,20 +550,16 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    $a = new Foo ** 1;
-                ',
+                    $a = new Foo ** 1;',
             '<?php
-                    $a = new Foo() ** 1;
-                ',
+                    $a = new Foo() ** 1;',
         ];
 
         yield [
             '<?php
-                    $a = new Foo <=> 1;
-                ',
+                    $a = new Foo <=> 1;',
             '<?php
-                    $a = new Foo() <=> 1;
-                ',
+                    $a = new Foo() <=> 1;',
         ];
 
         yield [
@@ -632,11 +607,9 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    $a = new Foo() <=> 1;
-                ',
+                    $a = new Foo() <=> 1;',
             '<?php
-                    $a = new Foo <=> 1;
-                ',
+                    $a = new Foo <=> 1;',
         ];
 
         yield [
@@ -646,16 +619,14 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new class() /**/ extends Bar1{};
                     $a = new class()  extends Bar2 implements Foo{};
                     $a = new class()    extends Bar3 implements Foo, Foo2{};
-                    $a = new class() {}?>
-                ',
+                    $a = new class() {}?>',
             '<?php
                     $a = new class {use SomeTrait;};
                     $a = new class implements Foo{};
                     $a = new class /**/ extends Bar1{};
                     $a = new class  extends Bar2 implements Foo{};
                     $a = new class    extends Bar3 implements Foo, Foo2{};
-                    $a = new class {}?>
-                ',
+                    $a = new class {}?>',
         ];
 
         yield [
@@ -664,15 +635,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                         public function B() {
                             $static = new static(new class(){});
                         }
-                    }
-                ',
+                    }',
             '<?php
                     class A {
                         public function B() {
                             $static = new static(new class{});
                         }
-                    }
-                ',
+                    }',
         ];
     }
 
@@ -706,16 +675,14 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                     $a = new class /**/ extends Bar1{};
                     $a = new class  extends Bar2 implements Foo{};
                     $a = new class    extends Bar3 implements Foo, Foo2{};
-                    $a = new class    {}?>
-                ',
+                    $a = new class    {}?>',
             '<?php
                     $a = new class() {use SomeTrait;};
                     $a = new class() implements Foo{};
                     $a = new class() /**/ extends Bar1{};
                     $a = new class()  extends Bar2 implements Foo{};
                     $a = new class()    extends Bar3 implements Foo, Foo2{};
-                    $a = new class ( )  {}?>
-                ',
+                    $a = new class ( )  {}?>',
         ];
 
         yield [
@@ -724,15 +691,13 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
                         public function B() {
                             $static = new static(new class{});
                         }
-                    }
-                ',
+                    }',
             '<?php
                     class A {
                         public function B() {
                             $static = new static(new class(){});
                         }
-                    }
-                ',
+                    }',
         ];
     }
 
@@ -797,19 +762,16 @@ $a = new ($foo."ar");',
         yield [
             '<?php
                 $bar1 = new $foo[0]?->bar();
-                $bar2 = new $foo[0][1]?->bar();
-            ',
+                $bar2 = new $foo[0][1]?->bar();',
         ];
 
         yield [
             '<?php $a = new
                 #[Internal]
-                class(){};
-            ',
+                class(){};',
             '<?php $a = new
                 #[Internal]
-                class{};
-            ',
+                class{};',
         ];
     }
 

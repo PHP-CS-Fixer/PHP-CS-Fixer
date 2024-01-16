@@ -115,14 +115,12 @@ class Point {
 final class Foo
 {
     public readonly string $prop;
-}
-            ',
+}',
             '<?php
 final class Foo
 {
     public READONLY string $prop;
-}
-            ',
+}',
         ];
 
         yield [

@@ -42,8 +42,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @covers Foo
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'already with annotation: @coversDefaultClass' => [
@@ -51,8 +50,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @coversDefaultClass
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'without docblock #1' => [
@@ -61,12 +59,10 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @coversNothing
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'without docblock #2 (class is final)' => [
@@ -75,18 +71,15 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @coversNothing
                      */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'without docblock #2 (class is abstract)' => [
             '<?php
-                    abstract class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    abstract class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'with docblock but annotation is missing' => [
@@ -98,8 +91,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      * @since v2.2
                      * @coversNothing
                      */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
                     /**
@@ -107,8 +99,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      *
                      * @since v2.2
                      */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'with one-line docblock but annotation is missing' => [
@@ -118,13 +109,11 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                      * Description.
                      * @coversNothing
                      */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
                     /** Description. */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'with 2-lines docblock but annotation is missing #1' => [
@@ -133,14 +122,12 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /** Description.
                      * @coversNothing
                      */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
                     /** Description.
                      */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'with 2-lines docblock but annotation is missing #2' => [
@@ -149,14 +136,12 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @coversNothing
                      * Description. */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
                     /**
                      * Description. */
-                    final class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    final class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'with comment instead of docblock' => [
@@ -167,21 +152,18 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @coversNothing
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
                     /*
                      * @covers Foo
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'not a test class' => [
             '<?php
 
-                    class Foo {}
-                ',
+                    class Foo {}',
         ];
 
         yield 'multiple classes in one file' => [
@@ -215,8 +197,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     /**
                      * @coversNothing
                      */
-                    class Baz4 extends TestCase {}
-                ',
+                    class Baz4 extends TestCase {}',
             '<?php /** */
 
                     use \PHPUnit\Framework\TestCase;
@@ -234,8 +215,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 
                     class Baz3 extends \PHPUnit\Framework\TestCase {}
 
-                    class Baz4 extends TestCase {}
-                ',
+                    class Baz4 extends TestCase {}',
         ];
 
         yield [
@@ -244,10 +224,8 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
 /**
  * @coversNothing
  */
-class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
-            '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+class FooTest extends \PHPUnit_Framework_TestCase {}',
+            '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
     }
 
@@ -274,12 +252,10 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                     /**
                      * @coversNothing
                      */
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
-                    class FooTest extends \PHPUnit_Framework_TestCase {}
-                ',
+                    class FooTest extends \PHPUnit_Framework_TestCase {}',
         ];
     }
 
@@ -301,18 +277,15 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 /**
                  * @coversNothing
                  */
-                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}
-            ',
+                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}',
             '<?php
 
-                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}
-            ',
+                readonly final class BarTest extends \PHPUnit_Framework_TestCase {}',
         ];
 
         yield 'without docblock #2 (class is abstract)' => [
             '<?php
-                    abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}
-            ',
+                    abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}',
             null,
         ];
     }

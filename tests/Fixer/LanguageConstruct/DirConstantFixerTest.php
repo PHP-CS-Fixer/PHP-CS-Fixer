@@ -160,8 +160,7 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
             '<?php
                     $x = dirname(dirname("a".__FILE__));
                     $x = dirname(dirname(__FILE__."a"));
-                    $x = dirname(dirname("a".__FILE__."a"));
-                ',
+                    $x = dirname(dirname("a".__FILE__."a"));',
         ];
 
         yield [
