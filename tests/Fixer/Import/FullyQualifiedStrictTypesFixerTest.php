@@ -772,6 +772,19 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'import only if not already implicitly used by relative name first part' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                new MyCl\Sub();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
         yield 'import with relative and absolute symbols - global' => [
             <<<'EOD'
                 <?php

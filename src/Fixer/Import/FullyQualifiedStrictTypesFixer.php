@@ -454,16 +454,26 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             uasort($discoveredSymbols, static fn ($a, $b) => substr_count($a, '\\') <=> substr_count($b, '\\'));
             foreach ($discoveredSymbols as $symbol) {
-                $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
-                if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
-                    $shortStartNameLower = strtolower(explode('\\', ltrim($symbol, '\\'), 2)[0]);
-                    if (str_starts_with($symbol, '\\') || ('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
-                        || !str_contains($symbol, '\\')
-                    ) {
-                        $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
+                while (true) {
+                    $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
+                    if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
+                        $shortStartNameLower = strtolower(explode('\\', ltrim($symbol, '\\'), 2)[0]);
+                        if (str_starts_with($symbol, '\\') || ('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
+                            || !str_contains($symbol, '\\')
+                        ) {
+                            $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
+
+                            break;
+                        }
                     }
+                    // else short name collision - keep unimported
+
+                    if (str_starts_with($symbol, '\\') || !str_contains($symbol, '\\')) {
+                        break;
+                    }
+
+                    $symbol = substr($symbol, 0, strrpos($symbol, '\\'));
                 }
-                // else short name collision - keep unimported
             }
 
             foreach ($uses as $useLongName => $useShortName) {
