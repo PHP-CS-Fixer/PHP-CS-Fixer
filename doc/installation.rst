@@ -85,7 +85,7 @@ To integrate php-cs-fixer as check into a GitHub Action step, you can use a conf
 .. code-block:: yaml
 
     - name: PHP-CS-Fixer
-      uses: docker://ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3}
+      uses: docker://ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
         with:
           args: check src
 
