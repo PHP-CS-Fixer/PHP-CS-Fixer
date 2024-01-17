@@ -1077,6 +1077,19 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
             ['import_symbols' => true],
         ];
+
+        yield 'do not import partly on import conflict (until conflicts are fully handled and consistent with namespaced/non-namespaced files) - global with use' => [
+            <<<'EOD'
+                <?php
+
+                use A;
+
+                new A();
+                new X\Y\A();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
