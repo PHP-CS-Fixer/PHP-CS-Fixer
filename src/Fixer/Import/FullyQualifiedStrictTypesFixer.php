@@ -452,7 +452,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $useByShortNameLower[strtolower($useShortName)] = true;
             }
 
-            uasort($discoveredSymbols, static fn ($a, $b) => substr_count($a, '\\') <=> substr_count($b, '\\'));
+            uasort($discoveredSymbols, static function ($a, $b) {
+                $res = str_starts_with($a, '\\') <=> str_starts_with($b, '\\');
+                if (0 !== $res) {
+                    return $res;
+                }
+
+                return substr_count($a, '\\') <=> substr_count($b, '\\');
+            });
             foreach ($discoveredSymbols as $symbol) {
                 while (true) {
                     $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
