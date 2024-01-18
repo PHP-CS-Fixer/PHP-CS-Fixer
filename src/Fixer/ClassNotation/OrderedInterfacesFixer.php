@@ -108,6 +108,11 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
         );
     }
 
+    public function getPriority(): int
+    {
+        return 75;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_IMPLEMENTS)
