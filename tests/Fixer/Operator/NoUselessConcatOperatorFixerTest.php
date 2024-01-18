@@ -160,6 +160,19 @@ line 2 indent" ?>',
 ;
 ",
         ];
+
+        yield 'concat without linebreak, followed by one with linebreak' => [
+            <<<'PHP'
+                <?php
+                $foo = 'ab'
+                    . 'c';
+                PHP,
+            <<<'PHP'
+                <?php
+                $foo = 'a' . 'b'
+                    . 'c';
+                PHP,
+        ];
     }
 
     public function testWithConfigJuggling(): void
