@@ -38,15 +38,11 @@ final class NoClosingTagFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+        return \count($tokens) >= 2 && $tokens->isMonolithicPhp() && $tokens->isTokenKindFound(T_CLOSE_TAG);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (\count($tokens) < 2 || !$tokens->isMonolithicPhp() || !$tokens->isTokenKindFound(T_CLOSE_TAG)) {
-            return;
-        }
-
         $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
         $index = array_key_first($closeTags);
 
