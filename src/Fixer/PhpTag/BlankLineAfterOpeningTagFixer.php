@@ -76,11 +76,12 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
             $tokens[$openTagIndex] = new Token([$token->getId(), rtrim($token->getContent()).$lineEnding]);
         }
 
-        if (isset($tokens[$openTagIndex + 1]) && !str_contains($tokens[$openTagIndex + 1]->getContent(), "\n")) {
-            if ($tokens[$openTagIndex + 1]->isWhitespace()) {
-                $tokens[$openTagIndex + 1] = new Token([T_WHITESPACE, $lineEnding.$tokens[$openTagIndex + 1]->getContent()]);
+        $newLineIndex = $openTagIndex + 1;
+        if (isset($tokens[$newLineIndex]) && !str_contains($tokens[$newLineIndex]->getContent(), "\n")) {
+            if ($tokens[$newLineIndex]->isWhitespace()) {
+                $tokens[$newLineIndex] = new Token([T_WHITESPACE, $lineEnding.$tokens[$newLineIndex]->getContent()]);
             } else {
-                $tokens->insertAt($openTagIndex + 1, new Token([T_WHITESPACE, $lineEnding]));
+                $tokens->insertAt($newLineIndex, new Token([T_WHITESPACE, $lineEnding]));
             }
         }
     }
