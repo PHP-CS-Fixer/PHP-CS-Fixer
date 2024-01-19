@@ -36,7 +36,19 @@ final class RuleSetNameValidatorTest extends TestCase
      */
     public static function provideIsValidOkCases(): iterable
     {
+        yield 'Built-in' => ['@Foo', false];
+
+        yield 'Built-in risky' => ['@Foo:risky', false];
+
+        yield 'Built-in with sub-namespace' => ['@PhpCsFixer/testing', false];
+
+        yield 'Built-in with dot-based namespace' => ['@PhpCsFixer.testing', false];
+
+        yield 'Built-in with hyphen' => ['@PER-CS', false];
+
         yield 'Simple name' => ['@Vendor/MyRules', true];
+
+        yield 'Simple name risky' => ['@Vendor/MyRules:risky', true];
 
         yield 'Versioned with dash and X.Y' => ['@Vendor/MyRules-1.0', true];
 
@@ -62,6 +74,12 @@ final class RuleSetNameValidatorTest extends TestCase
      */
     public static function provideIsValidBadNameCases(): iterable
     {
+        yield 'Built-in without @' => ['Foo', false];
+
+        yield 'Built-in starting with number' => ['@100rules', false];
+
+        yield 'Built-in containing @ in the middle' => ['@Foo@Bar', false];
+
         yield 'Does not start with @' => ['Vendor/MyRules', true];
 
         yield 'Contains comma 1' => ['MyRules,', true];
