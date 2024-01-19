@@ -108,6 +108,10 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     */
     public function getPriority(): int
     {
         return 75;
