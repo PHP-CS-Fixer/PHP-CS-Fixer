@@ -142,7 +142,7 @@ configure them in your config file.
         ->setLineEnding("\r\n")
     ;
 
-It's possible to register custom rule sets, which makes it easier to reuse custom configuration between multiple projects. If you have prepared rule set, you can register it and then enable it in the rules. Custom rule sets (in this example `\MyNameSpace\MyRuleSetClass`) must implement `\PhpCsFixer\RuleSet\RuleSetDescriptionInterface`.
+It's possible to register custom rule sets, which makes it easier to reuse custom configuration between multiple projects. If you have prepared rule set, you can register it and then enable it in the rules. Custom rule sets (in this example ``\MyNameSpace\MyRuleSetClass``) must implement ``\PhpCsFixer\RuleSet\RuleSetDescriptionInterface``.
 
 .. code-block:: php
 
@@ -150,11 +150,11 @@ It's possible to register custom rule sets, which makes it easier to reuse custo
 
     return (new PhpCsFixer\Config())
         ->registerCustomRuleSets([
-            '@MyRuleSet' => MyNameSpace\MyRuleSetClass::class,
+            MyNameSpace\MyRuleSetClass::class, // It identifies itself as '@MyRuleSet'
         ])
         ->setRules([
             '@MyRuleSet' => true,
         ])
     ;
 
-ℹ️ If you use other `\PhpCsFixer\ConfigInterface` implementation than built-in one, you can register custom rule sets using `\PhpCsFixer\RuleSet\RuleSets::registerRuleSet()` just before the configuration. Currently `\PhpCsFixer\Config::registerCustomRuleSets()` is not part of the `ConfigInterface` because it would be a BC-break - it will be added there in the next major version of the Fixer.
+ℹ️ If you use other ``\PhpCsFixer\ConfigInterface`` implementation than built-in one, you can register custom rule sets using ``\PhpCsFixer\RuleSet\RuleSets::registerRuleSet()`` just before the configuration. Currently ``\PhpCsFixer\Config::registerCustomRuleSets()`` is not part of the ``ConfigInterface`` because it would be a BC-break - it will be added there in the next major version of the Fixer.
