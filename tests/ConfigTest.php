@@ -23,6 +23,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
@@ -240,7 +241,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @param array<string, string> $ruleSets
+     * @param list<class-string> $ruleSets
      *
      * @dataProvider provideRegisterCustomRuleSetsCases
      */
@@ -254,7 +255,12 @@ final class ConfigTest extends TestCase
         $config->registerCustomRuleSets($ruleSets);
 
         if (null === $expectedException) {
-            self::assertContains(array_keys($ruleSets)[0], RuleSets::getSetDefinitionNames());
+            foreach ($ruleSets as $ruleSetClass) {
+                /** @var RuleSetDescriptionInterface $ruleSet */
+                $ruleSet = new $ruleSetClass();
+
+                self::assertContains($ruleSet->getName(), RuleSets::getSetDefinitionNames());
+            }
         }
     }
 
@@ -305,13 +311,13 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: null|class-string<\Throwable>, 1: array<string, class-string>}>
+     * @return iterable<array{0: null|class-string<\Throwable>, 1: list<class-string>}>
      */
     public static function provideRegisterCustomRuleSetsCases(): iterable
     {
-        yield [null, ['@RulesOk' => SampleRulesOk::class]];
+        yield [null, [SampleRulesOk::class]];
 
-        yield [\InvalidArgumentException::class, ['@RulesBad' => SampleRulesBad::class]];
+        yield [\InvalidArgumentException::class, [SampleRulesBad::class]];
     }
 
     public function testConfigConstructorWithName(): void
