@@ -22,11 +22,9 @@ namespace PhpCsFixer\Tests\Fixtures\ExternalRuleSet;
  */
 class SampleRulesBad
 {
-    private const NAME = '@RulesBad';
-
     public function getName(): string
     {
-        return static::NAME;
+        return '@RulesBad';
     }
 
     public function isRisky(): bool
