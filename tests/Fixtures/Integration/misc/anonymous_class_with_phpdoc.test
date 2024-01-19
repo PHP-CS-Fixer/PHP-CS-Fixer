@@ -9,16 +9,20 @@ $a = new
 /** @property string $x */
 class() {};
 
-$a = new
+$b = new
 #[X]
 class() {};
 
-$a = new
+$c = new
 /** @property string $x */
 #[X] #[Y\Z]
 class() {};
 
 class Z {}
+
+$d = new
+#[X] // comment
+class() {};
 
 --INPUT--
 <?php
@@ -29,14 +33,18 @@ $a = new
 class() {};
 
 
-$a = new
+$b = new
 #[X]
 class() {};
 
 
-$a = new
+$c = new
 /** @property string $x */
 #[X] #[Y\Z]
 class() {};
 
 class Z {}
+
+$d = new
+#[X] // comment
+class() {};
