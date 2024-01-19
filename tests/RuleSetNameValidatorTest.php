@@ -31,6 +31,9 @@ final class RuleSetNameValidatorTest extends TestCase
         self::assertTrue(RuleSetNameValidator::isValid($name, $isCustom));
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1: bool}>
+     */
     public static function provideIsValidOkCases(): iterable
     {
         yield 'Simple name' => ['@Vendor/MyRules', true];
@@ -54,6 +57,9 @@ final class RuleSetNameValidatorTest extends TestCase
         self::assertFalse(RuleSetNameValidator::isValid($name, $isCustom));
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1: bool}>
+     */
     public static function provideIsValidBadNameCases(): iterable
     {
         yield 'Does not start with @' => ['Vendor/MyRules', true];
