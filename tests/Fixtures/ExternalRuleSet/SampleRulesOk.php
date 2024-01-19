@@ -23,11 +23,9 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  */
 class SampleRulesOk implements RuleSetDescriptionInterface
 {
-    private const NAME = '@Vendor/RulesOk';
-
     public function getName(): string
     {
-        return static::NAME;
+        return '@Vendor/RulesOk';
     }
 
     public function isRisky(): bool
