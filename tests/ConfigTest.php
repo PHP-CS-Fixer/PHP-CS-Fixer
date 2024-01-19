@@ -295,20 +295,14 @@ final class ConfigTest extends TestCase
         yield [$fixers, new \ArrayIterator($fixers)];
     }
 
-    public static function provideRegisterCustomRuleSetsCases(): array
+    /**
+     * @return iterable<array{0: null|class-string<\Throwable>, 1: array<string, class-string>}>
+     */
+    public static function provideRegisterCustomRuleSetsCases(): iterable
     {
-        $ruleSetGood = [
-            '@RulesOk' => SampleRulesOk::class,
-        ];
+        yield [null, ['@RulesOk' => SampleRulesOk::class]];
 
-        $ruleSetBad = [
-            '@RulesBad' => SampleRulesBad::class,
-        ];
-
-        return [
-            [null, $ruleSetGood],
-            [\InvalidArgumentException::class, $ruleSetBad],
-        ];
+        yield [\InvalidArgumentException::class, ['@RulesBad' => SampleRulesBad::class]];
     }
 
     public function testConfigConstructorWithName(): void
