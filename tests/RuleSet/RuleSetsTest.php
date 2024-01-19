@@ -35,6 +35,17 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RuleSetsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Since we register custom rule sets statically, we need to clear resolved rule sets between runs.
+        $reflection = new \ReflectionClass(RuleSets::class);
+        $reflectionProperty = $reflection->getProperty('setDefinitions');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($reflection, null);
+    }
+
     public function testGetSetDefinitionNames(): void
     {
         self::assertSame(
@@ -200,33 +211,27 @@ Integration of %s.
     {
         self::expectException(\InvalidArgumentException::class);
         // @phpstan-ignore-next-line
-        RuleSets::registerRuleSet('@Vendor/MyRules', '\This\Class\Does\Not\Exists');
+        RuleSets::registerRuleSet('\This\Class\Does\Not\Exists');
     }
 
     public function testRegisterRuleSetOverlappingName(): void
     {
-        RuleSets::registerRuleSet('@Vendor/MyAnotherRuleSetForTesting', SampleRulesOk::class);
+        RuleSets::registerRuleSet(SampleRulesOk::class);
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('@Vendor/MyAnotherRuleSetForTesting', SampleRulesOk::class);
-    }
-
-    public function testRegisterRuleSetInvalidName(): void
-    {
-        self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('bad name', SampleRulesOk::class);
+        RuleSets::registerRuleSet(SampleRulesOk::class);
     }
 
     public function testRegisterRuleSetInvalidClass(): void
     {
         self::expectException(\InvalidArgumentException::class);
-        // @phpstan-ignore-next-line
-        RuleSets::registerRuleSet('@Vendor/MyClass', SampleRulesBad::class);
+
+        RuleSets::registerRuleSet(SampleRulesBad::class); // @phpstan-ignore-line
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerRuleSet('@Vendor/MySet', SampleRulesOk::class);
-        $set = RuleSets::getSetDefinition('@Vendor/MySet');
+        RuleSets::registerRuleSet(SampleRulesOk::class);
+        $set = RuleSets::getSetDefinition('@Vendor/RulesOk');
         self::assertSame('@Vendor/RulesOk', $set->getName());
     }
 
