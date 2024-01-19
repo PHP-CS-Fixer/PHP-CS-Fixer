@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.48.0
+---------------------
+
+* chore: `FullyQualifiedStrictTypesFixer` must run before `OrderedInterfacesFixer` (#7762)
+* docs: Add PHP-CS-Fixer integration in a GitHub Action step (#7757)
+* feat: `PhpdocTypesOrderFixer` Support DNF types (#7732)
+* fix: Support shebang in fixers operating on PHP opening tag (#7687)
+* fix: work correctly for a switch/case with ternary operator (#7756)
+* fix: `NoUselessConcatOperatorFixer` - do not remove new line (#7759)
+
 Changelog for v3.47.1
 ---------------------
 
