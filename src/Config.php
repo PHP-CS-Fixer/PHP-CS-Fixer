@@ -168,16 +168,14 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     /**
      * Registers custom rule sets to be used the same way as built-in rule sets.
      *
-     * `$ruleSets` must follow `'@RuleName' => RuleSetDescriptionInterface::class` convention.
-     *
-     * @param array<string, class-string<RuleSetDescriptionInterface>> $ruleSets
+     * @param list<class-string<RuleSetDescriptionInterface>> $ruleSets
      *
      * @todo Introduce it in ConfigInterface in 4.0
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface
     {
-        foreach ($ruleSets as $name => $class) {
-            RuleSets::registerRuleSet($name, $class);
+        foreach ($ruleSets as $class) {
+            RuleSets::registerRuleSet($class);
         }
 
         return $this;
