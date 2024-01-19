@@ -45,6 +45,10 @@ final class RuleSets
                 /** @var RuleSetDescriptionInterface */
                 $set = new $class();
 
+                if (!RuleSetNameValidator::isValid($set->getName(), false)) {
+                    throw new \UnexpectedValueException(sprintf('Rule set name invalid: %s', $set->getName()));
+                }
+
                 self::$setDefinitions[$set->getName()] = $set;
             }
 
@@ -79,7 +83,7 @@ final class RuleSets
     public static function registerRuleSet(string $name, string $class): void
     {
         if (!RuleSetNameValidator::isValid($name, false)) {
-            throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, dots and hyphens.');
+            throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, colons, dots and hyphens.');
         }
 
         if (!class_exists($class, true)) {
