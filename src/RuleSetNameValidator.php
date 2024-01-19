@@ -19,9 +19,9 @@ final class RuleSetNameValidator
     public static function isValid(string $name, bool $isCustom): bool
     {
         if (!$isCustom) {
-            return Preg::match('/^@[a-zA-Z][a-zA-Z0-9_\/\.-]*$/', $name);
+            return Preg::match('/^@[a-zA-Z][a-zA-Z0-9:_\/\.-]*$/', $name);
         }
 
-        return Preg::match('/^@[a-zA-Z][a-zA-Z0-9_\/\.-]*$/', $name);
+        return Preg::match('/^@[a-zA-Z][a-zA-Z0-9:_\/\.-]*$/', $name);
     }
 }
