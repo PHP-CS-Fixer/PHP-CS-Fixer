@@ -100,7 +100,10 @@ The rule is part of the following rule sets:
 
   ``['force' => true]``
 
-- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
+
+  ``['force' => true]``
+
 
 References
 ----------
