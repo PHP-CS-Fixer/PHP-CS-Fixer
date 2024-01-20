@@ -48,23 +48,16 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
-            return;
-        }
-
         $newlineFound = false;
-
-        /** @var Token $token */
         foreach ($tokens as $token) {
-            if ($token->isWhitespace() && str_contains($token->getContent(), "\n")) {
+            if (($token->isWhitespace() || $token->isGivenKind(T_OPEN_TAG)) && str_contains($token->getContent(), "\n")) {
                 $newlineFound = true;
 
                 break;
@@ -76,17 +69,19 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
             return;
         }
 
-        $token = $tokens[0];
+        $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
+        $token = $tokens[$openTagIndex];
 
         if (!str_contains($token->getContent(), "\n")) {
-            $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$lineEnding]);
+            $tokens[$openTagIndex] = new Token([$token->getId(), rtrim($token->getContent()).$lineEnding]);
         }
 
-        if (!str_contains($tokens[1]->getContent(), "\n")) {
-            if ($tokens[1]->isWhitespace()) {
-                $tokens[1] = new Token([T_WHITESPACE, $lineEnding.$tokens[1]->getContent()]);
+        $newLineIndex = $openTagIndex + 1;
+        if (isset($tokens[$newLineIndex]) && !str_contains($tokens[$newLineIndex]->getContent(), "\n")) {
+            if ($tokens[$newLineIndex]->isWhitespace()) {
+                $tokens[$newLineIndex] = new Token([T_WHITESPACE, $lineEnding.$tokens[$newLineIndex]->getContent()]);
             } else {
-                $tokens->insertAt(1, new Token([T_WHITESPACE, $lineEnding]));
+                $tokens->insertAt($newLineIndex, new Token([T_WHITESPACE, $lineEnding]));
             }
         }
     }

@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types,ordered_interfaces.
+--RULESET--
+{"fully_qualified_strict_types": true, "ordered_interfaces": true}
+--EXPECT--
+<?php
+
+namespace Foo;
+
+use Bar\Interface1;
+use Bar\Interface2;
+
+class Test implements Interface1, Interface2 {}
+
+--INPUT--
+<?php
+
+namespace Foo;
+
+use Bar\Interface1;
+use Bar\Interface2;
+
+class Test implements \Bar\Interface2, Interface1 {}

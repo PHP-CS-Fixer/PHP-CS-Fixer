@@ -3,6 +3,25 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.48.0
+---------------------
+
+* chore: `FullyQualifiedStrictTypesFixer` must run before `OrderedInterfacesFixer` (#7762)
+* docs: Add PHP-CS-Fixer integration in a GitHub Action step (#7757)
+* feat: `PhpdocTypesOrderFixer` Support DNF types (#7732)
+* fix: Support shebang in fixers operating on PHP opening tag (#7687)
+* fix: work correctly for a switch/case with ternary operator (#7756)
+* fix: `NoUselessConcatOperatorFixer` - do not remove new line (#7759)
+
+Changelog for v3.47.1
+---------------------
+
+* fix: Do not override short name with relative reference (#7752)
+* fix: make `BinaryOperatorSpacesFixer` work as pre-v3.47 (#7751)
+* fix: Proper Docker image name suffix (#7739)
+* fix: `FullyQualifiedStrictTypesFixer` - do not change case of the symbol when there's name collision between imported class and imported function (#7750)
+* fix: `FullyQualifiedStrictTypesFixer` - do not modify statements with property fetch and `::` (#7749)
+
 Changelog for v3.47.0
 ---------------------
 

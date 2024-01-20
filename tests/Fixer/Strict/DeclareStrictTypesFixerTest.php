@@ -49,8 +49,17 @@ class A {
             '<?php declare/* A b C*/(strict_types=1);',
         ];
 
-        yield [
-            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
+        yield 'monolithic file with closing tag' => [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>',
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>',
+        ];
+
+        yield 'monolithic file with closing tag and extra new line' => [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>'."\n",
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>'."\n",
+        ];
+
+        yield 'monolithic file with closing tag and extra content' => [
             '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
         ];
 
@@ -133,6 +142,49 @@ $a = 456;
         yield ['  <?php echo 123;']; // first statement must be an open tag
 
         yield ['<?= 123;']; // first token open with echo is not fixed
+
+        yield 'empty file /wo open tag' => [
+            '',
+        ];
+
+        yield 'empty file /w open tag' => [
+            '<?php declare(strict_types=1);',
+            '<?php',
+        ];
+
+        yield 'non-empty file /wo open tag' => [
+            'x',
+        ];
+
+        yield 'non-empty file /w open tag' => [
+            'x<?php',
+        ];
+
+        yield 'file with shebang /w open tag' => [
+            <<<'EOD'
+                #!x
+                <?php declare(strict_types=1);
+                EOD,
+            <<<'EOD'
+                #!x
+                <?php
+                EOD,
+        ];
+
+        yield 'file with shebang /wo open tag' => [
+            <<<'EOD'
+                #!x
+                y
+                EOD,
+        ];
+
+        yield 'file with shebang not followed by open tag' => [
+            <<<'EOD'
+                #!x
+                #!not_a_shebang
+                <?php
+                EOD,
+        ];
     }
 
     /**

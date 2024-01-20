@@ -845,6 +845,29 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'shorten relative reference to already imported, direct short name' => [
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+
+                use Foo\Bar;
+                use Foo\Bar\A\B;
+
+                final class Buzz extends Bar implements B {}
+                final class Fuzz extends Bar implements B {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+
+                use Foo\Bar;
+                use Foo\Bar\A\B;
+
+                final class Buzz extends Bar implements Bar\A\B {}
+                final class Fuzz extends Bar implements B {}
+                EOD,
+        ];
+
         yield 'fix to longest imported name' => [
             <<<'EOD'
                 <?php
@@ -873,6 +896,96 @@ class Foo extends \A\A implements \B\A, \C\A
                 new \A\X();
                 new \A\X\Z();
                 new R\T();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with shorter import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V;
+                new \U();
+                new V();
+                new V\W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with same import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V\W;
+                new \U();
+                new \U\V();
+                new W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with useless import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V\W\X;
+                new \U();
+                new \U\V();
+                new \U\V\W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with longer import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V\W\X\Y;
+                new \U();
+                new \U\V();
+                new \U\V\W();
+                new X();
+                new Y();
+                new Y\Z();
+                new Y\Z\e();
+                new Y\Z\e\f();
+                EOD,
+        ];
+
+        yield 'do not fix class named the same as imported function' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Request;
+                use function Baz\request;
+                class Test
+                {
+                    public function request(Request $request = null)
+                    {
+                        $request = $request ?? Request::create('/docs.json');
+                    }
+                }
+                $request = new Request();
+                EOD,
+        ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service;
+                class Baz {
+                    public function getValue()
+                    {
+                        return $this->service::getValueFromService();
+                    }
+
+                }
                 EOD,
         ];
     }
@@ -2056,6 +2169,15 @@ class Foo
 }
             ',
             ['import_symbols' => true],
+        ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Baz;
+                echo $x?->baz::CONSTANT_1;
+                EOD,
         ];
     }
 
