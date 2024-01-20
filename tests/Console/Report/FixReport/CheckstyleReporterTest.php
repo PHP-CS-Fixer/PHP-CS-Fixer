@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
@@ -47,17 +48,21 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     protected static function createNoErrorReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
-            <checkstyle />
+            <checkstyle version="{$about}" />
             XML;
     }
 
     protected static function createSimpleReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
-            <checkstyle>
+            <checkstyle version="{$about}">
               <file name="someFile.php">
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here" message="Found violation(s) of type: some_fixer_name_here" />
               </file>
@@ -67,10 +72,12 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     protected static function createWithDiffReport(): string
     {
+        $about = Application::getAbout();
+
         // NOTE: checkstyle format does NOT include diffs
-        return <<<'XML'
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
-            <checkstyle>
+            <checkstyle version="{$about}">
               <file name="someFile.php">
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here" message="Found violation(s) of type: some_fixer_name_here" />
               </file>
@@ -80,9 +87,11 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
-            <checkstyle>
+            <checkstyle version="{$about}">
               <file name="someFile.php">
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_1" message="Found violation(s) of type: some_fixer_name_here_1" />
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_2" message="Found violation(s) of type: some_fixer_name_here_2" />
@@ -93,10 +102,12 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     protected static function createWithTimeAndMemoryReport(): string
     {
+        $about = Application::getAbout();
+
         // NOTE: checkstyle format does NOT include time or memory
-        return <<<'XML'
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
-            <checkstyle>
+            <checkstyle version="{$about}">
               <file name="someFile.php">
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here" message="Found violation(s) of type: some_fixer_name_here" />
               </file>
@@ -106,9 +117,11 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
-            <checkstyle>
+            <checkstyle version="{$about}">
               <file name="someFile.php">
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_1" message="Found violation(s) of type: some_fixer_name_here_1" />
                 <error severity="warning" source="PHP-CS-Fixer.some_fixer_name_here_2" message="Found violation(s) of type: some_fixer_name_here_2" />

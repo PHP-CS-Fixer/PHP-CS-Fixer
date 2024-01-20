@@ -1442,7 +1442,7 @@ class Foo {
                      * "Sponsored" by https://github.com/PrestaShop/PrestaShop/blob/1.6.1.24/tools/tcpdf/tcpdf.php (search for "Get page dimensions from format name")
                      * @see
                      * @param $number - it can be:
-                     * '.implode("\n                     * ", range(1, 1000)).'
+                     * '.implode("\n                     * ", range(1, 1_000)).'
                      */
                      function display($number) {}
                 ',
@@ -2527,6 +2527,44 @@ static fn ($foo): int => 1;',
             '<?php
 /** @return int */
 static fn ($foo): int => 1;',
+        ];
+
+        yield 'multiline @param must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param string $arg
+                 *                    - foo
+                 *                    - foo2
+                 */
+                function foo(string $arg) {}
+                EOD,
+        ];
+
+        yield 'multiline @return must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @return string
+                 *                - foo
+                 *                - foo2
+                 */
+                function foo(string $arg): string {}
+                EOD,
+        ];
+
+        yield 'multiline @var must be kept even if there is no description on the phpdoc tag line' => [
+            <<<'EOD'
+                <?php
+                class Cl {
+                    /**
+                     * @var string
+                     *             - foo
+                     *             - foo2
+                     */
+                    public string $prop;
+                }
+                EOD,
         ];
     }
 

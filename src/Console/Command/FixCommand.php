@@ -17,6 +17,7 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\OutputContext;
@@ -251,9 +252,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             : ('txt' === $reporter->getFormat() ? $output : null);
 
         if (null !== $stdErr) {
-            if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                $stdErr->writeln($this->getApplication()->getLongVersion());
-            }
+            $stdErr->writeln(Application::getAboutWithRuntime(true));
 
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));

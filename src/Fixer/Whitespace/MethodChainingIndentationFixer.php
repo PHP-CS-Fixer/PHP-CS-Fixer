@@ -36,6 +36,16 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after NoSpaceAroundDoubleColonFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getObjectOperatorKinds());

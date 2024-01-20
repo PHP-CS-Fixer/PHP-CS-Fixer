@@ -31,6 +31,9 @@ final class NoUselessReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

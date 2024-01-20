@@ -85,4 +85,29 @@ final class SwitchAnalyzerTest extends TestCase
             [7, 12, 20, 30],
         ];
     }
+
+    public function testWithEmptyTokens(): void
+    {
+        $tokensWithEmpty = Tokens::fromCode(<<<'PHP'
+            <?php
+            switch/* to remove */($value1) {
+                case 1: return 2;
+            }
+            PHP);
+        $tokensWithEmpty->clearAt(2);
+
+        $tokensWithoutEmpty = clone $tokensWithEmpty;
+        $tokensWithoutEmpty->clearEmptyTokens();
+
+        self::assertStringNotContainsString('to remove', $tokensWithEmpty->generateCode());
+        self::assertStringNotContainsString('to remove', $tokensWithoutEmpty->generateCode());
+
+        self::assertSame(
+            $tokensWithEmpty->count(),
+            $tokensWithoutEmpty->count() + 1
+        );
+
+        self::assertTrue(SwitchAnalyzer::belongsToSwitch($tokensWithEmpty, 12));
+        self::assertTrue(SwitchAnalyzer::belongsToSwitch($tokensWithoutEmpty, 11));
+    }
 }

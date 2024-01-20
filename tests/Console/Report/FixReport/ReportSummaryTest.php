@@ -34,7 +34,7 @@ final class ReportSummaryTest extends TestCase
         ];
         $filesCount = 10;
         $time = time();
-        $memory = 123456789;
+        $memory = 123_456_789;
         $addAppliedFixers = true;
         $isDryRun = true;
         $isDecoratedOutput = false;

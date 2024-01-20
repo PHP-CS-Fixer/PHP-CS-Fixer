@@ -74,7 +74,7 @@ interface Foo
     public function foo(\Stringable&\Countable $obj): int;
 }
 ',
-                    new VersionSpecification(80100),
+                    new VersionSpecification(8_01_00),
                     ['null_adjustment' => 'always_last']
                 ),
                 new VersionSpecificCodeSample(
@@ -84,7 +84,7 @@ interface Bar
     public function bar(null|string|int $foo): string|int;
 }
 ',
-                    new VersionSpecification(80000),
+                    new VersionSpecification(8_00_00),
                     [
                         'sort_algorithm' => 'none',
                         'null_adjustment' => 'always_last',

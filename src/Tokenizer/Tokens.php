@@ -133,17 +133,25 @@ class Tokens extends \SplFixedArray
      */
     public static function detectBlockType(Token $token): ?array
     {
-        foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
-            if ($token->equals($definition['start'])) {
-                return ['type' => $type, 'isStart' => true];
-            }
+        static $blockEdgeKinds = null;
 
-            if ($token->equals($definition['end'])) {
-                return ['type' => $type, 'isStart' => false];
+        if (null === $blockEdgeKinds) {
+            $blockEdgeKinds = [];
+            foreach (self::getBlockEdgeDefinitions() as $type => $definition) {
+                $blockEdgeKinds[
+                    \is_string($definition['start']) ? $definition['start'] : $definition['start'][0]
+                ] = ['type' => $type, 'isStart' => true];
+                $blockEdgeKinds[
+                    \is_string($definition['end']) ? $definition['end'] : $definition['end'][0]
+                ] = ['type' => $type, 'isStart' => false];
             }
         }
 
-        return null;
+        // inlined extractTokenKind() call on the hot path
+        /** @var int|non-empty-string */
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+
+        return $blockEdgeKinds[$tokenKind] ?? null;
     }
 
     /**
@@ -209,63 +217,66 @@ class Tokens extends \SplFixedArray
      */
     public static function getBlockEdgeDefinitions(): array
     {
-        $definitions = [
-            self::BLOCK_TYPE_CURLY_BRACE => [
-                'start' => '{',
-                'end' => '}',
-            ],
-            self::BLOCK_TYPE_PARENTHESIS_BRACE => [
-                'start' => '(',
-                'end' => ')',
-            ],
-            self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
-                'start' => '[',
-                'end' => ']',
-            ],
-            self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
-                'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
-            ],
-            self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
-                'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => [
-                'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
-                'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
-                'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
-                'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
-            ],
-            self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
-                'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
-            ],
-            self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
-                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
-                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
-            ],
-            self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
-                'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
-                'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
-            ],
-            self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
-                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
-            ],
-        ];
-
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
-            $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
-                'start' => [T_ATTRIBUTE, '#['],
-                'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
+        static $definitions = null;
+        if (null === $definitions) {
+            $definitions = [
+                self::BLOCK_TYPE_CURLY_BRACE => [
+                    'start' => '{',
+                    'end' => '}',
+                ],
+                self::BLOCK_TYPE_PARENTHESIS_BRACE => [
+                    'start' => '(',
+                    'end' => ')',
+                ],
+                self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
+                    'start' => '[',
+                    'end' => ']',
+                ],
+                self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
+                    'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
+                    'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
+                ],
+                self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
+                    'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
+                    'end' => [CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => [
+                    'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
+                    'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
+                    'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
+                    'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
+                    'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
+                    'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
+                    'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
+                    'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
+                ],
+                self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
+                    'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
+                    'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+                ],
+                self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
+                    'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
+                    'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
+                ],
+                self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
+                    'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
+                    'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
+                ],
             ];
+
+            // @TODO: drop condition when PHP 8.0+ is required
+            if (\defined('T_ATTRIBUTE')) {
+                $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
+                    'start' => [T_ATTRIBUTE, '#['],
+                    'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
+                ];
+            }
         }
 
         return $definitions;
@@ -295,10 +306,18 @@ class Tokens extends \SplFixedArray
      */
     public function offsetUnset($index): void
     {
-        $this->changed = true;
-        $this->namespaceDeclarations = null;
         if (isset($this[$index])) {
+            if (isset($this->blockStartCache[$index])) {
+                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+            }
+            if (isset($this->blockEndCache[$index])) {
+                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+            }
+
             $this->unregisterFoundToken($this[$index]);
+
+            $this->changed = true;
+            $this->namespaceDeclarations = null;
         }
 
         parent::offsetUnset($index);
@@ -314,16 +333,21 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
-
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
+            if (isset($this[$index])) {
+                if (isset($this->blockStartCache[$index])) {
+                    unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+                }
+                if (isset($this->blockEndCache[$index])) {
+                    unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+                }
+
+                $this->unregisterFoundToken($this[$index]);
+            }
+
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
-            if (isset($this[$index])) {
-                $this->unregisterFoundToken($this[$index]);
-            }
             $this->registerFoundToken($newval);
         }
 
@@ -365,7 +389,14 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // we are moving the tokens, we need to clear the indices Cache
+        // should already be true
+        if (!$this->changed) {
+            // must never happen
+            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
+        }
+
+        // we are moving the tokens, we need to clear the index-based Cache
+        $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
@@ -1107,19 +1138,12 @@ class Tokens extends \SplFixedArray
      */
     public function isMonolithicPhp(): bool
     {
-        if (0 === $this->count()) {
+        if (1 !== ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO))) {
             return false;
         }
 
-        if ($this->countTokenKind(T_INLINE_HTML) > 1) {
-            return false;
-        }
-
-        if (1 === $this->countTokenKind(T_INLINE_HTML)) {
-            return Preg::match('/^#!.+$/', $this[0]->getContent());
-        }
-
-        return 1 === ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
+        return 0 === $this->countTokenKind(T_INLINE_HTML)
+            || (1 === $this->countTokenKind(T_INLINE_HTML) && Preg::match('/^#!.+$/', $this[0]->getContent()));
     }
 
     /**

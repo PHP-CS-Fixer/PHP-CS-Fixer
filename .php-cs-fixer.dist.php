@@ -12,6 +12,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
 $header = <<<'EOF'
     This file is part of PHP CS Fixer.
 
@@ -22,14 +25,14 @@ $header = <<<'EOF'
     with this source code in the file LICENSE.
     EOF;
 
-$finder = (new PhpCsFixer\Finder())
+$finder = (new Finder())
     ->ignoreDotFiles(false)
     ->ignoreVCSIgnored(true)
     ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
     ->in(__DIR__)
 ;
 
-return (new PhpCsFixer\Config())
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP74Migration' => true,
@@ -41,6 +44,7 @@ return (new PhpCsFixer\Config())
         'header_comment' => ['header' => $header],
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
+        'numeric_literal_separator' => true,
     ])
     ->setFinder($finder)
 ;

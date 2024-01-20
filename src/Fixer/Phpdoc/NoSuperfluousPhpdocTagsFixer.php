@@ -514,11 +514,11 @@ class Foo {
         array $symbolShortNames
     ): bool {
         if ('param' === $annotation->getTag()->getName()) {
-            $regex = '{\*\h*@param(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\h+(?:\&\h*)?(?:\.{3}\h*)?\$\S+)?(?:\h+(?<description>(?!\*+\/)\S+))?}s';
+            $regex = '{\*\h*@param(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\h+(?:\&\h*)?(?:\.{3}\h*)?\$\S+)?(?:\s+(?<description>(?!\*+\/)\S+))?}s';
         } elseif ('var' === $annotation->getTag()->getName()) {
-            $regex = '{\*\h*@var(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\h+\$\S+)?(?:\h+(?<description>(?!\*\/)\S+))?}s';
+            $regex = '{\*\h*@var(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\h+\$\S+)?(?:\s+(?<description>(?!\*\/)\S+))?}s';
         } else {
-            $regex = '{\*\h*@return(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\h+(?<description>(?!\*\/)\S+))?}s';
+            $regex = '{\*\h*@return(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\s+(?<description>(?!\*\/)\S+))?}s';
         }
 
         if (!Preg::match($regex, $annotation->getContent(), $matches)) {

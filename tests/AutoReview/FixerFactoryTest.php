@@ -449,6 +449,7 @@ final class FixerFactoryTest extends TestCase
             'fully_qualified_strict_types' => [
                 'no_superfluous_phpdoc_tags',
                 'ordered_imports',
+                'ordered_interfaces',
                 'statement_indentation',
             ],
             'function_declaration' => [
@@ -532,6 +533,10 @@ final class FixerFactoryTest extends TestCase
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
             ],
+            'multiline_string_to_heredoc' => [
+                'escape_implicit_backslashes',
+                'heredoc_indentation',
+            ],
             'multiline_whitespace_before_semicolons' => [
                 'space_after_semicolon',
             ],
@@ -613,6 +618,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'no_short_bool_cast' => [
                 'cast_spaces',
+            ],
+            'no_space_around_double_colon' => [
+                'method_chaining_indentation',
             ],
             'no_spaces_after_function_name' => [
                 'function_to_constant',

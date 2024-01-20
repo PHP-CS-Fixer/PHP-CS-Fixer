@@ -31,13 +31,13 @@ final class SwitchAnalyzer
             return false;
         }
 
-        $codeHash = $tokens->getCodeHash();
+        $tokensHash = md5(serialize($tokens->toArray()));
 
-        if (!\array_key_exists($codeHash, self::$cache)) {
-            self::$cache[$codeHash] = self::getColonIndicesForSwitch(clone $tokens);
+        if (!\array_key_exists($tokensHash, self::$cache)) {
+            self::$cache[$tokensHash] = self::getColonIndicesForSwitch(clone $tokens);
         }
 
-        return \in_array($index, self::$cache[$codeHash], true);
+        return \in_array($index, self::$cache[$tokensHash], true);
     }
 
     /**

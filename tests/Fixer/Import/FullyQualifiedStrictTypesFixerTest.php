@@ -541,6 +541,52 @@ namespace Foo\Baz {
             ['import_symbols' => true],
         ];
 
+        yield 'import new symbols with no existing imports nor namespace /wo declare' => [
+            <<<'EOD'
+                <?php
+
+                use Ns\A;
+                // comment
+
+                foo();
+
+                function foo(A $v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                foo();
+
+                function foo(\Ns\A $v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import new symbols with no existing imports nor namespace /w declare' => [
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                declare(strict_types=1);
+                use Ns\A;
+
+                function foo(A $v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                // comment
+
+                declare(strict_types=1);
+
+                function foo(\Ns\A $v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'import new symbols with custom whitespace config' => [
             '<?php
 
@@ -639,6 +685,308 @@ class Foo extends \A\A implements \B\A, \C\A
     }
 }',
             ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by class declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                class City
+                {
+                    public \Ns2\City $city;
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by interface declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                interface City
+                {
+                    public function f(\Ns2\City $city);
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by trait declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                trait City
+                {
+                    public \Ns2\City $city;
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in class instantiation' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                new MyCl();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in attribute' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                #[MyCl]
+                class Cl {}
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import only if not already implicitly used by short name usage in phpdoc' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                /** @var MyCl */;
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - global' => [
+            <<<'EOD'
+                <?php
+
+                use Foo\Bar;
+                new Exception();
+                new Exception();
+                new Bar();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new Exception();
+                new Foo\Bar();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - global and leading backslash' => [
+            <<<'EOD'
+                <?php
+
+                use Foo\Bar;
+                new \Exception();
+                new \Exception();
+                new Bar();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                new \Exception();
+                new Exception();
+                new Foo\Bar();
+                EOD,
+            ['import_symbols' => true, 'leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'import with relative and absolute symbols - namespaced' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns2\Foo4;
+                use Ns\Foo3\Sub3;
+                use Ns\Foo\Sub2;
+
+                new Foo();
+                new Foo\Sub();
+                new Foo();
+                new Foo2();
+                new Sub2();
+                new Sub3();
+                new \Ns2\Foo();
+                new Foo4();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new Foo();
+                new Foo\Sub();
+                new \Ns\Foo();
+                new \Ns\Foo2();
+                new \Ns\Foo\Sub2();
+                new \Ns\Foo3\Sub3();
+                new \Ns2\Foo();
+                new \Ns2\Foo4();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'shorten relative reference to already imported, direct short name' => [
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+
+                use Foo\Bar;
+                use Foo\Bar\A\B;
+
+                final class Buzz extends Bar implements B {}
+                final class Fuzz extends Bar implements B {}
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo\Bar\Baz;
+
+                use Foo\Bar;
+                use Foo\Bar\A\B;
+
+                final class Buzz extends Bar implements Bar\A\B {}
+                final class Fuzz extends Bar implements B {}
+                EOD,
+        ];
+
+        yield 'fix to longest imported name' => [
+            <<<'EOD'
+                <?php
+
+                use A\B;
+                use A\X as Y;
+                use S as R;
+                use S\T;
+
+                new B();
+                new B\C();
+                new Y();
+                new Y\Z();
+                new T();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use A\B;
+                use A\X as Y;
+                use S as R;
+                use S\T;
+
+                new \A\B();
+                new \A\B\C();
+                new \A\X();
+                new \A\X\Z();
+                new R\T();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with shorter import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V;
+                new \U();
+                new V();
+                new V\W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with same import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V\W;
+                new \U();
+                new \U\V();
+                new W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with useless import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V\W\X;
+                new \U();
+                new \U\V();
+                new \U\V\W();
+                new X();
+                new X\Y();
+                new X\Y\Z();
+                EOD,
+        ];
+
+        yield 'shortening - namespace with longer import' => [
+            <<<'EOD'
+                <?php
+                namespace U\V\W;
+                use U\V\W\X\Y;
+                new \U();
+                new \U\V();
+                new \U\V\W();
+                new X();
+                new Y();
+                new Y\Z();
+                new Y\Z\e();
+                new Y\Z\e\f();
+                EOD,
+        ];
+
+        yield 'do not fix class named the same as imported function' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Request;
+                use function Baz\request;
+                class Test
+                {
+                    public function request(Request $request = null)
+                    {
+                        $request = $request ?? Request::create('/docs.json');
+                    }
+                }
+                $request = new Request();
+                EOD,
+        ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service;
+                class Baz {
+                    public function getValue()
+                    {
+                        return $this->service::getValueFromService();
+                    }
+
+                }
+                EOD,
         ];
     }
 
@@ -1066,12 +1414,12 @@ use Ping\Pong\Pyng\Pung;
 class SomeClass
 {
     public function doSomething(
-        \Ping\Something $something,
-        Pung\Pang $other,
-        \Ping\Pong\Pung $other1,
+        Ping\Something $something,
+        Ping\Pong\Pung\Pang $other,
+        Ping\Pong\Pung $other1,
         Pang\Pung $other2,
-        Pyng\Pung\Pong $other3,
-        \Foo\Bar\Baz\Buz $other4
+        Pung\Pong $other3,
+        Bar\Baz\Buz $other4
     ){}
 }',
             '<?php
@@ -1822,6 +2170,15 @@ class Foo
             ',
             ['import_symbols' => true],
         ];
+
+        yield 'do not fix property named the same as class' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Baz;
+                echo $x?->baz::CONSTANT_1;
+                EOD,
+        ];
     }
 
     /**
@@ -1864,7 +2221,7 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(Bar $foo): Foo\Bar\Ba3{}
+    public function doSomething(Bar $foo): Bar\Ba3{}
     public function doSomethingMore(Bar|B $foo): Baz{}
     public function doSomethingElse(Bar&A\Z $foo): Baz{}
 }',
@@ -1878,6 +2235,21 @@ class SomeClass
     public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
     public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
 }',
+        ];
+
+        yield 'import only if not already implicitly used by enum declaration' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                enum City
+                {
+                    public function f(\Ns2\City $city) {}
+                }
+                EOD,
+            null,
+            ['import_symbols' => true],
         ];
     }
 
