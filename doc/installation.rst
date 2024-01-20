@@ -103,6 +103,7 @@ To integrate php-cs-fixer as check into Gitlab-CI, you can use a configuration l
         php-cs-fixer check --format gitlab
         # use `check .` if your repository not having paths configured in .php-cs-fixer[.dist].php
 
+
 Update
 ------
 
