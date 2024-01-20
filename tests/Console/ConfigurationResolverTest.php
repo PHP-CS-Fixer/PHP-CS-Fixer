@@ -1222,6 +1222,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
                 ? 'No replacement available'
                 : sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
         ));
+
         $config = new Config();
         $config->setRules([$ruleSet => true]);
         $config->setRiskyAllowed(true);
