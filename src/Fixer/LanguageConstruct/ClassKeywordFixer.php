@@ -53,7 +53,7 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
     {
         return 8;
     }
-    
+
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
