@@ -661,20 +661,18 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 EOD,
         ];
 
-        yield 'unescaped backslashes in single quoted string' => [
+        yield 'unescaped backslashes in single quoted string - backslash' => [
             <<<'EOD'
                 <?php
                 '\\';
                 '\\\\';
                 '\\\\\\';
-                '\b';
-                '\b';
-                '\\\b';
-                '\\\b';
-                '\\\\\b';
-                '\\\\\b';
-                '\\\\\\\b';
-                '\\\\\\\b';
+                EOD,
+        ];
+
+        yield 'unescaped backslashes in single quoted string - reserved double quote' => [
+            <<<'EOD'
+                <?php
                 '\"';
                 '\"';
                 '\\\"';
@@ -683,6 +681,31 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 '\\\\\"';
                 '\\\\\\\"';
                 '\\\\\\\"';
+                EOD,
+            <<<'EOD'
+                <?php
+                '\"';
+                '\\"';
+                '\\\"';
+                '\\\\"';
+                '\\\\\"';
+                '\\\\\\"';
+                '\\\\\\\"';
+                '\\\\\\\\"';
+                EOD,
+        ];
+
+        yield 'unescaped backslashes in single quoted string - reserved chars' => [
+            <<<'EOD'
+                <?php
+                '\b';
+                '\b';
+                '\\\b';
+                '\\\b';
+                '\\\\\b';
+                '\\\\\b';
+                '\\\\\\\b';
+                '\\\\\\\b';
                 '\$v';
                 '\$v';
                 '\{$v}';
@@ -692,9 +715,6 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 EOD,
             <<<'EOD'
                 <?php
-                '\\';
-                '\\\\';
-                '\\\\\\';
                 '\b';
                 '\\b';
                 '\\\b';
@@ -703,14 +723,6 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 '\\\\\\b';
                 '\\\\\\\b';
                 '\\\\\\\\b';
-                '\"';
-                '\\"';
-                '\\\"';
-                '\\\\"';
-                '\\\\\"';
-                '\\\\\\"';
-                '\\\\\\\"';
-                '\\\\\\\\"';
                 '\$v';
                 '\\$v';
                 '\{$v}';
@@ -720,12 +732,20 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 EOD,
         ];
 
-        yield 'unescaped backslashes in double quoted string' => [
+        yield 'unescaped backslashes in double quoted string - backslash' => [
             <<<'EOD'
                 <?php
                 "\\";
                 "\\\\";
                 "\\\\\\";
+                EOD,
+            null,
+            ['double_quoted' => 'unescape'],
+        ];
+
+        yield 'unescaped backslashes in double quoted string - reserved chars' => [
+            <<<'EOD'
+                <?php
                 "\b";
                 "\b";
                 "\\\b";
@@ -743,9 +763,6 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 EOD,
             <<<'EOD'
                 <?php
-                "\\";
-                "\\\\";
-                "\\\\\\";
                 "\b";
                 "\\b";
                 "\\\b";
@@ -764,7 +781,7 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
             ['double_quoted' => 'unescape'],
         ];
 
-        yield 'unescaped backslashes in heredoc' => [
+        yield 'unescaped backslashes in heredoc - backslash' => [
             <<<'EOD_'
                 <?php
                 <<<EOD
@@ -775,33 +792,6 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\
                 \\\\\
                 \\\\\\\
-                \b
-                \b
-                \\\b
-                \\\b
-                \\\\\b
-                \\\\\b
-                \\\\\\\b
-                \'
-                \'
-                \\\'
-                \\\'
-                \\\\\'
-                \\\\\'
-                \\\\\\\'
-                \"
-                \"
-                \\\"
-                \\\"
-                \\\\\"
-                \\\\\"
-                \\\\\\\"
-                \$v
-                \\$v
-                \{$v}
-                \\{$v}
-                \n
-                \\n
                 EOD;
                 EOD_,
             <<<'EOD_'
@@ -814,13 +804,27 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\
                 \\\\\\
                 \\\\\\\
-                \b
-                \\b
-                \\\b
-                \\\\b
-                \\\\\b
-                \\\\\\b
-                \\\\\\\b
+                EOD;
+                EOD_,
+            ['heredoc' => 'unescape'],
+        ];
+
+        yield 'unescaped backslashes in heredoc - reserved single quote' => [
+            <<<'EOD_'
+                <?php
+                <<<EOD
+                \'
+                \'
+                \\\'
+                \\\'
+                \\\\\'
+                \\\\\'
+                \\\\\\\'
+                EOD;
+                EOD_,
+            <<<'EOD_'
+                <?php
+                <<<EOD
                 \'
                 \\'
                 \\\'
@@ -828,6 +832,27 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\'
                 \\\\\\'
                 \\\\\\\'
+                EOD;
+                EOD_,
+            ['heredoc' => 'unescape'],
+        ];
+
+        yield 'unescaped backslashes in heredoc - reserved double quote' => [
+            <<<'EOD_'
+                <?php
+                <<<EOD
+                \"
+                \"
+                \\\"
+                \\\"
+                \\\\\"
+                \\\\\"
+                \\\\\\\"
+                EOD;
+                EOD_,
+            <<<'EOD_'
+                <?php
+                <<<EOD
                 \"
                 \\"
                 \\\"
@@ -835,12 +860,46 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
                 \\\\\"
                 \\\\\\"
                 \\\\\\\"
+                EOD;
+                EOD_,
+            ['heredoc' => 'unescape'],
+        ];
+
+        yield 'unescaped backslashes in heredoc - reserved chars' => [
+            <<<'EOD_'
+                <?php
+                <<<EOD
                 \$v
                 \\$v
                 \{$v}
                 \\{$v}
                 \n
                 \\n
+                \b
+                \b
+                \\\b
+                \\\b
+                \\\\\b
+                \\\\\b
+                \\\\\\\b
+                EOD;
+                EOD_,
+            <<<'EOD_'
+                <?php
+                <<<EOD
+                \$v
+                \\$v
+                \{$v}
+                \\{$v}
+                \n
+                \\n
+                \b
+                \\b
+                \\\b
+                \\\\b
+                \\\\\b
+                \\\\\\b
+                \\\\\\\b
                 EOD;
                 EOD_,
             ['heredoc' => 'unescape'],
