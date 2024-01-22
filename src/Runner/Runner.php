@@ -114,18 +114,7 @@ final class Runner
     private function fixSequential(): array
     {
         $changed = [];
-
-        $finder = $this->finder;
-        $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
-        $fileFilteredFileIterator = new FileFilterIterator(
-            $finderIterator,
-            $this->eventDispatcher,
-            $this->cacheManager
-        );
-
-        $collection = $this->linter->isAsync()
-            ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)
-            : new FileLintingIterator($fileFilteredFileIterator, $this->linter);
+        $collection = $this->getFileIterator();
 
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
@@ -313,5 +302,20 @@ final class Runner
         }
 
         $this->eventDispatcher->dispatch($event, $name);
+    }
+
+    private function getFileIterator(): LintingResultAwareFileIteratorInterface
+    {
+        $finder = $this->finder;
+        $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
+        $fileFilteredFileIterator = new FileFilterIterator(
+            $finderIterator,
+            $this->eventDispatcher,
+            $this->cacheManager
+        );
+
+        return $this->linter->isAsync()
+            ? new FileCachingLintingFileIterator($fileFilteredFileIterator, $this->linter)
+            : new FileLintingFileIterator($fileFilteredFileIterator, $this->linter);
     }
 }

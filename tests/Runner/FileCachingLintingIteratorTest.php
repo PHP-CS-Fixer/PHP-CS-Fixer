@@ -16,13 +16,13 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
-use PhpCsFixer\Runner\FileCachingLintingIterator;
+use PhpCsFixer\Runner\FileCachingLintingFileIterator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\FileCachingLintingIterator
+ * @covers \PhpCsFixer\Runner\FileCachingLintingFileIterator
  */
 final class FileCachingLintingIteratorTest extends TestCase
 {
@@ -30,7 +30,7 @@ final class FileCachingLintingIteratorTest extends TestCase
     {
         $iterator = new \ArrayIterator([]);
 
-        $fileCachingLintingIterator = new FileCachingLintingIterator(
+        $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
             $this->createLinterDouble()
         );
@@ -57,7 +57,7 @@ final class FileCachingLintingIteratorTest extends TestCase
 
         $iterator = new \ArrayIterator($files);
 
-        $fileCachingLintingIterator = new FileCachingLintingIterator(
+        $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
             $this->createLinterDouble($lintingResult)
         );
@@ -68,7 +68,7 @@ final class FileCachingLintingIteratorTest extends TestCase
     }
 
     private static function assertLintingIteratorIteration(
-        FileCachingLintingIterator $fileCachingLintingIterator,
+        FileCachingLintingFileIterator $fileCachingLintingIterator,
         LintingResultInterface $lintingResultInterface,
         \SplFileInfo ...$files
     ): void {

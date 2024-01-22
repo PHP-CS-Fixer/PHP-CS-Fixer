@@ -22,21 +22,16 @@ use PhpCsFixer\Linter\LintingResultInterface;
  *
  * @internal
  *
- * @extends \CachingIterator<mixed, \SplFileInfo, \Iterator<mixed, \SplFileInfo>>
+ * @extends \IteratorIterator<mixed, \SplFileInfo, \Traversable<\SplFileInfo>>
  */
-final class FileCachingLintingIterator extends \CachingIterator
+final class FileLintingFileIterator extends \IteratorIterator implements LintingResultAwareFileIteratorInterface
 {
-    private LinterInterface $linter;
-
     /**
-     * @var LintingResultInterface
+     * @var null|LintingResultInterface
      */
     private $currentResult;
 
-    /**
-     * @var LintingResultInterface
-     */
-    private $nextResult;
+    private LinterInterface $linter;
 
     /**
      * @param \Iterator<mixed, \SplFileInfo> $iterator
@@ -48,7 +43,7 @@ final class FileCachingLintingIterator extends \CachingIterator
         $this->linter = $linter;
     }
 
-    public function currentLintingResult(): LintingResultInterface
+    public function currentLintingResult(): ?LintingResultInterface
     {
         return $this->currentResult;
     }
@@ -57,24 +52,14 @@ final class FileCachingLintingIterator extends \CachingIterator
     {
         parent::next();
 
-        $this->currentResult = $this->nextResult;
-
-        if ($this->hasNext()) {
-            $this->nextResult = $this->handleItem($this->getInnerIterator()->current());
-        }
+        $this->currentResult = $this->valid() ? $this->handleItem($this->current()) : null;
     }
 
     public function rewind(): void
     {
         parent::rewind();
 
-        if ($this->valid()) {
-            $this->currentResult = $this->handleItem($this->current());
-        }
-
-        if ($this->hasNext()) {
-            $this->nextResult = $this->handleItem($this->getInnerIterator()->current());
-        }
+        $this->currentResult = $this->valid() ? $this->handleItem($this->current()) : null;
     }
 
     private function handleItem(\SplFileInfo $file): LintingResultInterface
