@@ -98,6 +98,11 @@ final class ToolInfo implements ToolInfoInterface
         return $this->isInstalledByComposer;
     }
 
+    public function isRunInsideDocker(): bool
+    {
+        return is_file('/.dockerenv') && str_starts_with(__FILE__, '/fixer/');
+    }
+
     public function getPharDownloadUri(string $version): string
     {
         return sprintf(
