@@ -22,16 +22,13 @@ use PhpCsFixer\Linter\LintingResultInterface;
  *
  * @internal
  *
- * @extends \IteratorIterator<mixed, \SplFileInfo, \Traversable<\SplFileInfo>>
+ * @extends \CachingIterator<mixed, \SplFileInfo, \Iterator<mixed, \SplFileInfo>>
  */
-final class FileLintingIterator extends \IteratorIterator
+final class FileCachingLintingFileIterator extends \CachingIterator implements LintingResultAwareFileIteratorInterface
 {
-    /**
-     * @var null|LintingResultInterface
-     */
-    private $currentResult;
-
     private LinterInterface $linter;
+    private ?LintingResultInterface $currentResult;
+    private ?LintingResultInterface $nextResult;
 
     /**
      * @param \Iterator<mixed, \SplFileInfo> $iterator
@@ -52,14 +49,24 @@ final class FileLintingIterator extends \IteratorIterator
     {
         parent::next();
 
-        $this->currentResult = $this->valid() ? $this->handleItem($this->current()) : null;
+        $this->currentResult = $this->nextResult;
+
+        if ($this->hasNext()) {
+            $this->nextResult = $this->handleItem($this->getInnerIterator()->current());
+        }
     }
 
     public function rewind(): void
     {
         parent::rewind();
 
-        $this->currentResult = $this->valid() ? $this->handleItem($this->current()) : null;
+        if ($this->valid()) {
+            $this->currentResult = $this->handleItem($this->current());
+        }
+
+        if ($this->hasNext()) {
+            $this->nextResult = $this->handleItem($this->getInnerIterator()->current());
+        }
     }
 
     private function handleItem(\SplFileInfo $file): LintingResultInterface
