@@ -171,7 +171,8 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
             $tokens->clearTokenAndMergeSurroundingWhitespace($i);
         }
 
-        if ($replacements[0]->isGivenKind([T_CLASS_C, T_STATIC])
+        if (
+            $replacements[0]->isGivenKind([T_CLASS_C, T_STATIC])
             || ($replacements[0]->isGivenKind(T_STRING) && 'self' === $replacements[0]->getContent())
         ) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
