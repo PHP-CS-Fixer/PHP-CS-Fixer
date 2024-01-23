@@ -35,7 +35,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         string $expected,
         ?string $input = null,
         array $config = [],
-        ?WhitespacesFixerConfig $whitespaceConfig = null
+        ?WhitespacesFixerConfig $whitespaceConfig = null,
     ): void {
         $this->fixer->configure($config);
 

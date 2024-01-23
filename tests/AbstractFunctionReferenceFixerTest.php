@@ -36,7 +36,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
         string $source,
         string $functionNameToSearch,
         int $start = 0,
-        ?int $end = null
+        ?int $end = null,
     ): void {
         $fixer = $this->createAbstractFunctionReferenceFixerDouble();
 

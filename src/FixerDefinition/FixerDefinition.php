@@ -44,7 +44,7 @@ final class FixerDefinition implements FixerDefinitionInterface
         string $summary,
         array $codeSamples,
         ?string $description = null,
-        ?string $riskyDescription = null
+        ?string $riskyDescription = null,
     ) {
         $this->summary = $summary;
         $this->codeSamples = $codeSamples;

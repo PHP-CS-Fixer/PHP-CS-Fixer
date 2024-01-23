@@ -37,7 +37,7 @@ final class BlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
         string $expected,
         ?string $input = null,
         ?array $config = [],
-        ?WhitespacesFixerConfig $whitespaces = null
+        ?WhitespacesFixerConfig $whitespaces = null,
     ): void {
         if (null !== $whitespaces) {
             $this->fixer->setWhitespacesConfig($whitespaces);

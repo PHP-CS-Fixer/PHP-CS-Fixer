@@ -63,7 +63,7 @@ final class IntegrationCase
         array $config,
         RuleSet $ruleset,
         string $expectedCode,
-        ?string $inputCode
+        ?string $inputCode,
     ) {
         $this->fileName = $fileName;
         $this->title = $title;

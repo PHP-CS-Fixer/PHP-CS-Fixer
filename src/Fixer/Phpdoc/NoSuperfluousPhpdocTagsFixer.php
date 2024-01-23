@@ -309,7 +309,7 @@ class Foo {
         array $element,
         ?string $namespace,
         ?string $currentSymbol,
-        array $shortNames
+        array $shortNames,
     ): string {
         $docBlock = new DocBlock($content);
 
@@ -366,7 +366,7 @@ class Foo {
         array $element,
         ?string $namespace,
         ?string $currentSymbol,
-        array $shortNames
+        array $shortNames,
     ): string {
         if (\count($element['types']) > 0) {
             $propertyTypeInfo = $this->parseTypeHint($tokens, array_key_first($element['types']));
@@ -511,7 +511,7 @@ class Foo {
         array $info,
         ?string $namespace,
         ?string $currentSymbol,
-        array $symbolShortNames
+        array $symbolShortNames,
     ): bool {
         if ('param' === $annotation->getTag()->getName()) {
             $regex = '{\*\h*@param(?:\h+'.TypeExpression::REGEX_TYPES.')?(?!\S)(?:\h+(?:\&\h*)?(?:\.{3}\h*)?\$\S+)?(?:\s+(?<description>(?!\*+\/)\S+))?}s';

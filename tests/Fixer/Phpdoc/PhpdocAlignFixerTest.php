@@ -35,7 +35,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
         array $configuration,
         string $expected,
         ?string $input = null,
-        ?WhitespacesFixerConfig $whitespacesFixerConfig = null
+        ?WhitespacesFixerConfig $whitespacesFixerConfig = null,
     ): void {
         $this->fixer->configure($configuration);
         if (null !== $whitespacesFixerConfig) {

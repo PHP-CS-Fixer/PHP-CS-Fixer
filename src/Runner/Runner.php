@@ -77,7 +77,7 @@ final class Runner
         bool $isDryRun,
         CacheManagerInterface $cacheManager,
         ?DirectoryInterface $directory = null,
-        bool $stopOnViolation = false
+        bool $stopOnViolation = false,
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;

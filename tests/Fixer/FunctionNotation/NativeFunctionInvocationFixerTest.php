@@ -90,7 +90,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     public function testConfigureIncludeSets(
         array $include,
         ?string $expectedExceptionClass = null,
-        ?string $expectedExceptionMessage = null
+        ?string $expectedExceptionMessage = null,
     ): void {
         if (null !== $expectedExceptionClass) {
             $this->expectException($expectedExceptionClass);

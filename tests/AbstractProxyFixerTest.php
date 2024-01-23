@@ -135,7 +135,7 @@ final class AbstractProxyFixerTest extends TestCase
         bool $isCandidate,
         bool $isRisky = false,
         bool $supports = false,
-        int $priority = 999
+        int $priority = 999,
     ): FixerInterface {
         return new class($isCandidate, $isRisky, $supports, $priority) implements FixerInterface {
             private bool $isCandidate;

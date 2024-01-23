@@ -102,7 +102,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
         array $caseCommands,
         array $expectedResult1Lines,
         array $expectedResult2Lines,
-        string $expectedResult3FilesLine
+        string $expectedResult3FilesLine,
     ): void {
         self::executeScript(array_merge(
             [

@@ -231,7 +231,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         Tokens $tokens,
         array $firstOperand,
         int $concatOperatorIndex,
-        array $secondOperand
+        array $secondOperand,
     ): void {
         $quote = self::STR_DOUBLE_QUOTE === $firstOperand['type'] || self::STR_DOUBLE_QUOTE === $secondOperand['type'] ? '"' : "'";
         $firstOperandTokenContent = $tokens[$firstOperand['start']]->getContent();
@@ -264,7 +264,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         Tokens $tokens,
         array $firstOperand,
         int $concatOperatorIndex,
-        array $secondOperand
+        array $secondOperand,
     ): void {
         // build uo the new content
         $newContent = '';

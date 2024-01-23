@@ -182,7 +182,7 @@ settype($bar, "null");
         int $firstArgumentStart,
         int $commaIndex,
         int $secondArgumentStart,
-        int $closeParenthesisIndex
+        int $closeParenthesisIndex,
     ): void {
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeParenthesisIndex);
         $prevIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
@@ -201,7 +201,7 @@ settype($bar, "null");
         Tokens $tokens,
         int $functionNameIndex,
         Token $argumentToken,
-        Token $castToken
+        Token $castToken,
     ): void {
         $tokens->insertAt(
             $functionNameIndex,
@@ -222,7 +222,7 @@ settype($bar, "null");
     private function fixSettypeNullCall(
         Tokens $tokens,
         int $functionNameIndex,
-        Token $argumentToken
+        Token $argumentToken,
     ): void {
         $tokens->insertAt(
             $functionNameIndex,

@@ -74,7 +74,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         Tokens $tokens,
         int $index,
         string $annotation,
-        array $preventingAnnotations
+        array $preventingAnnotations,
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
@@ -121,7 +121,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         Tokens $tokens,
         int $docBlockIndex,
         string $annotation,
-        array $preventingAnnotations
+        array $preventingAnnotations,
     ): void {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         foreach ($preventingAnnotations as $preventingAnnotation) {
