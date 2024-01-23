@@ -47,7 +47,7 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
     /**
      * {@inheritdoc}
      *
-     * Must run after FullyQualifiedStrictTypesFixer.
+     * Must run before FullyQualifiedStrictTypesFixer.
      */
     public function getPriority(): int
     {
