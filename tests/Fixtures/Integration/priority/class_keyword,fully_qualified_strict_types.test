@@ -4,11 +4,11 @@ Integration of fixers: class_keyword,fully_qualified_strict_types.
 {"class_keyword": true, "fully_qualified_strict_types": {"import_symbols": true}}
 --EXPECT--
 <?php
-use Foo\Bar\Thing;
 
-echo Thing::class;
+use PhpCsFixer\Fixer\FixerInterface;
+echo FixerInterface::class;
 
 --INPUT--
 <?php
 
-echo 'Foo\Bar\Thing';
+echo 'PhpCsFixer\Fixer\FixerInterface';
