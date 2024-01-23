@@ -376,6 +376,9 @@ final class FixerFactoryTest extends TestCase
                 'braces',
                 'single_line_empty_body',
             ],
+            'class_keyword' => [
+                'fully_qualified_strict_types',
+            ],
             'class_keyword_remove' => [
                 'no_unused_imports',
             ],
