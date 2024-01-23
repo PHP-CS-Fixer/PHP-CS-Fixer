@@ -115,7 +115,7 @@ final class ProjectCodeTest extends TestCase
         $testClassName = 'PhpCsFixer\\Tests'.substr($className, 10).'Test';
 
         if (\in_array($className, self::$classesWithoutTests, true)) {
-            self::assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
+            self::assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, self::class));
             self::markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
         }
 
