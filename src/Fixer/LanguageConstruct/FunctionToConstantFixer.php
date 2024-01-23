@@ -172,7 +172,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         }
 
         if ($replacements[0]->isGivenKind([T_CLASS_C, T_STATIC])
-            || ($replacements[0]->isGivenKind(T_STRING) && $replacements[0]->getContent() === 'self')
+            || ($replacements[0]->isGivenKind(T_STRING) && 'self' === $replacements[0]->getContent())
         ) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
