@@ -44,6 +44,16 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before FullyQualifiedStrictTypesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 8;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
