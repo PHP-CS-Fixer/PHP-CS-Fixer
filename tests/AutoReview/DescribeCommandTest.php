@@ -35,6 +35,8 @@ final class DescribeCommandTest extends TestCase
 {
     /**
      * @dataProvider provideDescribeCommandCases
+     *
+     * @param list<string> $successorsNames
      */
     public function testDescribeCommand(FixerFactory $factory, string $fixerName, ?array $successorsNames): void
     {
