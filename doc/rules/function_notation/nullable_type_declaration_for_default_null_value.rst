@@ -117,7 +117,7 @@ The rule is part of the following rule set:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['use_nullable_type_declaration' => false]``
+  ``['use_nullable_type_declaration' => true]``
 
 
 References
