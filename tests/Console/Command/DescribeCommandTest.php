@@ -53,6 +53,10 @@ final class DescribeCommandTest extends TestCase
      */
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $this->expectDeprecation(sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
+        }
+
         // @TODO 4.0 Remove these expectations:
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
@@ -283,6 +287,7 @@ $/s',
 
     public function testExecuteStatusCode(): void
     {
+        $this->expectDeprecation('Rule "Foo/bar" is deprecated. Use "Foo/baz" instead.');
         // @TODO 4.0 Remove these expectations:
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
