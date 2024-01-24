@@ -327,4 +327,56 @@ class Foo
             '<?php enum Foo: string { case PARENT = \'parent\'; }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield [<<<'PHP'
+            <?php
+            class Foo {
+                private const array PARENT = ['parent'];
+                private const array SELF = ['self'];
+                private const array STATIC = ['static'];
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php
+            class Foo {
+                private const int PARENT = 1;
+                private const int SELF = 2;
+                private const int STATIC = 3;
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php
+            class Foo {
+                private const int|static PARENT = 1;
+                private const int|static SELF = 2;
+                private const int|static STATIC = 3;
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php
+            class Foo {
+                private const string|(Bar&Baz) PARENT = 'parent';
+                private const string|(Bar&Baz) SELF = 'self';
+                private const string|(Bar&Baz) STATIC = 'static';
+            }
+            PHP];
+    }
 }
