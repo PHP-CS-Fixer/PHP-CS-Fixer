@@ -14,12 +14,28 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
+use Clue\React\NDJson\Decoder;
+use Clue\React\NDJson\Encoder;
+use PhpCsFixer\Config;
+use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Runner\RunnerConfig;
+use PhpCsFixer\ToolInfoInterface;
+use React\EventLoop\StreamSelectLoop;
+use React\Socket\ConnectionInterface;
+use React\Socket\TcpConnector;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Greg Korba <greg@codito.dev>
@@ -35,21 +51,39 @@ final class WorkerCommand extends Command
     /** @var string */
     protected static $defaultDescription = 'Internal command for running fixers in parallel';
 
-    public function __construct(string $name = null)
+    private ToolInfoInterface $toolInfo;
+    private ConfigurationResolver $configurationResolver;
+    private ErrorsManager $errorsManager;
+    private EventDispatcherInterface $eventDispatcher;
+
+    /** @var array<int, FixerFileProcessedEvent> */
+    private array $events;
+
+    public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct($name);
+        parent::__construct();
 
         $this->setHidden(true);
+        $this->toolInfo = $toolInfo;
+        $this->errorsManager = new ErrorsManager();
+        $this->eventDispatcher = new EventDispatcher();
     }
 
     protected function configure(): void
     {
         $this->setDefinition(
             [
-                new InputArgument(
-                    'paths',
-                    InputArgument::IS_ARRAY,
-                    'The path(s) that rules will be run against (each path can be a file or directory).'
+                new InputOption(
+                    'port',
+                    null,
+                    InputOption::VALUE_REQUIRED,
+                    'Specifies parallelisation server\'s port.'
+                ),
+                new InputOption(
+                    'identifier',
+                    null,
+                    InputOption::VALUE_REQUIRED,
+                    'Specifies parallelisation process\' identifier.'
                 ),
                 new InputOption(
                     'allow-risky',
@@ -58,6 +92,12 @@ final class WorkerCommand extends Command
                     'Are risky fixers allowed (can be `yes` or `no`).'
                 ),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
+                new InputOption(
+                    'dry-run',
+                    '',
+                    InputOption::VALUE_NONE,
+                    'Only shows which files would have been modified.'
+                ),
                 new InputOption(
                     'rules',
                     '',
@@ -71,12 +111,140 @@ final class WorkerCommand extends Command
                     'Does cache should be used (can be `yes` or `no`).'
                 ),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
+                new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
             ]
         );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $verbosity = $output->getVerbosity();
+        $errorOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
+        $identifier = $input->getOption('identifier');
+        $port = $input->getOption('port');
+
+        if (null === $identifier || !is_numeric($port)) {
+            $errorOutput->writeln('Missing parallelisation options');
+
+            return Command::FAILURE;
+        }
+
+        try {
+            $runner = $this->createRunner($input);
+        } catch (\Throwable $e) {
+            $errorOutput->writeln($e->getMessage());
+
+            return Command::FAILURE;
+        }
+
+        $loop = new StreamSelectLoop();
+        $tcpConnector = new TcpConnector($loop);
+        $tcpConnector
+            ->connect(sprintf('127.0.0.1:%d', $port))
+            ->then(function (ConnectionInterface $connection) use ($runner, $identifier): void {
+                $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
+                $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
+                $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+
+                // [REACT] Initialise connection with the parallelisation operator
+                $out->write(['action' => 'hello', 'identifier' => $identifier]);
+
+                $handleError = static function (\Throwable $error): void {
+                    // @TODO Handle communication errors
+                };
+                $out->on('error', $handleError);
+                $in->on('error', $handleError);
+
+                // [REACT] Listen for messages from the parallelisation operator (analysis requests)
+                $in->on('data', function (array $json) use ($runner, $out): void {
+                    if ('run' !== $json['action']) {
+                        return;
+                    }
+
+                    /** @var iterable<int, string> $files */
+                    $files = $json['files'];
+
+                    // Reset events because we want to collect only those coming from analysed files chunk
+                    $this->events = [];
+                    $runner->setFileIterator(new \ArrayIterator(
+                        array_map(static fn (string $path) => new \SplFileInfo($path), $files)
+                    ));
+                    $analysisResult = $runner->fix();
+
+                    $result = [];
+                    foreach ($files as $i => $absolutePath) {
+                        $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
+
+                        // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
+                        $result[$relativePath]['status'] = isset($this->events[$i])
+                            ? $this->events[$i]->getStatus()
+                            : null;
+                        $result[$relativePath]['fixInfo'] = $analysisResult[$relativePath] ?? null;
+                        // @TODO consider serialising whole Error, so it can be deserialised on server side and passed to error manager
+                        $result[$relativePath]['errors'] = array_map(
+                            static fn (Error $error): array => [
+                                'type' => $error->getType(),
+                                'error_message' => null !== $error->getSource() ? $error->getSource()->getMessage() : null,
+                            ],
+                            $this->errorsManager->forPath($absolutePath)
+                        );
+                    }
+
+                    $out->write(['action' => 'result', 'result' => $result]);
+                });
+            })
+        ;
+
+        $loop->run();
+
         return Command::SUCCESS;
+    }
+
+    private function createRunner(InputInterface $input): Runner
+    {
+        $passedConfig = $input->getOption('config');
+        $passedRules = $input->getOption('rules');
+
+        if (null !== $passedConfig && null !== $passedRules) {
+            throw new \RuntimeException('Passing both `--config` and `--rules` options is not allowed');
+        }
+
+        // There's no one single source of truth when it comes to fixing single file, we need to collect statuses from events.
+        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, function (FixerFileProcessedEvent $event): void {
+            $this->events[] = $event;
+        });
+
+        $this->configurationResolver = new ConfigurationResolver(
+            new Config(),
+            [
+                'allow-risky' => $input->getOption('allow-risky'),
+                'config' => $passedConfig,
+                'dry-run' => $input->getOption('dry-run'),
+                'rules' => $passedRules,
+                'path' => [],
+                'path-mode' => ConfigurationResolver::PATH_MODE_OVERRIDE,
+                'using-cache' => $input->getOption('using-cache'),
+                'cache-file' => $input->getOption('cache-file'),
+                'diff' => $input->getOption('diff'),
+            ],
+            getcwd(),
+            $this->toolInfo
+        );
+
+        return new Runner(
+            new RunnerConfig(
+                $this->configurationResolver->isDryRun(),
+                false, // @TODO Pass this option to the runner
+                ParallelConfig::sequential() // IMPORTANT! Worker must run in sequential mode
+            ),
+            null, // Paths are known when parallelisation server requests new chunk, not now
+            $this->configurationResolver->getFixers(),
+            $this->configurationResolver->getDiffer(),
+            $this->eventDispatcher,
+            $this->errorsManager,
+            $this->configurationResolver->getLinter(),
+            $this->configurationResolver->getCacheManager(),
+            $this->configurationResolver->getDirectory()
+        );
     }
 }

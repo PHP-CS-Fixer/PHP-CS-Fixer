@@ -23,8 +23,12 @@ final class ParallelConfig
     private int $maxProcesses;
     private int $processTimeout;
 
-    public function __construct(int $maxProcesses = 1, int $filesPerProcess = 10, int $processTimeout = 0)
+    public function __construct(int $maxProcesses = 1, int $filesPerProcess = 10, int $processTimeout = 120)
     {
+        if ($maxProcesses <= 0 || $filesPerProcess <= 0 || $processTimeout <= 0) {
+            throw new ParallelisationException('Invalid parallelisation configuration: only positive integers are allowed');
+        }
+
         $this->maxProcesses = $maxProcesses;
         $this->filesPerProcess = $filesPerProcess;
         $this->processTimeout = $processTimeout;
@@ -45,11 +49,16 @@ final class ParallelConfig
         return $this->processTimeout;
     }
 
+    public static function sequential(): self
+    {
+        return new self(1);
+    }
+
     /**
      * @TODO Automatic detection of available cores
      */
     public static function detect(): self
     {
-        return new self();
+        return self::sequential();
     }
 }

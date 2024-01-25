@@ -292,7 +292,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
             new RunnerConfig(
                 $resolver->isDryRun(),
                 $resolver->shouldStopOnViolation(),
-                $resolver->getParallelConfig()
+                $resolver->getParallelConfig(),
+                $resolver->getConfigFile()
             ),
             $finder,
             $resolver->getFixers(),
