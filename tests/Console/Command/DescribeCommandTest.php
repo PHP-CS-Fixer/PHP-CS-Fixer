@@ -51,13 +51,17 @@ final class DescribeCommandTest extends TestCase
     /**
      * @dataProvider provideExecuteOutputCases
      */
-    public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, ?FixerInterface $fixer = null): void
+    public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
-        // @TODO 4.0 Remove this expectation
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $this->expectDeprecation(sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
+        }
+
+        // @TODO 4.0 Remove these expectations:
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
-        $actual = $this->execute(null !== $fixer ? $fixer->getName() : 'Foo/bar', $decorated, $fixer)->getDisplay(true);
+        $actual = $this->execute($fixer->getName(), $decorated, $fixer)->getDisplay(true);
 
         if (true === $expectedIsRegEx) {
             self::assertMatchesRegularExpression($expected, $actual);
@@ -107,6 +111,7 @@ Fixing examples:
 ',
             false,
             false,
+            self::createConfigurableDeprecatedFixerDouble(),
         ];
 
         yield 'rule is configurable, risky and deprecated [with decoration]' => [
@@ -148,6 +153,7 @@ Fixing examples:
 ",
             false,
             true,
+            self::createConfigurableDeprecatedFixerDouble(),
         ];
 
         yield 'rule without code samples' => [
@@ -281,7 +287,8 @@ $/s',
 
     public function testExecuteStatusCode(): void
     {
-        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule "Foo/bar" is deprecated. Use "Foo/baz" instead.');
+        // @TODO 4.0 Remove these expectations:
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
@@ -347,7 +354,7 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        // @TODO 4.0 Remove this expectations
+        // @TODO 4.0 Remove these expectations:
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
@@ -412,7 +419,7 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
-        // @TODO 4.0 Remove this expectations
+        // @TODO 4.0 Remove these expectations:
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
@@ -501,7 +508,7 @@ Fixing examples:
         };
     }
 
-    private function createConfigurableDeprecatedFixerDouble(): FixerInterface
+    private static function createConfigurableDeprecatedFixerDouble(): FixerInterface
     {
         return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
             /** @var array<string, mixed> */
@@ -590,7 +597,7 @@ Fixing examples:
 
     private function execute(string $name, bool $decorated, ?FixerInterface $fixer = null): CommandTester
     {
-        $fixer ??= $this->createConfigurableDeprecatedFixerDouble();
+        $fixer ??= self::createConfigurableDeprecatedFixerDouble();
 
         $fixerClassName = \get_class($fixer);
         $isBuiltIn = str_starts_with($fixerClassName, 'PhpCsFixer') && !str_contains($fixerClassName, '@anon');
