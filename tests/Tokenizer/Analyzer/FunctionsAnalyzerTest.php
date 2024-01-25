@@ -400,7 +400,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<ArgumentAnalysis>}>
+     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoCases(): iterable
     {
@@ -593,7 +593,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<ArgumentAnalysis>}>
+     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoPre80Cases(): iterable
     {

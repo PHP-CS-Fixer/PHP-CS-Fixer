@@ -138,8 +138,8 @@ final class Tokens extends \SplFixedArray
     /**
      * Create token collection from array.
      *
-     * @param Token[] $array       the array to import
-     * @param ?bool   $saveIndices save the numeric indices used in the original array, default is yes
+     * @param array<int, Token> $array       the array to import
+     * @param ?bool             $saveIndices save the numeric indices used in the original array, default is yes
      */
     public static function fromArray($array, $saveIndices = null): self
     {

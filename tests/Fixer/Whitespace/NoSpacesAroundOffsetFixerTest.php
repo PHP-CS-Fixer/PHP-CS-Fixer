@@ -293,7 +293,7 @@ $var = $arr[0][     0
     }
 
     /**
-     * @return iterable<array{string, string, array<mixed>}>
+     * @return iterable<array{string, string, array{positions: array<string>}}>
      */
     public static function provideFixWithConfigurationCases(): iterable
     {
@@ -371,7 +371,7 @@ $var = $arr[0]{     0
     }
 
     /**
-     * @return iterable<array{string, string, array<mixed>}>
+     * @return iterable<array{string, string, array{positions: array<string>}}>
      */
     public static function provideFix80Cases(): iterable
     {
