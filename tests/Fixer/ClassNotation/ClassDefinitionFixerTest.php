@@ -46,7 +46,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param array<mixed> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideInvalidConfigurationCases
      */
@@ -59,7 +59,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{array<mixed>, string}>
+     * @return iterable<array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
