@@ -64,7 +64,7 @@ final class Application extends BaseApplication
             $this->toolInfo,
             new PharChecker()
         ));
-        $this->add(new WorkerCommand());
+        $this->add(new WorkerCommand($this->toolInfo));
     }
 
     public static function getMajorVersion(): int
