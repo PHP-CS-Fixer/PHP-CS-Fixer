@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: phpdoc_list_type,phpdoc_types_order.
+--RULESET--
+{"phpdoc_list_type": true, "phpdoc_types_order": true}
+--EXPECT--
+<?php
+/**
+ * @return list<string>|string
+ */
+function foo() {}
+
+--INPUT--
+<?php
+/**
+ * @return string|string[]
+ */
+function foo() {}
