@@ -1,6 +1,6 @@
-=========================
-Rule ``phpdoc_list_type``
-=========================
+===========================
+Rule ``phpdoc_array_style``
+===========================
 
 PHPDoc list types must be written in configured style.
 
@@ -58,7 +58,7 @@ With configuration: ``['style' => 'array']``.
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocListTypeFixer <./../../../src/Fixer/Phpdoc/PhpdocListTypeFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocListTypeFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocListTypeFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocArrayStyleFixer <./../../../src/Fixer/Phpdoc/PhpdocArrayStyleFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocArrayStyleFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocArrayStyleFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

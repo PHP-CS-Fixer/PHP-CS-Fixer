@@ -728,6 +728,9 @@ PHPDoc
 - `phpdoc_annotation_without_dot <./phpdoc/phpdoc_annotation_without_dot.rst>`_
 
   PHPDoc annotation descriptions should not be a sentence.
+- `phpdoc_array_style <./phpdoc/phpdoc_array_style.rst>`_
+
+  PHPDoc list types must be written in configured style.
 - `phpdoc_indent <./phpdoc/phpdoc_indent.rst>`_
 
   Docblocks should have the same indentation as the documented subject.
@@ -737,9 +740,6 @@ PHPDoc
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_
 
   Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
-- `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_
-
-  PHPDoc list types must be written in configured style.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
 
   ``@access`` annotations should be omitted from PHPDoc.

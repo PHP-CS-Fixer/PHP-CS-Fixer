@@ -27,7 +27,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class PhpdocListTypeFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const STYLE_ARRAY = 'array';
     private const STYLE_LIST = 'list';

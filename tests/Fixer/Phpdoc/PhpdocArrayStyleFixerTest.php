@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocArrayStyleFixer
  */
-final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
+final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param array{style?: string} $configuration
