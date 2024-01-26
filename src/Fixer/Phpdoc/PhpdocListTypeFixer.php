@@ -99,12 +99,7 @@ final class PhpdocListTypeFixer extends AbstractFixer implements ConfigurableFix
                     continue;
                 }
 
-                $type = $typeExpression->toString();
-                $type = $this->fixType($type);
-                if (self::STYLE_LIST === $this->configuration['style']) {
-                    $type = Preg::replace('/array(?=<[^,]+(>|<|{|\\())/', self::STYLE_LIST, $type);
-                }
-                $annotation->setTypes([$type]);
+                $annotation->setTypes([$this->fixType($typeExpression->toString())]);
             }
 
             $newContent = $docBlock->getContent();
@@ -118,12 +113,14 @@ final class PhpdocListTypeFixer extends AbstractFixer implements ConfigurableFix
 
     private function fixType(string $type): string
     {
-        $newType = Preg::replace('/([\\\\a-zA-Z0-9_>]+)\[\]/', 'array<$1>', $type);
+        do {
+            $type = Preg::replace('/([\\\\a-zA-Z0-9_>]+)\[\]/', 'array<$1>', $type, -1, $count);
+        } while ($count > 0);
 
-        if ($newType !== $type) {
-            return $this->fixType($newType);
+        if (self::STYLE_LIST === $this->configuration['style']) {
+            $type = Preg::replace('/array(?=<[^,]+(>|<|{|\\())/', self::STYLE_LIST, $type);
         }
 
-        return $newType;
+        return $type;
     }
 }
