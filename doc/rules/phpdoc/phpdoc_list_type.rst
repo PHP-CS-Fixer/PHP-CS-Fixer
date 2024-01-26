@@ -53,8 +53,7 @@ With configuration: ``['style' => 'array']``.
    + * @param array<bool> $a
      * @param array<int> $b
      * @param array<string, int> $c
-   - * @param list<int> $d
-   + * @param array<int> $d
+     * @param list<int> $d
      */
 References
 ----------

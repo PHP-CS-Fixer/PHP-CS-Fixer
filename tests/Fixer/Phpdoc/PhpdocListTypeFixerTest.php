@@ -36,7 +36,7 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: string, 2?: array{style: string}}>
+     * @return iterable<array{string, 1?: null|string, 2?: array{style: string}}>
      */
     public static function provideFixCases(): iterable
     {
@@ -125,8 +125,8 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var array<int> */',
             '<?php /** @var list<int> */',
+            null,
             ['style' => 'array'],
         ];
 
