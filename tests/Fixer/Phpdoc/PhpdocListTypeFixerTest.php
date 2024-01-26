@@ -119,6 +119,23 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{foo?: list<int>} $foo
+                 * @param callable(list<int>): list<int> $bar
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{foo?: int[]} $foo
+                 * @param callable(int[]): int[] $bar
+                 */
+                PHP,
+        ];
+
+        yield [
             '<?php /** @var array<int> */',
             '<?php /** @var int[] */',
             ['style' => 'array'],
