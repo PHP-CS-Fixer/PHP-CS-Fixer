@@ -282,7 +282,7 @@ final class ConfigurationResolver
 
         return $config instanceof ParallelRunnerConfigInterface
             ? $config->getParallelConfig()
-            : ParallelConfig::detect();
+            : ParallelConfig::sequential();
     }
 
     public function getConfigFile(): ?string

@@ -66,7 +66,7 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     public function __construct(string $name = 'default')
     {
-        $this->parallelRunnerConfig = ParallelConfig::detect();
+        $this->parallelRunnerConfig = ParallelConfig::sequential();
 
         // @TODO 4.0 cleanup
         if (Utils::isFutureModeEnabled()) {
