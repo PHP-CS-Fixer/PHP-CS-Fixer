@@ -41,6 +41,24 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
+With configuration: ``['strategy' => 'array_to_list']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * @param bool[] $a
+   - * @param array<int> $b
+   + * @param list<int> $b
+     * @param list<int> $c
+     * @param array<string, int> $d
+     */
+
+Example #3
+~~~~~~~~~~
+
 With configuration: ``['strategy' => 'brackets_to_array_to_list']``.
 
 .. code-block:: diff
@@ -52,24 +70,6 @@ With configuration: ``['strategy' => 'brackets_to_array_to_list']``.
    - * @param bool[] $a
    - * @param array<int> $b
    + * @param list<bool> $a
-   + * @param list<int> $b
-     * @param list<int> $c
-     * @param array<string, int> $d
-     */
-
-Example #3
-~~~~~~~~~~
-
-With configuration: ``['strategy' => 'array_to_list']``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * @param bool[] $a
-   - * @param array<int> $b
    + * @param list<int> $b
      * @param list<int> $c
      * @param array<string, int> $d

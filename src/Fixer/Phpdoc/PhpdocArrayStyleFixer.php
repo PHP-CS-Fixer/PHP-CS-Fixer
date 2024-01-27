@@ -55,8 +55,8 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
             'PHPDoc list types must be written in configured style.',
             [
                 new CodeSample($codeSample),
-                new CodeSample($codeSample, ['strategy' => self::STRATEGY_FROM_BRACKETS_TO_LIST]),
                 new CodeSample($codeSample, ['strategy' => self::STRATEGY_FROM_ARRAY_TO_LIST]),
+                new CodeSample($codeSample, ['strategy' => self::STRATEGY_FROM_BRACKETS_TO_LIST]),
             ]
         );
     }
