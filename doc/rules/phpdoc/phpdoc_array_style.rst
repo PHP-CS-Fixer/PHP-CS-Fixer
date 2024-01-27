@@ -7,14 +7,15 @@ PHPDoc list types must be written in configured style.
 Configuration
 -------------
 
-``style``
-~~~~~~~~~
+``strategy``
+~~~~~~~~~~~~
 
-Whether to use ``array`` or ``list`` as type.
+Which part of the conversion - brackets (``[]``) to ``array`` to ``list`` - to
+perform.
 
-Allowed values: ``'array'`` and ``'list'``
+Allowed values: ``'array_to_list'``, ``'brackets_to_array'`` and ``'brackets_to_array_to_list'``
 
-Default value: ``'list'``
+Default value: ``'brackets_to_array'``
 
 Examples
 --------
@@ -31,17 +32,16 @@ Example #1
     <?php
     /**
    - * @param bool[] $a
-   - * @param array<int> $b
-   + * @param list<bool> $a
-   + * @param list<int> $b
-     * @param array<string, int> $c
-     * @param list<int> $d
+   + * @param array<bool> $a
+     * @param array<int> $b
+     * @param list<int> $c
+     * @param array<string, int> $d
      */
 
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['style' => 'array']``.
+With configuration: ``['strategy' => 'brackets_to_array_to_list']``.
 
 .. code-block:: diff
 
@@ -50,10 +50,29 @@ With configuration: ``['style' => 'array']``.
     <?php
     /**
    - * @param bool[] $a
-   + * @param array<bool> $a
-     * @param array<int> $b
-     * @param array<string, int> $c
-     * @param list<int> $d
+   - * @param array<int> $b
+   + * @param list<bool> $a
+   + * @param list<int> $b
+     * @param list<int> $c
+     * @param array<string, int> $d
+     */
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'array_to_list']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * @param bool[] $a
+   - * @param array<int> $b
+   + * @param list<int> $b
+     * @param list<int> $c
+     * @param array<string, int> $d
      */
 References
 ----------

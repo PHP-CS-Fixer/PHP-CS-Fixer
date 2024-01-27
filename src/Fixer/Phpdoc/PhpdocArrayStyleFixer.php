@@ -29,8 +29,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const STYLE_ARRAY = 'array';
-    private const STYLE_LIST = 'list';
+    private const STRATEGY_FROM_ARRAY_TO_LIST = 'array_to_list';
+    private const STRATEGY_FROM_BRACKETS_TO_ARRAY = 'brackets_to_array';
+    private const STRATEGY_FROM_BRACKETS_TO_LIST = 'brackets_to_array_to_list';
 
     public function isCandidate(Tokens $tokens): bool
     {
@@ -44,8 +45,8 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
             /**
              * @param bool[] $a
              * @param array<int> $b
-             * @param array<string, int> $c
-             * @param list<int> $d
+             * @param list<int> $c
+             * @param array<string, int> $d
              */
 
             PHP;
@@ -54,7 +55,8 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
             'PHPDoc list types must be written in configured style.',
             [
                 new CodeSample($codeSample),
-                new CodeSample($codeSample, ['style' => self::STYLE_ARRAY]),
+                new CodeSample($codeSample, ['strategy' => self::STRATEGY_FROM_BRACKETS_TO_LIST]),
+                new CodeSample($codeSample, ['strategy' => self::STRATEGY_FROM_ARRAY_TO_LIST]),
             ]
         );
     }
@@ -73,9 +75,9 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('style', sprintf('Whether to use `%s` or `%s` as type.', self::STYLE_ARRAY, self::STYLE_LIST)))
-                ->setAllowedValues([self::STYLE_ARRAY, self::STYLE_LIST])
-                ->setDefault(self::STYLE_LIST)
+            (new FixerOptionBuilder('strategy', 'Which part of the conversion - brackets (`[]`) to `array` to `list` - to perform.'))
+                ->setAllowedValues([self::STRATEGY_FROM_ARRAY_TO_LIST, self::STRATEGY_FROM_BRACKETS_TO_ARRAY, self::STRATEGY_FROM_BRACKETS_TO_LIST])
+                ->setDefault(self::STRATEGY_FROM_BRACKETS_TO_ARRAY)
                 ->getOption(),
         ]);
     }
@@ -113,12 +115,14 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
 
     private function fixType(string $type): string
     {
-        do {
-            $type = Preg::replace('/([\\\\a-zA-Z0-9_>]+)\[\]/', 'array<$1>', $type, -1, $count);
-        } while ($count > 0);
+        if (self::STRATEGY_FROM_ARRAY_TO_LIST !== $this->configuration['strategy']) {
+            do {
+                $type = Preg::replace('/([\\\\a-zA-Z0-9_>]+)\[\]/', 'array<$1>', $type, -1, $count);
+            } while ($count > 0);
+        }
 
-        if (self::STYLE_LIST === $this->configuration['style']) {
-            $type = Preg::replace('/array(?=<[^,]+(>|<|{|\\())/', self::STYLE_LIST, $type);
+        if (self::STRATEGY_FROM_BRACKETS_TO_ARRAY !== $this->configuration['strategy']) {
+            $type = Preg::replace('/array(?=<[^,]+(>|<|{|\\())/', 'list', $type);
         }
 
         return $type;

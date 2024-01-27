@@ -24,7 +24,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param array{style?: string} $configuration
+     * @param array{strategy?: string} $configuration
      *
      * @dataProvider provideFixCases
      */
@@ -36,7 +36,7 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: null|string, 2?: array{style: string}}>
+     * @return iterable<array{string, 1?: null|string, 2?: array{strategy: string}}>
      */
     public static function provideFixCases(): iterable
     {
@@ -45,39 +45,52 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
         yield ['<?php /** @var $variableWithoutType */'];
 
         yield [
-            '<?php /** @var list<int> */',
             '<?php /** @var int[] */',
+            null,
+            ['strategy' => 'array_to_list'],
         ];
 
         yield [
-            '<?php /** @param list<list<list<list<int>>>> $x */',
+            '<?php /** @var array<int> */',
+            '<?php /** @var int[] */',
+            ['strategy' => 'brackets_to_array'],
+        ];
+
+        yield [
+            '<?php /** @var list<int> */',
+            '<?php /** @var int[] */',
+            ['strategy' => 'brackets_to_array_to_list'],
+        ];
+
+        yield [
+            '<?php /** @param array<array<array<array<int>>>> $x */',
             '<?php /** @param int[][][][] $x */',
         ];
 
         yield [
-            '<?php /** @return iterable<list<int>> */',
+            '<?php /** @return iterable<array<int>> */',
             '<?php /** @return iterable<int[]> */',
         ];
 
         yield [
-            '<?php /** @var list<Foo\Bar> */',
+            '<?php /** @var array<Foo\Bar> */',
             '<?php /** @var Foo\Bar[] */',
         ];
 
         yield [
-            '<?php /** @var list<Foo_Bar> */',
+            '<?php /** @var array<Foo_Bar> */',
             '<?php /** @var Foo_Bar[] */',
         ];
 
         yield [
-            '<?php /** @var list<bool>|list<float>|list<int>|list<string> */',
+            '<?php /** @var array<bool>|array<float>|array<int>|array<string> */',
             '<?php /** @var array<bool>|float[]|array<int>|string[] */',
         ];
 
         yield [
             <<<'PHP'
                 <?php
-                /** @return list<int> */
+                /** @return array<int> */
                 /*  @return int[] */
                 PHP,
             <<<'PHP'
@@ -100,6 +113,29 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
         yield [
             <<<'PHP'
                 <?php
+                /**
+                 * @param array{foo?: array<int>} $foo
+                 * @param callable(array<int>): array<int> $bar
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{foo?: int[]} $foo
+                 * @param callable(int[]): int[] $bar
+                 */
+                PHP,
+        ];
+
+        yield [
+            '<?php /** @var array<int> */',
+            null,
+            ['strategy' => 'brackets_to_array'],
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php
                 /** @var list<Foo> */
                 /** @var list<Foo> */
                 /** @var list<Foo> */
@@ -116,41 +152,13 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
                 /** @var array{Foo} */
                 /** @var array{int, Foo} */
                 PHP,
+            ['strategy' => 'brackets_to_array_to_list'],
         ];
 
         yield [
-            <<<'PHP'
-                <?php
-                /**
-                 * @param array{foo?: list<int>} $foo
-                 * @param callable(list<int>): list<int> $bar
-                 */
-                PHP,
-            <<<'PHP'
-                <?php
-                /**
-                 * @param array{foo?: int[]} $foo
-                 * @param callable(int[]): int[] $bar
-                 */
-                PHP,
-        ];
-
-        yield [
-            '<?php /** @var array<int> */',
-            '<?php /** @var int[] */',
-            ['style' => 'array'],
-        ];
-
-        yield [
-            '<?php /** @var list<int> */',
-            null,
-            ['style' => 'array'],
-        ];
-
-        yield [
-            '<?php /** @var array<array<array<array<int>>>> */',
+            '<?php /** @var list<list<list<list<int>>>> */',
             '<?php /** @var int[][][][] */',
-            ['style' => 'array'],
+            ['strategy' => 'brackets_to_array_to_list'],
         ];
     }
 }
