@@ -14,17 +14,27 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Runner\Parallel;
 
+use Fidry\CpuCoreCounter\CpuCoreCounter;
+use Fidry\CpuCoreCounter\Finder\DummyCpuCoreFinder;
+use Fidry\CpuCoreCounter\Finder\FinderRegistry;
+
 /**
  * @author Greg Korba <greg@codito.dev>
  */
 final class ParallelConfig
 {
+    private const DEFAULT_FILES_PER_PROCESS = 10;
+    private const DEFAULT_PROCESS_TIMEOUT = 120;
+
     private int $filesPerProcess;
     private int $maxProcesses;
     private int $processTimeout;
 
-    public function __construct(int $maxProcesses = 1, int $filesPerProcess = 10, int $processTimeout = 120)
-    {
+    public function __construct(
+        int $maxProcesses = 2,
+        int $filesPerProcess = self::DEFAULT_FILES_PER_PROCESS,
+        int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT
+    ) {
         if ($maxProcesses <= 0 || $filesPerProcess <= 0 || $processTimeout <= 0) {
             throw new ParallelisationException('Invalid parallelisation configuration: only positive integers are allowed');
         }
@@ -54,11 +64,15 @@ final class ParallelConfig
         return new self(1);
     }
 
-    /**
-     * @TODO Automatic detection of available cores
-     */
-    public static function detect(): self
-    {
-        return self::sequential();
+    public static function detect(
+        int $filesPerProcess = self::DEFAULT_FILES_PER_PROCESS,
+        int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT
+    ): self {
+        $counter = new CpuCoreCounter([
+            ...FinderRegistry::getDefaultLogicalFinders(),
+            new DummyCpuCoreFinder(1),
+        ]);
+
+        return new self($counter->getCount(), $filesPerProcess, $processTimeout);
     }
 }
