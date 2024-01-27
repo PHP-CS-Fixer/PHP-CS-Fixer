@@ -258,6 +258,22 @@ use Symfony\Component\Stopwatch\Stopwatch;
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
 
+            // @TODO remove when parallel runner is mature enough and works as expected
+            if ($resolver->getParallelConfig()->getMaxProcesses() > 1) {
+                $stdErr->writeln(
+                    sprintf(
+                        $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                        'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
+                    )
+                );
+
+                $stdErr->writeln(sprintf(
+                    'Running analysis on %d cores with %d files per process.',
+                    $resolver->getParallelConfig()->getMaxProcesses(),
+                    $resolver->getParallelConfig()->getFilesPerProcess()
+                ));
+            }
+
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
