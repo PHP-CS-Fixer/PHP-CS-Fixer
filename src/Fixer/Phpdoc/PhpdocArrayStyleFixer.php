@@ -125,11 +125,15 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
 
             $value = $type->toString();
 
-            if ("'" === $value[0] || '"' === $value[0]) {
+            if (Preg::match('/^\??\s*[\'"]/', $value)) {
                 return;
             }
 
-            $value = $this->fixType($value);
+            if (str_starts_with($value, '?')) {
+                $value = '?'.$this->fixType(substr($value, 1));
+            } else {
+                $value = $this->fixType($value);
+            }
 
             \Closure::bind(static function () use ($type, $value): void {
                 $type->value = $value;

@@ -151,6 +151,25 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param ?array<type> $a
+                 * @param ?array<array<type>> $b
+                 * @param ?'literal[]' $c
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param ?type[] $a
+                 * @param ?type[][] $b
+                 * @param ?'literal[]' $c
+                 */
+                PHP,
+        ];
+
+        yield [
             '<?php /** @var array<int> */',
             null,
             ['strategy' => 'brackets_to_array'],
