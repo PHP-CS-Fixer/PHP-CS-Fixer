@@ -18,7 +18,6 @@ use Clue\React\NDJson\Decoder;
 use Clue\React\NDJson\Encoder;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
-use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
@@ -180,14 +179,7 @@ final class WorkerCommand extends Command
                             ? $this->events[$i]->getStatus()
                             : null;
                         $result[$relativePath]['fixInfo'] = $analysisResult[$relativePath] ?? null;
-                        // @TODO consider serialising whole Error, so it can be deserialised on server side and passed to error manager
-                        $result[$relativePath]['errors'] = array_map(
-                            static fn (Error $error): array => [
-                                'type' => $error->getType(),
-                                'error_message' => null !== $error->getSource() ? $error->getSource()->getMessage() : null,
-                            ],
-                            $this->errorsManager->forPath($absolutePath)
-                        );
+                        $result[$relativePath]['errors'] = $this->errorsManager->forPath($absolutePath);
                     }
 
                     $out->write(['action' => 'result', 'result' => $result]);
