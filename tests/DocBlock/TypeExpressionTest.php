@@ -627,7 +627,7 @@ final class TypeExpressionTest extends TestCase
 
         $typeExpression->walkTypes($addLeadingSlash);
 
-        self::assertSame('\Foo\Bar\Bazaz', $typeExpression->toString());
+        self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
     }
 
     /**
