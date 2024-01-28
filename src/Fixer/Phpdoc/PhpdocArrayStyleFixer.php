@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -101,7 +102,7 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
                     continue;
                 }
 
-                $annotation->setTypes([$this->fixType($typeExpression->toString())]);
+                $annotation->setTypes([$this->normalize($typeExpression->toString())]);
             }
 
             $newContent = $docBlock->getContent();
@@ -113,11 +114,36 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
         }
     }
 
+    protected function normalize(string $type): string
+    {
+        $typeExpression = new TypeExpression($type, null, []);
+
+        $typeExpression->walkTypes(function (TypeExpression $type): void {
+            if ($type->isUnionType()) {
+                return;
+            }
+
+            $value = $type->toString();
+
+            if ("'" === $value[0] || '"' === $value[0]) {
+                return;
+            }
+
+            $value = $this->fixType($value);
+
+            \Closure::bind(static function () use ($type, $value): void {
+                $type->value = $value;
+            }, null, TypeExpression::class)();
+        });
+
+        return $typeExpression->toString();
+    }
+
     private function fixType(string $type): string
     {
         if (self::STRATEGY_FROM_ARRAY_TO_LIST !== $this->configuration['strategy']) {
             do {
-                $type = Preg::replace('/([\\\\a-zA-Z0-9_>]+)\[\]/', 'array<$1>', $type, -1, $count);
+                $type = Preg::replace('/(.+)\[\]/', 'array<$1>', $type, -1, $count);
             } while ($count > 0);
         }
 

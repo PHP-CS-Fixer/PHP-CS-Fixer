@@ -128,6 +128,29 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array<array{'a'}> $a
+                 * @param \Closure(iterable<\DateTime>): array<void> $b
+                 * @param 'x|T1[][]|y' $c
+                 * @param "x|T2[][]|y" $d
+                 * @param array<Yes>|'No[][]'|array<array<Yes>>|'No[]' $e
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{'a'}[] $a
+                 * @param \Closure(iterable<\DateTime>): void[] $b
+                 * @param 'x|T1[][]|y' $c
+                 * @param "x|T2[][]|y" $d
+                 * @param Yes[]|'No[][]'|Yes[][]|'No[]' $e
+                 */
+                PHP,
+        ];
+
+        yield [
             '<?php /** @var array<int> */',
             null,
             ['strategy' => 'brackets_to_array'],
