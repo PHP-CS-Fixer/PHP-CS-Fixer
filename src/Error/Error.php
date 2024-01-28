@@ -21,7 +21,7 @@ namespace PhpCsFixer\Error;
  *
  * @internal
  */
-final class Error
+final class Error implements \JsonSerializable
 {
     /**
      * Error which has occurred in linting phase, before applying any fixers.
@@ -38,6 +38,7 @@ final class Error
      */
     public const TYPE_LINT = 3;
 
+    /** @var self::TYPE_* */
     private int $type;
 
     private string $filePath;
@@ -89,5 +90,32 @@ final class Error
     public function getDiff(): ?string
     {
         return $this->diff;
+    }
+
+    /**
+     * @return array{
+     *     type: self::TYPE_*,
+     *     filePath: string,
+     *     source: null|array{message: string, code: int, file: string, line: int},
+     *     appliedFixers: list<string>,
+     *     diff: null|string
+     * }
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'type' => $this->type,
+            'filePath' => $this->filePath,
+            'source' => null !== $this->source
+                ? [
+                    'message' => $this->source->getMessage(),
+                    'code' => $this->source->getCode(),
+                    'file' => $this->source->getFile(),
+                    'line' => $this->source->getLine(),
+                ]
+                : null,
+            'appliedFixers' => $this->appliedFixers,
+            'diff' => $this->diff,
+        ];
     }
 }
