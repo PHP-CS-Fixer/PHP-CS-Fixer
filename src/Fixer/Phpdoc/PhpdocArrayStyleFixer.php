@@ -147,7 +147,7 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
     {
         if (self::STRATEGY_FROM_ARRAY_TO_LIST !== $this->configuration['strategy']) {
             do {
-                $type = Preg::replace('/(.+)\[\]/', 'array<$1>', $type, -1, $count);
+                $type = Preg::replace('/(.+)\[\](?=($|\>))/', 'array<$1>', $type, -1, $count);
             } while ($count > 0);
         }
 

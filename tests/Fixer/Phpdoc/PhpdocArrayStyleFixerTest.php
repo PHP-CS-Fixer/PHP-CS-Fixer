@@ -42,10 +42,22 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
     {
         yield ['<?php /** @tagNotSupportingTypes string[] */'];
 
-        yield ['<?php /** @var $variableWithoutType */'];
+        yield [
+            <<<'PHP'
+                <?php
+                /** @var array{'a', 'b[]', 'c'} */
+                /** @var 'x|T1[][]|y' */
+                /** @var "x|T2[][]|y" */
+                PHP,
+        ];
 
         yield [
-            '<?php /** @var int[] */',
+            <<<'PHP'
+                <?php
+                /** @var int[] */
+                /** @var array{} */
+                /** @var array{'a', 'b[]', 'c'} */
+                PHP,
             null,
             ['strategy' => 'array_to_list'],
         ];
@@ -131,21 +143,17 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php
                 /**
-                 * @param array<array{'a'}> $a
-                 * @param \Closure(iterable<\DateTime>): array<void> $b
-                 * @param 'x|T1[][]|y' $c
-                 * @param "x|T2[][]|y" $d
-                 * @param array<Yes>|'No[][]'|array<array<Yes>>|'No[]' $e
+                 * @var array<array{'a'}>
+                 * @var \Closure(iterable<\DateTime>): array<void>
+                 * @var array<Yes>|'No[][]'|array<array<Yes>>|'No[]'
                  */
                 PHP,
             <<<'PHP'
                 <?php
                 /**
-                 * @param array{'a'}[] $a
-                 * @param \Closure(iterable<\DateTime>): void[] $b
-                 * @param 'x|T1[][]|y' $c
-                 * @param "x|T2[][]|y" $d
-                 * @param Yes[]|'No[][]'|Yes[][]|'No[]' $e
+                 * @var array{'a'}[]
+                 * @var \Closure(iterable<\DateTime>): void[]
+                 * @var Yes[]|'No[][]'|Yes[][]|'No[]'
                  */
                 PHP,
         ];
@@ -167,6 +175,18 @@ final class PhpdocArrayStyleFixerTest extends AbstractFixerTestCase
                  * @param ?'literal[]' $c
                  */
                 PHP,
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                /** @var non-empty-list<Type> */
+                PHP,
+            <<<'PHP'
+                <?php
+                /** @var non-empty-array<Type> */
+                PHP,
+            ['strategy' => 'array_to_list'],
         ];
 
         yield [
