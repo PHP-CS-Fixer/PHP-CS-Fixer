@@ -2122,6 +2122,26 @@ Bar();',
             '<?php new /* foo */Bar();',
             '<?php new/* foo */Bar();',
         ];
+
+        yield 'attribute on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                #[FOO]
+                class() {};
+                EOF,
+        ];
+
+        yield 'phpdoc on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                /**
+                 @property string $x
+                 */
+                class() {};
+                EOF,
+        ];
     }
 
     /**
