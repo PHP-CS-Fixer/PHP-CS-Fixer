@@ -24,6 +24,7 @@ use React\Stream\ReadableStreamInterface;
 use React\Stream\WritableStreamInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Represents single process that is handled within parallel run.
@@ -74,9 +75,14 @@ final class Process
         int $serverPort
     ): self {
         $input = self::getArgvInput();
+        $phpBinary = (new PhpExecutableFinder())->find(false);
+
+        if (false === $phpBinary) {
+            throw new ParallelisationException('Cannot find PHP executable.');
+        }
 
         $commandArgs = [
-            'php',
+            $phpBinary,
             escapeshellarg($_SERVER['argv'][0]),
             'worker',
             '--port',
