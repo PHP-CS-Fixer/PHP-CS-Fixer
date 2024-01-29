@@ -119,7 +119,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'single_line_comment_style' => true,
             'single_line_empty_body' => true,
             'single_line_throw' => false,
-            'string_implicit_backslashes' => ['single_quoted' => 'ignore'],
+            'string_implicit_backslashes' => true,
             'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
         ];
     }
