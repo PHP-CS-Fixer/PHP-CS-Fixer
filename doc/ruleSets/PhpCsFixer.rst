@@ -66,10 +66,7 @@ Rules
 - `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
-- `string_implicit_backslashes <./../rules/string_notation/string_implicit_backslashes.rst>`_ with config:
-
-  ``['single_quoted' => 'ignore']``
-
+- `string_implicit_backslashes <./../rules/string_notation/string_implicit_backslashes.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_ with config:
 
   ``['ensure_single_space' => true]``
