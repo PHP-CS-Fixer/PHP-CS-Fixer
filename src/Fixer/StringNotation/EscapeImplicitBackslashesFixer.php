@@ -14,23 +14,29 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\StringNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ * @author Michael Vorisek <https://github.com/mvorisek>
+ *
+ * @deprecated Use `string_implicit_backslashes` with config: ['single_quoted' => 'ignore', 'double_quoted' => 'escape', 'heredoc' => 'escape'] (default)
  */
-final class EscapeImplicitBackslashesFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class EscapeImplicitBackslashesFixer extends AbstractProxyFixer implements ConfigurableFixerInterface, DeprecatedFixerInterface
 {
+    public function getSuccessorsNames(): array
+    {
+        return array_keys($this->proxyFixers);
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = <<<'EOF'
@@ -73,11 +79,6 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
         );
     }
 
-    public function isCandidate(Tokens $tokens): bool
-    {
-        return $tokens->isAnyTokenKindsFound([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]);
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -86,56 +87,35 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
      */
     public function getPriority(): int
     {
-        return 15;
+        return parent::getPriority();
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    public function configure(array $configuration): void
     {
-        static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\\\'\\\\])/';
-        static $doubleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
-        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        parent::configure($configuration);
 
-        $doubleQuoteOpened = false;
-        foreach ($tokens as $index => $token) {
-            $content = $token->getContent();
-            if ($token->equalsAny(['"', 'b"', 'B"'])) {
-                $doubleQuoteOpened = !$doubleQuoteOpened;
-            }
-            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || !str_contains($content, '\\')) {
-                continue;
-            }
+        /** @var StringImplicitBackslashesFixer */
+        $stringImplicitBackslashesFixer = $this->proxyFixers['string_implicit_backslashes'];
 
-            // Nowdoc syntax
-            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && '\'' === substr(rtrim($tokens[$index - 1]->getContent()), -1)) {
-                continue;
-            }
+        $stringImplicitBackslashesFixer->configure([
+            'single_quoted' => true === $this->configuration['single_quoted'] ? 'escape' : 'ignore',
+            'double_quoted' => true === $this->configuration['double_quoted'] ? 'escape' : 'ignore',
+            'heredoc' => true === $this->configuration['heredoc_syntax'] ? 'escape' : 'ignore',
+        ]);
+    }
 
-            $firstTwoCharacters = strtolower(substr($content, 0, 2));
-            $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
-            $isDoubleQuotedString =
-                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
-                || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
-            $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
-            if (
-                (false === $this->configuration['single_quoted'] && $isSingleQuotedString)
-                || (false === $this->configuration['double_quoted'] && $isDoubleQuotedString)
-                || (false === $this->configuration['heredoc_syntax'] && $isHeredocSyntax)
-            ) {
-                continue;
-            }
+    protected function createProxyFixers(): array
+    {
+        $stringImplicitBackslashesFixer = new StringImplicitBackslashesFixer();
+        $stringImplicitBackslashesFixer->configure([
+            'single_quoted' => 'ignore',
+            'double_quoted' => 'escape',
+            'heredoc' => 'escape',
+        ]);
 
-            $regex = $heredocSyntaxRegex;
-            if ($isSingleQuotedString) {
-                $regex = $singleQuotedRegex;
-            } elseif ($isDoubleQuotedString) {
-                $regex = $doubleQuotedRegex;
-            }
-
-            $newContent = Preg::replace($regex, '\\\\\\\\$1', $content);
-            if ($newContent !== $content) {
-                $tokens[$index] = new Token([$token->getId(), $newContent]);
-            }
-        }
+        return [
+            $stringImplicitBackslashesFixer,
+        ];
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

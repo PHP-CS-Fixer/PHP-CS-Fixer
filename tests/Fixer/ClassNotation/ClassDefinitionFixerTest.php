@@ -79,7 +79,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input, array $configuration = []): void
+    public function testFix(string $expected, string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -303,6 +303,67 @@ A#
             '<?php $z = new class ( static::foo($this->bar())  ,baz() ) {};',
             '<?php $z = new class   ( static::foo($this->bar())  ,baz() )  {};',
             ['space_before_parenthesis' => true, 'inline_constructor_arguments' => false],
+        ];
+
+        yield 'single attribute on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                #[FOO]
+                class() {};
+                EOF,
+        ];
+
+        yield 'multiple attributes on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                #[FOO]
+                #[\Ns\Bar]
+                class() {};
+                EOF,
+        ];
+
+        yield 'single line phpdoc on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                /** @property string $x */
+                class() {};
+                EOF,
+        ];
+
+        yield 'multi line phpdoc on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                /**
+                 @property string $x
+                 */
+                class() {};
+                EOF,
+        ];
+
+        yield 'phpdoc and single attribute on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                /**
+                 @property string $x
+                 */
+                #[FOO]
+                class() {};
+                EOF,
+        ];
+
+        yield 'phpdoc and multiple attributes on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                /** @property string $x */
+                #[FOO] #[\Ns\Bar]
+                class() {};
+                EOF,
         ];
 
         yield from self::provideClassyCases('class');
