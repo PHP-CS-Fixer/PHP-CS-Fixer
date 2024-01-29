@@ -31,6 +31,10 @@ Rules
 - `no_unset_on_property <./../rules/language_construct/no_unset_on_property.rst>`_
 - `php_unit_data_provider_name <./../rules/php_unit/php_unit_data_provider_name.rst>`_
 - `php_unit_data_provider_return_type <./../rules/php_unit/php_unit_data_provider_return_type.rst>`_
+- `php_unit_data_provider_static <./../rules/php_unit/php_unit_data_provider_static.rst>`_ with config:
+
+  ``['force' => true]``
+
 - `php_unit_strict <./../rules/php_unit/php_unit_strict.rst>`_
 - `php_unit_test_case_static_method_calls <./../rules/php_unit/php_unit_test_case_static_method_calls.rst>`_ with config:
 

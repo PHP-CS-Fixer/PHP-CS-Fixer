@@ -244,8 +244,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
             ],
         );
 
-        $tokens->clearTokenAndMergeSurroundingWhitespace($secondOperand['start']);
         $this->clearConcatAndAround($tokens, $concatOperatorIndex);
+        $tokens->clearTokenAndMergeSurroundingWhitespace($secondOperand['start']);
     }
 
     /**

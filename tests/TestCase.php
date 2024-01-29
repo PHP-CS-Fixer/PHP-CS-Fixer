@@ -35,12 +35,16 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         if (null !== $this->previouslyDefinedErrorHandler) {
-            foreach ($this->expectedDeprecations as $expectedDeprecation) {
-                self::assertContains($expectedDeprecation, $this->actualDeprecations);
-            }
+            $this->actualDeprecations = array_unique($this->actualDeprecations);
+            sort($this->actualDeprecations);
+            $this->expectedDeprecations = array_unique($this->expectedDeprecations);
+            sort($this->expectedDeprecations);
+            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
 
             restore_error_handler();
         }
+
+        parent::tearDown();
     }
 
     final public function testNotDefiningConstructor(): void
@@ -54,6 +58,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Mark test to expect given deprecation. Order or repetition count of expected vs actual deprecation usage can vary, but result sets must be identical.
+     *
      * @TODO change access to protected and pass the parameter when PHPUnit 9 support is dropped
      */
     public function expectDeprecation(/* string $message */): void

@@ -271,7 +271,7 @@ get_called_class#1
     }
 
     /**
-     * @param array<mixed> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideInvalidConfigurationKeysCases
      */

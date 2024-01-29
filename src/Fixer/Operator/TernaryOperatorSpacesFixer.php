@@ -44,7 +44,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 0;
+        return 1;
     }
 
     public function isCandidate(Tokens $tokens): bool

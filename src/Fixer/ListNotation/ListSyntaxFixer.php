@@ -69,7 +69,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
      */
     public function getPriority(): int
     {
-        return 1;
+        return 2;
     }
 
     public function isCandidate(Tokens $tokens): bool

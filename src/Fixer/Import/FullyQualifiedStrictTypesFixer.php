@@ -174,8 +174,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, StatementIndentationFixer.
-     * Must run after PhpdocToReturnTypeFixer.
+     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, OrderedInterfacesFixer, StatementIndentationFixer.
+     * Must run after ClassKeywordFixer, PhpdocToReturnTypeFixer.
      */
     public function getPriority(): int
     {

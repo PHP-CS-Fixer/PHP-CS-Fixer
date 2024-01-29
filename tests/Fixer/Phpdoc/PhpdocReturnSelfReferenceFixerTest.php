@@ -162,7 +162,7 @@ class F
     }
 
     /**
-     * @param array<mixed> $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideInvalidConfigurationCases
      */

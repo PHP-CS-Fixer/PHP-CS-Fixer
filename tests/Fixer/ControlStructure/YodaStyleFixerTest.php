@@ -936,7 +936,7 @@ switch ($a) {
     }
 
     /**
-     * @param array<mixed> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideInvalidConfigCases
      */
