@@ -146,9 +146,15 @@ final class PhpdocArrayStyleFixer extends AbstractFixer implements ConfigurableF
     private function fixType(string $type): string
     {
         if (self::STRATEGY_FROM_ARRAY_TO_LIST !== $this->configuration['strategy']) {
-            do {
-                $type = Preg::replace('/(.+)\[\](?=($|\>))/', 'array<$1>', $type, -1, $count);
-            } while ($count > 0);
+            $type = Preg::replaceCallback(
+                '/^(.+?)((?:\h*\[\h*\])+)$/',
+                static function (array $matches): string {
+                    $level = substr_count($matches[2], '[');
+
+                    return str_repeat('array<', $level).$matches[1].str_repeat('>', $level);
+                },
+                $type,
+            );
         }
 
         if (self::STRATEGY_FROM_BRACKETS_TO_ARRAY !== $this->configuration['strategy']) {
