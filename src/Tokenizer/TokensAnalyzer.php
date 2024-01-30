@@ -46,7 +46,7 @@ final class TokensAnalyzer
     /**
      * Get indices of methods and properties in classy code (classes, interfaces and traits).
      *
-     * @return array<int, array{classIndex: integer, token: Token, type: _ClassyElementType}>
+     * @return array<int, array{classIndex: int, token: Token, type: _ClassyElementType}>
      */
     public function getClassyElements(): array
     {
@@ -208,7 +208,7 @@ final class TokensAnalyzer
     /**
      * @param int $index Index of the T_FUNCTION token
      *
-     * @return array{visibility: null|T_PRIVATE|T_PROTECTED|T_PUBLIC, static: boolean, abstract: bool, final: bool}
+     * @return array{visibility: null|T_PRIVATE|T_PROTECTED|T_PUBLIC, static: bool, abstract: bool, final: bool}
      */
     public function getMethodAttributes(int $index): array
     {
