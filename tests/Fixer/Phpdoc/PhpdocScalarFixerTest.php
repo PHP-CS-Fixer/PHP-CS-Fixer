@@ -269,5 +269,21 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
              */
              '),
         ];
+
+        yield [
+            '<?php /** @var array<integer, boolean> */',
+        ];
+
+        yield [
+            '<?php /** @var array{boolean, integer, str} */',
+        ];
+
+        yield [
+            '<?php /** @var array{integer, array{str, boolean}} */',
+        ];
+
+        yield [
+            '<?php /** @var array{index: integer, isRequired: boolean} */',
+        ];
     }
 }
