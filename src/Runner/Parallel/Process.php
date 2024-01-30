@@ -61,7 +61,7 @@ final class Process
 
     private ?TimerInterface $timer = null;
 
-    public function __construct(string $command, LoopInterface $loop, int $timeoutSeconds)
+    private function __construct(string $command, LoopInterface $loop, int $timeoutSeconds)
     {
         $this->command = $command;
         $this->loop = $loop;
