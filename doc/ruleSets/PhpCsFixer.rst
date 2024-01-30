@@ -17,7 +17,6 @@ Rules
 - `combine_consecutive_issets <./../rules/language_construct/combine_consecutive_issets.rst>`_
 - `combine_consecutive_unsets <./../rules/language_construct/combine_consecutive_unsets.rst>`_
 - `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_
-- `escape_implicit_backslashes <./../rules/string_notation/escape_implicit_backslashes.rst>`_
 - `explicit_indirect_variable <./../rules/language_construct/explicit_indirect_variable.rst>`_
 - `explicit_string_variable <./../rules/string_notation/explicit_string_variable.rst>`_
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_ with config:
@@ -68,6 +67,10 @@ Rules
 - `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
+- `string_implicit_backslashes <./../rules/string_notation/string_implicit_backslashes.rst>`_ with config:
+
+  ``['single_quoted' => 'ignore']``
+
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_ with config:
 
   ``['ensure_single_space' => true]``

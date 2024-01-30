@@ -16,8 +16,10 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -33,9 +35,19 @@ final class DescribeCommandTest extends TestCase
 {
     /**
      * @dataProvider provideDescribeCommandCases
+     *
+     * @param list<string> $successorsNames
      */
-    public function testDescribeCommand(FixerFactory $factory, string $fixerName): void
+    public function testDescribeCommand(FixerFactory $factory, string $fixerName, ?array $successorsNames): void
     {
+        if (null !== $successorsNames) {
+            $message = "Rule \"{$fixerName}\" is deprecated. "
+                .([] === $successorsNames
+                    ? 'It will be removed in version 4.0.'
+                    : sprintf('Use %s instead.', Utils::naturalLanguageJoin($successorsNames)));
+            $this->expectDeprecation($message);
+        }
+
         // @TODO 4.0 Remove this expectation
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
@@ -60,7 +72,11 @@ final class DescribeCommandTest extends TestCase
         $factory->registerBuiltInFixers();
 
         foreach ($factory->getFixers() as $fixer) {
-            yield [$factory, $fixer->getName()];
+            yield [
+                $factory,
+                $fixer->getName(),
+                $fixer instanceof DeprecatedFixerInterface ? $fixer->getSuccessorsNames() : null,
+            ];
         }
     }
 }
