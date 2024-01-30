@@ -241,7 +241,7 @@ final class TypeExpression
      */
     public function walkTypes(\Closure $callback): void
     {
-        foreach ($this->innerTypeExpressions as [
+        foreach (array_reverse($this->innerTypeExpressions) as [
             'start_index' => $startIndex,
             'expression' => $inner,
         ]) {

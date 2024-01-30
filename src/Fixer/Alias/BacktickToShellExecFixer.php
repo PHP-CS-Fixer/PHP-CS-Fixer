@@ -53,7 +53,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer, NativeFunctionInvocationFixer, SingleQuoteFixer.
+     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer, NativeFunctionInvocationFixer, SingleQuoteFixer, StringImplicitBackslashesFixer.
      */
     public function getPriority(): int
     {

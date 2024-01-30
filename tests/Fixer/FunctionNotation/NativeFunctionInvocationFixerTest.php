@@ -604,7 +604,7 @@ namespace {
     }
 
     /**
-     * @return iterable<array{string, 1?: string, 2?: array<mixed>}>
+     * @return iterable<array{string, 1?: string, 2?: array<string, mixed>}>
      */
     public static function provideFixPre80Cases(): iterable
     {

@@ -52,7 +52,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'combine_consecutive_issets' => true,
             'combine_consecutive_unsets' => true,
             'empty_loop_body' => true,
-            'escape_implicit_backslashes' => true,
             'explicit_indirect_variable' => true,
             'explicit_string_variable' => true,
             'fully_qualified_strict_types' => [
@@ -122,6 +121,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'single_line_comment_style' => true,
             'single_line_empty_body' => true,
             'single_line_throw' => false,
+            'string_implicit_backslashes' => ['single_quoted' => 'ignore'],
             'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
         ];
     }

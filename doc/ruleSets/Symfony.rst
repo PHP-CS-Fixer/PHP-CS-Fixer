@@ -99,10 +99,7 @@ Rules
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
-- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_ with config:
-
-  ``['use_nullable_type_declaration' => false]``
-
+- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
 
