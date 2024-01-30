@@ -65,7 +65,7 @@ final class DotsOutput implements ProgressOutputInterface
      */
     public function __sleep(): array
     {
-        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot serialize '.self::class);
     }
 
     /**
@@ -76,7 +76,7 @@ final class DotsOutput implements ProgressOutputInterface
      */
     public function __wakeup(): void
     {
-        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot unserialize '.self::class);
     }
 
     public function onFixerFileProcessed(FixerFileProcessedEvent $event): void

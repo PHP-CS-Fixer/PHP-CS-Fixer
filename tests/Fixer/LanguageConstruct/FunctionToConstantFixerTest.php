@@ -153,8 +153,8 @@ $a =
                         public function echoClassName($notMe)
                         {
                             echo get_class($notMe);
-                            echo __CLASS__/** 1 *//* 2 */;
-                            echo __CLASS__;
+                            echo self::class/** 1 *//* 2 */;
+                            echo self::class;
                         }
                     }
 
@@ -182,7 +182,7 @@ $a =
         ];
 
         yield 'get_class with leading backslash' => [
-            '<?php __CLASS__;',
+            '<?php self::class;',
             '<?php \get_class();',
         ];
 
@@ -251,7 +251,7 @@ get_called_class#1
         ];
 
         yield [
-            '<?php class Foo{ public function Bar(){ echo static::class; echo __CLASS__; }}',
+            '<?php class Foo{ public function Bar(){ echo static::class; echo self::class; }}',
             '<?php class Foo{ public function Bar(){ echo \get_class((($this))); echo get_class(); }}',
             ['functions' => ['get_class_this', 'get_class']],
         ];
