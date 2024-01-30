@@ -93,6 +93,7 @@ final class Runner
         ?DirectoryInterface $directory = null
     ) {
         $this->runnerConfig = $runnerConfig;
+        $this->fileCount = \count($fileIterator ?? []); // Required only for main process (calculating workers count)
         $this->fileIterator = $fileIterator;
         $this->fixers = $fixers;
         $this->differ = $differ;
@@ -473,10 +474,6 @@ final class Runner
                 ? $this->fileIterator->getIterator()
                 : $this->fileIterator
         );
-
-        // In order to determine the amount of required workers, we need to know how many files we need to analyse
-        $this->fileCount = \count(iterator_to_array($fileIterator));
-        $fileIterator->rewind(); // Important! Without this 0 files would be analysed
 
         $fileFilterIterator = new FileFilterIterator(
             $fileIterator,
