@@ -49,7 +49,7 @@ Example #1
         {
    -        echo get_class();
    -        echo get_called_class();
-   +        echo __CLASS__;
+   +        echo self::class;
    +        echo static::class;
         }
     }

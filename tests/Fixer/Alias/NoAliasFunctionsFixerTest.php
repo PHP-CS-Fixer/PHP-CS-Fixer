@@ -247,7 +247,7 @@ abstract class A
     {
         $reflectionConstant = new \ReflectionClassConstant(NoAliasFunctionsFixer::class, 'SETS');
 
-        /** @var array<string, string[]> $allAliases */
+        /** @var array<string, array<string, string>> $allAliases */
         $allAliases = $reflectionConstant->getValue();
 
         $sets = $allAliases;

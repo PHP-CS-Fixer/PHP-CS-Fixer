@@ -1,9 +1,12 @@
 ====================================
-Rule ``escape_implicit_backslashes``
+Rule ``string_implicit_backslashes``
 ====================================
 
-Escape implicit backslashes in strings and heredocs to ease the understanding of
-which are special chars interpreted by PHP and which not.
+Handles implicit backslashes in strings and heredocs. Depending on the chosen
+strategy, it can escape implicit backslashes to ease the understanding of which
+are special chars interpreted by PHP and which not (``escape``), or it can
+remove these additional backslashes if you find them superfluous (``unescape``).
+You can also leave them as-is using ``ignore`` strategy.
 
 Description
 -----------
@@ -20,43 +23,35 @@ ensure that all backslashes are escaped. Both single and double backslashes are
 allowed in single-quoted strings, so the purpose in this context is mainly to
 have a uniformed way to have them written all over the codebase.
 
-Warning
--------
-
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``string_implicit_backslashes`` instead.
-
 Configuration
 -------------
 
 ``double_quoted``
 ~~~~~~~~~~~~~~~~~
 
-Whether to fix double-quoted strings.
+Whether to escape backslashes in double-quoted strings.
 
-Allowed types: ``bool``
+Allowed values: ``'escape'``, ``'ignore'`` and ``'unescape'``
 
-Default value: ``true``
+Default value: ``'escape'``
 
-``heredoc_syntax``
-~~~~~~~~~~~~~~~~~~
+``heredoc``
+~~~~~~~~~~~
 
-Whether to fix heredoc syntax.
+Whether to escape backslashes in heredoc syntax.
 
-Allowed types: ``bool``
+Allowed values: ``'escape'``, ``'ignore'`` and ``'unescape'``
 
-Default value: ``true``
+Default value: ``'escape'``
 
 ``single_quoted``
 ~~~~~~~~~~~~~~~~~
 
-Whether to fix single-quoted strings.
+Whether to escape backslashes in single-quoted strings.
 
-Allowed types: ``bool``
+Allowed values: ``'escape'``, ``'ignore'`` and ``'unescape'``
 
-Default value: ``false``
+Default value: ``'unescape'``
 
 Examples
 --------
@@ -85,7 +80,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['single_quoted' => true]``.
+With configuration: ``['single_quoted' => 'escape']``.
 
 .. code-block:: diff
 
@@ -107,7 +102,7 @@ With configuration: ``['single_quoted' => true]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['double_quoted' => false]``.
+With configuration: ``['double_quoted' => 'unescape']``.
 
 .. code-block:: diff
 
@@ -127,7 +122,7 @@ With configuration: ``['double_quoted' => false]``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['heredoc_syntax' => false]``.
+With configuration: ``['heredoc' => 'unescape']``.
 
 .. code-block:: diff
 
@@ -143,10 +138,21 @@ With configuration: ``['heredoc_syntax' => false]``.
     $hereDoc = <<<HEREDOC
     Interpret my \100 but not my \999
     HEREDOC;
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['single_quoted' => 'ignore']``
+
+
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixerTest <./../../../tests/Fixer/StringNotation/EscapeImplicitBackslashesFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\StringImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/StringImplicitBackslashesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\StringImplicitBackslashesFixerTest <./../../../tests/Fixer/StringNotation/StringImplicitBackslashesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

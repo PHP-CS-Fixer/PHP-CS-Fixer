@@ -630,7 +630,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * @return array<mixed>
+     * @return array<string, mixed>
      */
     private function parseRules(): array
     {
@@ -673,7 +673,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * @param array<mixed> $rules
+     * @param array<string, mixed> $rules
      *
      * @throws InvalidConfigurationException
      */

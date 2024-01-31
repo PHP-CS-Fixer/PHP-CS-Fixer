@@ -355,6 +355,23 @@ yield  from  baz();
                 }
             }
 
+            if ($tokens[$whitespaceTokenIndex]->isWhitespace() && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
+                $nextNextToken = $tokens[$whitespaceTokenIndex + 1];
+                if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition and else when PHP 8.0+ is required
+                    if ($nextNextToken->isGivenKind(T_ATTRIBUTE)) {
+                        continue;
+                    }
+                } else {
+                    if ($nextNextToken->isComment() && str_starts_with($nextNextToken->getContent(), '#[')) {
+                        continue;
+                    }
+                }
+
+                if ($nextNextToken->isGivenKind(T_DOC_COMMENT)) {
+                    continue;
+                }
+            }
+
             $tokens->ensureWhitespaceAtIndex($whitespaceTokenIndex, 0, ' ');
         }
     }

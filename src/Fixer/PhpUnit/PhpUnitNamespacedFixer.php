@@ -45,7 +45,7 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configurable
      *    space class and need a dedicated translation table. This trans-
      *    lation table is defined in @see configure.
      *
-     * @var array|string[] Class Mappings
+     * @var array<string, string> Class Mappings
      */
     private $classMap;
 
