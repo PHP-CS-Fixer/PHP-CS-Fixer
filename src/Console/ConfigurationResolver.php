@@ -479,7 +479,7 @@ final class ConfigurationResolver
             }
         }
 
-        $this->usingCache = $this->usingCache && ($this->toolInfo->isInstalledAsPhar() || $this->toolInfo->isInstalledByComposer());
+        $this->usingCache = $this->usingCache && $this->isCachingAllowedForRuntime();
 
         return $this->usingCache;
     }
@@ -948,5 +948,12 @@ final class ConfigurationResolver
         }
 
         return $config;
+    }
+
+    private function isCachingAllowedForRuntime(): bool
+    {
+        return $this->toolInfo->isInstalledAsPhar()
+            || $this->toolInfo->isInstalledByComposer()
+            || $this->toolInfo->isRunInsideDocker();
     }
 }
