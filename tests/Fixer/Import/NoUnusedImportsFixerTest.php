@@ -1331,30 +1331,55 @@ Bar3:
                 EOF
         ];
 
-        yield [ // TODO test shows lot of cases where imports are not removed while could be
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
+        yield 'grouped imports' => [
+            <<<'EOF'
+                <?php
+                use some\y\{ClassA, ClassC as C,};
+                use function some\a\{
+                    fn_a,
+                };
+                use const some\Z\{ConstA,ConstC,};
 
-    echo ConstA.ConstB.ConstC,ConstF;
-    echo ConstBB.ConstCC;
-    fn_a(ClassA::test, new C());
-',
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
-use Z;
+                echo ConstA.ConstC;
+                fn_a(ClassA::test, new C());
+                EOF,
+            <<<'EOF'
+                <?php
+                use A\{B,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{
+                    fn_a,
+                    fn_b,
+                    fn_c,
+                };
+                use function some\b\{fn_x, fn_y, fn_z,};
+                use const some\Z\{ConstA,ConstB,ConstC,};
+                use const some\X\{ConstX,ConstY,ConstZ};
+                use C\{D,E,};
+                use Z;
 
-    echo ConstA.ConstB.ConstC,ConstF;
-    echo ConstBB.ConstCC;
-    fn_a(ClassA::test, new C());
-',
+                echo ConstA.ConstC;
+                fn_a(ClassA::test, new C());
+                EOF,
+        ];
+
+        yield 'comma-separated imports' => [
+            <<<'EOF'
+                <?php
+                use A;
+                use function fn_b;
+                use const ConstC;
+
+                fn_b(new A(), ConstC);
+                EOF,
+            <<<'EOF'
+                <?php
+                use A, B, C;
+                use function fn_a, fn_b, fn_c;
+                use const ConstA, ConstB, ConstC;
+
+                fn_b(new A(), ConstC);
+                EOF,
         ];
     }
 
