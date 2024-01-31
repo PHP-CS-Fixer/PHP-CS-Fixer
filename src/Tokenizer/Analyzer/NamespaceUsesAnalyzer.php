@@ -28,22 +28,22 @@ final class NamespaceUsesAnalyzer
     /**
      * @return list<NamespaceUseAnalysis>
      */
-    public function getDeclarationsFromTokens(Tokens $tokens): array
+    public function getDeclarationsFromTokens(Tokens $tokens, bool $allowMultiUses = false): array
     {
         $tokenAnalyzer = new TokensAnalyzer($tokens);
         $useIndices = $tokenAnalyzer->getImportUseIndexes();
 
-        return $this->getDeclarations($tokens, $useIndices);
+        return $this->getDeclarations($tokens, $useIndices, $allowMultiUses);
     }
 
     /**
      * @return list<NamespaceUseAnalysis>
      */
-    public function getDeclarationsInNamespace(Tokens $tokens, NamespaceAnalysis $namespace): array
+    public function getDeclarationsInNamespace(Tokens $tokens, NamespaceAnalysis $namespace, bool $allowMultiUses = false): array
     {
         $namespaceUses = [];
 
-        foreach ($this->getDeclarationsFromTokens($tokens) as $namespaceUse) {
+        foreach ($this->getDeclarationsFromTokens($tokens, $allowMultiUses) as $namespaceUse) {
             if ($namespaceUse->getStartIndex() >= $namespace->getScopeStartIndex() && $namespaceUse->getStartIndex() <= $namespace->getScopeEndIndex()) {
                 $namespaceUses[] = $namespaceUse;
             }
@@ -57,23 +57,35 @@ final class NamespaceUsesAnalyzer
      *
      * @return list<NamespaceUseAnalysis>
      */
-    private function getDeclarations(Tokens $tokens, array $useIndices): array
+    private function getDeclarations(Tokens $tokens, array $useIndices, bool $allowMultiUses = false): array
     {
         $uses = [];
 
         foreach ($useIndices as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
-            $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
 
-            if (null !== $analysis) {
-                $uses[] = $analysis;
+            // TODO Collect all uses, then filter out multi-use imports if not requested
+            $analysis = true === $allowMultiUses
+                ? $this->parseAllDeclarations($index, $endIndex, $tokens)
+                : array_filter([$this->parseSingleDeclaration($index, $endIndex, $tokens)]);
+
+            if ([] !== $analysis) {
+                $uses = array_merge($uses, $analysis);
             }
         }
 
         return $uses;
     }
 
-    private function parseDeclaration(Tokens $tokens, int $startIndex, int $endIndex): ?NamespaceUseAnalysis
+    /**
+     * @return list<NamespaceUseAnalysis>
+     */
+    private function parseAllDeclarations(int $startIndex, int $endIndex, Tokens $tokens): array
+    {
+        throw new \RuntimeException('Not implemented');
+    }
+
+    private function parseSingleDeclaration(int $startIndex, int $endIndex, Tokens $tokens): ?NamespaceUseAnalysis
     {
         $fullName = $shortName = '';
         $aliased = false;
