@@ -98,6 +98,15 @@ final class ToolInfo implements ToolInfoInterface
         return $this->isInstalledByComposer;
     }
 
+    /**
+     * Determines if the tool is run inside our pre-built Docker image.
+     * The `/fixer/` path comes from our Dockerfile, tool is installed there and added to global PATH via symlinked binary.
+     */
+    public function isRunInsideDocker(): bool
+    {
+        return is_file('/.dockerenv') && str_starts_with(__FILE__, '/fixer/');
+    }
+
     public function getPharDownloadUri(string $version): string
     {
         return sprintf(

@@ -817,6 +817,84 @@ final class ConfigurationResolverTest extends TestCase
         self::assertFalse($resolver->getUsingCache());
     }
 
+    /**
+     * @dataProvider provideResolveUsingCacheForRuntimesCases
+     */
+    public function testResolveUsingCacheForRuntimes(bool $cacheAllowed, bool $installedWithComposer, bool $asPhar, bool $inDocker): void
+    {
+        $config = new Config();
+        $config->setUsingCache(true);
+
+        $resolver = $this->createConfigurationResolver(
+            [],
+            $config,
+            '',
+            new class($installedWithComposer, $asPhar, $inDocker) implements ToolInfoInterface {
+                private bool $installedWithComposer;
+                private bool $asPhar;
+                private bool $inDocker;
+
+                public function __construct(bool $installedWithComposer, bool $asPhar, bool $inDocker)
+                {
+                    $this->installedWithComposer = $installedWithComposer;
+                    $this->asPhar = $asPhar;
+                    $this->inDocker = $inDocker;
+                }
+
+                public function getComposerInstallationDetails(): array
+                {
+                    throw new \BadMethodCallException();
+                }
+
+                public function getComposerVersion(): string
+                {
+                    throw new \BadMethodCallException();
+                }
+
+                public function getVersion(): string
+                {
+                    throw new \BadMethodCallException();
+                }
+
+                public function isInstalledAsPhar(): bool
+                {
+                    return $this->asPhar;
+                }
+
+                public function isInstalledByComposer(): bool
+                {
+                    return $this->installedWithComposer;
+                }
+
+                public function isRunInsideDocker(): bool
+                {
+                    return $this->inDocker;
+                }
+
+                public function getPharDownloadUri(string $version): string
+                {
+                    throw new \BadMethodCallException();
+                }
+            }
+        );
+
+        self::assertSame($cacheAllowed, $resolver->getUsingCache());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: bool, 2: bool, 3: bool}>
+     */
+    public static function provideResolveUsingCacheForRuntimesCases(): iterable
+    {
+        yield 'none of the allowed runtimes' => [false, false, false, false];
+
+        yield 'composer installation' => [true, true, false, false];
+
+        yield 'PHAR distribution' => [true, false, true, false];
+
+        yield 'Docker runtime' => [true, false, false, true];
+    }
+
     public function testResolveCacheFileWithoutConfigAndOption(): void
     {
         $config = new Config();
@@ -1303,17 +1381,17 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     /**
      * @param array<string, mixed> $options
      */
-    private function createConfigurationResolver(array $options, Config $config = null, string $cwdPath = ''): ConfigurationResolver
-    {
-        if (null === $config) {
-            $config = new Config();
-        }
-
+    private function createConfigurationResolver(
+        array $options,
+        Config $config = null,
+        string $cwdPath = '',
+        ToolInfoInterface $toolInfo = null
+    ): ConfigurationResolver {
         return new ConfigurationResolver(
-            $config,
+            $config ?? new Config(),
             $options,
             $cwdPath,
-            $this->createToolInfoDouble()
+            $toolInfo ?? $this->createToolInfoDouble()
         );
     }
 
@@ -1377,6 +1455,11 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
             public function isInstalledByComposer(): bool
             {
                 throw new \BadMethodCallException();
+            }
+
+            public function isRunInsideDocker(): bool
+            {
+                return false;
             }
 
             public function getPharDownloadUri(string $version): string
