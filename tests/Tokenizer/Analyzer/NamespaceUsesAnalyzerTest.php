@@ -51,105 +51,115 @@ final class NamespaceUsesAnalyzerTest extends TestCase
 
         yield ['<?php use Foo\Bar;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 'Foo\Bar',
                 'Bar',
                 false,
+                false,
                 1,
-                6,
-                NamespaceUseAnalysis::TYPE_CLASS
+                6
             ),
         ], [1]];
 
         yield ['<?php use Foo\Bar; use Foo\Baz;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 'Foo\Bar',
                 'Bar',
                 false,
+                false,
                 1,
-                6,
-                NamespaceUseAnalysis::TYPE_CLASS
+                6
             ),
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 'Foo\Baz',
                 'Baz',
                 false,
+                false,
                 8,
                 13,
-                NamespaceUseAnalysis::TYPE_CLASS
             ),
         ], [1, 8]];
 
         yield ['<?php use \Foo\Bar;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 '\Foo\Bar',
                 'Bar',
                 false,
+                false,
                 1,
                 7,
-                NamespaceUseAnalysis::TYPE_CLASS
             ),
         ], [1]];
 
         yield ['<?php use Foo\Bar as Baz;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 'Foo\Bar',
                 'Baz',
                 true,
+                false,
                 1,
                 10,
-                NamespaceUseAnalysis::TYPE_CLASS
             ),
         ], [1]];
 
         yield ['<?php use Foo\Bar as Baz; use Foo\Buz as Baz;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 'Foo\Bar',
                 'Baz',
                 true,
+                false,
                 1,
                 10,
-                NamespaceUseAnalysis::TYPE_CLASS
             ),
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CLASS,
                 'Foo\Buz',
                 'Baz',
                 true,
+                false,
                 12,
                 21,
-                NamespaceUseAnalysis::TYPE_CLASS
             ),
         ], [1, 12]];
 
         yield ['<?php use function My\count;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_FUNCTION,
                 'My\count',
                 'count',
                 false,
+                false,
                 1,
                 8,
-                NamespaceUseAnalysis::TYPE_FUNCTION
             ),
         ], [1]];
 
         yield ['<?php use function My\count as myCount;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_FUNCTION,
                 'My\count',
                 'myCount',
                 true,
+                false,
                 1,
                 12,
-                NamespaceUseAnalysis::TYPE_FUNCTION
             ),
         ], [1]];
 
         yield ['<?php use const My\Full\CONSTANT;', [
             new NamespaceUseAnalysis(
+                NamespaceUseAnalysis::TYPE_CONSTANT,
                 'My\Full\CONSTANT',
                 'CONSTANT',
                 false,
+                false,
                 1,
                 10,
-                NamespaceUseAnalysis::TYPE_CONSTANT
             ),
         ], [1]];
 
@@ -189,8 +199,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 use Baz;',
             new NamespaceAnalysis('Foo', 'Foo', 2, 5, 2, 15),
             [
-                new NamespaceUseAnalysis('Bar', 'Bar', false, 7, 10, NamespaceUseAnalysis::TYPE_CLASS),
-                new NamespaceUseAnalysis('Baz', 'Baz', false, 12, 15, NamespaceUseAnalysis::TYPE_CLASS),
+                new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Bar', 'Bar', false, false, 7, 10),
+                new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Baz', 'Baz', false, false, 12, 15),
             ],
         ];
 
@@ -206,8 +216,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 }',
             new NamespaceAnalysis('Foo1', 'Foo1', 2, 4, 2, 18),
             [
-                new NamespaceUseAnalysis('Bar1', 'Bar1', false, 8, 11, NamespaceUseAnalysis::TYPE_CLASS),
-                new NamespaceUseAnalysis('Baz1', 'Baz1', false, 13, 16, NamespaceUseAnalysis::TYPE_CLASS),
+                new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Bar1', 'Bar1', false, false, 8, 11),
+                new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Baz1', 'Baz1', false, false, 13, 16),
             ],
         ];
 
@@ -223,8 +233,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 }',
             new NamespaceAnalysis('Foo2', 'Foo2', 20, 22, 20, 36),
             [
-                new NamespaceUseAnalysis('Bar2', 'Bar2', false, 26, 29, NamespaceUseAnalysis::TYPE_CLASS),
-                new NamespaceUseAnalysis('Baz2', 'Baz2', false, 31, 34, NamespaceUseAnalysis::TYPE_CLASS),
+                new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Bar2', 'Bar2', false, false, 26, 29),
+                new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Baz2', 'Baz2', false, false, 31, 34),
             ],
         ];
     }

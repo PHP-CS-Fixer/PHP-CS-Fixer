@@ -110,12 +110,13 @@ final class NamespaceUsesAnalyzer
         }
 
         return new NamespaceUseAnalysis(
+            $type,
             trim($fullName),
             $shortName,
             $aliased,
+            false,
             $startIndex,
             $endIndex,
-            $type
         );
     }
 }

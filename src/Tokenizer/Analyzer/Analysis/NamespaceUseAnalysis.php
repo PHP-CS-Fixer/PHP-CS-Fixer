@@ -34,6 +34,11 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     private string $shortName;
 
     /**
+     * Is the use statement part of multi-use (`use A, B, C;`, `use A\{B, C};`)?
+     */
+    private bool $isInMulti;
+
+    /**
      * Is the use statement being aliased?
      */
     private bool $isAliased;
@@ -53,14 +58,25 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
      */
     private int $type;
 
-    public function __construct(string $fullName, string $shortName, bool $isAliased, int $startIndex, int $endIndex, int $type)
-    {
+    /**
+     * @param self::TYPE_* $type
+     */
+    public function __construct(
+        int $type,
+        string $fullName,
+        string $shortName,
+        bool $isAliased,
+        bool $isInMulti,
+        int $startIndex,
+        int $endIndex
+    ) {
+        $this->type = $type;
         $this->fullName = $fullName;
         $this->shortName = $shortName;
         $this->isAliased = $isAliased;
+        $this->isInMulti = $isInMulti;
         $this->startIndex = $startIndex;
         $this->endIndex = $endIndex;
-        $this->type = $type;
     }
 
     public function getFullName(): string
@@ -76,6 +92,11 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     public function isAliased(): bool
     {
         return $this->isAliased;
+    }
+
+    public function isInMulti(): bool
+    {
+        return $this->isInMulti;
     }
 
     public function getStartIndex(): int
