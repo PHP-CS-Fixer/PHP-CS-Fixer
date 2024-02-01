@@ -52,6 +52,8 @@ jobs:
           days-before-pr-close: "${{ env.DAYS_BEFORE_PR_CLOSE }}"
           days-before-pr-stale: "${{ env.DAYS_BEFORE_PR_STALE }}"
           exempt-all-milestones: true
+          exempt-issue-labels: "topic/core"
+          exempt-pr-labels: "topic/core"
           labels-to-add-when-unstale: "status/to verify"
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           stale-issue-label: "status/stale"
