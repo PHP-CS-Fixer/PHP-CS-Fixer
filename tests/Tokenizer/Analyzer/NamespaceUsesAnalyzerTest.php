@@ -45,9 +45,12 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1: list<NamespaceUseAnalysis>}>
+     */
     public static function provideUsesFromTokensCases(): iterable
     {
-        yield ['<?php // no uses', [], []];
+        yield ['<?php // no uses', []];
 
         yield ['<?php use Foo\Bar;', [
             new NamespaceUseAnalysis(
@@ -59,7 +62,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 1,
                 6
             ),
-        ], [1]];
+        ]];
 
         yield ['<?php use Foo\Bar; use Foo\Baz;', [
             new NamespaceUseAnalysis(
@@ -80,7 +83,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 8,
                 13,
             ),
-        ], [1, 8]];
+        ]];
 
         yield ['<?php use \Foo\Bar;', [
             new NamespaceUseAnalysis(
@@ -92,7 +95,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 1,
                 7,
             ),
-        ], [1]];
+        ]];
 
         yield ['<?php use Foo\Bar as Baz;', [
             new NamespaceUseAnalysis(
@@ -104,7 +107,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 1,
                 10,
             ),
-        ], [1]];
+        ]];
 
         yield ['<?php use Foo\Bar as Baz; use Foo\Buz as Baz;', [
             new NamespaceUseAnalysis(
@@ -125,7 +128,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 12,
                 21,
             ),
-        ], [1, 12]];
+        ]];
 
         yield ['<?php use function My\count;', [
             new NamespaceUseAnalysis(
@@ -137,7 +140,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 1,
                 8,
             ),
-        ], [1]];
+        ]];
 
         yield ['<?php use function My\count as myCount;', [
             new NamespaceUseAnalysis(
@@ -149,7 +152,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 1,
                 12,
             ),
-        ], [1]];
+        ]];
 
         yield ['<?php use const My\Full\CONSTANT;', [
             new NamespaceUseAnalysis(
@@ -161,7 +164,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 1,
                 10,
             ),
-        ], [1]];
+        ]];
 
         // TODO: How to support these:
 
@@ -190,6 +193,9 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1: NamespaceAnalysis, 2: list<NamespaceUseAnalysis>}>
+     */
     public static function provideGetDeclarationsInNamespaceCases(): iterable
     {
         yield [
