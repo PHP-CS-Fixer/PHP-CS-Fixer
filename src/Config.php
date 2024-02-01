@@ -55,7 +55,7 @@ class Config implements ConfigInterface
     /**
      * @TODO: 4.0 - update to @PER
      *
-     * @var array<string, array<string, mixed>|bool>
+     * @var array<string, array<array-key, mixed>|bool>
      */
     private array $rules;
 
