@@ -53,6 +53,7 @@ final class Error implements \JsonSerializable
     private ?string $diff;
 
     /**
+     * @param self::TYPE_* $type
      * @param list<string> $appliedFixers
      */
     public function __construct(int $type, string $filePath, ?\Throwable $source = null, array $appliedFixers = [], ?string $diff = null)
