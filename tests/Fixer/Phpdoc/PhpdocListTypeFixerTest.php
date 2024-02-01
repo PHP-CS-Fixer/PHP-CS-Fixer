@@ -56,6 +56,11 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php /** @var list<Foo> */',
+            '<?php /** @var ARRAY<Foo> */',
+        ];
+
+        yield [
             '<?php /** @var ?list<Foo> */',
             '<?php /** @var ?array<Foo> */',
         ];
