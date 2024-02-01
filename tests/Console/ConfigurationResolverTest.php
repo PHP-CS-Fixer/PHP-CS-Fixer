@@ -57,10 +57,10 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($parallelConfig, $resolver->getParallelConfig());
     }
 
-    public function testResolveDefaultParallelConfig(): void
+    public function testDefaultParallelConfigFallbacksToSequential(): void
     {
         $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
-        $defaultParallelConfig = ParallelConfig::detect();
+        $defaultParallelConfig = ParallelConfig::sequential();
 
         self::assertSame($parallelConfig->getMaxProcesses(), $defaultParallelConfig->getMaxProcesses());
         self::assertSame($parallelConfig->getFilesPerProcess(), $defaultParallelConfig->getFilesPerProcess());
