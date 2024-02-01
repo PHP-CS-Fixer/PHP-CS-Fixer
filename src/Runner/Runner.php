@@ -84,7 +84,7 @@ final class Runner
 
     /**
      * @param null|\Traversable<\SplFileInfo> $fileIterator
-     * @param list<FixerInterface> $fixers
+     * @param list<FixerInterface>            $fixers
      */
     public function __construct(
         ?\Traversable $fileIterator,
@@ -203,7 +203,7 @@ final class Runner
 
         $processesToSpawn = min(
             $this->parallelConfig->getMaxProcesses(),
-            (int)ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess())
+            (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess())
         );
 
         for ($i = 0; $i < $processesToSpawn; ++$i) {
