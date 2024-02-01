@@ -27,7 +27,6 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -305,20 +304,18 @@ use Symfony\Component\Stopwatch\Stopwatch;
         );
 
         $runner = new Runner(
-            new RunnerConfig(
-                $resolver->isDryRun(),
-                $resolver->shouldStopOnViolation(),
-                $resolver->getParallelConfig(),
-                $resolver->getConfigFile()
-            ),
             $finder,
             $resolver->getFixers(),
             $resolver->getDiffer(),
             ProgressOutputType::NONE !== $progressType ? $this->eventDispatcher : null,
             $this->errorsManager,
             $resolver->getLinter(),
+            $resolver->isDryRun(),
             $resolver->getCacheManager(),
-            $resolver->getDirectory()
+            $resolver->getDirectory(),
+            $resolver->shouldStopOnViolation(),
+            $resolver->getParallelConfig(),
+            $resolver->getConfigFile()
         );
 
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);

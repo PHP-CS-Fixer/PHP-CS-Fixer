@@ -26,9 +26,7 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
-use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -257,13 +255,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorsManager = new ErrorsManager();
         $fixers = self::createFixers($case);
         $runner = new Runner(
-            new RunnerConfig(false, false, new ParallelConfig()),
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
             new UnifiedDiffer(),
             null,
             $errorsManager,
             $this->linter,
+            false,
             new NullCacheManager()
         );
 
@@ -317,13 +315,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
             }
 
             $runner = new Runner(
-                new RunnerConfig(false, false, new ParallelConfig()),
                 new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
                 new UnifiedDiffer(),
                 null,
                 $errorsManager,
                 $this->linter,
+                false,
                 new NullCacheManager()
             );
 

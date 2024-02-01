@@ -25,9 +25,7 @@ use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
-use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -58,15 +56,16 @@ final class RunnerTest extends TestCase
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
-            new RunnerConfig(true, false, new ParallelConfig()),
             Finder::create()->in($path),
             $fixers,
             new NullDiffer(),
             null,
             new ErrorsManager(),
             $linter,
+            true,
             new NullCacheManager(),
-            new Directory($path)
+            new Directory($path),
+            false
         );
 
         $changed = $runner->fix();
@@ -77,15 +76,16 @@ final class RunnerTest extends TestCase
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
-            new RunnerConfig(true, true, new ParallelConfig()),
             Finder::create()->in($path),
             $fixers,
             new NullDiffer(),
             null,
             new ErrorsManager(),
             $linter,
+            true,
             new NullCacheManager(),
             new Directory($path),
+            true
         );
 
         $changed = $runner->fix();
@@ -104,7 +104,6 @@ final class RunnerTest extends TestCase
 
         $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'invalid';
         $runner = new Runner(
-            new RunnerConfig(true, false, new ParallelConfig()),
             Finder::create()->in($path),
             [
                 new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -114,6 +113,7 @@ final class RunnerTest extends TestCase
             null,
             $errorsManager,
             new Linter(),
+            true,
             new NullCacheManager()
         );
         $changed = $runner->fix();
@@ -144,15 +144,16 @@ final class RunnerTest extends TestCase
         ];
 
         $runner = new Runner(
-            new RunnerConfig(true, true, new ParallelConfig()),
             Finder::create()->in($path),
             $fixers,
             $differ,
             null,
             new ErrorsManager(),
             new Linter(),
+            true,
             new NullCacheManager(),
-            new Directory($path)
+            new Directory($path),
+            true
         );
 
         $runner->fix();
