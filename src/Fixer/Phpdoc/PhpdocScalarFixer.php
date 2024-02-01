@@ -113,10 +113,16 @@ function sample($a, $b, $c)
 
     protected function normalize(string $type): string
     {
-        if (\in_array($type, $this->configuration['types'], true)) {
-            return self::$types[$type];
+        $suffix = '';
+        while (str_ends_with($type, '[]')) {
+            $type = substr($type, 0, -2);
+            $suffix .= '[]';
         }
 
-        return $type;
+        if (\in_array($type, $this->configuration['types'], true)) {
+            $type = self::$types[$type];
+        }
+
+        return $type.$suffix;
     }
 }
