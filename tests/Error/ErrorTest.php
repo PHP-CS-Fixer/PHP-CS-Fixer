@@ -26,7 +26,7 @@ final class ErrorTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $type = 123;
+        $type = 1;
         $filePath = 'foo.php';
 
         $error = new Error(
@@ -43,7 +43,7 @@ final class ErrorTest extends TestCase
 
     public function testConstructorSetsValues2(): void
     {
-        $type = 456;
+        $type = 2;
         $filePath = __FILE__;
         $source = new \Exception();
         $appliedFixers = ['some_rule'];
