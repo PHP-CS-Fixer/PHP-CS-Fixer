@@ -22,7 +22,6 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\ToolInfoInterface;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
@@ -218,25 +217,25 @@ final class WorkerCommand extends Command
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
                 'diff' => $input->getOption('diff'),
+                'stop-on-violation' => false, // @TODO Pass this option to the runner
             ],
             getcwd(),
             $this->toolInfo
         );
 
         return new Runner(
-            new RunnerConfig(
-                $this->configurationResolver->isDryRun(),
-                false, // @TODO Pass this option to the runner
-                ParallelConfig::sequential() // IMPORTANT! Worker must run in sequential mode
-            ),
             null, // Paths are known when parallelisation server requests new chunk, not now
             $this->configurationResolver->getFixers(),
             $this->configurationResolver->getDiffer(),
             $this->eventDispatcher,
             $this->errorsManager,
             $this->configurationResolver->getLinter(),
+            $this->configurationResolver->isDryRun(),
             $this->configurationResolver->getCacheManager(),
-            $this->configurationResolver->getDirectory()
+            $this->configurationResolver->getDirectory(),
+            $this->configurationResolver->shouldStopOnViolation(),
+            ParallelConfig::sequential(), // IMPORTANT! Worker must run in sequential mode
+            $this->configurationResolver->getConfigFile()
         );
     }
 }

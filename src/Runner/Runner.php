@@ -29,6 +29,7 @@ use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\Process;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
@@ -46,13 +47,9 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @author Greg Korba <greg@codito.dev>
  *
  * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
- *
- * @internal
  */
 final class Runner
 {
-    private RunnerConfig $runnerConfig;
-
     private DifferInterface $differ;
 
     private ?DirectoryInterface $directory;
@@ -63,10 +60,12 @@ final class Runner
 
     private CacheManagerInterface $cacheManager;
 
+    private bool $isDryRun;
+
     private LinterInterface $linter;
 
     /**
-     * @var ?iterable<\SplFileInfo>
+     * @var ?\Traversable<\SplFileInfo>
      */
     private $fileIterator;
 
@@ -77,22 +76,30 @@ final class Runner
      */
     private array $fixers;
 
+    private bool $stopOnViolation;
+
+    private ParallelConfig $parallelConfig;
+
+    private ?string $configFile;
+
     /**
-     * @param null|iterable<\SplFileInfo> $fileIterator
-     * @param list<FixerInterface>        $fixers
+     * @param null|\Traversable<\SplFileInfo> $fileIterator
+     * @param list<FixerInterface> $fixers
      */
     public function __construct(
-        RunnerConfig $runnerConfig,
-        ?iterable $fileIterator,
+        ?\Traversable $fileIterator,
         array $fixers,
         DifferInterface $differ,
         ?EventDispatcherInterface $eventDispatcher,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
+        bool $isDryRun,
         CacheManagerInterface $cacheManager,
-        ?DirectoryInterface $directory = null
+        ?DirectoryInterface $directory = null,
+        bool $stopOnViolation = false,
+        ?ParallelConfig $parallelConfig = null,
+        ?string $configFile = null
     ) {
-        $this->runnerConfig = $runnerConfig;
         $this->fileCount = \count($fileIterator ?? []); // Required only for main process (calculating workers count)
         $this->fileIterator = $fileIterator;
         $this->fixers = $fixers;
@@ -100,8 +107,12 @@ final class Runner
         $this->eventDispatcher = $eventDispatcher;
         $this->errorsManager = $errorsManager;
         $this->linter = $linter;
+        $this->isDryRun = $isDryRun;
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?? new Directory('');
+        $this->stopOnViolation = $stopOnViolation;
+        $this->parallelConfig = $parallelConfig ?? ParallelConfig::sequential();
+        $this->configFile = $configFile;
     }
 
     /**
@@ -117,7 +128,7 @@ final class Runner
      */
     public function fix(): array
     {
-        return $this->runnerConfig->getParallelConfig()->getMaxProcesses() > 1
+        return $this->parallelConfig->getMaxProcesses() > 1
             ? $this->fixParallel()
             : $this->fixSequential();
     }
@@ -148,7 +159,7 @@ final class Runner
         $fileChunk = function () use ($fileIterator): array {
             $files = [];
 
-            while (\count($files) < $this->runnerConfig->getParallelConfig()->getFilesPerProcess()) {
+            while (\count($files) < $this->parallelConfig->getFilesPerProcess()) {
                 $current = $fileIterator->current();
 
                 if (null === $current) {
@@ -191,15 +202,20 @@ final class Runner
         });
 
         $processesToSpawn = min(
-            $this->runnerConfig->getParallelConfig()->getMaxProcesses(),
-            (int) ceil($this->fileCount / $this->runnerConfig->getParallelConfig()->getFilesPerProcess())
+            $this->parallelConfig->getMaxProcesses(),
+            (int)ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess())
         );
 
         for ($i = 0; $i < $processesToSpawn; ++$i) {
             $identifier = ProcessIdentifier::create();
             $process = Process::create(
                 $streamSelectLoop,
-                $this->runnerConfig,
+                new RunnerConfig(
+                    $this->isDryRun,
+                    $this->stopOnViolation,
+                    $this->parallelConfig,
+                    $this->configFile
+                ),
                 $identifier,
                 $serverPort,
             );
@@ -285,7 +301,7 @@ final class Runner
                 $name = $this->directory->getRelativePathTo($file->__toString());
                 $changed[$name] = $fixInfo;
 
-                if ($this->runnerConfig->shouldStopOnViolation()) {
+                if ($this->stopOnViolation) {
                     break;
                 }
             }
@@ -388,7 +404,7 @@ final class Runner
                 return null;
             }
 
-            if (!$this->runnerConfig->isDryRun()) {
+            if (!$this->isDryRun) {
                 $fileName = $file->getRealPath();
 
                 if (!file_exists($fileName)) {
@@ -469,14 +485,10 @@ final class Runner
             throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
         }
 
-        $fileIterator = new \ArrayIterator(
+        $fileFilterIterator = new FileFilterIterator(
             $this->fileIterator instanceof \IteratorAggregate
                 ? $this->fileIterator->getIterator()
-                : $this->fileIterator
-        );
-
-        $fileFilterIterator = new FileFilterIterator(
-            $fileIterator,
+                : $this->fileIterator,
             $this->eventDispatcher,
             $this->cacheManager
         );
