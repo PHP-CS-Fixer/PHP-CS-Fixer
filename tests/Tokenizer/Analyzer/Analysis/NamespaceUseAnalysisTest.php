@@ -41,6 +41,15 @@ final class NamespaceUseAnalysisTest extends TestCase
         self::assertTrue($analysis->isAliased());
     }
 
+    public function testIsInMulti(): void
+    {
+        $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, false, 12, 22);
+        self::assertFalse($analysis->isInMulti());
+
+        $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, true, 1, 2);
+        self::assertTrue($analysis->isInMulti());
+    }
+
     public function testShortName(): void
     {
         $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, false, 1, 2);
