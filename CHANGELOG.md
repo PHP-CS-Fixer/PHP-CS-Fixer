@@ -3,6 +3,29 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.49.0
+---------------------
+
+* chore(checkbashisms): update to 2.23.7 (#7780)
+* chore: add missing key types in PHPDoc types (#7779)
+* chore: Exclude `topic/core` issues/PRs from Stale Bot (#7788)
+* chore: `DescribeCommand` - better handling of deprecations (#7778)
+* docs: docker - use gitlab reporter in GitLab integration example (#7764)
+* docs: docker in CI - don't suggest command that overrides path from config file (#7763)
+* DX: check deprecations exactly (#7742)
+* feat: Add `ordered_types` to `@Symfony` (#7356)
+* feat: introduce `PhpdocListTypeFixer` (#7796)
+* feat: introduce `string_implicit_backslashes` as `escape_implicit_backslashes` replacement (#7669)
+* feat: update `Symfony.nullable_type_declaration_for_default_null_value` config (#7773)
+* feat: `@PhpCsFixer` ruleset - enable `php_unit_data_provider_static` (#7685)
+* fix: Allow using cache when running in Docker distribution (#7769)
+* fix: ClassDefinitionFixer for anonymous class with phpdoc/attribute on separate line (#7546)
+* fix: `ClassKeywordFixer` must run before `FullyQualifiedStrictTypesFixer` (#7767)
+* fix: `function_to_constant` `get_class()` replacement (#7770)
+* fix: `LowercaseStaticReferenceFixer` - do not change typed constants (#7775)
+* fix: `PhpdocTypesFixer` - handle more complex types (#7791)
+* fix: `TypeExpression` - do not break type using `walkTypes` method (#7785)
+
 Changelog for v3.48.0
 ---------------------
 
