@@ -686,17 +686,25 @@ class(){};
 
     /**
      * @dataProvider provideIsTheSameClassCallCases
+     *
+     * @param list<int> $sameClassCallIndices
      */
-    public function testIsTheSameClassCall(bool $isTheSameClassCall, string $code, int $index): void
+    public function testIsTheSameClassCall(string $code, array $sameClassCallIndices): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        self::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            self::assertSame(
+                \in_array($index, $sameClassCallIndices, true),
+                $analyzer->isTheSameClassCall($tokens, $index),
+                sprintf('Index %d failed check.', $index)
+            );
+        }
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideIsTheSameClassCallCases(): iterable
     {
@@ -709,78 +717,68 @@ class(){};
         ';
 
         yield [
-            false,
             sprintf($template, '$this->'),
-            -1,
+            [24],
         ];
 
-        // 24 is index of "otherMethod" token
-
-        for ($i = 0; $i < 40; ++$i) {
-            yield [
-                24 === $i,
-                sprintf($template, '$this->'),
-                $i,
-            ];
-
-            yield [
-                24 === $i,
-                sprintf($template, 'self::'),
-                $i,
-            ];
-
-            yield [
-                24 === $i,
-                sprintf($template, 'static::'),
-                $i,
-            ];
-        }
+        yield [
+            sprintf($template, 'self::'),
+            [24],
+        ];
 
         yield [
-            true,
+            sprintf($template, 'static::'),
+            [24],
+        ];
+
+        yield [
             sprintf($template, '$THIS->'),
-            24,
+            [24],
         ];
 
         yield [
-            false,
             sprintf($template, '$notThis->'),
-            24,
+            [],
         ];
 
         yield [
-            false,
             sprintf($template, 'Bar::'),
-            24,
+            [],
         ];
 
         yield [
-            true,
             sprintf($template, '$this::'),
-            24,
+            [24],
         ];
     }
 
     /**
      * @dataProvider provideIsTheSameClassCall80Cases
      *
+     * @param list<int> $sameClassCallIndices
+     *
      * @requires PHP 8.0
      */
-    public function testIsTheSameClassCall80(bool $isTheSameClassCall, string $code, int $index): void
+    public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        self::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            self::assertSame(
+                \in_array($index, $sameClassCallIndices, true),
+                $analyzer->isTheSameClassCall($tokens, $index),
+                sprintf('Index %d failed check.', $index)
+            );
+        }
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideIsTheSameClassCall80Cases(): iterable
     {
         yield [
-            true,
             '<?php
                 class Foo {
                     public function methodOne() {
@@ -788,7 +786,7 @@ class(){};
                     }
                 }
             ',
-            24,
+            [24],
         ];
     }
 
