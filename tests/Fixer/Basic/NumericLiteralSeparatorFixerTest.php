@@ -116,6 +116,8 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 '01234567' => '01_234_567',
             ],
         ]);
+
+        yield 'do not change float to int when there is nothing after the dot' => ['<?php $x = 100.;'];
     }
 
     /**
