@@ -750,6 +750,19 @@ class(){};
             sprintf($template, '$this::'),
             [24],
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    private $bar;
+                    public function bar() {
+                        return $this->bar;
+                    }
+                }
+                PHP,
+            [],
+        ];
     }
 
     /**
