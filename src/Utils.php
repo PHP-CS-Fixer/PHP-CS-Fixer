@@ -216,7 +216,7 @@ final class Utils
     }
 
     /**
-     * @param array<mixed, mixed> $value
+     * @param array<array-key, mixed> $value
      */
     private static function arrayToString(array $value): string
     {
