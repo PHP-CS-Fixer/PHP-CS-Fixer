@@ -61,7 +61,7 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     /**
      * The end index of the single import in the multi-use statement.
      */
-    private? int $chunkEndIndex;
+    private ?int $chunkEndIndex;
 
     /**
      * The type of import: class, function or constant.
@@ -127,12 +127,12 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         return $this->endIndex;
     }
 
-    public  function getChunkStartIndex(): ?int
+    public function getChunkStartIndex(): ?int
     {
         return $this->chunkStartIndex;
     }
 
-    public  function getChunkEndIndex(): ?int
+    public function getChunkEndIndex(): ?int
     {
         return $this->chunkEndIndex;
     }

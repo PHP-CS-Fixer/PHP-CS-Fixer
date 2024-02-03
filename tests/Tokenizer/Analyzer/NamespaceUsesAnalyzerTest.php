@@ -424,7 +424,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     65
                 ),
             ],
-            true
+            true,
         ];
 
         yield 'multiple multi-imports with aliases' => [
@@ -502,7 +502,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     50
                 ),
             ],
-            true
+            true,
         ];
     }
 

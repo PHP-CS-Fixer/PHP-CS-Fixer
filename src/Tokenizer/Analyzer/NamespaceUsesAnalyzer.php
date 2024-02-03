@@ -166,7 +166,7 @@ final class NamespaceUsesAnalyzer
     private function getNearestQualifiedName(Tokens $tokens, int $index): array
     {
         $fullName = $shortName = '';
-        $aliased  = false;
+        $aliased = false;
 
         while (null !== $index) {
             $token = $tokens[$index];
@@ -185,7 +185,7 @@ final class NamespaceUsesAnalyzer
                 ';',
                 [CT::T_GROUP_IMPORT_BRACE_OPEN],
                 [CT::T_GROUP_IMPORT_BRACE_CLOSE],
-                [T_CLOSE_TAG]
+                [T_CLOSE_TAG],
             ])) {
                 break;
             }
