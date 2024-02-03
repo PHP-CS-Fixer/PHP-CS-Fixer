@@ -186,14 +186,23 @@ final class NoUnusedImportsFixer extends AbstractFixer
         return false;
     }
 
-    private function removeUseDeclaration(Tokens $tokens, NamespaceUseAnalysis $useDeclaration): void
-    {
-        for ($index = $useDeclaration->getEndIndex() - 1; $index >= $useDeclaration->getStartIndex(); --$index) {
+    private function removeUseDeclaration(
+        Tokens $tokens,
+        NamespaceUseAnalysis $useDeclaration,
+        bool $forceCompleteRemoval = false
+    ): void {
+        [$start, $end] = ($useDeclaration->isInMulti() && !$forceCompleteRemoval)
+            ? [$useDeclaration->getChunkStartIndex(), $useDeclaration->getChunkEndIndex()]
+            : [$useDeclaration->getStartIndex(), $useDeclaration->getEndIndex()];
+        $loopStartIndex = $useDeclaration->isInMulti() || $forceCompleteRemoval ? $end : $end - 1;
+
+        for ($index = $loopStartIndex; $index >= $start; --$index) {
             if ($tokens[$index]->isComment()) {
                 continue;
             }
 
             if (!$tokens[$index]->isWhitespace() || !str_contains($tokens[$index]->getContent(), "\n")) {
+                // TODO: improve removing last use statement (keep empty blank line between imports and further code)
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
                 continue;
@@ -210,12 +219,87 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
         }
 
+        // For multi-use import statements the tokens containing FQN were already removed in the loop above.
+        // We need to clean up tokens around the ex-chunk to keep the correct syntax and achieve proper formatting.
+        if (!$forceCompleteRemoval && $useDeclaration->isInMulti()) {
+            $this->cleanUpAfterImportChunkRemoval($tokens, $useDeclaration);
+
+            return;
+        }
+
         if ($tokens[$useDeclaration->getEndIndex()]->equals(';')) { // do not remove `? >`
             $tokens->clearAt($useDeclaration->getEndIndex());
         }
 
-        // remove white space above and below where the `use` statement was
+        $this->cleanUpSurroundingNewLines($tokens, $useDeclaration);
+    }
 
+    /**
+     * @param list<NamespaceUseAnalysis> $useDeclarations
+     */
+    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, NamespaceAnalysis $namespaceDeclaration): void
+    {
+        $namespace = $namespaceDeclaration->getFullName();
+        $nsLength = \strlen($namespace.'\\');
+
+        foreach ($useDeclarations as $useDeclaration) {
+            if ($useDeclaration->isAliased()) {
+                continue;
+            }
+
+            $useDeclarationFullName = ltrim($useDeclaration->getFullName(), '\\');
+
+            if (!str_starts_with($useDeclarationFullName, $namespace.'\\')) {
+                continue;
+            }
+
+            $partName = substr($useDeclarationFullName, $nsLength);
+
+            if (!str_contains($partName, '\\')) {
+                $this->removeUseDeclaration($tokens, $useDeclaration);
+            }
+        }
+    }
+
+    private function cleanUpAfterImportChunkRemoval(Tokens $tokens, NamespaceUseAnalysis $useDeclaration): void
+    {
+        $beforeChunkIndex = $tokens->getPrevMeaningfulToken($useDeclaration->getChunkStartIndex());
+        $afterChunkIndex = $tokens->getNextMeaningfulToken($useDeclaration->getChunkEndIndex());
+
+        if ($tokens[$afterChunkIndex]->equals(',')) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($afterChunkIndex);
+        } elseif ($tokens[$beforeChunkIndex]->equals(',')) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($beforeChunkIndex);
+        }
+
+        // Ensure there's a single space where applicable, otherwise no space (before comma, before closing brace)
+        for ($index = $beforeChunkIndex; $index <= $afterChunkIndex; ++$index) {
+            if (null === $tokens[$index]->getId() || !$tokens[$index]->isWhitespace(' ')) {
+                continue;
+            }
+
+            $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
+            if (
+                $tokens[$nextTokenIndex]->equals(',')
+                || $tokens[$nextTokenIndex]->equals(';')
+                || $tokens[$nextTokenIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_CLOSE])
+            ) {
+                $tokens->clearAt($index);
+            } else {
+                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+            }
+
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevTokenIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_OPEN])) {
+                $tokens->clearAt($index);
+            }
+        }
+
+        $this->removeImportStatementIfEmpty($tokens, $useDeclaration);
+    }
+
+    private function cleanUpSurroundingNewLines(Tokens $tokens, NamespaceUseAnalysis $useDeclaration): void
+    {
         $prevIndex = $useDeclaration->getStartIndex() - 1;
         $prevToken = $tokens[$prevIndex];
 
@@ -261,30 +345,30 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param list<NamespaceUseAnalysis> $useDeclarations
-     */
-    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, NamespaceAnalysis $namespaceDeclaration): void
+    private function removeImportStatementIfEmpty(Tokens $tokens, NamespaceUseAnalysis $useDeclaration): void
     {
-        $namespace = $namespaceDeclaration->getFullName();
-        $nsLength = \strlen($namespace.'\\');
+        // First we look for empty groups where all chunks were removed (`use Foo\{};`).
+        // We're only interested in ending brace if its index is between start and end of the import statement.
+        $endingBraceIndex = $tokens->getPrevTokenOfKind(
+            $useDeclaration->getEndIndex(),
+            [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]
+        );
 
-        foreach ($useDeclarations as $useDeclaration) {
-            if ($useDeclaration->isAliased()) {
-                continue;
+        if ($endingBraceIndex > $useDeclaration->getStartIndex()) {
+            $openingBraceIndex = $tokens->getPrevMeaningfulToken($endingBraceIndex);
+
+            if ($tokens[$openingBraceIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+                $this->removeUseDeclaration($tokens, $useDeclaration, true);
             }
+        }
 
-            $useDeclarationFullName = ltrim($useDeclaration->getFullName(), '\\');
-
-            if (!str_starts_with($useDeclarationFullName, $namespace.'\\')) {
-                continue;
-            }
-
-            $partName = substr($useDeclarationFullName, $nsLength);
-
-            if (!str_contains($partName, '\\')) {
-                $this->removeUseDeclaration($tokens, $useDeclaration);
-            }
+        // Second we look for empty groups where all comma-separated chunks were removed (`use;`).
+        $beforeSemicolonIndex = $tokens->getPrevMeaningfulToken($useDeclaration->getEndIndex());
+        if (
+            $tokens[$beforeSemicolonIndex]->isGivenKind([T_USE])
+            || \in_array($tokens[$beforeSemicolonIndex]->getContent(), ['function', 'const'], true)
+        ) {
+            $this->removeUseDeclaration($tokens, $useDeclaration, true);
         }
     }
 }

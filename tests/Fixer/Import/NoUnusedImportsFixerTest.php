@@ -314,9 +314,7 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 
                 namespace Foo;
 
-                use BarB, BarC as C, BarD;
                 use BarE;
-
                 $c = new D();
                 $e = new BarE();
                 EOF,
@@ -332,6 +330,8 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 use BarB2;
                 use BarB\B2;
                 use BarE;
+                use function fun_a, fun_b, fun_c;
+                use const CONST_A, CONST_B, CONST_C;
 
                 $c = new D();
                 $e = new BarE();
@@ -1319,7 +1319,16 @@ Bar3:
         ];
 
         yield [
-            $expected = <<<'EOF'
+            <<<'EOF'
+                <?php
+                use some\a\{ClassD};
+                use function some\c\{fn_a};
+                use const some\d\{ConstB};
+
+                new CLassD();
+                echo fn_a(ConstB);
+                EOF,
+            <<<'EOF'
                 <?php
                 use some\a\{ClassD};
                 use some\b\{ClassA, ClassB, ClassC as C};
@@ -1327,21 +1336,25 @@ Bar3:
                 use const some\d\{ConstA, ConstB, ConstC};
 
                 new CLassD();
-                echo fn_a();
+                echo fn_a(ConstB);
                 EOF
         ];
 
+        $empty = '';
+
         yield 'grouped imports' => [
-            <<<'EOF'
+            <<<EOF
                 <?php
-                use some\y\{ClassA, ClassC as C,};
-                use function some\a\{
-                    fn_a,
+                use some\\y\\{ClassA, ClassC as C,};
+                use function some\\a\\{
+                    {$empty}
+                    fn_b,
+                    {$empty}
                 };
-                use const some\Z\{ConstA,ConstC,};
+                use const some\\Z\\{ConstA,ConstC,};
 
                 echo ConstA.ConstC;
-                fn_a(ClassA::test, new C());
+                fn_b(ClassA::test, new C());
                 EOF,
             <<<'EOF'
                 <?php
@@ -1359,7 +1372,7 @@ Bar3:
                 use Z;
 
                 echo ConstA.ConstC;
-                fn_a(ClassA::test, new C());
+                fn_b(ClassA::test, new C());
                 EOF,
         ];
 
