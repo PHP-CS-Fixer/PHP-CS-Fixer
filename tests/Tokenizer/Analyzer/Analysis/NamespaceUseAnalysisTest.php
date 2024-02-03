@@ -46,8 +46,15 @@ final class NamespaceUseAnalysisTest extends TestCase
         $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, false, 12, 22);
         self::assertFalse($analysis->isInMulti());
 
-        $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, true, 1, 2);
+        $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, true, 1, 20, 5, 10);
         self::assertTrue($analysis->isInMulti());
+    }
+
+    public function testChunkStartIndexAndChunkdEndIndexAreRequiredWhenIsInMulti(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, true, 1, 20);
     }
 
     public function testShortName(): void
