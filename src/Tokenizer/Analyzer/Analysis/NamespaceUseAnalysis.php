@@ -54,6 +54,16 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     private int $endIndex;
 
     /**
+     * The start index of the single import in the multi-use statement.
+     */
+    private ?int $chunkStartIndex;
+
+    /**
+     * The end index of the single import in the multi-use statement.
+     */
+    private? int $chunkEndIndex;
+
+    /**
      * The type of import: class, function or constant.
      */
     private int $type;
@@ -68,8 +78,14 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         bool $isAliased,
         bool $isInMulti,
         int $startIndex,
-        int $endIndex
+        int $endIndex,
+        ?int $chunkStartIndex = null,
+        ?int $chunkEndIndex = null,
     ) {
+        if (true === $isInMulti && (null === $chunkStartIndex || null === $chunkEndIndex)) {
+            throw new \LogicException('Chunk start and end index must be set when the import is part of a multi-use statement.');
+        }
+
         $this->type = $type;
         $this->fullName = $fullName;
         $this->shortName = $shortName;
@@ -77,6 +93,8 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         $this->isInMulti = $isInMulti;
         $this->startIndex = $startIndex;
         $this->endIndex = $endIndex;
+        $this->chunkStartIndex = $chunkStartIndex;
+        $this->chunkEndIndex = $chunkEndIndex;
     }
 
     public function getFullName(): string
@@ -107,6 +125,16 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     public function getEndIndex(): int
     {
         return $this->endIndex;
+    }
+
+    public  function getChunkStartIndex(): ?int
+    {
+        return $this->chunkStartIndex;
+    }
+
+    public  function getChunkEndIndex(): ?int
+    {
+        return $this->chunkEndIndex;
     }
 
     public function getType(): int

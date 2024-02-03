@@ -64,13 +64,13 @@ final class NamespaceUsesAnalyzer
         foreach ($useIndices as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
 
-            // TODO Collect all uses, then filter out multi-use imports if not requested
-            $analysis = true === $allowMultiUses
-                ? $this->parseAllDeclarations($index, $endIndex, $tokens)
-                : array_filter([$this->parseSingleDeclaration($index, $endIndex, $tokens)]);
+            $declarations = $this->parseDeclarations($index, $endIndex, $tokens);
+            if (false === $allowMultiUses) {
+                $declarations = array_filter($declarations, static fn (NamespaceUseAnalysis $declaration) => !$declaration->isInMulti());
+            }
 
-            if ([] !== $analysis) {
-                $uses = array_merge($uses, $analysis);
+            if ([] !== $declarations) {
+                $uses = array_merge($uses, $declarations);
             }
         }
 
@@ -80,34 +80,96 @@ final class NamespaceUsesAnalyzer
     /**
      * @return list<NamespaceUseAnalysis>
      */
-    private function parseAllDeclarations(int $startIndex, int $endIndex, Tokens $tokens): array
+    private function parseDeclarations(int $startIndex, int $endIndex, Tokens $tokens): array
     {
-        throw new \RuntimeException('Not implemented');
+        $type = $this->determineImportType($tokens, $startIndex);
+        $potentialMulti = $tokens->getNextTokenOfKind($startIndex, [',', [CT::T_GROUP_IMPORT_BRACE_OPEN]]);
+        $multi = null !== $potentialMulti && $potentialMulti < $endIndex;
+        $index = $tokens->getNextTokenOfKind($startIndex, [[T_STRING], [T_NS_SEPARATOR]]);
+        $imports = [];
+
+        while (null !== $index && $index <= $endIndex) {
+            $qualifiedName = $this->getNearestQualifiedName($tokens, $index);
+            $token = $tokens[$qualifiedName['afterIndex']];
+
+            if ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+                $groupStart = $groupIndex = $qualifiedName['afterIndex'];
+                $groupEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupStart);
+
+                while ($groupIndex < $groupEnd) {
+                    $chunkStart = $tokens->getNextMeaningfulToken($groupIndex);
+                    $groupQualifiedName = $this->getNearestQualifiedName($tokens, $chunkStart);
+                    $imports[] = new NamespaceUseAnalysis(
+                        $type,
+                        $qualifiedName['fullName'].$groupQualifiedName['fullName'],
+                        $groupQualifiedName['shortName'],
+                        $groupQualifiedName['aliased'],
+                        true,
+                        $startIndex,
+                        $endIndex,
+                        $chunkStart,
+                        $tokens->getPrevMeaningfulToken($groupQualifiedName['afterIndex'])
+                    );
+
+                    $groupIndex = $groupQualifiedName['afterIndex'];
+                }
+
+                $index = $groupIndex;
+            } elseif ($token->equalsAny([',', ';', [T_CLOSE_TAG]])) {
+                $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
+
+                if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                    $imports[] = new NamespaceUseAnalysis(
+                        $type,
+                        $qualifiedName['fullName'],
+                        $qualifiedName['shortName'],
+                        $qualifiedName['aliased'],
+                        $multi,
+                        $startIndex,
+                        $endIndex,
+                        $multi ? $index : null,
+                        $multi ? $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']) : null
+                    );
+                }
+
+                $index = $qualifiedName['afterIndex'];
+                $aliased = false;
+                $fullName = $shortName = '';
+            }
+
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
+
+        return $imports;
     }
 
-    private function parseSingleDeclaration(int $startIndex, int $endIndex, Tokens $tokens): ?NamespaceUseAnalysis
+    /**
+     * @return NamespaceUseAnalysis::TYPE_*
+     */
+    private function determineImportType(Tokens $tokens, int $startIndex): int
+    {
+        $type = NamespaceUseAnalysis::TYPE_CLASS;
+        $potentialType = $tokens[$tokens->getNextMeaningfulToken($startIndex)];
+
+        if ($potentialType->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+            $type = NamespaceUseAnalysis::TYPE_FUNCTION;
+        } elseif ($potentialType->isGivenKind(CT::T_CONST_IMPORT)) {
+            $type = NamespaceUseAnalysis::TYPE_CONSTANT;
+        }
+
+        return $type;
+    }
+
+    /**
+     * @return array{fullName: string, shortName: string, aliased: bool, afterIndex: int}
+     */
+    private function getNearestQualifiedName(Tokens $tokens, int $index): array
     {
         $fullName = $shortName = '';
-        $aliased = false;
+        $aliased  = false;
 
-        $type = NamespaceUseAnalysis::TYPE_CLASS;
-        for ($i = $startIndex; $i <= $endIndex; ++$i) {
-            $token = $tokens[$i];
-            if ($token->equals(',') || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
-                // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
-                // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
-                return null;
-            }
-
-            if ($token->isGivenKind(CT::T_FUNCTION_IMPORT)) {
-                $type = NamespaceUseAnalysis::TYPE_FUNCTION;
-            } elseif ($token->isGivenKind(CT::T_CONST_IMPORT)) {
-                $type = NamespaceUseAnalysis::TYPE_CONSTANT;
-            }
-
-            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(T_USE)) {
-                continue;
-            }
+        while (null !== $index) {
+            $token = $tokens[$index];
 
             if ($token->isGivenKind(T_STRING)) {
                 $shortName = $token->getContent();
@@ -118,17 +180,24 @@ final class NamespaceUsesAnalyzer
                 $fullName .= $token->getContent();
             } elseif ($token->isGivenKind(T_AS)) {
                 $aliased = true;
+            } elseif ($token->equalsAny([
+                ',',
+                ';',
+                [CT::T_GROUP_IMPORT_BRACE_OPEN],
+                [CT::T_GROUP_IMPORT_BRACE_CLOSE],
+                [T_CLOSE_TAG]
+            ])) {
+                break;
             }
+
+            $index = $tokens->getNextMeaningfulToken($index);
         }
 
-        return new NamespaceUseAnalysis(
-            $type,
-            trim($fullName),
-            $shortName,
-            $aliased,
-            false,
-            $startIndex,
-            $endIndex,
-        );
+        return [
+            'fullName' => trim($fullName),
+            'shortName' => $shortName,
+            'aliased' => $aliased,
+            'afterIndex' => $index,
+        ];
     }
 }

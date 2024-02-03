@@ -175,6 +175,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 11,
+                3,
+                5
             ),
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_CLASS,
@@ -184,6 +186,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 11,
+                8,
+                10
             ),
         ], true];
 
@@ -196,6 +200,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 11,
+                6,
+                6
             ),
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_CLASS,
@@ -205,6 +211,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 11,
+                9,
+                9
             ),
         ], true];
 
@@ -217,6 +225,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                5,
+                7
             ),
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -226,6 +236,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                10,
+                12
             ),
         ], true];
 
@@ -238,6 +250,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                8,
+                8
             ),
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -247,6 +261,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                11,
+                11
             ),
         ], true];
 
@@ -259,6 +275,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                5,
+                7
             ),
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -268,6 +286,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                10,
+                12
             ),
         ], true];
 
@@ -280,6 +300,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                8,
+                8
             ),
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -289,6 +311,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                 true,
                 1,
                 13,
+                11,
+                11
             ),
         ], true];
 
@@ -308,6 +332,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     1,
                     20,
+                    3,
+                    5
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CLASS,
@@ -317,6 +343,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     1,
                     20,
+                    10,
+                    12
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CLASS,
@@ -326,6 +354,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     1,
                     20,
+                    17,
+                    19
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -335,6 +365,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     22,
                     43,
+                    26,
+                    28
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -344,6 +376,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     22,
                     43,
+                    33,
+                    35
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -353,6 +387,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     22,
                     43,
+                    40,
+                    42
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -362,6 +398,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     45,
                     66,
+                    49,
+                    51
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -371,6 +409,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     45,
                     66,
+                    56,
+                    58
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -380,6 +420,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     45,
                     66,
+                    63,
+                    65
                 ),
             ],
             true
@@ -401,6 +443,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     1,
                     15,
+                    3,
+                    5
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CLASS,
@@ -410,6 +454,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     1,
                     15,
+                    8,
+                    14
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -419,6 +465,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     17,
                     33,
+                    21,
+                    23
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_FUNCTION,
@@ -428,6 +476,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     17,
                     33,
+                    26,
+                    32
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -437,6 +487,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     35,
                     51,
+                    39,
+                    41
                 ),
                 new NamespaceUseAnalysis(
                     NamespaceUseAnalysis::TYPE_CONSTANT,
@@ -446,6 +498,8 @@ final class NamespaceUsesAnalyzerTest extends TestCase
                     true,
                     35,
                     51,
+                    44,
+                    50
                 ),
             ],
             true
