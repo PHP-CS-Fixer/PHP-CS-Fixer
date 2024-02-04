@@ -99,7 +99,9 @@ final class BlocksAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        self::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        $this->expectException(\InvalidArgumentException::class);
+
+        $analyzer->isBlock($tokens, $openIndex, $closeIndex);
     }
 
     public static function provideInvalidIndexCases(): iterable

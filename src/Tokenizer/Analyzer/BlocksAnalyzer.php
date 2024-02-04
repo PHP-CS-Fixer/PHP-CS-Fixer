@@ -27,15 +27,15 @@ final class BlocksAnalyzer
     public function isBlock(Tokens $tokens, ?int $openIndex, ?int $closeIndex): bool
     {
         if (null === $openIndex || null === $closeIndex) {
-            return false;
+            throw new \InvalidArgumentException('Token index not provided');
         }
 
         if (!$tokens->offsetExists($openIndex)) {
-            return false;
+            throw new \InvalidArgumentException(sprintf('Token open index %d does not exist.', $openIndex));
         }
 
         if (!$tokens->offsetExists($closeIndex)) {
-            return false;
+            throw new \InvalidArgumentException(sprintf('Token close index %d does not exist.', $closeIndex));
         }
 
         $blockType = $this->getBlockType($tokens[$openIndex]);
