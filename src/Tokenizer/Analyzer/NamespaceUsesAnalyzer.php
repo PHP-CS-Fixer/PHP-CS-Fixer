@@ -157,16 +157,17 @@ final class NamespaceUsesAnalyzer
      */
     private function determineImportType(Tokens $tokens, int $startIndex): int
     {
-        $type = NamespaceUseAnalysis::TYPE_CLASS;
         $potentialType = $tokens[$tokens->getNextMeaningfulToken($startIndex)];
 
         if ($potentialType->isGivenKind(CT::T_FUNCTION_IMPORT)) {
-            $type = NamespaceUseAnalysis::TYPE_FUNCTION;
-        } elseif ($potentialType->isGivenKind(CT::T_CONST_IMPORT)) {
-            $type = NamespaceUseAnalysis::TYPE_CONSTANT;
+            return NamespaceUseAnalysis::TYPE_FUNCTION;
         }
 
-        return $type;
+        if ($potentialType->isGivenKind(CT::T_CONST_IMPORT)) {
+            return NamespaceUseAnalysis::TYPE_CONSTANT;
+        }
+
+        return NamespaceUseAnalysis::TYPE_CLASS;
     }
 
     /**
