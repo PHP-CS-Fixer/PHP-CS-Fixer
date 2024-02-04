@@ -684,6 +684,17 @@ class(){};
         yield ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
     }
 
+    public function testIsTheSameClassCallInvalidIndex(): void
+    {
+        $tokens = Tokens::fromCode('<?php 1;2;');
+        $analyzer = new FunctionsAnalyzer();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Token index 666 does not exist.');
+
+        $analyzer->isTheSameClassCall($tokens, 666);
+    }
+
     /**
      * @dataProvider provideIsTheSameClassCallCases
      *
@@ -694,7 +705,7 @@ class(){};
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        for ($index = $tokens->count(); $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             self::assertSame(
                 \in_array($index, $sameClassCallIndices, true),
                 $analyzer->isTheSameClassCall($tokens, $index),

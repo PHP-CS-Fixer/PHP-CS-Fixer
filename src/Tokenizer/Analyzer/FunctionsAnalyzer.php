@@ -184,7 +184,7 @@ final class FunctionsAnalyzer
     public function isTheSameClassCall(Tokens $tokens, int $index): bool
     {
         if (!$tokens->offsetExists($index)) {
-            return false;
+            throw new \InvalidArgumentException(sprintf('Token index %d does not exist.', $index));
         }
 
         $operatorIndex = $tokens->getPrevMeaningfulToken($index);
