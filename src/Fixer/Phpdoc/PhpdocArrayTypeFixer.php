@@ -48,7 +48,7 @@ final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
                     PHP),
             ],
             null,
-            'Risky when `array` key should be present, but is missing.'
+            'Risky when using `T[]` in union types.'
         );
     }
 
@@ -78,9 +78,13 @@ final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
         return $prefix.Preg::replaceCallback(
             '/^(.+?)((?:\h*\[\h*\])+)$/',
             static function (array $matches): string {
+                $type = $matches[1];
                 $level = substr_count($matches[2], '[');
+                if (str_starts_with($type, '(') && str_ends_with($type, ')')) {
+                    $type = substr($type, 1, -1);
+                }
 
-                return str_repeat('array<', $level).$matches[1].str_repeat('>', $level);
+                return str_repeat('array<', $level).$type.str_repeat('>', $level);
             },
             $type,
         );

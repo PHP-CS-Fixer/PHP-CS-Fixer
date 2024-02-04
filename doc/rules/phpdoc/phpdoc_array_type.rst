@@ -10,7 +10,7 @@ Warning
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Risky when ``array`` key should be present, but is missing.
+Risky when using ``T[]`` in union types.
 
 Examples
 --------

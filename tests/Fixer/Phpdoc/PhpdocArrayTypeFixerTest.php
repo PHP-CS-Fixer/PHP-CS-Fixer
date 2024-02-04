@@ -135,5 +135,15 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
                  */
                 PHP,
         ];
+
+        yield [
+            '<?php /** @var array<Foo|Bar> */',
+            '<?php /** @var (Foo|Bar)[] */',
+        ];
+
+        yield [
+            '<?php /** @var (Foo&Bar)|array<Baz> */',
+            '<?php /** @var (Foo&Bar)|Baz[] */',
+        ];
     }
 }
