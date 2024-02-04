@@ -728,6 +728,9 @@ PHPDoc
 - `phpdoc_annotation_without_dot <./phpdoc/phpdoc_annotation_without_dot.rst>`_
 
   PHPDoc annotation descriptions should not be a sentence.
+- `phpdoc_array_type <./phpdoc/phpdoc_array_type.rst>`_ *(risky)*
+
+  PHPDoc ``array<T>`` type must be used instead of ``T[]``.
 - `phpdoc_indent <./phpdoc/phpdoc_indent.rst>`_
 
   Docblocks should have the same indentation as the documented subject.
