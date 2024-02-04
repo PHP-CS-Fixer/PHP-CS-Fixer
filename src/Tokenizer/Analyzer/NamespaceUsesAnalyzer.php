@@ -139,7 +139,7 @@ final class NamespaceUsesAnalyzer
                         $startIndex,
                         $endIndex,
                         $multi ? $index : null,
-                        $multi ? $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']) : null
+                        $multi ? $previousToken : null
                     );
                 }
 
