@@ -2572,7 +2572,7 @@ static fn ($foo): int => 1;',
                 <?php
                 /**
                  */
-                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2 /* , mixed $bundleDir3 */) {}
                 EOD,
             <<<'EOD'
                 <?php
@@ -2580,8 +2580,9 @@ static fn ($foo): int => 1;',
                  * @param array   $bundleConfig
                  * @param ?string $bundleDir1
                  * @param ?string $bundleDir2
+                 * @param mixed   $bundleDir2
                  */
-                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2 /* , mixed $bundleDir3 */) {}
                 EOD,
             ['allow_future_params' => false],
         ];
@@ -2593,7 +2594,7 @@ static fn ($foo): int => 1;',
                  * @param ?string $bundleDir1
                  * @param ?string $bundleDir2
                  */
-                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2 /* , mixed $bundleDir3 */) {}
                 EOD,
             <<<'EOD'
                 <?php
@@ -2601,8 +2602,9 @@ static fn ($foo): int => 1;',
                  * @param array   $bundleConfig
                  * @param ?string $bundleDir1
                  * @param ?string $bundleDir2
+                 * @param mixed   $bundleDir2
                  */
-                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2) {}
+                function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2 /* , mixed $bundleDir3 */) {}
                 EOD,
             ['allow_future_params' => true],
         ];
