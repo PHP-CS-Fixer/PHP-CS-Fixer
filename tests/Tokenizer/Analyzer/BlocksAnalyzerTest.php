@@ -63,12 +63,14 @@ final class BlocksAnalyzerTest extends TestCase
         yield ['<?php list($a, $b, $c) = [1, 2, 3];', 14, 22];
 
         yield ['<?php list($a, $b, $c) = array(1, 2, 3);', 15, 23];
+
+        yield ['<?php $fn = fn($x) => $x + 10;', 6, 8];
     }
 
     /**
      * @dataProvider provideNonBlocksCases
      */
-    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex, bool $isBlock = false): void
+    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
@@ -95,7 +97,5 @@ final class BlocksAnalyzerTest extends TestCase
         yield ['<?php foo((1));', 2, 5];
 
         yield ['<?php foo((1));', 3, 6];
-
-        yield ['<?php $fn = fn($x) => $x + 10;', 6, 8, true];
     }
 }
