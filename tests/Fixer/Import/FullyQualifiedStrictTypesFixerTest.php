@@ -1090,6 +1090,54 @@ class Foo extends \A\A implements \B\A, \C\A
             null,
             ['import_symbols' => true],
         ];
+
+        // TODO: Ensure shortening for imported functions and constants
+        yield 'Shorten symbol from comma-separated multi-use statement' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service1, Bar\Service2;
+                use function Bar\func1, Bar\func2;
+                use const Bar\CONST1, Bar\CONST2;
+
+                \Bar\func1(new Service1(\Bar\CONST1));
+                \Bar\func2(new Service2(\Bar\CONST2));
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service1, Bar\Service2;
+                use function Bar\func1, Bar\func2;
+                use const Bar\CONST1, Bar\CONST2;
+
+                \Bar\func1(new \Bar\Service1(\Bar\CONST1));
+                \Bar\func2(new \Bar\Service2(\Bar\CONST2));
+                EOD,
+        ];
+
+        // TODO: Ensure shortening for imported functions and constants
+        yield 'Shorten symbol from grouped multi-use statement' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\{Service1, Service2};
+                use function Bar\{func1, func2};
+                use const Bar\{CONST1, CONST2};
+
+                \Bar\func1(new Service1(\Bar\CONST1));
+                \Bar\func2(new Service2(\Bar\CONST2));
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\{Service1, Service2};
+                use function Bar\{func1, func2};
+                use const Bar\{CONST1, CONST2};
+
+                \Bar\func1(new \Bar\Service1(\Bar\CONST1));
+                \Bar\func2(new \Bar\Service2(\Bar\CONST2));
+                EOD,
+        ];
     }
 
     /**
