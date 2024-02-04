@@ -46,7 +46,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: list<NamespaceUseAnalysis>}>
+     * @return iterable<array{0: string, 1: list<NamespaceUseAnalysis>, 2?: bool}>
      */
     public static function provideUsesFromTokensCases(): iterable
     {
