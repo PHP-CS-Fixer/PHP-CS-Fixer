@@ -86,7 +86,6 @@ final class BlocksAnalyzerTest extends TestCase
      */
     public static function provideNonBlocksCases(): iterable
     {
-
         yield ['<?php foo(1);', 1, 4];
 
         yield ['<?php foo(1);', 3, 4];
