@@ -44,7 +44,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
     private $candidateTypesConfiguration;
 
     /**
-     * @var array<int|string>
+     * @var list<int|string>
      */
     private $candidateTypes;
 
