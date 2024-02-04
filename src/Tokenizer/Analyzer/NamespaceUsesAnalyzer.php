@@ -98,6 +98,12 @@ final class NamespaceUsesAnalyzer
 
                 while ($groupIndex < $groupEnd) {
                     $chunkStart = $tokens->getNextMeaningfulToken($groupIndex);
+
+                    // Finish parsing on trailing comma (no more chunks there)
+                    if ($tokens[$chunkStart]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                        break;
+                    }
+
                     $groupQualifiedName = $this->getNearestQualifiedName($tokens, $chunkStart);
                     $imports[] = new NamespaceUseAnalysis(
                         $type,

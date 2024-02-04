@@ -504,6 +504,41 @@ final class NamespaceUsesAnalyzerTest extends TestCase
             ],
             true,
         ];
+
+        yield 'multiline grouped class import with trailing comma' => [
+            <<<'PHP'
+                <?php
+                use Foo\{
+                    Bar,
+                    Baz,
+                };
+                PHP,
+            [
+                new NamespaceUseAnalysis(
+                    NamespaceUseAnalysis::TYPE_CLASS,
+                    'Foo\Bar',
+                    'Bar',
+                    false,
+                    true,
+                    1,
+                    14,
+                    7,
+                    7
+                ),
+                new NamespaceUseAnalysis(
+                    NamespaceUseAnalysis::TYPE_CLASS,
+                    'Foo\Baz',
+                    'Baz',
+                    false,
+                    true,
+                    1,
+                    14,
+                    10,
+                    10
+                ),
+            ],
+            true,
+        ];
     }
 
     /**
