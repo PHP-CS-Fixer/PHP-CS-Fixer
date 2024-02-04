@@ -21,7 +21,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
+final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
@@ -36,13 +36,13 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'PHPDoc `list` type must be used instead of `array` without a key.',
+            'PHPDoc `array<T>` type must be used instead of `T[]`.',
             [
                 new CodeSample(<<<'PHP'
                     <?php
                     /**
-                     * @param array<int> $x
-                     * @param array<array<string>> $y
+                     * @param int[] $x
+                     * @param string[][] $y
                      */
 
                     PHP),
@@ -55,16 +55,34 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer, PhpdocTypesOrderFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run before PhpdocAlignFixer, PhpdocListTypeFixer, PhpdocTypesOrderFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
-        return 1;
+        return 2;
     }
 
     protected function normalize(string $type): string
     {
-        return Preg::replace('/array(?=<[^,]+(>|<|{|\\())/i', 'list', $type);
+        if (Preg::match('/^\??\s*[\'"]/', $type)) {
+            return $type;
+        }
+
+        $prefix = '';
+        if (str_starts_with($type, '?')) {
+            $prefix = '?';
+            $type = substr($type, 1);
+        }
+
+        return $prefix.Preg::replaceCallback(
+            '/^(.+?)((?:\h*\[\h*\])+)$/',
+            static function (array $matches): string {
+                $level = substr_count($matches[2], '[');
+
+                return str_repeat('array<', $level).$matches[1].str_repeat('>', $level);
+            },
+            $type,
+        );
     }
 }
