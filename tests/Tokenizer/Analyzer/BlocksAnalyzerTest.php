@@ -94,7 +94,7 @@ final class BlocksAnalyzerTest extends TestCase
     /**
      * @dataProvider provideInvalidIndexCases
      */
-    public function testInvalidIndex(string $code, ?int $openIndex, ?int $closeIndex): void
+    public function testInvalidIndex(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
@@ -106,10 +106,6 @@ final class BlocksAnalyzerTest extends TestCase
 
     public static function provideInvalidIndexCases(): iterable
     {
-        yield ['<?php foo(1);', null, 4];
-
-        yield ['<?php foo(1);', 2, null];
-
         yield ['<?php foo(1);', 1_000, 4];
 
         yield ['<?php foo(1);', 2, 1_000];

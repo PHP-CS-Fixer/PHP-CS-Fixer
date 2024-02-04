@@ -24,12 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class BlocksAnalyzer
 {
-    public function isBlock(Tokens $tokens, ?int $openIndex, ?int $closeIndex): bool
+    public function isBlock(Tokens $tokens, int $openIndex, int $closeIndex): bool
     {
-        if (null === $openIndex || null === $closeIndex) {
-            throw new \InvalidArgumentException('Token index not provided');
-        }
-
         if (!$tokens->offsetExists($openIndex)) {
             throw new \InvalidArgumentException(sprintf('Token open index %d does not exist.', $openIndex));
         }
