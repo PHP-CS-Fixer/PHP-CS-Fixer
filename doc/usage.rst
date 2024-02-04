@@ -194,13 +194,11 @@ To visualize all the rules that belong to a ruleset:
 Caching
 -------
 
-The caching mechanism is enabled by default. This will speed up further runs by
-fixing only files that were modified since the last run. The tool will fix all
-files if the tool version has changed or the list of rules has changed.
-The cache is supported only when the tool was downloaded as a phar file or
-installed via Composer. The cache is written to the drive progressively, so do
-not be afraid of interruption - rerun the command and start where you left.
-The cache mechanism also supports executing the command in parallel.
+The caching mechanism is enabled by default. This will speed up further runs by fixing only files that were modified
+since the last run. The tool will fix all files if the tool version has changed or the list of rules has changed.
+The cache is supported only when the tool was downloaded as a PHAR file, executed within pre-built Docker image
+or installed via Composer. The cache is written to the drive progressively, so do not be afraid of interruption -
+rerun the command and start where you left. The cache mechanism also supports executing the command in parallel.
 
 Cache can be disabled via ``--using-cache`` option or config file:
 

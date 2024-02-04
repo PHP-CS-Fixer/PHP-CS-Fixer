@@ -174,8 +174,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, StatementIndentationFixer.
-     * Must run after PhpdocToReturnTypeFixer.
+     * Must run before NoSuperfluousPhpdocTagsFixer, OrderedImportsFixer, OrderedInterfacesFixer, StatementIndentationFixer.
+     * Must run after ClassKeywordFixer, PhpdocToReturnTypeFixer.
      */
     public function getPriority(): int
     {
@@ -262,6 +262,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $lastUse = null;
 
             foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace) as $use) {
+                if (!$use->isClass()) {
+                    continue;
+                }
                 $uses[ltrim($use->getFullName(), '\\')] = $use->getShortName();
                 $lastUse = $use;
             }
@@ -390,7 +393,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
             if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])])) {
                 $res = $tmpRes;
-                $iMin = substr_count($namespaceName, '\\') - 1;
+                $iMin = substr_count($namespaceName, '\\') + 1;
             }
         }
 
@@ -617,6 +620,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         while (true) {
             $index = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$index]->isObjectOperator()) {
+                break;
+            }
 
             if ($tokens[$index]->equalsAny([[T_STRING], [T_NS_SEPARATOR]])) {
                 $typeStartIndex = $index;

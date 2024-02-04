@@ -108,6 +108,16 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after FullyQualifiedStrictTypesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_IMPLEMENTS)

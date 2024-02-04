@@ -728,6 +728,9 @@ PHPDoc
 - `phpdoc_annotation_without_dot <./phpdoc/phpdoc_annotation_without_dot.rst>`_
 
   PHPDoc annotation descriptions should not be a sentence.
+- `phpdoc_array_type <./phpdoc/phpdoc_array_type.rst>`_ *(risky)*
+
+  PHPDoc ``array<T>`` type must be used instead of ``T[]``.
 - `phpdoc_indent <./phpdoc/phpdoc_indent.rst>`_
 
   Docblocks should have the same indentation as the documented subject.
@@ -737,6 +740,9 @@ PHPDoc
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_
 
   Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
+- `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
+
+  PHPDoc ``list`` type must be used instead of ``array`` without a key.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
 
   ``@access`` annotations should be omitted from PHPDoc.
@@ -852,7 +858,7 @@ Strict
 String Notation
 ---------------
 
-- `escape_implicit_backslashes <./string_notation/escape_implicit_backslashes.rst>`_
+- `escape_implicit_backslashes <./string_notation/escape_implicit_backslashes.rst>`_ *(deprecated)*
 
   Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.
 - `explicit_string_variable <./string_notation/explicit_string_variable.rst>`_
@@ -879,6 +885,9 @@ String Notation
 - `single_quote <./string_notation/single_quote.rst>`_
 
   Convert double quotes to single quotes for simple strings.
+- `string_implicit_backslashes <./string_notation/string_implicit_backslashes.rst>`_
+
+  Handles implicit backslashes in strings and heredocs. Depending on the chosen strategy, it can escape implicit backslashes to ease the understanding of which are special chars interpreted by PHP and which not (``escape``), or it can remove these additional backslashes if you find them superfluous (``unescape``). You can also leave them as-is using ``ignore`` strategy.
 - `string_length_to_empty <./string_notation/string_length_to_empty.rst>`_ *(risky)*
 
   String tests for empty must be done against ``''``, not with ``strlen``.

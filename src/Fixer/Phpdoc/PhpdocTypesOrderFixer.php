@@ -97,7 +97,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocListTypeFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
@@ -169,7 +169,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
      */
     private function sortTypes(TypeExpression $typeExpression): array
     {
-        $normalizeType = static fn (string $type): string => Preg::replace('/^\\??\\\?/', '', $type);
+        $normalizeType = static fn (string $type): string => Preg::replace('/^\(*\??\\\?/', '', $type);
 
         $typeExpression->sortTypes(
             function (TypeExpression $a, TypeExpression $b) use ($normalizeType): int {

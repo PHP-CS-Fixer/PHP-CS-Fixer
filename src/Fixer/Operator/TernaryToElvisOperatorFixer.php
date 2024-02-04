@@ -80,7 +80,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 1;
+        return 2;
     }
 
     public function isCandidate(Tokens $tokens): bool

@@ -612,6 +612,24 @@ final class TypeExpressionTest extends TestCase
         yield ['?\Closure(): void', true];
     }
 
+    public function testWalkTypes(): void
+    {
+        $typeExpression = new TypeExpression('Foo|Bar|Baz', null, []);
+        $addLeadingSlash = static function (TypeExpression $type): void {
+            \Closure::bind(static function () use ($type): void {
+                $value = $type->toString();
+                if (!str_starts_with($value, '\\')) {
+                    $value = '\\'.$value;
+                }
+                $type->value = $value;
+            }, null, TypeExpression::class)();
+        };
+
+        $typeExpression->walkTypes($addLeadingSlash);
+
+        self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
+    }
+
     /**
      * @dataProvider provideSortTypesCases
      */

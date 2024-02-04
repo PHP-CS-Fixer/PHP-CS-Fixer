@@ -354,6 +354,7 @@ final class FixerFactoryTest extends TestCase
                 'explicit_string_variable',
                 'native_function_invocation',
                 'single_quote',
+                'string_implicit_backslashes',
             ],
             'blank_line_after_opening_tag' => [
                 'blank_lines_before_namespace',
@@ -375,6 +376,9 @@ final class FixerFactoryTest extends TestCase
             'class_definition' => [
                 'braces',
                 'single_line_empty_body',
+            ],
+            'class_keyword' => [
+                'fully_qualified_strict_types',
             ],
             'class_keyword_remove' => [
                 'no_unused_imports',
@@ -449,6 +453,7 @@ final class FixerFactoryTest extends TestCase
             'fully_qualified_strict_types' => [
                 'no_superfluous_phpdoc_tags',
                 'ordered_imports',
+                'ordered_interfaces',
                 'statement_indentation',
             ],
             'function_declaration' => [
@@ -535,6 +540,7 @@ final class FixerFactoryTest extends TestCase
             'multiline_string_to_heredoc' => [
                 'escape_implicit_backslashes',
                 'heredoc_indentation',
+                'string_implicit_backslashes',
             ],
             'multiline_whitespace_before_semicolons' => [
                 'space_after_semicolon',
@@ -765,8 +771,15 @@ final class FixerFactoryTest extends TestCase
                 'phpdoc_align',
                 'phpdoc_order',
             ],
+            'phpdoc_array_type' => [
+                'phpdoc_list_type',
+                'phpdoc_types_order',
+            ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',
+            ],
+            'phpdoc_list_type' => [
+                'phpdoc_types_order',
             ],
             'phpdoc_no_access' => [
                 'no_empty_phpdoc',
@@ -913,6 +926,10 @@ final class FixerFactoryTest extends TestCase
             'strict_param' => [
                 'method_argument_space',
                 'native_function_invocation',
+            ],
+            'string_implicit_backslashes' => [
+                'heredoc_to_nowdoc',
+                'single_quote',
             ],
             'string_length_to_empty' => [
                 'no_extra_blank_lines',
