@@ -144,8 +144,6 @@ final class NamespaceUsesAnalyzer
                 }
 
                 $index = $qualifiedName['afterIndex'];
-                $aliased = false;
-                $fullName = $shortName = '';
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
