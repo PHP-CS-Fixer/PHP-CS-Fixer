@@ -38,6 +38,9 @@ final class BlocksAnalyzerTest extends TestCase
         self::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int}>
+     */
     public static function provideBlocksCases(): iterable
     {
         yield ['<?php foo(1);', 2, 4];
@@ -70,14 +73,17 @@ final class BlocksAnalyzerTest extends TestCase
     /**
      * @dataProvider provideNonBlocksCases
      */
-    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex): void
+    public function testNonBlocks(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        self::assertSame(false, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        self::assertFalse($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int}>
+     */
     public static function provideNonBlocksCases(): iterable
     {
 
@@ -91,6 +97,7 @@ final class BlocksAnalyzerTest extends TestCase
 
         yield ['<?php foo((1));', 3, 6];
     }
+
     /**
      * @dataProvider provideInvalidIndexCases
      */
@@ -104,6 +111,9 @@ final class BlocksAnalyzerTest extends TestCase
         $analyzer->isBlock($tokens, $openIndex, $closeIndex);
     }
 
+    /**
+     * @return iterable<array{string, int, int}>
+     */
     public static function provideInvalidIndexCases(): iterable
     {
         yield ['<?php foo(1);', 1_000, 4];
