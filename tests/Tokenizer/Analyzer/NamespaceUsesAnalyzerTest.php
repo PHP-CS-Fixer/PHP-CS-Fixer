@@ -166,6 +166,10 @@ final class NamespaceUsesAnalyzerTest extends TestCase
             ),
         ]];
 
+        yield 'Comma-separated class import with multi-use parsing disabled' => ['<?php use Foo\Bar, Foo\Baz;', [], false];
+
+        yield 'Group class import with multi-use parsing disabled' => ['<?php use Foo\{Bar, Baz};', [], false];
+
         yield 'Comma-separated class import' => ['<?php use Foo\Bar, Foo\Baz;', [
             new NamespaceUseAnalysis(
                 NamespaceUseAnalysis::TYPE_CLASS,
