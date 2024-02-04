@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @TODO Drop `allowMultiUses` opt-in flag when all fixers are updated and can handle multi-use statements.
  */
 final class NamespaceUsesAnalyzer
 {
