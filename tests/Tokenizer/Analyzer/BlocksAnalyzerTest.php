@@ -75,7 +75,7 @@ final class BlocksAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        self::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        self::assertSame(false, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
     public static function provideNonBlocksCases(): iterable
