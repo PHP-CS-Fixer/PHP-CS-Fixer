@@ -21,6 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @author VeeWee <toonverwerft@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
+ *
  * @internal
  */
 final class NamespaceUsesAnalyzer
