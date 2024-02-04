@@ -205,7 +205,7 @@ final class NamespaceUsesAnalyzer
         }
 
         return [
-            'fullName' => trim($fullName),
+            'fullName' => $fullName,
             'shortName' => $shortName,
             'aliased' => $aliased,
             'afterIndex' => $index,
