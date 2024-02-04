@@ -42,6 +42,14 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
 
         yield ['<?php /** @var array<int, array<string, bool>> */'];
 
+        yield ['<?php /** @var array<class-string<Foo>, bool> */'];
+
+        yield ['<?php /** @var array<int<1, 10>, bool> */'];
+
+        yield ['<?php /** @var array<Foo::BAR_*, bool> */'];
+
+        yield ['<?php /** @var array<\'foo\'|\'bar\', bool> */'];
+
         yield ['<?php /** @var array{} */'];
 
         yield ['<?php /** @var array{string, string, string} */'];
@@ -78,6 +86,11 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
         yield [
             '<?php /** @var array{string, list<array{Foo, list<int>, Bar}>} */',
             '<?php /** @var array{string, array<array{Foo, array<int>, Bar}>} */',
+        ];
+
+        yield [
+            '<?php /** @var list<int<1, 10>> */',
+            '<?php /** @var array<int<1, 10>> */',
         ];
     }
 }
