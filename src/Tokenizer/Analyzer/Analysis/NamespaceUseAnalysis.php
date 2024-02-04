@@ -80,7 +80,7 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         int $startIndex,
         int $endIndex,
         ?int $chunkStartIndex = null,
-        ?int $chunkEndIndex = null,
+        ?int $chunkEndIndex = null
     ) {
         if (true === $isInMulti && (null === $chunkStartIndex || null === $chunkEndIndex)) {
             throw new \LogicException('Chunk start and end index must be set when the import is part of a multi-use statement.');
