@@ -25,8 +25,8 @@ final class WhitespacesFixerConfig
 
     public function __construct(string $indent = '    ', string $lineEnding = "\n")
     {
-        if (!\in_array($indent, ['  ', '    ', "\t"], true)) {
-            throw new \InvalidArgumentException('Invalid "indent" param, expected tab or two or four spaces.');
+        if (!preg_match('/^(?: +|\t)$/', $indent)) {
+            throw new \InvalidArgumentException('Invalid "indent" param, expected tab or spaces.');
         }
 
         if (!\in_array($lineEnding, ["\n", "\r\n"], true)) {
