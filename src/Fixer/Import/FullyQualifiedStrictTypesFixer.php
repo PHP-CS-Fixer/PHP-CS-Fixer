@@ -475,7 +475,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     }
                     // else short name collision - keep unimported
 
-                    if ((str_starts_with($symbol, '\\') || '' === $namespaceName) || !str_contains($symbol, '\\')) {
+                    if (str_starts_with($symbol, '\\') || '' === $namespaceName || !str_contains($symbol, '\\')) {
                         break;
                     }
 
