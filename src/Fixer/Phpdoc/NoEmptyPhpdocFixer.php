@@ -34,7 +34,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, PhpdocAlignFixer.
+     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, PhpdocAlignFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, NoSuperfluousPhpdocTagsFixer, PhpUnitNoExpectationAnnotationFixer, PhpUnitTestAnnotationFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
@@ -54,9 +54,22 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
                 continue;
             }
 
-            if (Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
-                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            if (!Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
+                continue;
             }
+
+            if (
+                ($tokens[$index - 1]->isWhitespace() && substr_count($tokens[$index - 1]->getContent(), "\n") > 0)
+                && ($tokens[$index + 1]->isWhitespace() && substr_count($tokens[$index + 1]->getContent(), "\n") > 0)
+            ) {
+                $tokens->ensureWhitespaceAtIndex(
+                    $index - 1,
+                    0,
+                    Preg::replace('/\R\h*$/', '', $tokens[$index - 1]->getContent())
+                );
+            }
+
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
     }
 }

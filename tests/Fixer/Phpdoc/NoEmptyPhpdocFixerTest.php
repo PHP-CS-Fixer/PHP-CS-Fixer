@@ -33,7 +33,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 
     public static function provideFixCases(): iterable
     {
-        yield [
+        yield 'multiple PHPdocs' => [
             '<?php
                     /** a */
 
@@ -72,6 +72,107 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 
                      /** *test* */
                 ',
+        ];
+
+        yield 'PHPDoc on its own line' => [
+            <<<'PHP'
+                <?php
+                echo $a;
+                echo $b;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo $a;
+                /** */
+                echo $b;
+                PHP,
+        ];
+
+        yield 'PHPDoc on its own line with empty line before' => [
+            <<<'PHP'
+                <?php
+                function f() {
+                    echo $a;
+
+                    echo $b;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                function f() {
+                    echo $a;
+
+                    /** */
+                    echo $b;
+                }
+                PHP,
+        ];
+
+        yield 'PHPDoc on its own line with empty line after' => [
+            <<<'PHP'
+                <?php
+                echo $a;
+
+                echo $b;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo $a;
+                /** */
+
+                echo $b;
+                PHP,
+        ];
+
+        yield 'PHPDoc on its own line with empty line before and after' => [
+            <<<'PHP'
+                <?php
+                echo $a;
+
+                echo $b;
+                PHP,
+            <<<'PHP'
+                <?php
+                echo $a;
+
+                /** */
+
+                echo $b;
+                PHP,
+        ];
+
+        yield 'PHPDoc with empty line before and content after' => [
+            <<<'PHP'
+                <?php
+                function f() {
+                    echo $a;
+                    echo $b;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                function f() {
+                    echo $a;
+                    /** */echo $b;
+                }
+                PHP,
+        ];
+
+        yield 'PHPDoc with content before and empty line after' => [
+            <<<'PHP'
+                <?php
+                function f() {
+                    echo $a;
+                    echo $b;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                function f() {
+                    echo $a;/** */
+                    echo $b;
+                }
+                PHP,
         ];
     }
 }
