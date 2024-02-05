@@ -16,6 +16,7 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -100,18 +101,23 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     private function normalizeTypes(array $types): array
     {
         return array_map(
-            fn (string $type): string => $this->normalizeType($type),
+            function (string $type): string {
+                $typeExpression = new TypeExpression($type, null, []);
+
+                $typeExpression->walkTypes(function (TypeExpression $type): void {
+                    if (!$type->isUnionType()) {
+                        $value = $this->normalize($type->toString());
+
+                        // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
+                        \Closure::bind(static function () use ($type, $value): void {
+                            $type->value = $value;
+                        }, null, TypeExpression::class)();
+                    }
+                });
+
+                return $typeExpression->toString();
+            },
             $types
         );
-    }
-
-    /**
-     * Prepare the type and normalize it.
-     */
-    private function normalizeType(string $type): string
-    {
-        return str_ends_with($type, '[]')
-            ? $this->normalizeType(substr($type, 0, -2)).'[]'
-            : $this->normalize($type);
     }
 }

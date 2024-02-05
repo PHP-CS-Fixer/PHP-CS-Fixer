@@ -147,6 +147,10 @@ final class SymfonySet extends AbstractRuleSetDescription
                 ],
                 'sort_algorithm' => 'alpha',
             ],
+            'ordered_types' => [
+                'null_adjustment' => 'always_last',
+                'sort_algorithm' => 'none',
+            ],
             'php_unit_fqcn_annotation' => true,
             'php_unit_method_casing' => true,
             'phpdoc_align' => true,

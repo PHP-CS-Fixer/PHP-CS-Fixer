@@ -109,6 +109,10 @@ Rules
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
+- `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
 - `php_unit_fqcn_annotation <./../rules/php_unit/php_unit_fqcn_annotation.rst>`_
 - `php_unit_method_casing <./../rules/php_unit/php_unit_method_casing.rst>`_
 - `phpdoc_align <./../rules/phpdoc/phpdoc_align.rst>`_
