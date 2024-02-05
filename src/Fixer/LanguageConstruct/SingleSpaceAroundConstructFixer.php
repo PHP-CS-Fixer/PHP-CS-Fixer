@@ -345,7 +345,7 @@ yield  from  baz();
                 continue;
             }
 
-            if ($token->isGivenKind(T_CONST) && $this->isMultilineConstant($tokens, $index)) {
+            if ($token->isGivenKind(T_CONST) && $this->isMultilineCommaSeparatedConstant($tokens, $index)) {
                 continue;
             }
 
@@ -457,7 +457,7 @@ yield  from  baz();
         return false;
     }
 
-    private function isMultilineConstant(Tokens $tokens, int $constantIndex): bool
+    private function isMultilineCommaSeparatedConstant(Tokens $tokens, int $constantIndex): bool
     {
         $isMultilineConstant = false;
         $hasMoreThanOneConstant = false;
