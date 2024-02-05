@@ -63,6 +63,11 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
      */
     private array $symbolsForImport = [];
 
+    /**
+     * @var array<int<0, max>, array<string, true>>
+     */
+    private array $reservedIdentifiers;
+
     /** @var array<string, string> */
     private array $cacheUsesLast = [];
 
@@ -278,10 +283,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $classyKinds[] = T_ENUM;
                 }
 
+                $openedCurlyBrackets = 0;
+                $this->reservedIdentifiers = [];
+
                 for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex() + $indexDiff; ++$index) {
                     $origSize = \count($tokens);
 
-                    if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
+                    if ($tokens[$index]->equals('{')) {
+                        ++$openedCurlyBrackets;
+                    } if ($tokens[$index]->equals('}')) {
+                        unset($this->reservedIdentifiers[$openedCurlyBrackets]);
+                        --$openedCurlyBrackets;
+                    } elseif ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
@@ -303,11 +316,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         $this->determineShortType($matches[1], $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                        Preg::matchAll('/\*\h*@template\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/', $tokens[$index]->getContent(), $matches);
+                        foreach ($matches[1] as $reservedIdentifier) {
+                            $this->reservedIdentifiers[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
+                        }
+
                         $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
                     }
 
                     $indexDiff += \count($tokens) - $origSize;
                 }
+
+                $this->reservedIdentifiers = [];
 
                 if ($discoverSymbolsPhase) {
                     $this->setupUsesFromDiscoveredSymbols($uses, $namespaceName);
@@ -362,6 +382,12 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         if ((new TypeAnalysis($symbol))->isReservedType()) {
             return true;
+        }
+
+        foreach ($this->reservedIdentifiers as $reservedIdentifiers) {
+            if (isset($reservedIdentifiers[$symbol])) {
+                return true;
+            }
         }
 
         return false;

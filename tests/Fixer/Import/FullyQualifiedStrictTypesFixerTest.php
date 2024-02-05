@@ -798,6 +798,173 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'prevent import if implicitly used by generics' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Foo\T;
+
+                class Cl
+                {
+                    /**
+                     * @return T
+                     */
+                    public function before()
+                    {
+                        return new T();
+                    }
+
+                    /**
+                     * @template T of \Exception
+                     * @param \Closure(\Foo\T): T $fx
+                     * @return T
+                     */
+                    public function makeException(\Closure $fx)
+                    {
+                        $arg = new \Foo\T();
+
+                        return $fx($arg);
+                    }
+
+                    /**
+                     * @return T
+                     */
+                    public function after()
+                    {
+                        return new T();
+                    }
+
+                    /**
+                     * @return T
+                     */
+                    public function anony()
+                    {
+                        $anony = new
+                        /**
+                         * @template T of \Exception
+                         */
+                        class(new RuntimeException()) {
+                            /** @var T */
+                            public \Exception $e;
+
+                            /**
+                             * @param T $e
+                             */
+                            public function __construct(\Exception $e)
+                            {
+                                $this->e = $e;
+                            }
+
+                            public function before(): void
+                            {
+                                new \Foo\T();
+                            }
+
+                            /**
+                             * @return T
+                             */
+                            public function returnT()
+                            {
+                                new \Foo\T();
+
+                                return $this->e;
+                            }
+
+                            public function after(): void
+                            {
+                                new \Foo\T();
+                            }
+                        };
+
+                        return new T();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                class Cl
+                {
+                    /**
+                     * @return \Foo\T
+                     */
+                    public function before()
+                    {
+                        return new \Foo\T();
+                    }
+
+                    /**
+                     * @template T of \Exception
+                     * @param \Closure(\Foo\T): T $fx
+                     * @return T
+                     */
+                    public function makeException(\Closure $fx)
+                    {
+                        $arg = new \Foo\T();
+
+                        return $fx($arg);
+                    }
+
+                    /**
+                     * @return \Foo\T
+                     */
+                    public function after()
+                    {
+                        return new \Foo\T();
+                    }
+
+                    /**
+                     * @return \Foo\T
+                     */
+                    public function anony()
+                    {
+                        $anony = new
+                        /**
+                         * @template T of \Exception
+                         */
+                        class(new RuntimeException()) {
+                            /** @var T */
+                            public \Exception $e;
+
+                            /**
+                             * @param T $e
+                             */
+                            public function __construct(\Exception $e)
+                            {
+                                $this->e = $e;
+                            }
+
+                            public function before(): void
+                            {
+                                new \Foo\T();
+                            }
+
+                            /**
+                             * @return T
+                             */
+                            public function returnT()
+                            {
+                                new \Foo\T();
+
+                                return $this->e;
+                            }
+
+                            public function after(): void
+                            {
+                                new \Foo\T();
+                            }
+                        };
+
+                        return new \Foo\T();
+                    }
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'import with relative and absolute symbols - global' => [
             <<<'EOD'
                 <?php
