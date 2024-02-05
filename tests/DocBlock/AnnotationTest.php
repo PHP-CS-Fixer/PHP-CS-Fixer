@@ -619,7 +619,7 @@ final class AnnotationTest extends TestCase
     public static function provideGetTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
-        $useTraversable = new NamespaceUseAnalysis(\Traversable::class, \Traversable::class, false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
+        $useTraversable = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, \Traversable::class, \Traversable::class, false, false, 0, 999);
 
         yield ['* @param array|Traversable $foo', null, [], 'iterable'];
 

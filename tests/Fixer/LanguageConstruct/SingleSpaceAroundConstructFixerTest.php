@@ -864,6 +864,25 @@ FOO = 9000; }',
             '<?php class Foo { const  /* foo */FOO = 9000; }',
         ];
 
+        yield [
+            '<?php class Foo {
+                const FOO = [
+                    1
+                ];
+                const BAR = [
+                    2,
+                ];
+            }',
+            '<?php class Foo {
+                const    FOO = [
+                    1
+                ];
+                const    BAR = [
+                    2,
+                ];
+            }',
+        ];
+
         yield ['<?php class Foo {
     const
         FOO = 9000,
