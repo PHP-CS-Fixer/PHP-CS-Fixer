@@ -687,7 +687,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by class declaration' => [
+        yield 'do not import if already implicitly used by class declaration' => [
             <<<'EOD'
                 <?php
 
@@ -702,7 +702,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by interface declaration' => [
+        yield 'do not import if already implicitly used by interface declaration' => [
             <<<'EOD'
                 <?php
 
@@ -717,7 +717,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by trait declaration' => [
+        yield 'do not import if already implicitly used by trait declaration' => [
             <<<'EOD'
                 <?php
 
@@ -732,7 +732,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage in class instantiation' => [
+        yield 'do not import if already implicitly used by short name usage in class instantiation' => [
             <<<'EOD'
                 <?php
 
@@ -745,7 +745,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage in attribute' => [
+        yield 'do not import if already implicitly used by short name usage in attribute' => [
             <<<'EOD'
                 <?php
 
@@ -759,7 +759,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage in phpdoc' => [
+        yield 'do not import if already implicitly used by short name usage in phpdoc' => [
             <<<'EOD'
                 <?php
 
@@ -772,7 +772,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by relative name first part' => [
+        yield 'do not import if already implicitly used by relative name first part' => [
             <<<'EOD'
                 <?php
 
@@ -785,7 +785,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by relative name first part (with more backslashes than other FQCN)' => [
+        yield 'do not import if already implicitly used by relative name first part (with more backslashes than other FQCN)' => [
             <<<'EOD'
                 <?php
 
@@ -2382,7 +2382,7 @@ class SomeClass
 }',
         ];
 
-        yield 'import only if not already implicitly used by enum declaration' => [
+        yield 'do not import if already implicitly used by enum declaration' => [
             <<<'EOD'
                 <?php
 
