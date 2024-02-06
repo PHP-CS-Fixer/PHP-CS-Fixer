@@ -33,9 +33,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         $assertionRefClass = new \ReflectionClass(TestCase::class);
         $updatedStaticMethodsList = $assertionRefClass->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        $fixerRefClass = new \ReflectionClass(PhpUnitTestCaseStaticMethodCallsFixer::class);
-        $defaultProperties = $fixerRefClass->getDefaultProperties();
-        $staticMethods = $defaultProperties['staticMethods'];
+        $staticMethods = (new \ReflectionClass(PhpUnitTestCaseStaticMethodCallsFixer::class))->getConstant('STATIC_METHODS');
 
         $missingMethods = [];
         foreach ($updatedStaticMethodsList as $method) {
