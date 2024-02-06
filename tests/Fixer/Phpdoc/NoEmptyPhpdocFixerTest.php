@@ -129,6 +129,7 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
                 <?php
                 echo $a;
 
+
                 echo $b;
                 PHP,
             <<<'PHP'
@@ -172,6 +173,43 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
                     echo $a;/** */
                     echo $b;
                 }
+                PHP,
+        ];
+
+        yield 'PHPDoc after open tag - the same line' => [
+            '<?php '.'
+                foo();
+                ',
+            '<?php /** */
+                foo();
+                ',
+        ];
+
+        yield 'PHPDoc after open tag - next line' => [
+            <<<'PHP'
+                <?php
+                foo();
+                PHP,
+            <<<'PHP'
+                <?php
+                /** */
+                foo();
+                PHP,
+        ];
+
+        yield 'PHPDoc after open tag - next next next line' => [
+            <<<'PHP'
+                <?php
+
+
+                foo();
+                PHP,
+            <<<'PHP'
+                <?php
+
+
+                /** */
+                foo();
                 PHP,
         ];
     }
