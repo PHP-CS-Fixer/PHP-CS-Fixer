@@ -130,6 +130,10 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         }
 
         if (self::STR_DOUBLE_QUOTE_VAR === $firstOperand['type'] && self::STR_DOUBLE_QUOTE_VAR === $secondOperand['type']) {
+            if ($this->operandsCanNotBeMerged($tokens, $firstOperand, $secondOperand)) {
+                return;
+            }
+
             $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
             return;
@@ -146,6 +150,10 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
             [$operand1, $operand2] = $operandPair;
 
             if (self::STR_DOUBLE_QUOTE_VAR === $operand1['type'] && self::STR_DOUBLE_QUOTE === $operand2['type']) {
+                if ($this->operandsCanNotBeMerged($tokens, $operand1, $operand2)) {
+                    return;
+                }
+
                 $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
                 return;
@@ -169,6 +177,10 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
                 $operantContent = $tokens[$operand2['start']]->getContent();
 
                 if ($this->isSimpleQuotedStringContent($operantContent)) {
+                    if ($this->operandsCanNotBeMerged($tokens, $operand1, $operand2)) {
+                        return;
+                    }
+
                     $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
                 }
 
@@ -335,5 +347,23 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         }
 
         return false;
+    }
+
+    /**
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $firstOperand
+     * @param array{
+     *     start: int,
+     *     end: int,
+     *     type: self::STR_*,
+     * } $secondOperand
+     */
+    private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
+    {
+        return $tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)
+            && !str_starts_with($tokens[$secondOperand['start'] + 1]->getContent(), ' ');
     }
 }

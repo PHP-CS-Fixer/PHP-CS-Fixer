@@ -133,6 +133,9 @@ $text2 = "intro:   "."   "." #a
                 $f201 = b"a".b"b";
                 $f203 = "a".B"b";
                 echo b"He drank some juice made of {$fruit}s.".b" Sliced the {$fruit}s.";
+                echo "abc $d" . "e $f";
+                echo "abc $d" . "e";
+                echo "abc $d" . \'e\';
             ',
         ];
 
