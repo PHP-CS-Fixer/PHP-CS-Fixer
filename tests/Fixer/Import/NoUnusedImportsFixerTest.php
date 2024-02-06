@@ -169,7 +169,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
             <<<'EOF'
                 <?php namespace App\Http\Controllers;
 
-
                 EOF,
             <<<'EOF'
                 <?php namespace App\Http\Controllers;
@@ -315,6 +314,7 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 namespace Foo;
 
                 use BarE;
+
                 $c = new D();
                 $e = new BarE();
                 EOF,
@@ -669,7 +669,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
             <<<'EOF'
                 <?php
                 namespace Aaa;
-
 
                 class Ddd
                 {
@@ -1340,18 +1339,14 @@ Bar3:
                 EOF
         ];
 
-        $empty = '';
-
         yield 'grouped imports' => [
-            <<<EOF
+            <<<'EOF'
                 <?php
-                use some\\y\\{ClassA, ClassC as C,};
-                use function some\\a\\{
-                    {$empty}
+                use some\y\{ClassA, ClassC as C,};
+                use function some\a\{
                     fn_b,
-                    {$empty}
                 };
-                use const some\\Z\\{ConstA,ConstC,};
+                use const some\Z\{ConstA,ConstC,};
 
                 echo ConstA.ConstC;
                 fn_b(ClassA::test, new C());
@@ -1373,6 +1368,31 @@ Bar3:
 
                 echo ConstA.ConstC;
                 fn_b(ClassA::test, new C());
+                EOF,
+        ];
+
+        yield 'multiline grouped imports with comments' => [
+            <<<'EOF'
+                <?php
+                use function some\a\{
+                     // Foo
+                    fn_b,
+                    /* Bar *//** Baz */
+                     # Buzz
+                };
+
+                fn_b();
+                EOF,
+            <<<'EOF'
+                <?php
+                use function some\a\{
+                    fn_a, // Foo
+                    fn_b,
+                    /* Bar */ fn_c, /** Baz */
+                    fn_d, # Buzz
+                };
+
+                fn_b();
                 EOF,
         ];
 

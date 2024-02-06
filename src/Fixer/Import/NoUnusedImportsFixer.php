@@ -202,8 +202,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
 
             if (!$tokens[$index]->isWhitespace() || !str_contains($tokens[$index]->getContent(), "\n")) {
-                // TODO: improve removing last use statement (keep empty blank line between imports and further code)
-                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+                $tokens->clearAt($index);
 
                 continue;
             }
@@ -265,11 +264,32 @@ final class NoUnusedImportsFixer extends AbstractFixer
     {
         $beforeChunkIndex = $tokens->getPrevMeaningfulToken($useDeclaration->getChunkStartIndex());
         $afterChunkIndex = $tokens->getNextMeaningfulToken($useDeclaration->getChunkEndIndex());
+        $hasNonEmptyTokenBefore = $this->scanForNonEmptyTokensUntilNewLineFound(
+            $tokens,
+            $afterChunkIndex,
+            -1
+        );
+        $hasNonEmptyTokenAfter = $this->scanForNonEmptyTokensUntilNewLineFound(
+            $tokens,
+            $afterChunkIndex,
+            1
+        );
+
+        // We don't want to merge consequent new lines with indentation (leading to e.g. `\n    \n    `),
+        // so it's safe to merge whitespace only if there is any non-empty token before or after the chunk.
+        $mergingSurroundingWhitespaceIsSafe = $hasNonEmptyTokenBefore[1] || $hasNonEmptyTokenAfter[1];
+        $clearToken = static function (int $index) use ($tokens, $mergingSurroundingWhitespaceIsSafe): void {
+            if ($mergingSurroundingWhitespaceIsSafe) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            } else {
+                $tokens->clearAt($index);
+            }
+        };
 
         if ($tokens[$afterChunkIndex]->equals(',')) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($afterChunkIndex);
+            $clearToken($afterChunkIndex);
         } elseif ($tokens[$beforeChunkIndex]->equals(',')) {
-            $tokens->clearTokenAndMergeSurroundingWhitespace($beforeChunkIndex);
+            $clearToken($beforeChunkIndex);
         }
 
         // Ensure there's a single space where applicable, otherwise no space (before comma, before closing brace)
@@ -295,6 +315,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
         }
 
+        $this->removeLineIfEmpty($tokens, $useDeclaration);
         $this->removeImportStatementIfEmpty($tokens, $useDeclaration);
     }
 
@@ -370,5 +391,56 @@ final class NoUnusedImportsFixer extends AbstractFixer
         ) {
             $this->removeUseDeclaration($tokens, $useDeclaration, true);
         }
+    }
+
+    private function removeLineIfEmpty(Tokens $tokens, NamespaceUseAnalysis $useAnalysis): void
+    {
+        if (!$useAnalysis->isInMulti()) {
+            return;
+        }
+
+        $hasNonEmptyTokenBefore = $this->scanForNonEmptyTokensUntilNewLineFound(
+            $tokens,
+            $useAnalysis->getChunkStartIndex(),
+            -1
+        );
+        $hasNonEmptyTokenAfter = $this->scanForNonEmptyTokensUntilNewLineFound(
+            $tokens,
+            $useAnalysis->getChunkEndIndex(),
+            1
+        );
+
+        if (!$hasNonEmptyTokenBefore[1] && !$hasNonEmptyTokenAfter[1]) {
+            $tokens->clearRange($hasNonEmptyTokenBefore[0], $hasNonEmptyTokenAfter[0] - 1);
+        }
+    }
+
+    /**
+     * Returns tuple with the index of first token with whitespace containing new line char
+     * and a flag if any non-empty token was found along the way.
+     *
+     * @param -1|1 $direction
+     *
+     * @return array{0: int, 1: bool}
+     */
+    private function scanForNonEmptyTokensUntilNewLineFound(Tokens $tokens, int $index, int $direction): array
+    {
+        $hasNonEmptyToken = false;
+
+        while (\is_int($index) && $index > 0) {
+            $index = $tokens->getNonEmptySibling($index, $direction);
+
+            if (null === $tokens[$index]->getId()) {
+                continue;
+            }
+
+            if (!$tokens[$index]->isWhitespace()) {
+                $hasNonEmptyToken = true;
+            } elseif (str_starts_with($tokens[$index]->getContent(), "\n")) {
+                break;
+            }
+        }
+
+        return [$index, $hasNonEmptyToken];
     }
 }
