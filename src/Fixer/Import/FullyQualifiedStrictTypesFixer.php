@@ -211,7 +211,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCNs found during analysis should be automatically imported.'
+                'Whether FQCNs should be automatically imported.'
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -447,17 +447,40 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 $discoveredFqcnByShortNameLower[strtolower($useShortName)] = $useLongName;
             }
 
-            uasort($discoveredSymbols, static fn ($a, $b) => substr_count($a, '\\') <=> substr_count($b, '\\'));
+            $useByShortNameLower = [];
+            foreach ($uses as $useShortName) {
+                $useByShortNameLower[strtolower($useShortName)] = true;
+            }
+
+            uasort($discoveredSymbols, static function ($a, $b) {
+                $res = str_starts_with($a, '\\') <=> str_starts_with($b, '\\');
+                if (0 !== $res) {
+                    return $res;
+                }
+
+                return substr_count($a, '\\') <=> substr_count($b, '\\');
+            });
             foreach ($discoveredSymbols as $symbol) {
-                $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
-                if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
-                    if ('' !== $namespaceName && !str_starts_with($symbol, '\\') && str_contains($symbol, '\\')) { // @TODO add option to force all classes to be imported
-                        continue;
+                while (true) {
+                    $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
+                    if (!isset($discoveredFqcnByShortNameLower[$shortEndNameLower])) {
+                        $shortStartNameLower = strtolower(explode('\\', ltrim($symbol, '\\'), 2)[0]);
+                        if (str_starts_with($symbol, '\\') || ('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
+                            || !str_contains($symbol, '\\')
+                        ) {
+                            $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
+
+                            break;
+                        }
+                    }
+                    // else short name collision - keep unimported
+
+                    if (str_starts_with($symbol, '\\') || '' === $namespaceName || !str_contains($symbol, '\\')) {
+                        break;
                     }
 
-                    $discoveredFqcnByShortNameLower[$shortEndNameLower] = $this->resolveSymbol($symbol, $uses, $namespaceName);
+                    $symbol = substr($symbol, 0, strrpos($symbol, '\\'));
                 }
-                // else short name collision - keep unimported
             }
 
             foreach ($uses as $useLongName => $useShortName) {
@@ -522,20 +545,26 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            // @TODO parse the complex type using TypeExpression and fix all names inside (like `int|string` or `list<int|string>`)
-            if (!Preg::match('/^[a-zA-Z0-9_\\\\]+(\|null)?$/', $matches[4])) {
-                return $matches[0];
-            }
+            /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
+            $unsupported = false;
 
-            $shortTokens = $this->determineShortType($matches[4], $uses, $namespaceName);
-            if (null === $shortTokens) {
-                return $matches[0];
-            }
+            return $matches[1].$matches[2].$matches[3].implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
+                if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
+                    $unsupported = true;
 
-            return $matches[1].$matches[2].$matches[3].implode('', array_map(
-                static fn (Token $token) => $token->getContent(),
-                $shortTokens
-            ));
+                    return $v;
+                }
+
+                $shortTokens = $this->determineShortType($v, $uses, $namespaceName);
+                if (null === $shortTokens) {
+                    return $v;
+                }
+
+                return implode('', array_map(
+                    static fn (Token $token) => $token->getContent(),
+                    $shortTokens
+                ));
+            }, explode('|', $matches[4])));
         }, $phpDocContent);
 
         if ($phpDocContentNew !== $phpDocContent) {

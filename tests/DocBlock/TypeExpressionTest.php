@@ -456,8 +456,8 @@ final class TypeExpressionTest extends TestCase
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
 
-        $useTraversable = new NamespaceUseAnalysis(\Traversable::class, \Traversable::class, false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
-        $useObjectAsTraversable = new NamespaceUseAnalysis('Foo', \Traversable::class, false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
+        $useTraversable = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, \Traversable::class, \Traversable::class, false, false, 0, 0);
+        $useObjectAsTraversable = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Foo', \Traversable::class, false, false, 0, 0);
 
         yield ['true', 'bool'];
 
