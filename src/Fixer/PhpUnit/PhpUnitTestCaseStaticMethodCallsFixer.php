@@ -57,6 +57,10 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         // Assert methods
         'anything' => true,
         'arrayHasKey' => true,
+        'assertArrayIsEqualToArrayIgnoringListOfKeys' => true,
+        'assertArrayIsEqualToArrayOnlyConsideringListOfKeys' => true,
+        'assertArrayIsIdenticalToArrayIgnoringListOfKeys' => true,
+        'assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys' => true,
         'assertArrayHasKey' => true,
         'assertArrayNotHasKey' => true,
         'assertArraySubset' => true,
