@@ -230,7 +230,16 @@ final class Runner
                         }
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($result['status']));
-                        $this->cacheManager->setFile($file, file_get_contents($this->directory->getAbsolutePath().\DIRECTORY_SEPARATOR.$file));
+
+                        if (
+                            FixerFileProcessedEvent::STATUS_NO_CHANGES === (int) $result['status']
+                            || (
+                                FixerFileProcessedEvent::STATUS_FIXED === (int) $result['status']
+                                && !$this->isDryRun
+                            )
+                        ) {
+                            $this->cacheManager->setFile($file, file_get_contents($this->directory->getAbsolutePath().\DIRECTORY_SEPARATOR.$file));
+                        }
 
                         foreach ($result['errors'] ?? [] as $workerError) {
                             $error = new Error(
