@@ -62,9 +62,9 @@ final class ConfigurationResolverTest extends TestCase
         $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
         $defaultParallelConfig = ParallelConfig::sequential();
 
-        self::assertSame($parallelConfig->getMaxProcesses(), $defaultParallelConfig->getMaxProcesses());
-        self::assertSame($parallelConfig->getFilesPerProcess(), $defaultParallelConfig->getFilesPerProcess());
-        self::assertSame($parallelConfig->getProcessTimeout(), $defaultParallelConfig->getProcessTimeout());
+        self::assertSame($defaultParallelConfig->getMaxProcesses(), $parallelConfig->getMaxProcesses());
+        self::assertSame($defaultParallelConfig->getFilesPerProcess(), $parallelConfig->getFilesPerProcess());
+        self::assertSame($defaultParallelConfig->getProcessTimeout(), $parallelConfig->getProcessTimeout());
     }
 
     public function testSetOptionWithUndefinedOption(): void

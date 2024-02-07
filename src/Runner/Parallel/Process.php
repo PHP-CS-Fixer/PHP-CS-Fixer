@@ -180,8 +180,7 @@ final class Process
 
         $this->in->write($data);
         $this->timer = $this->loop->addTimer($this->timeoutSeconds, function (): void {
-            $onError = $this->onError;
-            $onError(
+            ($this->onError)(
                 new \Exception(
                     sprintf(
                         'Child process timed out after %d seconds. Try making it longer using `ParallelConfig`.',

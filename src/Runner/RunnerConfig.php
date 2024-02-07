@@ -21,10 +21,10 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
  */
 final class RunnerConfig
 {
-    private bool $isDryRun = false;
-    private bool $stopOnViolation = false;
+    private bool $isDryRun;
+    private bool $stopOnViolation;
     private ParallelConfig $parallelConfig;
-    private ?string $configFile = null;
+    private ?string $configFile;
 
     public function __construct(
         bool $isDryRun,

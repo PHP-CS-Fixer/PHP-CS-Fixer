@@ -108,7 +108,7 @@ final class WorkerCommand extends Command
                     'using-cache',
                     '',
                     InputOption::VALUE_REQUIRED,
-                    'Does cache should be used (can be `yes` or `no`).'
+                    'Should cache be used (can be `yes` or `no`).'
                 ),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
