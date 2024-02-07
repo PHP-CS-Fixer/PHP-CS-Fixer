@@ -171,7 +171,7 @@ jobs:
 
       - name: Disable time limit for tests when collecting coverage
         if: matrix.collect-code-coverage == 'yes'
-        run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
+        run: sed -e 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' -e 's/coverage/source/g' phpunit.xml.dist > phpunit.xml
 
       - name: Disable time limit for tests under Windows # due to https://github.com/sebastianbergmann/phpunit/issues/5589
         if: matrix.operating-system == 'windows-latest'

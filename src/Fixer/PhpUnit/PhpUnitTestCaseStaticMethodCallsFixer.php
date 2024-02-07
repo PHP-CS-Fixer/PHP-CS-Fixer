@@ -53,11 +53,15 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     /**
      * @var array<string, true>
      */
-    private array $staticMethods = [
+    private const STATIC_METHODS = [
         // Assert methods
         'anything' => true,
         'arrayHasKey' => true,
         'assertArrayHasKey' => true,
+        'assertArrayIsEqualToArrayIgnoringListOfKeys' => true,
+        'assertArrayIsEqualToArrayOnlyConsideringListOfKeys' => true,
+        'assertArrayIsIdenticalToArrayIgnoringListOfKeys' => true,
+        'assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys' => true,
         'assertArrayNotHasKey' => true,
         'assertArraySubset' => true,
         'assertAttributeContains' => true,
@@ -304,7 +308,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     /**
      * @var array<string, bool>
      */
-    private array $allowedValues = [
+    private const ALLOWED_VALUES = [
         self::CALL_TYPE_THIS => true,
         self::CALL_TYPE_SELF => true,
         self::CALL_TYPE_STATIC => true,
@@ -361,34 +365,32 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $thisFixer = $this;
-
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('call_type', 'The call type to use for referring to PHPUnit methods.'))
                 ->setAllowedTypes(['string'])
-                ->setAllowedValues(array_keys($this->allowedValues))
+                ->setAllowedValues(array_keys(self::ALLOWED_VALUES))
                 ->setDefault('static')
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function (array $option) use ($thisFixer): bool {
+                ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $method => $value) {
-                        if (!isset($thisFixer->staticMethods[$method])) {
+                        if (!isset(self::STATIC_METHODS[$method])) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "methods" key, expected any of %s, got "%s".',
-                                    Utils::naturalLanguageJoin(array_keys($thisFixer->staticMethods)),
+                                    Utils::naturalLanguageJoin(array_keys(self::STATIC_METHODS)),
                                     \gettype($method).'#'.$method
                                 )
                             );
                         }
 
-                        if (!isset($thisFixer->allowedValues[$value])) {
+                        if (!isset(self::ALLOWED_VALUES[$value])) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected value for method "%s", expected any of %s, got "%s".',
                                     $method,
-                                    Utils::naturalLanguageJoin(array_keys($thisFixer->allowedValues)),
+                                    Utils::naturalLanguageJoin(array_keys(self::ALLOWED_VALUES)),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );
@@ -436,7 +438,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING) || !isset($this->staticMethods[$tokens[$index]->getContent()])) {
+            if (!$tokens[$index]->isGivenKind(T_STRING) || !isset(self::STATIC_METHODS[$tokens[$index]->getContent()])) {
                 continue;
             }
 
