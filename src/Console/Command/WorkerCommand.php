@@ -21,6 +21,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ReadonlyCacheManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use React\EventLoop\StreamSelectLoop;
@@ -53,6 +54,7 @@ final class WorkerCommand extends Command
     private ConfigurationResolver $configurationResolver;
     private ErrorsManager $errorsManager;
     private EventDispatcherInterface $eventDispatcher;
+    private ReadonlyCacheManager $readonlyCacheManager;
 
     /** @var array<int, FixerFileProcessedEvent> */
     private array $events;
@@ -223,6 +225,8 @@ final class WorkerCommand extends Command
             $this->toolInfo
         );
 
+        $this->readonlyCacheManager = new ReadonlyCacheManager($this->configurationResolver->getCacheManager());
+
         return new Runner(
             null, // Paths are known when parallelisation server requests new chunk, not now
             $this->configurationResolver->getFixers(),
@@ -231,7 +235,7 @@ final class WorkerCommand extends Command
             $this->errorsManager,
             $this->configurationResolver->getLinter(),
             $this->configurationResolver->isDryRun(),
-            $this->configurationResolver->getCacheManager(),
+            $this->readonlyCacheManager,
             $this->configurationResolver->getDirectory(),
             $this->configurationResolver->shouldStopOnViolation(),
             ParallelConfig::sequential(), // IMPORTANT! Worker must run in sequential mode
