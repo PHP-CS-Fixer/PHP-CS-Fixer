@@ -28,6 +28,11 @@ final class Directory implements DirectoryInterface
         $this->directoryName = $directoryName;
     }
 
+    public function getAbsolutePath(): string
+    {
+        return $this->directoryName;
+    }
+
     public function getRelativePathTo(string $file): string
     {
         $file = $this->normalizePath($file);
