@@ -42,7 +42,7 @@ final class ProcessPool
 
     public function getProcess(ProcessIdentifier $identifier): Process
     {
-        if (!\array_key_exists((string) $identifier, $this->processes)) {
+        if (!isset($this->processes[(string) $identifier])) {
             throw ParallelisationException::forUnknownIdentifier($identifier);
         }
 
@@ -56,7 +56,7 @@ final class ProcessPool
 
     public function endProcessIfKnown(ProcessIdentifier $identifier): void
     {
-        if (!\array_key_exists((string) $identifier, $this->processes)) {
+        if (!isset($this->processes[(string) $identifier])) {
             return;
         }
 

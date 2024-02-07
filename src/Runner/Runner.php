@@ -65,7 +65,7 @@ final class Runner
     private LinterInterface $linter;
 
     /**
-     * @var ?\Traversable<\SplFileInfo>
+     * @var null|\Traversable<\SplFileInfo>
      */
     private $fileIterator;
 
