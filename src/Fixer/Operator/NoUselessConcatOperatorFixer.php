@@ -363,6 +363,11 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      */
     private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
     {
+        // If the first operand ends with a variable and the second operand does not start with a space,
+        // the variable in the first operand may be broken by the concatenation.
+
+        // example: "$param" . "hello" -> "$paramhello"
+
         return $tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)
             && !str_starts_with($tokens[$secondOperand['start'] + 1]->getContent(), ' ');
     }
