@@ -30,13 +30,18 @@ final class ParallelConfig
     private int $maxProcesses;
     private int $processTimeout;
 
+    /**
+     * @param positive-int $maxProcesses
+     * @param positive-int $filesPerProcess
+     * @param positive-int $processTimeout
+     */
     public function __construct(
         int $maxProcesses = 2,
         int $filesPerProcess = self::DEFAULT_FILES_PER_PROCESS,
         int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT
     ) {
         if ($maxProcesses <= 0 || $filesPerProcess <= 0 || $processTimeout <= 0) {
-            throw new ParallelisationException('Invalid parallelisation configuration: only positive integers are allowed');
+            throw new \InvalidArgumentException('Invalid parallelisation configuration: only positive integers are allowed');
         }
 
         $this->maxProcesses = $maxProcesses;
