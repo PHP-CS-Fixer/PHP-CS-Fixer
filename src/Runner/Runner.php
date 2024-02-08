@@ -29,6 +29,7 @@ use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\Process;
@@ -182,7 +183,7 @@ final class Runner
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $fileChunk, $decoder, $encoder): void {
-                if (Process::RUNNER_ACTION_HELLO !== $data['action']) {
+                if (ParallelAction::RUNNER_HELLO !== $data['action']) {
                     return;
                 }
 
@@ -197,7 +198,7 @@ final class Runner
                     return;
                 }
 
-                $process->request(['action' => 'run', 'files' => $job]);
+                $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $job]);
             });
         });
 
@@ -224,7 +225,7 @@ final class Runner
                 // [REACT] Handle workers' responses (multiple actions possible)
                 function (array $workerResponse) use ($processPool, $process, $identifier, $fileChunk, &$changed): void {
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
-                    if (Process::RUNNER_ACTION_RESULT === $workerResponse['action']) {
+                    if (ParallelAction::RUNNER_RESULT === $workerResponse['action']) {
                         $fileAbsolutePath = $workerResponse['file'];
                         $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
 
@@ -263,7 +264,7 @@ final class Runner
                         return;
                     }
 
-                    if (Process::RUNNER_ACTION_GET_FILE_CHUNK === $workerResponse['action']) {
+                    if (ParallelAction::RUNNER_GET_FILE_CHUNK === $workerResponse['action']) {
                         // Request another chunk of files, if still available
                         $job = $fileChunk();
 
@@ -273,7 +274,7 @@ final class Runner
                             return;
                         }
 
-                        $process->request(['action' => 'run', 'files' => $job]);
+                        $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $job]);
 
                         return;
                     }

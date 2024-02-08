@@ -20,8 +20,8 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
-use PhpCsFixer\Runner\Parallel\Process;
 use PhpCsFixer\Runner\Parallel\ReadonlyCacheManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
@@ -148,7 +148,7 @@ final class WorkerCommand extends Command
                 $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
 
                 // [REACT] Initialise connection with the parallelisation operator
-                $out->write(['action' => 'hello', 'identifier' => $identifier]);
+                $out->write(['action' => ParallelAction::RUNNER_HELLO, 'identifier' => $identifier]);
 
                 $handleError = static function (\Throwable $error): void {
                     // @TODO Handle communication errors
@@ -158,7 +158,7 @@ final class WorkerCommand extends Command
 
                 // [REACT] Listen for messages from the parallelisation operator (analysis requests)
                 $in->on('data', function (array $json) use ($runner, $out): void {
-                    if (Process::WORKER_ACTION_RUN !== $json['action']) {
+                    if (ParallelAction::WORKER_RUN !== $json['action']) {
                         return;
                     }
 
@@ -174,7 +174,7 @@ final class WorkerCommand extends Command
                         $analysisResult = $runner->fix();
 
                         $out->write([
-                            'action' => 'result',
+                            'action' => ParallelAction::RUNNER_RESULT,
                             'file' => $absolutePath,
                             // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
                             'status' => isset($this->events[0]) ? $this->events[0]->getStatus() : null,
@@ -184,7 +184,7 @@ final class WorkerCommand extends Command
                     }
 
                     // Request another file chunk (if available, the parallelisation operator will request new "run" action)
-                    $out->write(['action' => 'getFileChunk']);
+                    $out->write(['action' => ParallelAction::RUNNER_GET_FILE_CHUNK]);
                 });
             })
         ;
