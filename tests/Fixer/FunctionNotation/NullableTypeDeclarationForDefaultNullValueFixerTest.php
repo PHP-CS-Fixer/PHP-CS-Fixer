@@ -166,6 +166,13 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(? /*comment*/ string $param = null) {}',
             ['use_nullable_type_declaration' => false],
         ];
+
+        yield 'create implicitly nullable parameter types' => [
+            // @see https://wiki.php.net/rfc/deprecate-implicitly-nullable-types
+            '<?php function foo(int $a = null, string $b) {}',
+            '<?php function foo(?int $a = null, string $b) {}',
+            ['use_nullable_type_declaration' => false],
+        ];
     }
 
     /**
