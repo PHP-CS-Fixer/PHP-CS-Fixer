@@ -128,13 +128,18 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             $constructorPropertyModifiers[] = T_READONLY;
         }
 
+        $requiredParameterFound = false;
         foreach (array_reverse($arguments) as $argumentInfo) {
+            $requiredParameterFound = $requiredParameterFound || !$argumentInfo->hasDefault();
+
             if (
                 // Skip, if the parameter
                 // - doesn't have a type declaration
                 !$argumentInfo->hasTypeAnalysis()
                 // - has a mixed or standalone null type
                 || \in_array(strtolower($argumentInfo->getTypeAnalysis()->getName()), ['mixed', 'null'], true)
+                // - required parameter is after and strategy is to remove null
+                || $requiredParameterFound && false === $this->configuration['use_nullable_type_declaration']
                 // - a default value is not null we can continue
                 || !$argumentInfo->hasDefault() || 'null' !== strtolower($argumentInfo->getDefault())
             ) {
