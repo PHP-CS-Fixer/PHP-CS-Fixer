@@ -26,6 +26,13 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @phpstan-type _ConcatOperandType array{
+ *     start: int,
+ *     end: int,
+ *     type: self::STR_*,
+ * }
+ */
 final class NoUselessConcatOperatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const STR_DOUBLE_QUOTE = 0;
@@ -105,16 +112,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function fixConcatOperation(Tokens $tokens, array $firstOperand, int $concatIndex, array $secondOperand): void
     {
@@ -192,11 +191,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     /**
      * @param -1|1 $direction
      *
-     * @return null|array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * }
+     * @return null|_ConcatOperandType
      */
     private function getConcatOperandType(Tokens $tokens, int $index, int $direction): ?array
     {
@@ -228,16 +223,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function mergeConstantEscapedStringOperands(
         Tokens $tokens,
@@ -261,16 +248,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function mergeConstantEscapedStringVarOperands(
         Tokens $tokens,
@@ -350,16 +329,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
     {
