@@ -257,19 +257,9 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         int $concatOperatorIndex,
         array $secondOperand
     ): void {
-        // build uo the new content
-        $newContent = '';
+        // build up the new tokens
 
-        foreach ([$firstOperand, $secondOperand] as $operant) {
-            $operandContent = '';
-
-            for ($i = $operant['start']; $i <= $operant['end'];) {
-                $operandContent .= $tokens[$i]->getContent();
-                $i = $tokens->getNextMeaningfulToken($i);
-            }
-
-            $newContent .= substr($operandContent, 1, -1);
-        }
+        $newTokens = $this->mergeOperands($tokens, $firstOperand, $secondOperand);
 
         // remove tokens making up the concat statement
 
@@ -287,7 +277,6 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
 
         // insert new tokens based on the new content
 
-        $newTokens = Tokens::fromCode('<?php "'.$newContent.'";');
         $newTokensCount = \count($newTokens);
 
         $insertTokens = [];
@@ -334,12 +323,43 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      */
     private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
     {
-        // If the first operand ends with a variable and the second operand does not start with a space,
-        // the variable in the first operand may be broken by the concatenation.
+        if (!$tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)) {
+            return false;
+        }
 
-        // example: "$param" . "hello" -> "$paramhello"
+        $variablesInFirstOperand = $tokens->findGivenKind(T_VARIABLE, $firstOperand['start'], $firstOperand['end']);
+        $variablesInSecondOperand = $tokens->findGivenKind(T_VARIABLE, $secondOperand['start'], $secondOperand['end']);
 
-        return $tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)
-            && !str_starts_with($tokens[$secondOperand['start'] + 1]->getContent(), ' ');
+        $variablesInMergedOperands = $this->mergeOperands($tokens, $firstOperand, $secondOperand)->findGivenKind(T_VARIABLE);
+
+        // If the merged operands contain variables that are not in the given operands, it means that some variables are broken.
+        // So we don't merge them.
+
+        return [] !== array_diff(
+            array_map(static fn (Token $token) => $token->getContent(), $variablesInMergedOperands),
+            array_map(static fn (Token $token) => $token->getContent(), [...$variablesInFirstOperand, ...$variablesInSecondOperand]),
+        );
+    }
+
+    /**
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
+     */
+    private function mergeOperands(Tokens $tokens, array $firstOperand, array $secondOperand): Tokens
+    {
+        $newContent = '';
+
+        foreach ([$firstOperand, $secondOperand] as $operant) {
+            $operandContent = '';
+
+            for ($i = $operant['start']; $i <= $operant['end'];) {
+                $operandContent .= $tokens[$i]->getContent();
+                $i = $tokens->getNextMeaningfulToken($i);
+            }
+
+            $newContent .= substr($operandContent, 1, -1);
+        }
+
+        return Tokens::fromCode('<?php "'.$newContent.'";');
     }
 }
