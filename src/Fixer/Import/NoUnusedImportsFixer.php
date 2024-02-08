@@ -421,26 +421,30 @@ final class NoUnusedImportsFixer extends AbstractFixer
      *
      * @param -1|1 $direction
      *
-     * @return array{0: int, 1: bool}
+     * @return array{0: null|int, 1: bool}
      */
     private function scanForNonEmptyTokensUntilNewLineFound(Tokens $tokens, int $index, int $direction): array
     {
         $hasNonEmptyToken = false;
+        $newLineTokenIndex = null;
 
-        while (\is_int($index) && $index > 0) {
+        // Iterate until we find new line OR we get out of $tokens bounds (next sibling index is `null`).
+        while (\is_int($index)) {
             $index = $tokens->getNonEmptySibling($index, $direction);
 
-            if (null === $tokens[$index]->getId()) {
+            if (null === $index || null === $tokens[$index]->getId()) {
                 continue;
             }
 
             if (!$tokens[$index]->isWhitespace()) {
                 $hasNonEmptyToken = true;
             } elseif (str_starts_with($tokens[$index]->getContent(), "\n")) {
+                $newLineTokenIndex = $index;
+
                 break;
             }
         }
 
-        return [$index, $hasNonEmptyToken];
+        return [$newLineTokenIndex, $hasNonEmptyToken];
     }
 }
