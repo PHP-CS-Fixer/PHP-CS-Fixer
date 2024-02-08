@@ -20,6 +20,4 @@ namespace PhpCsFixer\Cache;
 interface DirectoryInterface
 {
     public function getRelativePathTo(string $file): string;
-
-    public function getAbsolutePath(): string;
 }

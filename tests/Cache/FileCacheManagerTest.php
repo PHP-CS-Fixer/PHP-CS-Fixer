@@ -130,7 +130,7 @@ final class FileCacheManagerTest extends TestCase
         $file = '/foo/bar/baz/src/hello.php';
         $relativePathToFile = 'src/hello.php';
 
-        $directory = $this->createDirectoryDouble($file, $relativePathToFile);
+        $directory = $this->createDirectoryDouble($relativePathToFile);
         $cachedSignature = $this->createSignatureDouble(true);
         $signature = $this->createSignatureDouble(true);
 
@@ -217,7 +217,7 @@ final class FileCacheManagerTest extends TestCase
         $relativePathToFile = 'src/hello.php';
         $fileContent = '<?php echo "Hello!"';
 
-        $directory = $this->createDirectoryDouble($file, $relativePathToFile);
+        $directory = $this->createDirectoryDouble($relativePathToFile);
         $cachedSignature = $this->createSignatureDouble(true);
         $signature = $this->createSignatureDouble(true);
 
@@ -237,21 +237,14 @@ final class FileCacheManagerTest extends TestCase
         return __DIR__.'/../Fixtures/.php_cs.empty-cache';
     }
 
-    private function createDirectoryDouble(string $absolutePath, string $relativePath): DirectoryInterface
+    private function createDirectoryDouble(string $relativePath): DirectoryInterface
     {
-        return new class($absolutePath, $relativePath) implements DirectoryInterface {
+        return new class($relativePath) implements DirectoryInterface {
             private string $relativePath;
-            private string $absolutePath;
 
-            public function __construct(string $absolutePath, string $relativePath)
+            public function __construct(string $relativePath)
             {
-                $this->absolutePath = $absolutePath;
                 $this->relativePath = $relativePath;
-            }
-
-            public function getAbsolutePath(): string
-            {
-                return $this->absolutePath;
             }
 
             public function getRelativePathTo(string $file): string

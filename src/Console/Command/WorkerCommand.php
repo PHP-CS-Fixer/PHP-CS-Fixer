@@ -176,11 +176,11 @@ final class WorkerCommand extends Command
                         $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
 
                         // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
-                        $result[$relativePath]['status'] = isset($this->events[$i])
+                        $result[$absolutePath]['status'] = isset($this->events[$i])
                             ? $this->events[$i]->getStatus()
                             : null;
-                        $result[$relativePath]['fixInfo'] = $analysisResult[$relativePath] ?? null;
-                        $result[$relativePath]['errors'] = $this->errorsManager->forPath($absolutePath);
+                        $result[$absolutePath]['fixInfo'] = $analysisResult[$relativePath] ?? null;
+                        $result[$absolutePath]['errors'] = $this->errorsManager->forPath($absolutePath);
                     }
 
                     $out->write(['action' => 'result', 'result' => $result]);
