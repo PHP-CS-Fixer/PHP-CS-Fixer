@@ -223,10 +223,12 @@ final class Runner
             $process->start(
                 // [REACT] Handle worker's "result" action (analysis report)
                 function (array $analysisResult) use ($processPool, $process, $identifier, $fileChunk, &$changed): void {
-                    foreach ($analysisResult as $file => $result) {
+                    foreach ($analysisResult as $fileAbsolutePath => $result) {
+                        $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
+
                         // Pass-back information about applied changes (only if there are any)
                         if (isset($result['fixInfo'])) {
-                            $changed[$file] = $result['fixInfo'];
+                            $changed[$fileRelativePath] = $result['fixInfo'];
                         }
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($result['status']));
@@ -238,7 +240,7 @@ final class Runner
                                 && !$this->isDryRun
                             )
                         ) {
-                            $this->cacheManager->setFile($file, file_get_contents($this->directory->getAbsolutePath().\DIRECTORY_SEPARATOR.$file));
+                            $this->cacheManager->setFile($fileRelativePath, file_get_contents($fileAbsolutePath));
                         }
 
                         foreach ($result['errors'] ?? [] as $workerError) {
