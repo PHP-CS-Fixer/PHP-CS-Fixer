@@ -410,7 +410,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
             1
         );
 
-        if (!$hasNonEmptyTokenBefore[1] && !$hasNonEmptyTokenAfter[1]) {
+        if (
+            \is_int($hasNonEmptyTokenBefore[0])
+            && !$hasNonEmptyTokenBefore[1]
+            && \is_int($hasNonEmptyTokenAfter[0])
+            && !$hasNonEmptyTokenAfter[1]
+        ) {
             $tokens->clearRange($hasNonEmptyTokenBefore[0], $hasNonEmptyTokenAfter[0] - 1);
         }
     }
