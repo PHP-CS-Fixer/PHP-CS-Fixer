@@ -7,7 +7,6 @@ Integration of fixers: phpdoc_readonly_class_comment_to_keyword,no_empty_phpdoc.
 --EXPECT--
 <?php
 
-
 readonly class Foo
 {
 

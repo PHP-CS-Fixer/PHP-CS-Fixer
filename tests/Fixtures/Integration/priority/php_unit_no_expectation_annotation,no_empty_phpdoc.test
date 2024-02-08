@@ -6,7 +6,6 @@ Integration of fixers: php_unit_no_expectation_annotation,no_empty_phpdoc.
 <?php
 class FooTest extends \PHPUnit_Framework_TestCase
 {
-    
     public function testFoo()
     {
         $this->setExpectedException(\FooException::class, 'foo', 123);

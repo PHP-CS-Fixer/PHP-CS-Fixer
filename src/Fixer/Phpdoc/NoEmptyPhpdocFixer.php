@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class NoEmptyPhpdocFixer extends AbstractFixer
@@ -34,7 +35,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, PhpdocAlignFixer.
+     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, PhpdocAlignFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, NoSuperfluousPhpdocTagsFixer, PhpUnitNoExpectationAnnotationFixer, PhpUnitTestAnnotationFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
@@ -54,9 +55,30 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
                 continue;
             }
 
-            if (Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
-                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            if (!Preg::match('#^/\*\*[\s\*]*\*/$#', $token->getContent())) {
+                continue;
             }
+
+            if (
+                $tokens[$index - 1]->isGivenKind([T_OPEN_TAG, T_WHITESPACE])
+                && substr_count($tokens[$index - 1]->getContent(), "\n") > 0
+                && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)
+                && Preg::match('/^\R/', $tokens[$index + 1]->getContent())
+            ) {
+                $tokens[$index - 1] = new Token([
+                    $tokens[$index - 1]->getId(),
+                    Preg::replace('/\h*$/', '', $tokens[$index - 1]->getContent()),
+                ]);
+
+                $newContent = Preg::replace('/^\R/', '', $tokens[$index + 1]->getContent());
+                if ('' === $newContent) {
+                    $tokens->clearAt($index + 1);
+                } else {
+                    $tokens[$index + 1] = new Token([T_WHITESPACE, $newContent]);
+                }
+            }
+
+            $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
     }
 }
