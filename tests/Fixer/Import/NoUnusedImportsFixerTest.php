@@ -1414,6 +1414,46 @@ Bar3:
                 fn_b(new A(), ConstC);
                 EOF,
         ];
+
+        yield 'only unused comma-separated imports in single line' => [
+            '<?php ',
+            '<?php use A, B, C;',
+        ];
+
+        yield 'only unused grouped imports in single line' => [
+            '<?php ',
+            '<?php use A\{B, C};',
+        ];
+
+        yield 'unused comma-separated imports right after open tag, with consecutive lines' => [
+            "<?php \n# Comment",
+            "<?php use A, B, C;\n\n# Comment",
+        ];
+
+        yield 'unused grouped imports right after open tag, with consecutive lines' => [
+            "<?php \n# Comment",
+            "<?php use A\\{B, C};\n\n# Comment",
+        ];
+
+        yield 'unused comma-separated imports right after open tag with a non-empty token after it, and with consecutive lines' => [
+            "<?php # Comment\n\n# Another comment",
+            "<?php use A, B, C; # Comment\n\n# Another comment",
+        ];
+
+        yield 'unused grouped imports right after open tag with a non-empty token after it, and with consecutive lines' => [
+            "<?php # Comment\n\n# Another comment",
+            "<?php use A\\{B, C}; # Comment\n\n# Another comment",
+        ];
+
+        yield 'only unused comma-separated imports in the last line, with whitespace after' => [
+            "<?php \n",
+            "<?php \nuse A, B, C;     \t\t",
+        ];
+
+        yield 'only unused grouped imports in the last line, with whitespace after' => [
+            "<?php \n",
+            "<?php \nuse A\\{B, C};     \t\t",
+        ];
     }
 
     /**
