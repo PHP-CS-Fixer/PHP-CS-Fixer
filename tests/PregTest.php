@@ -54,7 +54,7 @@ final class PregTest extends TestCase
 
         yield 'valid_control_character_delimiter' => ["\1\1", true];
 
-        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, '/ Unknown modifier /'];
+        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, '/ Unknown modifier|Invalid PCRE pattern /'];
 
         yield 'valid_slate' => ['//', true];
 
