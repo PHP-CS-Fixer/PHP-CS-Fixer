@@ -38,11 +38,6 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 final class Process
 {
-    public const RUNNER_ACTION_HELLO = 'hello';
-    public const RUNNER_ACTION_RESULT = 'result';
-    public const RUNNER_ACTION_GET_FILE_CHUNK = 'getFileChunk';
-    public const WORKER_ACTION_RUN = 'run';
-
     // Properties required for process instantiation
     private string $command;
     private LoopInterface $loop;
