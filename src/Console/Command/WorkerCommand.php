@@ -21,6 +21,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\Process;
 use PhpCsFixer\Runner\Parallel\ReadonlyCacheManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
@@ -157,33 +158,33 @@ final class WorkerCommand extends Command
 
                 // [REACT] Listen for messages from the parallelisation operator (analysis requests)
                 $in->on('data', function (array $json) use ($runner, $out): void {
-                    if ('run' !== $json['action']) {
+                    if (Process::WORKER_ACTION_RUN !== $json['action']) {
                         return;
                     }
 
                     /** @var iterable<int, string> $files */
                     $files = $json['files'];
 
-                    // Reset events because we want to collect only those coming from analysed files chunk
-                    $this->events = [];
-                    $runner->setFileIterator(new \ArrayIterator(
-                        array_map(static fn (string $path) => new \SplFileInfo($path), $files)
-                    ));
-                    $analysisResult = $runner->fix();
-
-                    $result = [];
                     foreach ($files as $i => $absolutePath) {
                         $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
 
-                        // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
-                        $result[$absolutePath]['status'] = isset($this->events[$i])
-                            ? $this->events[$i]->getStatus()
-                            : null;
-                        $result[$absolutePath]['fixInfo'] = $analysisResult[$relativePath] ?? null;
-                        $result[$absolutePath]['errors'] = $this->errorsManager->forPath($absolutePath);
+                        // Reset events because we want to collect only those coming from analysed files chunk
+                        $this->events = [];
+                        $runner->setFileIterator(new \ArrayIterator([new \SplFileInfo($absolutePath)]));
+                        $analysisResult = $runner->fix();
+
+                        $out->write([
+                            'action' => 'result',
+                            'file' => $absolutePath,
+                            // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
+                            'status' => isset($this->events[0]) ? $this->events[0]->getStatus() : null,
+                            'fixInfo' => $analysisResult[$relativePath] ?? null,
+                            'errors' => $this->errorsManager->forPath($absolutePath),
+                        ]);
                     }
 
-                    $out->write(['action' => 'result', 'result' => $result]);
+                    // Request another file chunk (if available, the parallelisation operator will request new "run" action)
+                    $out->write(['action' => 'getFileChunk']);
                 });
             })
         ;

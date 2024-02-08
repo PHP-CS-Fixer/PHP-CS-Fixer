@@ -38,6 +38,11 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 final class Process
 {
+    public const RUNNER_ACTION_HELLO = 'hello';
+    public const RUNNER_ACTION_RESULT = 'result';
+    public const RUNNER_ACTION_GET_FILE_CHUNK = 'getFileChunk';
+    public const WORKER_ACTION_RUN = 'run';
+
     // Properties required for process instantiation
     private string $command;
     private LoopInterface $loop;
@@ -219,11 +224,9 @@ final class Process
 
         $out->on('data', function (array $json): void {
             $this->cancelTimer();
-            if ('result' !== $json['action']) {
-                return;
-            }
 
-            ($this->onData)($json['result']);
+            // Pass everything to the parallelisation operator, it should decide how to handle the data
+            ($this->onData)($json);
         });
         $out->on('error', function (\Throwable $error): void {
             ($this->onError)($error);

@@ -182,7 +182,7 @@ final class Runner
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $fileChunk, $decoder, $encoder): void {
-                if ('hello' !== $data['action']) {
+                if (Process::RUNNER_ACTION_HELLO !== $data['action']) {
                     return;
                 }
 
@@ -221,29 +221,32 @@ final class Runner
             );
             $processPool->addProcess($identifier, $process);
             $process->start(
-                // [REACT] Handle worker's "result" action (analysis report)
-                function (array $analysisResult) use ($processPool, $process, $identifier, $fileChunk, &$changed): void {
-                    foreach ($analysisResult as $fileAbsolutePath => $result) {
+                // [REACT] Handle workers' responses (multiple actions possible)
+                function (array $workerResponse) use ($processPool, $process, $identifier, $fileChunk, &$changed): void {
+                    // File analysis result (we want close-to-realtime progress with frequent cache savings)
+                    if (Process::RUNNER_ACTION_RESULT === $workerResponse['action']) {
+                        $fileAbsolutePath = $workerResponse['file'];
                         $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
 
                         // Pass-back information about applied changes (only if there are any)
-                        if (isset($result['fixInfo'])) {
-                            $changed[$fileRelativePath] = $result['fixInfo'];
+                        if (isset($workerResponse['fixInfo'])) {
+                            $changed[$fileRelativePath] = $workerResponse['fixInfo'];
                         }
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
-                        $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($result['status']));
+                        $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($workerResponse['status']));
 
                         if (
-                            FixerFileProcessedEvent::STATUS_NO_CHANGES === (int) $result['status']
+                            FixerFileProcessedEvent::STATUS_NO_CHANGES === (int) $workerResponse['status']
                             || (
-                                FixerFileProcessedEvent::STATUS_FIXED === (int) $result['status']
+                                FixerFileProcessedEvent::STATUS_FIXED === (int) $workerResponse['status']
                                 && !$this->isDryRun
                             )
                         ) {
                             $this->cacheManager->setFile($fileRelativePath, file_get_contents($fileAbsolutePath));
                         }
 
-                        foreach ($result['errors'] ?? [] as $workerError) {
+                        // Worker requests for another file chunk when all files were processed
+                        foreach ($workerResponse['errors'] ?? [] as $workerError) {
                             $error = new Error(
                                 $workerError['type'],
                                 $workerError['filePath'],
@@ -256,18 +259,26 @@ final class Runner
 
                             $this->errorsManager->report($error);
                         }
-                    }
-
-                    // Request another chunk of files, if still available
-                    $job = $fileChunk();
-
-                    if (0 === \count($job)) {
-                        $processPool->endProcessIfKnown($identifier);
 
                         return;
                     }
 
-                    $process->request(['action' => 'run', 'files' => $job]);
+                    if (Process::RUNNER_ACTION_GET_FILE_CHUNK === $workerResponse['action']) {
+                        // Request another chunk of files, if still available
+                        $job = $fileChunk();
+
+                        if (0 === \count($job)) {
+                            $processPool->endProcessIfKnown($identifier);
+
+                            return;
+                        }
+
+                        $process->request(['action' => 'run', 'files' => $job]);
+
+                        return;
+                    }
+
+                    throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
                 },
 
                 // [REACT] Handle errors encountered during worker's execution
