@@ -33,7 +33,7 @@ final class DataProviderAnalysis
     {
         if (!array_is_list($usageIndices)) {
             Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
-                'Parameter "usageIndices" should be of type 'list' (and not type 'array') and this will be enforced in version %d.0.',
+                'Parameter "usageIndices" should be a list. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
         }
