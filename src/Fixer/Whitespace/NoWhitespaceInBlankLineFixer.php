@@ -38,7 +38,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      *
-     * Must run after AssignNullCoalescingToCoalesceEqualFixer, CombineConsecutiveIssetsFixer, CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUselessElseFixer, NoUselessReturnFixer, YieldFromArrayToYieldsFixer.
+     * Must run after AssignNullCoalescingToCoalesceEqualFixer, CombineConsecutiveIssetsFixer, CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyStatementFixer, NoUselessElseFixer, NoUselessReturnFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
