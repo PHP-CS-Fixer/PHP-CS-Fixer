@@ -407,7 +407,7 @@ case $b:
 }}}}}}}}}}',
         ];
 
-        yield [
+        yield 'numeric literal separator' => [
             '<?php
             switch($a) {
                 case "a":
@@ -422,7 +422,7 @@ case $b:
                     continue;
             }
             ',
-            'numeric literal separator' => [
+            [
                 '<?php
 switch ($a) {
 case $b:

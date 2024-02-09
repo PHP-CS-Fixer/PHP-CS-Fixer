@@ -659,7 +659,7 @@ else?><?php echo 5;',
             ';
 
         foreach ($cases as $index => $case) {
-            yield [sprintf('PHP8 Negative case %d', $index) => sprintf($template, $case)];
+            yield sprintf('PHP8 Negative case %d', $index) => [sprintf($template, $case)];
         }
     }
 

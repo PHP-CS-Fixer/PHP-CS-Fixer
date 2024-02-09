@@ -26,7 +26,7 @@
         "ext-tokenizer": "*",
         "composer/semver": "^3.4",
         "composer/xdebug-handler": "^3.0.3",
-        "sebastian/diff": "^4.0 || ^5.0",
+        "sebastian/diff": "^4.0 || ^5.0 || ^6.0",
         "symfony/console": "^5.4 || ^6.0 || ^7.0",
         "symfony/event-dispatcher": "^5.4 || ^6.0 || ^7.0",
         "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
@@ -47,7 +47,8 @@
         "php-cs-fixer/accessible-object": "^1.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.4",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.4",
-        "phpunit/phpunit": "^9.6 || ^10.5.5",
+        "phpunit/phpunit": "^9.6 || ^10.5.5 || ^11.0.2",
+        "symfony/var-dumper": "^5.4 || ^6.0 || ^7.0",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
     },
     "suggest": {

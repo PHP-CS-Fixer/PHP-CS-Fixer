@@ -41,6 +41,8 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
+     * @group medium
+     *
      * @dataProvider provideLintFileCases
      */
     public function testLintFile(string $file, ?string $errorMessage = null): void
@@ -56,9 +58,6 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintFile($file)->check();
     }
 
-    /**
-     * @medium
-     */
     public static function provideLintFileCases(): iterable
     {
         yield [

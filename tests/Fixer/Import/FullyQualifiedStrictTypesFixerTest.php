@@ -687,7 +687,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by class declaration' => [
+        yield 'do not import if already implicitly used by class declaration' => [
             <<<'EOD'
                 <?php
 
@@ -702,7 +702,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by interface declaration' => [
+        yield 'do not import if already implicitly used by interface declaration' => [
             <<<'EOD'
                 <?php
 
@@ -717,7 +717,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by trait declaration' => [
+        yield 'do not import if already implicitly used by trait declaration' => [
             <<<'EOD'
                 <?php
 
@@ -732,7 +732,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage in class instantiation' => [
+        yield 'do not import if already implicitly used by short name usage in class instantiation' => [
             <<<'EOD'
                 <?php
 
@@ -745,7 +745,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage in attribute' => [
+        yield 'do not import if already implicitly used by short name usage in attribute' => [
             <<<'EOD'
                 <?php
 
@@ -759,7 +759,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'import only if not already implicitly used by short name usage in phpdoc' => [
+        yield 'do not import if already implicitly used by short name usage in phpdoc' => [
             <<<'EOD'
                 <?php
 
@@ -767,6 +767,32 @@ class Foo extends \A\A implements \B\A, \C\A
 
                 new \Ns2\MyCl();
                 /** @var MyCl */;
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import if already implicitly used by relative name first part' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                new MyCl\Sub();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import if already implicitly used by relative name first part (with more backslashes than other FQCN)' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns2\MyCl();
+                new MyCl\A\B\C();
                 EOD,
             null,
             ['import_symbols' => true],
@@ -986,6 +1012,208 @@ class Foo extends \A\A implements \B\A, \C\A
                     }
 
                 }
+                EOD,
+        ];
+
+        yield 'import even if partly importable using namespace' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns\A\B;
+                use Ns\A\B\C;
+
+                new A();
+                new B();
+                new C();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new \Ns\A();
+                new \Ns\A\B();
+                new \Ns\A\B\C();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import relative symbols if not configured so - namespaced' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import relative symbols if not configured so - global with use' => [
+            <<<'EOD'
+                <?php
+
+                use A;
+                use B\B2\C2;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                new C2();
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use A;
+
+                new A();
+                new A\B();
+                new A\B\C();
+                new B\B2\C2();
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'do not import partly on import conflict (until conflicts are fully handled and consistent with namespaced/non-namespaced files) - global with use' => [
+            <<<'EOD'
+                <?php
+
+                use A;
+
+                new A();
+                new X\Y\A();
+                EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        // TODO: Ensure shortening for imported functions and constants
+        yield 'Shorten symbol from comma-separated multi-use statement' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service1, Bar\Service2;
+                use function Bar\func1, Bar\func2;
+                use const Bar\CONST1, Bar\CONST2;
+
+                \Bar\func1(new Service1(\Bar\CONST1));
+                \Bar\func2(new Service2(\Bar\CONST2));
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service1, Bar\Service2;
+                use function Bar\func1, Bar\func2;
+                use const Bar\CONST1, Bar\CONST2;
+
+                \Bar\func1(new \Bar\Service1(\Bar\CONST1));
+                \Bar\func2(new \Bar\Service2(\Bar\CONST2));
+                EOD,
+        ];
+
+        // TODO: Ensure shortening for imported functions and constants
+        yield 'Shorten symbol from multi-line, comma-separated multi-use statement, with some noise here and there' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service1, /* MAKE SOME NOOOOOISE! */
+                    /* MAKE SOME NOOOOOISE! */ Bar\Service2;
+                use function Bar\func1, // MAKE SOME NOOOOOISE!
+                    /** MAKE SOME NOOOOOISE! */ Bar\func2;
+                use const /* MAKE SOME NOOOOOISE! */ Bar\CONST1,
+                    Bar\CONST2; # MAKE SOME NOOOOOISE!
+
+                \Bar\func1(new Service1(\Bar\CONST1));
+                \Bar\func2(new Service2(\Bar\CONST2));
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\Service1, /* MAKE SOME NOOOOOISE! */
+                    /* MAKE SOME NOOOOOISE! */ Bar\Service2;
+                use function Bar\func1, // MAKE SOME NOOOOOISE!
+                    /** MAKE SOME NOOOOOISE! */ Bar\func2;
+                use const /* MAKE SOME NOOOOOISE! */ Bar\CONST1,
+                    Bar\CONST2; # MAKE SOME NOOOOOISE!
+
+                \Bar\func1(new \Bar\Service1(\Bar\CONST1));
+                \Bar\func2(new \Bar\Service2(\Bar\CONST2));
+                EOD,
+        ];
+
+        // TODO: Ensure shortening for imported functions and constants
+        yield 'Shorten symbol from grouped multi-use statement' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\{Service1, Service2};
+                use function Bar\{func1, func2};
+                use const Bar\{CONST1, CONST2};
+
+                \Bar\func1(new Service1(\Bar\CONST1));
+                \Bar\func2(new Service2(\Bar\CONST2));
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\{Service1, Service2};
+                use function Bar\{func1, func2};
+                use const Bar\{CONST1, CONST2};
+
+                \Bar\func1(new \Bar\Service1(\Bar\CONST1));
+                \Bar\func2(new \Bar\Service2(\Bar\CONST2));
+                EOD,
+        ];
+
+        // TODO: Ensure shortening for imported functions and constants
+        yield 'Shorten symbol from multi-line grouped multi-use statement with some noise here and there' => [
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\{
+                    /* MAKE SOME NOOOOOISE! */ Service1,
+
+                    Service2 /* MAKE SOME NOOOOOISE! */
+                };
+                use function Bar\{
+                    func1, // MAKE SOME NOOOOOISE!
+
+                    /** MAKE SOME NOOOOOISE! */ func2
+                };
+                use const Bar\{
+                    /* MAKE SOME NOOOOOISE! */ CONST1,
+
+                    CONST2 # MAKE SOME NOOOOOISE!
+                };
+
+                \Bar\func1(new Service1(\Bar\CONST1));
+                \Bar\func2(new Service2(\Bar\CONST2));
+                EOD,
+            <<<'EOD'
+                <?php
+                namespace Foo;
+                use Bar\{
+                    /* MAKE SOME NOOOOOISE! */ Service1,
+
+                    Service2 /* MAKE SOME NOOOOOISE! */
+                };
+                use function Bar\{
+                    func1, // MAKE SOME NOOOOOISE!
+
+                    /** MAKE SOME NOOOOOISE! */ func2
+                };
+                use const Bar\{
+                    /* MAKE SOME NOOOOOISE! */ CONST1,
+
+                    CONST2 # MAKE SOME NOOOOOISE!
+                };
+
+                \Bar\func1(new \Bar\Service1(\Bar\CONST1));
+                \Bar\func2(new \Bar\Service2(\Bar\CONST2));
                 EOD,
         ];
     }
@@ -1633,6 +1861,49 @@ namespace Ns;
 function foo($v) {}',
         ];
 
+        yield 'Test PHPDoc union with imports' => [
+            '<?php
+
+namespace Ns;
+use Other\Foo;
+use Other\FooŇ;
+
+/**
+ * @param \Exception|\Exception2|int|Foo|FooŇ|null $v
+ */
+function foo($v) {}',
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Exception|\Exception2|int|\Other\Foo|\Other\FooŇ|null $v
+ */
+function foo($v) {}',
+            ['import_symbols' => true],
+        ];
+
+        yield 'Test PHPDoc string must be kept as is' => [
+            '<?php
+
+namespace Ns;
+use Other\Foo;
+
+/**
+ * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ */
+function foo($v) {}',
+            '<?php
+
+namespace Ns;
+
+/**
+ * @param \Other\Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ */
+function foo($v) {}',
+            ['import_symbols' => true],
+        ];
+
         yield 'Test PHPDoc in interface' => [
             '<?php
 
@@ -2237,7 +2508,7 @@ class SomeClass
 }',
         ];
 
-        yield 'import only if not already implicitly used by enum declaration' => [
+        yield 'do not import if already implicitly used by enum declaration' => [
             <<<'EOD'
                 <?php
 

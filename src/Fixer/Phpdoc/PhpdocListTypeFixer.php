@@ -56,7 +56,7 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer, PhpdocTypesOrderFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
@@ -65,6 +65,6 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
 
     protected function normalize(string $type): string
     {
-        return Preg::replace('/array(?=<[^,]+(>|<|{|\\())/i', 'list', $type);
+        return Preg::replace('/array(?=<(?:[^,<]|<[^>]+>)+(>|{|\\())/i', 'list', $type);
     }
 }

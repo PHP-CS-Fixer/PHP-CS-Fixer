@@ -11,7 +11,7 @@ Configuration
 ``import_symbols``
 ~~~~~~~~~~~~~~~~~~
 
-Whether FQCNs found during analysis should be automatically imported.
+Whether FQCNs should be automatically imported.
 
 Allowed types: ``bool``
 

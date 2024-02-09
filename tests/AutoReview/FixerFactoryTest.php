@@ -586,7 +586,6 @@ final class FixerFactoryTest extends TestCase
             'no_empty_phpdoc' => [
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
-                'no_whitespace_in_blank_line',
             ],
             'no_empty_statement' => [
                 'braces',
@@ -770,6 +769,10 @@ final class FixerFactoryTest extends TestCase
                 'no_superfluous_phpdoc_tags',
                 'phpdoc_align',
                 'phpdoc_order',
+            ],
+            'phpdoc_array_type' => [
+                'phpdoc_list_type',
+                'phpdoc_types_order',
             ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',
