@@ -301,7 +301,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         do {
             $prevWhitespaceTokenIndex = $tokens->getPrevTokenOfKind(
                 $searchIndex,
-                [[T_WHITESPACE]]
+                [[T_ENCAPSED_AND_WHITESPACE], [T_WHITESPACE]],
             );
 
             $searchIndex = $prevWhitespaceTokenIndex;
@@ -311,6 +311,8 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
         if (null === $prevWhitespaceTokenIndex) {
             $existingIndentation = '';
+        } elseif (!$tokens[$prevWhitespaceTokenIndex]->isGivenKind(T_WHITESPACE)) {
+            return;
         } else {
             $existingIndentation = $tokens[$prevWhitespaceTokenIndex]->getContent();
             $lastLineIndex = strrpos($existingIndentation, "\n");
