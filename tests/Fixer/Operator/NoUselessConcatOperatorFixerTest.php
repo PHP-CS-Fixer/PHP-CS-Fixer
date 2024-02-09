@@ -133,9 +133,33 @@ $text2 = "intro:   "."   "." #a
                 $f201 = b"a".b"b";
                 $f203 = "a".B"b";
                 echo b"He drank some juice made of {$fruit}s.".b" Sliced the {$fruit}s.";
+            ',
+        ];
+
+        yield 'do not fix if variables would be broken' => [
+            '<?php
                 echo "abc $d" . "e $f";
                 echo "abc $d" . "e";
                 echo "abc $d" . \'e\';
+                echo "abc $d" . "😃"; // with emoji
+                echo "私の名前は$name" . "です"; // multibyte characters (Japanese)
+            ',
+        ];
+
+        yield 'fix if variables would not be broken' => [
+            '<?php
+                echo "$a bcde";
+                echo "abc ${d}e";
+                echo "abc $d-efg";
+                echo "abc $d-$e";
+                echo "abc $d[$e]";
+            ',
+            '<?php
+                echo "$a bc" . "de";
+                echo "abc ${d}" . "e";
+                echo "abc $d" . "-efg";
+                echo "abc $d" . "-$e";
+                echo "abc $d" . "[$e]";
             ',
         ];
 
