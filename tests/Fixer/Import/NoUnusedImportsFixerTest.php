@@ -169,7 +169,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
             <<<'EOF'
                 <?php namespace App\Http\Controllers;
 
-
                 EOF,
             <<<'EOF'
                 <?php namespace App\Http\Controllers;
@@ -314,7 +313,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 
                 namespace Foo;
 
-                use BarB, BarC as C, BarD;
                 use BarE;
 
                 $c = new D();
@@ -332,6 +330,8 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 use BarB2;
                 use BarB\B2;
                 use BarE;
+                use function fun_a, fun_b, fun_c;
+                use const CONST_A, CONST_B, CONST_C;
 
                 $c = new D();
                 $e = new BarE();
@@ -669,7 +669,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
             <<<'EOF'
                 <?php
                 namespace Aaa;
-
 
                 class Ddd
                 {
@@ -1319,7 +1318,16 @@ Bar3:
         ];
 
         yield [
-            $expected = <<<'EOF'
+            <<<'EOF'
+                <?php
+                use some\a\{ClassD};
+                use function some\c\{fn_a};
+                use const some\d\{ConstB};
+
+                new CLassD();
+                echo fn_a(ConstB);
+                EOF,
+            <<<'EOF'
                 <?php
                 use some\a\{ClassD};
                 use some\b\{ClassA, ClassB, ClassC as C};
@@ -1327,34 +1335,124 @@ Bar3:
                 use const some\d\{ConstA, ConstB, ConstC};
 
                 new CLassD();
-                echo fn_a();
+                echo fn_a(ConstB);
                 EOF
         ];
 
-        yield [ // TODO test shows lot of cases where imports are not removed while could be
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
+        yield 'grouped imports' => [
+            <<<'EOF'
+                <?php
+                use some\y\{ClassA, ClassC as C,};
+                use function some\a\{
+                    fn_b,
+                };
+                use const some\Z\{ConstA,ConstC,};
 
-    echo ConstA.ConstB.ConstC,ConstF;
-    echo ConstBB.ConstCC;
-    fn_a(ClassA::test, new C());
-',
-            '<?php use A\{B,};
-use some\y\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\Z\{ConstAA,ConstBB,ConstCC,};
-use const some\X\{ConstA,ConstB,ConstC,ConstF};
-use C\{D,E,};
-use Z;
+                echo ConstA.ConstC;
+                fn_b(ClassA::test, new C());
+                EOF,
+            <<<'EOF'
+                <?php
+                use A\{B,};
+                use some\y\{ClassA, ClassB, ClassC as C,};
+                use function some\a\{
+                    fn_a,
+                    fn_b,
+                    fn_c,
+                };
+                use function some\b\{fn_x, fn_y, fn_z,};
+                use const some\Z\{ConstA,ConstB,ConstC,};
+                use const some\X\{ConstX,ConstY,ConstZ};
+                use C\{D,E,};
+                use Z;
 
-    echo ConstA.ConstB.ConstC,ConstF;
-    echo ConstBB.ConstCC;
-    fn_a(ClassA::test, new C());
-',
+                echo ConstA.ConstC;
+                fn_b(ClassA::test, new C());
+                EOF,
+        ];
+
+        yield 'multiline grouped imports with comments' => [
+            <<<'EOF'
+                <?php
+                use function some\a\{
+                     // Foo
+                    fn_b,
+                    /* Bar *//** Baz */
+                     # Buzz
+                };
+
+                fn_b();
+                EOF,
+            <<<'EOF'
+                <?php
+                use function some\a\{
+                    fn_a, // Foo
+                    fn_b,
+                    /* Bar */ fn_c, /** Baz */
+                    fn_d, # Buzz
+                };
+
+                fn_b();
+                EOF,
+        ];
+
+        yield 'comma-separated imports' => [
+            <<<'EOF'
+                <?php
+                use A;
+                use function fn_b;
+                use const ConstC;
+
+                fn_b(new A(), ConstC);
+                EOF,
+            <<<'EOF'
+                <?php
+                use A, B, C;
+                use function fn_a, fn_b, fn_c;
+                use const ConstA, ConstB, ConstC;
+
+                fn_b(new A(), ConstC);
+                EOF,
+        ];
+
+        yield 'only unused comma-separated imports in single line' => [
+            '<?php ',
+            '<?php use A, B, C;',
+        ];
+
+        yield 'only unused grouped imports in single line' => [
+            '<?php ',
+            '<?php use A\{B, C};',
+        ];
+
+        yield 'unused comma-separated imports right after open tag, with consecutive lines' => [
+            "<?php \n# Comment",
+            "<?php use A, B, C;\n\n# Comment",
+        ];
+
+        yield 'unused grouped imports right after open tag, with consecutive lines' => [
+            "<?php \n# Comment",
+            "<?php use A\\{B, C};\n\n# Comment",
+        ];
+
+        yield 'unused comma-separated imports right after open tag with a non-empty token after it, and with consecutive lines' => [
+            "<?php # Comment\n\n# Another comment",
+            "<?php use A, B, C; # Comment\n\n# Another comment",
+        ];
+
+        yield 'unused grouped imports right after open tag with a non-empty token after it, and with consecutive lines' => [
+            "<?php # Comment\n\n# Another comment",
+            "<?php use A\\{B, C}; # Comment\n\n# Another comment",
+        ];
+
+        yield 'only unused comma-separated imports in the last line, with whitespace after' => [
+            "<?php \n",
+            "<?php \nuse A, B, C;     \t\t",
+        ];
+
+        yield 'only unused grouped imports in the last line, with whitespace after' => [
+            "<?php \n",
+            "<?php \nuse A\\{B, C};     \t\t",
         ];
     }
 
