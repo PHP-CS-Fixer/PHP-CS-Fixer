@@ -33,7 +33,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
 {
     /** @var array<string, string> */
-    private array $fixingMap = [];
+    private array $fixingMap;
 
     public function __construct()
     {
