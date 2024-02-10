@@ -16,7 +16,6 @@ on:
 jobs:
   docker-compose-build:
     name: Compose build PHP ${{ matrix.php-version }}
-    if: startsWith(github.ref, 'refs/heads')
     runs-on: ubuntu-latest
     strategy:
       matrix:
