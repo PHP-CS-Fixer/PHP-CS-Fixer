@@ -2,8 +2,18 @@ name: Create and publish a Docker images
 
 on:
   push:
+    branches:
+      - "master"
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+  pull_request:
+    paths:
+      - "compose.yaml"
+      - "Dockerfile"
+  # Allow running on demand using Github UI
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
 
 env:
   REGISTRY: ghcr.io
@@ -12,7 +22,8 @@ env:
 jobs:
   build-and-push-image:
     name: PHP ${{ matrix.php-version }}, Fixer ${{ github.ref_name }}
-    if: github.repository == 'PHP-CS-Fixer/PHP-CS-Fixer'
+    # Run only for tags in the main repository (official releases)
+    if: github.repository == 'PHP-CS-Fixer/PHP-CS-Fixer' && startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -72,3 +83,22 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  docker-compose-build:
+    name: Docker Compose build PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - php-version: '7.4'
+          - php-version: '8.0'
+          - php-version: '8.1'
+          - php-version: '8.2'
+          - php-version: '8.3'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Docker Compose build
+        run: docker compose build --no-cache --pull php-${{ matrix.php-version }}
