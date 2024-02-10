@@ -265,11 +265,11 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedForBuildingOfficialImages(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/docker.yml'));
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/release.yml'));
 
         return array_map(
             static fn ($item) => $item['php-version'],
-            $yaml['jobs']['build-and-push-image']['strategy']['matrix']['include']
+            $yaml['jobs']['docker-images']['strategy']['matrix']['include']
         );
     }
 
