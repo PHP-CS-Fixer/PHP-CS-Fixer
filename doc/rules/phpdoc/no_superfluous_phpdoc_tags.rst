@@ -8,10 +8,10 @@ information.
 Configuration
 -------------
 
-``allow_future_params``
+``allow_hidden_params``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether ``param`` annotation for future method signature are allowed.
+Whether ``param`` annotation for hidden params in method signature are allowed.
 
 Allowed types: ``bool``
 
@@ -108,7 +108,7 @@ With configuration: ``['remove_inheritdoc' => true]``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['allow_future_params' => true]``.
+With configuration: ``['allow_hidden_params' => true]``.
 
 .. code-block:: diff
 
@@ -156,7 +156,7 @@ The rule is part of the following rule sets:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['allow_future_params' => true, 'remove_inheritdoc' => true]``
+  ``['allow_hidden_params' => true, 'remove_inheritdoc' => true]``
 
 
 References

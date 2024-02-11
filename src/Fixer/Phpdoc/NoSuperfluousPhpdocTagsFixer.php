@@ -107,7 +107,7 @@ class Foo {
     public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
 }
 ',
-                    ['allow_future_params' => true],
+                    ['allow_hidden_params' => true],
                 ),
                 new CodeSample(
                     '<?php
@@ -235,7 +235,7 @@ class Foo {
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('allow_future_params', 'Whether `param` annotation for future method signature are allowed.'))
+            (new FixerOptionBuilder('allow_hidden_params', 'Whether `param` annotation for hidden params in method signature are allowed.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false) // @TODO set to `true` on 4.0
                 ->getOption(),
@@ -463,12 +463,12 @@ class Foo {
             $argumentsInfo[$token->getContent()] = $info;
         }
 
-        // virtualise "future params" as if they would be regular ones
-        if (true === $this->configuration['allow_future_params']) {
+        // virtualise "hidden params" as if they would be regular ones
+        if (true === $this->configuration['allow_hidden_params']) {
             $paramsString = $tokens->generatePartialCode($start, $end);
             Preg::matchAll('|/\*[^$]*(\$\w+)[^*]*\*/|', $paramsString, $matches);
             foreach ($matches[1] as $match) {
-                $argumentsInfo[$match] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for future param, for now we only indicate it's existence
+                $argumentsInfo[$match] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for hidden param, for now we only indicate it's existence
             }
         }
 
