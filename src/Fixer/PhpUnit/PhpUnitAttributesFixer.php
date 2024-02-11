@@ -164,7 +164,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         }
 
         // annotations that map from 'enabled'/'disabled' value to attribute with boolean value
-        foreach (['preserveGlobalState', 'backupStaticAttributes', 'backupGlobals'] as $annotation) {
+        foreach (['backupGlobals', 'backupStaticAttributes', 'preserveGlobalState'] as $annotation) {
             $this->fixingMap[$annotation] = 'fixWithEnabledDisabledValue';
         }
 
@@ -173,8 +173,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         $this->fixingMap['dataProvider'] = 'fixDataProvider';
         $this->fixingMap['depends'] = 'fixDepends';
         $this->fixingMap['requires'] = 'fixRequires';
-        $this->fixingMap['uses'] = 'fixUses';
         $this->fixingMap['testWith'] = 'fixTestWith';
+        $this->fixingMap['uses'] = 'fixUses';
     }
 
     private static function shouldBeFixed(string $annotationName, string $annotationScope): bool
@@ -214,6 +214,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
             $annotation->getContent(),
             $matches,
         );
+        if (!isset($matches[1])) {
+            return [];
+        }
 
         return self::createAttributeTokens(
             $tokens,
@@ -229,6 +232,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixWithEnabledDisabledValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        if (!isset($matches[1])) {
+            return [];
+        }
 
         return self::createAttributeTokens(
             $tokens,
@@ -266,6 +272,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixDataProvider(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        if (!isset($matches[1])) {
+            return [];
+        }
 
         if (str_contains($matches[1], '::')) {
             [$class, $method] = explode('::', $matches[1]);
@@ -352,7 +361,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
             'setting' => 'RequiresSetting',
         ];
 
-        if (!isset($map[$matches[1]]) || !isset($matches[2])) {
+        if (!isset($matches[2]) || !isset($map[$matches[1]])) {
             return [];
         }
 
@@ -382,9 +391,36 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     /**
      * @return list<Token>
      */
+    private static function fixTestWith(Tokens $tokens, int $index, Annotation $annotation): array
+    {
+        $content = $annotation->getContent();
+        $content = Preg::replace('/@testWith\s+/', '', $content);
+        $content = Preg::replace('/(^|\R)\s+\**\s*/', "\n", $content);
+        $content = trim($content);
+        if ('' === $content) {
+            return [];
+        }
+
+        $attributeTokens = [];
+        foreach (explode("\n", $content) as $json) {
+            $attributeTokens = array_merge(
+                $attributeTokens,
+                self::createAttributeTokens($tokens, $index, 'TestWithJson', self::createEscapedStringToken($json)),
+            );
+        }
+
+        return $attributeTokens;
+    }
+
+    /**
+     * @return list<Token>
+     */
     private static function fixUses(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        if (!isset($matches[1])) {
+            return [];
+        }
 
         if (str_starts_with($matches[1], '::')) {
             $attributeName = 'UsesFunction';
@@ -397,26 +433,6 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         }
 
         return self::createAttributeTokens($tokens, $index, $attributeName, ...$attributeTokens);
-    }
-
-    /**
-     * @return list<Token>
-     */
-    private static function fixTestWith(Tokens $tokens, int $index, Annotation $annotation): array
-    {
-        $content = $annotation->getContent();
-        $content = Preg::replace('/@testWith\s+/', '', $content);
-        $content = Preg::replace('/(^|\R)\s+\**\s*/', "\n", $content);
-
-        $attributeTokens = [];
-        foreach (explode("\n", trim($content)) as $json) {
-            $attributeTokens = array_merge(
-                $attributeTokens,
-                self::createAttributeTokens($tokens, $index, 'TestWithJson', self::createEscapedStringToken($json)),
-            );
-        }
-
-        return $attributeTokens;
     }
 
     /**

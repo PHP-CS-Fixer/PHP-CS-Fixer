@@ -41,11 +41,21 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
         yield 'do not fix with wrong values' => [<<<'PHP'
             <?php
             /**
-             * @requires PHP
+             * @requires
+             * @uses
              */
             class FooTest extends \PHPUnit\Framework\TestCas {
                 /**
+                 * @backupGlobals
+                 * @backupStaticAttributes
+                 * @covers
+                 * @dataProvider
                  * @depends
+                 * @group
+                 * @preserveGlobalState
+                 * @testDox
+                 * @testWith
+                 * @ticket
                  */
                 public function testFoo() { self::assertTrue(true); }
             }
