@@ -43,25 +43,27 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             class FooTest extends \PHPUnit\Framework\TestCas {
                 /**
                  * @backupGlobals yes, please
-                 * @preserveGlobalState DO IT!
+                 * @requires Foo Bar
                  */
                 public function testFoo() { self::assertTrue(true); }
-                /** PHPDoc at the end of the class */
             }
             PHP];
 
         yield 'do not fix with wrong casing' => [<<<'PHP'
             <?php
+            /**
+             * @COVERS \Foo
+             */
             class FooTest extends \PHPUnit\Framework\TestCas {
                 /**
-                 * @requires php 8.3
                  * @dataPROVIDER provideFooCases
+                 * @requires php 8.3
                  */
                 public function testFoo() { self::assertTrue(true); }
             }
             PHP];
 
-        yield 'do not fix those not supported by attributes' => [<<<'PHP'
+        yield 'do not fix when not supported by attributes' => [<<<'PHP'
             <?php
             /**
              * @covers FooClass::FooMethod
@@ -138,23 +140,41 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
-        yield 'fix in PHPDoc before class' => [
-            <<<'PHP'
+        $byte224 = \chr(224);
+
+        yield 'fix with non-alphanumeric characters' => [
+            <<<PHP
                 <?php
-                /**
-                 */
-                #[\PHPUnit\Framework\Attributes\CoversNothing]
-                class FooTest extends \PHPUnit\Framework\TestCase {
+                class FooTest extends \\PHPUnit\\Framework\\TestCase {
+                    /**
+                     */
+                    #[\\PHPUnit\\Framework\\Attributes\\TestDox('a\\'b"c')]
                     public function testFoo() { self::assertTrue(true); }
+                    /**
+                     */
+                    #[\\PHPUnit\\Framework\\Attributes\\TestDox('龍')]
+                    public function testBar() { self::assertTrue(true); }
+                    /**
+                     */
+                    #[\\PHPUnit\\Framework\\Attributes\\TestDox('byte224: {$byte224}')]
+                    public function testBaz() { self::assertTrue(true); }
                 }
                 PHP,
-            <<<'PHP'
+            <<<PHP
                 <?php
-                /**
-                 * @coversNothing
-                 */
-                class FooTest extends \PHPUnit\Framework\TestCase {
+                class FooTest extends \\PHPUnit\\Framework\\TestCase {
+                    /**
+                     * @testDox a'b"c
+                     */
                     public function testFoo() { self::assertTrue(true); }
+                    /**
+                     * @testDox 龍
+                     */
+                    public function testBar() { self::assertTrue(true); }
+                    /**
+                     * @testDox byte224: {$byte224}
+                     */
+                    public function testBaz() { self::assertTrue(true); }
                 }
                 PHP,
         ];
@@ -413,8 +433,8 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
 
         yield 'handle TestDox' => self::createCase(
             ['class', 'method'],
-            "#[TestDox('hello\\'world, my friend!')]",
-            "@testDox hello'world, my friend!",
+            "#[TestDox('Hello world!')]",
+            '@testDox Hello world!',
         );
 
         yield 'handle Ticket' => self::createCase(
