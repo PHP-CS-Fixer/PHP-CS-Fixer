@@ -210,7 +210,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixWithSingleStringValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(.+)\R/', $annotation->getTag()->getName()),
+            sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );
@@ -229,7 +229,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixWithEnabledDisabledValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(.+)\R/', $annotation->getTag()->getName()),
+            sprintf('/@%s\s+(\S+)(\R|\s*\*+\\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );
@@ -299,7 +299,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixDepends(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@depends\s+(.*)/', $annotation->getContent(), $matches);
+        Preg::match('/@depends\s+(.*\S)(?:\R|\s*\*+\\/$)/', $annotation->getContent(), $matches);
 
         $nameSuffix = '';
         $depended = $matches[1];
@@ -343,7 +343,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixRequires(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@requires\s+(\S+)(?:\s+(\S+))?(?:\s+(.+))?\R/', $annotation->getContent(), $matches);
+        Preg::match('/@requires\s+(\S+)(?:\s+(\S+))?(?:\s+(.*\S))?(?:\R|\s*\*+\\/$)/', $annotation->getContent(), $matches);
         $map = [
             'extension' => 'RequiresPhpExtension',
             'function' => 'RequiresFunction',

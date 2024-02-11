@@ -103,22 +103,6 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
-        yield 'fix single-line PHPDoc' => [
-            '<?php
-                class FooTest extends \PHPUnit\Framework\TestCase {
-                    '.'
-                    #[\PHPUnit\Framework\Attributes\Test]
-                    public function foo() { self::assertTrue(true); }
-                }
-            ',
-            '<?php
-                class FooTest extends \PHPUnit\Framework\TestCase {
-                    /** @test */
-                    public function foo() { self::assertTrue(true); }
-                }
-            ',
-        ];
-
         yield 'fix with multiple spaces' => [
             <<<'PHP'
                 <?php
@@ -498,11 +482,11 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param non-empty-list<'class'|'method'> $scope
+     * @param non-empty-list<'class'|'method'> $scopes
      *
      * @return array{string, string}
      */
-    private static function createCase(array $scope, string $expectedAttribute, string $inputAnnotation): array
+    private static function createCase(array $scopes, string $expectedAttribute, string $inputAnnotation): array
     {
         $expectedAttribute = str_replace('#[', '#[\\PHPUnit\\Framework\\Attributes\\', $expectedAttribute);
 
@@ -513,16 +497,20 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                     %s
                     class FooTest extends \PHPUnit\Framework\TestCase {
                         %s
-                        public function testFoo($x) { self::assertTrue($x); }
-                        public static function provideFooCases() { yield [true]; }
+                        public function testFoo($x) {}
+                        %s
+                        public function testBar($x) {}
                     }
                     PHP,
-                \in_array('class', $scope, true)
+                \in_array('class', $scopes, true)
                     ? sprintf("/**\n */\n%s", $expectedAttribute)
                     : sprintf("/**\n * %s\n */", $inputAnnotation),
-                \in_array('method', $scope, true)
+                \in_array('method', $scopes, true)
                     ? sprintf("/**\n     */\n    %s", $expectedAttribute)
                     : sprintf("/**\n     * %s\n     */", $inputAnnotation),
+                \in_array('method', $scopes, true)
+                    ? sprintf("\n    %s", $expectedAttribute)
+                    : sprintf('/** %s */', $inputAnnotation),
             ),
             sprintf(
                 <<<'PHP'
@@ -534,10 +522,12 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                         /**
                          * %s
                          */
-                        public function testFoo($x) { self::assertTrue($x); }
-                        public static function provideFooCases() { yield [true]; }
+                        public function testFoo($x) {}
+                        /** %s */
+                        public function testBar($x) {}
                     }
                     PHP,
+                $inputAnnotation,
                 $inputAnnotation,
                 $inputAnnotation,
             ),
