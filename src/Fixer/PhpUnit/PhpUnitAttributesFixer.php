@@ -236,7 +236,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
 
         $map = ['enabled' => 'true', 'disabled' => 'false'];
 
-        if (!isset($map[$matches[1]])) {
+        if (!isset($matches[1]) || !isset($map[$matches[1]])) {
             return [];
         }
 
