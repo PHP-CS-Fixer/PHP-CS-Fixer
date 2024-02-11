@@ -136,6 +136,20 @@ $text2 = "intro:   "."   "." #a
             ',
         ];
 
+        yield 'do not fix if the execution result would be different' => [
+            '<?php
+                echo "abc $d" . "[$e]";
+                echo "abc $d" . "[3]";
+                echo "abc $d" . \'[3]\';
+                echo "abc $d" . "->e";
+                echo "abc $d" . \'->e\';
+                echo "abc $d" . "->$e";
+                echo "abc $d" . "?->e";
+                echo "abc $d" . "?->$e";
+                echo "abc $d" . \'?->e\';
+            ',
+        ];
+
         yield 'do not fix if variables would be broken' => [
             '<?php
                 echo "abc $d" . "e $f";
