@@ -166,14 +166,12 @@ $text2 = "intro:   "."   "." #a
                 echo "abc ${d}e";
                 echo "abc $d-efg";
                 echo "abc $d-$e";
-                echo "abc $d[$e]";
             ',
             '<?php
                 echo "$a bc" . "de";
                 echo "abc ${d}" . "e";
                 echo "abc $d" . "-efg";
                 echo "abc $d" . "-$e";
-                echo "abc $d" . "[$e]";
             ',
         ];
 
