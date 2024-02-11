@@ -2580,7 +2580,7 @@ static fn ($foo): int => 1;',
                  * @param array   $bundleConfig
                  * @param ?string $bundleDir1
                  * @param ?string $bundleDir2
-                 * @param mixed   $bundleDir2
+                 * @param mixed   $bundleDir3
                  */
                 function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2 /* , mixed $bundleDir3 */) {}
                 EOD,
@@ -2602,7 +2602,7 @@ static fn ($foo): int => 1;',
                  * @param array   $bundleConfig
                  * @param ?string $bundleDir1
                  * @param ?string $bundleDir2
-                 * @param mixed   $bundleDir2
+                 * @param mixed   $bundleDir3
                  */
                 function foo(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container, /* string $bundleDir1 = null, */ $foo1/** , string $bundleDir2 = null */, $foo2 /* , mixed $bundleDir3 */) {}
                 EOD,
