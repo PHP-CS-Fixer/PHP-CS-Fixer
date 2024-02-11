@@ -228,23 +228,13 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixWithEnabledDisabledValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match(
-            sprintf('/@%s\s+(\S+)(\R|\s*\*+\\/$)/', $annotation->getTag()->getName()),
-            $annotation->getContent(),
-            $matches,
-        );
-
-        $map = ['enabled' => 'true', 'disabled' => 'false'];
-
-        if (!isset($matches[1]) || !isset($map[$matches[1]])) {
-            return [];
-        }
+        $matches = self::getMatches($annotation);
 
         return self::createAttributeTokens(
             $tokens,
             $index,
             self::getAttributeNameForAnnotation($annotation),
-            new Token([T_STRING, $map[$matches[1]]]),
+            new Token([T_STRING, isset($matches[1]) && 'enabled' === $matches[1] ? 'true' : 'false']),
         );
     }
 
@@ -253,7 +243,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixCovers(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@covers\s+(\S+)/', $annotation->getContent(), $matches);
+        $matches = self::getMatches($annotation);
+
         if (str_starts_with($matches[1], '::')) {
             return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
         }
@@ -274,7 +265,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixDataProvider(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@dataProvider\s+(\S+)/', $annotation->getContent(), $matches);
+        $matches = self::getMatches($annotation);
+
         if (str_contains($matches[1], '::')) {
             [$class, $method] = explode('::', $matches[1]);
 
@@ -299,16 +291,21 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixDepends(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@depends\s+(.*\S)(?:\R|\s*\*+\\/$)/', $annotation->getContent(), $matches);
+        $matches = self::getMatches($annotation);
+        if (!isset($matches[1])) {
+            return [];
+        }
 
         $nameSuffix = '';
         $depended = $matches[1];
-        if (str_starts_with($matches[1], 'clone ')) {
-            $nameSuffix = 'UsingDeepClone';
-            $depended = Preg::replace('/^clone\s+/', '', $matches[1]);
-        } elseif (str_starts_with($matches[1], 'shallowClone ')) {
-            $nameSuffix = 'UsingShallowClone';
-            $depended = Preg::replace('/^shallowClone\s+/', '', $matches[1]);
+        if (isset($matches[2])) {
+            if ('clone' === $matches[1]) {
+                $nameSuffix = 'UsingDeepClone';
+                $depended = $matches[2];
+            } elseif ('shallowClone' === $matches[1]) {
+                $nameSuffix = 'UsingShallowClone';
+                $depended = $matches[2];
+            }
         }
 
         $class = null;
@@ -343,7 +340,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixRequires(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@requires\s+(\S+)(?:\s+(\S+))?(?:\s+(.*\S))?(?:\R|\s*\*+\\/$)/', $annotation->getContent(), $matches);
+        $matches = self::getMatches($annotation);
+
         $map = [
             'extension' => 'RequiresPhpExtension',
             'function' => 'RequiresFunction',
@@ -353,7 +351,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
             'OSFAMILY' => 'RequiresOperatingSystemFamily',
             'setting' => 'RequiresSetting',
         ];
-        if (!isset($map[$matches[1]])) {
+
+        if (!isset($map[$matches[1]]) || !isset($matches[2])) {
             return [];
         }
 
@@ -385,7 +384,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
      */
     private static function fixUses(Tokens $tokens, int $index, Annotation $annotation): array
     {
-        Preg::match('/@uses\s+(\S+)/', $annotation->getContent(), $matches);
+        $matches = self::getMatches($annotation);
+
         if (str_starts_with($matches[1], '::')) {
             $attributeName = 'UsesFunction';
             $attributeTokens = [self::createEscapedStringToken(substr($matches[1], 2))];
@@ -417,6 +417,20 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         }
 
         return $attributeTokens;
+    }
+
+    /**
+     * @return array<string>
+     */
+    private static function getMatches(Annotation $annotation): array
+    {
+        Preg::match(
+            sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\\/$)/', $annotation->getTag()->getName()),
+            $annotation->getContent(),
+            $matches,
+        );
+
+        return $matches;
     }
 
     private static function getAttributeNameForAnnotation(Annotation $annotation): string

@@ -40,10 +40,12 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
     {
         yield 'do not fix with wrong values' => [<<<'PHP'
             <?php
+            /**
+             * @requires PHP
+             */
             class FooTest extends \PHPUnit\Framework\TestCas {
                 /**
-                 * @backupGlobals yes, please
-                 * @requires Foo Bar
+                 * @depends
                  */
                 public function testFoo() { self::assertTrue(true); }
             }
@@ -124,6 +126,12 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'fix with trailing spaces' => self::createCase(
+            ['class'],
+            '#[CoversClass(Foo::class)]',
+            '@covers Foo    ',
+        );
+
         $byte224 = \chr(224);
 
         yield 'fix with non-alphanumeric characters' => [
@@ -187,6 +195,12 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@backupGlobals disabled',
         );
 
+        yield 'handle BackupGlobals no' => self::createCase(
+            ['class', 'method'],
+            '#[BackupGlobals(false)]',
+            '@backupGlobals no',
+        );
+
         yield 'handle BackupStaticProperties enabled' => self::createCase(
             ['class', 'method'],
             '#[BackupStaticProperties(true)]',
@@ -214,13 +228,13 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
         yield 'handle CoversClass' => self::createCase(
             ['class'],
             '#[CoversClass(\\VendorName\\ClassName::class)]',
-            '@covers \VendorName\ClassName ',
+            '@covers \VendorName\ClassName',
         );
 
         yield 'handle CoversFunction' => self::createCase(
             ['class'],
             "#[CoversFunction('functionName')]",
-            '@covers ::functionName ',
+            '@covers ::functionName',
         );
 
         yield 'handle CoversNothing' => self::createCase(
