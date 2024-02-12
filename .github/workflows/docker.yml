@@ -8,6 +8,7 @@ on:
     paths:
       - "compose.yaml"
       - "Dockerfile"
+      - "docker/**"
   # Allow running on demand using Github UI
   workflow_dispatch:
   schedule:
