@@ -974,6 +974,48 @@ foo(
 );
             ',
         ];
+
+        yield [<<<'PHP'
+            <?php
+            function f()
+            {
+                echo <<<TEXT
+                    some text
+                    {$object->method(
+                        42
+                    )}
+                    some text
+                TEXT;
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php
+            function f()
+            {
+                echo <<<'TEXT'
+                    some text
+                    {$object->method(
+                        42
+                    )}
+                    some text
+                TEXT;
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php
+            function f()
+            {
+                echo <<<TEXT
+                    some text
+                    some value: {$object->method(
+                        42
+                    )}
+                    some text
+                TEXT;
+            }
+            PHP];
     }
 
     /**

@@ -38,6 +38,9 @@ final class BlocksAnalyzerTest extends TestCase
         self::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int}>
+     */
     public static function provideBlocksCases(): iterable
     {
         yield ['<?php foo(1);', 2, 4];
@@ -63,29 +66,26 @@ final class BlocksAnalyzerTest extends TestCase
         yield ['<?php list($a, $b, $c) = [1, 2, 3];', 14, 22];
 
         yield ['<?php list($a, $b, $c) = array(1, 2, 3);', 15, 23];
+
+        yield ['<?php $fn = fn($x) => $x + 10;', 6, 8];
     }
 
     /**
      * @dataProvider provideNonBlocksCases
      */
-    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex, bool $isBlock = false): void
+    public function testNonBlocks(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        self::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        self::assertFalse($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int}>
+     */
     public static function provideNonBlocksCases(): iterable
     {
-        yield ['<?php foo(1);', null, 4];
-
-        yield ['<?php foo(1);', 2, null];
-
-        yield ['<?php foo(1);', 1_000, 4];
-
-        yield ['<?php foo(1);', 2, 1_000];
-
         yield ['<?php foo(1);', 1, 4];
 
         yield ['<?php foo(1);', 3, 4];
@@ -95,7 +95,28 @@ final class BlocksAnalyzerTest extends TestCase
         yield ['<?php foo((1));', 2, 5];
 
         yield ['<?php foo((1));', 3, 6];
+    }
 
-        yield ['<?php $fn = fn($x) => $x + 10;', 6, 8, true];
+    /**
+     * @dataProvider provideInvalidIndexCases
+     */
+    public function testInvalidIndex(string $code, int $openIndex, int $closeIndex): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new BlocksAnalyzer();
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $analyzer->isBlock($tokens, $openIndex, $closeIndex);
+    }
+
+    /**
+     * @return iterable<array{string, int, int}>
+     */
+    public static function provideInvalidIndexCases(): iterable
+    {
+        yield ['<?php foo(1);', 1_000, 4];
+
+        yield ['<?php foo(1);', 2, 1_000];
     }
 }

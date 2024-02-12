@@ -59,7 +59,8 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Removes `@param`, `@return` and `@var` tags that don\'t provide any useful information.',
             [
-                new CodeSample('<?php
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -69,8 +70,10 @@ class Foo {
      */
     public function doFoo(Bar $bar, $baz): Baz {}
 }
-'),
-                new CodeSample('<?php
+',
+                ),
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @param Bar $bar
@@ -78,25 +81,48 @@ class Foo {
      */
     public function doFoo(Bar $bar, $baz) {}
 }
-', ['allow_mixed' => true]),
-                new CodeSample('<?php
+',
+                    ['allow_mixed' => true],
+                ),
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @inheritDoc
      */
     public function doFoo(Bar $bar, $baz) {}
 }
-', ['remove_inheritdoc' => true]),
-                new CodeSample('<?php
+',
+                    ['remove_inheritdoc' => true],
+                ),
+                new CodeSample(
+                    '<?php
 class Foo {
     /**
      * @param Bar $bar
      * @param mixed $baz
      * @param string|int|null $qux
+     * @param mixed $foo
      */
     public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
 }
-', ['allow_unused_params' => true]),
+',
+                    ['allow_hidden_params' => true],
+                ),
+                new CodeSample(
+                    '<?php
+class Foo {
+    /**
+     * @param Bar $bar
+     * @param mixed $baz
+     * @param string|int|null $qux
+     * @param mixed $foo
+     */
+    public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
+}
+',
+                    ['allow_unused_params' => true],
+                ),
             ]
         );
     }
@@ -208,6 +234,10 @@ class Foo {
             (new FixerOptionBuilder('remove_inheritdoc', 'Remove `@inheritDoc` tags.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('allow_hidden_params', 'Whether `param` annotation for hidden params in method signature are allowed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // @TODO set to `true` on 4.0
                 ->getOption(),
             (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).'))
                 ->setAllowedTypes(['bool'])
@@ -431,6 +461,15 @@ class Foo {
             }
 
             $argumentsInfo[$token->getContent()] = $info;
+        }
+
+        // virtualise "hidden params" as if they would be regular ones
+        if (true === $this->configuration['allow_hidden_params']) {
+            $paramsString = $tokens->generatePartialCode($start, $end);
+            Preg::matchAll('|/\*[^$]*(\$\w+)[^*]*\*/|', $paramsString, $matches);
+            foreach ($matches[1] as $match) {
+                $argumentsInfo[$match] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for hidden param, for now we only indicate it's existence
+            }
         }
 
         return $argumentsInfo;
