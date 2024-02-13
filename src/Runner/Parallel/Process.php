@@ -44,7 +44,7 @@ final class Process
     private int $timeoutSeconds;
 
     // Properties required for process execution
-    private ReactProcess $process;
+    private ?ReactProcess $process = null;
     private ?WritableStreamInterface $in = null;
 
     /** @var false|resource */
@@ -83,7 +83,7 @@ final class Process
 
         $commandArgs = [
             $phpBinary,
-            escapeshellarg($_SERVER['argv'][0]),
+            escapeshellarg(realpath(__DIR__.'/../../../php-cs-fixer')),
             'worker',
             '--port',
             (string) $serverPort,
@@ -194,7 +194,7 @@ final class Process
     public function quit(): void
     {
         $this->cancelTimer();
-        if (!$this->process->isRunning()) {
+        if (null === $this->process || !$this->process->isRunning()) {
             return;
         }
 
@@ -242,7 +242,11 @@ final class Process
         // In order to have full list of options supported by the command (e.g. `--verbose`)
         $fixCommand->mergeApplicationDefinition(false);
 
-        return new ArgvInput(null, $fixCommand->getDefinition());
+        // Workaround for tests, where top-level PHPUnit command has args/options that don't exist in the Fixer's command
+        $argv = $_SERVER['argv'] ?? [];
+        $isFixerApplication = str_ends_with($argv[0] ?? '', 'php-cs-fixer');
+
+        return new ArgvInput($isFixerApplication ? $argv : [], $fixCommand->getDefinition());
     }
 
     private function cancelTimer(): void
