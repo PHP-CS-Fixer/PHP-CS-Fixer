@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Runner\Parallel;
 
-use React\Socket\TcpServer;
+use React\Socket\ServerInterface;
 
 /**
  * Represents collection of active processes that are being run in parallel.
@@ -26,7 +26,7 @@ use React\Socket\TcpServer;
  */
 final class ProcessPool
 {
-    private TcpServer $server;
+    private ServerInterface $server;
 
     /** @var null|(callable(): void) */
     private $onServerClose;
@@ -34,7 +34,7 @@ final class ProcessPool
     /** @var array<string, Process> */
     private array $processes = [];
 
-    public function __construct(TcpServer $server, ?callable $onServerClose = null)
+    public function __construct(ServerInterface $server, ?callable $onServerClose = null)
     {
         $this->server = $server;
         $this->onServerClose = $onServerClose;
