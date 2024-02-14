@@ -14,15 +14,20 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner\Parallel;
 
+use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\Process;
+use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfo;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ServerInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * @internal
@@ -32,6 +37,20 @@ use React\Socket\ServerInterface;
 final class ProcessPoolTest extends TestCase
 {
     public bool $serverClosed = false;
+
+    private ProcessFactory $processFactory;
+
+    protected function setUp(): void
+    {
+        $fixCommand = new FixCommand(new ToolInfo());
+        $application = new Application();
+        $application->add($fixCommand);
+
+        // In order to have full list of options supported by the command (e.g. `--verbose`)
+        $fixCommand->mergeApplicationDefinition(false);
+
+        $this->processFactory = new ProcessFactory(new ArrayInput([], $fixCommand->getDefinition()));
+    }
 
     public function testGetProcessWithInvalidIdentifier(): void
     {
@@ -96,7 +115,7 @@ final class ProcessPoolTest extends TestCase
 
     private function createProcess(ProcessIdentifier $identifier): Process
     {
-        return Process::create(
+        return $this->processFactory->create(
             new StreamSelectLoop(),
             new RunnerConfig(
                 true,

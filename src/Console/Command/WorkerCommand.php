@@ -240,6 +240,7 @@ final class WorkerCommand extends Command
             $this->configurationResolver->getDirectory(),
             $this->configurationResolver->shouldStopOnViolation(),
             ParallelConfig::sequential(), // IMPORTANT! Worker must run in sequential mode
+            null,
             $this->configurationResolver->getConfigFile()
         );
     }

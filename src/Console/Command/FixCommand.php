@@ -315,6 +315,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $resolver->getDirectory(),
             $resolver->shouldStopOnViolation(),
             $resolver->getParallelConfig(),
+            $input,
             $resolver->getConfigFile()
         );
 

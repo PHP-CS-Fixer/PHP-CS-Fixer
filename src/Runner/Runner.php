@@ -32,13 +32,14 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
-use PhpCsFixer\Runner\Parallel\Process;
+use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Tokenizer\Tokens;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
 use React\Socket\TcpServer;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -81,6 +82,8 @@ final class Runner
 
     private ParallelConfig $parallelConfig;
 
+    private ?InputInterface $input;
+
     private ?string $configFile;
 
     /**
@@ -99,6 +102,7 @@ final class Runner
         ?DirectoryInterface $directory = null,
         bool $stopOnViolation = false,
         ?ParallelConfig $parallelConfig = null,
+        ?InputInterface $input = null,
         ?string $configFile = null
     ) {
         $this->fileCount = \count($fileIterator ?? []); // Required only for main process (calculating workers count)
@@ -113,6 +117,7 @@ final class Runner
         $this->directory = $directory ?? new Directory('');
         $this->stopOnViolation = $stopOnViolation;
         $this->parallelConfig = $parallelConfig ?? ParallelConfig::sequential();
+        $this->input = $input;
         $this->configFile = $configFile;
     }
 
@@ -129,7 +134,7 @@ final class Runner
      */
     public function fix(): array
     {
-        return $this->parallelConfig->getMaxProcesses() > 1
+        return $this->parallelConfig->getMaxProcesses() > 1 && null !== $this->input
             ? $this->fixParallel()
             : $this->fixSequential();
     }
@@ -206,10 +211,11 @@ final class Runner
             $this->parallelConfig->getMaxProcesses(),
             (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess())
         );
+        $processFactory = new ProcessFactory($this->input);
 
         for ($i = 0; $i < $processesToSpawn; ++$i) {
             $identifier = ProcessIdentifier::create();
-            $process = Process::create(
+            $process = $processFactory->create(
                 $streamSelectLoop,
                 new RunnerConfig(
                     $this->isDryRun,

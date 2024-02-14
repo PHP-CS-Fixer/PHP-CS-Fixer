@@ -14,17 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Runner\Parallel;
 
-use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Runner\RunnerConfig;
-use PhpCsFixer\ToolInfo;
 use React\ChildProcess\Process as ReactProcess;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\TimerInterface;
 use React\Stream\ReadableStreamInterface;
 use React\Stream\WritableStreamInterface;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Represents single process that is handled within parallel run.
@@ -61,58 +55,11 @@ final class Process
 
     private ?TimerInterface $timer = null;
 
-    private function __construct(string $command, LoopInterface $loop, int $timeoutSeconds)
+    public function __construct(string $command, LoopInterface $loop, int $timeoutSeconds)
     {
         $this->command = $command;
         $this->loop = $loop;
         $this->timeoutSeconds = $timeoutSeconds;
-    }
-
-    public static function create(
-        LoopInterface $loop,
-        RunnerConfig $runnerConfig,
-        ProcessIdentifier $identifier,
-        int $serverPort
-    ): self {
-        $input = self::getArgvInput();
-        $phpBinary = (new PhpExecutableFinder())->find(false);
-
-        if (false === $phpBinary) {
-            throw new ParallelisationException('Cannot find PHP executable.');
-        }
-
-        $commandArgs = [
-            $phpBinary,
-            escapeshellarg(realpath(__DIR__.'/../../../php-cs-fixer')),
-            'worker',
-            '--port',
-            (string) $serverPort,
-            '--identifier',
-            escapeshellarg((string) $identifier),
-        ];
-
-        if ($runnerConfig->isDryRun()) {
-            $commandArgs[] = '--dry-run';
-        }
-
-        if (filter_var($input->getOption('diff'), FILTER_VALIDATE_BOOLEAN)) {
-            $commandArgs[] = '--diff';
-        }
-
-        foreach (['allow-risky', 'config', 'rules', 'using-cache', 'cache-file'] as $option) {
-            $optionValue = $input->getOption($option);
-
-            if (null !== $optionValue) {
-                $commandArgs[] = "--{$option}";
-                $commandArgs[] = escapeshellarg($optionValue);
-            }
-        }
-
-        return new self(
-            implode(' ', $commandArgs),
-            $loop,
-            $runnerConfig->getParallelConfig()->getProcessTimeout()
-        );
     }
 
     /**
@@ -226,27 +173,6 @@ final class Process
         $out->on('error', function (\Throwable $error): void {
             ($this->onError)($error);
         });
-    }
-
-    /**
-     * Probably we should pass the input from the fix/check command explicitly, so it does not have to be re-created,
-     * but for now it's good enough to simulate it here. It works as expected and we don't need to refactor the full
-     * path from the CLI command, through Runner, up to this class.
-     */
-    private static function getArgvInput(): ArgvInput
-    {
-        $fixCommand = new FixCommand(new ToolInfo());
-        $application = new Application();
-        $application->add($fixCommand);
-
-        // In order to have full list of options supported by the command (e.g. `--verbose`)
-        $fixCommand->mergeApplicationDefinition(false);
-
-        // Workaround for tests, where top-level PHPUnit command has args/options that don't exist in the Fixer's command
-        $argv = $_SERVER['argv'] ?? [];
-        $isFixerApplication = str_ends_with($argv[0] ?? '', 'php-cs-fixer');
-
-        return new ArgvInput($isFixerApplication ? $argv : [], $fixCommand->getDefinition());
     }
 
     private function cancelTimer(): void
