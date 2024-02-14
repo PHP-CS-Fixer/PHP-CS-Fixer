@@ -267,9 +267,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 );
 
                 $stdErr->writeln(sprintf(
-                    'Running analysis on %d cores with %d files per process.',
+                    'Running analysis on %d cores with %d file%s per process.',
                     $resolver->getParallelConfig()->getMaxProcesses(),
-                    $resolver->getParallelConfig()->getFilesPerProcess()
+                    $resolver->getParallelConfig()->getFilesPerProcess(),
+                    $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : ''
                 ));
             }
 
