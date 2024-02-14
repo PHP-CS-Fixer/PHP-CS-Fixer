@@ -156,13 +156,13 @@ final class ProcessPoolTest extends TestCase
                 public function resume(): void {}
 
                 /** @phpstan-ignore-next-line */
-                public function on($event, callable $listener): void {}
+                public function on($event, $listener): void {}
 
                 /** @phpstan-ignore-next-line */
-                public function once($event, callable $listener): void {}
+                public function once($event, $listener): void {}
 
                 /** @phpstan-ignore-next-line */
-                public function removeListener($event, callable $listener): void {}
+                public function removeListener($event, $listener): void {}
 
                 /** @phpstan-ignore-next-line */
                 public function removeAllListeners($event = null): void {}
