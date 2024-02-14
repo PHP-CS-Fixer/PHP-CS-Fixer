@@ -27,8 +27,8 @@ use PhpCsFixer\Linter\LintingResultInterface;
 final class FileCachingLintingFileIterator extends \CachingIterator implements LintingResultAwareFileIteratorInterface
 {
     private LinterInterface $linter;
-    private ?LintingResultInterface $currentResult;
-    private ?LintingResultInterface $nextResult;
+    private ?LintingResultInterface $currentResult = null;
+    private ?LintingResultInterface $nextResult = null;
 
     /**
      * @param \Iterator<mixed, \SplFileInfo> $iterator
