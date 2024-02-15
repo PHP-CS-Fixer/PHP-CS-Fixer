@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Runner;
 use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
@@ -25,8 +26,12 @@ use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfo;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -97,8 +102,9 @@ final class RunnerTest extends TestCase
     /**
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
      */
-    public function testThatFixInvalidFileReportsToErrorManager(): void
+    public function testThatSequentialFixOfInvalidFileReportsToErrorManager(): void
     {
         $errorsManager = new ErrorsManager();
 
@@ -126,6 +132,51 @@ final class RunnerTest extends TestCase
         self::assertCount(1, $errors);
 
         $error = $errors[0];
+
+        self::assertSame(Error::TYPE_INVALID, $error->getType());
+        self::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     */
+    public function testThatParallelFixOfInvalidFileReportsToErrorManager(): void
+    {
+        $errorsManager = new ErrorsManager();
+
+        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'invalid';
+        $runner = new Runner(
+            Finder::create()->in($path),
+            [
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ],
+            new NullDiffer(),
+            null,
+            $errorsManager,
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            null,
+            false,
+            new ParallelConfig(2, 1, 50),
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+        );
+        $changed = $runner->fix();
+        $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
+
+        self::assertCount(0, $changed);
+
+        $errors = $errorsManager->getInvalidErrors();
+
+        self::assertCount(1, $errors);
+
+        $error = $errors[0];
+
+        self::assertInstanceOf(Error::class, $error);
+        self::assertInstanceOf(ParallelisationException::class, $error->getSource());
 
         self::assertSame(Error::TYPE_INVALID, $error->getType());
         self::assertSame($pathToInvalidFile, $error->getFilePath());
