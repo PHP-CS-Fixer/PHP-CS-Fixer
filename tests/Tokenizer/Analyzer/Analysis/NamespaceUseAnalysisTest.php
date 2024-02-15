@@ -50,7 +50,7 @@ final class NamespaceUseAnalysisTest extends TestCase
         self::assertTrue($analysis->isInMulti());
     }
 
-    public function testChunkStartIndexAndChunkdEndIndexAreRequiredWhenIsInMulti(): void
+    public function testChunkStartIndexAndChunkEndIndexAreRequiredWhenIsInMulti(): void
     {
         $this->expectException(\LogicException::class);
 

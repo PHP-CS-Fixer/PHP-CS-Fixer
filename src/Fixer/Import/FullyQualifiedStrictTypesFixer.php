@@ -266,7 +266,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $uses = [];
             $lastUse = null;
 
-            foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace) as $use) {
+            foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace, true) as $use) {
                 if (!$use->isClass()) {
                     continue;
                 }

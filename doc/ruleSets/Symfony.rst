@@ -81,7 +81,7 @@ Rules
 - `no_spaces_around_offset <./../rules/whitespace/no_spaces_around_offset.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_ with config:
 
-  ``['remove_inheritdoc' => true]``
+  ``['allow_hidden_params' => true, 'remove_inheritdoc' => true]``
 
 - `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_
 - `no_unneeded_braces <./../rules/control_structure/no_unneeded_braces.rst>`_ with config:
