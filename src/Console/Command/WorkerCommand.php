@@ -142,51 +142,56 @@ final class WorkerCommand extends Command
         $tcpConnector = new TcpConnector($loop);
         $tcpConnector
             ->connect(sprintf('127.0.0.1:%d', $port))
-            ->then(function (ConnectionInterface $connection) use ($runner, $identifier): void {
-                $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
-                $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+            ->then(
+                function (ConnectionInterface $connection) use ($runner, $identifier): void {
+                    $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
+                    $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
+                    $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
 
-                // [REACT] Initialise connection with the parallelisation operator
-                $out->write(['action' => ParallelAction::RUNNER_HELLO, 'identifier' => $identifier]);
+                    // [REACT] Initialise connection with the parallelisation operator
+                    $out->write(['action' => ParallelAction::RUNNER_HELLO, 'identifier' => $identifier]);
 
-                $handleError = static function (\Throwable $error): void {
-                    // @TODO Handle communication errors
-                };
-                $out->on('error', $handleError);
-                $in->on('error', $handleError);
+                    $handleError = static function (\Throwable $error): void {
+                        // @TODO Handle communication errors
+                    };
+                    $out->on('error', $handleError);
+                    $in->on('error', $handleError);
 
-                // [REACT] Listen for messages from the parallelisation operator (analysis requests)
-                $in->on('data', function (array $json) use ($runner, $out): void {
-                    if (ParallelAction::WORKER_RUN !== $json['action']) {
-                        return;
-                    }
+                    // [REACT] Listen for messages from the parallelisation operator (analysis requests)
+                    $in->on('data', function (array $json) use ($runner, $out): void {
+                        if (ParallelAction::WORKER_RUN !== $json['action']) {
+                            return;
+                        }
 
-                    /** @var iterable<int, string> $files */
-                    $files = $json['files'];
+                        /** @var iterable<int, string> $files */
+                        $files = $json['files'];
 
-                    foreach ($files as $i => $absolutePath) {
-                        $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
+                        foreach ($files as $i => $absolutePath) {
+                            $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
 
-                        // Reset events because we want to collect only those coming from analysed files chunk
-                        $this->events = [];
-                        $runner->setFileIterator(new \ArrayIterator([new \SplFileInfo($absolutePath)]));
-                        $analysisResult = $runner->fix();
+                            // Reset events because we want to collect only those coming from analysed files chunk
+                            $this->events = [];
+                            $runner->setFileIterator(new \ArrayIterator([new \SplFileInfo($absolutePath)]));
+                            $analysisResult = $runner->fix();
 
-                        $out->write([
-                            'action' => ParallelAction::RUNNER_RESULT,
-                            'file' => $absolutePath,
-                            // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
-                            'status' => isset($this->events[0]) ? $this->events[0]->getStatus() : null,
-                            'fixInfo' => $analysisResult[$relativePath] ?? null,
-                            'errors' => $this->errorsManager->forPath($absolutePath),
-                        ]);
-                    }
+                            $out->write([
+                                'action' => ParallelAction::RUNNER_RESULT,
+                                'file' => $absolutePath,
+                                // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
+                                'status' => isset($this->events[0]) ? $this->events[0]->getStatus() : null,
+                                'fixInfo' => $analysisResult[$relativePath] ?? null,
+                                'errors' => $this->errorsManager->forPath($absolutePath),
+                            ]);
+                        }
 
-                    // Request another file chunk (if available, the parallelisation operator will request new "run" action)
-                    $out->write(['action' => ParallelAction::RUNNER_GET_FILE_CHUNK]);
-                });
-            })
+                        // Request another file chunk (if available, the parallelisation operator will request new "run" action)
+                        $out->write(['action' => ParallelAction::RUNNER_GET_FILE_CHUNK]);
+                    });
+                },
+                static function (\Throwable $error) use ($errorOutput): void {
+                    $errorOutput->writeln($error->getMessage());
+                }
+            )
         ;
 
         $loop->run();
