@@ -158,19 +158,22 @@ class Tokens extends \SplFixedArray
      * Create token collection from array.
      *
      * @param array<int, Token> $array       the array to import
-     * @param bool              $saveIndices
+     * @param ?bool             $saveIndices save the numeric indices used in the original array, default is yes
      */
-    public static function fromArray($array, $saveIndices = false): self
+    public static function fromArray($array, $saveIndices = null): self
     {
-        if (!array_is_list($array) && false !== $saveIndices) {
-            throw new \InvalidArgumentException('Tokens must be a list - saving indices is no longer supported');
-        }
-
         $tokens = new self(\count($array));
 
-        $index = 0;
-        foreach ($array as $val) {
-            $tokens[$index++] = $val;
+        if ($saveIndices ?? true) {
+            foreach ($array as $key => $val) {
+                $tokens[$key] = $val;
+            }
+        } else {
+            $index = 0;
+
+            foreach ($array as $val) {
+                $tokens[$index++] = $val;
+            }
         }
 
         $tokens->generateCode(); // regenerate code to calculate code hash
@@ -304,10 +307,6 @@ class Tokens extends \SplFixedArray
      */
     public function offsetUnset($index): void
     {
-        if (\count($this) - 1 !== $index) {
-            throw new \InvalidArgumentException('Tokens must be a list - only the last index can be unset');
-        }
-
         if (isset($this[$index])) {
             if (isset($this->blockStartCache[$index])) {
                 unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
@@ -323,8 +322,6 @@ class Tokens extends \SplFixedArray
         }
 
         parent::offsetUnset($index);
-
-        $this->setSize(\count($this) - 1);
     }
 
     /**
@@ -335,10 +332,6 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
-        if (0 > $index || \count($this) <= $index) {
-            throw new \InvalidArgumentException('Tokens must be a list - index must be within the existing range');
-        }
-
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             if (isset($this[$index])) {
                 if (isset($this->blockStartCache[$index])) {
