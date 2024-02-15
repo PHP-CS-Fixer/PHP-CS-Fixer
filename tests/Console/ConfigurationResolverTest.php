@@ -67,6 +67,14 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($defaultParallelConfig->getProcessTimeout(), $parallelConfig->getProcessTimeout());
     }
 
+    public function testCliSequentialOptionOverridesParallelConfig(): void
+    {
+        $config = (new Config())->setParallelConfig(new ParallelConfig(10));
+        $resolver = $this->createConfigurationResolver(['sequential' => true], $config);
+
+        self::assertSame(1, $resolver->getParallelConfig()->getMaxProcesses());
+    }
+
     public function testSetOptionWithUndefinedOption(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -1163,7 +1171,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );

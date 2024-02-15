@@ -120,6 +120,7 @@ final class ConfigurationResolver
         'path' => [],
         'path-mode' => self::PATH_MODE_OVERRIDE,
         'rules' => null,
+        'sequential' => null,
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
@@ -280,7 +281,7 @@ final class ConfigurationResolver
     {
         $config = $this->getConfig();
 
-        return $config instanceof ParallelRunnerConfigInterface
+        return true !== $this->options['sequential'] && $config instanceof ParallelRunnerConfigInterface
             ? $config->getParallelConfig()
             : ParallelConfig::sequential();
     }
