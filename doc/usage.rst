@@ -112,6 +112,8 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
 
 The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use ``check`` command).
 
+The ``--sequential`` flag will enforce sequential analysis even if parallel config is provided.
+
 The ``--diff`` flag can be used to let the fixer output all the changes it makes in ``udiff`` format.
 
 The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.

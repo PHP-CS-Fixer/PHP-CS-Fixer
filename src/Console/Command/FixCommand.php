@@ -150,6 +150,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
+            The <comment>--sequential</comment> flag will enforce sequential analysis even if parallel config is provided.
+
             The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
 
             The <comment>--allow-risky</comment> option (pass `yes` or `no`) allows you to set whether risky rules may run. Default value is taken from config file.
@@ -212,6 +214,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
+                new InputOption('sequential', 's', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
             ]
         );
     }
@@ -243,6 +246,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
+                'sequential' => $input->getOption('sequential'),
             ],
             getcwd(),
             $this->toolInfo

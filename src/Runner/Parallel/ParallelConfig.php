@@ -73,10 +73,6 @@ final class ParallelConfig
         int $filesPerProcess = self::DEFAULT_FILES_PER_PROCESS,
         int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT
     ): self {
-        if (filter_var(getenv('PHP_CS_FIXER_TEST_SUITE'), FILTER_VALIDATE_BOOLEAN)) {
-            return self::sequential();
-        }
-
         $counter = new CpuCoreCounter([
             ...FinderRegistry::getDefaultLogicalFinders(),
             new DummyCpuCoreFinder(1),
