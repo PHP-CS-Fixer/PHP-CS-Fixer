@@ -66,7 +66,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     /**
      * @var array<int<0, max>, array<string, true>>
      */
-    private array $reservedIdentifiers;
+    private array $reservedIdentifiersByLevel;
 
     /** @var array<string, string> */
     private array $cacheUsesLast = [];
@@ -284,7 +284,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 }
 
                 $openedCurlyBrackets = 0;
-                $this->reservedIdentifiers = [];
+                $this->reservedIdentifiersByLevel = [];
 
                 for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex() + $indexDiff; ++$index) {
                     $origSize = \count($tokens);
@@ -292,7 +292,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     if ($tokens[$index]->equals('{')) {
                         ++$openedCurlyBrackets;
                     } if ($tokens[$index]->equals('}')) {
-                        unset($this->reservedIdentifiers[$openedCurlyBrackets]);
+                        unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
                         --$openedCurlyBrackets;
                     } elseif ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
@@ -318,7 +318,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                         Preg::matchAll('/\*\h*@(?:psalm-|phpstan-)?(?:template(?:-covariant|-contravariant)?|(?:import-)?type)\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/i', $tokens[$index]->getContent(), $matches);
                         foreach ($matches[1] as $reservedIdentifier) {
-                            $this->reservedIdentifiers[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
+                            $this->reservedIdentifiersByLevel[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
                         }
 
                         $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
@@ -327,7 +327,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $indexDiff += \count($tokens) - $origSize;
                 }
 
-                $this->reservedIdentifiers = [];
+                $this->reservedIdentifiersByLevel = [];
 
                 if ($discoverSymbolsPhase) {
                     $this->setupUsesFromDiscoveredSymbols($uses, $namespaceName);
@@ -384,7 +384,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             return true;
         }
 
-        foreach ($this->reservedIdentifiers as $reservedIdentifiers) {
+        foreach ($this->reservedIdentifiersByLevel as $reservedIdentifiers) {
             if (isset($reservedIdentifiers[$symbol])) {
                 return true;
             }
