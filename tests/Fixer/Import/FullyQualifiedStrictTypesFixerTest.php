@@ -1069,11 +1069,11 @@ class Foo extends \A\A implements \B\A, \C\A
                 /** @phpstan-template T2 */
                 class Foo {
                     /** @var T1 */
-                    public $v;
+                    public $v1;
                     /** @var T2 */
-                    public $v;
+                    public $v2;
                     /** @var \T3 */
-                    public $v;
+                    public $v3;
                 }
                 EOD,
             <<<'EOD'
@@ -1083,11 +1083,11 @@ class Foo extends \A\A implements \B\A, \C\A
                 /** @phpstan-template T2 */
                 class Foo {
                     /** @var T1 */
-                    public $v;
+                    public $v1;
                     /** @var T2 */
-                    public $v;
+                    public $v2;
                     /** @var T3 */
-                    public $v;
+                    public $v3;
                 }
                 EOD,
             ['leading_backslash_in_global_namespace' => true],
@@ -1101,9 +1101,9 @@ class Foo extends \A\A implements \B\A, \C\A
                 /** @psalm-template-contravariant T2 */
                 class Foo {
                     /** @var T1 */
-                    public $v;
+                    public $v1;
                     /** @var T2 */
-                    public $v;
+                    public $v2;
                 }
                 EOD,
             null,
