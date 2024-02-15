@@ -45,9 +45,21 @@ final class ProcessFactory
             throw new ParallelisationException('Cannot find PHP executable.');
         }
 
+        $mainScript = realpath(__DIR__.'/../../../php-cs-fixer');
+        if (false === $mainScript
+            && isset($_SERVER['argv'][0])
+            && str_contains($_SERVER['argv'][0], 'php-cs-fixer')
+        ) {
+            $mainScript = $_SERVER['argv'][0];
+        }
+
+        if (!is_file($mainScript)) {
+            throw new ParallelisationException('Cannot determine Fixer executable.');
+        }
+
         $commandArgs = [
             $phpBinary,
-            escapeshellarg(realpath(__DIR__.'/../../../php-cs-fixer')),
+            escapeshellarg($mainScript),
             'worker',
             '--port',
             (string) $serverPort,
