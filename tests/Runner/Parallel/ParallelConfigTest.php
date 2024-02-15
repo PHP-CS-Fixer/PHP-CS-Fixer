@@ -66,4 +66,12 @@ final class ParallelConfigTest extends TestCase
 
         self::assertSame(1, $config->getMaxProcesses());
     }
+
+    public function testDetectConfiguration(): void
+    {
+        $config = ParallelConfig::detect(1, 100);
+
+        self::assertSame(1, $config->getFilesPerProcess());
+        self::assertSame(100, $config->getProcessTimeout());
+    }
 }

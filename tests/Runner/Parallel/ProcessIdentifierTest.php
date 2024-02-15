@@ -25,6 +25,13 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ProcessIdentifierTest extends TestCase
 {
+    public function testCreateIdentifier(): void
+    {
+        $identifier = ProcessIdentifier::create();
+
+        self::assertStringStartsWith('php-cs-fixer_parallel_', (string) $identifier);
+    }
+
     /**
      * @dataProvider provideFromRawCases
      */
