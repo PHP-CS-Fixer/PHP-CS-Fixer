@@ -94,7 +94,7 @@ final class PharTest extends AbstractSmokeTestCase
     {
         self::assertSame(
             0,
-            self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
+            self::executePharCommand('fix src/Config.php -vvv --dry-run --sequential --diff --using-cache=no 2>&1')->getCode()
         );
     }
 
@@ -120,7 +120,7 @@ final class PharTest extends AbstractSmokeTestCase
     {
         try {
             $json = self::executePharCommand(sprintf(
-                'fix %s --dry-run --format=json --rules=\'%s\' --using-cache=%s',
+                'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
                 __FILE__,
                 json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),
                 $usingCache,
