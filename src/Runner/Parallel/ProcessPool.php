@@ -34,6 +34,9 @@ final class ProcessPool
     /** @var array<string, Process> */
     private array $processes = [];
 
+    /**
+     * @param null|(callable(): void) $onServerClose
+     */
     public function __construct(ServerInterface $server, ?callable $onServerClose = null)
     {
         $this->server = $server;
