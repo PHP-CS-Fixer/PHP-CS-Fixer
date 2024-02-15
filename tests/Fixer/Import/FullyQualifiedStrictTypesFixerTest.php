@@ -798,7 +798,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'prevent import if implicitly used by generics' => [
+        yield 'prevent import if implicitly used by generics template' => [
             <<<'EOD'
                 <?php
 
@@ -1059,6 +1059,55 @@ class Foo extends \A\A implements \B\A, \C\A
                 }
                 EOD,
             ['import_symbols' => true],
+        ];
+
+        yield 'prevent import if implicitly used by generics template - psalm/phpstan prefix' => [
+            <<<'EOD'
+                <?php
+
+                /** @psalm-template T1 */
+                /** @phpstan-template T2 */
+                class Foo {
+                    /** @var T1 */
+                    public $v;
+                    /** @var T2 */
+                    public $v;
+                    /** @var \T3 */
+                    public $v;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /** @psalm-template T1 */
+                /** @phpstan-template T2 */
+                class Foo {
+                    /** @var T1 */
+                    public $v;
+                    /** @var T2 */
+                    public $v;
+                    /** @var T3 */
+                    public $v;
+                }
+                EOD,
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'prevent import if implicitly used by generics template - covariant/contravariant suffix' => [
+            <<<'EOD'
+                <?php
+
+                /** @template-covariant T1 */
+                /** @psalm-template-contravariant T2 */
+                class Foo {
+                    /** @var T1 */
+                    public $v;
+                    /** @var T2 */
+                    public $v;
+                }
+                EOD,
+            null,
+            ['leading_backslash_in_global_namespace' => true],
         ];
 
         yield 'import with relative and absolute symbols - global' => [
