@@ -93,6 +93,10 @@
         ],
         "cs:check": "@php php-cs-fixer check --verbose --diff",
         "cs:fix": "@php php-cs-fixer fix",
+        "cs:fix:parallel": [
+            "echo '⚠️ This script is deprecated! Utilise built-in parallelisation instead.';",
+            "@cs:fix"
+        ],
         "docs": "@php dev-tools/doc.php",
         "install-tools": "@composer --working-dir=dev-tools install",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
@@ -156,6 +160,7 @@
         "auto-review": "Execute Auto-review",
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
+        "cs:fix:parallel": "⚠️DEPRECATED! Use cs:fix with proper parallel config",
         "docs": "Regenerate docs",
         "install-tools": "Install DEV tools",
         "mess-detector": "Analyse code with Mess Detector",
