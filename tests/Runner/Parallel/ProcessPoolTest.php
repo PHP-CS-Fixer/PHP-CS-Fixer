@@ -98,7 +98,10 @@ final class ProcessPoolTest extends TestCase
 
     public function testEndAll(): void
     {
-        $processPool = $this->getProcessPool();
+        $callbackExecuted = false;
+        $processPool = $this->getProcessPool(static function () use (&$callbackExecuted): void {
+            $callbackExecuted = true;
+        });
 
         $identifier1 = ProcessIdentifier::create();
         $process1 = $this->createProcess($identifier1);
@@ -111,6 +114,7 @@ final class ProcessPoolTest extends TestCase
         $processPool->endAll();
 
         self::assertTrue($this->serverClosed);
+        self::assertTrue($callbackExecuted, 'Callback was not executed on server close.');
     }
 
     private function createProcess(ProcessIdentifier $identifier): Process
