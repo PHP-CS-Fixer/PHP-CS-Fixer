@@ -94,6 +94,10 @@
         ],
         "cs:check": "@php php-cs-fixer check --verbose --diff",
         "cs:fix": "@php php-cs-fixer fix",
+        "cs:fix:parallel": [
+            "echo '⚠️ This script is deprecated! Utilise built-in parallelisation instead.';",
+            "@cs:fix"
+        ],
         "docs": "@php dev-tools/doc.php",
         "infection": "@test:mutation",
         "install-tools": "@composer --working-dir=dev-tools install",
@@ -162,6 +166,7 @@
         "auto-review": "Execute Auto-review",
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
+        "cs:fix:parallel": "⚠️DEPRECATED! Use cs:fix with proper parallel config",
         "docs": "Regenerate docs",
         "infection": "Alias for 'test:mutation'",
         "install-tools": "Install DEV tools",
