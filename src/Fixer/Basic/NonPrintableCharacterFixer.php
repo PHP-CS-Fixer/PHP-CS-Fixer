@@ -144,7 +144,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 }
 
                 if ($stringTypeChanged) {
-                    $content = Preg::replace('/(\\\\{1,2})/', '\\\\\\\\', $content);
+                    $content = Preg::replace('/(\\\{1,2})/', '\\\\\\\\', $content);
                     $content = str_replace('$', '\$', $content);
                 }
 

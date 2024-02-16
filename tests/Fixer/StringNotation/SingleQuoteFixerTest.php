@@ -110,15 +110,15 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a = \'foo \\\\($bar8)\';',
-            '<?php $a = "foo \\\\(\$bar8)";',
+            '<?php $a = \'foo \\\($bar8)\';',
+            '<?php $a = "foo \\\(\$bar8)";',
         ];
 
-        yield ['<?php $a = "foo \\" \\$$bar";'];
+        yield ['<?php $a = "foo \" \$$bar";'];
 
-        yield ['<?php $a = b"foo \\" \\$$bar";'];
+        yield ['<?php $a = b"foo \" \$$bar";'];
 
-        yield ['<?php $a = B"foo \\" \\$$bar";'];
+        yield ['<?php $a = B"foo \" \$$bar";'];
 
         yield ['<?php $a = "foo \'bar\'";'];
 

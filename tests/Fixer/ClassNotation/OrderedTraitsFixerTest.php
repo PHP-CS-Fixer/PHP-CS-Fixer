@@ -264,7 +264,7 @@ class Foo {
 }',
         ];
 
-        yield 'simple, leading \\ before character order' => [
+        yield 'simple, leading \ before character order' => [
             '<?php
 class Foo {
     use A;

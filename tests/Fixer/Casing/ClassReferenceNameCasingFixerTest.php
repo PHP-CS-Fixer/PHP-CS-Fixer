@@ -197,14 +197,14 @@ namespace Foo {
                 \Closure::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
+                \A\B\Bar::bind(fn () => null, null, new class {});
             ',
             '<?php
                 CLOSURE::bind(fn () => null, null, new class {});
                 \CLOSURE::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
+                \A\B\Bar::bind(fn () => null, null, new class {});
             ',
         ];
 

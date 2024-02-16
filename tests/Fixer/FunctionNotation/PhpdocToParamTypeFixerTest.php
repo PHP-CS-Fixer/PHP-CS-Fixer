@@ -61,7 +61,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid - phpdoc param with false class hint' => [
-            '<?php /** @param $foo \\Foo\\\\Bar */ function my_foo($foo) {}',
+            '<?php /** @param $foo \Foo\\\Bar */ function my_foo($foo) {}',
         ];
 
         yield 'invalid - phpdoc param with false param order' => [
@@ -82,7 +82,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             '<?php
                     /** @param Break $foo */ function foo_break($foo) {}
                     /** @param __CLASS__ $foo */ function foo_class($foo) {}
-                    /** @param I\Want\To\Break\\\\Free $foo */ function foo_queen($foo) {}
+                    /** @param I\Want\To\Break\\\Free $foo */ function foo_queen($foo) {}
                 ',
         ];
 

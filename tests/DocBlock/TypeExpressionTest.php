@@ -43,12 +43,12 @@ final class TypeExpressionTest extends TestCase
 
         $unionTestNs = '__UnionTest__';
         $unionExpression = $this->parseTypeExpression(
-            $unionTestNs.'\\A|'.$typesExpression.'|'.$unionTestNs.'\\Z',
+            $unionTestNs.'\A|'.$typesExpression.'|'.$unionTestNs.'\Z',
             null,
             []
         );
         self::assertSame(
-            [$unionTestNs.'\\A', ...$expectedTypes, $unionTestNs.'\\Z'],
+            [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
             [...$unionExpression->getTypes()]
         );
     }
@@ -189,25 +189,25 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure(string)'];
 
-        yield ['\\closure(string): void'];
+        yield ['\closure(string): void'];
 
         yield [\Closure::class];
 
-        yield ['\\Closure()'];
+        yield ['\Closure()'];
 
-        yield ['\\Closure(string)'];
+        yield ['\Closure(string)'];
 
-        yield ['\\Closure(string, bool)'];
+        yield ['\Closure(string, bool)'];
 
-        yield ['\\Closure(string|int, bool)'];
+        yield ['\Closure(string|int, bool)'];
 
-        yield ['\\Closure(string):bool'];
+        yield ['\Closure(string):bool'];
 
-        yield ['\\Closure(string): bool'];
+        yield ['\Closure(string): bool'];
 
-        yield ['\\Closure(string|int, bool): bool'];
+        yield ['\Closure(string|int, bool): bool'];
 
-        yield ['\\Closure(float|int): (bool|int)'];
+        yield ['\Closure(float|int): (bool|int)'];
 
         yield ['Closure<T>(): T'];
 
@@ -241,13 +241,13 @@ final class TypeExpressionTest extends TestCase
 
         yield ['(int)'];
 
-        yield ['(int|\\Exception)'];
+        yield ['(int|\Exception)'];
 
         yield ['($foo is int ? false : true)'];
 
         yield ['($foo🚀3 is int ? false : true)'];
 
-        yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
+        yield ['\'a\\\'s"\\\\\n\r\t\'|"b\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\"s\'\\\\\n\r\t"']];
 
         yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, with-dash: int}'];
 
@@ -323,9 +323,9 @@ final class TypeExpressionTest extends TestCase
 
         yield ['class cannot contain space'];
 
-        yield ['\\\\class_with_double_backslash'];
+        yield ['\\\class_with_double_backslash'];
 
-        yield ['class\\\\with_double_backslash'];
+        yield ['class\\\with_double_backslash'];
 
         yield ['class_with_end_backslash\\'];
 

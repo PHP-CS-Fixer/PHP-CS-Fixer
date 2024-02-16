@@ -108,9 +108,9 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
             $content = substr($content, 1, -1);
 
             if ($isSingleQuoted) {
-                $content = Preg::replace('~\\\\([\\\\\'])~', '$1', $content);
+                $content = Preg::replace('~\\\([\\\\\'])~', '$1', $content);
             } else {
-                $content = Preg::replace('~(\\\\\\\\)|\\\\(")~', '$1$2', $content);
+                $content = Preg::replace('~(\\\\\\\)|\\\(")~', '$1$2', $content);
             }
 
             $constantStringToken = new Token([T_ENCAPSED_AND_WHITESPACE, $content."\n"]);
@@ -143,7 +143,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
                 if ($tokens[$i]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
                     $tokens[$i] = new Token([
                         $tokens[$i]->getId(),
-                        Preg::replace('~(\\\\\\\\)|\\\\(")~', '$1$2', $tokens[$i]->getContent()),
+                        Preg::replace('~(\\\\\\\)|\\\(")~', '$1$2', $tokens[$i]->getContent()),
                     ]);
                 }
             }

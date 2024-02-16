@@ -94,8 +94,8 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
             $tokenOfStringBeforeToken = $tokens[$index - 1];
             $stringContent = $tokenOfStringBeforeToken->getContent();
 
-            if (str_ends_with($stringContent, '$') && !str_ends_with($stringContent, '\\$')) {
-                $newContent = substr($stringContent, 0, -1).'\\$';
+            if (str_ends_with($stringContent, '$') && !str_ends_with($stringContent, '\$')) {
+                $newContent = substr($stringContent, 0, -1).'\$';
                 $tokenOfStringBeforeToken = new Token([T_ENCAPSED_AND_WHITESPACE, $newContent]);
             }
 

@@ -546,7 +546,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $expected
      *
      * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     *           ["C:\Program Files\php\php.exe", "foo bar\baz.php", "\"C:\Program Files\php\php.exe\" -l \"foo bar\baz.php\""]
      * @requires OS Linux|Darwin
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
@@ -569,7 +569,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $expected
      *
      * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     *           ["C:\Program Files\php\php.exe", "foo bar\baz.php", "\"C:\Program Files\php\php.exe\" -l \"foo bar\baz.php\""]
      * @requires OS Linux|Darwin
      */
     public function prepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
@@ -594,7 +594,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $expected
      *
      * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     *           ["C:\Program Files\php\php.exe", "foo bar\baz.php", "\"C:\Program Files\php\php.exe\" -l \"foo bar\baz.php\""]
      * @requires OS Linux|Darwin
      *
      * @test
@@ -618,7 +618,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      * @param string $expected
      *
      * @testWith ["php", "foo.php", "\"php\" -l \"foo.php\""]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     *           ["C:\Program Files\php\php.exe", "foo bar\baz.php", "\"C:\Program Files\php\php.exe\" -l \"foo bar\baz.php\""]
      * @requires OS Linux|Darwin
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac($executable, $file, $expected)
