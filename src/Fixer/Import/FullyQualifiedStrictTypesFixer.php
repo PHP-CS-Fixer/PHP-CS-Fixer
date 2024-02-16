@@ -63,6 +63,11 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
      */
     private array $symbolsForImport = [];
 
+    /**
+     * @var array<int<0, max>, array<string, true>>
+     */
+    private array $reservedIdentifiersByLevel;
+
     /** @var array<string, string> */
     private array $cacheUsesLast = [];
 
@@ -278,10 +283,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $classyKinds[] = T_ENUM;
                 }
 
+                $openedCurlyBrackets = 0;
+                $this->reservedIdentifiersByLevel = [];
+
                 for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex() + $indexDiff; ++$index) {
                     $origSize = \count($tokens);
 
-                    if ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
+                    if ($tokens[$index]->equals('{')) {
+                        ++$openedCurlyBrackets;
+                    } if ($tokens[$index]->equals('}')) {
+                        unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
+                        --$openedCurlyBrackets;
+                    } elseif ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
@@ -303,11 +316,18 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         $this->determineShortType($matches[1], $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                        Preg::matchAll('/\*\h*@(?:psalm-|phpstan-)?(?:template(?:-covariant|-contravariant)?|(?:import-)?type)\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/i', $tokens[$index]->getContent(), $matches);
+                        foreach ($matches[1] as $reservedIdentifier) {
+                            $this->reservedIdentifiersByLevel[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
+                        }
+
                         $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
                     }
 
                     $indexDiff += \count($tokens) - $origSize;
                 }
+
+                $this->reservedIdentifiersByLevel = [];
 
                 if ($discoverSymbolsPhase) {
                     $this->setupUsesFromDiscoveredSymbols($uses, $namespaceName);
@@ -354,6 +374,25 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
     }
 
+    private function isReservedIdentifier(string $symbol): bool
+    {
+        if (str_contains($symbol, '\\')) { // optimization only
+            return false;
+        }
+
+        if ((new TypeAnalysis($symbol))->isReservedType()) {
+            return true;
+        }
+
+        foreach ($this->reservedIdentifiersByLevel as $reservedIdentifiers) {
+            if (isset($reservedIdentifiers[$symbol])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Resolve absolute or relative symbol to normalized FQCN.
      *
@@ -363,6 +402,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         if (str_starts_with($symbol, '\\')) {
             return substr($symbol, 1);
+        }
+
+        if ($this->isReservedIdentifier($symbol)) {
+            return $symbol;
         }
 
         $this->refreshUsesCache($uses);
@@ -383,6 +426,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function shortenSymbol(string $fqcn, array $uses, string $namespaceName): string
     {
+        if ($this->isReservedIdentifier($fqcn)) {
+            return $fqcn;
+        }
+
         $this->refreshUsesCache($uses);
 
         $res = null;
@@ -391,7 +438,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $iMin = 0;
         if (str_starts_with($fqcn, $namespaceName.'\\')) {
             $tmpRes = substr($fqcn, \strlen($namespaceName) + 1);
-            if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])])) {
+            if (!isset($this->cacheUseNameByShortNameLower[strtolower(explode('\\', $tmpRes, 2)[0])]) && !$this->isReservedIdentifier($tmpRes)) {
                 $res = $tmpRes;
                 $iMin = substr_count($namespaceName, '\\') + 1;
             }
@@ -401,9 +448,12 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $tmp = $fqcn;
         for ($i = substr_count($fqcn, '\\'); $i >= $iMin; --$i) {
             if (isset($this->cacheUseShortNameByNameLower[strtolower($tmp)])) {
-                $res = $this->cacheUseShortNameByNameLower[strtolower($tmp)].substr($fqcn, \strlen($tmp));
+                $tmpRes = $this->cacheUseShortNameByNameLower[strtolower($tmp)].substr($fqcn, \strlen($tmp));
+                if (!$this->isReservedIdentifier($tmpRes)) {
+                    $res = $tmpRes;
 
-                break;
+                    break;
+                }
             }
 
             if ($i > 0) {
@@ -741,12 +791,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function determineShortType(string $typeName, array $uses, string $namespaceName): ?array
     {
-        if ((new TypeAnalysis($typeName))->isReservedType()) {
-            return null;
-        }
-
         if (null !== $this->discoveredSymbols) {
-            $this->discoveredSymbols['class'][] = $typeName;
+            if (!$this->isReservedIdentifier($typeName)) {
+                $this->discoveredSymbols['class'][] = $typeName;
+            }
 
             return null;
         }

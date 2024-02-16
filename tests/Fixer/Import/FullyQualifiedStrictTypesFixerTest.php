@@ -798,6 +798,318 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'prevent import if implicitly used by generics template' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Foo\T;
+
+                class Cl
+                {
+                    /**
+                     * @return T
+                     */
+                    public function before()
+                    {
+                        return new T();
+                    }
+
+                    /**
+                     * @template T of \Exception
+                     * @param \Closure(\Foo\T): T $fx
+                     * @return T
+                     */
+                    public function makeException(\Closure $fx)
+                    {
+                        $arg = new \Foo\T();
+
+                        return $fx($arg);
+                    }
+
+                    /**
+                     * @return T
+                     */
+                    public function after()
+                    {
+                        return new T();
+                    }
+
+                    /**
+                     * @return T
+                     */
+                    public function anony()
+                    {
+                        $anony = new
+                        /**
+                         * @template T of \Exception
+                         */
+                        class(new RuntimeException()) {
+                            /** @var T */
+                            public \Exception $e;
+
+                            /**
+                             * @param T $e
+                             */
+                            public function __construct(\Exception $e)
+                            {
+                                $this->e = $e;
+                            }
+
+                            public function before(): void
+                            {
+                                new \Foo\T();
+                            }
+
+                            /**
+                             * @return T
+                             */
+                            public function returnT()
+                            {
+                                new \Foo\T();
+
+                                return $this->e;
+                            }
+
+                            public function after(): void
+                            {
+                                new \Foo\T();
+                            }
+                        };
+
+                        return new T();
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                class Cl
+                {
+                    /**
+                     * @return \Foo\T
+                     */
+                    public function before()
+                    {
+                        return new \Foo\T();
+                    }
+
+                    /**
+                     * @template T of \Exception
+                     * @param \Closure(\Foo\T): T $fx
+                     * @return T
+                     */
+                    public function makeException(\Closure $fx)
+                    {
+                        $arg = new \Foo\T();
+
+                        return $fx($arg);
+                    }
+
+                    /**
+                     * @return \Foo\T
+                     */
+                    public function after()
+                    {
+                        return new \Foo\T();
+                    }
+
+                    /**
+                     * @return \Foo\T
+                     */
+                    public function anony()
+                    {
+                        $anony = new
+                        /**
+                         * @template T of \Exception
+                         */
+                        class(new RuntimeException()) {
+                            /** @var T */
+                            public \Exception $e;
+
+                            /**
+                             * @param T $e
+                             */
+                            public function __construct(\Exception $e)
+                            {
+                                $this->e = $e;
+                            }
+
+                            public function before(): void
+                            {
+                                new \Foo\T();
+                            }
+
+                            /**
+                             * @return T
+                             */
+                            public function returnT()
+                            {
+                                new \Foo\T();
+
+                                return $this->e;
+                            }
+
+                            public function after(): void
+                            {
+                                new \Foo\T();
+                            }
+                        };
+
+                        return new \Foo\T();
+                    }
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'prevent import if implicitly used by local type' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use Ns2\Bar;
+                use Ns2\Foo;
+
+                /**
+                 * @phpstan-type Foo array{int, int}
+                 * @phpstan-import-type Bar from OtherCl
+                 */
+                class Cl
+                {
+                    /**
+                     * @param \Ns2\Foo $v
+                     *
+                     * @return Foo
+                     */
+                    public function foo($v)
+                    {
+                        return [1, 2];
+                    }
+
+                    /**
+                     * @param \Ns2\Bar $v
+                     *
+                     * @return Bar
+                     */
+                    public function bar($v)
+                    {
+                        return null;
+                    }
+                }
+
+                class Cl2
+                {
+                    /**
+                     * @param Foo $v
+                     */
+                    public function foo($v): void {}
+
+                    /**
+                     * @param Bar $v
+                     */
+                    public function bar($v): void {}
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                /**
+                 * @phpstan-type Foo array{int, int}
+                 * @phpstan-import-type Bar from OtherCl
+                 */
+                class Cl
+                {
+                    /**
+                     * @param \Ns2\Foo $v
+                     *
+                     * @return Foo
+                     */
+                    public function foo($v)
+                    {
+                        return [1, 2];
+                    }
+
+                    /**
+                     * @param \Ns2\Bar $v
+                     *
+                     * @return Bar
+                     */
+                    public function bar($v)
+                    {
+                        return null;
+                    }
+                }
+
+                class Cl2
+                {
+                    /**
+                     * @param \Ns2\Foo $v
+                     */
+                    public function foo($v): void {}
+
+                    /**
+                     * @param \Ns2\Bar $v
+                     */
+                    public function bar($v): void {}
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'prevent import if implicitly used by generics template - psalm/phpstan prefix' => [
+            <<<'EOD'
+                <?php
+
+                /** @psalm-template T1 */
+                /** @phpstan-template T2 */
+                class Foo {
+                    /** @var T1 */
+                    public $v1;
+                    /** @var T2 */
+                    public $v2;
+                    /** @var \T3 */
+                    public $v3;
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                /** @psalm-template T1 */
+                /** @phpstan-template T2 */
+                class Foo {
+                    /** @var T1 */
+                    public $v1;
+                    /** @var T2 */
+                    public $v2;
+                    /** @var T3 */
+                    public $v3;
+                }
+                EOD,
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
+        yield 'prevent import if implicitly used by generics template - covariant/contravariant suffix' => [
+            <<<'EOD'
+                <?php
+
+                /** @template-covariant T1 */
+                /** @psalm-template-contravariant T2 */
+                class Foo {
+                    /** @var T1 */
+                    public $v1;
+                    /** @var T2 */
+                    public $v2;
+                }
+                EOD,
+            null,
+            ['leading_backslash_in_global_namespace' => true],
+        ];
+
         yield 'import with relative and absolute symbols - global' => [
             <<<'EOD'
                 <?php
