@@ -75,7 +75,7 @@ final class FixCommandTest extends TestCase
     /**
      * There's no simple way to cover parallelisation with tests, because it involves a lot of hardcoded logic under the hood,
      * like opening server, communicating through sockets, etc. That's why we only test `fix` command with proper
-     * parallel config, so runner utilises multi-processing internally. Expected outcome is.
+     * parallel config, so runner utilises multi-processing internally. Expected outcome is information about utilising multiple CPUs.
      *
      * @covers \PhpCsFixer\Console\Command\WorkerCommand
      * @covers \PhpCsFixer\Runner\Runner::fixParallel
