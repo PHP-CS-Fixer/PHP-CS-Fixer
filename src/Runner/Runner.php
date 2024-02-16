@@ -198,6 +198,7 @@ final class Runner
                 $job = $fileChunk();
 
                 if (0 === \count($job)) {
+                    $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
                     $processPool->endProcessIfKnown($identifier);
 
                     return;
@@ -275,6 +276,7 @@ final class Runner
                         $job = $fileChunk();
 
                         if (0 === \count($job)) {
+                            $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
                             $processPool->endProcessIfKnown($identifier);
 
                             return;
