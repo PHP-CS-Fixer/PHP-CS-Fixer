@@ -119,7 +119,6 @@ final class WorkerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $verbosity = $output->getVerbosity();
         $errorOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
         $identifier = $input->getOption('identifier');
         $port = $input->getOption('port');
@@ -143,7 +142,8 @@ final class WorkerCommand extends Command
         $tcpConnector
             ->connect(sprintf('127.0.0.1:%d', $port))
             ->then(
-                function (ConnectionInterface $connection) use ($runner, $identifier): void {
+                /** @codeCoverageIgnore */
+                function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
                     $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
                     $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
                     $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
@@ -158,8 +158,18 @@ final class WorkerCommand extends Command
                     $in->on('error', $handleError);
 
                     // [REACT] Listen for messages from the parallelisation operator (analysis requests)
-                    $in->on('data', function (array $json) use ($runner, $out): void {
-                        if (ParallelAction::WORKER_RUN !== $json['action']) {
+                    $in->on('data', function (array $json) use ($loop, $runner, $out): void {
+                        $action = $json['action'] ?? null;
+
+                        // Parallelisation operator does not have more to do, let's close the connection
+                        if (ParallelAction::WORKER_THANK_YOU === $action) {
+                            $loop->stop();
+
+                            return;
+                        }
+
+                        // At this point we only expect analysis requests, so let's return early for any other message
+                        if (ParallelAction::WORKER_RUN !== $action) {
                             return;
                         }
 

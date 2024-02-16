@@ -39,6 +39,20 @@ final class ProcessFactory
         ProcessIdentifier $identifier,
         int $serverPort
     ): Process {
+        $commandArgs = $this->getCommandArgs($serverPort, $identifier, $runnerConfig);
+
+        return new Process(
+            implode(' ', $commandArgs),
+            $loop,
+            $runnerConfig->getParallelConfig()->getProcessTimeout()
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getCommandArgs(int $serverPort, ProcessIdentifier $identifier, RunnerConfig $runnerConfig): array
+    {
         $phpBinary = (new PhpExecutableFinder())->find(false);
 
         if (false === $phpBinary) {
@@ -84,10 +98,6 @@ final class ProcessFactory
             }
         }
 
-        return new Process(
-            implode(' ', $commandArgs),
-            $loop,
-            $runnerConfig->getParallelConfig()->getProcessTimeout()
-        );
+        return $commandArgs;
     }
 }

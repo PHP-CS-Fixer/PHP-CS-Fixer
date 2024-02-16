@@ -28,4 +28,5 @@ final class ParallelAction
 
     // Actions handled by the worker
     public const WORKER_RUN = 'run';
+    public const WORKER_THANK_YOU = 'thankYou';
 }
