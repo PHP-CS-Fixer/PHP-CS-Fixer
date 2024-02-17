@@ -315,6 +315,14 @@ class Sample
         $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], $this->determineRequiredLineCount($tokens, $class, $elementIndex));
     }
 
+    /**
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
+     */
     private function determineRequiredLineCount(Tokens $tokens, array $class, int $elementIndex): int
     {
         $type = $class['elements'][$elementIndex]['type'];
@@ -509,6 +517,17 @@ class Sample
         }
     }
 
+    /**
+     * including trailing single line comments if belonging to the class element.
+     *
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
+     * @param array{token: Token, type: string, index: int} $element
+     */
     private function getFirstTokenIndexOfClassElement(Tokens $tokens, array $class, array $element): int
     {
         $modifierTypes = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE];
@@ -532,7 +551,17 @@ class Sample
         return $firstElementAttributeIndex;
     }
 
-    // including trailing single line comments if belonging to the class element
+    /**
+     * including trailing single line comments if belonging to the class element.
+     *
+     * @param array{
+     *     index: int,
+     *     open: int,
+     *     close: int,
+     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
+     * } $class
+     * @param array{token: Token, type: string, index: int, start: int} $element
+     */
     private function getLastTokenIndexOfClassElement(Tokens $tokens, array $class, array $element, TokensAnalyzer $tokensAnalyzer): int
     {
         // find last token of the element

@@ -208,6 +208,11 @@ $foo = new class(){};
         $this->sortClassModifiers($tokens, $classDefInfo);
     }
 
+    /**
+     * @param array{start: int, numberOfExtends: int, multiLine: bool} $classExtendsInfo
+     *
+     * @return array{start: int, numberOfExtends: int, multiLine: bool}
+     */
     private function fixClassyDefinitionExtends(Tokens $tokens, int $classOpenIndex, array $classExtendsInfo): array
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
@@ -226,6 +231,11 @@ $foo = new class(){};
         return $classExtendsInfo;
     }
 
+    /**
+     * @param array{start: int, numberOfImplements: int, multiLine: bool} $classImplementsInfo
+     *
+     * @return array{start: int, numberOfImplements: int, multiLine: bool}
+     */
     private function fixClassyDefinitionImplements(Tokens $tokens, int $classOpenIndex, array $classImplementsInfo): array
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
@@ -244,6 +254,19 @@ $foo = new class(){};
         return $classImplementsInfo;
     }
 
+    /**
+     * @param array{
+     *      start: int,
+     *      classy: int,
+     *      open: int,
+     *      extends: false|array{start: int, numberOfExtends: int, multiLine: bool},
+     *      implements: false|array{start: int, numberOfImplements: int, multiLine: bool},
+     *      anonymousClass: bool,
+     *      final: false|int,
+     *      abstract: false|int,
+     *      readonly: false|int,
+     *  } $classDefInfo
+     */
     private function fixClassyDefinitionOpenSpacing(Tokens $tokens, array $classDefInfo): int
     {
         if ($classDefInfo['anonymousClass']) {
@@ -337,6 +360,9 @@ $foo = new class(){};
         return $def;
     }
 
+    /**
+     * @return array<string, 1>|array{start: int, multiLine: bool}
+     */
     private function getClassyInheritanceInfo(Tokens $tokens, int $startIndex, string $label): array
     {
         $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];

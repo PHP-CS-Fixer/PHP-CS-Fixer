@@ -33,6 +33,7 @@ use Symfony\Component\Finder\SplFileInfo;
 #[AsCommand(name: 'documentation')]
 final class DocumentationCommand extends Command
 {
+    /** @var string */
     protected static $defaultName = 'documentation';
 
     protected function configure(): void
