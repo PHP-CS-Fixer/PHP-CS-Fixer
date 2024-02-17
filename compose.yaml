@@ -3,7 +3,7 @@ version: '3.8'
 services:
   php-7.4: &php
     build:
-      target: php
+      target: dev
       args:
         ALPINE_VERSION: "3.16"
         PHP_VERSION: "7.4"
