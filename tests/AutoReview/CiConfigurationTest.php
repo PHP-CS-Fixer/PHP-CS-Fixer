@@ -71,7 +71,8 @@ final class CiConfigurationTest extends TestCase
 
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $ciVersions);
         self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
-        self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedByGitHubDocker());
+        self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingOfficialImages());
+        self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingLocalImages());
     }
 
     public function testDeploymentJobsRunOnLatestStablePhpThatIsSupportedByTool(): void
@@ -262,13 +263,26 @@ final class CiConfigurationTest extends TestCase
     /**
      * @return list<numeric-string>
      */
-    private function getPhpVersionsUsedByGitHubDocker(): array
+    private function getPhpVersionsUsedForBuildingOfficialImages(): array
+    {
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/release.yml'));
+
+        return array_map(
+            static fn ($item) => $item['php-version'],
+            $yaml['jobs']['docker-images']['strategy']['matrix']['include']
+        );
+    }
+
+    /**
+     * @return list<numeric-string>
+     */
+    private function getPhpVersionsUsedForBuildingLocalImages(): array
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/docker.yml'));
 
         return array_map(
             static fn ($item) => $item['php-version'],
-            $yaml['jobs']['build-and-push-image']['strategy']['matrix']['include']
+            $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
         );
     }
 }
