@@ -37,6 +37,14 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * Make sure there is one blank line above and below class elements.
  *
  * The exception is when an element is the first or last item in a 'classy'.
+ *
+ * @phpstan-type _Class array{
+ *      index: int,
+ *      open: int,
+ *      close: int,
+ *      elements: non-empty-list<_Element>
+ *  }
+ * @phpstan-type _Element array{token: Token, type: string, index: int, start?: int, end?: int}
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -239,12 +247,7 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      *
-     * @param array{
-     *     index: int,
-     *     open: int,
-     *     close: int,
-     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
-     * } $class
+     * @param _Class $class
      */
     private function fixSpaceAboveClassElement(Tokens $tokens, array $class, int $elementIndex): void
     {
@@ -316,12 +319,7 @@ class Sample
     }
 
     /**
-     * @param array{
-     *     index: int,
-     *     open: int,
-     *     close: int,
-     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
-     * } $class
+     * @param _Class $class
      */
     private function determineRequiredLineCount(Tokens $tokens, array $class, int $elementIndex): int
     {
@@ -358,12 +356,7 @@ class Sample
     }
 
     /**
-     * @param array{
-     *     index: int,
-     *     open: int,
-     *     close: int,
-     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
-     * } $class
+     * @param _Class $class
      */
     private function fixSpaceBelowClassElement(Tokens $tokens, array $class): void
     {
@@ -466,12 +459,7 @@ class Sample
     /**
      * @TODO Introduce proper DTO instead of an array
      *
-     * @return \Generator<array{
-     *     index: int,
-     *     open: int,
-     *     close: int,
-     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
-     * }>
+     * @return \Generator<_Class>
      */
     private function getElementsByClass(Tokens $tokens): \Generator
     {
@@ -520,13 +508,8 @@ class Sample
     /**
      * including trailing single line comments if belonging to the class element.
      *
-     * @param array{
-     *     index: int,
-     *     open: int,
-     *     close: int,
-     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
-     * } $class
-     * @param array{token: Token, type: string, index: int} $element
+     * @param _Class   $class
+     * @param _Element $element
      */
     private function getFirstTokenIndexOfClassElement(Tokens $tokens, array $class, array $element): int
     {
@@ -554,13 +537,8 @@ class Sample
     /**
      * including trailing single line comments if belonging to the class element.
      *
-     * @param array{
-     *     index: int,
-     *     open: int,
-     *     close: int,
-     *     elements: non-empty-list<array{token: Token, type: string, index: int, start: int, end: int}>
-     * } $class
-     * @param array{token: Token, type: string, index: int, start: int} $element
+     * @param _Class   $class
+     * @param _Element $element
      */
     private function getLastTokenIndexOfClassElement(Tokens $tokens, array $class, array $element, TokensAnalyzer $tokensAnalyzer): int
     {

@@ -30,6 +30,9 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements and PSR12 ¶8. Anonymous Classes.
+ *
+ * @phpstan-type _ClassExtendsInfo array{start: int, numberOfExtends: int, multiLine: bool}
+ * @phpstan-type _ClassImplementsInfo array{start: int, numberOfImplements: int, multiLine: bool}
  */
 final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -209,9 +212,9 @@ $foo = new class(){};
     }
 
     /**
-     * @param array{start: int, numberOfExtends: int, multiLine: bool} $classExtendsInfo
+     * @param _ClassExtendsInfo $classExtendsInfo
      *
-     * @return array{start: int, numberOfExtends: int, multiLine: bool}
+     * @return _ClassExtendsInfo
      */
     private function fixClassyDefinitionExtends(Tokens $tokens, int $classOpenIndex, array $classExtendsInfo): array
     {
@@ -232,9 +235,9 @@ $foo = new class(){};
     }
 
     /**
-     * @param array{start: int, numberOfImplements: int, multiLine: bool} $classImplementsInfo
+     * @param _ClassImplementsInfo $classImplementsInfo
      *
-     * @return array{start: int, numberOfImplements: int, multiLine: bool}
+     * @return _ClassImplementsInfo
      */
     private function fixClassyDefinitionImplements(Tokens $tokens, int $classOpenIndex, array $classImplementsInfo): array
     {
@@ -259,8 +262,8 @@ $foo = new class(){};
      *      start: int,
      *      classy: int,
      *      open: int,
-     *      extends: false|array{start: int, numberOfExtends: int, multiLine: bool},
-     *      implements: false|array{start: int, numberOfImplements: int, multiLine: bool},
+     *      extends: false|_ClassExtendsInfo,
+     *      implements: false|_ClassImplementsInfo,
      *      anonymousClass: bool,
      *      final: false|int,
      *      abstract: false|int,
@@ -305,8 +308,8 @@ $foo = new class(){};
      *     start: int,
      *     classy: int,
      *     open: int,
-     *     extends: false|array{start: int, numberOfExtends: int, multiLine: bool},
-     *     implements: false|array{start: int, numberOfImplements: int, multiLine: bool},
+     *     extends: false|_ClassExtendsInfo,
+     *     implements: false|_ClassImplementsInfo,
      *     anonymousClass: bool,
      *     final: false|int,
      *     abstract: false|int,
