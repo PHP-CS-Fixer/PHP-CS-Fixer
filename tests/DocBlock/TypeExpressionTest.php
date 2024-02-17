@@ -230,6 +230,10 @@ final class TypeExpressionTest extends TestCase
         yield ['($foo🚀3 is int ? false : true)'];
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
+
+        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, with-dash: int}'];
+
+        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, k: int, l: int, with-dash: int}'];
     }
 
     public static function provideGetConstTypesCases(): iterable
