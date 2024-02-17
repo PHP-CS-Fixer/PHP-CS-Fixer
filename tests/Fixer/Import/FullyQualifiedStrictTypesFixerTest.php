@@ -1528,6 +1528,17 @@ class Foo extends \A\A implements \B\A, \C\A
                 \Bar\func2(new \Bar\Service2(\Bar\CONST2));
                 EOD,
         ];
+
+        yield 'do not crash on large PHPDoc' => [<<<'PHP'
+            <?php
+            class Foo
+            {
+                /**
+                 * @return array{k0: int, k1: int, k2: int, k3: int, k4: int, k5: int, k6: int, k7: int, k8: int, k9: int, k10: int, k11: int, with-dash: int}
+                 */
+                function bar() {}
+            }
+            PHP];
     }
 
     /**
