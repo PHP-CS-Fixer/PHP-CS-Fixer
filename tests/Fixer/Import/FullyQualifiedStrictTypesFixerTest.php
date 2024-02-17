@@ -1529,7 +1529,7 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        yield '[issue_7839] do not crash on large PHPDoc' => [<<<'PHP'
+        yield 'do not crash on large PHPDoc' => [<<<'PHP'
             <?php
             class Foo
             {
