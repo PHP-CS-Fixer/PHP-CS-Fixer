@@ -32,6 +32,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'help')]
 final class HelpCommand extends BaseHelpCommand
 {
+    /** @var string */
     protected static $defaultName = 'help';
 
     /**

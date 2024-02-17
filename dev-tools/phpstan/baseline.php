@@ -2,56 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\DescribeCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\DocumentationCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/DocumentationCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\HelpCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/HelpCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\ListFilesCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\ListSetsCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/ListSetsCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\SelfUpdateCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
@@ -87,104 +37,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/CastNotation/NoShortBoolCastFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:determineRequiredLineCount\\(\\) has parameter \\$class with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:getFirstTokenIndexOfClassElement\\(\\) has parameter \\$class with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:getFirstTokenIndexOfClassElement\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:getLastTokenIndexOfClassElement\\(\\) has parameter \\$class with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:getLastTokenIndexOfClassElement\\(\\) has parameter \\$element with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:fixClassyDefinitionExtends\\(\\) has parameter \\$classExtendsInfo with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:fixClassyDefinitionExtends\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:fixClassyDefinitionImplements\\(\\) has parameter \\$classImplementsInfo with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:fixClassyDefinitionImplements\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:fixClassyDefinitionOpenSpacing\\(\\) has parameter \\$classDefInfo with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:getClassyInheritanceInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\NoPhp4ConstructorFixer\\:\\:getWrapperMethodSequence\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$pos with its value variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ControlStructure\\\\YodaStyleFixer\\:\\:getCompareFixableInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:countImportsUsedAsArgument\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:countImportsUsedAsArgument\\(\\) has parameter \\$imports with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:countImportsUsedAsArgument\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:filterArguments\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:filterArguments\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\LambdaNotUsedImportFixer\\:\\:findNotUsedLambdaImports\\(\\) has parameter \\$imports with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',

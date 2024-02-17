@@ -290,7 +290,7 @@ class Foo
      * @param int    $startIndex function/method start index
      * @param int    $bodyIndex  function/method body index
      *
-     * @return array an array containing the sequence and case sensitiveness [ 0 => $seq, 1 => $case ]
+     * @return array{array<array<array{int, string}|int|string>>, array{3: false}}
      */
     private function getWrapperMethodSequence(Tokens $tokens, string $method, int $startIndex, int $bodyIndex): array
     {
