@@ -66,6 +66,8 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
      */
     public const MATCH_EXPRESSIONS = 'match';
 
+    private ?array $switchColonIndexes = null;
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -245,7 +247,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
                     $until,
                     $fixSwitchCases,
                     [':', ';'],
-                    $this->computeSwitchColonIndexes($tokens)
+                    $this->getSwitchColonIndexes($tokens)
                 );
 
                 $index = $until + $added;
@@ -278,12 +280,9 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
     /**
      * @return array<int>
      */
-    private function computeSwitchColonIndexes(Tokens $tokens): array
+    private function getSwitchColonIndexes(Tokens $tokens): array
     {
-        static $colonIndexesByHash = [];
-        $hash = $tokens->getCodeHash();
-
-        if (!isset($colonIndexesByHash[$hash])) {
+        if (null === $this->switchColonIndexes) {
             $colonIndexes = [];
 
             /** @var SwitchAnalysis $analysis */
@@ -299,10 +298,10 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
                 }
             }
 
-            $colonIndexesByHash[$hash] = $colonIndexes;
+            $this->switchColonIndexes = $colonIndexes;
         }
 
-        return $colonIndexesByHash[$hash];
+        return $this->switchColonIndexes;
     }
 
     private function addNewLineAfterIfNecessary(Tokens $tokens, int $index): int
