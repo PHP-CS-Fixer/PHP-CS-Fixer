@@ -25,6 +25,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -87,7 +89,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', sprintf('Which expression must have one element by line (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
+            (new FixerOptionBuilder('elements', 'Which expression must have one element by line.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset([
                     self::ELEMENTS_ARRAYS,
@@ -116,9 +118,18 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
      * Since recursion is used to handle things like array inside array or functions we need
      * a parameter $shouldAddNewLine to knows if we are currently fixing the structure, which
      * requires to add newlines, or if we are just looking for the next one to fix.
+     *
+     * @param null|array<string> $lineDelimiters
+     * @param null|array<int>    $lineDelimitersIndexes
      */
-    private function processBlock(Tokens $tokens, int $begin, int $end, bool $shouldAddNewLine, ?string $lineDelimiter = null): int
-    {
+    private function processBlock(
+        Tokens $tokens,
+        int $begin,
+        int $end,
+        bool $shouldAddNewLine,
+        ?array $lineDelimiters = null,
+        ?array $lineDelimitersIndexes = null
+    ): int {
         $tokenAddedCount = 0;
         if (!$tokens->isPartialCodeMultiline($begin, $end)) {
             return $tokenAddedCount;
@@ -139,7 +150,11 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
             /** @var Token $token */
             $token = $tokens[$index];
 
-            if (null !== $lineDelimiter && $token->equals($lineDelimiter)) {
+            if (
+                null !== $lineDelimiters
+                && $token->equalsAny($lineDelimiters)
+                && (null === $lineDelimitersIndexes || \in_array($index, $lineDelimitersIndexes, true))
+            ) {
                 if ($shouldAddNewLine) {
                     $tokenAddedCount += $this->addNewLineAfterIfNecessary($tokens, $index);
                 }
@@ -149,7 +164,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
 
             if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixArrays, ',');
+                $added = $this->processBlock($tokens, $index, $until, $fixArrays, [',']);
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -164,7 +179,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             if ($tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixArrays, ',');
+                $added = $this->processBlock($tokens, $index, $until, $fixArrays, [',']);
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -184,7 +199,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
 
             if ($tokens[$prevIndex]->isGivenKind(T_FOR)) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixControlStructures, ';');
+                $added = $this->processBlock($tokens, $index, $until, $fixControlStructures, [';']);
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -197,7 +212,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
                 && !$tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixArguments, ',');
+                $added = $this->processBlock($tokens, $index, $until, $fixArguments, [',']);
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -210,7 +225,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
                 || $tokens[$prevIndex]->isGivenKind(T_STRING) && $tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixParameters, ',');
+                $added = $this->processBlock($tokens, $index, $until, $fixParameters, [',']);
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -224,7 +239,14 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
 
                 $index = $tokens->getNextTokenOfKind($index, ['{']);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixSwitchCases, ':');
+                $added = $this->processBlock(
+                    $tokens,
+                    $index,
+                    $until,
+                    $fixSwitchCases,
+                    [':', ';'],
+                    $this->computeSwitchColonIndexes($tokens)
+                );
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -239,7 +261,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
 
                 $index = $tokens->getNextTokenOfKind($index, ['{']);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $added = $this->processBlock($tokens, $index, $until, $fixMatch, ',');
+                $added = $this->processBlock($tokens, $index, $until, $fixMatch, [',']);
 
                 $index = $until + $added;
                 $tokenAddedCount += $added;
@@ -253,10 +275,40 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
         return $tokenAddedCount;
     }
 
+    /**
+     * @return array<int>
+     */
+    private function computeSwitchColonIndexes(Tokens $tokens): array
+    {
+        static $colonIndexesByHash = [];
+        $hash = $tokens->getCodeHash();
+
+        if (!isset($colonIndexesByHash[$hash])) {
+            $colonIndexes = [];
+
+            /** @var SwitchAnalysis $analysis */
+            foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+                $default = $analysis->getDefaultAnalysis();
+
+                if (null !== $default) {
+                    $colonIndexes[] = $default->getColonIndex();
+                }
+
+                foreach ($analysis->getCases() as $caseAnalysis) {
+                    $colonIndexes[] = $caseAnalysis->getColonIndex();
+                }
+            }
+
+            $colonIndexesByHash[$hash] = $colonIndexes;
+        }
+
+        return $colonIndexesByHash[$hash];
+    }
+
     private function addNewLineAfterIfNecessary(Tokens $tokens, int $index): int
     {
         $next = $tokens->getNextMeaningfulToken($index);
-        if ($tokens->isPartialCodeMultiline($index, $next)) {
+        if ($tokens->isPartialCodeMultiline($index, $next - 1)) {
             return 0;
         }
 

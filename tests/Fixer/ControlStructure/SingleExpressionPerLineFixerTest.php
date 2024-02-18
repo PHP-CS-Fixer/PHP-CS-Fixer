@@ -19,7 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Vincent Langlet
+ *
  * @internal
+ *
  * @covers \PhpCsFixer\Fixer\ControlStructure\SingleExpressionPerLineFixer
  */
 final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
@@ -200,6 +202,52 @@ $a
                      | \RuntimeException $e) {
                     };',
             ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+        ];
+
+        yield [
+            '<?php
+                    $a = [
+                        1,
+"2
+                        ",
+3
+                    ];',
+            '<?php
+                    $a = [
+                        1, "2
+                        ", 3
+                    ];',
+        ];
+
+        yield [
+            '<?php
+
+            switch ($foo) {
+                case 1:
+case 2:
+default:
+            }
+            ',
+            '<?php
+
+            switch ($foo) {
+                case 1: case 2: default:
+            }
+            ',
+            ['elements' => [SingleExpressionPerLineFixer::SWITCH_CASES]],
+        ];
+
+        yield [
+            '<?php
+
+            switch ($foo) {
+                case 1:
+                case 2:
+                    $a = $b ? $c : $d;
+            }
+            ',
+            null,
+            ['elements' => [SingleExpressionPerLineFixer::SWITCH_CASES]],
         ];
     }
 
