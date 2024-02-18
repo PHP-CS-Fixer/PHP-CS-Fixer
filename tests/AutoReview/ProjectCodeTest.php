@@ -27,7 +27,6 @@ use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\RstUtils;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
-use PhpCsFixer\ExecutorWithoutErrorHandler;
 use PhpCsFixer\ExecutorWithoutErrorHandlerException;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
@@ -81,7 +80,6 @@ final class ProjectCodeTest extends TestCase
         DocLexer::class,
         DocumentationCommand::class,
         DocumentationLocator::class,
-        ExecutorWithoutErrorHandler::class,
         ExecutorWithoutErrorHandlerException::class,
         FileCachingLintingIterator::class,
         FixerDocumentGenerator::class,
