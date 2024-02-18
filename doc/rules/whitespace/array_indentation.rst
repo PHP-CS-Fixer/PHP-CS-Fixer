@@ -4,11 +4,25 @@ Rule ``array_indentation``
 
 Each element of an array must be indented exactly once.
 
+Configuration
+-------------
+
+``strict``
+~~~~~~~~~~
+
+Whether the indentation must be exactly (true) or at least (false) once.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -22,6 +36,22 @@ Example #1
    +    'bar' => [
    +        'baz' => true,
    +    ],
+    ];
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['strict' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $foo = [
+   -  'bar' => 1,
+   +    'bar' => 1,
+            'baz' => 2,
     ];
 
 Rule sets

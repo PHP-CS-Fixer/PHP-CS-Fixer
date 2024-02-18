@@ -25,10 +25,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, mixed> $config
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
+
         $this->doTest($expected, $input);
     }
 
@@ -50,6 +54,23 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
                             'bar' => 'baz',
                      ];
                     INPUT,
+            ],
+            [
+                <<<'EXPECTED'
+                    <?php
+                    $foo = [
+                        'foo',
+                            'bar' => 'baz',
+                    ];
+                    EXPECTED,
+                <<<'INPUT'
+                    <?php
+                    $foo = [
+                      'foo',
+                            'bar' => 'baz',
+                    ];
+                    INPUT,
+                ['strict' => false],
             ],
             [
                 <<<'EXPECTED'
@@ -964,9 +985,9 @@ class Foo {
     }
 
     /**
-     * @param list<array{0: string, 1?: string}> $cases
+     * @param list<array{0: string, 1?: null|string, 2?: array<string, mixed>}> $cases
      *
-     * @return list<array{0: string, 1?: string}>
+     * @return list<array{0: string, 1?: null|string, 2?: array<string, mixed>}>
      */
     private static function withLongArraySyntaxCases(array $cases): array
     {

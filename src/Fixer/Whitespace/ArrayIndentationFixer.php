@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\Indentation;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -25,7 +29,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
     use Indentation;
 
@@ -35,6 +39,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             'Each element of an array must be indented exactly once.',
             [
                 new CodeSample("<?php\n\$foo = [\n   'bar' => [\n    'baz' => true,\n  ],\n];\n"),
+                new CodeSample("<?php\n\$foo = [\n  'bar' => 1,\n        'baz' => 2,\n];\n", ['strict' => false]),
             ]
         );
     }
@@ -55,8 +60,20 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
         return 29;
     }
 
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('strict', 'Whether the indentation must be exactly (true) or at least (false) once.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $isStrict = true === $this->configuration['strict'];
+
         $lastIndent = '';
         $scopes = [];
         $previousLineInitialIndent = '';
@@ -130,7 +147,9 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     );
                 }
 
-                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+                if ($isStrict || \strlen($token->getContent()) < \strlen($content)) {
+                    $tokens[$index] = new Token([T_WHITESPACE, $content]);
+                }
                 $lastIndent = $this->extractIndent($content);
 
                 continue;
