@@ -335,7 +335,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
     {
         // If the first operand does not end with a variable, no variables would be broken by concatenation.
-        if ($firstOperand['type'] !== self::STR_DOUBLE_QUOTE_VAR) {
+        if (self::STR_DOUBLE_QUOTE_VAR !== $firstOperand['type']) {
             return false;
         }
         if (!$tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)) {
