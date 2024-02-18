@@ -334,12 +334,29 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      */
     private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
     {
-        // If the first operand ends with a variable and the second operand does not start with a space,
-        // the variable in the first operand may be broken by the concatenation.
+        // If the first operand does not end with a variable, no variables would be broken by concatenation.
+        if ($firstOperand['type'] !== self::STR_DOUBLE_QUOTE_VAR) {
+            return false;
+        }
+        if (!$tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)) {
+            return false;
+        }
 
-        // example: "$param" . "hello" -> "$paramhello"
+        $allowedPatternsForSecondOperand = [
+            '/^\s.*/', // e.g. " foo", ' bar', " $baz"
+            '/^-(?!\>)/', // e.g. "-foo", '-bar', "-$baz"
+        ];
 
-        return $tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)
-            && !str_starts_with($tokens[$secondOperand['start'] + 1]->getContent(), ' ');
+        // If the first operand ends with a variable, the second operand should match one of the allowed patterns.
+        // Otherwise, the concatenation can break a variable in the first operand.
+        foreach ($allowedPatternsForSecondOperand as $allowedPattern) {
+            $secondOperandInnerContent = substr($tokens->generatePartialCode($secondOperand['start'], $secondOperand['end']), 1, -1);
+
+            if (Preg::match($allowedPattern, $secondOperandInnerContent)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -162,21 +162,23 @@ $text2 = "intro:   "."   "." #a
 
         yield 'fix if variables would not be broken' => [
             '<?php
+                echo "$a b";
                 echo "$a bcde";
                 echo "abc ${d}e";
                 echo "abc $d-efg";
-                echo "$a bcde";
-                echo "abc ${d}e";
-                echo "abc $d-efg";
+                echo "$a bcdef";
+                echo "abc ${d}ef";
+                echo "abc $d-efgh";
                 echo "abc $d-$e";
             ',
             '<?php
+                echo "$a" . " b";
                 echo "$a bc" . "de";
                 echo "abc ${d}" . "e";
                 echo "abc $d" . "-efg";
-                echo "$a bc" . \'de\';
-                echo "abc ${d}" . \'e\';
-                echo "abc $d" . \'-efg\';
+                echo "$a bc" . \'def\';
+                echo "abc ${d}" . \'ef\';
+                echo "abc $d" . \'-efgh\';
                 echo "abc $d" . "-$e";
             ',
         ];
