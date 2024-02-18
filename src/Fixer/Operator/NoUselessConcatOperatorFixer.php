@@ -257,7 +257,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         int $concatOperatorIndex,
         array $secondOperand
     ): void {
-        // build uo the new content
+        // build up the new content
         $newContent = '';
 
         foreach ([$firstOperand, $secondOperand] as $operant) {
