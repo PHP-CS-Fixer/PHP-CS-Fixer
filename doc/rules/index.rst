@@ -291,9 +291,6 @@ Control Structure
 - `empty_loop_condition <./control_structure/empty_loop_condition.rst>`_
 
   Empty loop-condition must be in configured style.
-- `fully_multiline <./control_structure/fully_multiline.rst>`_
-
-  Multi-line arrays, arguments list, parameters list, control structures, ``switch`` cases and ``match`` expressions should have one element by line.
 - `include <./control_structure/include.rst>`_
 
   Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
@@ -324,6 +321,9 @@ Control Structure
 - `simplified_if_return <./control_structure/simplified_if_return.rst>`_
 
   Simplify ``if`` control structures that return the boolean result of their condition.
+- `single_expression_per_line <./control_structure/single_expression_per_line.rst>`_
+
+  Multi-line arrays, arguments list, parameters list, control structures, ``switch`` cases and ``match`` expressions should have one element by line.
 - `switch_case_semicolon_to_colon <./control_structure/switch_case_semicolon_to_colon.rst>`_
 
   A case should be followed by a colon and not a semicolon.

@@ -1,6 +1,6 @@
-========================
-Rule ``fully_multiline``
-========================
+===================================
+Rule ``single_expression_per_line``
+===================================
 
 Multi-line arrays, arguments list, parameters list, control structures,
 ``switch`` cases and ``match`` expressions should have one element by line.
@@ -126,7 +126,7 @@ With configuration: ``['elements' => ['match']]``.
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\FullyMultilineFixer <./../../../src/Fixer/ControlStructure/FullyMultilineFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\FullyMultilineFixerTest <./../../../tests/Fixer/ControlStructure/FullyMultilineFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\SingleExpressionPerLineFixer <./../../../src/Fixer/ControlStructure/SingleExpressionPerLineFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\SingleExpressionPerLineFixerTest <./../../../tests/Fixer/ControlStructure/SingleExpressionPerLineFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

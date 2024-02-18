@@ -14,17 +14,15 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\Fixer\ControlStructure\FullyMultilineFixer;
+use PhpCsFixer\Fixer\ControlStructure\SingleExpressionPerLineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Vincent Langlet
- *
  * @internal
- *
- * @covers \PhpCsFixer\Fixer\ControlStructure\FullyMultilineFixer
+ * @covers \PhpCsFixer\Fixer\ControlStructure\SingleExpressionPerLineFixer
  */
-final class FullyMultilineFixerTest extends AbstractFixerTestCase
+final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param array<string, mixed> $config
@@ -106,7 +104,7 @@ final class FullyMultilineFixerTest extends AbstractFixerTestCase
                     $a = foo(1, 2,
                         3
                     );',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_ARGUMENTS]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
         yield [
@@ -120,7 +118,7 @@ $b,
                     function($a, $b,
                         $c
                     ) {};',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_PARAMETERS]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_PARAMETERS]],
         ];
 
         yield [
@@ -134,7 +132,7 @@ $foo
                     foreach ($foo
                     as $key => $value) {
                     };',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
 
         yield [
@@ -149,7 +147,7 @@ $i++
                     for ($i = 0;
                     $i < 2; $i++) {
                     };',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
 
         yield [
@@ -171,7 +169,7 @@ $c
                         && $d) {
                     } else {
                     }',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
 
         yield [
@@ -185,7 +183,7 @@ $a
                     while ($a
                         && $b) {
                     }',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
 
         yield [
@@ -201,7 +199,7 @@ $a
                     catch (\LogicException
                      | \RuntimeException $e) {
                     };',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
     }
 
@@ -239,7 +237,7 @@ $a
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
 
         yield [
@@ -257,7 +255,7 @@ $a
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
-            ['elements' => [FullyMultilineFixer::MATCH_EXPRESSIONS]],
+            ['elements' => [SingleExpressionPerLineFixer::MATCH_EXPRESSIONS]],
         ];
 
         yield [
@@ -277,7 +275,7 @@ $a,
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
-            ['elements' => [FullyMultilineFixer::ELEMENTS_ARGUMENTS, FullyMultilineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_ARGUMENTS, SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
     }
 }

@@ -32,7 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vincent Langlet
  */
-final class FullyMultilineFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class SingleExpressionPerLineFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal
