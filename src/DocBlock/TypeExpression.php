@@ -59,7 +59,7 @@ final class TypeExpression
                         (?:
                             \h*,\h*
                             (?&array_shape_inner)
-                        )*
+                        )*+
                         (?:\h*,\h*)?
                     |)
                     \h*\}

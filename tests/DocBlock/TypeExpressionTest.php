@@ -235,7 +235,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, k: int, l: int, with-dash: int}'];
 
-        yield [self::createHugeArrayShape()];
+        yield [self::createHugeArrayShapeType()];
     }
 
     public static function provideGetConstTypesCases(): iterable
@@ -379,7 +379,7 @@ final class TypeExpressionTest extends TestCase
 
         yield 'generic with no arguments' => ['f<>'];
 
-        yield [substr(self::createHugeArrayShape(), 0, -1)];
+        yield [substr(self::createHugeArrayShapeType(), 0, -1)];
     }
 
     public function testHugeType(): void
@@ -886,7 +886,7 @@ final class TypeExpressionTest extends TestCase
         ];
     }
 
-    private static function createHugeArrayShape(): string
+    private static function createHugeArrayShapeType(): string
     {
         return sprintf(
             'array{%s}',
