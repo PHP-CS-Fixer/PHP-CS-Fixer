@@ -11,8 +11,7 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Which expression must have one element by line (PHP >= 8.0 for ``parameters``
-and ``match``).
+Which expression must have one element by line.
 
 Allowed values: a subset of ``['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']``
 
@@ -123,6 +122,37 @@ With configuration: ``['elements' => ['match']]``.
    +    1 => 1,
    +2 => 2
     };
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
+  ``['elements' => ['arguments', 'parameters', 'control_structures', 'case', 'match']]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['elements' => ['arguments', 'parameters', 'control_structures', 'case', 'match']]``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['elements' => ['parameters', 'case', 'match']]``
+
+
 References
 ----------
 

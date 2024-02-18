@@ -116,6 +116,13 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'protected_to_private' => true,
             'return_assignment' => true,
             'self_static_accessor' => true,
+            'single_expression_per_line' => [
+                'elements' => [
+                    'case',
+                    'match',
+                    'parameters',
+                ],
+            ],
             'single_line_comment_style' => true,
             'single_line_empty_body' => true,
             'single_line_throw' => false,
