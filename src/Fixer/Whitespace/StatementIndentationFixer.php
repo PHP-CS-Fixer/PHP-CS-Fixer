@@ -735,22 +735,22 @@ if ($foo) {
 
         $firstCommentIndex = $index;
         while (true) {
-            $i = $this->getSiblingContinuousSingleLineComment($tokens, $firstCommentIndex, false);
-            if (null === $i) {
+            $firstCommentCandidateIndex = $this->getSiblingContinuousSingleLineComment($tokens, $firstCommentIndex, false);
+            if (null === $firstCommentCandidateIndex) {
                 break;
             }
 
-            $firstCommentIndex = $i;
+            $firstCommentIndex = $firstCommentCandidateIndex;
         }
 
         $lastCommentIndex = $index;
         while (true) {
-            $i = $this->getSiblingContinuousSingleLineComment($tokens, $lastCommentIndex, true);
-            if (null === $i) {
+            $lastCommentCandidateIndex = $this->getSiblingContinuousSingleLineComment($tokens, $lastCommentIndex, true);
+            if (null === $lastCommentCandidateIndex) {
                 break;
             }
 
-            $lastCommentIndex = $i;
+            $lastCommentIndex = $lastCommentCandidateIndex;
         }
 
         if ($firstCommentIndex === $lastCommentIndex) {
