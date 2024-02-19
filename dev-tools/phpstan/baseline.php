@@ -37,11 +37,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/CastNotation/NoShortBoolCastFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Foreach overwrites \\$pos with its value variable\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
@@ -102,11 +97,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^For loop initial assignment overwrites variable \\$i\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getFileInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getFileInfo\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
@@ -115,11 +105,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getPathInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getPathInfo\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Foreach overwrites \\$key with its key variable\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$array \\(array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\) of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:fromArray\\(\\) should be contravariant with parameter \\$array \\(array\\<int, mixed\\>\\) of method SplFixedArray\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\:\\:fromArray\\(\\)$#',

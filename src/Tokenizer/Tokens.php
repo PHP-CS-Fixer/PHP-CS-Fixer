@@ -804,10 +804,10 @@ class Tokens extends \SplFixedArray
 
         // remove the first token from the sequence, so we can freely iterate through the sequence after a match to
         // the first one is found
-        $key = array_key_first($sequence);
-        $firstCs = self::isKeyCaseSensitive($caseSensitive, $key);
-        $firstToken = $sequence[$key];
-        unset($sequence[$key]);
+        $firstKey = array_key_first($sequence);
+        $firstCs = self::isKeyCaseSensitive($caseSensitive, $firstKey);
+        $firstToken = $sequence[$firstKey];
+        unset($sequence[$firstKey]);
 
         // begin searching for the first token in the sequence (start included)
         $index = $start - 1;
