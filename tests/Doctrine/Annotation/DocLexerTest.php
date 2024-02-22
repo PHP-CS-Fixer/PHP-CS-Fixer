@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Doctrine\Annotation;
 
 use PhpCsFixer\Doctrine\Annotation\DocLexer;
+use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -29,15 +30,14 @@ final class DocLexerTest extends TestCase
         $lexer = new DocLexer();
         $lexer->setInput('/** @Foo("bar": 42) */');
 
-        self::assertSame('/', $lexer->peek()->getContent());
-        self::assertSame('@', $lexer->peek()->getContent());
-        self::assertSame('Foo', $lexer->peek()->getContent());
-        self::assertSame('(', $lexer->peek()->getContent());
-        self::assertSame('bar', $lexer->peek()->getContent());
-        self::assertSame(':', $lexer->peek()->getContent());
-        self::assertSame('42', $lexer->peek()->getContent());
-        self::assertSame(')', $lexer->peek()->getContent());
-        self::assertSame('/', $lexer->peek()->getContent());
+        $expectedContents = ['/', '@', 'Foo', '(', 'bar', ':', '42', ')', '/'];
+
+        foreach ($expectedContents as $expectedContent) {
+            $token = $lexer->peek();
+            self::assertInstanceOf(Token::class, $token);
+            self::assertSame($expectedContent, $token->getContent());
+        }
+
         self::assertNull($lexer->peek());
     }
 }

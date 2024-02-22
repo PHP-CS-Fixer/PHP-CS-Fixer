@@ -26,8 +26,19 @@ final class GithubClientTest extends TestCase
 {
     public function testGettingTags(): void
     {
+        $path = tempnam(sys_get_temp_dir(), 'tmp_url');
+        file_put_contents($path, json_encode(['tag1', 'tag2']));
+
         $githubClient = new GithubClient();
 
-        self::assertNotSame([], $githubClient->getTags());
+        try {
+            \Closure::bind(static function (GithubClient $githubClient) use ($path): void {
+                $githubClient->url = $path;
+            }, null, $githubClient)($githubClient);
+
+            self::assertSame(['tag1', 'tag2'], $githubClient->getTags());
+        } finally {
+            unlink($path);
+        }
     }
 }
