@@ -3,6 +3,41 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.50.0
+---------------------
+
+* chore: add missing types (#7842)
+* chore: BlocksAnalyzer - raise exception on invalid index (#7819)
+* chore: DataProviderAnalysis - expect list over array (#7800)
+* chore: do not use `@large` on method level (#7832)
+* chore: do not use `@medium` on method level (#7833)
+* chore: Fix typos (#7835)
+* chore: rename variables (#7847)
+* chore: some improvements around array typehints (#7799)
+* CI: fix PHP 8.4 job (#7829)
+* DX: Include `symfony/var-dumper` in dev tools (#7795)
+* feat: Ability to remove unused imports from multi-use statements (#7815)
+* feat: allow PHPUnit 11 (#7824)
+* feat: Allow shortening symbols from multi-use statements (only classes for now) (#7816)
+* feat: introduce `PhpdocArrayTypeFixer` (#7812)
+* feat: PhpUnitTestCaseStaticMethodCallsFixer - cover PHPUnit v11 methods (#7822)
+* feat: Support for multi-use statements in `NamespaceUsesAnalyzer` (#7814)
+* feat: `MbStrFunctionsFixer` - add support for `mb_trim`, `mb_ltrim` and `mb_rtrim` functions (#7840)
+* feat: `NoEmptyPhpdocFixer` - do not leave empty line after removing PHPDoc (#7820)
+* feat: `no_superfluous_phpdoc_tags` - introduce `allow_future_params` option (#7743)
+* fix: do not use wrongly named arguments in data providers (#7823)
+* fix: Ensure PCNTL extension is always installed in Docker (#7782)
+* fix: PhpdocListTypeFixer - support key types containing `<…>` (#7817)
+* fix: Proper build target for local Docker Compose (#7834)
+* fix: union PHPDoc support in `fully_qualified_strict_types` fixer (#7719)
+* fix: `ExecutorWithoutErrorHandler` - remove invalid PHP 7.4 type (#7845)
+* fix: `fully_qualified_strict_types` must honor template/local type identifiers (#7724)
+* fix: `MethodArgumentSpaceFixer` - do not break heredoc/nowdoc (#7828)
+* fix: `NumericLiteralSeparatorFixer` - do not change `float` to `int` when there is nothing after the dot (#7805)
+* fix: `PhpUnitStrictFixer` - do not crash on property having the name of method to fix (#7804)
+* fix: `SingleSpaceAroundConstructFixer` - correctly recognise multiple constants (#7700)
+* fix: `TypeExpression` - handle array shape key with dash (#7841)
+
 Changelog for v3.49.0
 ---------------------
 
