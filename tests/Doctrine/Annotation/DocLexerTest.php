@@ -30,12 +30,25 @@ final class DocLexerTest extends TestCase
         $lexer = new DocLexer();
         $lexer->setInput('/** @Foo("bar": 42) */');
 
-        $expectedContents = ['/', '@', 'Foo', '(', 'bar', ':', '42', ')', '/'];
+        /** @var list<array{DocLexer::T_*, string, int}> */
+        $expectedContents = [
+            [DocLexer::T_NONE, '/', 0],
+            [DocLexer::T_AT, '@', 4],
+            [DocLexer::T_IDENTIFIER, 'Foo', 5],
+            [DocLexer::T_OPEN_PARENTHESIS, '(', 8],
+            [DocLexer::T_STRING, 'bar', 9],
+            [DocLexer::T_COLON, ':', 14],
+            [DocLexer::T_INTEGER, '42', 16],
+            [DocLexer::T_CLOSE_PARENTHESIS, ')', 18],
+            [DocLexer::T_NONE, '/', 21],
+        ];
 
         foreach ($expectedContents as $expectedContent) {
             $token = $lexer->peek();
             self::assertInstanceOf(Token::class, $token);
-            self::assertSame($expectedContent, $token->getContent());
+            self::assertSame($expectedContent[0], $token->getType());
+            self::assertSame($expectedContent[1], $token->getContent());
+            self::assertSame($expectedContent[2], $token->getPosition());
         }
 
         self::assertNull($lexer->peek());
