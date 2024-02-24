@@ -37,6 +37,14 @@ final class GithubClient implements GithubClientInterface
             throw new \RuntimeException(sprintf('Failed to load tags at "%s".', $this->url));
         }
 
+        /**
+         * @var list<array{
+         *     name: string,
+         *     zipball_url: string,
+         *     tarball_url: string,
+         *     commit: array{sha: string, url: string},
+         * }>
+         */
         $result = json_decode($result, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \RuntimeException(sprintf(
@@ -46,6 +54,9 @@ final class GithubClient implements GithubClientInterface
             ));
         }
 
-        return $result;
+        return array_map(
+            static fn (array $tagData): string => $tagData['name'],
+            $result
+        );
     }
 }
