@@ -26,16 +26,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class DescribeNameNotFoundExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException(): void
-    {
-        $exception = new DescribeNameNotFoundException(
-            'Peter',
-            'weird'
-        );
-
-        self::assertInstanceOf(\InvalidArgumentException::class, $exception);
-    }
-
     public function testConstructorSetsValues(): void
     {
         $name = 'Peter';

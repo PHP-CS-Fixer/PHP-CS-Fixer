@@ -127,8 +127,6 @@ final class RunnerTest extends TestCase
 
         $error = $errors[0];
 
-        self::assertInstanceOf(Error::class, $error);
-
         self::assertSame(Error::TYPE_INVALID, $error->getType());
         self::assertSame($pathToInvalidFile, $error->getFilePath());
     }

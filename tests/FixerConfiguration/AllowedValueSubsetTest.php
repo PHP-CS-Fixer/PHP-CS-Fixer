@@ -24,11 +24,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AllowedValueSubsetTest extends TestCase
 {
-    public function testConstructor(): void
-    {
-        self::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
-    }
-
     public static function provideGetAllowedValuesAreSortedCases(): iterable
     {
         yield [
