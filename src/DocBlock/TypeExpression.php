@@ -78,6 +78,10 @@ final class TypeExpression
                                     \h+(?i)(?<callable_template_inner_b_kw>of|as)(?-i)\h+
                                     (?<callable_template_inner_b_types>(?&types_inner))
                                 |)
+                                (?<callable_template_inner_d>
+                                    \h*=\h*
+                                    (?<callable_template_inner_d_types>(?&types_inner))
+                                |)
                             )
                             (?:
                                 \h*,\h*
@@ -511,6 +515,14 @@ final class TypeExpression
                     'start_index' => $startIndex + $index + $matches['callable_template_inner_b_types'][1]
                         - \strlen($addedPrefix),
                     'expression' => $this->inner($matches['callable_template_inner_b_types'][0]),
+                ];
+            }
+
+            if ('' !== $matches['callable_template_inner_d'][0]) {
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $startIndex + $index + $matches['callable_template_inner_d_types'][1]
+                        - \strlen($addedPrefix),
+                    'expression' => $this->inner($matches['callable_template_inner_d_types'][0]),
                 ];
             }
 

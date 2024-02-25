@@ -219,6 +219,12 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure< T1 of Foo, T2 AS Foo >(T1): T2'];
 
+        yield ['Closure<T = Foo>(T): T'];
+
+        yield ['Closure<T1=int, T2 of Foo = Foo2>(T1): T2'];
+
+        yield ['Closure<T of string = \'\'>(T): T'];
+
         yield ['Closure<Closure_can_be_regular_class>'];
 
         yield ['Closure(int $a)'];
@@ -835,9 +841,14 @@ final class TypeExpressionTest extends TestCase
             'Closure<B, A>(x|y, A|B|U<o|p>): (B|X|Y)',
         ];
 
-        yield 'generic Closure with narrowed template' => [
+        yield 'generic Closure with bound template' => [
             'Closure<B of J|I, C, A of V|U, D of object>(B|A): array{B, A, B, C, D}',
             'Closure<B of I|J, C, A of U|V, D of object>(A|B): array{B, A, B, C, D}',
+        ];
+
+        yield 'generic Closure with template with default' => [
+            'Closure<T = B&A>(T): void',
+            'Closure<T = A&B>(T): void',
         ];
 
         yield 'nullable generic' => [
