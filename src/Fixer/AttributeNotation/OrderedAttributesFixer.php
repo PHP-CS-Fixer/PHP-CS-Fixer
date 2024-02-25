@@ -156,7 +156,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                     'start' => $attributeAnalysis->getStartIndex(),
                     'end' => $attributeAnalysis->getEndIndex(),
                 ];
-            }, AttributeAnalyzer::collectFor($tokens, $index));
+            }, AttributeAnalyzer::collect($tokens, $index));
 
             $endIndex = end($elements)['end'];
 

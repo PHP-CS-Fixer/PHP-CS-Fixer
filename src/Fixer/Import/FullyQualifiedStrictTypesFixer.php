@@ -695,7 +695,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixAttribute(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
-        $attributeAnalysis = AttributeAnalyzer::collectFor($tokens, $index)[0];
+        $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
 
         foreach ($attributeAnalysis->getAttributes() as $attribute) {
             $index = $attribute['start'];
