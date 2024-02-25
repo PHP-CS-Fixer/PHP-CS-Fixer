@@ -65,8 +65,21 @@ final class TypeExpression
                     \h*\}
                 )
                 |
-                (?<callable> # callable syntax, e.g. `callable(string, int...): bool`
-                    (?<callable_start>(?&name)\h*\(\h*)
+                (?<callable> # callable syntax, e.g. `callable(string, int...): bool`, `\Closure<T>(T, int): T`
+                    (?<callable_name>(?&name))
+                    (?<callable_template>
+                        (?<callable_template_start>\h*<\h*)
+                        (?<callable_template_types>
+                            (?&identifier)
+                            (?:
+                                \h*,\h*
+                                (?&identifier)
+                            )*
+                        )
+                        \h*>
+                        (?=\h*\()
+                    |)
+                    (?<callable_start>\h*\(\h*)
                     (?<callable_arguments>
                         (?<callable_argument>
                             (?<callable_argument_type>(?&types_inner))
@@ -377,8 +390,16 @@ final class TypeExpression
                 $matches['generic_types'][0]
             );
         } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
+            $this->parseCommaSeparatedInnerTypes(
+                $index + \strlen($matches['callable_name'][0])
+                    + \strlen($matches['callable_template_start'][0]),
+                $matches['callable_template_types'][0]
+            );
+
             $this->parseCallableArgumentTypes(
-                $index + \strlen($matches['callable_start'][0]),
+                $index + \strlen($matches['callable_name'][0])
+                    + \strlen($matches['callable_template'][0])
+                    + \strlen($matches['callable_start'][0]),
                 $matches['callable_arguments'][0]
             );
 
