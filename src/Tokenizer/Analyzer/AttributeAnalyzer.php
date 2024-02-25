@@ -75,12 +75,15 @@ final class AttributeAnalyzer
      *
      * @return list<AttributeAnalysis>
      */
-    public static function collectFor(Tokens $tokens, int $index): array
+    public static function collect(Tokens $tokens, int $index): array
     {
-        while (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
-            if (null === $index = $tokens->getPrevNonWhitespace($index)) {
-                return [];
-            }
+        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            throw new \InvalidArgumentException('Given index must point to an attribute.');
+        }
+
+        // Rewind to first attribute in group
+        while ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $prevIndex);
         }
 
         /** @var list<AttributeAnalysis> $elements */
@@ -88,20 +91,36 @@ final class AttributeAnalyzer
 
         $openingIndex = $index;
         do {
-            $startIndex = $index;
-            $closingIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $openingIndex);
-            $index = $tokens->getNextNonWhitespace($closingIndex);
-
-            $elements[] = new AttributeAnalysis(
-                $startIndex,
-                $index - 1,
-                self::collectAttributes($tokens, $startIndex, $closingIndex),
-            );
-
-            $openingIndex = $tokens->getNextMeaningfulToken($closingIndex);
+            $elements[] = $element = self::collectOne($tokens, $openingIndex);
+            $openingIndex = $tokens->getNextMeaningfulToken($element->getEndIndex());
         } while ($tokens[$openingIndex]->isGivenKind(T_ATTRIBUTE));
 
         return $elements;
+    }
+
+    /**
+     * Find one element that starts with #[ and ends with ] and the attributes inside.
+     */
+    public static function collectOne(Tokens $tokens, int $index): AttributeAnalysis
+    {
+        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            throw new \InvalidArgumentException('Given index must point to an attribute.');
+        }
+
+        $startIndex = $index;
+        if ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            // Include docblock if it exists
+            $startIndex = $tokens->getNextNonWhitespace($prevIndex);
+        }
+
+        $closingIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+        $endIndex = $tokens->getNextNonWhitespace($closingIndex);
+
+        return new AttributeAnalysis(
+            $startIndex,
+            $endIndex - 1,
+            self::collectAttributes($tokens, $index, $closingIndex),
+        );
     }
 
     /**

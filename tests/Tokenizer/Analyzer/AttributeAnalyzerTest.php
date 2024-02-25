@@ -141,7 +141,7 @@ final class AttributeAnalyzerTest extends TestCase
     public function testGetAttributeDeclarations(string $code, int $startIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
-        $attributeDeclarationAnalyses = AttributeAnalyzer::collectFor($tokens, $startIndex);
+        $attributeDeclarationAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         self::assertSame(
             serialize($expected),
@@ -154,15 +154,6 @@ final class AttributeAnalyzerTest extends TestCase
      */
     public static function provideGetAttributeDeclarationsCases(): iterable
     {
-        yield [
-            '<?php
-            function foo() {}
-            function bar() {}
-            ',
-            11,
-            [],
-        ];
-
         yield [
             '<?php
             /**
@@ -205,7 +196,7 @@ final class AttributeAnalyzerTest extends TestCase
                     'name' => 'BarAlias',
                 ]]),
                 new AttributeAnalysis(68, 73, [[
-                    'start' => 69,
+                    'start' => 71,
                     'end' => 71,
                     'name' => 'Corge',
                 ]]),
@@ -245,7 +236,7 @@ final class AttributeAnalyzerTest extends TestCase
                     'name' => 'BarAlias',
                 ]]),
                 new AttributeAnalysis(67, 71, [[
-                    'start' => 68,
+                    'start' => 69,
                     'end' => 69,
                     'name' => 'Corge',
                 ]]),
@@ -354,7 +345,7 @@ final class AttributeAnalyzerTest extends TestCase
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
-        $attributeDeclarationAnalyses = AttributeAnalyzer::collectFor($tokens, $startIndex);
+        $attributeDeclarationAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         self::assertSame(
             serialize($expected),
