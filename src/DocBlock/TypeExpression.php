@@ -86,7 +86,7 @@ final class TypeExpression
                             (?:
                                 \h*,\h*
                                 (?&callable_template_inner)
-                            )*
+                            )*+
                         )
                         \h*>
                         (?=\h*\()
