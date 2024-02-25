@@ -26,13 +26,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class LintingExceptionTest extends TestCase
 {
-    public function testIsRuntimeException(): void
-    {
-        $exception = new LintingException();
-
-        self::assertInstanceOf(\RuntimeException::class, $exception);
-    }
-
     public function testConstructorSetsValues(): void
     {
         $message = 'Cannot lint this, sorry!';

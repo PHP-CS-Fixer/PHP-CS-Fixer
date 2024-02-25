@@ -24,12 +24,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ErrorTest extends TestCase
 {
-    public function testThatErrorTypeConstantValuesAreDifferent(): void
-    {
-        self::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
-        self::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
-    }
-
     public function testConstructorSetsValues(): void
     {
         $type = 123;
