@@ -925,6 +925,8 @@ final class ConfigurationResolverTest extends TestCase
         $cacheManager = $resolver->getCacheManager();
 
         self::assertInstanceOf(NullCacheManager::class, $cacheManager);
+
+        self::assertFalse($resolver->getLinter()->isAsync());
     }
 
     public function testResolveCacheFileWithOption(): void
