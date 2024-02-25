@@ -829,6 +829,11 @@ final class TypeExpressionTest extends TestCase
             'Closure<B, A>(x|y, A|B|U<o|p>): (B|X|Y)',
         ];
 
+        yield 'generic Closure with narrowed template' => [
+            'Closure<B of J|I, C, A of V|U, D of object>(B|A): array{B, A, B, C, D}',
+            'Closure<B of I|J, C, A of U|V, D of object>(A|B): array{B, A, B, C, D}',
+        ];
+
         yield 'nullable generic' => [
             '?array<Foo|Bar>',
             '?array<Bar|Foo>',

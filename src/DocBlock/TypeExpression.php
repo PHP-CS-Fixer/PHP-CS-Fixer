@@ -69,11 +69,19 @@ final class TypeExpression
                     (?<callable_name>(?&name))
                     (?<callable_template>
                         (?<callable_template_start>\h*<\h*)
-                        (?<callable_template_types>
-                            (?&identifier)
+                        (?<callable_template_inners>
+                            (?<callable_template_inner>
+                                (?<callable_template_inner_name>
+                                    (?&identifier)
+                                )
+                                (?<callable_template_inner_of>
+                                    \h+(?i)of(?-i)\h+
+                                    (?<callable_template_inner_of_types>(?&types_inner))
+                                |)
+                            )
                             (?:
                                 \h*,\h*
-                                (?&identifier)
+                                (?&callable_template_inner)
                             )*
                         )
                         \h*>
@@ -390,10 +398,10 @@ final class TypeExpression
                 $matches['generic_types'][0]
             );
         } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
-            $this->parseCommaSeparatedInnerTypes(
+            $this->parseCallableTemplateInnerTypes(
                 $index + \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template_start'][0]),
-                $matches['callable_template_types'][0]
+                $matches['callable_template_inners'][0]
             );
 
             $this->parseCallableArgumentTypes(
@@ -475,6 +483,41 @@ final class TypeExpression
         }
     }
 
+    private function parseCallableTemplateInnerTypes(int $startIndex, string $value): void
+    {
+        $index = 0;
+        while (\strlen($value) !== $index) {
+            Preg::match(
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_callable_template_inner>(?&callable_template_inner))(?:\h*,\h*|$))}',
+                $value,
+                $prematches,
+                0,
+                $index
+            );
+            $consumedValue = $prematches['_callable_template_inner'];
+            $consumedValueLength = \strlen($consumedValue);
+            $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
+
+            $addedPrefix = 'Closure<';
+            Preg::match(
+                '{^'.self::REGEX_TYPES.'$}',
+                $addedPrefix.$consumedValue.'>(): void',
+                $matches,
+                PREG_OFFSET_CAPTURE
+            );
+
+            if ('' !== $matches['callable_template_inner_of'][0]) {
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $startIndex + $index + $matches['callable_template_inner_of_types'][1]
+                        - \strlen($addedPrefix),
+                    'expression' => $this->inner($matches['callable_template_inner_of_types'][0]),
+                ];
+            }
+
+            $index += $consumedValueLength + $consumedCommaLength;
+        }
+    }
+
     private function parseCallableArgumentTypes(int $startIndex, string $value): void
     {
         $index = 0;
@@ -531,7 +574,8 @@ final class TypeExpression
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex + $index + $matches['array_shape_inner_value'][1] - \strlen($addedPrefix),
+                'start_index' => $startIndex + $index + $matches['array_shape_inner_value'][1]
+                    - \strlen($addedPrefix),
                 'expression' => $this->inner($matches['array_shape_inner_value'][0]),
             ];
 
