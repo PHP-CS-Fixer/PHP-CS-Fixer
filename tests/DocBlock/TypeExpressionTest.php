@@ -215,6 +215,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array  <  int   , callable  (  string  )  :   bool  >'];
 
+        yield ['Closure<T of Foo>(T): T'];
+
+        yield ['Closure< T1 of Foo, T2 AS Foo >(T1): T2'];
+
         yield ['Closure<Closure_can_be_regular_class>'];
 
         yield ['Closure(int $a)'];

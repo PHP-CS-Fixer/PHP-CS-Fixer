@@ -74,9 +74,9 @@ final class TypeExpression
                                 (?<callable_template_inner_name>
                                     (?&identifier)
                                 )
-                                (?<callable_template_inner_of>
-                                    \h+(?i)of(?-i)\h+
-                                    (?<callable_template_inner_of_types>(?&types_inner))
+                                (?<callable_template_inner_b>
+                                    \h+(?i)(?<callable_template_inner_b_kw>of|as)(?-i)\h+
+                                    (?<callable_template_inner_b_types>(?&types_inner))
                                 |)
                             )
                             (?:
@@ -506,11 +506,11 @@ final class TypeExpression
                 PREG_OFFSET_CAPTURE
             );
 
-            if ('' !== $matches['callable_template_inner_of'][0]) {
+            if ('' !== $matches['callable_template_inner_b'][0]) {
                 $this->innerTypeExpressions[] = [
-                    'start_index' => $startIndex + $index + $matches['callable_template_inner_of_types'][1]
+                    'start_index' => $startIndex + $index + $matches['callable_template_inner_b_types'][1]
                         - \strlen($addedPrefix),
-                    'expression' => $this->inner($matches['callable_template_inner_of_types'][0]),
+                    'expression' => $this->inner($matches['callable_template_inner_b_types'][0]),
                 ];
             }
 
