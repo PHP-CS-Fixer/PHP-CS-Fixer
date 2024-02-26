@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
-use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
@@ -31,7 +30,6 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -171,7 +169,6 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver([]);
 
         self::assertNull($resolver->getConfigFile());
-        self::assertInstanceOf(ConfigInterface::class, $resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile(): void
@@ -929,9 +926,7 @@ final class ConfigurationResolverTest extends TestCase
 
         self::assertInstanceOf(NullCacheManager::class, $cacheManager);
 
-        $linter = $resolver->getLinter();
-
-        self::assertInstanceOf(LinterInterface::class, $linter);
+        self::assertFalse($resolver->getLinter()->isAsync());
     }
 
     public function testResolveCacheFileWithOption(): void

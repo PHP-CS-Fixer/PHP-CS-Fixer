@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
-use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
@@ -27,17 +26,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class DeprecatedFixerOptionTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $option = new DeprecatedFixerOption(
-            new FixerOption('foo', 'Foo.'),
-            'deprecated'
-        );
-
-        self::assertInstanceOf(FixerOptionInterface::class, $option);
-        self::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
-    }
-
     public function testGetName(): void
     {
         $option = new DeprecatedFixerOption(
