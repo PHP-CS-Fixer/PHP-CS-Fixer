@@ -19,20 +19,16 @@ use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Console\Command\DocumentationCommand;
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Doctrine\Annotation\DocLexer;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\RstUtils;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
-use PhpCsFixer\ExecutorWithoutErrorHandlerException;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Runner\FileCachingLintingIterator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
@@ -77,13 +73,9 @@ final class ProjectCodeTest extends TestCase
      * @var string[]
      */
     private static $classesWithoutTests = [
-        DocLexer::class,
         DocumentationCommand::class,
         DocumentationLocator::class,
-        ExecutorWithoutErrorHandlerException::class,
-        FileCachingLintingIterator::class,
         FixerDocumentGenerator::class,
-        GithubClient::class,
         RstUtils::class,
         RuleSetDocumentationGenerator::class,
     ];

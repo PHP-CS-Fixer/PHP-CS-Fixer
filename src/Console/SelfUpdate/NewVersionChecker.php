@@ -82,9 +82,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
             return;
         }
 
-        foreach ($this->githubClient->getTags() as $tag) {
-            $version = $tag['name'];
-
+        foreach ($this->githubClient->getTags() as $version) {
             try {
                 $this->versionParser->normalize($version);
 
