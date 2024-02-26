@@ -73,7 +73,7 @@ final class GitlabReporter implements ReporterInterface
     }
 
     /**
-     * @param array<Diff> $diffs
+     * @param list<Diff> $diffs
      *
      * @return array{begin: int, end: int}
      */
