@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class DataProviderAnalyzerTest extends TestCase
 {
     /**
-     * @param array<int> $expected
+     * @param list<DataProviderAnalysis> $expected
      *
      * @dataProvider provideGettingDataProvidersCases
      */
