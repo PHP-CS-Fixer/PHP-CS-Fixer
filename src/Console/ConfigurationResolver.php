@@ -573,7 +573,7 @@ final class ConfigurationResolver
 
         $candidates[] = getenv("HOME").\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
         $candidates[] = getenv("HOME").\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
-        
+
         return $candidates;
     }
 
