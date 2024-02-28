@@ -35,7 +35,7 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, null|string, 2?: array{elements?: array<string>}}>
+     * @return iterable<array{string, null|string, 2?: array{elements?: list<string>}}>
      */
     public static function provideFixCases(): iterable
     {

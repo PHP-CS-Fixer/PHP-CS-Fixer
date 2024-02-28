@@ -294,7 +294,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $sequence
+     * @param list<mixed> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */

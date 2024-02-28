@@ -265,7 +265,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param array<mixed> $replacements
+     * @param array<array-key, mixed> $replacements
      *
      * @dataProvider provideConfigureWithInvalidReplacementsCases
      */
