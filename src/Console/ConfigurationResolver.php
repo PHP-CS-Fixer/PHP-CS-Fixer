@@ -571,6 +571,9 @@ final class ConfigurationResolver
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
 
+        $candidates[] = getenv("HOME").\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
+        $candidates[] = getenv("HOME").\DIRECTORY_SEPARATO.'.php-cs-fixer.dist.php';
+        
         return $candidates;
     }
 
