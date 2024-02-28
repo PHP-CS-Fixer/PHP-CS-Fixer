@@ -66,6 +66,15 @@ With configuration: ``['syntax' => 'question_mark']``.
    +    public ?bool $internal;
    +    public ?\Closure $callback;
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+
 References
 ----------
 
