@@ -45,6 +45,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 #[AsCommand(name: 'worker', description: 'Internal command for running fixers in parallel', hidden: true)]
 final class WorkerCommand extends Command
 {
+    /** @var string Prefix used before JSON-encoded error printed in the worker's process */
+    public const ERROR_PREFIX = 'WORKER_ERROR::';
+
     /** @var string */
     protected static $defaultName = 'worker';
 
@@ -151,8 +154,15 @@ final class WorkerCommand extends Command
                     // [REACT] Initialise connection with the parallelisation operator
                     $out->write(['action' => ParallelAction::RUNNER_HELLO, 'identifier' => $identifier]);
 
-                    $handleError = static function (\Throwable $error): void {
-                        // @TODO Handle communication errors
+                    $handleError = static function (\Throwable $error) use ($out): void {
+                        $out->write([
+                            'action' => ParallelAction::RUNNER_ERROR_REPORT,
+                            'message' => $error->getMessage(),
+                            'file' => $error->getFile(),
+                            'line' => $error->getLine(),
+                            'code' => $error->getCode(),
+                            'trace' => $error->getTraceAsString(),
+                        ]);
                     };
                     $out->on('error', $handleError);
                     $in->on('error', $handleError);

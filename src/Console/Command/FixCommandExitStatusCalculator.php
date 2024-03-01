@@ -28,8 +28,14 @@ final class FixCommandExitStatusCalculator
     public const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
     public const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
 
-    public function calculate(bool $isDryRun, bool $hasChangedFiles, bool $hasInvalidErrors, bool $hasExceptionErrors, bool $hasLintErrorsAfterFixing): int
-    {
+    public function calculate(
+        bool $isDryRun,
+        bool $hasChangedFiles,
+        bool $hasInvalidErrors,
+        bool $hasExceptionErrors,
+        bool $hasLintErrorsAfterFixing,
+        bool $hasWorkerErrors
+    ): int {
         $exitStatus = 0;
 
         if ($isDryRun) {
@@ -42,7 +48,7 @@ final class FixCommandExitStatusCalculator
             }
         }
 
-        if ($hasExceptionErrors || $hasLintErrorsAfterFixing) {
+        if ($hasExceptionErrors || $hasLintErrorsAfterFixing || $hasWorkerErrors) {
             $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
         }
 

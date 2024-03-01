@@ -22,6 +22,7 @@ namespace PhpCsFixer\Runner\Parallel;
 final class ParallelAction
 {
     // Actions handled by the runner
+    public const RUNNER_ERROR_REPORT = 'errorReport';
     public const RUNNER_HELLO = 'hello';
     public const RUNNER_RESULT = 'result';
     public const RUNNER_GET_FILE_CHUNK = 'getFileChunk';
