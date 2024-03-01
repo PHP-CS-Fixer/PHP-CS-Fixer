@@ -175,7 +175,6 @@ final class RunnerTest extends TestCase
 
         $error = $errors[0];
 
-        self::assertInstanceOf(Error::class, $error);
         self::assertInstanceOf(ParallelisationException::class, $error->getSource());
 
         self::assertSame(Error::TYPE_INVALID, $error->getType());
