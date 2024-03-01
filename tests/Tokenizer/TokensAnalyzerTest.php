@@ -1575,7 +1575,7 @@ abstract class Baz
     }
 
     /**
-     * @param array<int> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
@@ -1695,20 +1695,33 @@ abstract class Baz
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsBinaryOperatorCases
      */
     public function testIsBinaryOperator(array $expected, string $source): void
     {
+        $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $isBinary) {
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+        foreach ($tokens as $index => $token) {
+            $expect = \in_array($index, $expected, true);
 
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            self::assertSame(
+                $expect,
+                $tokensAnalyzer->isBinaryOperator($index),
+                sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+            );
+
+            if ($expect) {
+                self::assertFalse(
+                    $tokensAnalyzer->isUnarySuccessorOperator($index),
+                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
+                self::assertFalse(
+                    $tokensAnalyzer->isUnaryPredecessorOperator($index),
+                    sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
             }
         }
     }
@@ -1716,159 +1729,159 @@ abstract class Baz
     public static function provideIsBinaryOperatorCases(): iterable
     {
         yield [
-            [8 => true],
+            [8],
             '<?php echo $a[1] + 1;',
         ];
 
         yield [
-            [8 => true],
+            [8],
             '<?php echo $a{1} + 1;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a .= $b; ?>',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a . \'a\' ?>',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a &+ $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a && $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a & $b;',
         ];
 
         yield [
-            [4 => true],
+            [4],
             '<?php [] + [];',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a + $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php 1 + $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php 0.2 + $b;',
         ];
 
         yield [
-            [6 => true],
+            [6],
             '<?php $a[1] + $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php FOO + $b;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php foo() + $b;',
         ];
 
         yield [
-            [6 => true],
+            [6],
             '<?php ${"foo"} + $b;',
         ];
 
         yield [
-            [2 => true],
+            [2],
             '<?php $a+$b;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php $a /* foo */  +  /* bar */  $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a =
 $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a
 = $b;',
         ];
 
         yield [
-            [3 => true, 9 => true, 12 => false],
+            [3, 9],
             '<?php $a = array("b" => "c", );',
         ];
 
         yield [
-            [3 => true, 5 => false],
+            [3],
             '<?php $a * -$b;',
         ];
 
         yield [
-            [3 => true, 5 => false, 8 => true, 10 => false],
+            [3, 8],
             '<?php $a = -2 / +5;',
         ];
 
         yield [
-            [3 => true, 5 => false],
+            [3, 5 => false],
             '<?php $a = &$b;',
         ];
 
         yield [
-            [2 => false, 4 => true],
+            [4],
             '<?php $a++ + $b;',
         ];
 
         yield [
-            [7 => true],
+            [3, 7],
             '<?php $a = FOO & $bar;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php __LINE__ - 1;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php `echo 1` + 1;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a ** $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a **= $b;',
         ];
 
         yield [
-            [9 => false],
+            [3],
             '<?php $a = "{$value}-{$theSwitch}";',
         ];
 
         yield [
-            [3 => false],
+            [],
             '<?=$path?>-<?=$id?>',
         ];
 
@@ -1879,18 +1892,18 @@ $b;',
 
         foreach ($operators as $operator) {
             yield [
-                [3 => true],
+                [3],
                 '<?php $a '.$operator.' $b;',
             ];
         }
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a <=> $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a ?? $b;',
         ];
     }
