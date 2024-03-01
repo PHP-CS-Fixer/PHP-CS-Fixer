@@ -22,6 +22,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ReadonlyCacheManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
@@ -127,17 +128,13 @@ final class WorkerCommand extends Command
         $port = $input->getOption('port');
 
         if (null === $identifier || !is_numeric($port)) {
-            $errorOutput->writeln('Missing parallelisation options');
-
-            return Command::FAILURE;
+            throw new ParallelisationException('Missing parallelisation options');
         }
 
         try {
             $runner = $this->createRunner($input);
         } catch (\Throwable $e) {
-            $errorOutput->writeln($e->getMessage());
-
-            return Command::FAILURE;
+            throw new ParallelisationException('Unable to create runner: '.$e->getMessage(), 0, $e);
         }
 
         $loop = new StreamSelectLoop();

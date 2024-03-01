@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\WorkerError;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,6 +29,66 @@ use Symfony\Component\Console\Output\StreamOutput;
  */
 final class ErrorOutputTest extends TestCase
 {
+    /**
+     * @param OutputInterface::VERBOSITY_* $verbosityLevel
+     *
+     * @dataProvider provideWorkerErrorOutputCases
+     */
+    public function testWorkerErrorOutput(WorkerError $error, int $verbosityLevel): void
+    {
+        $output = $this->createStreamOutput($verbosityLevel);
+        $errorOutput = new ErrorOutput($output);
+        $errorOutput->listWorkerErrors([$error]);
+
+        $displayed = $this->readFullStreamOutput($output);
+
+        $startWith = sprintf(
+            '
+Errors reported from workers (parallel analysis):
+   1) %s',
+            $error->getMessage()
+        );
+
+        if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+            $startWith .= sprintf(
+                '
+      in %s on line %d',
+                $error->getFilePath(),
+                $error->getLine()
+            );
+        }
+
+        if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
+            $startWith .= sprintf(
+                '
+      Stack trace:
+%s',
+                implode("\n", array_map(
+                    static fn (string $frame) => "      {$frame}",
+                    explode("\n", $error->getTrace())
+                ))
+            );
+        }
+
+        self::assertStringStartsWith($startWith, $displayed);
+    }
+
+    /**
+     * @return iterable<array{0: WorkerError, 1: OutputInterface::VERBOSITY_*}>
+     */
+    public static function provideWorkerErrorOutputCases(): iterable
+    {
+        $error = new WorkerError('Boom!', 'foo.php', 123, 1, '#0 Foo\n#1 Bar\n#2 {main}');
+
+        yield [$error, OutputInterface::VERBOSITY_NORMAL];
+
+        yield [$error, OutputInterface::VERBOSITY_VERBOSE];
+
+        yield [$error, OutputInterface::VERBOSITY_VERY_VERBOSE];
+
+        yield [$error, OutputInterface::VERBOSITY_DEBUG];
+    }
+
     /**
      * @param OutputInterface::VERBOSITY_* $verbosityLevel
      *
