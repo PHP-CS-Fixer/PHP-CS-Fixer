@@ -166,6 +166,24 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(? /*comment*/ string $param = null) {}',
             ['use_nullable_type_declaration' => false],
         ];
+
+        yield [
+            '<?php function foo(string|null $param = null) {}',
+            '<?php function foo(string $param = null) {}',
+            ['force_nullable_for_default_null' => true],
+        ];
+
+        yield [
+            '<?php function foo(string|int|null $param = null) {}',
+            '<?php function foo(string|int $param = null) {}',
+            ['force_nullable_for_default_null' => true],
+        ];
+
+        yield [
+            '<?php function foo(string|null $param = null) {}',
+            '<?php function foo(?string $param = null) {}',
+            ['force_nullable_for_default_null' => true],
+        ];
     }
 
     /**

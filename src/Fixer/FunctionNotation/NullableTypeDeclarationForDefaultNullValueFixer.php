@@ -36,6 +36,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION = 'use_nullable_type_declaration';
+    private const CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL = 'force_nullable_for_default_null';
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -46,7 +49,15 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(?string \$str = null)\n{}\n",
-                    ['use_nullable_type_declaration' => false]
+                    [self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION => false]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(?string \$str = null)\n{}\n",
+                    [self::CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL => true]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(string \$str = null)\n{}\n",
+                    [self::CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL => true]
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample(string|int \$str = null)\n{}\n",
@@ -55,7 +66,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample(string|int|null \$str = null)\n{}\n",
                     new VersionSpecification(8_00_00),
-                    ['use_nullable_type_declaration' => false]
+                    [self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION => false]
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample(\\Foo&\\Bar \$str = null)\n{}\n",
@@ -64,7 +75,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample((\\Foo&\\Bar)|null \$str = null)\n{}\n",
                     new VersionSpecification(8_02_00),
-                    ['use_nullable_type_declaration' => false]
+                    [self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION => false]
                 ),
             ],
             'Rule is applied only in a PHP 7.1+ environment.'
@@ -89,9 +100,13 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('use_nullable_type_declaration', 'Whether to add or remove `?` or `|null` to parameters with a default `null` value.'))
+            (new FixerOptionBuilder(self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION, 'Whether to add or remove `?` or `|null` to parameters with a default `null` value.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
+                ->getOption(),
+            (new FixerOptionBuilder(self::CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL, 'Enforces explicit nullable type declarations for parameters with a default `null` value, standardizing nullability in typehints'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -143,7 +158,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
             $argumentTypeInfo = $argumentInfo->getTypeAnalysis();
 
-            if (\PHP_VERSION_ID >= 8_00_00 && false === $this->configuration['use_nullable_type_declaration']) {
+            if (\PHP_VERSION_ID >= 8_00_00 && false === $this->configuration[self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION]) {
                 $visibility = $tokens[$tokens->getPrevMeaningfulToken($argumentTypeInfo->getStartIndex())];
 
                 if ($visibility->isGivenKind($constructorPropertyModifiers)) {
@@ -162,9 +177,18 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
     private function fixSingleTypeParameter(Tokens $tokens, TypeAnalysis $argumentTypeInfo): void
     {
-        if (true === $this->configuration['use_nullable_type_declaration']) {
+        if (true === $this->configuration[self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION] || true === $this->configuration[self::CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL]) {
             if (!$argumentTypeInfo->isNullable()) {
-                $tokens->insertAt($argumentTypeInfo->getStartIndex(), new Token([CT::T_NULLABLE_TYPE, '?']));
+                if (false === $this->configuration[self::CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL]) {
+                    $tokens->insertAt($argumentTypeInfo->getStartIndex(), new Token([CT::T_NULLABLE_TYPE, '?']));
+                } else {
+                    $this->insertUnionTypeNullToEnd($tokens, $argumentTypeInfo->getEndIndex() + 1);
+                }
+            } else {
+                $startIndex = $argumentTypeInfo->getStartIndex();
+                if ('?' === $tokens[$startIndex]->getContent() && true === $this->configuration[self::CONFIGURATION_OPTION_FORCE_NULLABLE_FOR_DEFAULT_NULL]) {
+                    $this->convertOptionalTypeToUnionNull($tokens, $argumentTypeInfo);
+                }
             }
         } elseif ($argumentTypeInfo->isNullable()) {
             $tokens->removeTrailingWhitespace($startIndex = $argumentTypeInfo->getStartIndex());
@@ -174,7 +198,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
     private function fixUnionTypeParameter(Tokens $tokens, TypeAnalysis $argumentTypeInfo): void
     {
-        if (true === $this->configuration['use_nullable_type_declaration']) {
+        if (true === $this->configuration[self::CONFIGURATION_OPTION_USE_NULLABLE_TYPE_DECLARATION]) {
             if ($argumentTypeInfo->isNullable()) {
                 return;
             }
@@ -188,10 +212,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 $tokens->insertAt($endIndex, new Token([CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')']));
             }
 
-            $tokens->insertAt($endIndex + 1, [
-                new Token([CT::T_TYPE_ALTERNATION, '|']),
-                new Token([T_STRING, 'null']),
-            ]);
+            $this->insertUnionTypeNullToEnd($tokens, $endIndex + 1);
         } elseif ($argumentTypeInfo->isNullable()) {
             $startIndex = $argumentTypeInfo->getStartIndex();
 
@@ -229,5 +250,24 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
         }
+    }
+
+    private function convertOptionalTypeToUnionNull(Tokens $tokens, TypeAnalysis $argumentTypeInfo): void
+    {
+        $tokens->removeTrailingWhitespace($argumentTypeInfo->getStartIndex());
+        $tokens->clearTokenAndMergeSurroundingWhitespace($argumentTypeInfo->getStartIndex());
+
+        $tokens->insertAt($argumentTypeInfo->getEndIndex() + 1, [
+            new Token([CT::T_TYPE_ALTERNATION, '|']),
+            new Token([T_STRING, 'null']),
+        ]);
+    }
+
+    private function insertUnionTypeNullToEnd(Tokens $tokens, int $endIndex): void
+    {
+        $tokens->insertAt($endIndex, [
+            new Token([CT::T_TYPE_ALTERNATION, '|']),
+            new Token([T_STRING, 'null']),
+        ]);
     }
 }

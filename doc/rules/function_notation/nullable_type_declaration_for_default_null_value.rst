@@ -13,6 +13,16 @@ Rule is applied only in a PHP 7.1+ environment.
 Configuration
 -------------
 
+``force_nullable_for_default_null``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Enforces explicit nullable type declarations for parameters with a default
+``null`` value, standardizing nullability in typehints
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``use_nullable_type_declaration``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -57,6 +67,34 @@ With configuration: ``['use_nullable_type_declaration' => false]``.
 Example #3
 ~~~~~~~~~~
 
+With configuration: ``['force_nullable_for_default_null' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(?string $str = null)
+   +function sample(string|null $str = null)
+    {}
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['force_nullable_for_default_null' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(string $str = null)
+   +function sample(string|null $str = null)
+    {}
+
+Example #5
+~~~~~~~~~~
+
 *Default* configuration.
 
 .. code-block:: diff
@@ -68,7 +106,7 @@ Example #3
    +function sample(string|int|null $str = null)
     {}
 
-Example #4
+Example #6
 ~~~~~~~~~~
 
 With configuration: ``['use_nullable_type_declaration' => false]``.
@@ -82,7 +120,7 @@ With configuration: ``['use_nullable_type_declaration' => false]``.
    +function sample(string|int $str = null)
     {}
 
-Example #5
+Example #7
 ~~~~~~~~~~
 
 *Default* configuration.
@@ -96,7 +134,7 @@ Example #5
    +function sample((\Foo&\Bar)|null $str = null)
     {}
 
-Example #6
+Example #8
 ~~~~~~~~~~
 
 With configuration: ``['use_nullable_type_declaration' => false]``.
