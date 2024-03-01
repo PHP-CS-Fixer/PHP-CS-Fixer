@@ -1692,6 +1692,11 @@ abstract class Baz
             [9],
             '<?php $foo = fn(int &$x) => null;',
         ];
+
+        yield [
+            [],
+            '<?php fn() => A_CONSTANT & $object->property;',
+        ];
     }
 
     /**
@@ -1915,6 +1920,11 @@ $b;',
         yield [
             [3],
             '<?php $a ??= $b;',
+        ];
+
+        yield [
+            [5, 11],
+            '<?php fn() => $object->property & A_CONSTANT;',
         ];
     }
 
