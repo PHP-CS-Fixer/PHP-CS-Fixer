@@ -1906,6 +1906,16 @@ $b;',
             [3],
             '<?php $a ?? $b;',
         ];
+
+        yield [
+            [],
+            '<?php try {} catch (A | B $e) {}',
+        ];
+
+        yield [
+            [3],
+            '<?php $a ??= $b;',
+        ];
     }
 
     /**
@@ -2019,38 +2029,6 @@ $b;',
                     $array = []; $d = array();
                 ',
             [76, 84],
-        ];
-    }
-
-    /**
-     * @param array<int, bool> $expected
-     *
-     * @dataProvider provideIsBinaryOperator71Cases
-     */
-    public function testIsBinaryOperator71(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public static function provideIsBinaryOperator71Cases(): iterable
-    {
-        yield [
-            [11 => false],
-            '<?php try {} catch (A | B $e) {}',
-        ];
-
-        yield [
-            [3 => true],
-            '<?php $a ??= $b;',
         ];
     }
 
