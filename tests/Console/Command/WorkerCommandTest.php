@@ -22,6 +22,7 @@ use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\RunnerConfig;
@@ -47,18 +48,18 @@ final class WorkerCommandTest extends TestCase
 {
     public function testMissingIdentifierCausesFailure(): void
     {
-        $commandTester = $this->doTestExecute(['--port' => 12_345]);
+        self::expectException(ParallelisationException::class);
+        self::expectExceptionMessage('Missing parallelisation options');
 
-        self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertStringContainsString('Missing parallelisation options', $commandTester->getErrorOutput());
+        $commandTester = $this->doTestExecute(['--port' => 12_345]);
     }
 
-    public function testMissingCausesFailure(): void
+    public function testMissingPortCausesFailure(): void
     {
-        $commandTester = $this->doTestExecute(['--identifier' => (string) ProcessIdentifier::create()]);
+        self::expectException(ParallelisationException::class);
+        self::expectExceptionMessage('Missing parallelisation options');
 
-        self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertStringContainsString('Missing parallelisation options', $commandTester->getErrorOutput());
+        $commandTester = $this->doTestExecute(['--identifier' => (string) ProcessIdentifier::create()]);
     }
 
     public function testWorkerCantConnectToServerWhenExecutedDirectly(): void

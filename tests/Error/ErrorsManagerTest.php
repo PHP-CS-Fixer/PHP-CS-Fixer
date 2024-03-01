@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Error;
 
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Error\WorkerError;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -33,6 +34,7 @@ final class ErrorsManagerTest extends TestCase
         self::assertEmpty($errorsManager->getInvalidErrors());
         self::assertEmpty($errorsManager->getExceptionErrors());
         self::assertEmpty($errorsManager->getLintErrors());
+        self::assertEmpty($errorsManager->getWorkerErrors());
     }
 
     public function testThatCanReportAndRetrieveInvalidErrors(): void
@@ -55,6 +57,7 @@ final class ErrorsManagerTest extends TestCase
 
         self::assertCount(0, $errorsManager->getExceptionErrors());
         self::assertCount(0, $errorsManager->getLintErrors());
+        self::assertCount(0, $errorsManager->getWorkerErrors());
     }
 
     public function testThatCanReportAndRetrieveExceptionErrors(): void
@@ -77,6 +80,7 @@ final class ErrorsManagerTest extends TestCase
 
         self::assertCount(0, $errorsManager->getInvalidErrors());
         self::assertCount(0, $errorsManager->getLintErrors());
+        self::assertCount(0, $errorsManager->getWorkerErrors());
     }
 
     public function testThatCanReportAndRetrieveInvalidFileErrors(): void
@@ -99,6 +103,26 @@ final class ErrorsManagerTest extends TestCase
 
         self::assertCount(0, $errorsManager->getInvalidErrors());
         self::assertCount(0, $errorsManager->getExceptionErrors());
+        self::assertCount(0, $errorsManager->getWorkerErrors());
+    }
+
+    public function testThatCanReportAndRetrieveWorkerErrors(): void
+    {
+        $error = new WorkerError('Boom!', 'foo.php', 123, 1, '#0 Foo\n#1 Bar');
+        $errorsManager = new ErrorsManager();
+
+        $errorsManager->report($error);
+
+        self::assertFalse($errorsManager->isEmpty());
+
+        $errors = $errorsManager->getWorkerErrors();
+
+        self::assertCount(1, $errors);
+        self::assertSame($error, array_shift($errors));
+
+        self::assertCount(0, $errorsManager->getInvalidErrors());
+        self::assertCount(0, $errorsManager->getExceptionErrors());
+        self::assertCount(0, $errorsManager->getLintErrors());
     }
 
     public function testThatCanReportAndRetrieveErrorsForSpecificPath(): void
