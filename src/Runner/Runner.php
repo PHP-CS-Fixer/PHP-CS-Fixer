@@ -20,15 +20,18 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
+use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Error\WorkerError;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
@@ -287,25 +290,58 @@ final class Runner
                         return;
                     }
 
+                    if (ParallelAction::RUNNER_ERROR_REPORT === $workerResponse['action']) {
+                        $this->errorsManager->report(new WorkerError(
+                            $workerResponse['message'],
+                            $workerResponse['file'],
+                            (int) $workerResponse['line'],
+                            (int) $workerResponse['code'],
+                            $workerResponse['trace']
+                        ));
+
+                        return;
+                    }
+
                     throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
                 },
 
                 // [REACT] Handle errors encountered during worker's execution
-                static function (\Throwable $error) use ($processPool): void {
-                    // @TODO Pass-back error to the main process so it can be displayed to the user
+                function (\Throwable $error) use ($processPool): void {
+                    $this->errorsManager->report(new WorkerError(
+                        $error->getMessage(),
+                        $error->getFile(),
+                        $error->getLine(),
+                        $error->getCode(),
+                        $error->getTraceAsString()
+                    ));
 
                     $processPool->endAll();
                 },
 
                 // [REACT] Handle worker's shutdown
-                static function ($exitCode, string $output) use ($processPool, $identifier): void {
+                function ($exitCode, string $output) use ($processPool, $identifier): void {
                     $processPool->endProcessIfKnown($identifier);
 
                     if (0 === $exitCode || null === $exitCode) {
                         return;
                     }
 
-                    // @TODO Handle output string for non-zero exit codes
+                    $errorsReported = Preg::matchAll(
+                        sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
+                        $output,
+                        $matches
+                    );
+
+                    if ($errorsReported > 0) {
+                        $error = json_decode($matches[1][0], true);
+                        $this->errorsManager->report(new WorkerError(
+                            $error['message'],
+                            $error['file'],
+                            (int) $error['line'],
+                            (int) $error['code'],
+                            $error['trace']
+                        ));
+                    }
                 }
             );
         }
