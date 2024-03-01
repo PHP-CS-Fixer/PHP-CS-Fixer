@@ -1575,20 +1575,33 @@ abstract class Baz
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param array<int> $expected
      *
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
     public function testIsUnaryPredecessorOperator(array $expected, string $source): void
     {
+        $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $isUnary) {
-            self::assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+        foreach ($tokens as $index => $token) {
+            $expect = \in_array($index, $expected, true);
 
-            if ($isUnary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame(
+                $expect,
+                $tokensAnalyzer->isUnaryPredecessorOperator($index),
+                sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+            );
+
+            if ($expect) {
+                self::assertFalse(
+                    $tokensAnalyzer->isUnarySuccessorOperator($index),
+                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
+                self::assertFalse(
+                    $tokensAnalyzer->isBinaryOperator($index),
+                    sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
+                );
             }
         }
     }
@@ -1596,87 +1609,87 @@ abstract class Baz
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
         yield [
-            [1 => true],
+            [1],
             '<?php ++$a;',
         ];
 
         yield [
-            [1 => true],
+            [1],
             '<?php --$a;',
         ];
 
         yield [
-            [1 => true],
+            [1],
             '<?php -- $a;',
         ];
 
         yield [
-            [3 => false, 5 => true],
+            [5],
             '<?php $a + ++$b;',
         ];
 
         yield [
-            [1 => true, 2 => true],
+            [1, 2],
             '<?php !!$a;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php $a = &$b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php function &foo() {}',
         ];
 
         yield [
-            [1 => true],
+            [1],
             '<?php @foo();',
         ];
 
         yield [
-            [3 => true, 8 => true],
+            [3, 8],
             '<?php foo(+ $a, -$b);',
         ];
 
         yield [
-            [5 => true, 11 => true, 17 => true],
+            [5, 11, 17],
             '<?php function foo(&$a, array &$b, Bar &$c) {}',
         ];
 
         yield [
-            [8 => true],
+            [8],
             '<?php function foo($a, ...$b) {}',
         ];
 
         yield [
-            [5 => true, 6 => true],
+            [5, 6],
             '<?php function foo(&...$b) {}',
         ];
 
         yield [
-            [7 => true],
+            [7],
             '<?php function foo(array ...$b) {}',
         ];
 
         yield [
-            [7 => true],
+            [7],
             '<?php $foo = function(...$a) {};',
         ];
 
         yield [
-            [10 => true],
+            [10],
             '<?php $foo = function($a, ...$b) {};',
         ];
 
         yield [
-            [9 => true],
+            [9],
             '<?php $foo = function(int &$x) {};',
         ];
 
         yield [
-            [9 => true],
+            [9],
             '<?php $foo = fn(int &$x) => null;',
         ];
     }
