@@ -24,7 +24,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @covers \PhpCsFixer\Runner\FileCachingLintingFileIterator
  */
-final class FileCachingLintingIteratorTest extends TestCase
+final class FileCachingLintingFileIteratorTest extends TestCase
 {
     public function testLintingEmpty(): void
     {
