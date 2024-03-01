@@ -74,6 +74,9 @@ final class WorkerCommandTest extends TestCase
         );
     }
 
+    /**
+     * @requires OS Linux|Darwin
+     */
     public function testWorkerCommunicatesWithTheServer(): void
     {
         $streamSelectLoop = new StreamSelectLoop();
