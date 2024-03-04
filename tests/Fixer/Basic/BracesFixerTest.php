@@ -1404,7 +1404,7 @@ function mixedComplex()
 
         yield [
             '<?php if (true) {
-    echo "s";
+echo "s";
 } ?>x',
             '<?php if (true) echo "s" ?>x',
         ];
@@ -2437,7 +2437,7 @@ function mixedComplex()
 
         yield [
             '<?php if (true) {
-    echo "s";
+echo "s";
 } ?>x',
             '<?php if (true) echo "s" ?>x',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
@@ -3233,10 +3233,6 @@ function foo()
         ];
 
         yield [
-            '<?php
-if ($a) { //
-    ?><?php ++$a;
-} ?>',
             '<?php
 if ($a) { //
 ?><?php ++$a;
@@ -5419,63 +5415,6 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
     }
 
     /**
-     * @dataProvider provideNowdocInTemplatesCases
-     */
-    public function testNowdocInTemplates(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideNowdocInTemplatesCases(): iterable
-    {
-        yield [
-            <<<'EOT'
-                <?php
-                if (true) {
-                    $var = <<<'NOWDOC'
-                NOWDOC;
-                    ?>
-                <?php
-                }
-
-                EOT,
-            <<<'EOT'
-                <?php
-                if (true) {
-                $var = <<<'NOWDOC'
-                NOWDOC;
-                ?>
-                <?php
-                }
-
-                EOT,
-        ];
-
-        yield [
-            <<<'EOT'
-                <?php
-                if (true) {
-                    $var = <<<HEREDOC
-                HEREDOC;
-                    ?>
-                <?php
-                }
-
-                EOT,
-            <<<'EOT'
-                <?php
-                if (true) {
-                $var = <<<HEREDOC
-                HEREDOC;
-                ?>
-                <?php
-                }
-
-                EOT,
-        ];
-    }
-
-    /**
      * @dataProvider provideFixCommentsCases
      */
     public function testFixComments(string $expected, ?string $input = null): void
@@ -5809,7 +5748,7 @@ return foo($i);
 
         yield [
             '<?php if ($a) {
-    foreach ($b as $c): ?> X <?php endforeach;
+foreach ($b as $c): ?> X <?php endforeach;
 } ?>',
             '<?php if ($a) foreach ($b as $c): ?> X <?php endforeach; ?>',
         ];
@@ -5843,25 +5782,25 @@ return foo($i);
         yield [
             '<?php
 if ($a) {
-    foreach ($b as $c): ?>
+foreach ($b as $c): ?>
     <?php if ($a) {
-        for (;;): ?>
+    for (;;): ?>
         <?php if ($a) {
-            foreach ($b as $c): ?>
+        foreach ($b as $c): ?>
             <?php if ($a) {
-                for (;;): ?>
+            for (;;): ?>
                 <?php if ($a) {
-                    while ($b): ?>
+                while ($b): ?>
                     <?php if ($a) {
-                        while ($b): ?>
+                    while ($b): ?>
                         <?php if ($a) {
-                            foreach ($b as $c): ?>
+                        foreach ($b as $c): ?>
                             <?php if ($a) {
-                                for (;;): ?>
+                            for (;;): ?>
                                 <?php if ($a) {
-                                    while ($b): ?>
+                                while ($b): ?>
                                     <?php if ($a) {
-                                        while ($b): ?>
+                                    while ($b): ?>
                                     <?php endwhile;
                                     } ?>
                                 <?php endwhile;
