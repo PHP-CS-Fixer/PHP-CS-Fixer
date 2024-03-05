@@ -27,6 +27,8 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Error\WorkerError;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerBlame\FixerBlame;
+use PhpCsFixer\FixerBlame\FixerChange;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
@@ -51,7 +53,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
  *
- * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string, blame: list<FixerChange>}>
  */
 final class Runner
 {
@@ -89,6 +91,8 @@ final class Runner
 
     private ?string $configFile;
 
+    private FixerBlame $blame;
+
     /**
      * @param null|\Traversable<\SplFileInfo> $fileIterator
      * @param list<FixerInterface>            $fixers
@@ -122,6 +126,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfig::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
+        $this->blame = new FixerBlame();
     }
 
     /**
@@ -379,7 +384,7 @@ final class Runner
     }
 
     /**
-     * @return null|array{appliedFixers: list<string>, diff: string}
+     * @return null|list{appliedFixers: list<string>, diff: string, blame: list<FixerChange>}
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
@@ -409,6 +414,7 @@ final class Runner
         $appliedFixers = [];
 
         try {
+            $this->blame->originalCode($tokens);
             foreach ($this->fixers as $fixer) {
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
@@ -423,6 +429,8 @@ final class Runner
 
                 if ($tokens->isChanged()) {
                     $tokens->clearEmptyTokens();
+                    $this->blame->snapshotTokens($fixer, $tokens);
+
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
                 }
@@ -457,6 +465,7 @@ final class Runner
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
+                'blame' => $this->blame->calculateChanges(),
             ];
 
             try {

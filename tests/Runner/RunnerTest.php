@@ -76,6 +76,13 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
 
         self::assertCount(2, $changed);
+
+        self::assertCount(1, $changed['somefile.php']['blame']);
+        self::assertSame('line:  7 char:  5 fixer: visibility_required', (string) $changed['somefile.php']['blame'][0]);
+        self::assertCount(1, $changed['somefile2.php']['blame']);
+        self::assertSame('line:  7 char:  5 fixer: visibility_required', (string) $changed['somefile2.php']['blame'][0]);
+        unset($changed['somefile.php']['blame'], $changed['somefile2.php']['blame']);
+
         self::assertSame($expectedChangedInfo, array_pop($changed));
         self::assertSame($expectedChangedInfo, array_pop($changed));
 
@@ -96,6 +103,11 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
 
         self::assertCount(1, $changed);
+
+        self::assertCount(1, $changed['somefile.php']['blame']);
+        self::assertSame('line:  7 char:  5 fixer: visibility_required', (string) $changed['somefile.php']['blame'][0]);
+        unset($changed['somefile.php']['blame']);
+
         self::assertSame($expectedChangedInfo, array_pop($changed));
     }
 

@@ -1,0 +1,74 @@
+--TEST--
+Integration of fixers: Anonymous class /w PHPDoc and attributes on separate line.
+--RULESET--
+{
+    "@Symfony": true,
+    "@Symfony:risky": true,
+    "@PHP74Migration": true,
+    "@PHP74Migration:risky": true,
+    "@PHPUnit100Migration:risky": true,
+    "@PhpCsFixer": true,
+    "@PhpCsFixer:risky": true,
+    "general_phpdoc_annotation_remove": {"annotations": ["expectedDeprecation"]},
+    "header_comment": {"header": "This file is part of PHP CS Fixer.\n\n(c) Fabien Potencier <fabien@symfony.com>\n    Dariusz Rumiński <dariusz.ruminski@gmail.com>\n\nThis source file is subject to the MIT license that is bundled\nwith this source code in the file LICENSE."},
+    "modernize_strpos": true,
+    "no_useless_concat_operator": true,
+    "numeric_literal_separator": true,
+    "single_line_comment_style": false
+}
+--EXPECT--
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+class MyClass
+{
+    public int $param;
+
+    public function method(int $arg1 = null): void
+    {
+        if ('     ' === substr('', 0, 5)) {
+        }
+        echo $arg1;
+    }
+}
+
+--BLAME_EXPECT--
+line:  6 char:  0 fixer: no_superfluous_phpdoc_tags
+line: 10 char: 45 fixer: void_return
+line:  5 char:  0 fixer: no_empty_phpdoc
+line:  1 char:  6 fixer: declare_strict_types
+line:  1 char:  0 fixer: blank_line_after_opening_tag
+line: 12 char: 13 fixer: yoda_style
+line: 15 char:  9 fixer: no_mixed_echo_print
+line:  3 char:  7 fixer: psr_autoloading
+line: 13 char:  0 fixer: no_extra_blank_lines
+line:  3 char:  0 fixer: header_comment
+--INPUT--
+<?php
+
+class Kebab_Class_Name
+{
+    /**
+     * @var $param
+     */
+    public int $param;
+
+    public function method(int $arg1 = null)
+    {
+        if (substr('', 0, 5) === '     ') {
+
+        }
+        print $arg1;
+    }
+}
