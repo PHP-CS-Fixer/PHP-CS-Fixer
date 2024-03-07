@@ -542,4 +542,21 @@ echo M_PI;
 
         yield ['<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}'];
     }
+
+    /**
+     * @dataProvider provideFixPhp82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFixPhp82(string $expected): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest($expected);
+    }
+
+    public static function provideFixPhp82Cases(): iterable
+    {
+        yield ['<?php class Foo { public (\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var; }'];
+        yield ['<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}'];
+    }
 }
