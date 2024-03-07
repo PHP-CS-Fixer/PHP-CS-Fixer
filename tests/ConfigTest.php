@@ -36,6 +36,18 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends TestCase
 {
+    public function testFutureMode(): void
+    {
+        $futureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $config = new Config('test');
+        self::assertSame('test (future mode)', $config->getName());
+        self::assertArrayHasKey('@PER-CS', $config->getRules());
+
+        putenv('PHP_CS_FIXER_FUTURE_MODE='.$futureMode);
+    }
+
     public function testConfigRulesUsingSeparateMethod(): void
     {
         $config = new Config();
