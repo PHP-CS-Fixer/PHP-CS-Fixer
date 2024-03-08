@@ -557,6 +557,7 @@ echo M_PI;
     public static function provideFixPhp82Cases(): iterable
     {
         yield ['<?php class Foo { public (\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var; }'];
+
         yield ['<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}'];
     }
 }
