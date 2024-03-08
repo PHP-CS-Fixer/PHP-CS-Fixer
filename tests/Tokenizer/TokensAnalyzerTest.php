@@ -1494,7 +1494,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<int, list{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp82Cases(): iterable
     {
