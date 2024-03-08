@@ -554,6 +554,7 @@ final class TokensAnalyzer
             ';',
             '{',
             '}',
+            [T_DOUBLE_ARROW],
             [T_FN],
             [T_FUNCTION],
             [T_OPEN_TAG],
