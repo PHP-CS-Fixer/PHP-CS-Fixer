@@ -1493,6 +1493,9 @@ abstract class Baz
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<int, list{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationPhp82Cases(): iterable
     {
         yield [

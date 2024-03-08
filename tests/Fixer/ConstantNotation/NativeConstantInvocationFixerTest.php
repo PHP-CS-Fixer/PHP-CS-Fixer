@@ -554,6 +554,9 @@ echo M_PI;
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{0: string}>
+     */
     public static function provideFixPhp82Cases(): iterable
     {
         yield ['<?php class Foo { public (\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var; }'];
