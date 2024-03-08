@@ -101,10 +101,6 @@ Rules
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
 - `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
-- `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
-
-  ``['only_booleans' => true]``
-
 - `ordered_imports <./../rules/import/ordered_imports.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``

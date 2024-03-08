@@ -31,6 +31,10 @@ Rules
 - `no_blank_lines_after_class_opening <./../rules/class_notation/no_blank_lines_after_class_opening.rst>`_
 - `no_leading_import_slash <./../rules/import/no_leading_import_slash.rst>`_
 - `no_whitespace_in_blank_line <./../rules/whitespace/no_whitespace_in_blank_line.rst>`_
+- `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
+
+  ``['only_booleans' => true]``
+
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_ with config:
 
   ``['order' => ['use_trait']]``

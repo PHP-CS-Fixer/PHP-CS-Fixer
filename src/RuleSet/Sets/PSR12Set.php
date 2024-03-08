@@ -46,6 +46,9 @@ final class PSR12Set extends AbstractRuleSetDescription
             'no_blank_lines_after_class_opening' => true,
             'no_leading_import_slash' => true,
             'no_whitespace_in_blank_line' => true,
+            'operator_linebreak' => [
+                'only_booleans' => true,
+            ],
             'ordered_class_elements' => [
                 'order' => [
                     'use_trait',

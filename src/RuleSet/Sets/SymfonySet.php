@@ -137,9 +137,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'normalize_index_brace' => true,
             'nullable_type_declaration_for_default_null_value' => true,
             'object_operator_without_whitespace' => true,
-            'operator_linebreak' => [
-                'only_booleans' => true,
-            ],
             'ordered_imports' => [
                 'imports_order' => [
                     'class',
