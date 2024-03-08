@@ -152,7 +152,7 @@ class Foo
         return array_keys($this->proxyFixers);
     }
 
-    public function configure(array $configuration = null): void
+    public function configure(?array $configuration = null): void
     {
         parent::configure($configuration);
 

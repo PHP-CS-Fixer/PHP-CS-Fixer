@@ -60,7 +60,7 @@ final class TokensTest extends TestCase
         ?array $expected,
         array $sequence,
         int $start = 0,
-        int $end = null,
+        ?int $end = null,
         $caseSensitive = true
     ): void {
         $tokens = Tokens::fromCode($source);
@@ -1150,7 +1150,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveLeadingWhitespaceCases
      */
-    public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
+    public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
 
@@ -1221,7 +1221,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveTrailingWhitespaceCases
      */
-    public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
+    public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
 
@@ -1853,7 +1853,7 @@ $bar;',
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
-    private static function assertEqualsTokensArray(array $expected = null, array $input = null): void
+    private static function assertEqualsTokensArray(?array $expected = null, ?array $input = null): void
     {
         if (null === $expected) {
             self::assertNull($input);

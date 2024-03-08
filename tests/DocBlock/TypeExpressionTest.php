@@ -32,7 +32,7 @@ final class TypeExpressionTest extends TestCase
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
-    public function testGetTypes(string $typesExpression, array $expectedTypes = null): void
+    public function testGetTypes(string $typesExpression, ?array $expectedTypes = null): void
     {
         if (null === $expectedTypes) {
             $expectedTypes = [$typesExpression];
@@ -449,7 +449,7 @@ final class TypeExpressionTest extends TestCase
      *
      * @dataProvider provideGetCommonTypeCases
      */
-    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
+    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, ?NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
         self::assertSame($expectedCommonType, $expression->getCommonType());
