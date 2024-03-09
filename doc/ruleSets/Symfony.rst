@@ -81,7 +81,7 @@ Rules
 - `no_spaces_around_offset <./../rules/whitespace/no_spaces_around_offset.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_ with config:
 
-  ``['remove_inheritdoc' => true]``
+  ``['allow_hidden_params' => true, 'remove_inheritdoc' => true]``
 
 - `no_trailing_comma_in_singleline <./../rules/basic/no_trailing_comma_in_singleline.rst>`_
 - `no_unneeded_braces <./../rules/control_structure/no_unneeded_braces.rst>`_ with config:
@@ -99,10 +99,8 @@ Rules
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
-- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_ with config:
-
-  ``['use_nullable_type_declaration' => false]``
-
+- `nullable_type_declaration <./../rules/language_construct/nullable_type_declaration.rst>`_
+- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
 
@@ -111,6 +109,10 @@ Rules
 - `ordered_imports <./../rules/import/ordered_imports.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
+
+- `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
 - `php_unit_fqcn_annotation <./../rules/php_unit/php_unit_fqcn_annotation.rst>`_
 - `php_unit_method_casing <./../rules/php_unit/php_unit_method_casing.rst>`_

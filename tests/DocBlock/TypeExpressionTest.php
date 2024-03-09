@@ -32,7 +32,7 @@ final class TypeExpressionTest extends TestCase
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
-    public function testGetTypes(string $typesExpression, array $expectedTypes = null): void
+    public function testGetTypes(string $typesExpression, ?array $expectedTypes = null): void
     {
         if (null === $expectedTypes) {
             $expectedTypes = [$typesExpression];
@@ -230,6 +230,10 @@ final class TypeExpressionTest extends TestCase
         yield ['($foo🚀3 is int ? false : true)'];
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
+
+        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, with-dash: int}'];
+
+        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, k: int, l: int, with-dash: int}'];
     }
 
     public static function provideGetConstTypesCases(): iterable
@@ -445,7 +449,7 @@ final class TypeExpressionTest extends TestCase
      *
      * @dataProvider provideGetCommonTypeCases
      */
-    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
+    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, ?NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
         self::assertSame($expectedCommonType, $expression->getCommonType());
@@ -456,8 +460,8 @@ final class TypeExpressionTest extends TestCase
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
 
-        $useTraversable = new NamespaceUseAnalysis(\Traversable::class, \Traversable::class, false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
-        $useObjectAsTraversable = new NamespaceUseAnalysis('Foo', \Traversable::class, false, 0, 0, NamespaceUseAnalysis::TYPE_CLASS);
+        $useTraversable = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, \Traversable::class, \Traversable::class, false, false, 0, 0);
+        $useObjectAsTraversable = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Foo', \Traversable::class, false, false, 0, 0);
 
         yield ['true', 'bool'];
 
@@ -610,6 +614,24 @@ final class TypeExpressionTest extends TestCase
         yield ['?int', true];
 
         yield ['?\Closure(): void', true];
+    }
+
+    public function testWalkTypes(): void
+    {
+        $typeExpression = new TypeExpression('Foo|Bar|Baz', null, []);
+        $addLeadingSlash = static function (TypeExpression $type): void {
+            \Closure::bind(static function () use ($type): void {
+                $value = $type->toString();
+                if (!str_starts_with($value, '\\')) {
+                    $value = '\\'.$value;
+                }
+                $type->value = $value;
+            }, null, TypeExpression::class)();
+        };
+
+        $typeExpression->walkTypes($addLeadingSlash);
+
+        self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
     }
 
     /**

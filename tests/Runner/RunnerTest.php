@@ -127,8 +127,6 @@ final class RunnerTest extends TestCase
 
         $error = $errors[0];
 
-        self::assertInstanceOf(Error::class, $error);
-
         self::assertSame(Error::TYPE_INVALID, $error->getType());
         self::assertSame($pathToInvalidFile, $error->getFilePath());
     }
@@ -168,7 +166,7 @@ final class RunnerTest extends TestCase
         return new class() implements DifferInterface {
             public ?\SplFileInfo $passedFile = null;
 
-            public function diff(string $old, string $new, \SplFileInfo $file = null): string
+            public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
             {
                 $this->passedFile = $file;
 

@@ -26,6 +26,8 @@ $config->getFinder()->notPath([
     'src/DocBlock/Annotation.php',
     'src/Doctrine/Annotation/Tokens.php',
     'src/Tokenizer/Tokens.php',
+    // @TODO add `mixed` return type to `ExecutorWithoutErrorHandler::execute` when PHP 8.0+ is required and remove the exception from this list
+    'src/ExecutorWithoutErrorHandler.php',
 ]);
 
 $config->setRules([

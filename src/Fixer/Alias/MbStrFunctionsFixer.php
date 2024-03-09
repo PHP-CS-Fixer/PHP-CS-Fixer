@@ -73,6 +73,12 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
             self::$functionsMap['str_pad'] = ['alternativeName' => 'mb_str_pad', 'argumentCount' => [1, 2, 3, 4]];
         }
 
+        if (\PHP_VERSION_ID >= 8_04_00) {
+            self::$functionsMap['trim'] = ['alternativeName' => 'mb_trim', 'argumentCount' => [1, 2]];
+            self::$functionsMap['ltrim'] = ['alternativeName' => 'mb_ltrim', 'argumentCount' => [1, 2]];
+            self::$functionsMap['rtrim'] = ['alternativeName' => 'mb_rtrim', 'argumentCount' => [1, 2]];
+        }
+
         $this->functions = array_filter(
             self::$functionsMap,
             static fn (array $mapping): bool => (new \ReflectionFunction($mapping['alternativeName']))->isInternal()

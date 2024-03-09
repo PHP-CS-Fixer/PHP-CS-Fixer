@@ -217,7 +217,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @return array<string>
+     * @return list<string>
      */
     private static function mapToTemplate(string ...$types): array
     {

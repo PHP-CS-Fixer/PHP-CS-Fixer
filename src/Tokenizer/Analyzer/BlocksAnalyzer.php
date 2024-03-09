@@ -24,18 +24,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class BlocksAnalyzer
 {
-    public function isBlock(Tokens $tokens, ?int $openIndex, ?int $closeIndex): bool
+    public function isBlock(Tokens $tokens, int $openIndex, int $closeIndex): bool
     {
-        if (null === $openIndex || null === $closeIndex) {
-            return false;
-        }
-
         if (!$tokens->offsetExists($openIndex)) {
-            return false;
+            throw new \InvalidArgumentException(sprintf('Tokex index %d for potential block opening does not exist.', $openIndex));
         }
 
         if (!$tokens->offsetExists($closeIndex)) {
-            return false;
+            throw new \InvalidArgumentException(sprintf('Token index %d for potential block closure does not exist.', $closeIndex));
         }
 
         $blockType = $this->getBlockType($tokens[$openIndex]);

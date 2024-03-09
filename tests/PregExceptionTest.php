@@ -25,10 +25,11 @@ use PhpCsFixer\PregException;
  */
 final class PregExceptionTest extends TestCase
 {
-    public function testIsRuntimeException(): void
+    public function testPregException(): void
     {
-        $exception = new PregException();
+        $exception = new PregException('foo', 123);
 
-        self::assertInstanceOf(\RuntimeException::class, $exception);
+        self::assertSame('foo', $exception->getMessage());
+        self::assertSame(123, $exception->getCode());
     }
 }

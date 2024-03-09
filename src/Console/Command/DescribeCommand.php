@@ -55,6 +55,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'describe')]
 final class DescribeCommand extends Command
 {
+    /** @var string */
     protected static $defaultName = 'describe';
 
     /**
@@ -164,8 +165,11 @@ final class DescribeCommand extends Command
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
             $message = [] === $successors
-                ? 'will be removed in the next major version'
+                ? sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
                 : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+
+            $endMessage = '. '.ucfirst($message);
+            Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
             $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
             $output->writeln(sprintf('<error>DEPRECATED</error>: %s.', $message));
             $output->writeln('');

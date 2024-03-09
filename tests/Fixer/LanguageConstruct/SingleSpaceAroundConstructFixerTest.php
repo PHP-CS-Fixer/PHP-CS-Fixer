@@ -864,6 +864,25 @@ FOO = 9000; }',
             '<?php class Foo { const  /* foo */FOO = 9000; }',
         ];
 
+        yield [
+            '<?php class Foo {
+                const FOO = [
+                    1
+                ];
+                const BAR = [
+                    2,
+                ];
+            }',
+            '<?php class Foo {
+                const    FOO = [
+                    1
+                ];
+                const    BAR = [
+                    2,
+                ];
+            }',
+        ];
+
         yield ['<?php class Foo {
     const
         FOO = 9000,
@@ -2121,6 +2140,26 @@ Bar();',
         yield [
             '<?php new /* foo */Bar();',
             '<?php new/* foo */Bar();',
+        ];
+
+        yield 'attribute on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                #[FOO]
+                class() {};
+                EOF,
+        ];
+
+        yield 'phpdoc on separate line' => [
+            <<<'EOF'
+                <?php
+                $a = new
+                /**
+                 @property string $x
+                 */
+                class() {};
+                EOF,
         ];
     }
 

@@ -17,23 +17,13 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\Console\Command\DocumentationCommand;
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Doctrine\Annotation\DocLexer;
-use PhpCsFixer\Documentation\DocumentationLocator;
-use PhpCsFixer\Documentation\FixerDocumentGenerator;
-use PhpCsFixer\Documentation\RstUtils;
-use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
-use PhpCsFixer\ExecutorWithoutErrorHandler;
-use PhpCsFixer\ExecutorWithoutErrorHandlerException;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Runner\FileCachingLintingIterator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
@@ -70,41 +60,11 @@ final class ProjectCodeTest extends TestCase
      */
     private static array $tokensCache = [];
 
-    /**
-     * This structure contains older classes that are not yet covered by tests.
-     *
-     * It may only shrink, never add anything to it.
-     *
-     * @var string[]
-     */
-    private static $classesWithoutTests = [
-        DocLexer::class,
-        DocumentationCommand::class,
-        DocumentationLocator::class,
-        ExecutorWithoutErrorHandler::class,
-        ExecutorWithoutErrorHandlerException::class,
-        FileCachingLintingIterator::class,
-        FixerDocumentGenerator::class,
-        GithubClient::class,
-        RstUtils::class,
-        RuleSetDocumentationGenerator::class,
-    ];
-
     public static function tearDownAfterClass(): void
     {
         self::$srcClassCases = null;
         self::$testClassCases = null;
         self::$tokensCache = [];
-    }
-
-    public function testThatClassesWithoutTestsVarIsProper(): void
-    {
-        $unknownClasses = array_filter(
-            self::$classesWithoutTests,
-            static fn (string $class): bool => !class_exists($class) && !trait_exists($class),
-        );
-
-        self::assertSame([], $unknownClasses);
     }
 
     /**
@@ -113,11 +73,6 @@ final class ProjectCodeTest extends TestCase
     public function testThatSrcClassHaveTestClass(string $className): void
     {
         $testClassName = 'PhpCsFixer\\Tests'.substr($className, 10).'Test';
-
-        if (\in_array($className, self::$classesWithoutTests, true)) {
-            self::assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
-            self::markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
-        }
 
         self::assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
     }
@@ -350,7 +305,7 @@ final class ProjectCodeTest extends TestCase
         $doc = $reflectionClass->getDocComment();
         self::assertNotFalse($doc);
 
-        if (Preg::match('/@coversNothing/', $doc, $matches)) {
+        if (Preg::match('/@coversNothing/', $doc)) {
             return;
         }
 

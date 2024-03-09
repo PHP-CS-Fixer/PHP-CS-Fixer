@@ -135,8 +135,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @see doTest()
      *
-     * @large
-     *
+     * @group large
      * @group legacy
      */
     public function testIntegration(IntegrationCase $case): void

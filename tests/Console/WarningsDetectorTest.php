@@ -108,6 +108,11 @@ final class WarningsDetectorTest extends TestCase
                 return $this->isInstalledByComposer;
             }
 
+            public function isRunInsideDocker(): bool
+            {
+                return false;
+            }
+
             public function getPharDownloadUri(string $version): string
             {
                 throw new \LogicException('Not implemented.');

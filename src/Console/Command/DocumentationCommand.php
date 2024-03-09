@@ -33,7 +33,16 @@ use Symfony\Component\Finder\SplFileInfo;
 #[AsCommand(name: 'documentation')]
 final class DocumentationCommand extends Command
 {
+    /** @var string */
     protected static $defaultName = 'documentation';
+
+    private Filesystem $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        parent::__construct();
+        $this->filesystem = $filesystem;
+    }
 
     protected function configure(): void
     {
@@ -45,7 +54,6 @@ final class DocumentationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $filesystem = new Filesystem();
         $locator = new DocumentationLocator();
 
         $fixerFactory = new FixerFactory();
@@ -65,7 +73,7 @@ final class DocumentationCommand extends Command
 
         foreach ($fixers as $fixer) {
             $docForFixerRelativePaths[] = $locator->getFixerDocumentationFileRelativePath($fixer);
-            $filesystem->dumpFile(
+            $this->filesystem->dumpFile(
                 $locator->getFixerDocumentationFilePath($fixer),
                 $fixerDocumentGenerator->generateFixerDocumentation($fixer)
             );
@@ -77,12 +85,12 @@ final class DocumentationCommand extends Command
                 ->in($locator->getFixersDocumentationDirectoryPath())
                 ->notPath($docForFixerRelativePaths) as $file
         ) {
-            $filesystem->remove($file->getPathname());
+            $this->filesystem->remove($file->getPathname());
         }
 
         // Fixer doc. index
 
-        $filesystem->dumpFile(
+        $this->filesystem->dumpFile(
             $locator->getFixersDocumentationIndexFilePath(),
             $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers)
         );
@@ -91,7 +99,7 @@ final class DocumentationCommand extends Command
 
         /** @var SplFileInfo $file */
         foreach ((new Finder())->files()->in($locator->getRuleSetsDocumentationDirectoryPath()) as $file) {
-            $filesystem->remove($file->getPathname());
+            $this->filesystem->remove($file->getPathname());
         }
 
         $paths = [];
@@ -99,12 +107,12 @@ final class DocumentationCommand extends Command
         foreach ($setDefinitions as $name => $definition) {
             $path = $locator->getRuleSetsDocumentationFilePath($name);
             $paths[$path] = $definition;
-            $filesystem->dumpFile($path, $ruleSetDocumentationGenerator->generateRuleSetsDocumentation($definition, $fixers));
+            $this->filesystem->dumpFile($path, $ruleSetDocumentationGenerator->generateRuleSetsDocumentation($definition, $fixers));
         }
 
         // RuleSet doc. index
 
-        $filesystem->dumpFile(
+        $this->filesystem->dumpFile(
             $locator->getRuleSetsDocumentationIndexFilePath(),
             $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths)
         );

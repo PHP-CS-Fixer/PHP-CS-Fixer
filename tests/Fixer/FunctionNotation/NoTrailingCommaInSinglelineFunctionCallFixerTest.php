@@ -26,7 +26,7 @@ final class NoTrailingCommaInSinglelineFunctionCallFixerTest extends AbstractFix
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -203,7 +203,7 @@ $g["e"](1,); // foo',
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

@@ -184,7 +184,7 @@ final class FunctionsAnalyzer
     public function isTheSameClassCall(Tokens $tokens, int $index): bool
     {
         if (!$tokens->offsetExists($index)) {
-            return false;
+            throw new \InvalidArgumentException(sprintf('Token index %d does not exist.', $index));
         }
 
         $operatorIndex = $tokens->getPrevMeaningfulToken($index);
@@ -203,7 +203,11 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        return $tokens[$referenceIndex]->equalsAny([[T_VARIABLE, '$this'], [T_STRING, 'self'], [T_STATIC, 'static']], false);
+        if (!$tokens[$referenceIndex]->equalsAny([[T_VARIABLE, '$this'], [T_STRING, 'self'], [T_STATIC, 'static']], false)) {
+            return false;
+        }
+
+        return $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(');
     }
 
     private function buildFunctionsAnalysis(Tokens $tokens): void

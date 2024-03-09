@@ -3,6 +3,74 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.51.0
+---------------------
+
+* chore: add missing tests for non-documentation classes (#7848)
+* chore: do not perform type analysis in tests (#7852)
+* chore: list over array in more places (#7857)
+* chore: tests documentation classes (#7855)
+* feat: `@Symfony` - add nullable_type_declaration (#7856)
+* test: fix wrong type in param annotation (#7858)
+
+Changelog for v3.50.0
+---------------------
+
+* chore: add missing types (#7842)
+* chore: BlocksAnalyzer - raise exception on invalid index (#7819)
+* chore: DataProviderAnalysis - expect list over array (#7800)
+* chore: do not use `@large` on method level (#7832)
+* chore: do not use `@medium` on method level (#7833)
+* chore: Fix typos (#7835)
+* chore: rename variables (#7847)
+* chore: some improvements around array typehints (#7799)
+* CI: fix PHP 8.4 job (#7829)
+* DX: Include `symfony/var-dumper` in dev tools (#7795)
+* feat: Ability to remove unused imports from multi-use statements (#7815)
+* feat: allow PHPUnit 11 (#7824)
+* feat: Allow shortening symbols from multi-use statements (only classes for now) (#7816)
+* feat: introduce `PhpdocArrayTypeFixer` (#7812)
+* feat: PhpUnitTestCaseStaticMethodCallsFixer - cover PHPUnit v11 methods (#7822)
+* feat: Support for multi-use statements in `NamespaceUsesAnalyzer` (#7814)
+* feat: `MbStrFunctionsFixer` - add support for `mb_trim`, `mb_ltrim` and `mb_rtrim` functions (#7840)
+* feat: `NoEmptyPhpdocFixer` - do not leave empty line after removing PHPDoc (#7820)
+* feat: `no_superfluous_phpdoc_tags` - introduce `allow_future_params` option (#7743)
+* fix: do not use wrongly named arguments in data providers (#7823)
+* fix: Ensure PCNTL extension is always installed in Docker (#7782)
+* fix: PhpdocListTypeFixer - support key types containing `<…>` (#7817)
+* fix: Proper build target for local Docker Compose (#7834)
+* fix: union PHPDoc support in `fully_qualified_strict_types` fixer (#7719)
+* fix: `ExecutorWithoutErrorHandler` - remove invalid PHP 7.4 type (#7845)
+* fix: `fully_qualified_strict_types` must honor template/local type identifiers (#7724)
+* fix: `MethodArgumentSpaceFixer` - do not break heredoc/nowdoc (#7828)
+* fix: `NumericLiteralSeparatorFixer` - do not change `float` to `int` when there is nothing after the dot (#7805)
+* fix: `PhpUnitStrictFixer` - do not crash on property having the name of method to fix (#7804)
+* fix: `SingleSpaceAroundConstructFixer` - correctly recognise multiple constants (#7700)
+* fix: `TypeExpression` - handle array shape key with dash (#7841)
+
+Changelog for v3.49.0
+---------------------
+
+* chore(checkbashisms): update to 2.23.7 (#7780)
+* chore: add missing key types in PHPDoc types (#7779)
+* chore: Exclude `topic/core` issues/PRs from Stale Bot (#7788)
+* chore: `DescribeCommand` - better handling of deprecations (#7778)
+* docs: docker - use gitlab reporter in GitLab integration example (#7764)
+* docs: docker in CI - don't suggest command that overrides path from config file (#7763)
+* DX: check deprecations exactly (#7742)
+* feat: Add `ordered_types` to `@Symfony` (#7356)
+* feat: introduce `PhpdocListTypeFixer` (#7796)
+* feat: introduce `string_implicit_backslashes` as `escape_implicit_backslashes` replacement (#7669)
+* feat: update `Symfony.nullable_type_declaration_for_default_null_value` config (#7773)
+* feat: `@PhpCsFixer` ruleset - enable `php_unit_data_provider_static` (#7685)
+* fix: Allow using cache when running in Docker distribution (#7769)
+* fix: ClassDefinitionFixer for anonymous class with phpdoc/attribute on separate line (#7546)
+* fix: `ClassKeywordFixer` must run before `FullyQualifiedStrictTypesFixer` (#7767)
+* fix: `function_to_constant` `get_class()` replacement (#7770)
+* fix: `LowercaseStaticReferenceFixer` - do not change typed constants (#7775)
+* fix: `PhpdocTypesFixer` - handle more complex types (#7791)
+* fix: `TypeExpression` - do not break type using `walkTypes` method (#7785)
+
 Changelog for v3.48.0
 ---------------------
 

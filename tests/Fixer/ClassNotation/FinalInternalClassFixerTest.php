@@ -345,7 +345,7 @@ $a = new class{};',
     /**
      * @group legacy
      *
-     * @param array<mixed> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideInvalidConfigurationCases
      */
@@ -361,7 +361,7 @@ $a = new class{};',
     }
 
     /**
-     * @return iterable<array{array<mixed>, string, 2?: string}>
+     * @return iterable<array{array<string, mixed>, string, 2?: string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

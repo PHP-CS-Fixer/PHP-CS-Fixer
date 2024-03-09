@@ -225,11 +225,11 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     }
 
     /**
-     * @param null|array<mixed> $template
+     * @param null|array<string, mixed> $template
      *
-     * @return array<mixed>
+     * @return array<string, mixed>
      */
-    private function parseJson(?string $encoded, array $template = null): array
+    private function parseJson(?string $encoded, ?array $template = null): array
     {
         // content is optional if template is provided
         if ((null === $encoded || '' === $encoded) && null !== $template) {

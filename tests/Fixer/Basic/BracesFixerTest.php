@@ -5694,7 +5694,7 @@ function example()
     /**
      * @dataProvider provideIndentCommentCases
      */
-    public function testIndentComment(string $expected, ?string $input, WhitespacesFixerConfig $config = null): void
+    public function testIndentComment(string $expected, ?string $input, ?WhitespacesFixerConfig $config = null): void
     {
         if (null !== $config) {
             $this->fixer->setWhitespacesConfig($config);

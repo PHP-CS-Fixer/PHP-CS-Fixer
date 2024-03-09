@@ -20,6 +20,14 @@ ensure that all backslashes are escaped. Both single and double backslashes are
 allowed in single-quoted strings, so the purpose in this context is mainly to
 have a uniformed way to have them written all over the codebase.
 
+Warning
+-------
+
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``string_implicit_backslashes`` instead.
+
 Configuration
 -------------
 
@@ -135,14 +143,6 @@ With configuration: ``['heredoc_syntax' => false]``.
     $hereDoc = <<<HEREDOC
     Interpret my \100 but not my \999
     HEREDOC;
-
-Rule sets
----------
-
-The rule is part of the following rule set:
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-
 References
 ----------
 

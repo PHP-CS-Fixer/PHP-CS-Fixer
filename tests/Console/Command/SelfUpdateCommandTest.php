@@ -431,6 +431,11 @@ final class SelfUpdateCommandTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function isRunInsideDocker(): bool
+            {
+                return false;
+            }
+
             public function getPharDownloadUri(string $version): string
             {
                 return sprintf('%s/%s.phar', $this->directory->url(), $version);

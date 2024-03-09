@@ -27,13 +27,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidConfigurationExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException(): void
-    {
-        $exception = new InvalidConfigurationException('I cannot do that, Dave.');
-
-        self::assertInstanceOf(\InvalidArgumentException::class, $exception);
-    }
-
     public function testDefaults(): void
     {
         $message = 'I cannot do that, Dave.';

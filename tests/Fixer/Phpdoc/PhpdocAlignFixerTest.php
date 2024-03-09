@@ -29,7 +29,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param array{align: string, tags: array<string>, spacing: array<string,int>} $configuration
+     * @param array{align: string, tags: list<string>, spacing: array<string,int>} $configuration
      */
     public function testFix(
         array $configuration,

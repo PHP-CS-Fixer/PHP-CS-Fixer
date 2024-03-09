@@ -97,7 +97,7 @@ final class CT
         static $constants;
 
         if (null === $constants) {
-            $reflection = new \ReflectionClass(__CLASS__);
+            $reflection = new \ReflectionClass(self::class);
             $constants = array_flip($reflection->getConstants());
         }
 

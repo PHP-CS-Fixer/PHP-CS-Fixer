@@ -116,10 +116,8 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
-
-  ``['use_nullable_type_declaration' => false]``
-
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References
 ----------

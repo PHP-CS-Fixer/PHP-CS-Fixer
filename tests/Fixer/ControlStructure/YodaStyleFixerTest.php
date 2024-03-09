@@ -936,7 +936,7 @@ switch ($a) {
     }
 
     /**
-     * @param array<mixed> $config
+     * @param array<string, mixed> $config
      *
      * @dataProvider provideInvalidConfigCases
      */
@@ -1221,7 +1221,7 @@ if ($a = $obj instanceof (foo()) === true) {
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, string $input = null): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
