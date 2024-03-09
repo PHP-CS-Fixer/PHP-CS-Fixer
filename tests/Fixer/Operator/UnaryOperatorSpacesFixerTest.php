@@ -152,5 +152,9 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
             '<?php function foo($a, ...   $b) { return (--   $a) * ($b   ++);}',
             ['only_dec_inc' => true],
         ];
+
+        yield [
+            '<?php static fn(Token $t): bool => 8 === ($t->flags & 8);',
+        ];
     }
 }
