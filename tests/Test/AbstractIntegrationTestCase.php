@@ -20,6 +20,7 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerBlame\FixerChange;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
@@ -268,6 +269,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $result = $runner->fix();
         $changed = array_pop($result);
 
+        if ($case->hasBlameCode()) {
+            self::assertSame($case->getBlameCode(), self::blameChangesArrayToString($changed['blame']));
+        }
+
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
             self::assertEmpty($errors, sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
@@ -393,5 +398,19 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         return $linter;
+    }
+
+    /**
+     * @param array<FixerChange> $changes
+     */
+    private static function blameChangesArrayToString(array $changes): string
+    {
+        $buffer = [];
+
+        foreach ($changes as $change) {
+            $buffer[] = (string) $change;
+        }
+
+        return implode("\n", $buffer);
     }
 }

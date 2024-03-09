@@ -50,6 +50,8 @@ final class IntegrationCase
 
     private string $title;
 
+    private ?string $blameCode;
+
     /**
      * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
      * @param array{php: int, "php<": int, os: list<string>}                                         $requirements
@@ -63,7 +65,8 @@ final class IntegrationCase
         array $config,
         RuleSet $ruleset,
         string $expectedCode,
-        ?string $inputCode
+        ?string $inputCode,
+        ?string $blameCode = null
     ) {
         $this->fileName = $fileName;
         $this->title = $title;
@@ -73,6 +76,7 @@ final class IntegrationCase
         $this->ruleset = $ruleset;
         $this->expectedCode = $expectedCode;
         $this->inputCode = $inputCode;
+        $this->blameCode = $blameCode;
     }
 
     public function hasInputCode(): bool
@@ -143,5 +147,15 @@ final class IntegrationCase
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function hasBlameCode(): bool
+    {
+        return null !== $this->blameCode;
+    }
+
+    public function getBlameCode(): ?string
+    {
+        return $this->blameCode;
     }
 }

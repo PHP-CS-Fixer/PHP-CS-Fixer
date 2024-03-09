@@ -90,11 +90,22 @@ final class PharTest extends AbstractSmokeTestCase
         );
     }
 
-    public function testFix(): void
+    public function testFixSequential(): void
     {
         self::assertSame(
             0,
-            self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
+            self::executePharCommand('fix src/Config.php -vvv --dry-run --sequential --diff --using-cache=no 2>&1')->getCode()
+        );
+    }
+
+    public function testFixParallel(): void
+    {
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1');
+
+        self::assertSame(0, $command->getCode());
+        self::assertMatchesRegularExpression(
+            '/Running analysis on [0-9]+ cores with [0-9]+ files per process/',
+            $command->getOutput()
         );
     }
 
@@ -120,7 +131,7 @@ final class PharTest extends AbstractSmokeTestCase
     {
         try {
             $json = self::executePharCommand(sprintf(
-                'fix %s --dry-run --format=json --rules=\'%s\' --using-cache=%s',
+                'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
                 __FILE__,
                 json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),
                 $usingCache,

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Console\Output;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Error\Error;
+use PhpCsFixer\Error\WorkerError;
 use PhpCsFixer\Linter\LintingException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -114,6 +115,42 @@ final class ErrorOutput
 
                     $this->output->writeln($diffFormatter->format($diff));
                 }
+            }
+        }
+    }
+
+    /**
+     * @param array<WorkerError> $errors
+     */
+    public function listWorkerErrors(array $errors): void
+    {
+        $this->output->writeln(['', 'Errors reported from workers (parallel analysis):']);
+
+        $showDetails = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
+        $showTrace = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG;
+
+        foreach ($errors as $i => $error) {
+            $this->output->writeln(sprintf('%4d) %s', $i + 1, $error->getMessage()));
+
+            if (!$showDetails) {
+                continue;
+            }
+
+            $this->output->writeln(sprintf(
+                '      in <comment>%s</comment> on line <comment>%d</comment>',
+                $error->getFilePath(),
+                $error->getLine()
+            ));
+
+            if ($showTrace) {
+                $this->output->writeln([
+                    '      <info>Stack trace:</info>',
+                    ...array_map(
+                        static fn (string $frame) => "      {$frame}",
+                        explode("\n", $error->getTrace())
+                    ),
+                    '',
+                ]);
             }
         }
     }

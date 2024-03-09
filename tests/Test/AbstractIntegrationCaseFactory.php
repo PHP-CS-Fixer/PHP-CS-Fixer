@@ -35,6 +35,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                     (?:\s   --SETTINGS--       \r?\n(?<settings>       .*?))?
                     (?:\s   --REQUIREMENTS--   \r?\n(?<requirements>   .*?))?
                     (?:\s   --EXPECT--         \r?\n(?<expect>         .*?\r?\n*))?
+                    (?:\s   --BLAME_EXPECT--   \r?\n(?<blame_expect>   .*?))?
                     (?:\s   --INPUT--          \r?\n(?<input>          .*))?
                 $/sx',
                 $file->getContents(),
@@ -49,6 +50,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                     'settings' => null,
                     'requirements' => null,
                     'expect' => null,
+                    'blame_expect' => null,
                     'input' => null,
                 ],
                 $match
@@ -62,7 +64,8 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                 $this->determineConfig($file, $match['config']),
                 $this->determineRuleset($file, $match['ruleset']),
                 $this->determineExpectedCode($file, $match['expect']),
-                $this->determineInputCode($file, $match['input'])
+                $this->determineInputCode($file, $match['input']),
+                $this->determineBlameExpect($file, $match['blame_expect'])
             );
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
@@ -153,6 +156,11 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     protected function determineTitle(SplFileInfo $file, string $config): string
     {
         return $config;
+    }
+
+    protected function determineBlameExpect(SplFileInfo $file, ?string $config): ?string
+    {
+        return '' !== $config ? $config : null;
     }
 
     /**

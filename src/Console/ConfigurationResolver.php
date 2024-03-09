@@ -35,8 +35,10 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\ParallelRunnerConfigInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\Utils;
@@ -118,6 +120,7 @@ final class ConfigurationResolver
         'path' => [],
         'path-mode' => self::PATH_MODE_OVERRIDE,
         'rules' => null,
+        'sequential' => null,
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
@@ -272,6 +275,15 @@ final class ConfigurationResolver
         }
 
         return $this->config;
+    }
+
+    public function getParallelConfig(): ParallelConfig
+    {
+        $config = $this->getConfig();
+
+        return true !== $this->options['sequential'] && $config instanceof ParallelRunnerConfigInterface
+            ? $config->getParallelConfig()
+            : ParallelConfig::sequential();
     }
 
     public function getConfigFile(): ?string

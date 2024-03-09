@@ -14,26 +14,46 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Runner;
 
+use Clue\React\NDJson\Decoder;
+use Clue\React\NDJson\Encoder;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
+use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Error\WorkerError;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerBlame\FixerBlame;
+use PhpCsFixer\FixerBlame\FixerChange;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Preg;
+use PhpCsFixer\Runner\Parallel\ParallelAction;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelisationException;
+use PhpCsFixer\Runner\Parallel\ProcessFactory;
+use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
+use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Tokenizer\Tokens;
+use React\EventLoop\StreamSelectLoop;
+use React\Socket\ConnectionInterface;
+use React\Socket\TcpServer;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
+ *
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string, blame: list<FixerChange>}>
  */
 final class Runner
 {
@@ -52,9 +72,11 @@ final class Runner
     private LinterInterface $linter;
 
     /**
-     * @var \Traversable<\SplFileInfo>
+     * @var null|\Traversable<\SplFileInfo>
      */
-    private $finder;
+    private $fileIterator;
+
+    private int $fileCount;
 
     /**
      * @var list<FixerInterface>
@@ -63,12 +85,20 @@ final class Runner
 
     private bool $stopOnViolation;
 
+    private ParallelConfig $parallelConfig;
+
+    private ?InputInterface $input;
+
+    private ?string $configFile;
+
+    private FixerBlame $blame;
+
     /**
-     * @param \Traversable<\SplFileInfo> $finder
-     * @param list<FixerInterface>       $fixers
+     * @param null|\Traversable<\SplFileInfo> $fileIterator
+     * @param list<FixerInterface>            $fixers
      */
     public function __construct(
-        \Traversable $finder,
+        ?\Traversable $fileIterator,
         array $fixers,
         DifferInterface $differ,
         ?EventDispatcherInterface $eventDispatcher,
@@ -77,9 +107,13 @@ final class Runner
         bool $isDryRun,
         CacheManagerInterface $cacheManager,
         ?DirectoryInterface $directory = null,
-        bool $stopOnViolation = false
+        bool $stopOnViolation = false,
+        ?ParallelConfig $parallelConfig = null,
+        ?InputInterface $input = null,
+        ?string $configFile = null
     ) {
-        $this->finder = $finder;
+        $this->fileCount = \count($fileIterator ?? []); // Required only for main process (calculating workers count)
+        $this->fileIterator = $fileIterator;
         $this->fixers = $fixers;
         $this->differ = $differ;
         $this->eventDispatcher = $eventDispatcher;
@@ -89,26 +123,246 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?? new Directory('');
         $this->stopOnViolation = $stopOnViolation;
+        $this->parallelConfig = $parallelConfig ?? ParallelConfig::sequential();
+        $this->input = $input;
+        $this->configFile = $configFile;
+        $this->blame = new FixerBlame();
     }
 
     /**
-     * @return array<string, array{appliedFixers: list<string>, diff: string}>
+     * @param iterable<\SplFileInfo> $fileIterator
+     */
+    public function setFileIterator(iterable $fileIterator): void
+    {
+        $this->fileIterator = $fileIterator;
+    }
+
+    /**
+     * @return _RunResult
      */
     public function fix(): array
     {
+        return $this->parallelConfig->getMaxProcesses() > 1 && null !== $this->input
+            ? $this->fixParallel()
+            : $this->fixSequential();
+    }
+
+    /**
+     * Heavily inspired by {@see https://github.com/phpstan/phpstan-src/blob/9ce425bca5337039fb52c0acf96a20a2b8ace490/src/Parallel/ParallelAnalyser.php}.
+     *
+     * @return _RunResult
+     */
+    private function fixParallel(): array
+    {
         $changed = [];
+        $streamSelectLoop = new StreamSelectLoop();
+        $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
+        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
 
-        $finder = $this->finder;
-        $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
-        $fileFilteredFileIterator = new FileFilterIterator(
-            $finderIterator,
-            $this->eventDispatcher,
-            $this->cacheManager
+        if (!is_numeric($serverPort)) {
+            throw new ParallelisationException(sprintf(
+                'Unable to parse server port from "%s"',
+                $server->getAddress() ?? ''
+            ));
+        }
+
+        $processPool = new ProcessPool($server);
+        $fileIterator = $this->getFileIterator();
+        $fileIterator->rewind();
+
+        $fileChunk = function () use ($fileIterator): array {
+            $files = [];
+
+            while (\count($files) < $this->parallelConfig->getFilesPerProcess()) {
+                $current = $fileIterator->current();
+
+                if (null === $current) {
+                    break;
+                }
+
+                $files[] = $current->getRealPath();
+
+                $fileIterator->next();
+            }
+
+            return $files;
+        };
+
+        // [REACT] Handle worker's handshake (init connection)
+        $server->on('connection', static function (ConnectionInterface $connection) use ($processPool, $fileChunk): void {
+            $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
+            $decoder = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+            $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
+
+            // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
+            $decoder->on('data', static function (array $data) use ($processPool, $fileChunk, $decoder, $encoder): void {
+                if (ParallelAction::RUNNER_HELLO !== $data['action']) {
+                    return;
+                }
+
+                $identifier = ProcessIdentifier::fromRaw($data['identifier']);
+                $process = $processPool->getProcess($identifier);
+                $process->bindConnection($decoder, $encoder);
+                $job = $fileChunk();
+
+                if (0 === \count($job)) {
+                    $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
+                    $processPool->endProcessIfKnown($identifier);
+
+                    return;
+                }
+
+                $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $job]);
+            });
+        });
+
+        $processesToSpawn = min(
+            $this->parallelConfig->getMaxProcesses(),
+            (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess())
         );
+        $processFactory = new ProcessFactory($this->input);
 
-        $collection = $this->linter->isAsync()
-            ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)
-            : new FileLintingIterator($fileFilteredFileIterator, $this->linter);
+        for ($i = 0; $i < $processesToSpawn; ++$i) {
+            $identifier = ProcessIdentifier::create();
+            $process = $processFactory->create(
+                $streamSelectLoop,
+                new RunnerConfig(
+                    $this->isDryRun,
+                    $this->stopOnViolation,
+                    $this->parallelConfig,
+                    $this->configFile
+                ),
+                $identifier,
+                $serverPort,
+            );
+            $processPool->addProcess($identifier, $process);
+            $process->start(
+                // [REACT] Handle workers' responses (multiple actions possible)
+                function (array $workerResponse) use ($processPool, $process, $identifier, $fileChunk, &$changed): void {
+                    // File analysis result (we want close-to-realtime progress with frequent cache savings)
+                    if (ParallelAction::RUNNER_RESULT === $workerResponse['action']) {
+                        $fileAbsolutePath = $workerResponse['file'];
+                        $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
+
+                        // Pass-back information about applied changes (only if there are any)
+                        if (isset($workerResponse['fixInfo'])) {
+                            $changed[$fileRelativePath] = $workerResponse['fixInfo'];
+                        }
+                        // Dispatch an event for each file processed and dispatch its status (required for progress output)
+                        $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($workerResponse['status']));
+
+                        if (
+                            FixerFileProcessedEvent::STATUS_NO_CHANGES === (int) $workerResponse['status']
+                            || (
+                                FixerFileProcessedEvent::STATUS_FIXED === (int) $workerResponse['status']
+                                && !$this->isDryRun
+                            )
+                        ) {
+                            $this->cacheManager->setFile($fileRelativePath, file_get_contents($fileAbsolutePath));
+                        }
+
+                        // Worker requests for another file chunk when all files were processed
+                        foreach ($workerResponse['errors'] ?? [] as $workerError) {
+                            $error = new Error(
+                                $workerError['type'],
+                                $workerError['filePath'],
+                                null !== $workerError['source']
+                                    ? ParallelisationException::forWorkerError($workerError['source'])
+                                    : null,
+                                $workerError['appliedFixers'],
+                                $workerError['diff']
+                            );
+
+                            $this->errorsManager->report($error);
+                        }
+
+                        return;
+                    }
+
+                    if (ParallelAction::RUNNER_GET_FILE_CHUNK === $workerResponse['action']) {
+                        // Request another chunk of files, if still available
+                        $job = $fileChunk();
+
+                        if (0 === \count($job)) {
+                            $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
+                            $processPool->endProcessIfKnown($identifier);
+
+                            return;
+                        }
+
+                        $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $job]);
+
+                        return;
+                    }
+
+                    if (ParallelAction::RUNNER_ERROR_REPORT === $workerResponse['action']) {
+                        $this->errorsManager->report(new WorkerError(
+                            $workerResponse['message'],
+                            $workerResponse['file'],
+                            (int) $workerResponse['line'],
+                            (int) $workerResponse['code'],
+                            $workerResponse['trace']
+                        ));
+
+                        return;
+                    }
+
+                    throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
+                },
+
+                // [REACT] Handle errors encountered during worker's execution
+                function (\Throwable $error) use ($processPool): void {
+                    $this->errorsManager->report(new WorkerError(
+                        $error->getMessage(),
+                        $error->getFile(),
+                        $error->getLine(),
+                        $error->getCode(),
+                        $error->getTraceAsString()
+                    ));
+
+                    $processPool->endAll();
+                },
+
+                // [REACT] Handle worker's shutdown
+                function ($exitCode, string $output) use ($processPool, $identifier): void {
+                    $processPool->endProcessIfKnown($identifier);
+
+                    if (0 === $exitCode || null === $exitCode) {
+                        return;
+                    }
+
+                    $errorsReported = Preg::matchAll(
+                        sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
+                        $output,
+                        $matches
+                    );
+
+                    if ($errorsReported > 0) {
+                        $error = json_decode($matches[1][0], true);
+                        $this->errorsManager->report(new WorkerError(
+                            $error['message'],
+                            $error['file'],
+                            (int) $error['line'],
+                            (int) $error['code'],
+                            $error['trace']
+                        ));
+                    }
+                }
+            );
+        }
+
+        $streamSelectLoop->run();
+
+        return $changed;
+    }
+
+    /**
+     * @return _RunResult
+     */
+    private function fixSequential(): array
+    {
+        $changed = [];
+        $collection = $this->getFileIterator();
 
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
@@ -130,7 +384,7 @@ final class Runner
     }
 
     /**
-     * @return null|array{appliedFixers: list<string>, diff: string}
+     * @return null|list{appliedFixers: list<string>, diff: string, blame: list<FixerChange>}
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
@@ -160,6 +414,7 @@ final class Runner
         $appliedFixers = [];
 
         try {
+            $this->blame->originalCode($tokens);
             foreach ($this->fixers as $fixer) {
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
@@ -174,6 +429,8 @@ final class Runner
 
                 if ($tokens->isChanged()) {
                     $tokens->clearEmptyTokens();
+                    $this->blame->snapshotTokens($fixer, $tokens);
+
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
                 }
@@ -208,6 +465,7 @@ final class Runner
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
+                'blame' => $this->blame->calculateChanges(),
             ];
 
             try {
@@ -296,5 +554,24 @@ final class Runner
         }
 
         $this->eventDispatcher->dispatch($event, $name);
+    }
+
+    private function getFileIterator(): LintingResultAwareFileIteratorInterface
+    {
+        if (null === $this->fileIterator) {
+            throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
+        }
+
+        $fileFilterIterator = new FileFilterIterator(
+            $this->fileIterator instanceof \IteratorAggregate
+                ? $this->fileIterator->getIterator()
+                : $this->fileIterator,
+            $this->eventDispatcher,
+            $this->cacheManager
+        );
+
+        return $this->linter->isAsync()
+            ? new FileCachingLintingFileIterator($fileFilterIterator, $this->linter)
+            : new FileLintingFileIterator($fileFilterIterator, $this->linter);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 $header = <<<'EOF'
     This file is part of PHP CS Fixer.
@@ -33,6 +34,7 @@ $finder = (new Finder())
 ;
 
 return (new Config())
+    ->setParallelConfig(ParallelConfig::detect())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP74Migration' => true,

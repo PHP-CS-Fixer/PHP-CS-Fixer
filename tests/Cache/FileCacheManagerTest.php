@@ -237,19 +237,19 @@ final class FileCacheManagerTest extends TestCase
         return __DIR__.'/../Fixtures/.php_cs.empty-cache';
     }
 
-    private function createDirectoryDouble(string $relativePathToFile): DirectoryInterface
+    private function createDirectoryDouble(string $relativePath): DirectoryInterface
     {
-        return new class($relativePathToFile) implements DirectoryInterface {
-            private string $relativePathToFile;
+        return new class($relativePath) implements DirectoryInterface {
+            private string $relativePath;
 
-            public function __construct(string $relativePathToFile)
+            public function __construct(string $relativePath)
             {
-                $this->relativePathToFile = $relativePathToFile;
+                $this->relativePath = $relativePath;
             }
 
             public function getRelativePathTo(string $file): string
             {
-                return $this->relativePathToFile;
+                return $this->relativePath;
             }
         };
     }
