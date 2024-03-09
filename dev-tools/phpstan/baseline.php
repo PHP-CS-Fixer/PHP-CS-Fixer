@@ -7,6 +7,11 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Binary operation "\\+" between int and string results in an error\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$token with its value variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Doctrine/Annotation/Tokens.php',
@@ -37,7 +42,17 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/CastNotation/NoShortBoolCastFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^For loop initial assignment overwrites variable \\$index\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$array of function array_reverse expects array, string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
@@ -77,9 +92,24 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Foreach overwrites \\$index with its key variable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocVarWithoutNameFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$end might not be defined\\.$#',
@@ -97,6 +127,36 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:match\\(\\) never assigns null to &\\$matches so it can be removed from the by\\-ref type\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:matchAll\\(\\) never assigns null to &\\$matches so it can be removed from the by\\-ref type\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) never assigns null to &\\$count so it can be removed from the by\\-ref type\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) never assigns null to &\\$count so it can be removed from the by\\-ref type\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter &\\$matches by\\-ref type of method PhpCsFixer\\\\Preg\\:\\:match\\(\\) expects array\\<string\\>\\|null, \\(int is int \\? array\\<array\\<int, int\\<\\-1, max\\>\\|string\\>\\> \\: \\(int is int \\? array\\<string\\|null\\> \\: \\(int is int \\? array\\<array\\<int, int\\|string\\|null\\>\\> \\: array\\<string\\>\\)\\)\\) given\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter &\\$matches by\\-ref type of method PhpCsFixer\\\\Preg\\:\\:matchAll\\(\\) expects array\\<string\\>\\|null, \\(int is int \\? array\\<array\\<int, string\\>\\> \\: \\(int is int \\? array\\<int, array\\<string\\>\\> \\: \\(int is int \\? array\\<array\\<int, array\\<int, int\\|string\\>\\>\\> \\: \\(int is int \\? array\\<int, array\\<array\\<int, int\\|string\\>\\>\\> \\: \\(int is int \\? array\\<array\\<int, string\\|null\\>\\> \\: \\(int is int \\? array\\<int, array\\<string\\|null\\>\\> \\: \\(int is int \\? array\\<int, array\\<array\\<int, int\\|string\\|null\\>\\>\\> \\: array\\)\\)\\)\\)\\)\\)\\) given\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getFileInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getFileInfo\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
@@ -105,6 +165,11 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$className \\(string\\) of method PhpCsFixer\\\\StdinFileInfo\\:\\:getPathInfo\\(\\) should be contravariant with parameter \\$class \\(string\\|null\\) of method SplFileInfo\\:\\:getPathInfo\\(\\)$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/StdinFileInfo.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^PHPDoc tag @var with type array\\<int, string\\> is not subtype of type string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/DataProviderAnalyzer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$array \\(array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\) of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:fromArray\\(\\) should be contravariant with parameter \\$array \\(array\\<int, mixed\\>\\) of method SplFixedArray\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\:\\:fromArray\\(\\)$#',
