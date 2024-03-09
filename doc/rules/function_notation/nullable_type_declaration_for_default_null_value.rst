@@ -113,8 +113,9 @@ With configuration: ``['use_nullable_type_declaration' => false]``.
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['use_nullable_type_declaration' => false]``
