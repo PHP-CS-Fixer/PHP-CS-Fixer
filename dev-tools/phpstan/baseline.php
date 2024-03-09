@@ -82,19 +82,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ListNotation/ListSyntaxFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Naming/NoHomoglyphNamesFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\Operator\\\\ConcatSpaceFixer\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/ConcatSpaceFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpTag/FullOpeningTagFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable method call on \\$this\\(PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitConstructFixer\\)\\.$#',
@@ -105,11 +95,6 @@ $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
@@ -125,16 +110,6 @@ $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type string supplied for foreach, only iterables are supported\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocVarWithoutNameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, string given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an elseif condition, string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/HeredocIndentationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$end might not be defined\\.$#',
