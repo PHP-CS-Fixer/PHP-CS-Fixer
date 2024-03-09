@@ -413,7 +413,7 @@ function Foo(INTEGER $a) {}
      *
      * @requires PHP 8.3
      */
-    public function testFix83(string $expected, string $input = null): void
+    public function testFix83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

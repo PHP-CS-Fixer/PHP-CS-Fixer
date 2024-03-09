@@ -30,7 +30,7 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
