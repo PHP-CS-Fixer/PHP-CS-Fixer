@@ -25,6 +25,8 @@ namespace PhpCsFixer;
 final class Preg
 {
     /**
+     * @todo replace template with variable when https://github.com/phpstan/phpstan/issues/10699 is done
+     *
      * @template TFlags as int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>
      *
      * @param array<array-key, mixed> $matches
@@ -59,6 +61,8 @@ final class Preg
     }
 
     /**
+     * @todo replace template with variable when https://github.com/phpstan/phpstan/issues/10699 is done
+     *
      * @template TFlags as int-mask<PREG_PATTERN_ORDER, PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>
      *
      * @param array<array-key, mixed> $matches
