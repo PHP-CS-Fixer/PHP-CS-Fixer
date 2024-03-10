@@ -25,8 +25,21 @@ namespace PhpCsFixer;
 final class Preg
 {
     /**
-     * @param null|string[]         $matches
-     * @param int-mask<0, 256, 512> $flags
+     * @template TFlags as int-mask<0, 256, 512>
+     *
+     * @param null|mixed[] $matches
+     * @param TFlags       $flags
+     *
+     * @param-out (TFlags is 256
+     *     ? array<array-key, array{string, 0|positive-int}|array{'', -1}>
+     *     : (TFlags is 512
+     *         ? array<array-key, string|null>
+     *             : (TFlags is 768
+     *                 ? array<array-key, array{string, 0|positive-int}|array{null, -1}>
+     *                 : array<array-key, string>
+     *         )
+     *     )
+     * ) $matches
      *
      * @throws PregException
      */
@@ -46,7 +59,34 @@ final class Preg
     }
 
     /**
-     * @param null|string[] $matches
+     * @template TFlags as int
+     *
+     * @param null|mixed[][] $matches
+     * @param TFlags         $flags
+     *
+     * @param-out (
+     *           TFlags is 1
+     *           ? array<list<string>>
+     *           : (TFlags is 2
+     *               ? list<array<string>>
+     *               : (TFlags is 256|257
+     *                   ? array<list<array{string, int}>>
+     *                   : (TFlags is 258
+     *                       ? list<array<array{string, int}>>
+     *                       : (TFlags is 512|513
+     *                           ? array<list<?string>>
+     *                           : (TFlags is 514
+     *                               ? list<array<?string>>
+     *                               : (TFlags is 770
+     *                                   ? list<array<array{?string, int}>>
+     *                                   : array
+     *                               )
+     *                           )
+     *                       )
+     *                   )
+     *               )
+     *           )
+     *         ) $matches
      *
      * @throws PregException
      */
@@ -68,6 +108,8 @@ final class Preg
     /**
      * @param string|string[] $subject
      *
+     * @param-out int $count
+     *
      * @throws PregException
      */
     public static function replace(string $pattern, string $replacement, $subject, int $limit = -1, ?int &$count = null): string
@@ -86,6 +128,8 @@ final class Preg
     }
 
     /**
+     * @param-out int $count
+     *
      * @throws PregException
      */
     public static function replaceCallback(string $pattern, callable $callback, string $subject, int $limit = -1, ?int &$count = null): string

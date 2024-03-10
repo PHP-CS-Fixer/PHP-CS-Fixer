@@ -50,10 +50,7 @@ final class DataProviderAnalyzer
 
             Preg::matchAll('/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/', $tokens[$docCommentIndex]->getContent(), $matches);
 
-            /** @var list<string> $matches */
-            $matches = $matches[1];
-
-            foreach ($matches as $dataProviderName) {
+            foreach ($matches[1] as $dataProviderName) {
                 $dataProviders[$dataProviderName][] = $docCommentIndex;
             }
         }
