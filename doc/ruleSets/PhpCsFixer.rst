@@ -66,7 +66,7 @@ Rules
 - `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_
 - `single_expression_per_line <./../rules/control_structure/single_expression_per_line.rst>`_ with config:
 
-  ``['elements' => ['parameters', 'case', 'match']]``
+  ``['elements' => ['case', 'match', 'parameters']]``
 
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_

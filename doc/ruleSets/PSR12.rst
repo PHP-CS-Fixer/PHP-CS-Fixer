@@ -43,7 +43,7 @@ Rules
 - `short_scalar_cast <./../rules/cast_notation/short_scalar_cast.rst>`_
 - `single_expression_per_line <./../rules/control_structure/single_expression_per_line.rst>`_ with config:
 
-  ``['elements' => ['arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_ with config:
 

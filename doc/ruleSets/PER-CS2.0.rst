@@ -21,6 +21,6 @@ Rules
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
 - `single_expression_per_line <./../rules/control_structure/single_expression_per_line.rst>`_ with config:
 
-  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_

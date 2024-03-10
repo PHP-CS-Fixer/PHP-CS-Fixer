@@ -130,27 +130,27 @@ The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ with config:
 
-  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
-  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
-  ``['elements' => ['arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
-  ``['elements' => ['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
-  ``['elements' => ['arguments', 'parameters', 'control_structures', 'case', 'match']]``
+  ``['elements' => ['arguments', 'case', 'control_structures', 'match', 'parameters']]``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['elements' => ['parameters', 'case', 'match']]``
+  ``['elements' => ['case', 'match', 'parameters']]``
 
 
 References
