@@ -25,18 +25,18 @@ namespace PhpCsFixer;
 final class Preg
 {
     /**
-     * @template TFlags as int-mask<0, 256, 512>
+     * @template TFlags as int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>
      *
-     * @param null|mixed[] $matches
-     * @param TFlags       $flags
+     * @param array<array-key, mixed> $matches
+     * @param TFlags                  $flags
      *
-     * @param-out (TFlags is 256
+     * @param-out (TFlags is PREG_OFFSET_CAPTURE
      *     ? array<array-key, array{string, 0|positive-int}|array{'', -1}>
-     *     : (TFlags is 512
+     *     : (TFlags is PREG_UNMATCHED_AS_NULL
      *         ? array<array-key, string|null>
-     *             : (TFlags is 768
-     *                 ? array<array-key, array{string, 0|positive-int}|array{null, -1}>
-     *                 : array<array-key, string>
+     *         : (TFlags is PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
+     *             ? array<array-key, array{string, 0|positive-int}|array{null, -1}>
+     *             : array<array-key, string>
      *         )
      *     )
      * ) $matches
@@ -59,34 +59,33 @@ final class Preg
     }
 
     /**
-     * @template TFlags as int
+     * @template TFlags as int-mask<PREG_PATTERN_ORDER, PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>
      *
-     * @param null|mixed[][] $matches
-     * @param TFlags         $flags
+     * @param array<array-key, mixed> $matches
+     * @param TFlags                  $flags
      *
-     * @param-out (
-     *           TFlags is 1
-     *           ? array<list<string>>
-     *           : (TFlags is 2
-     *               ? list<array<string>>
-     *               : (TFlags is 256|257
-     *                   ? array<list<array{string, int}>>
-     *                   : (TFlags is 258
-     *                       ? list<array<array{string, int}>>
-     *                       : (TFlags is 512|513
-     *                           ? array<list<?string>>
-     *                           : (TFlags is 514
-     *                               ? list<array<?string>>
-     *                               : (TFlags is 770
-     *                                   ? list<array<array{?string, int}>>
-     *                                   : array
-     *                               )
-     *                           )
-     *                       )
-     *                   )
-     *               )
-     *           )
-     *         ) $matches
+     * @param-out (TFlags is PREG_PATTERN_ORDER
+     *     ? array<list<string>>
+     *     : (TFlags is PREG_SET_ORDER
+     *         ? list<array<string>>
+     *         : (TFlags is PREG_PATTERN_ORDER|PREG_OFFSET_CAPTURE
+     *             ? array<list<array{string, int}>>
+     *             : (TFlags is PREG_SET_ORDER|PREG_OFFSET_CAPTURE
+     *                 ? list<array<array{string, int}>>
+     *                 : (TFlags is PREG_PATTERN_ORDER|PREG_UNMATCHED_AS_NULL
+     *                     ? array<list<?string>>
+     *                     : (TFlags is PREG_SET_ORDER|PREG_UNMATCHED_AS_NULL
+     *                         ? list<array<?string>>
+     *                         : (TFlags is PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL
+     *                             ? list<array<array{?string, int}>>
+     *                             : array
+     *                         )
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * ) $matches
      *
      * @throws PregException
      */
