@@ -5,6 +5,7 @@
 /compose.override.yaml
 /composer.lock
 /dev-tools/bin/
+/dev-tools/infection/
 /dev-tools/phpstan/cache/
 /dev-tools/vendor/
 /php-cs-fixer.phar

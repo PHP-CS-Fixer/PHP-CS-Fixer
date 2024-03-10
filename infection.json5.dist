@@ -1,0 +1,21 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "testFrameworkOptions": "--testsuite=unit",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "mutators": {
+        "@default": true,
+        "Throw_": {
+            "ignore": [
+                "PhpCsFixer\\Cache\\FileHandler"
+            ]
+        }
+    },
+    "logs": {
+        "text": "dev-tools/infection/run.log",
+        "html": "dev-tools/infection/report.html"
+    }
+}
