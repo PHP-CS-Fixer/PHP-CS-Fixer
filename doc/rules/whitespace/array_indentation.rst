@@ -33,9 +33,11 @@ Example #1
    -   'bar' => [
    -    'baz' => true,
    -  ],
+   -        'qux' => false,
    +    'bar' => [
    +        'baz' => true,
    +    ],
+   +    'qux' => false,
     ];
 
 Example #2
@@ -49,9 +51,13 @@ With configuration: ``['strict' => false]``.
    +++ New
     <?php
     $foo = [
-   -  'bar' => 1,
-   +    'bar' => 1,
-            'baz' => 2,
+   -   'bar' => [
+   -    'baz' => true,
+   -  ],
+   +    'bar' => [
+   +        'baz' => true,
+   +    ],
+            'qux' => false,
     ];
 
 Rule sets

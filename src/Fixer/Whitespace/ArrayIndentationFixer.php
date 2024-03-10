@@ -38,8 +38,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
         return new FixerDefinition(
             'Each element of an array must be indented exactly once.',
             [
-                new CodeSample("<?php\n\$foo = [\n   'bar' => [\n    'baz' => true,\n  ],\n];\n"),
-                new CodeSample("<?php\n\$foo = [\n  'bar' => 1,\n        'baz' => 2,\n];\n", ['strict' => false]),
+                new CodeSample("<?php\n\$foo = [\n   'bar' => [\n    'baz' => true,\n  ],\n        'qux' => false,\n];\n"),
+                new CodeSample("<?php\n\$foo = [\n   'bar' => [\n    'baz' => true,\n  ],\n        'qux' => false,\n];\n", ['strict' => false]),
             ]
         );
     }
