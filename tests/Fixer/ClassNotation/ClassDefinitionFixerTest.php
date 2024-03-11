@@ -79,7 +79,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input = null, array $configuration = []): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);

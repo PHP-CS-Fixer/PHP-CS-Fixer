@@ -1571,7 +1571,7 @@ enum UserStatus: string {
     /**
      * @dataProvider provideFixWithDocCommentCases
      */
-    public function testFixWithDocComment(string $expected, string $input = null): void
+    public function testFixWithDocComment(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['phpdoc'],

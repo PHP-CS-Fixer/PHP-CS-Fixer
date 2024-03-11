@@ -28,7 +28,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, \SplFileInfo $file = null): void
+    public function testFix(string $expected, ?string $input = null, ?\SplFileInfo $file = null): void
     {
         $this->doTest($expected, $input, $file);
     }

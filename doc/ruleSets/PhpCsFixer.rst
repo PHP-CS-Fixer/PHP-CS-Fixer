@@ -79,5 +79,4 @@ Rules
 Disabled rules
 --------------
 
-- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_

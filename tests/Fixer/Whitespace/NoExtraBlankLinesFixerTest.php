@@ -1129,7 +1129,7 @@ class Foo {}'
      *
      * @requires PHP 8.0
      */
-    public function testFix80(array $config, string $expected, string $input = null): void
+    public function testFix80(array $config, string $expected, ?string $input = null): void
     {
         $this->fixer->configure($config);
 
@@ -1227,7 +1227,7 @@ function foo(){}
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, string $input = null): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => ['case']]);
 
