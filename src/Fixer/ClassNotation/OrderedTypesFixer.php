@@ -304,7 +304,7 @@ interface Bar
     }
 
     /**
-     * @return array{0: array<string|string[]>, 1: string}
+     * @return array{0: list<string|string[]>, 1: string}
      */
     private function collectDisjunctiveNormalFormTypes(string $type): array
     {
@@ -336,9 +336,9 @@ interface Bar
     }
 
     /**
-     * @param array<string|string[]> $types
+     * @param list<string|string[]> $types
      *
-     * @return array<string|string[]>
+     * @return list<string|string[]>
      */
     private function runTypesThroughSortingAlgorithm(array $types): array
     {

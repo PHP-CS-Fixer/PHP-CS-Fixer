@@ -40,7 +40,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
     private string $position = 'beginning';
 
     /**
-     * @var array<array<int|string>|string>
+     * @var list<list<int|string>|string>
      */
     private array $operators = [];
 
