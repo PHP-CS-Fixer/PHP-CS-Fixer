@@ -68,7 +68,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @param array<string> $preventingAnnotations
+     * @param list<string> $preventingAnnotations
      */
     final protected function ensureIsDockBlockWithAnnotation(
         Tokens $tokens,
@@ -115,7 +115,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @param array<string> $preventingAnnotations
+     * @param list<string> $preventingAnnotations
      */
     private function updateDocBlockIfNeeded(
         Tokens $tokens,
@@ -137,7 +137,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @return array<Line>
+     * @return list<Line>
      */
     private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation): array
     {
