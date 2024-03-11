@@ -2040,7 +2040,7 @@ use function some\f\{fn_c, fn_d, fn_e};
      *
      * @param string[] $importOrder
      */
-    public function testFixTypesOrderAndAlphabet(string $expected, ?string $input = null, array $importOrder = null): void
+    public function testFixTypesOrderAndAlphabet(string $expected, ?string $input = null, ?array $importOrder = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -2106,7 +2106,7 @@ use function some\a\{fn_a, fn_b};
      *
      * @param null|string[] $importOrder
      */
-    public function testFixTypesOrderAndNone(string $expected, ?string $input = null, array $importOrder = null): void
+    public function testFixTypesOrderAndNone(string $expected, ?string $input = null, ?array $importOrder = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_NONE,

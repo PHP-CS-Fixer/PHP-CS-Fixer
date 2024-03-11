@@ -108,6 +108,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_singleline_whitespace_before_semicolons' => true,
             'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => [
+                'allow_hidden_params' => true,
                 'remove_inheritdoc' => true,
             ],
             'no_trailing_comma_in_singleline' => true,
@@ -134,6 +135,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_useless_nullsafe_operator' => true,
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
+            'nullable_type_declaration' => true,
             'nullable_type_declaration_for_default_null_value' => true,
             'object_operator_without_whitespace' => true,
             'operator_linebreak' => [

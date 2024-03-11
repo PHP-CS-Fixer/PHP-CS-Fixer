@@ -115,10 +115,10 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         parent::configure($configuration);
 
         $this->typePosition = [];
-        $pos = 0;
+        $position = 0;
 
         foreach ($this->configuration['order'] as $type) {
-            $this->typePosition[$type] = $pos++;
+            $this->typePosition[$type] = $position++;
         }
 
         foreach (self::$typeHierarchy as $type => $parents) {

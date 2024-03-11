@@ -39,7 +39,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP 8.0
      */
-    public function testProcess(array $expected, array $input = null): void
+    public function testProcess(array $expected, ?array $input = null): void
     {
         $expectedTokens = Tokens::fromArray($expected);
         $tokens = null === $input

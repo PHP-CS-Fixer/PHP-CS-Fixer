@@ -345,6 +345,9 @@ return $foo === count($bar);
         return $newTokens;
     }
 
+    /**
+     * @return null|array{left: array{start: int, end: int}, right: array{start: int, end: int}}
+     */
     private function getCompareFixableInfo(Tokens $tokens, int $index, bool $yoda): ?array
     {
         $right = $this->getRightSideCompareFixableInfo($tokens, $index);

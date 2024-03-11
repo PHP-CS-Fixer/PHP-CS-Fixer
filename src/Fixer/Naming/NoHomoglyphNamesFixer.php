@@ -222,7 +222,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
 
             $replaced = Preg::replaceCallback('/[^[:ascii:]]/u', static fn (array $matches): string => self::$replacements[$matches[0]] ?? $matches[0], $token->getContent(), -1, $count);
 
-            if ($count) {
+            if ($count > 0) {
                 $tokens->offsetSet($index, new Token([$token->getId(), $replaced]));
             }
         }

@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\FileHandler;
-use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
@@ -41,15 +40,6 @@ final class FileHandlerTest extends TestCase
         if (file_exists($file)) {
             unlink($file);
         }
-    }
-
-    public function testImplementsHandlerInterface(): void
-    {
-        $file = $this->getFile();
-
-        $handler = new FileHandler($file);
-
-        self::assertInstanceOf(FileHandlerInterface::class, $handler);
     }
 
     public function testConstructorSetsFile(): void

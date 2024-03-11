@@ -6,7 +6,6 @@ Integration of fixers: phpdoc_no_access,no_empty_phpdoc.
 <?php
 
 
-
 --INPUT--
 <?php
 

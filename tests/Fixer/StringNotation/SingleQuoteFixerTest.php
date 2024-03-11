@@ -161,18 +161,18 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 <?php
                 // none
                 $a = 'start \' end';
-                // one escaped baskslash
+                // one escaped backslash
                 $b = 'start \\\' end';
-                // two escaped baskslash
+                // two escaped backslash
                 $c = 'start \\\\\' end';
                 EOT,
             <<<'EOT'
                 <?php
                 // none
                 $a = "start ' end";
-                // one escaped baskslash
+                // one escaped backslash
                 $b = "start \\' end";
-                // two escaped baskslash
+                // two escaped backslash
                 $c = "start \\\\' end";
                 EOT,
             ['strings_containing_single_quote_chars' => true],
@@ -183,7 +183,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 <?php
                 // one unescaped backslash
                 $a = "start \' end";
-                // one escaped + one unescaped baskslash
+                // one escaped + one unescaped backslash
                 $b = "start \\\' end";
                 EOT,
             null,

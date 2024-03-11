@@ -6,7 +6,6 @@ Integration of fixers: no_superfluous_phpdoc_tags,no_empty_phpdoc.
 <?php
 
 class Foo {
-    
     public function doFoo(Bar $bar) {}
 }
 

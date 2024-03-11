@@ -101,4 +101,40 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
             '<?php $x = str_pad("bar", 2, "0", STR_PAD_LEFT);',
         ];
     }
+
+    /**
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideFix84Cases
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, null|string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'mb_trim 1 argument' => [
+            '<?php $x = mb_trim("    foo  ");',
+            '<?php $x = trim("    foo  ");',
+        ];
+
+        yield 'mb_trim 2 arguments' => [
+            '<?php $x = mb_trim("____foo__", "_");',
+            '<?php $x = trim("____foo__", "_");',
+        ];
+
+        yield 'ltrim' => [
+            '<?php $x = mb_ltrim("    foo  ");',
+            '<?php $x = ltrim("    foo  ");',
+        ];
+
+        yield 'rtrim' => [
+            '<?php $x = mb_rtrim("    foo  ");',
+            '<?php $x = rtrim("    foo  ");',
+        ];
+    }
 }

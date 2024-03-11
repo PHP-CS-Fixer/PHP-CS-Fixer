@@ -293,7 +293,7 @@ $var = $arr[0][     0
     }
 
     /**
-     * @return iterable<array{string, string, array{positions: array<string>}}>
+     * @return iterable<array{string, string, array{positions: list<string>}}>
      */
     public static function provideFixWithConfigurationCases(): iterable
     {
@@ -358,7 +358,7 @@ $var = $arr[0]{     0
     }
 
     /**
-     * @param array{positions: array<string>} $configuration
+     * @param array{positions: list<string>} $configuration
      *
      * @dataProvider provideFix80Cases
      *
@@ -371,7 +371,7 @@ $var = $arr[0]{     0
     }
 
     /**
-     * @return iterable<array{string, string, array{positions: array<string>}}>
+     * @return iterable<array{string, string, array{positions: list<string>}}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -394,7 +394,7 @@ $var = $arr[0]{     0
     }
 
     /**
-     * @return iterable<array{string, string, array{positions: array<string>}}>
+     * @return iterable<array{string, string, array{positions: list<string>}}>
      */
     private static function provideMultiDimensionalArrayCases(): iterable
     {
