@@ -1481,6 +1481,34 @@ abstract class Baz
         ];
     }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsConstantInvocationPhp82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testIsConstantInvocationPhp82(array $expected, string $source): void
+    {
+        $this->doIsConstantInvocationTest($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsConstantInvocationPhp82Cases(): iterable
+    {
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => false, 20 => false, 23 => false, 25 => false, 28 => false, 31 => false, 33 => false, 35 => false, 39 => false, 42 => false, 44 => false],
+            '<?php class Foo { public (\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var; }',
+        ];
+
+        yield [
+            [3 => false, 8 => false, 10 => false, 14 => false, 17 => false, 20 => false, 22 => false, 25 => false, 28 => false, 30 => false, 32 => false, 36 => false, 39 => false, 41 => false],
+            '<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}',
+        ];
+    }
+
     public function testIsConstantInvocationInvalid(): void
     {
         $this->expectException(\LogicException::class);
