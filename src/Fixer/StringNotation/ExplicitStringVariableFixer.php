@@ -52,11 +52,12 @@ final class ExplicitStringVariableFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
+     * Must run before NoUselessConcatOperatorFixer.
      * Must run after BacktickToShellExecFixer.
      */
     public function getPriority(): int
     {
-        return 0;
+        return 6;
     }
 
     public function isCandidate(Tokens $tokens): bool
