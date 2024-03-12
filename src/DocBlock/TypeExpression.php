@@ -74,11 +74,11 @@ final class TypeExpression
                                 (?<callable_template_inner_name>
                                     (?&identifier)
                                 )
-                                (?<callable_template_inner_b>
+                                (?<callable_template_inner_b> # template bound
                                     \h+(?i)(?<callable_template_inner_b_kw>of|as)(?-i)\h+
                                     (?<callable_template_inner_b_types>(?&types_inner))
                                 |)
-                                (?<callable_template_inner_d>
+                                (?<callable_template_inner_d> # template default
                                     \h*=\h*
                                     (?<callable_template_inner_d_types>(?&types_inner))
                                 |)
