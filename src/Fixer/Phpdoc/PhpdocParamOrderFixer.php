@@ -229,7 +229,7 @@ function m($a, array $b, Foo $c) {}
      *
      * @param Annotation[] $paramAnnotations
      *
-     * @return null|array<int>
+     * @return ?list<int>
      */
     private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): ?array
     {

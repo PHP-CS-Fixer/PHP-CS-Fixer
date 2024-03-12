@@ -62,7 +62,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
     /**
      * @param ($startIndex is null ? null : int) $endIndex
      */
-    public function __construct(string $name, int $startIndex = null, int $endIndex = null)
+    public function __construct(string $name, ?int $startIndex = null, ?int $endIndex = null)
     {
         $this->name = $name;
 

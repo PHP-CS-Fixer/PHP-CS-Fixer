@@ -335,7 +335,7 @@ switch ($foo) {
     }
 
     /**
-     * @return array<int>
+     * @return list<int>
      */
     private static function getParenthesisedStructureKinds(): array
     {

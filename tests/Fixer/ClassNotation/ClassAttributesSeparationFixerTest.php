@@ -2203,7 +2203,7 @@ enum Cards: string
     }
 
     /**
-     * @param array<mixed> $elements
+     * @param array<array-key, mixed> $elements
      *
      * @dataProvider provideInvalidConfigurationCases
      */

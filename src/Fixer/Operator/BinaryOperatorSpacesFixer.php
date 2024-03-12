@@ -150,7 +150,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     private int $currentLevel;
 
     /**
-     * @var array<null|string>
+     * @var list<null|string>
      */
     private static array $allowedValues = [
         self::ALIGN,

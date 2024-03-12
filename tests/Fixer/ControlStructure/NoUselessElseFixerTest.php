@@ -1018,9 +1018,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return array<array<string>>
+     * @return iterable<array{0: string, 1?: string}>
      */
-    private static function generateCases(string $expected, ?string $input = null): array
+    private static function generateCases(string $expected, ?string $input = null): iterable
     {
         $cases = [];
 

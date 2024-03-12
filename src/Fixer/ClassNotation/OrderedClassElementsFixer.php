@@ -410,7 +410,7 @@ Custom values:
     }
 
     /**
-     * @return array<string>|string type or array of type and name
+     * @return list<string>|string type or array of type and name
      */
     private function detectElementType(Tokens $tokens, int $index)
     {

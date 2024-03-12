@@ -1481,6 +1481,34 @@ abstract class Baz
         ];
     }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsConstantInvocationPhp82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testIsConstantInvocationPhp82(array $expected, string $source): void
+    {
+        $this->doIsConstantInvocationTest($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsConstantInvocationPhp82Cases(): iterable
+    {
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => false, 20 => false, 23 => false, 25 => false, 28 => false, 31 => false, 33 => false, 35 => false, 39 => false, 42 => false, 44 => false],
+            '<?php class Foo { public (\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var; }',
+        ];
+
+        yield [
+            [3 => false, 8 => false, 10 => false, 14 => false, 17 => false, 20 => false, 22 => false, 25 => false, 28 => false, 30 => false, 32 => false, 36 => false, 39 => false, 41 => false],
+            '<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}',
+        ];
+    }
+
     public function testIsConstantInvocationInvalid(): void
     {
         $this->expectException(\LogicException::class);
@@ -1575,20 +1603,33 @@ abstract class Baz
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
     public function testIsUnaryPredecessorOperator(array $expected, string $source): void
     {
+        $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $isUnary) {
-            self::assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+        foreach ($tokens as $index => $token) {
+            $expect = \in_array($index, $expected, true);
 
-            if ($isUnary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isBinaryOperator($index));
+            self::assertSame(
+                $expect,
+                $tokensAnalyzer->isUnaryPredecessorOperator($index),
+                sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+            );
+
+            if ($expect) {
+                self::assertFalse(
+                    $tokensAnalyzer->isUnarySuccessorOperator($index),
+                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
+                self::assertFalse(
+                    $tokensAnalyzer->isBinaryOperator($index),
+                    sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
+                );
             }
         }
     }
@@ -1596,106 +1637,124 @@ abstract class Baz
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
         yield [
-            [1 => true],
+            [1],
             '<?php ++$a;',
         ];
 
         yield [
-            [1 => true],
+            [1],
             '<?php --$a;',
         ];
 
         yield [
-            [1 => true],
+            [1],
             '<?php -- $a;',
         ];
 
         yield [
-            [3 => false, 5 => true],
+            [5],
             '<?php $a + ++$b;',
         ];
 
         yield [
-            [1 => true, 2 => true],
+            [1, 2],
             '<?php !!$a;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php $a = &$b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php function &foo() {}',
         ];
 
         yield [
-            [1 => true],
+            [1],
             '<?php @foo();',
         ];
 
         yield [
-            [3 => true, 8 => true],
+            [3, 8],
             '<?php foo(+ $a, -$b);',
         ];
 
         yield [
-            [5 => true, 11 => true, 17 => true],
+            [5, 11, 17],
             '<?php function foo(&$a, array &$b, Bar &$c) {}',
         ];
 
         yield [
-            [8 => true],
+            [8],
             '<?php function foo($a, ...$b) {}',
         ];
 
         yield [
-            [5 => true, 6 => true],
+            [5, 6],
             '<?php function foo(&...$b) {}',
         ];
 
         yield [
-            [7 => true],
+            [7],
             '<?php function foo(array ...$b) {}',
         ];
 
         yield [
-            [7 => true],
+            [7],
             '<?php $foo = function(...$a) {};',
         ];
 
         yield [
-            [10 => true],
+            [10],
             '<?php $foo = function($a, ...$b) {};',
         ];
 
         yield [
-            [9 => true],
+            [9],
             '<?php $foo = function(int &$x) {};',
         ];
 
         yield [
-            [9 => true],
+            [9],
             '<?php $foo = fn(int &$x) => null;',
+        ];
+
+        yield [
+            [],
+            '<?php fn() => A_CONSTANT & $object->property;',
         ];
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsBinaryOperatorCases
      */
     public function testIsBinaryOperator(array $expected, string $source): void
     {
+        $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $isBinary) {
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+        foreach ($tokens as $index => $token) {
+            $expect = \in_array($index, $expected, true);
 
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            self::assertSame(
+                $expect,
+                $tokensAnalyzer->isBinaryOperator($index),
+                sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+            );
+
+            if ($expect) {
+                self::assertFalse(
+                    $tokensAnalyzer->isUnarySuccessorOperator($index),
+                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
+                self::assertFalse(
+                    $tokensAnalyzer->isUnaryPredecessorOperator($index),
+                    sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
             }
         }
     }
@@ -1703,159 +1762,159 @@ abstract class Baz
     public static function provideIsBinaryOperatorCases(): iterable
     {
         yield [
-            [8 => true],
+            [8],
             '<?php echo $a[1] + 1;',
         ];
 
         yield [
-            [8 => true],
+            [8],
             '<?php echo $a{1} + 1;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a .= $b; ?>',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a . \'a\' ?>',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a &+ $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a && $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a & $b;',
         ];
 
         yield [
-            [4 => true],
+            [4],
             '<?php [] + [];',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a + $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php 1 + $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php 0.2 + $b;',
         ];
 
         yield [
-            [6 => true],
+            [6],
             '<?php $a[1] + $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php FOO + $b;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php foo() + $b;',
         ];
 
         yield [
-            [6 => true],
+            [6],
             '<?php ${"foo"} + $b;',
         ];
 
         yield [
-            [2 => true],
+            [2],
             '<?php $a+$b;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php $a /* foo */  +  /* bar */  $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a =
 $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a
 = $b;',
         ];
 
         yield [
-            [3 => true, 9 => true, 12 => false],
+            [3, 9],
             '<?php $a = array("b" => "c", );',
         ];
 
         yield [
-            [3 => true, 5 => false],
+            [3],
             '<?php $a * -$b;',
         ];
 
         yield [
-            [3 => true, 5 => false, 8 => true, 10 => false],
+            [3, 8],
             '<?php $a = -2 / +5;',
         ];
 
         yield [
-            [3 => true, 5 => false],
+            [3, 5 => false],
             '<?php $a = &$b;',
         ];
 
         yield [
-            [2 => false, 4 => true],
+            [4],
             '<?php $a++ + $b;',
         ];
 
         yield [
-            [7 => true],
+            [3, 7],
             '<?php $a = FOO & $bar;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php __LINE__ - 1;',
         ];
 
         yield [
-            [5 => true],
+            [5],
             '<?php `echo 1` + 1;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a ** $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a **= $b;',
         ];
 
         yield [
-            [9 => false],
+            [3],
             '<?php $a = "{$value}-{$theSwitch}";',
         ];
 
         yield [
-            [3 => false],
+            [],
             '<?=$path?>-<?=$id?>',
         ];
 
@@ -1866,19 +1925,34 @@ $b;',
 
         foreach ($operators as $operator) {
             yield [
-                [3 => true],
+                [3],
                 '<?php $a '.$operator.' $b;',
             ];
         }
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a <=> $b;',
         ];
 
         yield [
-            [3 => true],
+            [3],
             '<?php $a ?? $b;',
+        ];
+
+        yield [
+            [],
+            '<?php try {} catch (A | B $e) {}',
+        ];
+
+        yield [
+            [3],
+            '<?php $a ??= $b;',
+        ];
+
+        yield [
+            [5, 11],
+            '<?php fn() => $object->property & A_CONSTANT;',
         ];
     }
 
@@ -1993,38 +2067,6 @@ $b;',
                     $array = []; $d = array();
                 ',
             [76, 84],
-        ];
-    }
-
-    /**
-     * @param array<int, bool> $expected
-     *
-     * @dataProvider provideIsBinaryOperator71Cases
-     */
-    public function testIsBinaryOperator71(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public static function provideIsBinaryOperator71Cases(): iterable
-    {
-        yield [
-            [11 => false],
-            '<?php try {} catch (A | B $e) {}',
-        ];
-
-        yield [
-            [3 => true],
-            '<?php $a ??= $b;',
         ];
     }
 

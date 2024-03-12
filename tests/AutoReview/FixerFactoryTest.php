@@ -442,6 +442,9 @@ final class FixerFactoryTest extends TestCase
                 'heredoc_to_nowdoc',
                 'single_quote',
             ],
+            'explicit_string_variable' => [
+                'no_useless_concat_operator',
+            ],
             'final_class' => [
                 'protected_to_private',
                 'self_static_accessor',
