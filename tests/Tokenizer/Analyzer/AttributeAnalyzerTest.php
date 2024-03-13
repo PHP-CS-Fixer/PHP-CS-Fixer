@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -128,5 +129,71 @@ final class AttributeAnalyzerTest extends TestCase
         yield [true, '<?php #[Attr1(2 * (3 + 7)), Foo, Attr2((16 + 4) / 5 )] class Bar {}'];
 
         yield [true, '<?php #[Foo("(")] class Bar {}'];
+    }
+
+    public function testGetAttributesForNotAllowedElement(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Index 1 cannot have attributes.');
+
+        AttributeAnalyzer::getAttributesForElement(
+            Tokens::fromCode('<?php echo "foo";'),
+            1
+        );
+    }
+
+    /**
+     * @param list<AttributeAnalysis> $attributeAnalysis
+     *
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideGetAttributesForElementCases
+     */
+    public function testGetAttributesForElement(string $code, int $index, array $attributeAnalysis): void
+    {
+        $tokens = Tokens::fromCode($code);
+
+        self::assertSame(
+            serialize($attributeAnalysis),
+            serialize(AttributeAnalyzer::getAttributesForElement($tokens, $index)),
+        );
+    }
+
+    /**
+     * @return iterable<array{string, int, list<AttributeAnalysis>}>
+     */
+    public static function provideGetAttributesForElementCases(): iterable
+    {
+        yield [
+            '<?php #[Foo("(")] class AClass {}',
+            8,
+            [
+                new AttributeAnalysis(1, 6),
+            ],
+        ];
+
+        yield [
+            '<?php #[Foo] #[Bar(1)] #[Baz(2+3+4+5)] class AClass {}',
+            25,
+            [
+                new AttributeAnalysis(1, 3),
+                new AttributeAnalysis(5, 10),
+                new AttributeAnalysis(12, 23),
+            ],
+        ];
+
+        yield [
+            '<?php #[Foo] class AClass {} class BClass {}',
+            5,
+            [
+                new AttributeAnalysis(1, 3),
+            ],
+        ];
+
+        yield [
+            '<?php #[Foo] class AClass {} class BClass {}',
+            12,
+            [],
+        ];
     }
 }

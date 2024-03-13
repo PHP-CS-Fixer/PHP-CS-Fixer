@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -69,19 +70,21 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     /**
      * @param list<string> $preventingAnnotations
+     * @param list<string> $preventingAttributes
      */
-    final protected function ensureIsDockBlockWithAnnotation(
+    final protected function ensureIsDocBlockWithAnnotation(
         Tokens $tokens,
         int $index,
         string $annotation,
-        array $preventingAnnotations
+        array $preventingAnnotations,
+        array $preventingAttributes = []
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         if ($this->isPHPDoc($tokens, $docBlockIndex)) {
-            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
+            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations, $preventingAttributes);
         } else {
-            $this->createDocBlock($tokens, $docBlockIndex, $annotation);
+            $this->createDocBlock($tokens, $docBlockIndex, $annotation, $preventingAttributes);
         }
     }
 
@@ -90,8 +93,15 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         return $tokens[$index]->isGivenKind(T_DOC_COMMENT);
     }
 
-    private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation): void
+    /**
+     * @param list<string> $preventingAttributes
+     */
+    private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation, array $preventingAttributes): void
     {
+        if ($this->isPreventedByAttribute($tokens, $docBlockIndex, $preventingAttributes)) {
+            return;
+        }
+
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
@@ -116,12 +126,14 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     /**
      * @param list<string> $preventingAnnotations
+     * @param list<string> $preventingAttributes
      */
     private function updateDocBlockIfNeeded(
         Tokens $tokens,
         int $docBlockIndex,
         string $annotation,
-        array $preventingAnnotations
+        array $preventingAnnotations,
+        array $preventingAttributes
     ): void {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         foreach ($preventingAnnotations as $preventingAnnotation) {
@@ -129,11 +141,34 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
                 return;
             }
         }
+
+        if ($this->isPreventedByAttribute($tokens, $docBlockIndex, $preventingAttributes)) {
+            return;
+        }
+
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+    }
+
+    /**
+     * @param list<string> $preventingAttributes
+     */
+    private function isPreventedByAttribute(Tokens $tokens, int $docBlockIndex, array $preventingAttributes): bool
+    {
+        $classIndex = $tokens->getNextTokenOfKind($docBlockIndex, [[T_CLASS]]);
+
+        foreach (AttributeAnalyzer::getAttributesForElement($tokens, $classIndex) as $attributeAnalysis) {
+            $attributeNameIndex = $tokens->getNextMeaningfulToken($attributeAnalysis->getStartIndex());
+            $attributeName = $tokens[$attributeNameIndex]->getContent();
+            if (\in_array($attributeName, $preventingAttributes, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

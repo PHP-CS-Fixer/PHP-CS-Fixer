@@ -72,7 +72,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
             return;
         }
 
-        $this->ensureIsDockBlockWithAnnotation(
+        $this->ensureIsDocBlockWithAnnotation(
             $tokens,
             $classIndex,
             $this->configuration['group'],
