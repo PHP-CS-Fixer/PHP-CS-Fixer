@@ -50,3 +50,7 @@ $b = (bool) 1;
 $c = true ? (int) '1' : 2;
 
 $fn = fn($a) => $a;
+
+$array = [
+    'foo' => 'bar',
+];

@@ -43,4 +43,8 @@ $c = true  ? (INT) '1'  :  2;
 
 $fn = fn ($a) => $a;
 
+$array = [
+'foo' => 'bar',
+];
+
 ?>
