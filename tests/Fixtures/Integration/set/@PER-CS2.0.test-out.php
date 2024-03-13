@@ -51,6 +51,8 @@ $c = true ? (int) '1' : 2;
 
 $fn = fn($a) => $a;
 
-$array = [
+$arrayNotMultiline = ['foo' => 'bar', 'foo2' => 'bar'];
+$arrayMultiline = [
     'foo' => 'bar',
+    'foo2' => 'bar',
 ];
