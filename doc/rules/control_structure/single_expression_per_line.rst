@@ -148,10 +148,6 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['arguments', 'case', 'control_structures', 'match', 'parameters']]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
-
-  ``['elements' => ['case', 'match', 'parameters']]``
-
 
 References
 ----------
