@@ -52,7 +52,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
      */
     public function getPriority(): int
     {
-        return 29;
+        return 28;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

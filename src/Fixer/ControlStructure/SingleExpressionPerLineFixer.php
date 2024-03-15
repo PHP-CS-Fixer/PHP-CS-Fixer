@@ -83,6 +83,17 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before ArrayIndentationFixer, StatementIndentationFixer.
+     * Must run after MethodArgumentSpaceFixer.
+     */
+    public function getPriority(): int
+    {
+        return 29;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, '(']);
