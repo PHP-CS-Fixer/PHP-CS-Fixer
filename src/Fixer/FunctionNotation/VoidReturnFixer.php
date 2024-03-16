@@ -176,7 +176,7 @@ final class VoidReturnFixer extends AbstractFixer
             if (
                 // skip anonymous classes
                 ($tokens[$i]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
-                 // skip lambda functions
+                // skip lambda functions
                 || ($tokens[$i]->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i))
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
