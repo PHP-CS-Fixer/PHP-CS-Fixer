@@ -195,8 +195,8 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                     ? \strlen($first['normalized']) - \strlen($second['normalized'])
                     : (
                         true === $this->configuration['case_sensitive']
-                        ? $first['normalized'] <=> $second['normalized']
-                        : strcasecmp($first['normalized'], $second['normalized'])
+                            ? $first['normalized'] <=> $second['normalized']
+                            : strcasecmp($first['normalized'], $second['normalized'])
                     );
 
                 if (self::DIRECTION_DESCEND === $this->configuration[self::OPTION_DIRECTION]) {
