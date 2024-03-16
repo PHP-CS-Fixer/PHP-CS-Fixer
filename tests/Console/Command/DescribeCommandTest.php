@@ -439,7 +439,7 @@ $/s',
         ]);
 
         $expected =
-"Description of the `Vendor/describe_fixture` rule.
+            "Description of the `Vendor/describe_fixture` rule.
 
 Fixture for describe command.
 

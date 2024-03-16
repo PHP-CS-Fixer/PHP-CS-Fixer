@@ -116,8 +116,8 @@ class FooTest extends TestCase {
             (new FixerOptionBuilder(
                 'force',
                 'Whether to make the data providers static even if they have a dynamic class call'
-                .' (may introduce fatal error "using $this when not in object context",'
-                .' and you may have to adjust the code manually by converting dynamic calls to static ones).'
+                    .' (may introduce fatal error "using $this when not in object context",'
+                    .' and you may have to adjust the code manually by converting dynamic calls to static ones).'
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
