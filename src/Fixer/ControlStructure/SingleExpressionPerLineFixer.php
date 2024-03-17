@@ -112,7 +112,14 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
                     self::SWITCH_CASES,
                     self::MATCH_EXPRESSIONS,
                 ])])
-                ->setDefault([self::ELEMENTS_ARRAYS])
+                ->setDefault([
+                    self::ELEMENTS_ARRAYS,
+                    self::ELEMENTS_ARGUMENTS,
+                    self::ELEMENTS_PARAMETERS,
+                    self::ELEMENTS_CONTROL_STRUCTURES,
+                    self::SWITCH_CASES,
+                    self::MATCH_EXPRESSIONS,
+                ])
                 ->getOption(),
         ]);
     }

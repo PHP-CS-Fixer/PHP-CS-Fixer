@@ -15,7 +15,7 @@ Which expression must have one element by line.
 
 Allowed values: a subset of ``['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']``
 
-Default value: ``['arrays']``
+Default value: ``['arrays', 'arguments', 'parameters', 'control_structures', 'case', 'match']``
 
 Examples
 --------
