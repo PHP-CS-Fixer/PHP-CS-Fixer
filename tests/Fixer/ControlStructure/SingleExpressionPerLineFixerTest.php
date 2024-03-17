@@ -290,7 +290,6 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
             $lineEnding
         ));
 
-
         $this->doTest($expected, $input);
     }
 

@@ -390,7 +390,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
             return $existingIndentation.str_repeat($this->whitespacesConfig->getIndent(), $extraIndentation);
         }
         if ($extraIndentation < 0) {
-            return substr($existingIndentation, 0, $extraIndentation * strlen($this->whitespacesConfig->getIndent()));
+            return substr($existingIndentation, 0, $extraIndentation * \strlen($this->whitespacesConfig->getIndent()));
         }
 
         return $existingIndentation;
