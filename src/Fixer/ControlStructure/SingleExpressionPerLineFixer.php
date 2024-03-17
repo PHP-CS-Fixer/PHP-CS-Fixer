@@ -16,7 +16,6 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -35,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vincent Langlet
  */
-final class SingleExpressionPerLineFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class SingleExpressionPerLineFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal
@@ -157,7 +156,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
         }
 
         if ($shouldAddNewLine) {
-            $tokenAddedCount += $this->addNewLineAfterIfNecessary($tokens, $begin, 1);
+            $tokenAddedCount += $this->addNewLineAfterIfNecessary($tokens, $begin);
         }
 
         $fixArrays = \in_array(self::ELEMENTS_ARRAYS, $this->configuration['elements'], true);
@@ -290,7 +289,7 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
         }
 
         if ($shouldAddNewLine) {
-            $tokenAddedCount += $this->addNewLineBeforeIfNecessary($tokens, $end + $tokenAddedCount, -1);
+            $tokenAddedCount += $this->addNewLineBeforeIfNecessary($tokens, $end + $tokenAddedCount);
         }
 
         return $tokenAddedCount;
@@ -323,76 +322,36 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
         return $this->switchColonIndexes;
     }
 
-    private function addNewLineAfterIfNecessary(Tokens $tokens, int $index, int $extraIndentation = 0): int
+    private function addNewLineAfterIfNecessary(Tokens $tokens, int $index): int
     {
         $next = $tokens->getNextMeaningfulToken($index);
         if ($tokens->isPartialCodeMultiline($index, $next - 1)) {
             return 0;
         }
 
-        return $this->addNewLineAfter($tokens, $index, $extraIndentation);
+        return $this->addNewLineAfter($tokens, $index);
     }
 
-    private function addNewLineBeforeIfNecessary(Tokens $tokens, int $index, int $extraIndentation = 0): int
+    private function addNewLineBeforeIfNecessary(Tokens $tokens, int $index): int
     {
         $previous = $tokens->getPrevMeaningfulToken($index);
         if ($tokens->isPartialCodeMultiline($previous, $index)) {
             return 0;
         }
 
-        return $this->addNewLineAfter($tokens, $previous, $extraIndentation);
+        return $this->addNewLineAfter($tokens, $previous);
     }
 
-    private function addNewLineAfter(Tokens $tokens, int $index, int $extraIndentation = 0): int
+    private function addNewLineAfter(Tokens $tokens, int $index): int
     {
-        $indent = $this->getIndentation($tokens, $index, $extraIndentation);
         if ($tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1] = new Token([T_WHITESPACE, "\n".$indent]);
+            $tokens[$index + 1] = new Token([T_WHITESPACE, "\n"]);
 
             return 0;
         }
 
-        $tokens->insertSlices([$index + 1 => new Token([T_WHITESPACE, "\n".$indent])]);
+        $tokens->insertSlices([$index + 1 => new Token([T_WHITESPACE, "\n"])]);
 
         return 1;
-    }
-
-    private function getIndentation(Tokens $tokens, int $index, int $extraIndentation = 0): string
-    {
-        // find out what the indentation is
-        $searchIndex = $index;
-        do {
-            $prevWhitespaceTokenIndex = $tokens->getPrevTokenOfKind(
-                $searchIndex,
-                [[T_ENCAPSED_AND_WHITESPACE], [T_WHITESPACE]],
-            );
-
-            $searchIndex = $prevWhitespaceTokenIndex;
-        } while (
-            null !== $prevWhitespaceTokenIndex
-            && !str_contains($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
-            && $prevWhitespaceTokenIndex > 1
-        );
-
-        if (null === $prevWhitespaceTokenIndex) {
-            $existingIndentation = '';
-        } elseif (!$tokens[$prevWhitespaceTokenIndex]->isGivenKind(T_WHITESPACE)) {
-            return '';
-        } else {
-            $existingIndentation = $tokens[$prevWhitespaceTokenIndex]->getContent();
-            $lastLineIndex = strrpos($existingIndentation, "\n");
-            $existingIndentation = false === $lastLineIndex
-                ? $existingIndentation
-                : substr($existingIndentation, $lastLineIndex + 1);
-        }
-
-        if ($extraIndentation > 0) {
-            return $existingIndentation.str_repeat($this->whitespacesConfig->getIndent(), $extraIndentation);
-        }
-        if ($extraIndentation < 0) {
-            return substr($existingIndentation, 0, $extraIndentation * \strlen($this->whitespacesConfig->getIndent()));
-        }
-
-        return $existingIndentation;
     }
 }

@@ -16,7 +16,6 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\Fixer\ControlStructure\SingleExpressionPerLineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Vincent Langlet
@@ -34,24 +33,7 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
-        $indent = '    ';
-        $lineEnding = "\n";
-
-        if (str_contains($expected, "\t")) {
-            $indent = "\t";
-        } elseif (preg_match('/\n  \S/', $expected)) {
-            $indent = '  ';
-        }
-
-        if (str_contains($expected, "\r")) {
-            $lineEnding = "\r\n";
-        }
-
         $this->fixer->configure($config);
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
-            $indent,
-            $lineEnding
-        ));
 
         $this->doTest($expected, $input);
     }
@@ -66,9 +48,9 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     $a = [
-                        1,
+1,
                         2
-                    ];',
+];',
             '<?php
                     $a = [1,
                         2];',
@@ -78,7 +60,7 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
             '<?php
                     $a = [
                         1,
-                        2,
+2,
                         3
                     ];',
             '<?php
@@ -94,7 +76,7 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
             '<?php
                     $a = array(
                         1,
-                        2,
+2,
                         3
                     );',
             '<?php
@@ -108,9 +90,16 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
+                    $a = foo(1, 2,
+                        3
+                    );',
+        ];
+
+        yield [
+            '<?php
                     $a = foo(
-                        1,
-                        2,
+1,
+2,
                         3
                     );',
             '<?php
@@ -123,8 +112,8 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     function(
-                        $a,
-                        $b,
+$a,
+$b,
                         $c
                     ) {};',
             '<?php
@@ -137,13 +126,13 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     foreach (
-                        $foo
-                        as $key => $value
-                    ) {
+$foo
+                    as $key => $value
+) {
                     };',
             '<?php
                     foreach ($foo
-                        as $key => $value) {
+                    as $key => $value) {
                     };',
             ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
@@ -151,14 +140,14 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     for (
-                        $i = 0;
-                        $i < 2;
-                        $i++
-                    ) {
+$i = 0;
+                    $i < 2;
+$i++
+) {
                     };',
             '<?php
                     for ($i = 0;
-                        $i < 2; $i++) {
+                    $i < 2; $i++) {
                     };',
             ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
@@ -166,13 +155,13 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     if (
-                        $a
+$a
                         && $b
-                    ) {
+) {
                     } elseif (
-                        $c
+$c
                         && $d
-                    ) {
+) {
                     } else {
                     }',
             '<?php
@@ -188,9 +177,9 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     while (
-                        $a
+$a
                         && $b
-                    ) {
+) {
                     }',
             '<?php
                     while ($a
@@ -203,14 +192,14 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
             '<?php
                     try {}
                     catch (
-                        \LogicException
-                        | \RuntimeException $e
-                    ) {
+\LogicException
+                     | \RuntimeException $e
+) {
                     };',
             '<?php
                     try {}
                     catch (\LogicException
-                        | \RuntimeException $e) {
+                     | \RuntimeException $e) {
                     };',
             ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
         ];
@@ -219,9 +208,9 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
             '<?php
                     $a = [
                         1,
-                        "2
+"2
                         ",
-                        3
+3
                     ];',
             '<?php
                     $a = [
@@ -235,8 +224,8 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
 
             switch ($foo) {
                 case 1:
-                case 2:
-                default:
+case 2:
+default:
             }
             ',
             '<?php
@@ -271,24 +260,7 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
      */
     public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
-        $indent = '    ';
-        $lineEnding = "\n";
-
-        if (str_contains($expected, "\t")) {
-            $indent = "\t";
-        } elseif (preg_match('/\n  \S/', $expected)) {
-            $indent = '  ';
-        }
-
-        if (str_contains($expected, "\r")) {
-            $lineEnding = "\r\n";
-        }
-
         $this->fixer->configure($config);
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
-            $indent,
-            $lineEnding
-        ));
 
         $this->doTest($expected, $input);
     }
@@ -301,9 +273,9 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     match (
-                        $a
+$a
                         + $b
-                    ) {
+) {
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
@@ -321,9 +293,9 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
                     match ($a
                         + $b) {
                         1 => 1,
-                        2 => 2,
+2 => 2,
                         3,
-                        4 => 4,
+4 => 4,
                     };',
             '<?php
                     match ($a
@@ -337,17 +309,17 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                     match (
-                        foo(
-                            $a,
-                            $b
-                        )
-                    ) {
+foo(
+$a,
+                        $b
+)
+) {
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
             '<?php
                     match (foo($a,
-                            $b)) {
+                        $b)) {
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
