@@ -97,7 +97,7 @@ if ($foo) {
      * {@inheritdoc}
      *
      * Must run before HeredocIndentationFixer.
-     * Must run after BracesPositionFixer, ClassAttributesSeparationFixer, CurlyBracesPositionFixer, FullyQualifiedStrictTypesFixer, GlobalNamespaceImportFixer, MethodArgumentSpaceFixer, NoUselessElseFixer, YieldFromArrayToYieldsFixer.
+     * Must run after BracesPositionFixer, ClassAttributesSeparationFixer, CurlyBracesPositionFixer, FullyQualifiedStrictTypesFixer, GlobalNamespaceImportFixer, MethodArgumentSpaceFixer, NoUselessElseFixer, SingleExpressionPerLineFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {

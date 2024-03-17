@@ -3,7 +3,7 @@ Rule ``single_expression_per_line``
 ===================================
 
 Multi-line arrays, arguments list, parameters list, control structures,
-``switch`` cases and ``match`` expressions should have one element per line.
+``switch`` cases and ``match`` expressions should have one element by line.
 
 Configuration
 -------------
@@ -11,7 +11,7 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Which expression must have one element per line.
+Which expression must have one element by line.
 
 Allowed values: a subset of ``['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']``
 
@@ -33,7 +33,7 @@ Example #1
    -array(1,
    -    2);
    +array(
-   +    1,
+   +1,
    +    2
    +);
 
@@ -50,7 +50,7 @@ With configuration: ``['elements' => ['arguments']]``.
    -foo(1,
    -    2);
    +foo(
-   +    1,
+   +1,
    +    2
    +);
 
@@ -67,7 +67,7 @@ With configuration: ``['elements' => ['control_structures']]``.
    -if ($a
    -    && $b) {};
    +if (
-   +    $a
+   +$a
    +    && $b
    +) {};
 
@@ -84,7 +84,7 @@ With configuration: ``['elements' => ['case']]``.
     switch ($foo) {
    -    case 0: case 1:
    +    case 0:
-   +    case 1:
+   +case 1:
             return null;
         };
 
@@ -101,7 +101,7 @@ With configuration: ``['elements' => ['parameters']]``.
    -function foo($x,
    -    $y)
    +function foo(
-   +    $x,
+   +$x,
    +    $y
    +)
     {
@@ -120,7 +120,7 @@ With configuration: ``['elements' => ['match']]``.
     match($x) {
    -    1 => 1, 2 => 2
    +    1 => 1,
-   +    2 => 2
+   +2 => 2
     };
 
 Rule sets

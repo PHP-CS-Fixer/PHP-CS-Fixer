@@ -114,13 +114,6 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                    $a = foo(1, 2,
-                        3
-                    );',
-        ];
-
-        yield [
-            '<?php
                     $a = foo(
 1,
 2,

@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: single_expression_per_line,statement_indentation.
+--RULESET--
+{ "single_expression_per_line": true, "statement_indentation": true}
+--EXPECT--
+<?php
+if (
+    $a
+    || $b
+) {
+    // foo
+}
+
+--INPUT--
+<?php
+if ($a
+    || $b) {
+    // foo
+}
