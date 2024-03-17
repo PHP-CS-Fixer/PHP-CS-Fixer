@@ -3,7 +3,7 @@ Rule ``single_expression_per_line``
 ===================================
 
 Multi-line arrays, arguments list, parameters list, control structures,
-``switch`` cases and ``match`` expressions should have one element by line.
+``switch`` cases and ``match`` expressions should have one element per line.
 
 Configuration
 -------------
@@ -11,7 +11,7 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Which expression must have one element by line.
+Which expression must have one element per line.
 
 Allowed values: a subset of ``['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']``
 

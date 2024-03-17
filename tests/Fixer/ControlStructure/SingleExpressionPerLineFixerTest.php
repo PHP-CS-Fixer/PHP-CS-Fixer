@@ -70,6 +70,30 @@ final class SingleExpressionPerLineFixerTest extends AbstractFixerTestCase
                     ];',
         ];
 
+        yield [
+            '<?php
+                    $a = [
+                        1 => "foo",
+2 => "bar",
+                    ];',
+            '<?php
+                    $a = [
+                        1 => "foo", 2 => "bar",
+                    ];',
+        ];
+
+        yield [
+            '<?php
+                    $a = [
+                        [1, 2],
+[3, 4],
+                    ];',
+            '<?php
+                    $a = [
+                        [1, 2], [3, 4],
+                    ];',
+        ];
+
         yield ['<?php $a = array(1, 2, 3);'];
 
         yield [
