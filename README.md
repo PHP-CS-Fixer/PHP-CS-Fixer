@@ -73,7 +73,7 @@ docker run -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-
 ### Usage
 
 Assuming you installed PHP CS Fixer as instructed above, you can run the
-following command to fix the files PHP files in the `src` directory:
+following command to fix the PHP files in the `src` directory:
 
 ```console
 tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src

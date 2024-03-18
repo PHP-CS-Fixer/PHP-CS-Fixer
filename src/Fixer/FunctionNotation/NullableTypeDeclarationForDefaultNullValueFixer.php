@@ -92,6 +92,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             (new FixerOptionBuilder('use_nullable_type_declaration', 'Whether to add or remove `?` or `|null` to parameters with a default `null` value.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
+                ->setDeprecationMessage('Behaviour will follow default one.') // @TODO remove the option on next major 4.0
                 ->getOption(),
         ]);
     }

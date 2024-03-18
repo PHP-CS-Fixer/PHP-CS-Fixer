@@ -9,7 +9,6 @@ Rules
 
 - `@PER-CS <./PER-CS.rst>`_
 - `@Symfony <./Symfony.rst>`_
-- `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_ with config:
 
   ``['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'include', 'include_once', 'phpdoc', 'require', 'require_once', 'return', 'switch', 'throw', 'try', 'yield', 'yield_from']]``

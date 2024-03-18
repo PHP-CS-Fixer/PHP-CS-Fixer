@@ -46,6 +46,11 @@ final class TypeExpression
         )*+
     )';
 
+    /**
+     * Based on:
+     * - https://github.com/phpstan/phpdoc-parser/blob/1.26.0/doc/grammars/type.abnf fuzzing grammar
+     * - and https://github.com/phpstan/phpdoc-parser/blob/1.26.0/src/Parser/PhpDocParser.php parser impl.
+     */
     private const REGEX_TYPE = '(?<type>(?x) # single type
             (?<nullable>\??\h*)
             (?:
@@ -59,14 +64,39 @@ final class TypeExpression
                         (?:
                             \h*,\h*
                             (?&array_shape_inner)
-                        )*
+                        )*+
                         (?:\h*,\h*)?
                     |)
                     \h*\}
                 )
                 |
-                (?<callable> # callable syntax, e.g. `callable(string, int...): bool`
-                    (?<callable_start>(?&name)\h*\(\h*)
+                (?<callable> # callable syntax, e.g. `callable(string, int...): bool`, `\Closure<T>(T, int): T`
+                    (?<callable_name>(?&name))
+                    (?<callable_template>
+                        (?<callable_template_start>\h*<\h*)
+                        (?<callable_template_inners>
+                            (?<callable_template_inner>
+                                (?<callable_template_inner_name>
+                                    (?&identifier)
+                                )
+                                (?<callable_template_inner_b> # template bound
+                                    \h+(?i)(?<callable_template_inner_b_kw>of|as)(?-i)\h+
+                                    (?<callable_template_inner_b_types>(?&types_inner))
+                                |)
+                                (?<callable_template_inner_d> # template default
+                                    \h*=\h*
+                                    (?<callable_template_inner_d_types>(?&types_inner))
+                                |)
+                            )
+                            (?:
+                                \h*,\h*
+                                (?&callable_template_inner)
+                            )*+
+                        )
+                        \h*>
+                        (?=\h*\()
+                    |)
+                    (?<callable_start>\h*\(\h*)
                     (?<callable_arguments>
                         (?<callable_argument>
                             (?<callable_argument_type>(?&types_inner))
@@ -377,8 +407,16 @@ final class TypeExpression
                 $matches['generic_types'][0]
             );
         } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
+            $this->parseCallableTemplateInnerTypes(
+                $index + \strlen($matches['callable_name'][0])
+                    + \strlen($matches['callable_template_start'][0]),
+                $matches['callable_template_inners'][0]
+            );
+
             $this->parseCallableArgumentTypes(
-                $index + \strlen($matches['callable_start'][0]),
+                $index + \strlen($matches['callable_name'][0])
+                    + \strlen($matches['callable_template'][0])
+                    + \strlen($matches['callable_start'][0]),
                 $matches['callable_arguments'][0]
             );
 
@@ -454,6 +492,49 @@ final class TypeExpression
         }
     }
 
+    private function parseCallableTemplateInnerTypes(int $startIndex, string $value): void
+    {
+        $index = 0;
+        while (\strlen($value) !== $index) {
+            Preg::match(
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_callable_template_inner>(?&callable_template_inner))(?:\h*,\h*|$))}',
+                $value,
+                $prematches,
+                0,
+                $index
+            );
+            $consumedValue = $prematches['_callable_template_inner'];
+            $consumedValueLength = \strlen($consumedValue);
+            $consumedCommaLength = \strlen($prematches[0]) - $consumedValueLength;
+
+            $addedPrefix = 'Closure<';
+            Preg::match(
+                '{^'.self::REGEX_TYPES.'$}',
+                $addedPrefix.$consumedValue.'>(): void',
+                $matches,
+                PREG_OFFSET_CAPTURE
+            );
+
+            if ('' !== $matches['callable_template_inner_b'][0]) {
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $startIndex + $index + $matches['callable_template_inner_b_types'][1]
+                        - \strlen($addedPrefix),
+                    'expression' => $this->inner($matches['callable_template_inner_b_types'][0]),
+                ];
+            }
+
+            if ('' !== $matches['callable_template_inner_d'][0]) {
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $startIndex + $index + $matches['callable_template_inner_d_types'][1]
+                        - \strlen($addedPrefix),
+                    'expression' => $this->inner($matches['callable_template_inner_d_types'][0]),
+                ];
+            }
+
+            $index += $consumedValueLength + $consumedCommaLength;
+        }
+    }
+
     private function parseCallableArgumentTypes(int $startIndex, string $value): void
     {
         $index = 0;
@@ -510,7 +591,8 @@ final class TypeExpression
             );
 
             $this->innerTypeExpressions[] = [
-                'start_index' => $startIndex + $index + $matches['array_shape_inner_value'][1] - \strlen($addedPrefix),
+                'start_index' => $startIndex + $index + $matches['array_shape_inner_value'][1]
+                    - \strlen($addedPrefix),
                 'expression' => $this->inner($matches['array_shape_inner_value'][0]),
             ];
 

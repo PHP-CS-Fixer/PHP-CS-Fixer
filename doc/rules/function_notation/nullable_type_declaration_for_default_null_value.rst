@@ -16,6 +16,8 @@ Configuration
 ``use_nullable_type_declaration``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed in the next major version. Behaviour will follow default one.
+
 Whether to add or remove ``?`` or ``|null`` to parameters with a default
 ``null`` value.
 

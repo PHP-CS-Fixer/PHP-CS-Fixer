@@ -3,6 +3,26 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.52.0
+---------------------
+
+* chore: fix PHP 8.4 deprecations (#7894)
+* chore: fix PHPStan 1.10.60 issues (#7873)
+* chore: list over array in more places (#7876)
+* chore: replace template with variable in Preg class (#7882)
+* chore: update PHPStan (#7871)
+* depr: `nullable_type_declaration_for_default_null_value` - deprecate option that is against `@PHP84Migration` (#7872)
+* docs: Fix typo (#7889)
+* feat: Add support for callable template in PHPDoc parser (#7084)
+* feat: Add `array_indentation` to `PER-CS2.0` ruleset (#7881)
+* feat: `@Symfony:risky` - add `no_unreachable_default_argument_value` (#7863)
+* feat: `PhpCsFixer` ruleset - enable `nullable_type_declaration_for_default_null_value` (#7870)
+* fix: Constant invocation detected in DNF types (#7869)
+* fix: Correctly indent multiline constants and properties (#7875)
+* fix: `no_useless_concat_operator` - do not break variable (#7827)
+* fix: `TokensAnalyzer` - handle unary operator in arrow functions (#7862)
+* fix: `TypeExpression` - fix "JIT stack limit exhausted" error (#7843)
+
 Changelog for v3.51.0
 ---------------------
 

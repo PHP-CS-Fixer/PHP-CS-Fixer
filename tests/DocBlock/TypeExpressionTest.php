@@ -209,6 +209,24 @@ final class TypeExpressionTest extends TestCase
 
         yield ['\\Closure(float|int): (bool|int)'];
 
+        yield ['Closure<T>(): T'];
+
+        yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty}'];
+
+        yield ['array  <  int   , callable  (  string  )  :   bool  >'];
+
+        yield ['Closure<T of Foo>(T): T'];
+
+        yield ['Closure< T1 of Foo, T2 AS Foo >(T1): T2'];
+
+        yield ['Closure<T = Foo>(T): T'];
+
+        yield ['Closure<T1=int, T2 of Foo = Foo2>(T1): T2'];
+
+        yield ['Closure<T of string = \'\'>(T): T'];
+
+        yield ['Closure<Closure_can_be_regular_class>'];
+
         yield ['Closure(int $a)'];
 
         yield ['Closure(int $a): bool'];
@@ -234,6 +252,8 @@ final class TypeExpressionTest extends TestCase
         yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, with-dash: int}'];
 
         yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, k: int, l: int, with-dash: int}'];
+
+        yield [self::createHugeArrayShapeType()];
     }
 
     public static function provideGetConstTypesCases(): iterable
@@ -376,6 +396,12 @@ final class TypeExpressionTest extends TestCase
         yield ['\' unclosed string \\\''];
 
         yield 'generic with no arguments' => ['f<>'];
+
+        yield 'generic Closure with no arguments' => ['Closure<>(): void'];
+
+        yield 'generic Closure with non-identifier template argument' => ['Closure<A|B>(): void'];
+
+        yield [substr(self::createHugeArrayShapeType(), 0, -1)];
     }
 
     public function testHugeType(): void
@@ -814,6 +840,21 @@ final class TypeExpressionTest extends TestCase
             'array<string, array{ \Closure(mixed, string, $this): (float|int)|string }|string>|false',
         ];
 
+        yield 'generic Closure' => [
+            'Closure<B, A>(y|x, U<p|o>|B|A): (Y|B|X)',
+            'Closure<B, A>(x|y, A|B|U<o|p>): (B|X|Y)',
+        ];
+
+        yield 'generic Closure with bound template' => [
+            'Closure<B of J|I, C, A of V|U, D of object>(B|A): array{B, A, B, C, D}',
+            'Closure<B of I|J, C, A of U|V, D of object>(A|B): array{B, A, B, C, D}',
+        ];
+
+        yield 'generic Closure with template with default' => [
+            'Closure<T = B&A>(T): void',
+            'Closure<T = A&B>(T): void',
+        ];
+
         yield 'nullable generic' => [
             '?array<Foo|Bar>',
             '?array<Bar|Foo>',
@@ -880,6 +921,20 @@ final class TypeExpressionTest extends TestCase
             '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
         ];
+    }
+
+    private static function createHugeArrayShapeType(): string
+    {
+        return sprintf(
+            'array{%s}',
+            implode(
+                ', ',
+                array_map(
+                    static fn (int $k): string => sprintf('key%sno%d: int', 0 === $k % 2 ? '-' : '_', $k),
+                    range(1, 1_000),
+                ),
+            ),
+        );
     }
 
     /**

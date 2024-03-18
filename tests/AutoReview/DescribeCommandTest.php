@@ -48,9 +48,12 @@ final class DescribeCommandTest extends TestCase
             $this->expectDeprecation($message);
         }
 
-        // @TODO 4.0 Remove this expectation
+        // @TODO 4.0 Remove this expectations
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        if ('nullable_type_declaration_for_default_null_value' === $fixerName) {
+            $this->expectDeprecation('Option "use_nullable_type_declaration" for rule "nullable_type_declaration_for_default_null_value" is deprecated and will be removed in version 4.0. Behaviour will follow default one.');
+        }
 
         $command = new DescribeCommand($factory);
 
