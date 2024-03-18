@@ -1509,7 +1509,6 @@ abstract class Baz
         ];
     }
 
-
     /**
      * @param array<int, bool> $expected
      *
