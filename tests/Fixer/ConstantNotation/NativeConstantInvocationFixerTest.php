@@ -564,7 +564,7 @@ echo M_PI;
         yield ['<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}'];
     }
 
-        /**
+    /**
      * @dataProvider provideFixPhp83Cases
      *
      * @requires PHP 8.3
