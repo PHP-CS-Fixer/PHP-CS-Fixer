@@ -145,5 +145,16 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @var (Foo&Bar)|array<Baz> */',
             '<?php /** @var (Foo&Bar)|Baz[] */',
         ];
+
+        $expected = $input = 'string';
+        for ($i = 0; $i < 128; ++$i) {
+            $expected = 'array<'.$expected.'>';
+            $input .= '[]';
+        }
+
+        yield [
+            sprintf('<?php /** @var %s */', $expected),
+            sprintf('<?php /** @var %s */', $input),
+        ];
     }
 }
