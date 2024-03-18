@@ -16,6 +16,8 @@ Configuration
 ``use_nullable_type_declaration``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed in the next major version. Behaviour will follow default one.
+
 Whether to add or remove ``?`` or ``|null`` to parameters with a default
 ``null`` value.
 
@@ -113,8 +115,9 @@ With configuration: ``['use_nullable_type_declaration' => false]``.
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References

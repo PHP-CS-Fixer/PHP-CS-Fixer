@@ -77,7 +77,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
     }
 
     /**
-     * @return array<int>
+     * @return list<int>
      */
     private function getMagicConstantTokens(): array
     {

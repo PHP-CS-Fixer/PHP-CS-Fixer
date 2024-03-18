@@ -26,6 +26,13 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @phpstan-type _ConcatOperandType array{
+ *     start: int,
+ *     end: int,
+ *     type: self::STR_*,
+ * }
+ */
 final class NoUselessConcatOperatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const STR_DOUBLE_QUOTE = 0;
@@ -47,7 +54,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      * {@inheritdoc}
      *
      * Must run before DateTimeCreateFromFormatCallFixer, EregToPregFixer, PhpUnitDedicateAssertInternalTypeFixer, RegularCallableCallFixer, SetTypeToCastFixer.
-     * Must run after NoBinaryStringFixer, SingleQuoteFixer.
+     * Must run after ExplicitStringVariableFixer, NoBinaryStringFixer, SingleQuoteFixer.
      */
     public function getPriority(): int
     {
@@ -105,16 +112,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function fixConcatOperation(Tokens $tokens, array $firstOperand, int $concatIndex, array $secondOperand): void
     {
@@ -130,6 +129,10 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         }
 
         if (self::STR_DOUBLE_QUOTE_VAR === $firstOperand['type'] && self::STR_DOUBLE_QUOTE_VAR === $secondOperand['type']) {
+            if ($this->operandsCanNotBeMerged($tokens, $firstOperand, $secondOperand)) {
+                return;
+            }
+
             $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
             return;
@@ -146,6 +149,10 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
             [$operand1, $operand2] = $operandPair;
 
             if (self::STR_DOUBLE_QUOTE_VAR === $operand1['type'] && self::STR_DOUBLE_QUOTE === $operand2['type']) {
+                if ($this->operandsCanNotBeMerged($tokens, $operand1, $operand2)) {
+                    return;
+                }
+
                 $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
 
                 return;
@@ -169,6 +176,10 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
                 $operantContent = $tokens[$operand2['start']]->getContent();
 
                 if ($this->isSimpleQuotedStringContent($operantContent)) {
+                    if ($this->operandsCanNotBeMerged($tokens, $operand1, $operand2)) {
+                        return;
+                    }
+
                     $this->mergeConstantEscapedStringVarOperands($tokens, $firstOperand, $concatIndex, $secondOperand);
                 }
 
@@ -180,11 +191,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     /**
      * @param -1|1 $direction
      *
-     * @return null|array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * }
+     * @return null|_ConcatOperandType
      */
     private function getConcatOperandType(Tokens $tokens, int $index, int $direction): ?array
     {
@@ -216,16 +223,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function mergeConstantEscapedStringOperands(
         Tokens $tokens,
@@ -249,16 +248,8 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $firstOperand
-     * @param array{
-     *     start: int,
-     *     end: int,
-     *     type: self::STR_*,
-     * } $secondOperand
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
      */
     private function mergeConstantEscapedStringVarOperands(
         Tokens $tokens,
@@ -266,7 +257,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         int $concatOperatorIndex,
         array $secondOperand
     ): void {
-        // build uo the new content
+        // build up the new content
         $newContent = '';
 
         foreach ([$firstOperand, $secondOperand] as $operant) {
@@ -335,5 +326,37 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         }
 
         return false;
+    }
+
+    /**
+     * @param _ConcatOperandType $firstOperand
+     * @param _ConcatOperandType $secondOperand
+     */
+    private function operandsCanNotBeMerged(Tokens $tokens, array $firstOperand, array $secondOperand): bool
+    {
+        // If the first operand does not end with a variable, no variables would be broken by concatenation.
+        if (self::STR_DOUBLE_QUOTE_VAR !== $firstOperand['type']) {
+            return false;
+        }
+        if (!$tokens[$firstOperand['end'] - 1]->isGivenKind(T_VARIABLE)) {
+            return false;
+        }
+
+        $allowedPatternsForSecondOperand = [
+            '/^\s.*/', // e.g. " foo", ' bar', " $baz"
+            '/^-(?!\>)/', // e.g. "-foo", '-bar', "-$baz"
+        ];
+
+        // If the first operand ends with a variable, the second operand should match one of the allowed patterns.
+        // Otherwise, the concatenation can break a variable in the first operand.
+        foreach ($allowedPatternsForSecondOperand as $allowedPattern) {
+            $secondOperandInnerContent = substr($tokens->generatePartialCode($secondOperand['start'], $secondOperand['end']), 1, -1);
+
+            if (Preg::match($allowedPattern, $secondOperandInnerContent)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

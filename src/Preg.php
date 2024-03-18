@@ -25,8 +25,19 @@ namespace PhpCsFixer;
 final class Preg
 {
     /**
-     * @param null|string[]         $matches
-     * @param int-mask<0, 256, 512> $flags
+     * @param array<array-key, mixed>                               $matches
+     * @param int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     *
+     * @param-out ($flags is PREG_OFFSET_CAPTURE
+     *     ? array<array-key, array{string, 0|positive-int}|array{'', -1}>
+     *     : ($flags is PREG_UNMATCHED_AS_NULL
+     *         ? array<array-key, string|null>
+     *         : ($flags is int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>&768
+     *             ? array<array-key, array{string, 0|positive-int}|array{null, -1}>
+     *             : array<array-key, string>
+     *         )
+     *     )
+     * ) $matches
      *
      * @throws PregException
      */
@@ -46,7 +57,31 @@ final class Preg
     }
 
     /**
-     * @param null|string[] $matches
+     * @param array<array-key, mixed>                                                                   $matches
+     * @param int-mask<PREG_PATTERN_ORDER, PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
+     *
+     * @param-out ($flags is PREG_PATTERN_ORDER
+     *     ? array<list<string>>
+     *     : ($flags is PREG_SET_ORDER
+     *         ? list<array<string>>
+     *         : ($flags is int-mask<PREG_PATTERN_ORDER, PREG_OFFSET_CAPTURE>&(256|257)
+     *             ? array<list<array{string, int}>>
+     *             : ($flags is int-mask<PREG_SET_ORDER, PREG_OFFSET_CAPTURE>&258
+     *                 ? list<array<array{string, int}>>
+     *                 : ($flags is int-mask<PREG_PATTERN_ORDER, PREG_UNMATCHED_AS_NULL>&(512|513)
+     *                     ? array<list<?string>>
+     *                     : ($flags is int-mask<PREG_SET_ORDER, PREG_UNMATCHED_AS_NULL>&514
+     *                         ? list<array<?string>>
+     *                         : ($flags is int-mask<PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>&770
+     *                             ? list<array<array{?string, int}>>
+     *                             : array
+     *                         )
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * ) $matches
      *
      * @throws PregException
      */
@@ -68,6 +103,8 @@ final class Preg
     /**
      * @param string|string[] $subject
      *
+     * @param-out int $count
+     *
      * @throws PregException
      */
     public static function replace(string $pattern, string $replacement, $subject, int $limit = -1, ?int &$count = null): string
@@ -86,6 +123,8 @@ final class Preg
     }
 
     /**
+     * @param-out int $count
+     *
      * @throws PregException
      */
     public static function replaceCallback(string $pattern, callable $callback, string $subject, int $limit = -1, ?int &$count = null): string

@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: explicit_string_variable,no_useless_concat_operator.
+--RULESET--
+{"no_useless_concat_operator": true, "explicit_string_variable": true}
+--EXPECT--
+<?php
+
+$foo = "bar {$baz}qux";
+
+--INPUT--
+<?php
+
+$foo = "bar $baz" . "qux";

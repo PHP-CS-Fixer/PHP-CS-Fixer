@@ -44,7 +44,7 @@ final class GotoLabelAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, array<int>}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideGotoLabelCases(): iterable
     {
@@ -124,7 +124,7 @@ Bar3:
     }
 
     /**
-     * @return iterable<array{string, array<int>}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideGotoLabel80Cases(): iterable
     {

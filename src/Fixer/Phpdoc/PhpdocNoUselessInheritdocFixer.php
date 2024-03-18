@@ -121,7 +121,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
             $count
         );
 
-        if ($count) {
+        if ($count > 0) {
             $tokens[$tokenIndex] = new Token([T_DOC_COMMENT, $content]);
         }
     }

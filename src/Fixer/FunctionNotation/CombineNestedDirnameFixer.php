@@ -189,7 +189,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     }
 
     /**
-     * @param array<array{indices: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
+     * @param list<array{indices: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
      */
     private function combineDirnames(Tokens $tokens, array $dirnameInfoArray): void
     {

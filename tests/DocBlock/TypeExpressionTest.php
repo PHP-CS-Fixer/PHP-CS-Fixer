@@ -32,7 +32,7 @@ final class TypeExpressionTest extends TestCase
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
-    public function testGetTypes(string $typesExpression, array $expectedTypes = null): void
+    public function testGetTypes(string $typesExpression, ?array $expectedTypes = null): void
     {
         if (null === $expectedTypes) {
             $expectedTypes = [$typesExpression];
@@ -209,6 +209,24 @@ final class TypeExpressionTest extends TestCase
 
         yield ['\\Closure(float|int): (bool|int)'];
 
+        yield ['Closure<T>(): T'];
+
+        yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty}'];
+
+        yield ['array  <  int   , callable  (  string  )  :   bool  >'];
+
+        yield ['Closure<T of Foo>(T): T'];
+
+        yield ['Closure< T1 of Foo, T2 AS Foo >(T1): T2'];
+
+        yield ['Closure<T = Foo>(T): T'];
+
+        yield ['Closure<T1=int, T2 of Foo = Foo2>(T1): T2'];
+
+        yield ['Closure<T of string = \'\'>(T): T'];
+
+        yield ['Closure<Closure_can_be_regular_class>'];
+
         yield ['Closure(int $a)'];
 
         yield ['Closure(int $a): bool'];
@@ -379,6 +397,10 @@ final class TypeExpressionTest extends TestCase
 
         yield 'generic with no arguments' => ['f<>'];
 
+        yield 'generic Closure with no arguments' => ['Closure<>(): void'];
+
+        yield 'generic Closure with non-identifier template argument' => ['Closure<A|B>(): void'];
+
         yield [substr(self::createHugeArrayShapeType(), 0, -1)];
     }
 
@@ -453,7 +475,7 @@ final class TypeExpressionTest extends TestCase
      *
      * @dataProvider provideGetCommonTypeCases
      */
-    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
+    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, ?NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
         self::assertSame($expectedCommonType, $expression->getCommonType());
@@ -816,6 +838,21 @@ final class TypeExpressionTest extends TestCase
         yield 'complex type with Closure with $this' => [
             'array<string, string|array{ string|\Closure(mixed, string, $this): (int|float) }>|false',
             'array<string, array{ \Closure(mixed, string, $this): (float|int)|string }|string>|false',
+        ];
+
+        yield 'generic Closure' => [
+            'Closure<B, A>(y|x, U<p|o>|B|A): (Y|B|X)',
+            'Closure<B, A>(x|y, A|B|U<o|p>): (B|X|Y)',
+        ];
+
+        yield 'generic Closure with bound template' => [
+            'Closure<B of J|I, C, A of V|U, D of object>(B|A): array{B, A, B, C, D}',
+            'Closure<B of I|J, C, A of U|V, D of object>(A|B): array{B, A, B, C, D}',
+        ];
+
+        yield 'generic Closure with template with default' => [
+            'Closure<T = B&A>(T): void',
+            'Closure<T = A&B>(T): void',
         ];
 
         yield 'nullable generic' => [

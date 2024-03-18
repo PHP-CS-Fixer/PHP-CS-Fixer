@@ -166,7 +166,7 @@ final class RunnerTest extends TestCase
         return new class() implements DifferInterface {
             public ?\SplFileInfo $passedFile = null;
 
-            public function diff(string $old, string $new, \SplFileInfo $file = null): string
+            public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
             {
                 $this->passedFile = $file;
 

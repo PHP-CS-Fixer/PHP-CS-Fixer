@@ -84,7 +84,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @return array<array<string, bool|int>>
+     * @return list<array<string, bool|int>>
      */
     private function getUnsetsInfo(Tokens $tokens, int $index): array
     {
@@ -144,7 +144,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param array<array<string, bool|int>> $unsetsInfo
+     * @param list<array<string, bool|int>> $unsetsInfo
      */
     private function isAnyUnsetToTransform(array $unsetsInfo): bool
     {

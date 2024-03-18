@@ -9,7 +9,6 @@ Rules
 
 - `@PER-CS <./PER-CS.rst>`_
 - `@Symfony <./Symfony.rst>`_
-- `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_ with config:
 
   ``['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'include', 'include_once', 'phpdoc', 'require', 'require_once', 'return', 'switch', 'throw', 'try', 'yield', 'yield_from']]``
@@ -79,5 +78,4 @@ Rules
 Disabled rules
 --------------
 
-- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_

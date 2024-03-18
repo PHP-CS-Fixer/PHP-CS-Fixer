@@ -80,7 +80,7 @@ class T
 // nothing we can do
 
 // https://wiki.php.net/rfc/trailing_comma_in_parameter_list
-function foo(string $param = null): void {}
+function foo(?string $param = null): void {}
 call_user_func('foo', 1);
 
 // https://wiki.php.net/rfc/trailing_comma_in_closure_use_list

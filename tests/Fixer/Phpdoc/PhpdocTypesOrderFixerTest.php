@@ -552,6 +552,21 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             '<?php /** @param A|((B&C)|D) */',
             '<?php /** @param (D|(C&B))|A */',
         ];
+
+        yield [
+            '<?php /** @var Closure<T>(T): T|null|string */',
+            '<?php /** @var string|Closure<T>(T): T|null */',
+        ];
+
+        yield [
+            '<?php /** @var \Closure<T of Model, T2, T3>(A|T, T3, T2): (T|T2)|null|string */',
+            '<?php /** @var string|\Closure<T of Model, T2, T3>(T|A, T3, T2): (T2|T)|null */',
+        ];
+
+        yield [
+            '<?php /** @var Closure<Closure_can_be_regular_class>|null|string */',
+            '<?php /** @var string|Closure<Closure_can_be_regular_class>|null */',
+        ];
     }
 
     /**
