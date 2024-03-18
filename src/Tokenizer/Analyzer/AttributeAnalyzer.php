@@ -79,7 +79,7 @@ final class AttributeAnalyzer
     public static function getAttributesForElement(Tokens $tokens, int $index): array
     {
         if (!$tokens[$index]->isGivenKind([T_CLASS])) {
-            throw new \InvalidArgumentException("Index {$index} cannot have attributes.");
+            throw new \InvalidArgumentException(sprintf('Index %d cannot have attributes, or is not not yet supported by "%s".', $index, __FUNCTION__));
         }
 
         $attributes = [];

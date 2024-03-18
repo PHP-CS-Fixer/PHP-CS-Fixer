@@ -134,7 +134,7 @@ final class AttributeAnalyzerTest extends TestCase
     public function testGetAttributesForNotAllowedElement(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Index 1 cannot have attributes.');
+        $this->expectExceptionMessage('Index 1 cannot have attributes, or is not not yet supported by "getAttributesForElement".');
 
         AttributeAnalyzer::getAttributesForElement(
             Tokens::fromCode('<?php echo "foo";'),
