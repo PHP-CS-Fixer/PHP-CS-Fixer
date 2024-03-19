@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.52.1
+---------------------
+
+* fix: StatementIndentationFixer - do not crash on ternary operator in class property (#7899)
+* fix: `PhpCsFixer\Tokenizer\Tokens::setSize` return type (#7900)
+
 Changelog for v3.52.0
 ---------------------
 
