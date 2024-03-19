@@ -43,6 +43,11 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
      */
     public const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
 
+    /**
+     * @internal
+     */
+    public const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS_IGNORE_REST = 'new_line_for_chained_calls_ignore_rest';
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -61,8 +66,24 @@ function foo() {
 $object->method1()
     ->method2()
     ->method(3);
+
+$someCond = $a === $b ||
+    $c === $d
+;
 ',
                     ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
+                ),
+                new CodeSample(
+                    '<?php
+$object->method1()
+    ->method2()
+    ->method(3);
+
+$someCond = $a === $b ||
+    $c === $d
+;
+',
+                    ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS_IGNORE_REST]
                 ),
             ]
         );
@@ -91,7 +112,11 @@ $object->method1()
                 'strategy',
                 'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
             ))
-                ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
+                ->setAllowedValues([
+                    self::STRATEGY_NO_MULTI_LINE,
+                    self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS,
+                    self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS_IGNORE_REST,
+                ])
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)
                 ->getOption(),
         ]);
@@ -110,7 +135,10 @@ $object->method1()
             $previous = $tokens[$previousIndex];
 
             $indent = $this->findWhitespaceBeforeFirstCall($index, $tokens);
-            if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy'] && null !== $indent) {
+            if ((
+                self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy']
+                || self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS_IGNORE_REST === $this->configuration['strategy']
+            ) && null !== $indent) {
                 if ($previous->isWhitespace() && $previous->getContent() === $lineEnding.$indent) {
                     continue;
                 }
@@ -129,7 +157,7 @@ $object->method1()
 
                 // insert the new line with indented semicolon
                 $tokens->insertAt($index++, [$newline, new Token(';')]);
-            } else {
+            } elseif (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS_IGNORE_REST !== $this->configuration['strategy']) {
                 if (!$previous->isWhitespace() || !str_contains($previous->getContent(), "\n")) {
                     continue;
                 }

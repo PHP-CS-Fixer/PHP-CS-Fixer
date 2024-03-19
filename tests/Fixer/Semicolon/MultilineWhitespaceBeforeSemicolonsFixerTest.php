@@ -1147,6 +1147,42 @@ switch ($foo) {
     }
 
     /**
+     * @dataProvider provideSemicolonForChainedCallsIgnoreRestFixCases
+     */
+    public function testSemicolonForChainedCallsIgnoreRestFix(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS_IGNORE_REST]);
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideSemicolonForChainedCallsIgnoreRestFixCases(): iterable
+    {
+        yield [
+            '<?php
+
+                    $this
+                        ->method1()
+                        ->method2()
+                    ;
+
+                    $cond = $a === 0 ||
+                        $a === 1
+                    ;
+                ?>',
+            '<?php
+
+                    $this
+                        ->method1()
+                        ->method2();
+
+                    $cond = $a === 0 ||
+                        $a === 1
+                    ;
+                ?>',
+        ];
+    }
+
+    /**
      * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsCases
      */
     public function testMessyWhitespacesSemicolonForChainedCalls(string $expected, ?string $input = null): void
