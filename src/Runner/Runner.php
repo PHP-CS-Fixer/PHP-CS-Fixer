@@ -162,7 +162,7 @@ final class Runner
         }
 
         $processPool = new ProcessPool($server);
-        $fileIterator = $this->getFileIterator();
+        $fileIterator = $this->getFilteringFileIterator();
         $fileIterator->rewind();
 
         $fileChunk = function () use ($fileIterator): array {
@@ -357,7 +357,7 @@ final class Runner
     private function fixSequential(): array
     {
         $changed = [];
-        $collection = $this->getFileIterator();
+        $collection = $this->getLintingFileIterator();
 
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
@@ -547,22 +547,27 @@ final class Runner
         $this->eventDispatcher->dispatch($event, $name);
     }
 
-    private function getFileIterator(): LintingResultAwareFileIteratorInterface
+    private function getLintingFileIterator(): LintingResultAwareFileIteratorInterface
     {
         if (null === $this->fileIterator) {
             throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
         }
 
-        $fileFilterIterator = new FileFilterIterator(
+        $fileFilterIterator = $this->getFilteringFileIterator();
+
+        return $this->linter->isAsync()
+            ? new FileCachingLintingFileIterator($fileFilterIterator, $this->linter)
+            : new LintingFileIterator($fileFilterIterator, $this->linter);
+    }
+
+    private function getFilteringFileIterator(): FileFilterIterator
+    {
+        return new FileFilterIterator(
             $this->fileIterator instanceof \IteratorAggregate
                 ? $this->fileIterator->getIterator()
                 : $this->fileIterator,
             $this->eventDispatcher,
             $this->cacheManager
         );
-
-        return $this->linter->isAsync()
-            ? new FileCachingLintingFileIterator($fileFilterIterator, $this->linter)
-            : new LintingFileIterator($fileFilterIterator, $this->linter);
     }
 }
