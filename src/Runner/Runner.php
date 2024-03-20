@@ -104,6 +104,7 @@ final class Runner
         CacheManagerInterface $cacheManager,
         ?DirectoryInterface $directory = null,
         bool $stopOnViolation = false,
+        // @TODO Make these arguments required in 4.0
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
         ?string $configFile = null
@@ -137,6 +138,7 @@ final class Runner
      */
     public function fix(): array
     {
+        // @TODO Remove condition for the input argument in 4.0, as it should be required in the constructor
         return $this->parallelConfig->getMaxProcesses() > 1 && null !== $this->input
             ? $this->fixParallel()
             : $this->fixSequential();
@@ -258,7 +260,7 @@ final class Runner
 
                         // Worker requests for another file chunk when all files were processed
                         foreach ($workerResponse['errors'] ?? [] as $workerError) {
-                            $error = new Error(
+                            $this->errorsManager->report(new Error(
                                 $workerError['type'],
                                 $workerError['filePath'],
                                 null !== $workerError['source']
@@ -266,9 +268,7 @@ final class Runner
                                     : null,
                                 $workerError['appliedFixers'],
                                 $workerError['diff']
-                            );
-
-                            $this->errorsManager->report($error);
+                            ));
                         }
 
                         return;
