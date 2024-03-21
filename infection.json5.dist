@@ -10,6 +10,7 @@
         "@default": true,
         "Throw_": {
             "ignore": [
+                // It makes `tests/Fixtures/cache-file-handler/cache-file` unreadable (permissions)
                 "PhpCsFixer\\Cache\\FileHandler"
             ]
         }
