@@ -266,6 +266,24 @@ default:
             null,
             ['elements' => [SingleExpressionPerLineFixer::SWITCH_CASES]],
         ];
+
+        yield [
+            '<?php
+
+            $app->get("/hello/{name}", function ($name) use ($app) {
+                return "Hello " . $app->escape($name);
+            });
+            ',
+        ];
+
+        yield [
+            '<?php
+
+            $a = foo([
+                1,
+                2,
+            ]);',
+        ];
     }
 
     /**
@@ -289,16 +307,27 @@ default:
     {
         yield [
             '<?php
+                    match ($a
+                        + $b) {
+                        1 => 1, 2 => 2,
+                        3, 4 => 4,
+                    };',
+            null,
+            ['elements' => [SingleExpressionPerLineFixer::ELEMENTS_CONTROL_STRUCTURES]],
+        ];
+
+        yield [
+            '<?php
                     match (
 $a
-                        + $b
+                        || $b
 ) {
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
             '<?php
                     match ($a
-                        + $b) {
+                        || $b) {
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
@@ -325,12 +354,10 @@ $a
 
         yield [
             '<?php
-                    match (
-foo(
+                    match (foo(
 $a,
                         $b
-)
-) {
+)) {
                         1 => 1, 2 => 2,
                         3, 4 => 4,
                     };',
