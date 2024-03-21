@@ -14,9 +14,5 @@
                 "PhpCsFixer\\Cache\\FileHandler"
             ]
         }
-    },
-    "logs": {
-        "text": "dev-tools/infection/run.log",
-        "html": "dev-tools/infection/report.html"
     }
 }
