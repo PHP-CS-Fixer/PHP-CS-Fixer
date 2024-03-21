@@ -164,7 +164,6 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
         bool $enforceOneExpressionPerLine = false,
         ?array $expressionDelimiters = null,
         ?array $expressionDelimitersIndexes = null
-
     ): int {
         if (!$tokens->isPartialCodeMultiline($begin, $end)) {
             return 0;
