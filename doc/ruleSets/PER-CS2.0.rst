@@ -19,8 +19,5 @@ Rules
   ``['closure_fn_spacing' => 'none']``
 
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
-- `single_expression_per_line <./../rules/control_structure/single_expression_per_line.rst>`_ with config:
-
-  ``['elements' => ['arguments', 'arrays', 'case', 'control_structures', 'match', 'parameters']]``
-
+- `single_expression_per_line <./../rules/control_structure/single_expression_per_line.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
