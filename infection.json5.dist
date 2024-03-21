@@ -13,6 +13,12 @@
                 // It makes `tests/Fixtures/cache-file-handler/cache-file` unreadable (permissions)
                 "PhpCsFixer\\Cache\\FileHandler"
             ]
+        },
+        "LogicalNot": {
+            "ignore": [
+                // Causes modifications in `tests/Fixtures/FixerTest/fix/*.php`
+                "PhpCsFixer\\Runner\\Runner::fixFile"
+            ]
         }
     }
 }
