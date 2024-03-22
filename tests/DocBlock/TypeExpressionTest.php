@@ -165,6 +165,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['OBJECT { x: 1 }'];
 
+        yield ['array{a: int, b: int, with-dash: int}'];
+
         yield ['callable'];
 
         yield ['callable(string)'];
@@ -249,11 +251,11 @@ final class TypeExpressionTest extends TestCase
 
         yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
 
-        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, with-dash: int}'];
+        yield ['string'.str_repeat('[]', 128)];
 
-        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, k: int, l: int, with-dash: int}'];
+        yield [str_repeat('array<', 128).'string'.str_repeat('>', 128)];
 
-        yield [self::createHugeArrayShapeType()];
+        yield [self::makeLongArrayShapeType()];
     }
 
     public static function provideGetConstTypesCases(): iterable
@@ -401,7 +403,7 @@ final class TypeExpressionTest extends TestCase
 
         yield 'generic Closure with non-identifier template argument' => ['Closure<A|B>(): void'];
 
-        yield [substr(self::createHugeArrayShapeType(), 0, -1)];
+        yield [substr(self::makeLongArrayShapeType(), 0, -1)];
     }
 
     public function testHugeType(): void
@@ -923,18 +925,15 @@ final class TypeExpressionTest extends TestCase
         ];
     }
 
-    private static function createHugeArrayShapeType(): string
+    private static function makeLongArrayShapeType(): string
     {
-        return sprintf(
-            'array{%s}',
-            implode(
-                ', ',
-                array_map(
-                    static fn (int $k): string => sprintf('key%sno%d: int', 0 === $k % 2 ? '-' : '_', $k),
-                    range(1, 1_000),
-                ),
+        return 'array{'.implode(
+            ', ',
+            array_map(
+                static fn (int $k): string => sprintf('key%sno%d: int', 0 === $k % 2 ? '-' : '_', $k),
+                range(1, 1_000),
             ),
-        );
+        ).'}';
     }
 
     /**
