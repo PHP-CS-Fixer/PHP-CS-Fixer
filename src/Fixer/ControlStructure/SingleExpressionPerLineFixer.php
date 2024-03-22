@@ -94,7 +94,6 @@ final class SingleExpressionPerLineFixer extends AbstractFixer implements Config
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, StatementIndentationFixer.
-     * Must run after MethodArgumentSpaceFixer.
      */
     public function getPriority(): int
     {
