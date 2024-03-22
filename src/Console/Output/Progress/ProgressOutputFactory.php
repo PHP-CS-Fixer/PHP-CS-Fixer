@@ -57,11 +57,6 @@ final class ProgressOutputFactory
 
     public function supports(string $outputType): bool
     {
-        return $this->isBuiltInType($outputType);
-    }
-
-    private function isBuiltInType(string $outputType): bool
-    {
         return \in_array($outputType, ProgressOutputType::all(), true);
     }
 }
