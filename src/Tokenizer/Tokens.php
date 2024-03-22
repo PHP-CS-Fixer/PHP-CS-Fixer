@@ -335,10 +335,6 @@ class Tokens extends \SplFixedArray
         }
 
         parent::offsetUnset($index);
-
-        if (\count($this) - 1 === $index) {
-            $this->setSize(\count($this) - 1);
-        }
     }
 
     /**
@@ -615,7 +611,7 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-            if (0 > $index || \count($this) <= $index) {
+            if (!$this->offsetExists($index)) {
                 return null;
             }
 
@@ -669,7 +665,7 @@ class Tokens extends \SplFixedArray
 
         while (true) {
             $index += $direction;
-            if (0 > $index || \count($this) <= $index) {
+            if (!$this->offsetExists($index)) {
                 return null;
             }
 
@@ -736,7 +732,7 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-            if (0 > $index || \count($this) <= $index) {
+            if (!$this->offsetExists($index)) {
                 return null;
             }
 
@@ -1467,7 +1463,7 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-            if (0 > $index || \count($this) <= $index) {
+            if (!$this->offsetExists($index)) {
                 return null;
             }
 
