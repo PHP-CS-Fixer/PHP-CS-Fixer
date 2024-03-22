@@ -20,13 +20,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @internal
+ *
+ * @phpstan-type _StatusMap array<FixerFileProcessedEvent::STATUS_*, array{symbol: string, format: string, description: string}>
  */
 abstract class OneCharLegendOutput implements ProgressOutputInterface
 {
     /**
      * File statuses map.
      *
-     * @var array<FixerFileProcessedEvent::STATUS_*, array{symbol: string, format: string, description: string}>
+     * @var _StatusMap
      */
     private const EVENT_STATUS_MAP = [
         FixerFileProcessedEvent::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],
@@ -84,7 +86,7 @@ abstract class OneCharLegendOutput implements ProgressOutputInterface
     }
 
     /**
-     * @return array<FixerFileProcessedEvent::STATUS_*, array{symbol: string, format: string, description: string}>
+     * @return _StatusMap
      */
     protected function getStatusMap(): array
     {
