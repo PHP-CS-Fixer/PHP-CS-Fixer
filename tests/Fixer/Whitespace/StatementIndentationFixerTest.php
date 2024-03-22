@@ -1464,6 +1464,16 @@ $foo = [
     1,
 ];',
         ];
+
+        yield 'ternary operator in property' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $bar = BAZ ? -1 : 1;
+                }
+                PHP
+        ];
     }
 
     /**

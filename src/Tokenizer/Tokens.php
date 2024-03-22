@@ -287,6 +287,7 @@ class Tokens extends \SplFixedArray
      *
      * @param int $size
      */
+    #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
         if ($this->getSize() !== $size) {

@@ -230,7 +230,7 @@ if ($foo) {
                 } elseif ($token->equals(':')) {
                     if (isset($caseBlockStarts[$index])) {
                         [$endIndex, $endIndexInclusive] = $this->findCaseBlockEnd($tokens, $index);
-                    } else {
+                    } elseif ($this->alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
                     }
                 } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
