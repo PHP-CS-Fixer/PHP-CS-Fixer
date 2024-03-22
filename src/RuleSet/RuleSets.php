@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
+use PhpCsFixer\RuleSetNameValidator;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -26,7 +27,7 @@ final class RuleSets
     /**
      * @var array<string, RuleSetDescriptionInterface>
      */
-    private static $setDefinitions;
+    private static ?array $setDefinitions = null;
 
     /**
      * @return array<string, RuleSetDescriptionInterface>
@@ -40,10 +41,14 @@ final class RuleSets
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
                 $set = new $class();
 
+                if (!RuleSetNameValidator::isValid($set->getName(), false)) {
+                    throw new \UnexpectedValueException(sprintf('Rule set name invalid: %s', $set->getName()));
+                }
+
                 self::$setDefinitions[$set->getName()] = $set;
             }
 
-            uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
+            self::sortSetDefinitions();
         }
 
         return self::$setDefinitions;
@@ -66,5 +71,49 @@ final class RuleSets
         }
 
         return $definitions[$name];
+    }
+
+    /**
+     * @param class-string<RuleSetDescriptionInterface> $class
+     */
+    public static function registerRuleSet(string $class): void
+    {
+        if (!class_exists($class)
+            || !\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)
+        ) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class "%s" must be an instance of "%s".',
+                    $class,
+                    RuleSetDescriptionInterface::class
+                )
+            );
+        }
+
+        $ruleset = new $class();
+        $name = $ruleset->getName();
+
+        if (!RuleSetNameValidator::isValid($name, false)) {
+            throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, colons, dots and hyphens.');
+        }
+
+        if (!class_exists($class, true)) {
+            throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+        }
+
+        $preDefinedDefinitions = self::getSetDefinitions();
+
+        if (\array_key_exists($name, $preDefinedDefinitions)) {
+            throw new \InvalidArgumentException(sprintf('Set "%s" is already defined.', $name));
+        }
+
+        self::$setDefinitions[$name] = $ruleset;
+
+        self::sortSetDefinitions();
+    }
+
+    private static function sortSetDefinitions(): void
+    {
+        uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
     }
 }

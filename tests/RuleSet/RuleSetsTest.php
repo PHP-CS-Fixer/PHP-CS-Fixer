@@ -20,6 +20,8 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -31,6 +33,17 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RuleSetsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Since we register custom rule sets statically, we need to clear resolved rule sets between runs.
+        $reflection = new \ReflectionClass(RuleSets::class);
+        $reflectionProperty = $reflection->getProperty('setDefinitions');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($reflection, null);
+    }
+
     public function testGetSetDefinitionNames(): void
     {
         self::assertSame(
@@ -169,6 +182,34 @@ Integration of %s.
 
             self::assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $targetVersion);
         }
+    }
+
+    public function testRegisterRuleSetMissingClass(): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+        // @phpstan-ignore-next-line
+        RuleSets::registerRuleSet('\This\Class\Does\Not\Exists');
+    }
+
+    public function testRegisterRuleSetOverlappingName(): void
+    {
+        RuleSets::registerRuleSet(SampleRulesOk::class);
+        self::expectException(\InvalidArgumentException::class);
+        RuleSets::registerRuleSet(SampleRulesOk::class);
+    }
+
+    public function testRegisterRuleSetInvalidClass(): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+
+        RuleSets::registerRuleSet(SampleRulesBad::class); // @phpstan-ignore-line
+    }
+
+    public function testCanReadCustomRegisteredRuleSet(): void
+    {
+        RuleSets::registerRuleSet(SampleRulesOk::class);
+        $set = RuleSets::getSetDefinition('@Vendor/RulesOk');
+        self::assertSame('@Vendor/RulesOk', $set->getName());
     }
 
     /**

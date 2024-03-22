@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -144,6 +146,22 @@ class Config implements ConfigInterface
     {
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Registers custom rule sets to be used the same way as built-in rule sets.
+     *
+     * @param list<class-string<RuleSetDescriptionInterface>> $ruleSets
+     *
+     * @todo Introduce it in ConfigInterface in 4.0
+     */
+    public function registerCustomRuleSets(array $ruleSets): ConfigInterface
+    {
+        foreach ($ruleSets as $class) {
+            RuleSets::registerRuleSet($class);
         }
 
         return $this;

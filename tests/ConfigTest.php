@@ -23,6 +23,10 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -206,6 +210,30 @@ final class ConfigTest extends TestCase
         self::assertSame($expected, $config->getCustomFixers());
     }
 
+    /**
+     * @param list<class-string> $ruleSets
+     *
+     * @dataProvider provideRegisterCustomRuleSetsCases
+     */
+    public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
+    {
+        if (null !== $expectedException) {
+            $this->expectException($expectedException);
+        }
+
+        $config = new Config();
+        $config->registerCustomRuleSets($ruleSets);
+
+        if (null === $expectedException) {
+            foreach ($ruleSets as $ruleSetClass) {
+                /** @var RuleSetDescriptionInterface $ruleSet */
+                $ruleSet = new $ruleSetClass();
+
+                self::assertContains($ruleSet->getName(), RuleSets::getSetDefinitionNames());
+            }
+        }
+    }
+
     public function testConfigDefault(): void
     {
         $config = new Config();
@@ -258,6 +286,16 @@ final class ConfigTest extends TestCase
         yield [$fixers, $fixers];
 
         yield [$fixers, new \ArrayIterator($fixers)];
+    }
+
+    /**
+     * @return iterable<array{0: null|class-string<\Throwable>, 1: list<class-string>}>
+     */
+    public static function provideRegisterCustomRuleSetsCases(): iterable
+    {
+        yield [null, [SampleRulesOk::class]];
+
+        yield [\InvalidArgumentException::class, [SampleRulesBad::class]];
     }
 
     public function testConfigConstructorWithName(): void
