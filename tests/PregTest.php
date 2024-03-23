@@ -179,8 +179,8 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|list<string> $pattern
-     * @param string|list<string> $subject
+     * @param list<string>|string $pattern
+     * @param list<string>|string $subject
      *
      * @dataProvider provideCommonCases
      */
@@ -201,8 +201,8 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|list<string> $pattern
-     * @param string|list<string> $subject
+     * @param list<string>|string $pattern
+     * @param list<string>|string $subject
      *
      * @dataProvider provideCommonCases
      */
