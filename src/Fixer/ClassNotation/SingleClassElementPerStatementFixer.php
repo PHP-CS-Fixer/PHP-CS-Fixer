@@ -195,7 +195,7 @@ final class Example
     }
 
     /**
-     * @return Token[]
+     * @return list<Token>
      */
     private function getModifiersSequences(Tokens $tokens, string $type, int $startIndex, int $endIndex): array
     {
