@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 final class TypeExpressionTest extends TestCase
 {
     /**
-     * @param null|string[] $expectedTypes
+     * @param null|list<string> $expectedTypes
      *
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
@@ -473,7 +473,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param list<NamespaceUseAnalysis> $namespaceUses
      *
      * @dataProvider provideGetCommonTypeCases
      */
@@ -978,7 +978,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * Parse type expression with and without PCRE JIT.
      *
-     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param list<NamespaceUseAnalysis> $namespaceUses
      */
     private function parseTypeExpression(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses): TypeExpression
     {

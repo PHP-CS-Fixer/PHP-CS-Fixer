@@ -51,7 +51,7 @@ final class LineTest extends TestCase
     /**
      * This represents the content of each line.
      *
-     * @var string[]
+     * @var list<string>
      */
     private static $content = [
         "/**\n",
@@ -74,7 +74,7 @@ final class LineTest extends TestCase
     /**
      * This represents the if each line is "useful".
      *
-     * @var bool[]
+     * @var list<bool>
      */
     private static $useful = [
         false,
@@ -97,7 +97,7 @@ final class LineTest extends TestCase
     /**
      * This represents the if each line "contains a tag".
      *
-     * @var bool[]
+     * @var list<bool>
      */
     private static $tag = [
         false,

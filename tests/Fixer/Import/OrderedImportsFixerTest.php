@@ -2038,7 +2038,7 @@ use function some\f\{fn_c, fn_d, fn_e};
     /**
      * @dataProvider provideFixTypesOrderAndAlphabetCases
      *
-     * @param string[] $importOrder
+     * @param list<string> $importOrder
      */
     public function testFixTypesOrderAndAlphabet(string $expected, ?string $input = null, ?array $importOrder = null): void
     {
@@ -2104,7 +2104,7 @@ use function some\a\{fn_a, fn_b};
     /**
      * @dataProvider provideFixTypesOrderAndNoneCases
      *
-     * @param null|string[] $importOrder
+     * @param null|list<string> $importOrder
      */
     public function testFixTypesOrderAndNone(string $expected, ?string $input = null, ?array $importOrder = null): void
     {

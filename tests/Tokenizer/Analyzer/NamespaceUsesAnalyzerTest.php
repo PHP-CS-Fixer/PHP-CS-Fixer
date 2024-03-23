@@ -546,7 +546,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $expected
+     * @param list<NamespaceUseAnalysis> $expected
      *
      * @dataProvider provideGetDeclarationsInNamespaceCases
      */

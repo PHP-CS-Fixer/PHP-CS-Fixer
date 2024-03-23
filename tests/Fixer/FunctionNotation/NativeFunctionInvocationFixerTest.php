@@ -83,7 +83,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string[] $include
+     * @param list<string> $include
      *
      * @dataProvider provideConfigureIncludeSetsCases
      */
