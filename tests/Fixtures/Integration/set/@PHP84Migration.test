@@ -1,5 +1,5 @@
 --TEST--
-Integration of @PHP83Migration.
+Integration of @PHP84Migration.
 --RULESET--
 {"@PHP84Migration": true}
 --REQUIREMENTS--
