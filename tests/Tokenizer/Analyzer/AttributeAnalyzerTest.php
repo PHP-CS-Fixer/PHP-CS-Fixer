@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -128,5 +129,287 @@ final class AttributeAnalyzerTest extends TestCase
         yield [true, '<?php #[Attr1(2 * (3 + 7)), Foo, Attr2((16 + 4) / 5 )] class Bar {}'];
 
         yield [true, '<?php #[Foo("(")] class Bar {}'];
+    }
+
+    /**
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideGetAttributeDeclarationsCases
+     *
+     * @param array{0: string, 1: list<AttributeAnalysis>} $expected
+     */
+    public function testGetAttributeDeclarations(string $code, int $startIndex, array $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $attributeDeclarationAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
+
+        self::assertSame(
+            serialize($expected),
+            serialize($attributeDeclarationAnalyses),
+        );
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     */
+    public static function provideGetAttributeDeclarationsCases(): iterable
+    {
+        yield [
+            '<?php
+            /**
+             * Start docblock
+             */
+            #[AB\Baz(prop: \'baz\')]
+            #[A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
+            #[\A\B\Qux()]
+            #[BarAlias(3)]
+            /**
+             * Corge docblock
+             */
+            #[Corge]
+            #[Foo(4, \'baz qux\')]
+            /**
+             * End docblock
+             */
+            function foo() {}
+            ',
+            4,
+            [
+                new AttributeAnalysis(4, 15, [[
+                    'start' => 5,
+                    'end' => 13,
+                    'name' => 'AB\\Baz',
+                ]]),
+                new AttributeAnalysis(16, 49, [[
+                    'start' => 17,
+                    'end' => 47,
+                    'name' => 'A\\B\\Quux',
+                ]]),
+                new AttributeAnalysis(50, 60, [[
+                    'start' => 51,
+                    'end' => 58,
+                    'name' => '\\A\\B\\Qux',
+                ]]),
+                new AttributeAnalysis(61, 67, [[
+                    'start' => 62,
+                    'end' => 65,
+                    'name' => 'BarAlias',
+                ]]),
+                new AttributeAnalysis(68, 73, [[
+                    'start' => 71,
+                    'end' => 71,
+                    'name' => 'Corge',
+                ]]),
+                new AttributeAnalysis(74, 83, [[
+                    'start' => 75,
+                    'end' => 81,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+
+        yield [
+            '<?php
+            /** Start docblock */#[AB\Baz(prop: \'baz\')] #[A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] #[\A\B\Qux()] #[BarAlias(3)] /** Corge docblock */#[Corge] #[Foo(4, \'baz qux\')]/** End docblock */
+            function foo() {}
+            ',
+            3,
+            [
+                new AttributeAnalysis(3, 14, [[
+                    'start' => 4,
+                    'end' => 12,
+                    'name' => 'AB\\Baz',
+                ]]),
+                new AttributeAnalysis(15, 48, [[
+                    'start' => 16,
+                    'end' => 46,
+                    'name' => 'A\\B\\Quux',
+                ]]),
+                new AttributeAnalysis(49, 59, [[
+                    'start' => 50,
+                    'end' => 57,
+                    'name' => '\\A\\B\\Qux',
+                ]]),
+                new AttributeAnalysis(60, 66, [[
+                    'start' => 61,
+                    'end' => 64,
+                    'name' => 'BarAlias',
+                ]]),
+                new AttributeAnalysis(67, 71, [[
+                    'start' => 69,
+                    'end' => 69,
+                    'name' => 'Corge',
+                ]]),
+                new AttributeAnalysis(72, 80, [[
+                    'start' => 73,
+                    'end' => 79,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+
+        yield [
+            '<?php
+            #[
+                /*
+                 * AB\Baz comment
+                 */
+                AB\Baz(prop: \'baz\'),
+                A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
+                \A\B\Qux(),
+                BarAlias(3),
+                /*
+                 * Corge comment
+                 */
+                Corge,
+                /**
+                 * Foo docblock
+                 */
+                Foo(4, \'baz qux\'),
+            ]
+            function foo() {}
+            ',
+            2,
+            [
+                new AttributeAnalysis(2, 83, [[
+                    'start' => 3,
+                    'end' => 14,
+                    'name' => 'AB\\Baz',
+                ], [
+                    'start' => 16,
+                    'end' => 47,
+                    'name' => 'A\\B\\Quux',
+                ], [
+                    'start' => 49,
+                    'end' => 57,
+                    'name' => '\\A\\B\\Qux',
+                ], [
+                    'start' => 59,
+                    'end' => 63,
+                    'name' => 'BarAlias',
+                ], [
+                    'start' => 65,
+                    'end' => 68,
+                    'name' => 'Corge',
+                ], [
+                    'start' => 70,
+                    'end' => 79,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+
+        yield [
+            '<?php
+            #[/* AB\Baz comment */AB\Baz(prop: \'baz\'), A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'), \A\B\Qux(), BarAlias(3), /* Corge comment */Corge, /** Foo docblock */Foo(4, \'baz qux\')]
+            function foo() {}
+            ',
+            2,
+            [
+                new AttributeAnalysis(2, 77, [[
+                    'start' => 3,
+                    'end' => 12,
+                    'name' => 'AB\\Baz',
+                ], [
+                    'start' => 14,
+                    'end' => 45,
+                    'name' => 'A\\B\\Quux',
+                ], [
+                    'start' => 47,
+                    'end' => 55,
+                    'name' => '\\A\\B\\Qux',
+                ], [
+                    'start' => 57,
+                    'end' => 61,
+                    'name' => 'BarAlias',
+                ], [
+                    'start' => 63,
+                    'end' => 65,
+                    'name' => 'Corge',
+                ], [
+                    'start' => 67,
+                    'end' => 75,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP 8.1
+     *
+     * @dataProvider provideGetAttributeDeclarations81Cases
+     *
+     * @param array{0: string, 1: list<AttributeAnalysis>} $expected
+     */
+    public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $attributeDeclarationAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
+
+        self::assertSame(
+            serialize($expected),
+            serialize($attributeDeclarationAnalyses),
+        );
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     */
+    public static function provideGetAttributeDeclarations81Cases(): iterable
+    {
+        yield [
+            '<?php
+                #[AB\Baz(prop: \'baz\')]
+                #[\A\B\Qux(prop: new P\R())]
+                #[Corge]
+                function foo() {}
+                ',
+            2,
+            [
+                new AttributeAnalysis(2, 13, [[
+                    'start' => 3,
+                    'end' => 11,
+                    'name' => 'AB\\Baz',
+                ]]),
+                new AttributeAnalysis(14, 34, [[
+                    'start' => 15,
+                    'end' => 32,
+                    'name' => '\\A\\B\\Qux',
+                ]]),
+                new AttributeAnalysis(35, 38, [[
+                    'start' => 36,
+                    'end' => 36,
+                    'name' => 'Corge',
+                ]]),
+            ],
+        ];
+
+        yield [
+            '<?php
+             #[
+                 AB\Baz(prop: \'baz\'),
+                 \A\B\Qux(prop: new P\R()),
+                 Corge,
+             ]
+             function foo() {}
+             ',
+            2,
+            [
+                new AttributeAnalysis(2, 39, [[
+                    'start' => 3,
+                    'end' => 12,
+                    'name' => 'AB\\Baz',
+                ], [
+                    'start' => 14,
+                    'end' => 32,
+                    'name' => '\\A\\B\\Qux',
+                ], [
+                    'start' => 34,
+                    'end' => 35,
+                    'name' => 'Corge',
+                ]]),
+            ],
+        ];
     }
 }
