@@ -151,7 +151,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             }
 
             foreach ($interfaces as $interfaceIndex => $interface) {
-                $interfaceTokens = Tokens::fromArray($interface, false);
+                $interfaceTokens = Tokens::fromArray($interface);
                 $normalized = '';
                 $actualInterfaceIndex = $interfaceTokens->getNextMeaningfulToken(-1);
 
