@@ -549,10 +549,6 @@ final class Runner
 
     private function getLintingFileIterator(): LintingResultAwareFileIteratorInterface
     {
-        if (null === $this->fileIterator) {
-            throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
-        }
-
         $fileFilterIterator = $this->getFilteringFileIterator();
 
         return $this->linter->isAsync()
@@ -562,6 +558,10 @@ final class Runner
 
     private function getFilteringFileIterator(): FileFilterIterator
     {
+        if (null === $this->fileIterator) {
+            throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
+        }
+
         return new FileFilterIterator(
             $this->fileIterator instanceof \IteratorAggregate
                 ? $this->fileIterator->getIterator()
