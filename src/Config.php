@@ -48,7 +48,7 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     private string $name;
 
-    private ParallelConfig $parallelRunnerConfig;
+    private ?ParallelConfig $parallelRunnerConfig;
 
     /**
      * @var null|string
@@ -66,8 +66,6 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     public function __construct(string $name = 'default')
     {
-        $this->parallelRunnerConfig = ParallelConfig::sequential();
-
         // @TODO 4.0 cleanup
         if (Utils::isFutureModeEnabled()) {
             $this->name = $name.' (future mode)';
@@ -125,7 +123,7 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     public function getParallelConfig(): ParallelConfig
     {
-        return $this->parallelRunnerConfig;
+        return $this->parallelRunnerConfig ?? ParallelConfig::sequential();
     }
 
     public function getPhpExecutable(): ?string
