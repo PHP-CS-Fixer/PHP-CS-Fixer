@@ -101,7 +101,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * same spacing for all or specific for different tags.
      *
-     * @var int|int[]
+     * @var int|list<int>
      */
     private $spacing = 1;
 
