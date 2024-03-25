@@ -40,7 +40,7 @@ final class FunctionsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, array<int>}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallCases(): iterable
     {
@@ -284,7 +284,7 @@ A();
     }
 
     /**
-     * @return iterable<array{string, array<int>}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPre80Cases(): iterable
     {

@@ -40,6 +40,7 @@ The rule is part of the following rule sets:
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
 References
 ----------

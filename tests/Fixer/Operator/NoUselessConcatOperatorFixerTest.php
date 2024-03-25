@@ -136,6 +136,53 @@ $text2 = "intro:   "."   "." #a
             ',
         ];
 
+        yield 'do not fix if the execution result would be different' => [
+            '<?php
+                echo "abc $d" . "[$e]";
+                echo "abc $d" . "[3]";
+                echo "abc $d" . \'[3]\';
+                echo "abc $d" . "->e";
+                echo "abc $d" . \'->e\';
+                echo "abc $d" . "->$e";
+                echo "abc $d" . "?->e";
+                echo "abc $d" . "?->$e";
+                echo "abc $d" . \'?->e\';
+            ',
+        ];
+
+        yield 'do not fix if variables would be broken' => [
+            '<?php
+                echo "abc $d" . "e $f";
+                echo "abc $d" . "e";
+                echo "abc $d" . \'e\';
+                echo "abc $d" . "😃"; // with emoji
+                echo "私の名前は$name" . "です"; // multibyte characters (Japanese)
+            ',
+        ];
+
+        yield 'fix if variables would not be broken' => [
+            '<?php
+                echo "$a b";
+                echo "$a bcde";
+                echo "abc ${d}e";
+                echo "abc $d-efg";
+                echo "$a bcdef";
+                echo "abc ${d}ef";
+                echo "abc $d-efgh";
+                echo "abc $d-$e";
+            ',
+            '<?php
+                echo "$a" . " b";
+                echo "$a bc" . "de";
+                echo "abc ${d}" . "e";
+                echo "abc $d" . "-efg";
+                echo "$a bc" . \'def\';
+                echo "abc ${d}" . \'ef\';
+                echo "abc $d" . \'-efgh\';
+                echo "abc $d" . "-$e";
+            ',
+        ];
+
         yield 'single quote concat single quote but with line break after' => [
             "<?php \$fh = 'x'. // some comment
 'y';",

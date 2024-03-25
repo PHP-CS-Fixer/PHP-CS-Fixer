@@ -157,7 +157,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param array<array<int>> $annotationPositions Pairs of begin and end indices of main annotations
+     * @param list<array{int, int}> $annotationPositions Pairs of begin and end indices of main annotations
      */
     private function indentationCanBeFixed(Tokens $tokens, int $newLineTokenIndex, array $annotationPositions): bool
     {
