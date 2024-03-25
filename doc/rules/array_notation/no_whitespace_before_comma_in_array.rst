@@ -77,6 +77,10 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['after_heredoc' => true]``
