@@ -118,49 +118,49 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'namespace with wrong casing' => [
-            '<?php namespace Fixer\\Basic; class PsrAutoloadingFixerTest {}',
-            '<?php namespace Fixer\\BASIC; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Fixer\Basic; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Fixer\BASIC; class PsrAutoloadingFixerTest {}',
             null,
             __DIR__.'/../..',
         ];
 
         yield 'multiple namespaces in file' => [
-            '<?php namespace Foo\\Helpers; function helper() {}; namespace Foo\\Domain; class Feature {}',
+            '<?php namespace Foo\Helpers; function helper() {}; namespace Foo\Domain; class Feature {}',
         ];
 
         yield 'namespace and class with comments' => [
-            '<?php namespace /* namespace here */ PhpCsFixer\\Tests\\Fixer\\Basic; class /* hi there */ PsrAutoloadingFixerTest /* hello */ {} /* class end */',
-            '<?php namespace /* namespace here */ PhpCsFixer\\Tests\\Fixer\\Basic; class /* hi there */ Foo /* hello */ {} /* class end */',
+            '<?php namespace /* namespace here */ PhpCsFixer\Tests\Fixer\Basic; class /* hi there */ PsrAutoloadingFixerTest /* hello */ {} /* class end */',
+            '<?php namespace /* namespace here */ PhpCsFixer\Tests\Fixer\Basic; class /* hi there */ Foo /* hello */ {} /* class end */',
         ];
 
         yield 'namespace partially matching directory structure' => [
-            '<?php namespace Foo\\Bar\\Baz\\FIXER\\Basic; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo\Bar\Baz\FIXER\Basic; class PsrAutoloadingFixerTest {}',
         ];
 
         yield 'namespace partially matching directory structure with comment' => [
-            '<?php namespace /* hi there */ Foo\\Bar\\Baz\\FIXER\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+            '<?php namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
         ];
 
         yield 'namespace partially matching directory structure with configured directory' => [
-            '<?php namespace Foo\\Bar\\Baz\\Fixer\\Basic; class PsrAutoloadingFixerTest {}',
-            '<?php namespace Foo\\Bar\\Baz\\FIXER\\Basic; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo\Bar\Baz\Fixer\Basic; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo\Bar\Baz\FIXER\Basic; class PsrAutoloadingFixerTest {}',
             null,
             __DIR__.'/../..',
         ];
 
         yield 'namespace partially matching directory structure with comment and configured directory' => [
-            '<?php namespace /* hi there */ Foo\\Bar\\Baz\\Fixer\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
-            '<?php namespace /* hi there */ Foo\\Bar\\Baz\\FIXER\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+            '<?php namespace /* hi there */ Foo\Bar\Baz\Fixer\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+            '<?php namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
             null,
             __DIR__.'/../..',
         ];
 
         yield 'namespace not matching directory structure' => [
-            '<?php namespace Foo\\Bar\\Baz; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo\Bar\Baz; class PsrAutoloadingFixerTest {}',
         ];
 
         yield 'namespace not matching directory structure with configured directory' => [
-            '<?php namespace Foo\\Bar\\Baz; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo\Bar\Baz; class PsrAutoloadingFixerTest {}',
             null,
             null,
             __DIR__,

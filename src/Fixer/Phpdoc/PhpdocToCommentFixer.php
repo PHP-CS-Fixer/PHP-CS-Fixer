@@ -158,7 +158,7 @@ function returnClassName() {
                 continue;
             }
 
-            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\\-]+)\b~', $token->getContent(), $matches)) {
+            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\-]+)\b~', $token->getContent(), $matches)) {
                 foreach ($matches[1] as $match) {
                     if (\in_array(strtolower($match), $this->ignoredTags, true)) {
                         continue 2;

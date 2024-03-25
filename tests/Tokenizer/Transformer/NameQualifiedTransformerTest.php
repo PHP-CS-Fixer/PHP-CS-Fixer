@@ -248,7 +248,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
                 new Token([T_STRING, 'Transformer']),
                 new Token(';'),
             ],
-            '<?php namespace\\Transformer;',
+            '<?php namespace\Transformer;',
         ];
 
         yield [

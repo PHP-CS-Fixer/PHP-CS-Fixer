@@ -144,10 +144,7 @@ Rule sets
 
 The rule is part of the following rule set:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
-
-  ``['single_quoted' => 'ignore']``
-
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
 References
 ----------

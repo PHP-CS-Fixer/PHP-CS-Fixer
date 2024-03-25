@@ -209,7 +209,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     private function createTransformer(): TransformerInterface
     {
-        $transformerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
+        $transformerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 
         return new $transformerClassName();
     }

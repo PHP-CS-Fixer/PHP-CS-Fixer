@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class DataProviderAnalyzer
 {
-    private const REGEX_CLASS = '(?:\\\\?+'.TypeExpression::REGEX_IDENTIFIER
+    private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
         .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
 
     /**

@@ -181,17 +181,17 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 
         yield 'function name with escaped slash' => [
             '<?php \pack(...$args);',
-            '<?php call_user_func_array("\\\\pack", $args);',
+            '<?php call_user_func_array("\\\pack", $args);',
         ];
 
         yield 'function call_user_func_array with leading slash' => [
             '<?php \pack(...$args);',
-            '<?php \call_user_func_array("\\\\pack", $args);',
+            '<?php \call_user_func_array("\\\pack", $args);',
         ];
 
         yield 'function call_user_func_array caps' => [
             '<?php \pack(...$args);',
-            '<?php \CALL_USER_FUNC_ARRAY("\\\\pack", $args);',
+            '<?php \CALL_USER_FUNC_ARRAY("\\\pack", $args);',
         ];
 
         yield [

@@ -50,7 +50,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                use Foo\\Bar;
+                use Foo\Bar;
             '."
                 echo 'Foo\\Bar\\Thing';
                 ",
@@ -69,8 +69,8 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 ",
             '<?php
                 namespace Foo;
-                use Foo\\Bar;
-                echo \\Foo\\Bar\\Baz::class;
+                use Foo\Bar;
+                echo \Foo\Bar\Baz::class;
                 ',
         ];
 
@@ -233,7 +233,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 ",
             '<?php
                 namespace Foo;
-                var_dump(Bar\\Baz::class);
+                var_dump(Bar\Baz::class);
                 ',
         ];
 
@@ -243,7 +243,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 var_dump('Foo\\Bar\\Baz');
                 ",
             '<?php
-                namespace Foo\\Bar;
+                namespace Foo\Bar;
                 var_dump(Baz::class);
                 ',
         ];
@@ -289,18 +289,18 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                     var_dump(Foo::class);
                 }
                 namespace A {
-                    use B\\C;
+                    use B\C;
                     var_dump(C::class);
                 }
                 namespace {
-                    var_dump(Bar\\Baz::class);
+                    var_dump(Bar\Baz::class);
                 }
                 namespace B {
-                    use A\\C\\D;
+                    use A\C\D;
                     var_dump(D::class);
                 }
                 namespace {
-                    var_dump(Qux\\Quux::class);
+                    var_dump(Qux\Quux::class);
                 }
                 ',
         ];

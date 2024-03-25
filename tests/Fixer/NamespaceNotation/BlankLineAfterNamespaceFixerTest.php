@@ -247,7 +247,7 @@ class X extends Y {}',
     {
         yield [
             "<?php namespace A\\B;\r\n\r\nclass C {}",
-            '<?php namespace A\\B;  class C {}',
+            '<?php namespace A\B;  class C {}',
         ];
 
         yield [

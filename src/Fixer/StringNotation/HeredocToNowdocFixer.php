@@ -81,12 +81,12 @@ final class HeredocToNowdocFixer extends AbstractFixer
 
             $content = $tokens[$index + 1]->getContent();
             // regex: odd number of backslashes, not followed by dollar
-            if (Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?![$\\\\])/', $content)) {
+            if (Preg::match('/(?<!\\\)(?:\\\{2})*\\\(?![$\\\])/', $content)) {
                 continue;
             }
 
             $tokens[$index] = $this->convertToNowdoc($token);
-            $content = str_replace(['\\\\', '\\$'], ['\\', '$'], $content);
+            $content = str_replace(['\\\\', '\$'], ['\\', '$'], $content);
             $tokens[$index + 1] = new Token([
                 $tokens[$index + 1]->getId(),
                 $content,
