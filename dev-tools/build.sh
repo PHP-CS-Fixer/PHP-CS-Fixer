@@ -4,6 +4,9 @@ set -eu
 # ensure that deps will work on lowest supported PHP version
 composer config platform.php 7.4
 
+# Infection is not compatible with 7.4, and basically not needed in PHAR
+composer remove --dev infection/infection --no-update
+
 # install package deps without dev-deps / remove already installed dev-deps
 # box can ignore dev-deps, but dev-deps, when installed, may lower version of prod-deps
 composer update --optimize-autoloader --no-interaction --no-progress --no-scripts --no-dev
