@@ -1,0 +1,24 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "testFrameworkOptions": "--testsuite=unit",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "mutators": {
+        "@default": true,
+        "Throw_": {
+            "ignore": [
+                // It makes `tests/Fixtures/cache-file-handler/cache-file` unreadable (permissions)
+                "PhpCsFixer\\Cache\\FileHandler"
+            ]
+        },
+        "LogicalNot": {
+            "ignore": [
+                // Causes modifications in `tests/Fixtures/FixerTest/fix/*.php`
+                "PhpCsFixer\\Runner\\Runner::fixFile"
+            ]
+        }
+    }
+}
