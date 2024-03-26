@@ -455,6 +455,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'fully_qualified_strict_types' => [
                 'no_superfluous_phpdoc_tags',
+                'ordered_attributes',
                 'ordered_imports',
                 'ordered_interfaces',
                 'statement_indentation',
