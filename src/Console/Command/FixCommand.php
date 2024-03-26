@@ -260,22 +260,26 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
+            $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
+
+            $stdErr->writeln(sprintf(
+                'Running analysis on %d core%s.',
+                $resolver->getParallelConfig()->getMaxProcesses(),
+                $isParallel ? sprintf(
+                    's with %d file%s per process',
+                    $resolver->getParallelConfig()->getFilesPerProcess(),
+                    $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : ''
+                ) : ' sequentially'
+            ));
 
             // @TODO remove when parallel runner is mature enough and works as expected
-            if ($resolver->getParallelConfig()->getMaxProcesses() > 1) {
+            if ($isParallel) {
                 $stdErr->writeln(
                     sprintf(
                         $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
                         'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
                     )
                 );
-
-                $stdErr->writeln(sprintf(
-                    'Running analysis on %d cores with %d file%s per process.',
-                    $resolver->getParallelConfig()->getMaxProcesses(),
-                    $resolver->getParallelConfig()->getFilesPerProcess(),
-                    $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : ''
-                ));
             }
 
             $configFile = $resolver->getConfigFile();

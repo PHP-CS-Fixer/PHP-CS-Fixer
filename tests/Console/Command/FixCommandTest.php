@@ -73,6 +73,37 @@ final class FixCommandTest extends TestCase
     }
 
     /**
+     * @covers \PhpCsFixer\Console\Command\WorkerCommand
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
+     */
+    public function testSequentialRun(): void
+    {
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+            \$config->setRules(['header_comment' => ['header' => 'SEQUENTIAL!']]);
+            \$config->setParallelConfig(\\PhpCsFixer\\Runner\\Parallel\\ParallelConfig::sequential());
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('Running analysis on 1 core sequentially.', $cmdTester->getDisplay());
+        self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
+        self::assertSame(8, $cmdTester->getStatusCode());
+    }
+
+    /**
      * There's no simple way to cover parallelisation with tests, because it involves a lot of hardcoded logic under the hood,
      * like opening server, communicating through sockets, etc. That's why we only test `fix` command with proper
      * parallel config, so runner utilises multi-processing internally. Expected outcome is information about utilising multiple CPUs.
