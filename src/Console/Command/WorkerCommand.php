@@ -59,7 +59,6 @@ final class WorkerCommand extends Command
     private ConfigurationResolver $configurationResolver;
     private ErrorsManager $errorsManager;
     private EventDispatcherInterface $eventDispatcher;
-    private ReadonlyCacheManager $readonlyCacheManager;
 
     /** @var list<FixerFileProcessedEvent> */
     private array $events;
@@ -248,8 +247,6 @@ final class WorkerCommand extends Command
             $this->toolInfo
         );
 
-        $this->readonlyCacheManager = new ReadonlyCacheManager($this->configurationResolver->getCacheManager());
-
         return new Runner(
             null, // Paths are known when parallelisation server requests new chunk, not now
             $this->configurationResolver->getFixers(),
@@ -258,7 +255,7 @@ final class WorkerCommand extends Command
             $this->errorsManager,
             $this->configurationResolver->getLinter(),
             $this->configurationResolver->isDryRun(),
-            $this->readonlyCacheManager,
+            new ReadonlyCacheManager($this->configurationResolver->getCacheManager()),
             $this->configurationResolver->getDirectory(),
             $this->configurationResolver->shouldStopOnViolation(),
             ParallelConfig::sequential(), // IMPORTANT! Worker must run in sequential mode
