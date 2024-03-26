@@ -18,6 +18,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 /**
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @internal
  */
 final class RunnerConfig
 {
