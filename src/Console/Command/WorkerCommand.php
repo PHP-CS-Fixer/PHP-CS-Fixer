@@ -61,7 +61,7 @@ final class WorkerCommand extends Command
     private EventDispatcherInterface $eventDispatcher;
     private ReadonlyCacheManager $readonlyCacheManager;
 
-    /** @var array<int, FixerFileProcessedEvent> */
+    /** @var list<FixerFileProcessedEvent> */
     private array $events;
 
     public function __construct(ToolInfoInterface $toolInfo)
