@@ -92,15 +92,18 @@ final class PharTest extends AbstractSmokeTestCase
 
     public function testFixSequential(): void
     {
-        self::assertSame(
-            0,
-            self::executePharCommand('fix src/Config.php -vvv --dry-run --sequential --diff --using-cache=no 2>&1')->getCode()
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --sequential --diff --using-cache=no 2>&1');
+
+        self::assertSame(0, $command->getCode());
+        self::assertMatchesRegularExpression(
+            '/Running analysis on 1 core sequentially/',
+            $command->getOutput()
         );
     }
 
     public function testFixParallel(): void
     {
-        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1');
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config=.php-cs-fixer.dist.php 2>&1');
 
         self::assertSame(0, $command->getCode());
         self::assertMatchesRegularExpression(
