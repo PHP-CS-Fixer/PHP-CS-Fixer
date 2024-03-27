@@ -70,6 +70,12 @@ jobs:
       - name: Check - phpstan
         run: ./dev-tools/vendor/bin/phpstan analyse --ansi
 
+      - name: Check - well defined array keys
+        run: |
+          echo "Array types must explicitly declare key-type, i.e. as \`array<type-of-key, type-of-value>\`, \`list<type-of-value>\` or \`array{...}\` - instead of \`array<type-of-value>\` or \`type-of-value[]\`."
+          echo "Hint: don't apply those rules blindly, provide array key type explicitly\!"
+          ./php-cs-fixer check --rules=phpdoc_list_type,phpdoc_array_type tests/ --path-mode=intersection # @TODO run for whole project, when no more violations
+
       - name: Check - composer-unused
         run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
 
