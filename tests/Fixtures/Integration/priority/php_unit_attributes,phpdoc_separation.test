@@ -1,0 +1,40 @@
+--TEST--
+Integration of fixers: php_unit_attributes,phpdoc_separation.
+--RULESET--
+{"php_unit_attributes": true, "phpdoc_separation": true }
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+namespace Foo;
+use PHPUnit\Framework\TestCase;
+class BarTest extends TestCase
+{
+    /**
+     * @see food
+     *
+     * @return void
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getData')]
+    public function testSomething()
+    {
+    }
+}
+
+--INPUT--
+<?php
+namespace Foo;
+use PHPUnit\Framework\TestCase;
+class BarTest extends TestCase
+{
+    /**
+     * @see food
+     *
+     * @dataProvider getData
+     *
+     * @return void
+     */
+    public function testSomething()
+    {
+    }
+}

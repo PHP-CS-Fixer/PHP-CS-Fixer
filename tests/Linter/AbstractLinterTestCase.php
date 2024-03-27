@@ -41,7 +41,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @group medium
+     * @medium
      *
      * @dataProvider provideLintFileCases
      */
