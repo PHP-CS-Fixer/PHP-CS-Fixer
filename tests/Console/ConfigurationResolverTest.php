@@ -1062,7 +1062,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param string[] $rules
+     * @param list<string> $rules
      *
      * @dataProvider provideResolveRenamedRulesWithUnknownRulesCases
      */

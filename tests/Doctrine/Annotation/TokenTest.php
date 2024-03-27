@@ -67,7 +67,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsTypeReturnsTrueCases
      *
-     * @param int|int[] $types
+     * @param int|list<int> $types
      */
     public function testIsTypeReturnsTrue(int $type, $types): void
     {
@@ -97,7 +97,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsTypeReturnsFalseCases
      *
-     * @param int|int[] $types
+     * @param int|list<int> $types
      */
     public function testIsTypeReturnsFalse(int $type, $types): void
     {

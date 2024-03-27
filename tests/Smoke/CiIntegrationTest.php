@@ -91,9 +91,9 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
     }
 
     /**
-     * @param string[] $caseCommands
-     * @param string[] $expectedResult1Lines
-     * @param string[] $expectedResult2Lines
+     * @param list<string> $caseCommands
+     * @param list<string> $expectedResult1Lines
+     * @param list<string> $expectedResult2Lines
      *
      * @dataProvider provideIntegrationCases
      */

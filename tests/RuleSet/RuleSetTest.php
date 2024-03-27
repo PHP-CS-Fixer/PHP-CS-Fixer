@@ -39,7 +39,7 @@ final class RuleSetTest extends TestCase
     /**
      * Options for which order of array elements matters.
      *
-     * @var string[]
+     * @var list<string>
      */
     private const ORDER_MATTERS = [
         'ordered_imports.imports_order',

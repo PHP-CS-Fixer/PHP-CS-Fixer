@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
-     * @param int[] $indices
+     * @param list<int> $indices
      *
      * @dataProvider provideIsGlobalFunctionCallCases
      */
@@ -272,7 +272,7 @@ A();
     }
 
     /**
-     * @param int[] $indices
+     * @param list<int> $indices
      *
      * @dataProvider provideIsGlobalFunctionCallPre80Cases
      *
@@ -298,7 +298,7 @@ A();
     }
 
     /**
-     * @param int[] $indices
+     * @param list<int> $indices
      *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      *
@@ -344,7 +344,7 @@ class Foo {}
     }
 
     /**
-     * @param int[] $indices
+     * @param list<int> $indices
      *
      * @dataProvider provideIsGlobalFunctionCallPhp81Cases
      *
@@ -857,7 +857,7 @@ class(){};
     }
 
     /**
-     * @param int[] $expectedIndices
+     * @param list<int> $expectedIndices
      */
     private static function assertIsGlobalFunctionCall(array $expectedIndices, string $code): void
     {

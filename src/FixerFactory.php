@@ -104,7 +104,7 @@ final class FixerFactory
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param iterable<FixerInterface> $fixers
      *
      * @return $this
      */
@@ -217,7 +217,7 @@ final class FixerFactory
     }
 
     /**
-     * @param array<string, string[]> $fixerConflicts
+     * @param array<string, list<string>> $fixerConflicts
      */
     private function generateConflictMessage(array $fixerConflicts): string
     {

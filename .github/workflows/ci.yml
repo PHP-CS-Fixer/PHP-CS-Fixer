@@ -213,7 +213,8 @@ jobs:
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
       - name: Run mutation tests (Infection)
-        if: matrix.run-mutation-tests == 'yes'
+        # Run only on pull requests because we run mutations tests only for diff between branches
+        if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
         run: |

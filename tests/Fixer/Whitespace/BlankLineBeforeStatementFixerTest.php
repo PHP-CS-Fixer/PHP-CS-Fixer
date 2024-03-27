@@ -1361,7 +1361,7 @@ function foo() {
     /**
      * @dataProvider provideFixWithMultipleConfigStatementsCases
      *
-     * @param string[] $statements
+     * @param list<string> $statements
      */
     public function testFixWithMultipleConfigStatements(array $statements, string $expected, ?string $input = null): void
     {

@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     /**
-     * @param null|int[] $expected
+     * @param null|list<int> $expected
      *
      * @dataProvider provideAbstractFunctionReferenceFixerCases
      */

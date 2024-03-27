@@ -26,7 +26,7 @@ use PhpCsFixer\WordMatcher;
 final class WordMatcherTest extends TestCase
 {
     /**
-     * @param string[] $candidates
+     * @param list<string> $candidates
      *
      * @dataProvider provideMatchCases
      */
@@ -37,7 +37,7 @@ final class WordMatcherTest extends TestCase
     }
 
     /**
-     * @return iterable<array{?string, string, string[]}>
+     * @return iterable<array{?string, string, list<string>}>
      */
     public static function provideMatchCases(): iterable
     {
