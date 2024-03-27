@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: single_expression_per_line,array_indentation.
+--RULESET--
+{ "single_expression_per_line": true, "array_indentation": true}
+--EXPECT--
+<?php
+[
+    $a,
+    $b
+];
+
+--INPUT--
+<?php
+[$a,
+$b];

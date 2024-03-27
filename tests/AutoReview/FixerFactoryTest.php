@@ -880,6 +880,10 @@ final class FixerFactoryTest extends TestCase
             'single_class_element_per_statement' => [
                 'class_attributes_separation',
             ],
+            'single_expression_per_line' => [
+                'array_indentation',
+                'statement_indentation',
+            ],
             'single_import_per_statement' => [
                 'multiline_whitespace_before_semicolons',
                 'no_leading_import_slash',
