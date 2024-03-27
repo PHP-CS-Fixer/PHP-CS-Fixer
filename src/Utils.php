@@ -123,7 +123,7 @@ final class Utils
     /**
      * Join names in natural language using specified wrapper (double quote by default).
      *
-     * @param string[] $names
+     * @param list<string> $names
      *
      * @throws \InvalidArgumentException
      */
@@ -151,7 +151,7 @@ final class Utils
     /**
      * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
      *
-     * @param string[] $names
+     * @param list<string> $names
      *
      * @throws \InvalidArgumentException
      */

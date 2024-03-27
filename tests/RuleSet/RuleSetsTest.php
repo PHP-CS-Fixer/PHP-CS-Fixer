@@ -201,7 +201,7 @@ Integration of %s.
             throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
-        /** @var string[] $allowedVersionsForRuleset */
+        /** @var list<string> $allowedVersionsForRuleset */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0

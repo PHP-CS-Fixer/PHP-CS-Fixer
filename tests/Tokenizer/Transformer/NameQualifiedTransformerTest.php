@@ -32,8 +32,8 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     use AssertTokensTrait;
 
     /**
-     * @param Token[]      $expected
-     * @param null|Token[] $input
+     * @param list<Token>      $expected
+     * @param null|list<Token> $input
      *
      * @dataProvider provideProcessCases
      *
@@ -157,7 +157,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param Token[] $expected
+     * @param list<Token> $expected
      *
      * @dataProvider providePriorityCases
      */

@@ -219,7 +219,7 @@ abstract class Foo
     /**
      * @dataProvider provideFixWithAsCases
      *
-     * @param array<string, string[]> $config
+     * @param array<string, list<string>> $config
      */
     public function testFixWithAs(string $expected, ?string $input = null, array $config = []): void
     {
