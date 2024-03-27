@@ -26,7 +26,7 @@ final class ErrorTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $type = 123;
+        $type = 1;
         $filePath = 'foo.php';
 
         $error = new Error(
@@ -43,7 +43,7 @@ final class ErrorTest extends TestCase
 
     public function testConstructorSetsValues2(): void
     {
-        $type = 456;
+        $type = 2;
         $filePath = __FILE__;
         $source = new \Exception();
         $appliedFixers = ['some_rule'];
@@ -62,5 +62,32 @@ final class ErrorTest extends TestCase
         self::assertSame($source, $error->getSource());
         self::assertSame($appliedFixers, $error->getAppliedFixers());
         self::assertSame($diff, $error->getDiff());
+    }
+
+    public function testErrorCanBeSerialised(): void
+    {
+        $type = 2;
+        $filePath = __FILE__;
+        $source = new \Exception();
+        $appliedFixers = ['some_rule'];
+        $diff = '__diff__';
+
+        $error = new Error(
+            $type,
+            $filePath,
+            $source,
+            $appliedFixers,
+            $diff
+        );
+        $serialisedError = $error->jsonSerialize();
+
+        self::assertSame($type, $serialisedError['type']);
+        self::assertSame($filePath, $serialisedError['filePath']);
+        self::assertSame($source->getMessage(), $serialisedError['source']['message']);
+        self::assertSame($source->getLine(), $serialisedError['source']['line']);
+        self::assertSame($source->getFile(), $serialisedError['source']['file']);
+        self::assertSame($source->getCode(), $serialisedError['source']['code']);
+        self::assertSame($appliedFixers, $serialisedError['appliedFixers']);
+        self::assertSame($diff, $serialisedError['diff']);
     }
 }

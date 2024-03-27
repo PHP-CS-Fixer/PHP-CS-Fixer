@@ -23,6 +23,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -35,6 +36,18 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends TestCase
 {
+    public function testFutureMode(): void
+    {
+        $futureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $config = new Config('test');
+        self::assertSame('test (future mode)', $config->getName());
+        self::assertArrayHasKey('@PER-CS', $config->getRules());
+
+        putenv('PHP_CS_FIXER_FUTURE_MODE='.$futureMode);
+    }
+
     public function testConfigRulesUsingSeparateMethod(): void
     {
         $config = new Config();
@@ -267,5 +280,22 @@ final class ConfigTest extends TestCase
 
         self::assertSame($anonymousConfig->getName(), 'default');
         self::assertSame($namedConfig->getName(), 'foo');
+    }
+
+    public function testConfigWithDefaultParallelConfig(): void
+    {
+        $config = new Config();
+
+        self::assertSame(1, $config->getParallelConfig()->getMaxProcesses());
+    }
+
+    public function testConfigWithExplicitParallelConfig(): void
+    {
+        $config = new Config();
+        $config->setParallelConfig(new ParallelConfig(5, 10, 15));
+
+        self::assertSame(5, $config->getParallelConfig()->getMaxProcesses());
+        self::assertSame(10, $config->getParallelConfig()->getFilesPerProcess());
+        self::assertSame(15, $config->getParallelConfig()->getProcessTimeout());
     }
 }

@@ -173,12 +173,13 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION;
 
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n([\.S]{%d})%s\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
+            'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),

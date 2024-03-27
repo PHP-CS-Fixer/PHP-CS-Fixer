@@ -15,13 +15,14 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface
+class Config implements ConfigInterface, ParallelRunnerConfigInterface
 {
     private string $cacheFile = '.php-cs-fixer.cache';
 
@@ -46,6 +47,8 @@ class Config implements ConfigInterface
     private string $lineEnding = "\n";
 
     private string $name;
+
+    private ?ParallelConfig $parallelRunnerConfig;
 
     /**
      * @var null|string
@@ -120,6 +123,11 @@ class Config implements ConfigInterface
         return $this->name;
     }
 
+    public function getParallelConfig(): ParallelConfig
+    {
+        return $this->parallelRunnerConfig ?? ParallelConfig::sequential();
+    }
+
     public function getPhpExecutable(): ?string
     {
         return $this->phpExecutable;
@@ -187,6 +195,13 @@ class Config implements ConfigInterface
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
         $this->lineEnding = $lineEnding;
+
+        return $this;
+    }
+
+    public function setParallelConfig(ParallelConfig $config): ConfigInterface
+    {
+        $this->parallelRunnerConfig = $config;
 
         return $this;
     }

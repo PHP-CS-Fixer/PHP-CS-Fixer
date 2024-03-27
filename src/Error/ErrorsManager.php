@@ -29,6 +29,21 @@ final class ErrorsManager
     private array $errors = [];
 
     /**
+     * @var list<WorkerError>
+     */
+    private array $workerErrors = [];
+
+    /**
+     * Returns worker errors reported during processing files in parallel.
+     *
+     * @return list<WorkerError>
+     */
+    public function getWorkerErrors(): array
+    {
+        return $this->workerErrors;
+    }
+
+    /**
      * Returns errors reported during linting before fixing.
      *
      * @return list<Error>
@@ -59,15 +74,34 @@ final class ErrorsManager
     }
 
     /**
+     * Returns errors reported for specified path.
+     *
+     * @return list<Error>
+     */
+    public function forPath(string $path): array
+    {
+        return array_values(array_filter($this->errors, static fn (Error $error): bool => $path === $error->getFilePath()));
+    }
+
+    /**
      * Returns true if no errors were reported.
      */
     public function isEmpty(): bool
     {
-        return [] === $this->errors;
+        return [] === $this->errors && [] === $this->workerErrors;
     }
 
-    public function report(Error $error): void
+    /**
+     * @param Error|WorkerError $error
+     */
+    public function report($error): void
     {
+        if ($error instanceof WorkerError) {
+            $this->workerErrors[] = $error;
+
+            return;
+        }
+
         $this->errors[] = $error;
     }
 }
