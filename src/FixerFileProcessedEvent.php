@@ -37,15 +37,38 @@ final class FixerFileProcessedEvent extends Event
     public const STATUS_EXCEPTION = 5;
     public const STATUS_LINT = 6;
 
+    private \SplFileInfo $file;
+
     private int $status;
 
-    public function __construct(int $status)
+    /** @var array<string> */
+    private array $appliedFixers;
+
+    /**
+     * @param array<string> $appliedFixers
+     */
+    public function __construct(\SplFileInfo $file, int $status, array $appliedFixers = [])
     {
+        $this->file = $file;
         $this->status = $status;
+        $this->appliedFixers = $appliedFixers;
     }
 
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    public function getFile(): \SplFileInfo
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getAppliedFixers(): array
+    {
+        return $this->appliedFixers;
     }
 }

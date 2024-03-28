@@ -35,17 +35,20 @@ final class TextReporter implements ReporterInterface
         $identifiedFiles = 0;
         foreach ($reportSummary->getChanged() as $file => $fixResult) {
             ++$identifiedFiles;
-            $output .= sprintf('%4d) %s', $identifiedFiles, $file);
 
-            if ($reportSummary->shouldAddAppliedFixers()) {
-                $output .= $this->getAppliedFixers(
-                    $reportSummary->isDecoratedOutput(),
-                    $fixResult['appliedFixers'],
-                );
+            if ($reportSummary->shouldPrintFileSummary()) {
+                $output .= sprintf('%4d) %s', $identifiedFiles, $file);
+
+                if ($reportSummary->shouldAddAppliedFixers()) {
+                    $output .= $this->getAppliedFixers(
+                        $reportSummary->isDecoratedOutput(),
+                        $fixResult['appliedFixers'],
+                    );
+                }
+
+                $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult['diff']);
+                $output .= PHP_EOL;
             }
-
-            $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult['diff']);
-            $output .= PHP_EOL;
         }
 
         return $output.$this->getFooter(

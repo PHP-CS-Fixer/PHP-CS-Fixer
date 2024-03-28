@@ -21,6 +21,6 @@ parameters:
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 1020
+            count: 1019
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

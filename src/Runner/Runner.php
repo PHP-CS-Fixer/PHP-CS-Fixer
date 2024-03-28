@@ -141,7 +141,7 @@ final class Runner
         } catch (LintingException $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_INVALID)
+                new FixerFileProcessedEvent($file, FixerFileProcessedEvent::STATUS_INVALID)
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
@@ -181,14 +181,14 @@ final class Runner
         } catch (\ParseError $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
-                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
+                new FixerFileProcessedEvent($file, FixerFileProcessedEvent::STATUS_LINT, $appliedFixers)
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
 
             return null;
         } catch (\Throwable $e) {
-            $this->processException($name, $e);
+            $this->processException($file, $e, $appliedFixers);
 
             return null;
         }
@@ -215,7 +215,7 @@ final class Runner
             } catch (LintingException $e) {
                 $this->dispatchEvent(
                     FixerFileProcessedEvent::NAME,
-                    new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_LINT)
+                    new FixerFileProcessedEvent($file, FixerFileProcessedEvent::STATUS_LINT, $appliedFixers)
                 );
 
                 $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
@@ -270,7 +270,11 @@ final class Runner
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            new FixerFileProcessedEvent(null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            new FixerFileProcessedEvent(
+                $file,
+                null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES,
+                $appliedFixers
+            )
         );
 
         return $fixInfo;
@@ -278,15 +282,17 @@ final class Runner
 
     /**
      * Process an exception that occurred.
+     *
+     * @param array<string> $appliedFixers
      */
-    private function processException(string $name, \Throwable $e): void
+    private function processException(\SplFileInfo $file, \Throwable $e, array $appliedFixers = []): void
     {
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_EXCEPTION)
+            new FixerFileProcessedEvent($file, FixerFileProcessedEvent::STATUS_EXCEPTION, $appliedFixers)
         );
 
-        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name, $e));
+        $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $file->getPathname(), $e));
     }
 
     private function dispatchEvent(string $name, Event $event): void

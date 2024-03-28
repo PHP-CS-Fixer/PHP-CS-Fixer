@@ -20,8 +20,10 @@ namespace PhpCsFixer\Console\Output\Progress;
 final class ProgressOutputType
 {
     public const NONE = 'none';
-    public const DOTS = 'dots';
     public const BAR = 'bar';
+    public const DETAIL = 'detail';
+    public const DOTS = 'dots';
+    public const MEANINGFUL = 'meaningful';
 
     /**
      * @return list<ProgressOutputType::*>
@@ -30,7 +32,9 @@ final class ProgressOutputType
     {
         return [
             self::BAR,
+            self::DETAIL,
             self::DOTS,
+            self::MEANINGFUL,
             self::NONE,
         ];
     }

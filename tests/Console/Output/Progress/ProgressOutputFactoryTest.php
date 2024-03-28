@@ -15,9 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
+use PhpCsFixer\Console\Output\Progress\DetailOutput;
 use PhpCsFixer\Console\Output\Progress\DotsOutput;
 use PhpCsFixer\Console\Output\Progress\NullOutput;
+use PhpCsFixer\Console\Output\Progress\OnlyMeaningfulOutput;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
+use PhpCsFixer\Console\Output\Progress\ProgressOutputInterface;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
@@ -40,6 +43,9 @@ final class ProgressOutputFactoryTest extends TestCase
         self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }
 
+    /**
+     * @return iterable<string, array{0: ProgressOutputType::*|string, 1: OutputContext, 2: class-string<ProgressOutputInterface>}>
+     */
     public static function provideValidProcessOutputIsCreatedCases(): iterable
     {
         $context = new OutputContext(new SymfonyNullOutput(), 100, 10);
@@ -50,6 +56,10 @@ final class ProgressOutputFactoryTest extends TestCase
         yield 'dots' => [ProgressOutputType::DOTS, $context, DotsOutput::class];
 
         yield 'dots with null output' => [ProgressOutputType::DOTS, $nullContext, NullOutput::class];
+
+        yield 'detail' => ['detail', $context, DetailOutput::class];
+
+        yield 'meaningful' => ['meaningful', $context, OnlyMeaningfulOutput::class];
 
         yield 'unsupported type with null output' => ['boom', $nullContext, NullOutput::class];
     }
