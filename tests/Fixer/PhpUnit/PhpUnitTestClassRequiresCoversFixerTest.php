@@ -284,6 +284,38 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'already with attribute: #CoversClass' => [
+            <<<'PHP'
+                <?php
+                #[CoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with attribute: #CoversNothing' => [
+            <<<'PHP'
+                <?php
+                #[CoversNothing]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+    }
+
+    /**
      * @dataProvider provideFix82Cases
      *
      * @requires PHP 8.2

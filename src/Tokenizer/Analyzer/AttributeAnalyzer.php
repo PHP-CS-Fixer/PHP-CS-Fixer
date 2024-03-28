@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -66,5 +67,36 @@ final class AttributeAnalyzer
         }
 
         return 0 === $count;
+    }
+
+    /**
+     * Currently support only classes.
+     *
+     * @todo: support constants, functions and properties (when there is a fixer needing it)
+     *
+     * @return array<AttributeAnalysis>
+     */
+    public static function getAttributesForElement(Tokens $tokens, int $index): array
+    {
+        if (!$tokens[$index]->isGivenKind([T_CLASS])) {
+            throw new \InvalidArgumentException(sprintf('Index %d cannot have attributes, or is not not yet supported by "%s".', $index, __FUNCTION__));
+        }
+
+        $attributes = [];
+
+        $attributeEndIndex = $tokens->getPrevTokenOfKind(
+            $index,
+            ['}', [T_OPEN_TAG], [CT::T_ATTRIBUTE_CLOSE]]
+        );
+
+        while ($tokens[$attributeEndIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $attributeStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $attributeEndIndex);
+
+            array_unshift($attributes, new AttributeAnalysis($attributeStartIndex, $attributeEndIndex));
+
+            $attributeEndIndex = $tokens->getPrevMeaningfulToken($attributeStartIndex);
+        }
+
+        return $attributes;
     }
 }
