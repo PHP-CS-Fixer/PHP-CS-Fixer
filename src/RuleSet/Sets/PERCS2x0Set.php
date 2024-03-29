@@ -42,6 +42,10 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
             ],
             'method_argument_space' => true,
             'single_line_empty_body' => true,
+            'trailing_comma_in_multiline' => [
+                'after_heredoc' => true,
+                'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+            ],
         ];
     }
 
