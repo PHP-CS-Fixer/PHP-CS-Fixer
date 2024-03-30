@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
-use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -28,30 +27,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @requires PHP <8.0
-     *
-     * @dataProvider provideInvalidConfigurationCases
-     *
-     * @param mixed $exceptionMessage
-     * @param mixed $configuration
-     */
-    public function testInvalidConfiguration($exceptionMessage, $configuration): void
-    {
-        $this->expectException(InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessage($exceptionMessage);
-
-        $this->fixer->configure($configuration);
-    }
-
-    public static function provideInvalidConfigurationCases(): iterable
-    {
-        yield [
-            '[trailing_comma_in_multiline] Invalid configuration for env: "parameters" option can only be enabled with PHP 8.0+.',
-            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-        ];
-    }
-
     /**
      * @param array<string, mixed> $config
      *
