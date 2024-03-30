@@ -2,3 +2,5 @@
 Integration of @PER-CS2.0.
 --RULESET--
 {"@PER-CS2.0": true}
+--REQUIREMENTS--
+{"php>": 80000}
