@@ -343,6 +343,8 @@ use Bar;
                 $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
             } elseif (self::SORT_LENGTH_ORDER_DESC === $this->configuration['sort_length_order']) {
                 $sortResult = $firstNamespaceLength > $secondNamespaceLength ? -1 : 1;
+            } else {
+                $sortResult = 0;
             }
         }
 
