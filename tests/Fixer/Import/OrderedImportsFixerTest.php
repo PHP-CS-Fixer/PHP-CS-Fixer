@@ -1117,7 +1117,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
             $input,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-                'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
                 'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
             ],
         ];
@@ -1234,7 +1233,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1293,7 +1291,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
             'case_sensitive' => true,
         ]);
@@ -1327,7 +1324,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1456,7 +1452,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1547,7 +1542,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1628,7 +1622,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1725,7 +1718,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1770,7 +1762,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1811,7 +1802,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1836,7 +1826,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -1856,7 +1845,6 @@ use function some\a\{fn_a, fn_b, fn_c,};
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => null,
         ]);
 
@@ -2001,7 +1989,6 @@ use const ZZZ;
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'sort_length_order' => OrderedImportsFixer::SORT_LENGTH_ORDER_ASC,
             'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ]);
 
