@@ -78,6 +78,16 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     public const SORT_NONE = 'none';
 
     /**
+     * @internal
+     */
+    public const SORT_LENGTH_ORDER_ASC = 'asc';
+
+    /**
+     * @internal
+     */
+    public const SORT_LENGTH_ORDER_DESC = 'desc';
+
+    /**
      * Array of supported sort types in configuration.
      *
      * @var list<string>
@@ -90,6 +100,13 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      * @var list<string>
      */
     private const SUPPORTED_SORT_ALGORITHMS = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
+
+    /**
+     * Array of supported sort length order variants in configuration.
+     *
+     * @var list<string>
+     */
+    private const SUPPORTED_SORT_LENGTH_ORDER = [self::SORT_LENGTH_ORDER_ASC, self::SORT_LENGTH_ORDER_DESC];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -248,6 +265,10 @@ use Bar;
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
+            (new FixerOptionBuilder('sort_length_order', 'Should the operators be sorted in ascending or descending order.'))
+                ->setAllowedValues(self::SUPPORTED_SORT_LENGTH_ORDER)
+                ->setDefault(self::SORT_LENGTH_ORDER_ASC)
+                ->getOption(),
             (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
                 ->setAllowedValues([static function (?array $value) use ($supportedSortTypes): bool {
@@ -318,7 +339,11 @@ use Bar;
                 ? $firstNamespace <=> $secondNamespace
                 : strcasecmp($firstNamespace, $secondNamespace);
         } else {
-            $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
+            if ($this->configuration['sort_length_order'] === self::SORT_LENGTH_ORDER_ASC) {
+                $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
+            } elseif ($this->configuration['sort_length_order'] === self::SORT_LENGTH_ORDER_DESC) {
+                $sortResult = $firstNamespaceLength > $secondNamespaceLength ? -1 : 1;
+            }
         }
 
         return $sortResult;
