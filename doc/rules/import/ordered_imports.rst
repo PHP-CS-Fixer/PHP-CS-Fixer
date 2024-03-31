@@ -35,6 +35,15 @@ Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
 
 Default value: ``'alpha'``
 
+``sort_length_order``
+~~~~~~~~~~~~~~~~~~~~~
+
+Should the operators be sorted in ascending or descending order.
+
+Allowed values: ``'asc'`` and ``'desc'``
+
+Default value: ``'asc'``
+
 Examples
 --------
 
