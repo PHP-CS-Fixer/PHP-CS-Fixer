@@ -339,9 +339,9 @@ use Bar;
                 ? $firstNamespace <=> $secondNamespace
                 : strcasecmp($firstNamespace, $secondNamespace);
         } else {
-            if ($this->configuration['sort_length_order'] === self::SORT_LENGTH_ORDER_ASC) {
+            if (self::SORT_LENGTH_ORDER_ASC === $this->configuration['sort_length_order']) {
                 $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
-            } elseif ($this->configuration['sort_length_order'] === self::SORT_LENGTH_ORDER_DESC) {
+            } elseif (self::SORT_LENGTH_ORDER_DESC === $this->configuration['sort_length_order']) {
                 $sortResult = $firstNamespaceLength > $secondNamespaceLength ? -1 : 1;
             }
         }
