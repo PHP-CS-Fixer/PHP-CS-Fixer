@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @phpstan-import-type _AttributeItems from AttributeAnalysis
  */
 final class AttributeAnalyzer
 {
@@ -109,7 +111,7 @@ final class AttributeAnalyzer
 
         $startIndex = $index;
         if ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-            // Include docblock if it exists
+            // Include comments/PHPDoc if they are present
             $startIndex = $tokens->getNextNonWhitespace($prevIndex);
         }
 
@@ -119,16 +121,18 @@ final class AttributeAnalyzer
         return new AttributeAnalysis(
             $startIndex,
             $endIndex - 1,
+            $index,
+            $closingIndex,
             self::collectAttributes($tokens, $index, $closingIndex),
         );
     }
 
     /**
-     * @return list<array{start: int, end: int, name: string}>
+     * @return _AttributeItems
      */
     private static function collectAttributes(Tokens $tokens, int $index, int $closingIndex): array
     {
-        /** @var list<array{start: int, end: int, name: string}> $elements */
+        /** @var _AttributeItems $elements */
         $elements = [];
 
         do {

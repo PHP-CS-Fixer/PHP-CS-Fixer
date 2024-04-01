@@ -16,24 +16,30 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
  * @internal
+ *
+ * @phpstan-type _AttributeItems list<array{start: int, end: int, name: string}>
  */
 final class AttributeAnalysis
 {
     private int $startIndex;
     private int $endIndex;
+    private int $openingBracketsIndex;
+    private int $closingBracketsIndex;
 
     /**
-     * @var list<array{start: int, end: int, name: string}>
+     * @var _AttributeItems
      */
     private array $attributes;
 
     /**
-     * @param list<array{start: int, end: int, name: string}> $attributes
+     * @param _AttributeItems $attributes
      */
-    public function __construct(int $startIndex, int $endIndex, array $attributes)
+    public function __construct(int $startIndex, int $endIndex, int $openingBracketsIndex, int $closingBracketsIndex, array $attributes)
     {
         $this->startIndex = $startIndex;
         $this->endIndex = $endIndex;
+        $this->openingBracketsIndex = $openingBracketsIndex;
+        $this->closingBracketsIndex = $closingBracketsIndex;
         $this->attributes = $attributes;
     }
 
@@ -47,8 +53,18 @@ final class AttributeAnalysis
         return $this->endIndex;
     }
 
+    public function getOpeningBracketsIndex(): int
+    {
+        return $this->openingBracketsIndex;
+    }
+
+    public function getClosingBracketsIndex(): int
+    {
+        return $this->closingBracketsIndex;
+    }
+
     /**
-     * @return list<array{start: int, end: int, name: string}>
+     * @return _AttributeItems
      */
     public function getAttributes(): array
     {

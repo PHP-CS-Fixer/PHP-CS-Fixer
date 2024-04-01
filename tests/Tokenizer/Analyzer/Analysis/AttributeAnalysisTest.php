@@ -26,18 +26,16 @@ final class AttributeAnalysisTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $analysis = new AttributeAnalysis(2, 34, $attributes = [[
-            'start' => 3,
-            'end' => 12,
-            'name' => 'AB\\Baz',
-        ], [
-            'start' => 14,
-            'end' => 32,
-            'name' => '\\A\\B\\Qux',
-        ]]);
+        $attributes = [
+            ['start' => 3, 'end' => 12, 'name' => 'AB\\Baz'],
+            ['start' => 14, 'end' => 32, 'name' => '\\A\\B\\Qux'],
+        ];
+        $analysis = new AttributeAnalysis(2, 34, 3, 34, $attributes);
 
         self::assertSame(2, $analysis->getStartIndex());
         self::assertSame(34, $analysis->getEndIndex());
+        self::assertSame(3, $analysis->getOpeningBracketsIndex());
+        self::assertSame(34, $analysis->getClosingBracketsIndex());
         self::assertSame($attributes, $analysis->getAttributes());
     }
 }
