@@ -32,7 +32,7 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
 
     public function getRules(): array
     {
-        return [
+        $rules = [
             '@PER-CS1.0' => true,
             'array_indentation' => true,
             'cast_spaces' => true,
@@ -44,9 +44,16 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
             'single_line_empty_body' => true,
             'trailing_comma_in_multiline' => [
                 'after_heredoc' => true,
-                'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+                'elements' => ['arguments', 'arrays'],
             ],
         ];
+
+        if (\PHP_VERSION_ID >= 8_00_00) {
+            $rules['trailing_comma_in_multiline']['elements'][] = 'match';
+            $rules['trailing_comma_in_multiline']['elements'][] = 'parameters';
+        }
+
+        return $rules;
     }
 
     public function getDescription(): string
