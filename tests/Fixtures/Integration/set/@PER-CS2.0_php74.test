@@ -1,6 +1,0 @@
---TEST--
-Integration of @PER-CS2.0 [PHP 7.4 version].
---RULESET--
-{"@PER-CS2.0": true}
---REQUIREMENTS--
-{"php": 70400, "php<": 80000}
