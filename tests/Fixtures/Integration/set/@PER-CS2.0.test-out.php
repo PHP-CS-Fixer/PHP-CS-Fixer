@@ -71,7 +71,3 @@ argumentsMultilineWithoutComma(
     1,
     2,
 );
-function parametersMultilineWithoutComma(
-    $x,
-    $y,
-) {}
