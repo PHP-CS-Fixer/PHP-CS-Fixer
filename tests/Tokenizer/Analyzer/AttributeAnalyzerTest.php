@@ -145,8 +145,8 @@ final class AttributeAnalyzerTest extends TestCase
         $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketsIndex()]->getId());
-            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketsIndex()]->getId());
+            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
         }
 
         self::assertSame(
@@ -354,8 +354,8 @@ final class AttributeAnalyzerTest extends TestCase
         $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketsIndex()]->getId());
-            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketsIndex()]->getId());
+            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
         }
 
         self::assertSame(

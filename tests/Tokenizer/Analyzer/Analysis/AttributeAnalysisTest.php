@@ -34,8 +34,8 @@ final class AttributeAnalysisTest extends TestCase
 
         self::assertSame(2, $analysis->getStartIndex());
         self::assertSame(34, $analysis->getEndIndex());
-        self::assertSame(3, $analysis->getOpeningBracketsIndex());
-        self::assertSame(34, $analysis->getClosingBracketsIndex());
+        self::assertSame(3, $analysis->getOpeningBracketIndex());
+        self::assertSame(34, $analysis->getClosingBracketIndex());
         self::assertSame($attributes, $analysis->getAttributes());
     }
 }

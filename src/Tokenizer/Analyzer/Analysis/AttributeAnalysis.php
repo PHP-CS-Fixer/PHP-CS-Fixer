@@ -23,8 +23,8 @@ final class AttributeAnalysis
 {
     private int $startIndex;
     private int $endIndex;
-    private int $openingBracketsIndex;
-    private int $closingBracketsIndex;
+    private int $openingBracketIndex;
+    private int $closingBracketIndex;
 
     /**
      * @var _AttributeItems
@@ -34,12 +34,12 @@ final class AttributeAnalysis
     /**
      * @param _AttributeItems $attributes
      */
-    public function __construct(int $startIndex, int $endIndex, int $openingBracketsIndex, int $closingBracketsIndex, array $attributes)
+    public function __construct(int $startIndex, int $endIndex, int $openingBracketIndex, int $closingBracketIndex, array $attributes)
     {
         $this->startIndex = $startIndex;
         $this->endIndex = $endIndex;
-        $this->openingBracketsIndex = $openingBracketsIndex;
-        $this->closingBracketsIndex = $closingBracketsIndex;
+        $this->openingBracketIndex = $openingBracketIndex;
+        $this->closingBracketIndex = $closingBracketIndex;
         $this->attributes = $attributes;
     }
 
@@ -53,14 +53,14 @@ final class AttributeAnalysis
         return $this->endIndex;
     }
 
-    public function getOpeningBracketsIndex(): int
+    public function getOpeningBracketIndex(): int
     {
-        return $this->openingBracketsIndex;
+        return $this->openingBracketIndex;
     }
 
-    public function getClosingBracketsIndex(): int
+    public function getClosingBracketIndex(): int
     {
-        return $this->closingBracketsIndex;
+        return $this->closingBracketIndex;
     }
 
     /**
