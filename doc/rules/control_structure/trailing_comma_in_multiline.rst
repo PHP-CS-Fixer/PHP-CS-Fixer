@@ -103,6 +103,18 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'arrays', 'match', 'parameters']]``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'arrays', 'match', 'parameters']]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'arrays', 'match', 'parameters']]``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
