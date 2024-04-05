@@ -14,11 +14,15 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @phpstan-import-type _AttributeItems from AttributeAnalysis
  */
 final class AttributeAnalyzer
 {
@@ -66,5 +70,110 @@ final class AttributeAnalyzer
         }
 
         return 0 === $count;
+    }
+
+    /**
+     * Find all consecutive elements that start with #[ and end with ] and the attributes inside.
+     *
+     * @return list<AttributeAnalysis>
+     */
+    public static function collect(Tokens $tokens, int $index): array
+    {
+        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            throw new \InvalidArgumentException('Given index must point to an attribute.');
+        }
+
+        // Rewind to first attribute in group
+        while ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $prevIndex);
+        }
+
+        /** @var list<AttributeAnalysis> $elements */
+        $elements = [];
+
+        $openingIndex = $index;
+        do {
+            $elements[] = $element = self::collectOne($tokens, $openingIndex);
+            $openingIndex = $tokens->getNextMeaningfulToken($element->getEndIndex());
+        } while ($tokens[$openingIndex]->isGivenKind(T_ATTRIBUTE));
+
+        return $elements;
+    }
+
+    /**
+     * Find one element that starts with #[ and ends with ] and the attributes inside.
+     */
+    public static function collectOne(Tokens $tokens, int $index): AttributeAnalysis
+    {
+        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            throw new \InvalidArgumentException('Given index must point to an attribute.');
+        }
+
+        $startIndex = $index;
+        if ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            // Include comments/PHPDoc if they are present
+            $startIndex = $tokens->getNextNonWhitespace($prevIndex);
+        }
+
+        $closingIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+        $endIndex = $tokens->getNextNonWhitespace($closingIndex);
+
+        return new AttributeAnalysis(
+            $startIndex,
+            $endIndex - 1,
+            $index,
+            $closingIndex,
+            self::collectAttributes($tokens, $index, $closingIndex),
+        );
+    }
+
+    /**
+     * @return _AttributeItems
+     */
+    private static function collectAttributes(Tokens $tokens, int $index, int $closingIndex): array
+    {
+        /** @var _AttributeItems $elements */
+        $elements = [];
+
+        do {
+            $attributeStartIndex = $index + 1;
+
+            $nameStartIndex = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
+            $index = $tokens->getNextTokenOfKind($attributeStartIndex, ['(', ',', [CT::T_ATTRIBUTE_CLOSE]]);
+            $attributeName = $tokens->generatePartialCode($nameStartIndex, $tokens->getPrevMeaningfulToken($index));
+
+            // Find closing parentheses, we need to do this in case there's a comma inside the parentheses
+            if ($tokens[$index]->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->getNextTokenOfKind($index, [',', [CT::T_ATTRIBUTE_CLOSE]]);
+            }
+
+            $elements[] = [
+                'start' => $attributeStartIndex,
+                'end' => $index - 1,
+                'name' => $attributeName,
+            ];
+
+            $nextIndex = $index;
+
+            // In case there's a comma right before T_ATTRIBUTE_CLOSE
+            if ($nextIndex < $closingIndex) {
+                $nextIndex = $tokens->getNextMeaningfulToken($index);
+            }
+        } while ($nextIndex < $closingIndex);
+
+        // End last element at newline if it exists and there's no trailing comma
+        --$index;
+        while ($tokens[$index]->isWhitespace()) {
+            if (Preg::match('/\R/', $tokens[$index]->getContent())) {
+                $lastElementKey = array_key_last($elements);
+                $elements[$lastElementKey]['end'] = $index - 1;
+
+                break;
+            }
+            --$index;
+        }
+
+        return $elements;
     }
 }
