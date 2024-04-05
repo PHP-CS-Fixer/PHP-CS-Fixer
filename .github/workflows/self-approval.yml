@@ -1,5 +1,5 @@
 # Flow for self-approving the PRs, used by maintainers for cases aligned between them.
-# To trigger it, maintainer need to commit and push:
+# To trigger it, the maintainer needs to commit and push:
 # $ git commit -m "self-approval" --allow-empty
 
 name: Self Approval
