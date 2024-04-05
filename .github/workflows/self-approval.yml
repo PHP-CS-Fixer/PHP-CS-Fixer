@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.after }}
-      - name: get marker
+      - name: Determine whether PR should be automatically approved
         id: marker
         run: |
           msg=$(git show -s --format=%s ${{ github.event.after }})
