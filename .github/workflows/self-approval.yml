@@ -33,9 +33,6 @@ jobs:
           indicator=$([[ $msg == $MARKER ]] && echo yes || echo no)
           echo $indicator
           echo "indicator_value=${indicator}" >> "$GITHUB_OUTPUT"
-      - name: skip
-        if: steps.marker.outputs.indicator_value != 'yes'
-        run: echo no marker detected, skipping
       - name: self-approve
         if: steps.marker.outputs.indicator_value == 'yes'
         run: |
