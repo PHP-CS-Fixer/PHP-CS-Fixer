@@ -2,7 +2,7 @@
 # To trigger it, maintainer need to commit and push:
 # $ git commit -m "self-approval" --allow-empty
 
-name: self-approval
+name: Self Approval
 
 on:
   - pull_request_target
@@ -12,7 +12,8 @@ permissions:
   contents: write
 
 jobs:
-  job:
+  automate:
+    name: Automate
     runs-on: ubuntu-latest
     if: ${{ contains(fromJson('["julienfalque", "keradus", "keradus-ci", "kubawerlos", "localheinz", "Wirone"]'), github.actor) }}
     env:
