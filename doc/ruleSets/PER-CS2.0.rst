@@ -8,6 +8,7 @@ Rules
 -----
 
 - `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_ with config:
 
@@ -19,3 +20,7 @@ Rules
 
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'arrays', 'match', 'parameters']]``
+

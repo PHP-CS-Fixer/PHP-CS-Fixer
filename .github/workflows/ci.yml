@@ -107,6 +107,11 @@ jobs:
             run-tests: 'yes'
             collect-code-coverage: 'yes'
 
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.3'
+            job-description: 'mutation tests'
+            run-mutation-tests: 'yes'
+
           - operating-system: 'windows-latest'
             php-version: '8.3'
             job-description: 'Fixer on Windows'
@@ -151,12 +156,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Remove Infection requirement if not needed
+        if: matrix.run-mutation-tests != 'yes'
+        run: composer remove --dev infection/infection --no-update
+
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
           os: ${{ runner.os }}
           php: ${{ matrix.php-version }}
-          php-coverage: ${{ matrix.collect-code-coverage }}
+          php-coverage: ${{ matrix.collect-code-coverage || matrix.run-mutation-tests }}
           composer-flags: ${{ matrix.composer-flags }}
           composer-flex-with-symfony-version: ${{ matrix.execute-flex-with-symfony-version }}
 
@@ -169,13 +178,19 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 
-      - name: Disable time limit for tests when collecting coverage
-        if: matrix.collect-code-coverage == 'yes'
+      - name: Custom PHPUnit config with v10 alignments
+        if: matrix.collect-code-coverage == 'yes' || matrix.run-mutation-tests
         run: sed -e 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' -e 's/coverage/source/g' phpunit.xml.dist > phpunit.xml
 
       - name: Disable time limit for tests under Windows # due to https://github.com/sebastianbergmann/phpunit/issues/5589
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
+
+      - name: Fix PHP 8.4 deprecations for tests
+        if: matrix.run-tests == 'yes' && matrix.php-version == '8.4'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+        run: php php-cs-fixer fix --rules=no_unreachable_default_argument_value,nullable_type_declaration_for_default_null_value --diff vendor
 
       - name: Run tests
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
@@ -196,6 +211,15 @@ jobs:
         env:
           FAST_LINT_TEST_CASES: 1
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
+
+      - name: Run mutation tests (Infection)
+        # Run only on pull requests because we run mutations tests only for diff between branches
+        if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
+        env:
+          FAST_LINT_TEST_CASES: 1
+        run: |
+          git fetch origin $GITHUB_BASE_REF
+          vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
 
       - name: Upload coverage results to Coveralls
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
@@ -235,6 +259,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Remove Infection
+        run: composer remove --dev infection/infection --no-update
+
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
@@ -242,7 +269,7 @@ jobs:
           php: ${{ matrix.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: dev-tools/bin/
           key: Build-${{ hashFiles('dev-tools/build.sh') }}

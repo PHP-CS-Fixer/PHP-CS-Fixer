@@ -353,7 +353,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     private static function createFixers(IntegrationCase $case): array
     {
@@ -370,7 +370,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
-     * @param Error[] $errors
+     * @param list<Error> $errors
      */
     private function implodeErrors(array $errors): string
     {

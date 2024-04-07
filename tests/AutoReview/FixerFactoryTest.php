@@ -70,7 +70,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @param string[] $edges
+     * @param list<string> $edges
      *
      * @dataProvider provideFixersPriorityCasesHaveIntegrationTestCases
      */
@@ -327,7 +327,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return array<string, string[]>
+     * @return array<string, list<string>>
      */
     private static function getFixersPriorityGraph(): array
     {
