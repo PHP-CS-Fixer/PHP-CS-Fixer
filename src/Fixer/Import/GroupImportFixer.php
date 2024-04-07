@@ -143,7 +143,7 @@ final class GroupImportFixer extends AbstractFixer
                     $tokens,
                     $insertIndex,
                     $useDeclaration,
-                    $this->getNamespaceNameWithSlash($currentUseDeclaration)
+                    rtrim($this->getNamespaceNameWithSlash($currentUseDeclaration), '\\')
                 );
             } else {
                 $newTokens = [
@@ -225,7 +225,7 @@ final class GroupImportFixer extends AbstractFixer
             $newTokens[] = new Token([T_WHITESPACE, ' ']);
         }
 
-        $namespaceParts = array_filter(explode('\\', $currentNamespace));
+        $namespaceParts = explode('\\', $currentNamespace);
 
         foreach ($namespaceParts as $part) {
             $newTokens[] = new Token([T_STRING, $part]);
