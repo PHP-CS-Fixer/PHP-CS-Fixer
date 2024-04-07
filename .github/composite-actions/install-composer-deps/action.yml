@@ -35,7 +35,7 @@ runs:
         echo "PHP_VERSION_ID=$(php -r 'echo PHP_VERSION_ID;')" >> $GITHUB_ENV
 
     - name: Cache Composer dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ env.COMPOSER_CACHE_DIR }}
         key: Composer-${{ runner.os }}-${{ env.COMPOSER_CACHE_PHP }}-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
@@ -45,7 +45,7 @@ runs:
           Composer-${{ runner.os }}-
 
     - name: Install dependencies
-      uses: nick-invision/retry@v2
+      uses: nick-invision/retry@v3
       with:
         timeout_minutes: 5
         max_attempts: 5
