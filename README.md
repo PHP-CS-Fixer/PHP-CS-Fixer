@@ -4,7 +4,7 @@
     </a>
 </p>
 
-# PHP Coding Standards Fixer
+# PHP Coding Standards Fixer (test)
 
 The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards;
 whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, etc.,
