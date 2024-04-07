@@ -343,7 +343,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         }
 
         $allowedPatternsForSecondOperand = [
-            '/^\s.*/', // e.g. " foo", ' bar', " $baz"
+            '/^ .*/', // e.g. " foo", ' bar', " $baz"
             '/^-(?!\>)/', // e.g. "-foo", '-bar', "-$baz"
         ];
 
