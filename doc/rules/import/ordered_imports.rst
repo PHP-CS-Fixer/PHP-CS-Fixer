@@ -38,7 +38,7 @@ Default value: ``'alpha'``
 ``sort_length_order``
 ~~~~~~~~~~~~~~~~~~~~~
 
-Should the operators be sorted in ascending or descending order.
+Should the operators be sorted by length in ascending or descending order.
 
 Allowed values: ``'asc'`` and ``'desc'``
 
