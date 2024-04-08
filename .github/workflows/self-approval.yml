@@ -38,4 +38,3 @@ jobs:
         run: |
           echo self-approving
           gh pr review --approve "$PR_URL"
-          gh pr merge --auto --squash "$PR_URL"
