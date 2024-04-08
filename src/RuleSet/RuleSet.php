@@ -108,7 +108,10 @@ final class RuleSet implements RuleSetInterface
         }
 
         // filter out all resolvedRules that are off
-        $resolvedRules = array_filter($resolvedRules);
+        $resolvedRules = array_filter(
+            $resolvedRules,
+            static fn ($value): bool => false !== $value
+        );
 
         $this->rules = $resolvedRules;
     }
