@@ -294,11 +294,11 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
-        yield 'already with attribute: #CoversClass' => [
+        yield 'already with attribute CoversClass' => [
             <<<'PHP'
                 <?php
                 #[PHPUnit\Framework\Attributes\CoversClass(Foo::class)]
@@ -306,7 +306,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
 
-        yield 'already with attribute: #CoversNothing' => [
+        yield 'already with attribute CoversNothing' => [
             <<<'PHP'
                 <?php
                 #[PHPUnit\Framework\Attributes\CoversNothing]
@@ -333,7 +333,16 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
 
-        yield 'already with aliased imported attribute' => [
+        yield 'already with aliased attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversClass as PHPUnitCoversClass;
+                #[PHPUnitCoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially aliased attribute' => [
             <<<'PHP'
                 <?php
                 use PHPUnit\Framework\Attributes as PHPUnitAttributes;
