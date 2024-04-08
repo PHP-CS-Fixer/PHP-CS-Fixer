@@ -265,7 +265,7 @@ use Bar;
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
-            (new FixerOptionBuilder('sort_length_order', 'Should the operators be sorted in ascending or descending order.'))
+            (new FixerOptionBuilder('sort_length_order', 'Should the operators be sorted by length in ascending or descending order.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_LENGTH_ORDER)
                 ->setDefault(self::SORT_LENGTH_ORDER_ASC)
                 ->getOption(),
