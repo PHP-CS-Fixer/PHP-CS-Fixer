@@ -126,7 +126,7 @@ settype($bar, "null");
 
             // --- Test type ------------------------------
 
-            $type = strtolower(trim($tokens[$secondArgumentStart]->getContent(), '"\'"'));
+            $type = strtolower(trim($tokens[$secondArgumentStart]->getContent(), '"\''));
 
             if ('null' !== $type && !isset($map[$type])) {
                 continue; // we don't know how to map
