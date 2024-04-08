@@ -1509,6 +1509,54 @@ abstract class Baz
         ];
     }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsConstantInvocationPhp83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testIsConstantInvocationPhp83(array $expected, string $source): void
+    {
+        $this->doIsConstantInvocationTest($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsConstantInvocationPhp83Cases(): iterable
+    {
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const A FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 15 => false, 19 => true],
+            '<?php class Foo { public const A|B FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 15 => false, 19 => true],
+            '<?php class Foo { public const A&B FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 12 => false, 14 => false, 17 => false, 19 => false, 23 => true],
+            '<?php class Foo { public const (A&B)|C FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 12 => false, 14 => false, 18 => false, 20 => false, 23 => false, 27 => true],
+            '<?php class Foo { public const (A&B)|(C&D) FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 12 => false, 15 => false, 17 => false, 21 => false, 23 => false, 25 => false, 28 => false, 32 => true],
+            '<?php class Foo { public const (A&\B\C)|(D\E&F) FOO = BAR; }',
+        ];
+    }
+
     public function testIsConstantInvocationInvalid(): void
     {
         $this->expectException(\LogicException::class);

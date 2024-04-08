@@ -125,13 +125,16 @@ final class FixerDocumentGenerator
             }
 
             $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
-            $doc .= "\n\n".implode("\n", array_filter([
-                $warningsHeader,
-                $warningsHeaderLine,
-                $deprecationDescription,
-                $experimentalDescription,
-                $riskyDescription,
-            ]));
+            $doc .= "\n\n".implode("\n", array_filter(
+                [
+                    $warningsHeader,
+                    $warningsHeaderLine,
+                    $deprecationDescription,
+                    $experimentalDescription,
+                    $riskyDescription,
+                ],
+                static fn (string $text): bool => '' !== $text
+            ));
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {

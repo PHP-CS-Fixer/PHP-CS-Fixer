@@ -87,11 +87,11 @@ final class RuleSetDocumentationGenerator
             $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
             $doc .= "\n\n".implode(
                 "\n",
-                array_filter([
+                [
                     $warningsHeader,
                     $warningsHeaderLine,
                     ...$warnings,
-                ])
+                ]
             );
         }
 

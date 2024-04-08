@@ -146,8 +146,6 @@ if (count($x)) {
             $this->fullyQualifyClasses($tokens, $useDeclarations);
         }
 
-        $newImports = array_filter($newImports);
-
         if (\count($newImports) > 0) {
             if (\count($useDeclarations) > 0) {
                 $useDeclaration = end($useDeclarations);

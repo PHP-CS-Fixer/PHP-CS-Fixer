@@ -563,4 +563,36 @@ echo M_PI;
 
         yield ['<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}'];
     }
+
+    /**
+     * @dataProvider provideFixPhp83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFixPhp83(string $expected, string $input): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: string}>
+     */
+    public static function provideFixPhp83Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {
+                public const string C1 = \PHP_EOL;
+                protected const string|int C2 = \PHP_EOL;
+                private const string|(A&B) C3 = BAR;
+                public const EnumA C4 = EnumA::FOO;
+            }',
+            '<?php class Foo {
+                public const string C1 = PHP_EOL;
+                protected const string|int C2 = \PHP_EOL;
+                private const string|(A&B) C3 = \BAR;
+                public const EnumA C4 = EnumA::FOO;
+            }',
+        ];
+    }
 }
