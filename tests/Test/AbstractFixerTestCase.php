@@ -65,7 +65,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAccessFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
@@ -489,7 +488,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoUselessElseFixerTest::class,
             OrderedImportsFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAccessFixerTest::class,
             PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
