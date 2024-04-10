@@ -106,7 +106,7 @@ if ($foo) {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return true;
+        return $tokens->isMonolithicPhp();
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
