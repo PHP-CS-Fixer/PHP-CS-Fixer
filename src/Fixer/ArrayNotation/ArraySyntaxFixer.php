@@ -34,12 +34,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var null|int
+     * @var CT::T_ARRAY_SQUARE_BRACE_OPEN|T_ARRAY
      */
     private $candidateTokenKind;
 
     /**
-     * @var null|string
+     * @var callable(Tokens, int): void
      */
     private $fixCallback;
 
@@ -82,13 +82,15 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         return $tokens->isTokenKindFound($this->candidateTokenKind);
     }
 
+    /**
+     * @uses fixToShortArraySyntax()
+     * @uses fixToLongArraySyntax()
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $callback = $this->fixCallback;
-
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                $this->{$callback}($tokens, $index);
+                \call_user_func_array($this->fixCallback, [$tokens, $index]);
             }
         }
     }
@@ -126,7 +128,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
 
     private function resolveFixCallback(): void
     {
-        $this->fixCallback = sprintf('fixTo%sArraySyntax', ucfirst($this->configuration['syntax']));
+        $this->fixCallback = [$this, 'short' === $this->configuration['syntax'] ? 'fixToShortArraySyntax' : 'fixToLongArraySyntax'];
     }
 
     private function resolveCandidateTokenKind(): void

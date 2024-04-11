@@ -100,14 +100,14 @@ final class Tokens extends \SplFixedArray
                 }
 
                 $lastTokenEndIndex = 0;
-                foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $token) {
-                    if ($token->isType(DocLexer::T_STRING)) {
-                        $token = new Token(
-                            $token->getType(),
-                            '"'.str_replace('"', '""', $token->getContent()).'"',
-                            $token->getPosition()
-                        );
-                    }
+                foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $scannedToken) {
+                    $token = $scannedToken->isType(DocLexer::T_STRING)
+                        ? new Token(
+                            $scannedToken->getType(),
+                            '"'.str_replace('"', '""', $scannedToken->getContent()).'"',
+                            $scannedToken->getPosition()
+                        )
+                        : $scannedToken;
 
                     $missingTextLength = $token->getPosition() - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
