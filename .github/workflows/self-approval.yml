@@ -24,11 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.after }}
+          ref: ${{ github.head_ref }}
       - name: Determine whether PR should be automatically approved
         id: marker
         run: |
-          msg=$(git show -s --format=%s ${{ github.event.after }})
+          msg=$(git show -s --format=%s ${{ github.head_ref }})
           echo $msg
           indicator=$([[ $msg == $MARKER ]] && echo yes || echo no)
           echo $indicator
