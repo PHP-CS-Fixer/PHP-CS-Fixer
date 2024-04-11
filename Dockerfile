@@ -25,7 +25,8 @@ COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 FROM base-dev as vendor
 COPY composer.json /fixer/composer.json
 WORKDIR /fixer
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
+RUN composer remove --dev infection/infection --no-update \
+    && composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
 FROM base as dist
 
