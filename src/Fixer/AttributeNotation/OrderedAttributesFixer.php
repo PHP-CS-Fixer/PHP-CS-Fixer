@@ -49,13 +49,6 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
         self::ORDER_NONE,
     ];
 
-    private ?NamespaceAnalysis $namespaceAnalysis = null;
-
-    /**
-     * @var null|array<string, NamespaceUseAnalysis>
-     */
-    private ?array $namespaceUseAnalyses = null;
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -174,7 +167,6 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                 $this->sortTokens($tokens, $index, $endIndex, $sortedElements);
             } finally {
                 $index = $endIndex;
-                $this->clearNamespaceAnalysis();
             }
         }
     }
@@ -206,13 +198,13 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
     private function getAttributeName(Tokens $tokens, string $name, int $index): string
     {
         if (self::ORDER_NONE === $this->configuration['sort_algorithm']) {
-            $name = $this->determineAttributeFQCN($tokens, $name, $index);
+            $name = $this->determineAttributeFullyQualifiedName($tokens, $name, $index);
         }
 
         return ltrim($name, '\\');
     }
 
-    private function determineAttributeFQCN(Tokens $tokens, string $name, int $index): string
+    private function determineAttributeFullyQualifiedName(Tokens $tokens, string $name, int $index): string
     {
         if ('\\' === $name[0]) {
             return $name;
@@ -222,13 +214,12 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
             $index = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
         }
 
-        $this->initializeNamespaceAnalysis($tokens, $index);
-
-        $namespace = $this->namespaceAnalysis->getFullName();
-
+        [$namespaceAnalysis, $namespaceUseAnalyses] = $this->collectNamespaceAnalysis($tokens, $index);
+        $namespace = $namespaceAnalysis->getFullName();
         $firstTokenOfName = $tokens[$index]->getContent();
-        $namespaceUseAnalysis = $this->namespaceUseAnalyses[$firstTokenOfName] ?? false;
-        if ($namespaceUseAnalysis) {
+        $namespaceUseAnalysis = $namespaceUseAnalyses[$firstTokenOfName] ?? false;
+
+        if ($namespaceUseAnalysis instanceof NamespaceUseAnalysis) {
             $namespace = $namespaceUseAnalysis->getFullName();
 
             if ($name === $firstTokenOfName) {
@@ -287,25 +278,23 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
         $tokens->overrideRange($startIndex, $endIndex, $replaceTokens);
     }
 
-    private function initializeNamespaceAnalysis(Tokens $tokens, int $startIndex): void
+    /**
+     * @return array{NamespaceAnalysis, array<string, NamespaceUseAnalysis>}
+     */
+    private function collectNamespaceAnalysis(Tokens $tokens, int $startIndex): array
     {
-        if (isset($this->namespaceAnalysis, $this->namespaceUseAnalyses)) {
-            return;
-        }
+        $namespaceAnalysis = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $startIndex);
+        $namespaceUseAnalyses = (new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($tokens, $namespaceAnalysis);
 
-        $this->namespaceAnalysis = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $startIndex);
-
-        $this->namespaceUseAnalyses = [];
-        foreach ((new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($tokens, $this->namespaceAnalysis) as $namespaceUseAnalysis) {
-            if (!$namespaceUseAnalysis->isClass()) {
+        $uses = [];
+        foreach ($namespaceUseAnalyses as $use) {
+            if (!$use->isClass()) {
                 continue;
             }
-            $this->namespaceUseAnalyses[$namespaceUseAnalysis->getShortName()] = $namespaceUseAnalysis;
-        }
-    }
 
-    private function clearNamespaceAnalysis(): void
-    {
-        $this->namespaceAnalysis = $this->namespaceUseAnalyses = null;
+            $uses[$use->getShortName()] = $use;
+        }
+
+        return [$namespaceAnalysis, $uses];
     }
 }
