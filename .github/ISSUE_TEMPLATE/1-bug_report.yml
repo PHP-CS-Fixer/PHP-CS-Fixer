@@ -13,6 +13,19 @@ body:
       description: Please describe encountered problem and provide the background of it
     validations:
       required: true
+  - type: textarea
+    id: minimal-reproducer
+    attributes:
+      label: Minimal reproducer
+      description: |
+        Provide a minimal code snippet and the CLI command that should be run to reproduce the problem.
+        Please see how to utilise `--rules` option on the [usage page](https://cs.symfony.com/doc/usage.html).
+
+        If it's not possible to prepare short CLI reproducer command, please provide complete config used in your project.
+
+        If relevant, provide the expected output, the actual output and/or the error that occurred, if any.
+
+        Please use markdown syntax for each code snippet.
   - type: input
     id: version
     attributes:
@@ -39,24 +52,6 @@ body:
         - Docker
     validations:
       required: true
-  - type: textarea
-    id: minimal-reproducer
-    attributes:
-      label: Minimal reproducer
-      description: |
-        Provide a minimal code snippet and the CLI command that should be run to reproduce the problem.
-        Please see how to utilise `--rules` option on the [usage page](https://cs.symfony.com/doc/usage.html).
-
-        If it's not possible to prepare short CLI reproducer command, please provide complete config used in your project.
-
-        If relevant, provide the expected output, the actual output and/or the error that occurred, if any.
-
-        Please use markdown syntax for each code snippet, e.g.:
-
-        ```php
-        <?php
-        $var = 'foo';
-        ```
   - type: checkboxes
     id: terms
     attributes:
