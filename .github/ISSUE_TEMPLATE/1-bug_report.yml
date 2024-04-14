@@ -26,6 +26,8 @@ body:
         If relevant, provide the expected output, the actual output and/or the error that occurred, if any.
 
         Please use markdown syntax for each code snippet.
+    validations:
+      required: true
   - type: input
     id: version
     attributes:
