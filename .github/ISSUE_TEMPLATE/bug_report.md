@@ -7,7 +7,7 @@ labels: kind/bug
 ## Bug report
 
 <!--
-  Before reporting a bug, make sure PHP CS Fixer is up-to-date.
+  Before reporting a bug, make sure PHP CS Fixer is up-to-date and the problem is not reported already.
 
   Check that the issue is NOT regarded to an applied rule by using the `-vvv` option (will list applied rules) on a minimal code snippet.
 -->
@@ -25,24 +25,15 @@ labels: kind/bug
   $ php-cs-fixer -V
 -->
 
-### Used command
+### Minimal reproducer
 
 <!--
-  Provide the command used to run PHP CS Fixer (run with `-vvv`).
--->
+  Provide a minimal code snippet and the CLI command that should be run to reproduce the problem.
+  Please see how to utilise `--rules` option on the usage page (https://cs.symfony.com/doc/usage.html).
 
-### Configuration file
+  If it's not possible to prepare short CLI reproducer command, please provide complete config used in your project.
 
-<!--
-  Provide content of configuration file you used (.php-cs-fixer[.dist].php).
--->
-
-### Code snippet that reproduces the problem
-
-<!--
-  Provide a minimal code snippet before running PHP CS Fixer. If relevant,
-  also provide the expected output, the actual output and/or the error that
-  occurred, if any.
+  If relevant, provide the expected output, the actual output and/or the error that occurred, if any.
 
   Please use markdown syntax for each code snippet, e.g.:
 
