@@ -1,5 +1,5 @@
 name: Feature request 🚀
-description: Existing feature does not behave as expected.
+description: I have a suggestion about a new feature (and may want to implement it)!
 labels: [ "kind/feature request", "status/to verify" ]
 body:
   - type: markdown
