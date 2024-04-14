@@ -269,7 +269,7 @@ jobs:
           php: ${{ matrix.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: dev-tools/bin/
           key: Build-${{ hashFiles('dev-tools/build.sh') }}
