@@ -23,6 +23,7 @@ body:
     id: discussion-reference
     attributes:
       label: Link to Discussion where feature request was formed
+      placeholder: "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/<ID>"
     validations:
       required: false
   - type: checkboxes
