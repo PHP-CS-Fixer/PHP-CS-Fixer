@@ -33,9 +33,8 @@ jobs:
           indicator=$([[ $msg == $MARKER ]] && echo yes || echo no)
           echo $indicator
           echo "indicator_value=${indicator}" >> "$GITHUB_OUTPUT"
-      - name: Approve and enable auto-merge
+      - name: Approve pull request
         if: steps.marker.outputs.indicator_value == 'yes'
         run: |
-          echo self-approving
           gh pr review --approve "$PR_URL"
-          gh pr merge --auto --squash "$PR_URL"
+          echo "Approval from GH Bot - PR is now mergeable, use it wisely!"

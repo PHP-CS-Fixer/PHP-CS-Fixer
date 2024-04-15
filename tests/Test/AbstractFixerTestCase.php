@@ -65,7 +65,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAccessFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
@@ -82,8 +81,6 @@ use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
@@ -489,7 +486,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoUselessElseFixerTest::class,
             OrderedImportsFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAccessFixerTest::class,
             PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
@@ -504,8 +500,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocVarWithoutNameFixerTest::class,
             PhpUnitConstructFixerTest::class,
             PhpUnitDedicateAssertFixerTest::class,
-            PhpUnitMethodCasingFixerTest::class,
-            PhpUnitStrictFixerTest::class,
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
