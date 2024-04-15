@@ -125,6 +125,11 @@ final class UtilsTest extends TestCase
             'voyage_éclair',
             'VoyageÉclair',
         ];
+
+        yield [
+            'i_want_to_fully_be__a__snake',
+            'i_wantTo_fully_be_A_Snake',
+        ];
     }
 
     /**
