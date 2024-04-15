@@ -81,7 +81,6 @@ use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
@@ -501,7 +500,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocVarWithoutNameFixerTest::class,
             PhpUnitConstructFixerTest::class,
             PhpUnitDedicateAssertFixerTest::class,
-            PhpUnitMethodCasingFixerTest::class,
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
