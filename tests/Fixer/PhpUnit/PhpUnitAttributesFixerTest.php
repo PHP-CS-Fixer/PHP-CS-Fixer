@@ -44,7 +44,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
              * @requires
              * @uses
              */
-            class FooTest extends \PHPUnit\Framework\TestCas {
+            class FooTest extends \PHPUnit\Framework\TestCase {
                 /**
                  * @backupGlobals
                  * @backupStaticAttributes
@@ -66,7 +66,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             /**
              * @COVERS \Foo
              */
-            class FooTest extends \PHPUnit\Framework\TestCas {
+            class FooTest extends \PHPUnit\Framework\TestCase {
                 /**
                  * @dataPROVIDER provideFooCases
                  * @requires php 8.3
@@ -81,7 +81,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
              * @covers FooClass::FooMethod
              * @uses ClassName::methodName
              */
-            class FooTest extends \PHPUnit\Framework\TestCas {
+            class FooTest extends \PHPUnit\Framework\TestCase {
                 public function testFoo() { self::assertTrue(true); }
             }
             PHP];
