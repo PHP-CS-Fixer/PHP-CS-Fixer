@@ -24,17 +24,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.after }}
+          ref: ${{ github.head_ref }}
       - name: Determine whether PR should be automatically approved
         id: marker
         run: |
-          msg=$(git show -s --format=%s ${{ github.event.after }})
+          msg=$(git show -s --format=%s ${{ github.head_ref }})
           echo $msg
           indicator=$([[ $msg == $MARKER ]] && echo yes || echo no)
           echo $indicator
           echo "indicator_value=${indicator}" >> "$GITHUB_OUTPUT"
-      - name: Approve and enable auto-merge
+      - name: Approve pull request
         if: steps.marker.outputs.indicator_value == 'yes'
         run: |
-          echo self-approving
           gh pr review --approve "$PR_URL"
+          echo "Approval from GH Bot - PR is now mergeable, use it wisely!"
