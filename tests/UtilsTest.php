@@ -127,7 +127,7 @@ final class UtilsTest extends TestCase
         ];
 
         yield [
-            'i_want_to_fully_be__a__snake',
+            'i_want_to_fully_be_a_snake',
             'i_wantTo_fully_be_A_Snake',
         ];
     }

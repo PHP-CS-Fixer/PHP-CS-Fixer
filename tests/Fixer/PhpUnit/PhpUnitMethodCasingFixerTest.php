@@ -64,7 +64,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'mixed case to snake case' => [
-            '<?php class MyTest extends TestCase { function test_should_not_foo__when__bar() {} }',
+            '<?php class MyTest extends TestCase { function test_should_not_foo_when_bar() {} }',
             '<?php class MyTest extends TestCase { function test_should_notFoo_When_Bar() {} }',
             ['case' => 'snake_case'],
         ];
