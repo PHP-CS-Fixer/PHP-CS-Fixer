@@ -1539,22 +1539,7 @@ class Foo extends \A\A implements \B\A, \C\A
                 function bar() {}
             }
             PHP];
-    }
 
-    /**
-     * @dataProvider provideCodeWithReturnTypesCases
-     * @dataProvider provideCodeWithReturnTypesCasesWithNullableCases
-     */
-    public function testCodeWithReturnTypes(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: null|string}>
-     */
-    public static function provideCodeWithReturnTypesCases(): iterable
-    {
         yield 'Import common strict types' => [
             '<?php
 
@@ -1755,24 +1740,7 @@ class SomeClass
     }
 }',
         ];
-    }
 
-    /**
-     * @param array<string, array<string, mixed>|bool> $config
-     *
-     * @dataProvider provideCodeWithoutReturnTypesCases
-     */
-    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: null|string}>
-     */
-    public static function provideCodeWithoutReturnTypesCases(): iterable
-    {
         yield 'import from namespace and global' => [
             '<?php
 use App\DateTime;
@@ -1786,7 +1754,7 @@ class TestBar
 ',
         ];
 
-        yield 'Import common strict types' => [
+        yield 'Import common strict types without return type' => [
             '<?php
 
 use Foo\Bar;
@@ -1809,7 +1777,7 @@ class SomeClass
 }',
         ];
 
-        yield 'Test namespace fixes' => [
+        yield 'Test namespace fixes without return type' => [
             '<?php
 
 namespace Foo\Bar;
@@ -1832,7 +1800,7 @@ class SomeClass
 }',
         ];
 
-        yield 'Partial class name looks like FQCN' => [
+        yield 'Partial class name looks like FQCN without return type' => [
             '<?php
 
 namespace One;
@@ -1854,7 +1822,7 @@ class Two
 }',
         ];
 
-        yield 'Test multi namespace fixes' => [
+        yield 'Test multi namespace fixes without return type' => [
             '<?php
 namespace Foo\Other {
 }
@@ -1881,7 +1849,7 @@ namespace Foo\Bar {
 }',
         ];
 
-        yield 'Test fixes in interface' => [
+        yield 'Test fixes in interface without return type' => [
             '<?php
 
 namespace Foo\Bar;
@@ -1904,7 +1872,7 @@ interface SomeClass
 }',
         ];
 
-        yield 'Test fixes in trait' => [
+        yield 'Test fixes in trait without return type' => [
             '<?php
 
 namespace Foo\Bar;
@@ -1931,7 +1899,7 @@ trait SomeClass
 }',
         ];
 
-        yield 'Test fixes in regular functions' => [
+        yield 'Test fixes in regular functions without return type' => [
             '<?php
 
 namespace Foo\Bar;
@@ -2028,13 +1996,7 @@ namespace {
                 }
             ',
         ];
-    }
 
-    /**
-     * @return iterable<array{0: string, 1?: null|string}>
-     */
-    public static function provideCodeWithReturnTypesCasesWithNullableCases(): iterable
-    {
         yield 'Test namespace fixes with nullable types' => [
             '<?php
 
@@ -2062,7 +2024,7 @@ class SomeClass
 }',
         ];
 
-        yield 'Partial class name looks like FQCN' => [
+        yield 'Partial class name looks like FQCN with return type with nullable' => [
             '<?php
 
 namespace One;
@@ -2083,24 +2045,7 @@ class Two
     }
 }',
         ];
-    }
 
-    /**
-     * @param array<string, mixed> $config
-     *
-     * @dataProvider provideCodeWithPhpDocCases
-     */
-    public function testCodeWithPhpDoc(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, mixed>}>
-     */
-    public static function provideCodeWithPhpDocCases(): iterable
-    {
         yield 'Test class PHPDoc fixes' => [
             '<?php
 
