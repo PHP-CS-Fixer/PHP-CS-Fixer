@@ -88,9 +88,26 @@ final class NamespacesAnalyzerTest extends TestCase
         ]];
 
         yield [
-            'there is no namespace if there is no PHP code',
+            <<<'PHP'
+                #!/usr/bin/php
+                <?php
+                return true;
+                PHP,
             [
+                new NamespaceAnalysis(
+                    '',
+                    '',
+                    1,
+                    1,
+                    1,
+                    5
+                ),
             ],
+        ];
+
+        yield [
+            'there is no namespace if there is no PHP code',
+            [],
         ];
     }
 

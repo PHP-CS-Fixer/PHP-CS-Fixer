@@ -2604,6 +2604,22 @@ use Foo\Bar;
  */
 function foo($a) {}',
         ];
+
+        yield 'with shebang' => [
+            <<<'PHP'
+                #!/usr/bin/env php
+                <?php
+
+                use Bar\Baz;
+                $foo = new Baz();
+                PHP,
+            <<<'PHP'
+                #!/usr/bin/env php
+                <?php
+                $foo = new Bar\Baz();
+                PHP,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
