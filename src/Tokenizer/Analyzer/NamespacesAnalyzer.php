@@ -64,7 +64,7 @@ final class NamespacesAnalyzer
             $index = $scopeEndIndex;
         }
 
-        if (0 === \count($namespaces)) {
+        if (0 === \count($namespaces) && $tokens->isTokenKindFound(T_OPEN_TAG)) {
             $namespaces[] = new NamespaceAnalysis('', '', 0, 0, 0, \count($tokens) - 1);
         }
 
