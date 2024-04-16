@@ -86,6 +86,12 @@ final class NamespacesAnalyzerTest extends TestCase
                 17
             ),
         ]];
+
+        yield [
+            'there is no namespace if there is no PHP code',
+            [
+            ],
+        ];
     }
 
     /**
@@ -153,19 +159,6 @@ final class NamespacesAnalyzerTest extends TestCase
                 16,
                 10,
                 17
-            ),
-        ];
-
-        yield [
-            ' ',
-            0,
-            new NamespaceAnalysis(
-                '',
-                '',
-                0,
-                0,
-                0,
-                0
             ),
         ];
     }
