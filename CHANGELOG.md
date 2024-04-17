@@ -3,6 +3,27 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.54.0
+---------------------
+
+* feat: introduce `PhpUnitAttributesFixer` (#7831)
+* chore: Properly determine self-approval trigger commit (#7936)
+* chore: Revert ref for self-approval Git checkout (#7944)
+* CI: check if proper array key is declared (#7912)
+* DX: cleanup `FullyQualifiedStrictTypesFixerTest` (#7954)
+* DX: cleanup `PhpdocNoAccessFixerTest` (#7933)
+* DX: cleanup `PhpUnitMethodCasingFixerTest` (#7948)
+* DX: cleanup `PhpUnitStrictFixerTest` (#7938)
+* DX: Improve internal dist config for Fixer (#7952)
+* DX: Improve issue templates (#7942)
+* DX: there is no namespace if there is no PHP code (#7953)
+* DX: update .gitattributes (#7931)
+* fix: Remove Infection during Docker release (#7937)
+* fix: `FullyQualifiedStrictTypesFixer` - do not add imports before PHP opening tag (#7955)
+* fix: `PhpUnitMethodCasingFixer` - do not double underscore (#7949)
+* fix: `PhpUnitTestClassRequiresCoversFixer` - do not add annotation when there are attributes (#7880)
+* test: Ignore PHP version related mutations (#7935)
+
 Changelog for v3.53.0
 ---------------------
 
