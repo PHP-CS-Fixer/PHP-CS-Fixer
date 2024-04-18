@@ -237,24 +237,24 @@ if ($foo) {
             ) {
                 $endIndexInclusive = true;
 
-                if ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
-                    $endIndex = $tokens->getNextTokenOfKind($index, ['{']);
-                } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
-                    $endIndex = $tokens->getNextTokenOfKind($index, [';']);
+                if ($token->equals('{')) {
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                } elseif ($token->equals('(')) {
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 } elseif ($token->equals(':')) {
                     if (isset($caseBlockStarts[$index])) {
                         [$endIndex, $endIndexInclusive] = $this->findCaseBlockEnd($tokens, $index);
                     } elseif ($this->alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
                     }
+                } elseif ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
+                    $endIndex = $tokens->getNextTokenOfKind($index, ['{']);
+                } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
+                    $endIndex = $tokens->getNextTokenOfKind($index, [';']);
                 } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]]);
                 } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
-                } elseif ($token->equals('{')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                } elseif ($token->equals('(')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
