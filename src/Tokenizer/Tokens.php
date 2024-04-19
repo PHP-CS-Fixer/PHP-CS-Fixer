@@ -589,7 +589,7 @@ class Tokens extends \SplFixedArray
      */
     public function getNextNonWhitespace(int $index, ?string $whitespaces = null): ?int
     {
-        return $this->getNonWhitespaceSibling($index, 1, $whitespaces);
+        return $this->getNonWhitespaceSibling($index, self::DIRECTION_NEXT, $whitespaces);
     }
 
     /**
@@ -603,7 +603,7 @@ class Tokens extends \SplFixedArray
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        return $this->getTokenOfKindSibling($index, 1, $tokens, $caseSensitive);
+        return $this->getTokenOfKindSibling($index, self::DIRECTION_NEXT, $tokens, $caseSensitive);
     }
 
     /**
@@ -637,7 +637,7 @@ class Tokens extends \SplFixedArray
      */
     public function getPrevNonWhitespace(int $index, ?string $whitespaces = null): ?int
     {
-        return $this->getNonWhitespaceSibling($index, -1, $whitespaces);
+        return $this->getNonWhitespaceSibling($index, self::DIRECTION_PREV, $whitespaces);
     }
 
     /**
@@ -650,7 +650,7 @@ class Tokens extends \SplFixedArray
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        return $this->getTokenOfKindSibling($index, -1, $tokens, $caseSensitive);
+        return $this->getTokenOfKindSibling($index, self::DIRECTION_PREV, $tokens, $caseSensitive);
     }
 
     /**
@@ -1033,7 +1033,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace(int $index, ?string $whitespaces = null): void
     {
-        $this->removeWhitespaceSafely($index, -1, $whitespaces);
+        $this->removeWhitespaceSafely($index, self::DIRECTION_PREV, $whitespaces);
     }
 
     /**
@@ -1041,7 +1041,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeTrailingWhitespace(int $index, ?string $whitespaces = null): void
     {
-        $this->removeWhitespaceSafely($index, 1, $whitespaces);
+        $this->removeWhitespaceSafely($index, self::DIRECTION_NEXT, $whitespaces);
     }
 
     /**
@@ -1218,7 +1218,7 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        $prevIndex = $this->getNonEmptySibling($index, -1);
+        $prevIndex = $this->getNonEmptySibling($index, self::DIRECTION_PREV);
 
         if ($this[$prevIndex]->isWhitespace()) {
             $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
