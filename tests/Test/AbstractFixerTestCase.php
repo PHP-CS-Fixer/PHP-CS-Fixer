@@ -322,6 +322,26 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
+    final public function testDeprecatedFixersDoNotHaveDeprecatedSuccessor(): void
+    {
+        if (!$this->fixer instanceof DeprecatedFixerInterface || [] === $this->fixer->getSuccessorsNames()) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        foreach ($this->fixer->getSuccessorsNames() as $successorsName) {
+            self::assertFalse(
+                self::getFixerByName($successorsName) instanceof DeprecatedFixerInterface,
+                sprintf(
+                    'Successor fixer `%s` for deprecated fixer `%s` is deprecated itself.',
+                    $successorsName,
+                    $this->fixer->getName(),
+                )
+            );
+        }
+    }
+
     /**
      * Blur filter that find candidate fixer for performance optimization to use only `insertSlices` instead of multiple `insertAt` if there is no other collection manipulation.
      */

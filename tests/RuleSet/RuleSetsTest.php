@@ -14,10 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
@@ -296,26 +294,5 @@ Integration of %s.
         }
 
         return $targetVersion;
-    }
-
-    private static function getFixerByName(string $name): AbstractFixer
-    {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
-        $factory->useRuleSet(new RuleSet([$name => true]));
-
-        $fixers = $factory->getFixers();
-
-        if (0 === \count($fixers)) {
-            throw new \RuntimeException('FixerFactory unexpectedly returned empty array.');
-        }
-
-        $fixer = current($fixers);
-
-        if (!$fixer instanceof AbstractFixer) {
-            throw new \RuntimeException(sprintf('Fixer class for "%s" rule does not extend "%s".', $name, AbstractFixer::class));
-        }
-
-        return $fixer;
     }
 }
