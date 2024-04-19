@@ -51,6 +51,10 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
     public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
 
+    private const NON_MEANINGFUL_TOKENS = [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT];
+    private const DIRECTION_PREV = -1;
+    private const DIRECTION_NEXT = 1;
+
     /**
      * Static class cache.
      *
@@ -717,10 +721,10 @@ class Tokens extends \SplFixedArray
      */
     public function getMeaningfulTokenSibling(int $index, int $direction): ?int
     {
-        return $this->getTokenNotOfKindsSibling(
+        return $this->getTokenNotOfKind(
             $index,
             $direction,
-            [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]
+            fn (int $index): bool => $this[$index]->isGivenKind(self::NON_MEANINGFUL_TOKENS),
         );
     }
 
@@ -751,7 +755,11 @@ class Tokens extends \SplFixedArray
      */
     public function getNextMeaningfulToken(int $index): ?int
     {
-        return $this->getMeaningfulTokenSibling($index, 1);
+        return $this->getTokenNotOfKind(
+            $index,
+            self::DIRECTION_NEXT,
+            fn (int $index): bool => $this[$index]->isGivenKind(self::NON_MEANINGFUL_TOKENS),
+        );
     }
 
     /**
@@ -761,7 +769,11 @@ class Tokens extends \SplFixedArray
      */
     public function getPrevMeaningfulToken(int $index): ?int
     {
-        return $this->getMeaningfulTokenSibling($index, -1);
+        return $this->getTokenNotOfKind(
+            $index,
+            self::DIRECTION_PREV,
+            fn (int $index): bool => $this[$index]->isGivenKind(self::NON_MEANINGFUL_TOKENS),
+        );
     }
 
     /**
