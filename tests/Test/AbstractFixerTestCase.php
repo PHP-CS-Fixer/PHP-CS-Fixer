@@ -331,8 +331,9 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         foreach ($this->fixer->getSuccessorsNames() as $successorName) {
-            self::assertFalse(
-                self::getFixerByName($successorName) instanceof DeprecatedFixerInterface,
+            self::assertNotInstanceOf(
+                DeprecatedFixerInterface::class,
+                self::getFixerByName($successorName),
                 sprintf(
                     'Successor fixer `%s` for deprecated fixer `%s` is deprecated itself.',
                     $successorName,
