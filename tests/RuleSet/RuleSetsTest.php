@@ -189,6 +189,8 @@ Integration of %s.
 
         $fixer = self::getFixerByName($ruleName);
 
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
+
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
                 $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
