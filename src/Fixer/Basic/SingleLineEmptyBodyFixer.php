@@ -15,13 +15,17 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class SingleLineEmptyBodyFixer extends AbstractFixer
+final class SingleLineEmptyBodyFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -46,6 +50,16 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
         return -19;
     }
 
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_for_constructors', 'Whether to ONLY fold __construct() methods, nothing else.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         if (\defined('T_ENUM') && $tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
@@ -60,6 +74,13 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if (!$tokens[$index]->isGivenKind([...Token::getClassyTokenKinds(), T_FUNCTION])) {
                 continue;
+            }
+
+            if (true === $this->configuration['only_for_constructors']) {
+                $funcNameIndex = $tokens->getNextNonWhitespace($index);
+                if ($tokens[$funcNameIndex]->getContent() !== '__construct') {
+                    continue;
+                }
             }
 
             $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
