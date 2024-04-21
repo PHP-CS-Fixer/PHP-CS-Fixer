@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
@@ -84,7 +84,7 @@ abstract class TestCase extends BaseTestCase
         }
     }
 
-    protected static function getFixerByName(string $name): AbstractFixer
+    protected static function getFixerByName(string $name): FixerInterface
     {
         static $fixers = null;
 
