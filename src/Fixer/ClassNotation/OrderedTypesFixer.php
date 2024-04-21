@@ -342,7 +342,7 @@ interface Bar
      */
     private function runTypesThroughSortingAlgorithm(array $types): array
     {
-        $normalizeType = static fn (string $type): string => Preg::replace('/^\\\\?/', '', $type);
+        $normalizeType = static fn (string $type): string => Preg::replace('/^\\\?/', '', $type);
 
         usort($types, function ($a, $b) use ($normalizeType): int {
             if (\is_array($a)) {

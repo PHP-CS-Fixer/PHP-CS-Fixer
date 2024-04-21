@@ -91,7 +91,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
                         EOL,
                     new VersionSpecification(8_00_00),
-                    ['sort_algorithm' => self::ORDER_CUSTOM, 'order' => ['A\\B\\Qux', 'A\\B\\Bar', 'A\\B\\Corge']],
+                    ['sort_algorithm' => self::ORDER_CUSTOM, 'order' => ['A\B\Qux', 'A\B\Bar', 'A\B\Corge']],
                 ),
             ],
         );

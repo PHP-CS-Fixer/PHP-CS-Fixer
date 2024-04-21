@@ -27,7 +27,7 @@ final class CleanNamespaceFixer extends AbstractFixer
     {
         $samples = [];
 
-        foreach (['namespace Foo \\ Bar;', 'echo foo /* comment */ \\ bar();'] as $sample) {
+        foreach (['namespace Foo \ Bar;', 'echo foo /* comment */ \ bar();'] as $sample) {
             $samples[] = new VersionSpecificCodeSample(
                 "<?php\n".$sample."\n",
                 new VersionSpecification(null, 8_00_00 - 1)

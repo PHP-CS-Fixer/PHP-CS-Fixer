@@ -53,7 +53,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid class 2' => [
-            '<?php /** @return \\Foo\\\\Bar */ function my_foo() {}',
+            '<?php /** @return \Foo\\\Bar */ function my_foo() {}',
         ];
 
         yield 'invalid class 3' => [
@@ -65,7 +65,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid class 5' => [
-            '<?php /** @return I\Want\To\Bre\\\\ak\Free */ function queen() {}',
+            '<?php /** @return I\Want\To\Bre\\\ak\Free */ function queen() {}',
         ];
 
         yield 'excluded class methods' => [

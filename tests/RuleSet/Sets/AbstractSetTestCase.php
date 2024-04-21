@@ -75,7 +75,7 @@ abstract class AbstractSetTestCase extends TestCase
 
     protected static function getSet(): RuleSetDescriptionInterface
     {
-        $setClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
+        $setClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 
         return new $setClassName();
     }

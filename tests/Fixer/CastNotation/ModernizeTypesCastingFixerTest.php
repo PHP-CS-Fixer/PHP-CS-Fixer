@@ -103,17 +103,17 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = ClassA::intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = ScopeA\\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = ScopeA\intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = namespace\\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = namespace\intval(mt_rand(0, 100));'];
 
         yield ['<?php $x = $object->intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = new \\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = new \intval(mt_rand(0, 100));'];
 
         yield ['<?php $x = new intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = new ScopeB\\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = new ScopeB\intval(mt_rand(0, 100));'];
 
         yield ['<?php intvalSmth(mt_rand(0, 100));'];
 
@@ -141,11 +141,11 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = \\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = \intval(mt_rand(0, 100));'];
 
         yield ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = intval(mt_rand(0, 100)).".dist";'];
 
-        yield ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \\intval(mt_rand(0, 100)).".dist";'];
+        yield ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \intval(mt_rand(0, 100)).".dist";'];
 
         yield [$multiLinePatternFixed, $multiLinePatternToFix];
 

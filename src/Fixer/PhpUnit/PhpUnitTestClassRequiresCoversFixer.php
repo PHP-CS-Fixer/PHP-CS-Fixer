@@ -78,8 +78,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'coversNothing',
             ],
             [
-                'phpunit\\framework\\attributes\\coversclass',
-                'phpunit\\framework\\attributes\\coversnothing',
+                'phpunit\framework\attributes\coversclass',
+                'phpunit\framework\attributes\coversnothing',
             ],
         );
     }

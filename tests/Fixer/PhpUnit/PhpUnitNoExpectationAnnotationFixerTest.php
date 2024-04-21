@@ -453,7 +453,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     }',
         ];
 
-        yield 'special \\ handling' => [
+        yield 'special \ handling' => [
             <<<'EOT'
                     <?php
                     final class MyTest extends \PHPUnit_Framework_TestCase

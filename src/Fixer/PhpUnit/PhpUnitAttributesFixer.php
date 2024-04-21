@@ -210,7 +210,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixWithSingleStringValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\\/$)/', $annotation->getTag()->getName()),
+            sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );
@@ -427,7 +427,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         if (str_starts_with($matches[1], '::')) {
             $attributeName = 'UsesFunction';
             $attributeTokens = [self::createEscapedStringToken(substr($matches[1], 2))];
-        } elseif (Preg::match('/^[a-zA-Z\d\\\\]+$/', $matches[1])) {
+        } elseif (Preg::match('/^[a-zA-Z\d\\\]+$/', $matches[1])) {
             $attributeName = 'UsesClass';
             $attributeTokens = self::toClassConstant($matches[1]);
         } else {
@@ -443,7 +443,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function getMatches(Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\\/$)/', $annotation->getTag()->getName()),
+            sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );

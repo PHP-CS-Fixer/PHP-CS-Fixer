@@ -175,7 +175,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
         ];
 
         yield [
-            '<?php echo "Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape";',
+            '<?php echo "Foo\u{200b} Bar \\\n \\\ \$variableToEscape";',
             '<?php echo \'Foo'.pack('H*', 'e2808b').' Bar \n \ $variableToEscape\';',
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -215,7 +215,7 @@ TXT;
 
         yield [
             '<?php echo <<<TXT
-Foo\u{200b} Bar \\\\n \\\\ \$variableToEscape
+Foo\u{200b} Bar \\\n \\\ \$variableToEscape
 TXT;
 ',
             '<?php echo <<<\'TXT\'

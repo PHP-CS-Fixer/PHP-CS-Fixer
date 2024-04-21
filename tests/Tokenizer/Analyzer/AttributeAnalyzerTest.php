@@ -184,17 +184,17 @@ final class AttributeAnalyzerTest extends TestCase
                 new AttributeAnalysis(4, 15, 4, 14, [[
                     'start' => 5,
                     'end' => 13,
-                    'name' => 'AB\\Baz',
+                    'name' => 'AB\Baz',
                 ]]),
                 new AttributeAnalysis(16, 49, 16, 48, [[
                     'start' => 17,
                     'end' => 47,
-                    'name' => 'A\\B\\Quux',
+                    'name' => 'A\B\Quux',
                 ]]),
                 new AttributeAnalysis(50, 60, 50, 59, [[
                     'start' => 51,
                     'end' => 58,
-                    'name' => '\\A\\B\\Qux',
+                    'name' => '\A\B\Qux',
                 ]]),
                 new AttributeAnalysis(61, 67, 61, 66, [[
                     'start' => 62,
@@ -224,17 +224,17 @@ final class AttributeAnalyzerTest extends TestCase
                 new AttributeAnalysis(3, 14, 3, 13, [[
                     'start' => 4,
                     'end' => 12,
-                    'name' => 'AB\\Baz',
+                    'name' => 'AB\Baz',
                 ]]),
                 new AttributeAnalysis(15, 48, 15, 47, [[
                     'start' => 16,
                     'end' => 46,
-                    'name' => 'A\\B\\Quux',
+                    'name' => 'A\B\Quux',
                 ]]),
                 new AttributeAnalysis(49, 59, 49, 58, [[
                     'start' => 50,
                     'end' => 57,
-                    'name' => '\\A\\B\\Qux',
+                    'name' => '\A\B\Qux',
                 ]]),
                 new AttributeAnalysis(60, 66, 60, 65, [[
                     'start' => 61,
@@ -280,15 +280,15 @@ final class AttributeAnalyzerTest extends TestCase
                 new AttributeAnalysis(2, 83, 2, 82, [[
                     'start' => 3,
                     'end' => 14,
-                    'name' => 'AB\\Baz',
+                    'name' => 'AB\Baz',
                 ], [
                     'start' => 16,
                     'end' => 47,
-                    'name' => 'A\\B\\Quux',
+                    'name' => 'A\B\Quux',
                 ], [
                     'start' => 49,
                     'end' => 57,
-                    'name' => '\\A\\B\\Qux',
+                    'name' => '\A\B\Qux',
                 ], [
                     'start' => 59,
                     'end' => 63,
@@ -315,15 +315,15 @@ final class AttributeAnalyzerTest extends TestCase
                 new AttributeAnalysis(2, 77, 2, 76, [[
                     'start' => 3,
                     'end' => 12,
-                    'name' => 'AB\\Baz',
+                    'name' => 'AB\Baz',
                 ], [
                     'start' => 14,
                     'end' => 45,
-                    'name' => 'A\\B\\Quux',
+                    'name' => 'A\B\Quux',
                 ], [
                     'start' => 47,
                     'end' => 55,
-                    'name' => '\\A\\B\\Qux',
+                    'name' => '\A\B\Qux',
                 ], [
                     'start' => 57,
                     'end' => 61,
@@ -381,12 +381,12 @@ final class AttributeAnalyzerTest extends TestCase
                 new AttributeAnalysis(2, 13, 2, 12, [[
                     'start' => 3,
                     'end' => 11,
-                    'name' => 'AB\\Baz',
+                    'name' => 'AB\Baz',
                 ]]),
                 new AttributeAnalysis(14, 34, 14, 33, [[
                     'start' => 15,
                     'end' => 32,
-                    'name' => '\\A\\B\\Qux',
+                    'name' => '\A\B\Qux',
                 ]]),
                 new AttributeAnalysis(35, 38, 35, 37, [[
                     'start' => 36,
@@ -410,11 +410,11 @@ final class AttributeAnalyzerTest extends TestCase
                 new AttributeAnalysis(2, 39, 2, 38, [[
                     'start' => 3,
                     'end' => 12,
-                    'name' => 'AB\\Baz',
+                    'name' => 'AB\Baz',
                 ], [
                     'start' => 14,
                     'end' => 32,
-                    'name' => '\\A\\B\\Qux',
+                    'name' => '\A\B\Qux',
                 ], [
                     'start' => 34,
                     'end' => 35,

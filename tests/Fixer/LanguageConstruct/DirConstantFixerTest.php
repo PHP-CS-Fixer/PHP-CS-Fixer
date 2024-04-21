@@ -61,17 +61,17 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = ClassA::dirname(__FILE__);'];
 
-        yield ['<?php $x = ScopeA\\dirname(__FILE__);'];
+        yield ['<?php $x = ScopeA\dirname(__FILE__);'];
 
-        yield ['<?php $x = namespace\\dirname(__FILE__);'];
+        yield ['<?php $x = namespace\dirname(__FILE__);'];
 
         yield ['<?php $x = $object->dirname(__FILE__);'];
 
-        yield ['<?php $x = new \\dirname(__FILE__);'];
+        yield ['<?php $x = new \dirname(__FILE__);'];
 
         yield ['<?php $x = new dirname(__FILE__);'];
 
-        yield ['<?php $x = new ScopeB\\dirname(__FILE__);'];
+        yield ['<?php $x = new ScopeB\dirname(__FILE__);'];
 
         yield ['<?php dirnameSmth(__FILE__);'];
 

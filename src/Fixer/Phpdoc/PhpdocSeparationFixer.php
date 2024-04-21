@@ -295,7 +295,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
 
     private function tagName(Annotation $annotation): ?string
     {
-        Preg::match('/@([a-zA-Z0-9_\\\\-]+(?=\s|$|\())/', $annotation->getContent(), $matches);
+        Preg::match('/@([a-zA-Z0-9_\\\-]+(?=\s|$|\())/', $annotation->getContent(), $matches);
 
         return $matches[1] ?? null;
     }

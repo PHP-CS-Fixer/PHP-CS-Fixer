@@ -114,19 +114,19 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
         yield ['<?php new srand($a);'];
 
-        yield ['<?php new Smth\\srand($a);'];
+        yield ['<?php new Smth\srand($a);'];
 
-        yield ['<?php Smth\\srand($a);'];
+        yield ['<?php Smth\srand($a);'];
 
-        yield ['<?php namespace\\srand($a);'];
+        yield ['<?php namespace\srand($a);'];
 
         yield ['<?php Smth::srand($a);'];
 
-        yield ['<?php new srand\\smth($a);'];
+        yield ['<?php new srand\smth($a);'];
 
         yield ['<?php srand::smth($a);'];
 
-        yield ['<?php srand\\smth($a);'];
+        yield ['<?php srand\smth($a);'];
 
         yield ['<?php "SELECT ... srand(\$a) ...";'];
 
@@ -157,11 +157,11 @@ class srand extends SrandClass{
 
         yield ['<?php mt_srand($a);', '<?php srand($a);'];
 
-        yield ['<?php \\mt_srand($a);', '<?php \\srand($a);'];
+        yield ['<?php \mt_srand($a);', '<?php \srand($a);'];
 
         yield ['<?php $a = &mt_srand($a);', '<?php $a = &srand($a);'];
 
-        yield ['<?php $a = &\\mt_srand($a);', '<?php $a = &\\srand($a);'];
+        yield ['<?php $a = &\mt_srand($a);', '<?php $a = &\srand($a);'];
 
         yield ['<?php /* foo */ mt_srand /** bar */ ($a);', '<?php /* foo */ srand /** bar */ ($a);'];
 
@@ -171,7 +171,7 @@ class srand extends SrandClass{
 
         yield ['<?php a(mt_srand());', '<?php a(srand());'];
 
-        yield ['<?php a(\\mt_srand());', '<?php a(\\srand());'];
+        yield ['<?php a(\mt_srand());', '<?php a(\srand());'];
 
         yield [
             '<?php rand(rand($a));',

@@ -125,7 +125,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         unlink($tmpArtifactPath);
         $this->fs->mkdir($tmpArtifactPath);
 
-        $fakeVersion = preg_replace('/\\-.+/', '', Application::VERSION, 1).'-alpha987654321';
+        $fakeVersion = preg_replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
         $tmpPath = $this->createFakeComposerProject([
             'repositories' => [

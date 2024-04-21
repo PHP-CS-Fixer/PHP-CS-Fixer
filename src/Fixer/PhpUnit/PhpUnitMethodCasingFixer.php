@@ -52,7 +52,7 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
             [
                 new CodeSample(
                     '<?php
-class MyTest extends \\PhpUnit\\FrameWork\\TestCase
+class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function test_my_code() {}
 }
@@ -60,7 +60,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
                 ),
                 new CodeSample(
                     '<?php
-class MyTest extends \\PhpUnit\\FrameWork\\TestCase
+class MyTest extends \PhpUnit\FrameWork\TestCase
 {
     public function testMyCode() {}
 }
