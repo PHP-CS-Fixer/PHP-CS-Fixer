@@ -375,11 +375,13 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
                 new Token([T_WHITESPACE, ' ']),
                 self::createEscapedStringToken($method),
             ];
+        } elseif ('RequiresPhp' === $attributeName && isset($matches[3])) {
+            $attributeTokens = [self::createEscapedStringToken($matches[2].' '.$matches[3])];
         } else {
             $attributeTokens = [self::createEscapedStringToken($matches[2])];
         }
 
-        if (isset($matches[3])) {
+        if (isset($matches[3]) && 'RequiresPhp' !== $attributeName) {
             $attributeTokens[] = new Token(',');
             $attributeTokens[] = new Token([T_WHITESPACE, ' ']);
             $attributeTokens[] = self::createEscapedStringToken($matches[3]);
