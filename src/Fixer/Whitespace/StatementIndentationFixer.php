@@ -116,6 +116,10 @@ if ($foo) {
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('not_for_comments', 'Leave commented lines alone.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
@@ -434,6 +438,13 @@ if ($foo) {
                                 $nextNewlineIndex = $searchIndex;
 
                                 break;
+                            }
+                        }
+
+                        if (true === $this->configuration['not_for_comments']) {
+                            $lineIsCommented = $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind([T_COMMENT]);
+                            if ($lineIsCommented) {
+                                continue;
                             }
                         }
 
