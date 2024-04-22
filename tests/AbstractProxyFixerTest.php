@@ -244,7 +244,7 @@ final class AbstractProxyFixerTest extends TestCase
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      */
     private function createProxyFixerDouble(array $fixers): AbstractProxyFixer
     {

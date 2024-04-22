@@ -189,6 +189,8 @@ Integration of %s.
 
         $fixer = self::getFixerByName($ruleName);
 
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
+
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
                 $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
@@ -201,7 +203,7 @@ Integration of %s.
             throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
-        /** @var string[] $allowedVersionsForRuleset */
+        /** @var list<string> $allowedVersionsForRuleset */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0

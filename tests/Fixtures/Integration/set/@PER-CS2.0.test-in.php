@@ -49,4 +49,19 @@ $arrayMultiline = [
 'foo2' => 'bar',
 ];
 
+$arrayMultilineWithoutComma = [
+    'foo' => 'bar',
+    'foo2' => 'bar'
+];
+$heredocMultilineWithoutComma = [
+    'foo',
+    <<<EOD
+        bar
+        EOD
+];
+argumentsMultilineWithoutComma(
+    1,
+    2
+);
+
 ?>

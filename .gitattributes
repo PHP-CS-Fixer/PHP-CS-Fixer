@@ -4,10 +4,10 @@
 /dev-tools/ export-ignore
 /doc/ export-ignore
 /docker/ export-ignore
-/compose.yaml export-ignore
 /compose.override.dist.yaml export-ignore
+/compose.yaml export-ignore
 /Dockerfile export-ignore
-/phpmd.xml export-ignore
+/infection.json5.dist export-ignore
 /phpstan.dist.neon export-ignore
 /phpunit.xml.dist export-ignore
 /tests/ export-ignore

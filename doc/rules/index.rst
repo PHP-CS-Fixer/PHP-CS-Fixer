@@ -637,6 +637,9 @@ PHP Tag
 PHPUnit
 -------
 
+- `php_unit_attributes <./php_unit/php_unit_attributes.rst>`_
+
+  PHPUnit attributes must be used over their respective PHPDoc-based annotations.
 - `php_unit_construct <./php_unit/php_unit_construct.rst>`_ *(risky)*
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be written with dedicated method like ``->assertTrue($foo)``.

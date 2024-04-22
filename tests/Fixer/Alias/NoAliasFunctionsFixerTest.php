@@ -28,7 +28,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param array<string, string[]> $configuration
+     * @param array<string, list<string>> $configuration
      *
      * @dataProvider provideFixCases
      */

@@ -51,7 +51,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
     ];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $stepsToVerifyInstallation = [
         // Confirm we can install.

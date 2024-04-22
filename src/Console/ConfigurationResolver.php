@@ -832,10 +832,10 @@ final class ConfigurationResolver
 
         $isIntersectionPathMode = self::PATH_MODE_INTERSECTION === $this->options['path-mode'];
 
-        $paths = array_filter(array_map(
+        $paths = array_map(
             static fn (string $path) => realpath($path),
             $this->getPath()
-        ));
+        );
 
         if (0 === \count($paths)) {
             if ($isIntersectionPathMode) {

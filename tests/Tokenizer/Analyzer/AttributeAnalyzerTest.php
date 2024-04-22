@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -128,5 +130,297 @@ final class AttributeAnalyzerTest extends TestCase
         yield [true, '<?php #[Attr1(2 * (3 + 7)), Foo, Attr2((16 + 4) / 5 )] class Bar {}'];
 
         yield [true, '<?php #[Foo("(")] class Bar {}'];
+    }
+
+    /**
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideGetAttributeDeclarationsCases
+     *
+     * @param list<AttributeAnalysis> $expectedAnalyses
+     */
+    public function testGetAttributeDeclarations(string $code, int $startIndex, array $expectedAnalyses): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
+
+        foreach ($expectedAnalyses as $expectedAnalysis) {
+            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
+        }
+
+        self::assertSame(
+            serialize($expectedAnalyses),
+            serialize($actualAnalyses),
+        );
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     */
+    public static function provideGetAttributeDeclarationsCases(): iterable
+    {
+        yield 'multiple #[] in a multiline group' => [
+            '<?php
+            /**
+             * Start docblock
+             */
+            #[AB\Baz(prop: \'baz\')]
+            #[A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
+            #[\A\B\Qux()]
+            #[BarAlias(3)]
+            /**
+             * Corge docblock
+             */
+            #[Corge]
+            #[Foo(4, \'baz qux\')]
+            /**
+             * End docblock
+             */
+            function foo() {}
+            ',
+            4,
+            [
+                new AttributeAnalysis(4, 15, 4, 14, [[
+                    'start' => 5,
+                    'end' => 13,
+                    'name' => 'AB\\Baz',
+                ]]),
+                new AttributeAnalysis(16, 49, 16, 48, [[
+                    'start' => 17,
+                    'end' => 47,
+                    'name' => 'A\\B\\Quux',
+                ]]),
+                new AttributeAnalysis(50, 60, 50, 59, [[
+                    'start' => 51,
+                    'end' => 58,
+                    'name' => '\\A\\B\\Qux',
+                ]]),
+                new AttributeAnalysis(61, 67, 61, 66, [[
+                    'start' => 62,
+                    'end' => 65,
+                    'name' => 'BarAlias',
+                ]]),
+                new AttributeAnalysis(68, 73, 70, 72, [[
+                    'start' => 71,
+                    'end' => 71,
+                    'name' => 'Corge',
+                ]]),
+                new AttributeAnalysis(74, 83, 74, 82, [[
+                    'start' => 75,
+                    'end' => 81,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+
+        yield 'multiple #[] in a single line group' => [
+            '<?php
+            /** Start docblock */#[AB\Baz(prop: \'baz\')] #[A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')] #[\A\B\Qux()] #[BarAlias(3)] /** Corge docblock */#[Corge] #[Foo(4, \'baz qux\')]/** End docblock */
+            function foo() {}
+            ',
+            3,
+            [
+                new AttributeAnalysis(3, 14, 3, 13, [[
+                    'start' => 4,
+                    'end' => 12,
+                    'name' => 'AB\\Baz',
+                ]]),
+                new AttributeAnalysis(15, 48, 15, 47, [[
+                    'start' => 16,
+                    'end' => 46,
+                    'name' => 'A\\B\\Quux',
+                ]]),
+                new AttributeAnalysis(49, 59, 49, 58, [[
+                    'start' => 50,
+                    'end' => 57,
+                    'name' => '\\A\\B\\Qux',
+                ]]),
+                new AttributeAnalysis(60, 66, 60, 65, [[
+                    'start' => 61,
+                    'end' => 64,
+                    'name' => 'BarAlias',
+                ]]),
+                new AttributeAnalysis(67, 71, 68, 70, [[
+                    'start' => 69,
+                    'end' => 69,
+                    'name' => 'Corge',
+                ]]),
+                new AttributeAnalysis(72, 80, 72, 80, [[
+                    'start' => 73,
+                    'end' => 79,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+
+        yield 'comma-separated attributes in a multiline #[]' => [
+            '<?php
+            #[
+                /*
+                 * AB\Baz comment
+                 */
+                AB\Baz(prop: \'baz\'),
+                A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'),
+                \A\B\Qux(),
+                BarAlias(3),
+                /*
+                 * Corge comment
+                 */
+                Corge,
+                /**
+                 * Foo docblock
+                 */
+                Foo(4, \'baz qux\'),
+            ]
+            function foo() {}
+            ',
+            2,
+            [
+                new AttributeAnalysis(2, 83, 2, 82, [[
+                    'start' => 3,
+                    'end' => 14,
+                    'name' => 'AB\\Baz',
+                ], [
+                    'start' => 16,
+                    'end' => 47,
+                    'name' => 'A\\B\\Quux',
+                ], [
+                    'start' => 49,
+                    'end' => 57,
+                    'name' => '\\A\\B\\Qux',
+                ], [
+                    'start' => 59,
+                    'end' => 63,
+                    'name' => 'BarAlias',
+                ], [
+                    'start' => 65,
+                    'end' => 68,
+                    'name' => 'Corge',
+                ], [
+                    'start' => 70,
+                    'end' => 79,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+
+        yield 'comma-separated attributes in a single line #[]' => [
+            '<?php
+            #[/* AB\Baz comment */AB\Baz(prop: \'baz\'), A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\'), \A\B\Qux(), BarAlias(3), /* Corge comment */Corge, /** Foo docblock */Foo(4, \'baz qux\')]
+            function foo() {}
+            ',
+            2,
+            [
+                new AttributeAnalysis(2, 77, 2, 76, [[
+                    'start' => 3,
+                    'end' => 12,
+                    'name' => 'AB\\Baz',
+                ], [
+                    'start' => 14,
+                    'end' => 45,
+                    'name' => 'A\\B\\Quux',
+                ], [
+                    'start' => 47,
+                    'end' => 55,
+                    'name' => '\\A\\B\\Qux',
+                ], [
+                    'start' => 57,
+                    'end' => 61,
+                    'name' => 'BarAlias',
+                ], [
+                    'start' => 63,
+                    'end' => 65,
+                    'name' => 'Corge',
+                ], [
+                    'start' => 67,
+                    'end' => 75,
+                    'name' => 'Foo',
+                ]]),
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP 8.1
+     *
+     * @dataProvider provideGetAttributeDeclarations81Cases
+     *
+     * @param list<AttributeAnalysis> $expectedAnalyses
+     */
+    public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
+
+        foreach ($expectedAnalyses as $expectedAnalysis) {
+            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
+        }
+
+        self::assertSame(
+            serialize($expectedAnalyses),
+            serialize($actualAnalyses),
+        );
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     */
+    public static function provideGetAttributeDeclarations81Cases(): iterable
+    {
+        yield 'multiple #[] in a group, including `new` in arguments' => [
+            '<?php
+                #[AB\Baz(prop: \'baz\')]
+                #[\A\B\Qux(prop: new P\R())]
+                #[Corge]
+                function foo() {}
+                ',
+            2,
+            [
+                new AttributeAnalysis(2, 13, 2, 12, [[
+                    'start' => 3,
+                    'end' => 11,
+                    'name' => 'AB\\Baz',
+                ]]),
+                new AttributeAnalysis(14, 34, 14, 33, [[
+                    'start' => 15,
+                    'end' => 32,
+                    'name' => '\\A\\B\\Qux',
+                ]]),
+                new AttributeAnalysis(35, 38, 35, 37, [[
+                    'start' => 36,
+                    'end' => 36,
+                    'name' => 'Corge',
+                ]]),
+            ],
+        ];
+
+        yield 'comma-separated attributes in single #[] group, including `new` in arguments' => [
+            '<?php
+             #[
+                 AB\Baz(prop: \'baz\'),
+                 \A\B\Qux(prop: new P\R()),
+                 Corge,
+             ]
+             function foo() {}
+             ',
+            2,
+            [
+                new AttributeAnalysis(2, 39, 2, 38, [[
+                    'start' => 3,
+                    'end' => 12,
+                    'name' => 'AB\\Baz',
+                ], [
+                    'start' => 14,
+                    'end' => 32,
+                    'name' => '\\A\\B\\Qux',
+                ], [
+                    'start' => 34,
+                    'end' => 35,
+                    'name' => 'Corge',
+                ]]),
+            ],
+        ];
     }
 }

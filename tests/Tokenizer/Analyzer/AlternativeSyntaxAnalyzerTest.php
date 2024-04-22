@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AlternativeSyntaxAnalyzerTest extends TestCase
 {
     /**
-     * @param int[] $expectedPositives
+     * @param list<int> $expectedPositives
      *
      * @dataProvider provideBelongsToAlternativeSyntaxCases
      */
