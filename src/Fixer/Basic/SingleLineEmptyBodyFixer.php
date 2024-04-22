@@ -31,12 +31,29 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer implements Configurab
     {
         return new FixerDefinition(
             'Empty body of class, interface, trait, enum or function must be abbreviated as `{}` and placed on the same line as the previous symbol, separated by a single space.',
-            [new CodeSample('<?php function foo(
+            [
+                new CodeSample('<?php function foo(
     int $x
 )
 {
 }
-')],
+'
+                ),
+                new CodeSample('<?php
+class Foo
+{
+    public function __construct()
+    {
+    }
+
+    public function foo()
+    {
+    }
+}
+',
+                    ['only_for_constructors' => true]
+                )
+            ],
         );
     }
 
