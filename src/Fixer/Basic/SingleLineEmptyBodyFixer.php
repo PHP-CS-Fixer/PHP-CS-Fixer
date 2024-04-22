@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -78,7 +78,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer implements Configurab
 
             if (true === $this->configuration['only_for_constructors']) {
                 $funcNameIndex = $tokens->getNextNonWhitespace($index);
-                if ($tokens[$funcNameIndex]->getContent() !== '__construct') {
+                if ('__construct' !== $tokens[$funcNameIndex]->getContent()) {
                     continue;
                 }
             }
