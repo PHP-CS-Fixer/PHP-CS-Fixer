@@ -136,6 +136,27 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'fix with > in operator' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends \PHPUnit\Framework\TestCase {
+                    /**
+                     */
+                    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 8.1')]
+                    public function testFoo() { self::assertTrue(true); }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends \PHPUnit\Framework\TestCase {
+                    /**
+                     * @requires PHP >= 8.1
+                     */
+                    public function testFoo() { self::assertTrue(true); }
+                }
+                PHP,
+        ];
+
         yield 'fix with trailing spaces' => self::createCase(
             ['class'],
             '#[CoversClass(Foo::class)]',
