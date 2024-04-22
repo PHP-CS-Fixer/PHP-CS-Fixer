@@ -7,6 +7,15 @@ Each statement must be indented.
 Configuration
 -------------
 
+``not_for_comments``
+~~~~~~~~~~~~~~~~~~~~
+
+Leave commented lines alone.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``stick_comment_to_next_continuous_control_statement``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -83,6 +92,25 @@ With configuration: ``['stick_comment_to_next_continuous_control_statement' => t
         $aaa = 1;
    -        // this is treated as comment of `elseif(3)` block, as it is a comment in the final block
    +    // this is treated as comment of `elseif(3)` block, as it is a comment in the final block
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['not_for_comments' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    if ($foo) {
+    // Comment stays where it is
+   -echo "foo"; // Code is indented
+   +    echo "foo"; // Code is indented
+            // Comment stays where it is
+    } else {
+        $aaa = 1;
     }
 
 Rule sets

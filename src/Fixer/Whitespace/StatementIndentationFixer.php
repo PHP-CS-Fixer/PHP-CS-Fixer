@@ -89,6 +89,18 @@ if ($foo) {
 ',
                     ['stick_comment_to_next_continuous_control_statement' => true]
                 ),
+                new CodeSample(
+                    '<?php
+if ($foo) {
+// Comment stays where it is
+echo "foo"; // Code is indented
+        // Comment stays where it is
+} else {
+    $aaa = 1;
+}
+',
+                    ['not_for_comments' => true]
+                ),
             ]
         );
     }
