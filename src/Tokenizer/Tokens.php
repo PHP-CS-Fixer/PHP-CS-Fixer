@@ -340,6 +340,8 @@ class Tokens extends \SplFixedArray
     /**
      * Set collection item.
      *
+     * Warning! `$newval` must not be typehinted to be compatible with `ArrayAccess::offsetSet` method.
+     *
      * @param int   $index
      * @param Token $newval
      */
