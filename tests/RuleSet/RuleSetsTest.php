@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -185,7 +186,7 @@ Integration of %s.
     {
         $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
 
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
 
@@ -283,7 +284,7 @@ Integration of %s.
     private function getDefaultPHPUnitTargetOfRule(string $ruleName): ?string
     {
         $targetVersion = null;
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         if ($fixer instanceof ConfigurableFixerInterface) {
             foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {

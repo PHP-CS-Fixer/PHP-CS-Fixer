@@ -23,6 +23,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -85,7 +86,7 @@ final class RuleSetTest extends TestCase
      */
     public function testThatDefaultConfigIsNotPassed(string $setName, string $ruleName, $ruleConfig): void
     {
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         if (!$fixer instanceof ConfigurableFixerInterface || \is_bool($ruleConfig)) {
             $this->expectNotToPerformAssertions();
@@ -115,7 +116,7 @@ final class RuleSetTest extends TestCase
      */
     public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
     {
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         self::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }

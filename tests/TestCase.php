@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerFactory;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 /**
@@ -82,26 +80,5 @@ abstract class TestCase extends BaseTestCase
                 }
             );
         }
-    }
-
-    protected static function getFixerByName(string $name): FixerInterface
-    {
-        static $fixers = null;
-
-        if (null === $fixers) {
-            $factory = new FixerFactory();
-            $factory->registerBuiltInFixers();
-
-            $fixers = [];
-            foreach ($factory->getFixers() as $fixer) {
-                $fixers[$fixer->getName()] = $fixer;
-            }
-        }
-
-        if (!\array_key_exists($name, $fixers)) {
-            throw new \InvalidArgumentException(sprintf('Fixer "%s" does not exist.', $name));
-        }
-
-        return $fixers[$name];
     }
 }
