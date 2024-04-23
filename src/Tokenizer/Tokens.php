@@ -14,9 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.
@@ -164,13 +166,17 @@ class Tokens extends \SplFixedArray
     {
         $tokens = new self(\count($array));
 
-        if ($saveIndices ?? true) {
+        if (false !== $saveIndices && !array_is_list($array)) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+                'Parameter "array" should be a list. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+
             foreach ($array as $key => $val) {
                 $tokens[$key] = $val;
             }
         } else {
             $index = 0;
-
             foreach ($array as $val) {
                 $tokens[$index++] = $val;
             }
@@ -290,7 +296,7 @@ class Tokens extends \SplFixedArray
     #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
-        if ($this->getSize() !== $size) {
+        if (\count($this) !== $size) {
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
@@ -307,6 +313,13 @@ class Tokens extends \SplFixedArray
      */
     public function offsetUnset($index): void
     {
+        if (\count($this) - 1 !== $index) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+                'Tokens should be a list - only the last index can be unset. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
         if (isset($this[$index])) {
             if (isset($this->blockStartCache[$index])) {
                 unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
@@ -334,6 +347,13 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
+        if (0 > $index || \count($this) <= $index) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+                'Tokens should be a list - index must be within the existing range. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             if (isset($this[$index])) {
                 if (isset($this->blockStartCache[$index])) {
@@ -370,7 +390,7 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens(): void
     {
-        $limit = $this->count();
+        $limit = \count($this);
 
         for ($index = 0; $index < $limit; ++$index) {
             if ($this->isEmptyAt($index)) {
@@ -470,7 +490,7 @@ class Tokens extends \SplFixedArray
      * @param self::BLOCK_TYPE_* $type        type of block
      * @param int                $searchIndex index of opening brace
      *
-     * @return int index of closing brace
+     * @return int<0, max> index of closing brace
      */
     public function findBlockEnd(int $type, int $searchIndex): int
     {
@@ -481,7 +501,7 @@ class Tokens extends \SplFixedArray
      * @param self::BLOCK_TYPE_* $type        type of block
      * @param int                $searchIndex index of closing brace
      *
-     * @return int index of opening brace
+     * @return int<0, max> index of opening brace
      */
     public function findBlockStart(int $type, int $searchIndex): int
     {
@@ -493,12 +513,12 @@ class Tokens extends \SplFixedArray
      * @param int                     $start        optional offset
      * @param null|int                $end          optional limit
      *
-     * @return ($possibleKind is int ? array<int, Token> : array<int, array<int, Token>>)
+     * @return ($possibleKind is int ? array<int<0, max>, Token> : array<int, array<int<0, max>, Token>>)
      */
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
         if (null === $end) {
-            $end = $this->count();
+            $end = \count($this);
         }
 
         $elements = [];
@@ -593,7 +613,6 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
@@ -648,7 +667,6 @@ class Tokens extends \SplFixedArray
 
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
@@ -716,7 +734,6 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
@@ -757,7 +774,7 @@ class Tokens extends \SplFixedArray
      *                                                                              the ones used in $sequence. If any is missing, the default case-sensitive
      *                                                                              comparison is used
      *
-     * @return null|non-empty-array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
+     * @return null|non-empty-array<int<0, max>, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
     public function findSequence(array $sequence, int $start = 0, ?int $end = null, $caseSensitive = true): ?array
     {
@@ -924,7 +941,7 @@ class Tokens extends \SplFixedArray
             $sliceCount = \count($slice);
 
             for ($i = $previousSliceIndex - 1; $i >= $index; --$i) {
-                parent::offsetSet($i + $itemsCount, parent::offsetGet($i));
+                parent::offsetSet($i + $itemsCount, $this[$i]);
             }
 
             $previousSliceIndex = $index;
@@ -1261,7 +1278,7 @@ class Tokens extends \SplFixedArray
      * @param int                $searchIndex index of starting brace
      * @param bool               $findEnd     if method should find block's end or start
      *
-     * @return int index of opposite brace
+     * @return int<0, max> index of opposite brace
      */
     private function findOppositeBlockEdge(int $type, int $searchIndex, bool $findEnd): int
     {
@@ -1282,7 +1299,7 @@ class Tokens extends \SplFixedArray
         $startEdge = $blockEdgeDefinitions[$type]['start'];
         $endEdge = $blockEdgeDefinitions[$type]['end'];
         $startIndex = $searchIndex;
-        $endIndex = $this->count() - 1;
+        $endIndex = \count($this) - 1;
         $indexOffset = 1;
 
         if (!$findEnd) {
@@ -1448,7 +1465,6 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
