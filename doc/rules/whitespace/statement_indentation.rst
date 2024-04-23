@@ -7,10 +7,10 @@ Each statement must be indented.
 Configuration
 -------------
 
-``not_for_comments``
-~~~~~~~~~~~~~~~~~~~~
+``allow_zero_indented_comments``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Leave commented lines alone.
+Leave lines that start with a // comment alone.
 
 Allowed types: ``bool``
 
@@ -97,7 +97,7 @@ With configuration: ``['stick_comment_to_next_continuous_control_statement' => t
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['not_for_comments' => true]``.
+With configuration: ``['allow_zero_indented_comments' => true]``.
 
 .. code-block:: diff
 
@@ -105,10 +105,11 @@ With configuration: ``['not_for_comments' => true]``.
    +++ New
     <?php
     if ($foo) {
-    // Comment stays where it is
-   -echo "foo"; // Code is indented
-   +    echo "foo"; // Code is indented
-            // Comment stays where it is
+    // This comment will stay where it is
+   -echo "foo"; // This code will be indented
+   -        // This comment will be indented properly
+   +    echo "foo"; // This code will be indented
+   +    // This comment will be indented properly
     } else {
         $aaa = 1;
     }

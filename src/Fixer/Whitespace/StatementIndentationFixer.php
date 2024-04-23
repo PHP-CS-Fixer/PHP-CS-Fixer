@@ -92,14 +92,14 @@ if ($foo) {
                 new CodeSample(
                     '<?php
 if ($foo) {
-// Comment stays where it is
-echo "foo"; // Code is indented
-        // Comment stays where it is
+// This comment will stay where it is
+echo "foo"; // This code will be indented
+        // This comment will be indented properly
 } else {
     $aaa = 1;
 }
 ',
-                    ['not_for_comments' => true]
+                    ['allow_zero_indented_comments' => true]
                 ),
             ]
         );
@@ -128,7 +128,7 @@ echo "foo"; // Code is indented
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('not_for_comments', 'Leave commented lines alone.'))
+            (new FixerOptionBuilder('allow_zero_indented_comments', 'Leave lines that start with a // comment alone.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
@@ -453,9 +453,10 @@ echo "foo"; // Code is indented
                             }
                         }
 
-                        if (true === $this->configuration['not_for_comments']) {
+                        if (true === $this->configuration['allow_zero_indented_comments']) {
                             $lineIsCommented = $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind([T_COMMENT]);
-                            if ($lineIsCommented) {
+                            $prevTokenEndsWithNewline = Preg::match('/\R$/', $tokens[$firstNonWhitespaceTokenIndex - 1]->getContent());
+                            if ($lineIsCommented && $prevTokenEndsWithNewline) {
                                 continue;
                             }
                         }
