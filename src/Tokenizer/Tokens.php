@@ -391,8 +391,9 @@ class Tokens extends \SplFixedArray
     public function clearEmptyTokens(): void
     {
         $limit = \count($this);
+        $index = 0;
 
-        for ($index = 0; $index < $limit; ++$index) {
+        for (; $index < $limit; ++$index) {
             if ($this->isEmptyAt($index)) {
                 break;
             }
@@ -403,7 +404,9 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        for ($count = $index; $index < $limit; ++$index) {
+        $count = $index;
+
+        for (; $index < $limit; ++$index) {
             if (!$this->isEmptyAt($index)) {
                 // use directly for speed, skip the register of token kinds found etc.
                 parent::offsetSet($count++, $this[$index]);
@@ -1313,8 +1316,9 @@ class Tokens extends \SplFixedArray
         }
 
         $blockLevel = 0;
+        $index = $startIndex;
 
-        for ($index = $startIndex; $index !== $endIndex; $index += $indexOffset) {
+        for (; $index !== $endIndex; $index += $indexOffset) {
             $token = $this[$index];
 
             if ($token->equals($startEdge)) {
