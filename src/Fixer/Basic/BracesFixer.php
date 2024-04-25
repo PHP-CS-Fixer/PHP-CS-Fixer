@@ -51,9 +51,9 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
     public const LINE_SAME = 'same';
 
     /**
-     * @var null|CurlyBracesPositionFixer
+     * @var null|BracesPositionFixer
      */
-    private $curlyBracesPositionFixer;
+    private $bracesPositionFixer;
 
     /**
      * @var null|ControlStructureContinuationPositionFixer
@@ -156,7 +156,7 @@ class Foo
     {
         parent::configure($configuration);
 
-        $this->getCurlyBracesPositionFixer()->configure([
+        $this->getBracesPositionFixer()->configure([
             'control_structures_opening_brace' => $this->translatePositionOption($this->configuration['position_after_control_structures']),
             'functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_functions_and_oop_constructs']),
             'anonymous_functions_opening_brace' => $this->translatePositionOption($this->configuration['position_after_anonymous_constructs']),
@@ -217,7 +217,7 @@ class Foo
             $singleSpaceAroundConstructFixer,
             new ControlStructureBracesFixer(),
             $noExtraBlankLinesFixer,
-            $this->getCurlyBracesPositionFixer(),
+            $this->getBracesPositionFixer(),
             $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),
             new NoMultipleStatementsPerLineFixer(),
@@ -225,13 +225,13 @@ class Foo
         ];
     }
 
-    private function getCurlyBracesPositionFixer(): CurlyBracesPositionFixer
+    private function getBracesPositionFixer(): BracesPositionFixer
     {
-        if (null === $this->curlyBracesPositionFixer) {
-            $this->curlyBracesPositionFixer = new CurlyBracesPositionFixer();
+        if (null === $this->bracesPositionFixer) {
+            $this->bracesPositionFixer = new BracesPositionFixer();
         }
 
-        return $this->curlyBracesPositionFixer;
+        return $this->bracesPositionFixer;
     }
 
     private function getControlStructureContinuationPositionFixer(): ControlStructureContinuationPositionFixer
@@ -246,7 +246,7 @@ class Foo
     private function translatePositionOption(string $option): string
     {
         return self::LINE_NEXT === $option
-            ? CurlyBracesPositionFixer::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END
-            : CurlyBracesPositionFixer::SAME_LINE;
+            ? BracesPositionFixer::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END
+            : BracesPositionFixer::SAME_LINE;
     }
 }
