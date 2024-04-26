@@ -157,7 +157,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Remove Infection requirement if not needed
-        if: matrix.run-mutation-tests != 'yes'
+        # TODO: Fix it properly. It somehow stopped working on MacOS (Composer not available)
+        if: matrix.operating-system != 'macos-latest' && matrix.run-mutation-tests != 'yes'
         run: composer remove --dev infection/infection --no-update
 
       - name: Setup PHP with Composer deps
