@@ -5,7 +5,7 @@ includes:
     - dev-tools/phpstan/baseline.php
 
 parameters:
-    level: 6
+    level: 7
     paths:
         - src
         - tests
