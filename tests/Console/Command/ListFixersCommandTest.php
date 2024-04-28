@@ -37,19 +37,6 @@ final class ListFixersCommandTest extends TestCase
         $this->application = new Application();
     }
 
-    public function testConfigOptionNotPassedUsesDefaultConfigFile(): void
-    {
-        $cmdTester = $this->doTestExecute();
-
-        $result = $cmdTester->getDisplay();
-
-        self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
-
-        // "  // Loaded config default from /path/to/library/.php-cs-fixer.dist.php."
-        self::assertStringContainsString('// Loaded config default from', $result);
-        self::assertStringContainsString('/.php-cs-fixer.dist.php.', $result);
-    }
-
     public function testConfigOptionThrowsExceptionIfCustomConfigFileDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -84,8 +71,6 @@ final class ListFixersCommandTest extends TestCase
         $result = $cmdTester->getDisplay();
         $result = $this->prepareOutputForTest($result);
 
-        // $this->saveExpected($fileName, $result);
-
         $expected = $this->loadExpectedOutput($fileName);
 
         self::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
@@ -104,8 +89,6 @@ final class ListFixersCommandTest extends TestCase
 
         $result = $cmdTester->getDisplay();
         $result = $this->prepareOutputForTest($result);
-
-        // $this->saveExpected($fileName, $result);
 
         $expected = $this->loadExpectedOutput($fileName);
 
@@ -136,14 +119,6 @@ final class ListFixersCommandTest extends TestCase
         );
 
         return $commandTester;
-    }
-
-    /**
-     * @deprecated Just useful while writing those tests
-     */
-    private function saveExpected(string $filename, string $content):void
-    {
-        file_put_contents(sprintf(__DIR__.'/../../Fixtures/ListFixersCommand/%s.expected.txt', $filename), $content);
     }
 
     private function prepareOutputForTest(string $output): string

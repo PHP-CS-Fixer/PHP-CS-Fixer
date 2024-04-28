@@ -123,6 +123,7 @@ final class ListFixersCommand extends Command
     private bool $hideEnabled;
     private bool $hideRisky;
     private bool $hideInherited;
+    private bool $hideInheritance;
     private bool $hideDeprecated;
     private bool $hideCustom;
     private int $countConfiguredFixers = 0;
@@ -305,6 +306,7 @@ EOT
         $this->hideEnabled = $input->getOption(self::OPT_HIDE_ENABLED);
         $this->hideRisky = $input->getOption(self::OPT_HIDE_RISKY);
         $this->hideInherited = $input->getOption(self::OPT_HIDE_INHERITED);
+        $this->hideInheritance = $input->getOption(self::OPT_HIDE_INHERITANCE);
         $this->hideDeprecated = $input->getOption(self::OPT_HIDE_DEPRECATED);
         $this->hideCustom = $input->getOption(self::OPT_HIDE_CUSTOM);
 
@@ -366,7 +368,7 @@ EOT
             $columns[] = sprintf('Risky (%d)', $this->countRiskyFixers);
         }
 
-        if (!$this->hideInherited) {
+        if (!$this->hideInherited && !$this->hideInheritance) {
             $columns[] = sprintf('From set (%d)', $this->countInheritedFixers);
         }
 
@@ -464,7 +466,7 @@ EOT
                 $row['is_risky'] = $fixer['is_risky'] ? sprintf('<fg=green;>%s</>', self::THICK) : sprintf('<fg=red;>%s</>', self::CROSS);
             }
 
-            if (!$this->hideInherited) {
+            if (!$this->hideInherited && !$this->hideInheritance) {
                 $row['is_inherited'] = $fixer['is_inherited'] && false === $fixer['is_configured'] && isset($fixer['source'])
                     ? $fixer['source']
                     : sprintf('<fg=red;>%s</>', self::CROSS);
