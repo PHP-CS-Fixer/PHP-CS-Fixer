@@ -10,8 +10,8 @@ Configuration
 ``order``
 ~~~~~~~~~
 
-A list of FQCNs of attributes defining the desired order used when no sorting
-algorithm is configured.
+A list of FQCNs of attributes defining the desired order used when custom
+sorting algorithm is configured.
 
 Allowed types: ``string[]``
 
@@ -22,7 +22,7 @@ Default value: ``[]``
 
 How the attributes should be sorted.
 
-Allowed values: ``'alpha'`` and ``'none'``
+Allowed values: ``'alpha'`` and ``'custom'``
 
 Default value: ``'alpha'``
 
@@ -61,7 +61,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['sort_algorithm' => 'none', 'order' => ['A\\B\\Qux', 'A\\B\\Bar', 'A\\B\\Corge']]``.
+With configuration: ``['sort_algorithm' => 'custom', 'order' => ['A\\B\\Qux', 'A\\B\\Bar', 'A\\B\\Corge']]``.
 
 .. code-block:: diff
 

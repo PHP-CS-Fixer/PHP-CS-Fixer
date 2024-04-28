@@ -43,13 +43,26 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: array{sort_algorithm: OrderedAttributesFixer::ORDER_*, order: list<string>}, 1: string}>
+     * @return iterable<array{0: array{sort_algorithm: OrderedAttributesFixer::ORDER_*, order?: list<string>}, 1: string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
+        yield 'Custom order strategy without `order` option' => [
+            ['sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM],
+            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.',
+        ];
+
+        yield 'Custom order strategy with empty `order` option' => [
+            [
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
+                'order' => [],
+            ],
+            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.',
+        ];
+
         yield 'Non unique attributes throw an exception' => [
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['A\B\Bar', 'Test\Corge', 'A\B\Bar'],
             ],
             'The list includes attributes that are not unique.',
@@ -232,7 +245,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             function f() {}
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Bar', 'Test\Corge', 'A\B\Baz', 'A\B\Foo', 'A\B\Qux'],
             ],
         ];
@@ -265,7 +278,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             function f() {}
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['A\B\Quux', 'A\B\Bar', 'Corge', 'A\B\Baz', 'A\B\Foo', 'A\B\Qux'],
             ],
         ];
@@ -302,7 +315,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             function f() {}
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Baz', 'A\B\Qux'],
             ],
         ];
@@ -399,7 +412,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             }
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['A\B\Bar', 'Test\AB\Baz', 'A\B\Quux', 'A\B\Baz', 'A\B\Foo', 'AB\Baz'],
             ],
         ];
@@ -532,7 +545,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             function f() {}
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Bar', 'Test\Corge', 'A\B\Baz', 'A\B\Foo', 'A\B\Qux'],
             ],
         ];
@@ -626,7 +639,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             }
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Bar', 'Test\Corge', 'A\B\Baz', 'A\B\Qux'],
             ],
         ];
@@ -786,7 +799,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             function f() {}
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Bar', 'Test\Corge', 'A\B\Baz', 'A\B\Qux'],
             ],
         ];
@@ -880,7 +893,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             function f() {}
             ',
             [
-                'sort_algorithm' => OrderedAttributesFixer::ORDER_NONE,
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Bar', 'Test\Corge', 'A\B\Baz', 'A\B\Foo', 'A\B\Qux'],
             ],
         ];

@@ -42,11 +42,11 @@ use Symfony\Component\OptionsResolver\Options;
 final class OrderedAttributesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public const ORDER_ALPHA = 'alpha';
-    public const ORDER_NONE = 'none';
+    public const ORDER_CUSTOM = 'custom';
 
     private const SUPPORTED_SORT_ALGORITHMS = [
         self::ORDER_ALPHA,
-        self::ORDER_NONE,
+        self::ORDER_CUSTOM,
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -91,7 +91,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
                         EOL,
                     new VersionSpecification(8_00_00),
-                    ['sort_algorithm' => self::ORDER_NONE, 'order' => ['A\\B\\Qux', 'A\\B\\Bar', 'A\\B\\Corge']],
+                    ['sort_algorithm' => self::ORDER_CUSTOM, 'order' => ['A\\B\\Qux', 'A\\B\\Bar', 'A\\B\\Corge']],
                 ),
             ],
         );
@@ -120,8 +120,18 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
             (new FixerOptionBuilder('sort_algorithm', 'How the attributes should be sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::ORDER_ALPHA)
+                ->setNormalizer(static function (Options $options, string $value) use ($fixerName): string {
+                    if (self::ORDER_CUSTOM === $value && [] === $options['order']) {
+                        throw new InvalidFixerConfigurationException(
+                            $fixerName,
+                            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.'
+                        );
+                    }
+
+                    return $value;
+                })
                 ->getOption(),
-            (new FixerOptionBuilder('order', 'A list of FQCNs of attributes defining the desired order used when no sorting algorithm is configured.'))
+            (new FixerOptionBuilder('order', 'A list of FQCNs of attributes defining the desired order used when custom sorting algorithm is configured.'))
                 ->setAllowedTypes(['string[]'])
                 ->setDefault([])
                 ->setNormalizer(static function (Options $options, array $value) use ($fixerName): array {
@@ -197,7 +207,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
     private function getAttributeName(Tokens $tokens, string $name, int $index): string
     {
-        if (self::ORDER_NONE === $this->configuration['sort_algorithm']) {
+        if (self::ORDER_CUSTOM === $this->configuration['sort_algorithm']) {
             $name = $this->determineAttributeFullyQualifiedName($tokens, $name, $index);
         }
 
@@ -246,7 +256,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                 return $a['name'] <=> $b['name'];
             }
 
-            if (self::ORDER_NONE === $sortAlgorithm) {
+            if (self::ORDER_CUSTOM === $sortAlgorithm) {
                 return
                     ($this->configuration['order'][$a['name']] ?? PHP_INT_MAX)
                     <=>
