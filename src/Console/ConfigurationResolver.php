@@ -554,7 +554,7 @@ final class ConfigurationResolver
             $configDir = $path[0];
         } else {
             $dirName = pathinfo($path[0], PATHINFO_DIRNAME);
-            $configDir = $dirName ?: $path[0];
+            $configDir = is_dir($dirName) ? $dirName : $path[0];
         }
 
         $candidates = [

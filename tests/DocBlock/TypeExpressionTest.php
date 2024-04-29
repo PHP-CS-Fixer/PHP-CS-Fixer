@@ -417,8 +417,7 @@ final class TypeExpressionTest extends TestCase
         $expression = new TypeExpression($str, null, []);
         self::assertSame($types, $expression->getTypes());
 
-        $nRecursive = 100;
-        for ($i = 0; $i < $nRecursive; ++$i) {
+        for ($i = 0; $i < 100; ++$i) {
             $str = 'array'.(1 === $i % 2 ? '{' : '<').$str.(1 === $i % 2 ? '}' : '>');
         }
 
@@ -437,6 +436,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedTypesGlue, $expression->getTypesGlue());
     }
 
+    /**
+     * @return iterable<array{0: '&'|'|', 1: string}>
+     */
     public static function provideGetTypesGlueCases(): iterable
     {
         yield ['|', 'string']; // for backward behaviour
@@ -455,6 +457,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedIsUnionType, $expression->isUnionType());
     }
 
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
     public static function provideIsUnionTypeCases(): iterable
     {
         yield [false, 'string'];
