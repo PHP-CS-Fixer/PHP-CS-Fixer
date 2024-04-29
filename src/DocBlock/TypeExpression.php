@@ -147,8 +147,8 @@ final class TypeExpression
                           (?:\.(?&constant_digits)|(?<=\d)\.)?+
                           (?:e[+-]?(?&constant_digits))?+
                     )
-                    | \'(?:[^\'\\\\]|\\\\.)*+\'
-                    | "(?:[^"\\\\]|\\\\.)*+"
+                    | \'(?:[^\'\\\]|\\\.)*+\'
+                    | "(?:[^"\\\]|\\\.)*+"
                     (?-i)
                 )
                 |
@@ -159,7 +159,7 @@ final class TypeExpression
                 )
                 |
                 (?<name> # full name, e.g.: `int`, `\DateTime`, `\Foo\Bar`, `positive-int`
-                    \\\\?+
+                    \\\?+
                     (?<identifier>'.self::REGEX_IDENTIFIER.')
                     (?:[\\\\\-](?&identifier))*+
                 )

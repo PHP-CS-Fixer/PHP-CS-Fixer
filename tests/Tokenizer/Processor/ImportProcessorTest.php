@@ -53,17 +53,17 @@ final class ImportProcessorTest extends TestCase
     {
         yield [__CLASS__];
 
-        yield ['Foo\\Bar'];
+        yield ['Foo\Bar'];
 
-        yield ['\\Foo\\Bar'];
+        yield ['\Foo\Bar'];
 
         yield ['FooBar'];
 
-        yield ['\\FooBar'];
+        yield ['\FooBar'];
 
-        yield ['\\Foo\\Bar\\Baz\\Buzz'];
+        yield ['\Foo\Bar\Baz\Buzz'];
 
-        yield ['\\Foo1\\Bar_\\baz\\buzz'];
+        yield ['\Foo1\Bar_\baz\buzz'];
     }
 
     /**
@@ -101,7 +101,7 @@ use Other\B;
 namespace Foo;
 ',
             [
-                'class' => ['Other\\A', 'Other\\B'],
+                'class' => ['Other\A', 'Other\B'],
             ],
             6,
         ];
@@ -120,7 +120,7 @@ namespace Foo {
 }
 ',
             [
-                'class' => ['Other\\A', 'Other\\B'],
+                'class' => ['Other\A', 'Other\B'],
             ],
             7,
         ];

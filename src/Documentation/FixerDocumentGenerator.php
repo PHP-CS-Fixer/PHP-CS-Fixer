@@ -256,7 +256,7 @@ final class FixerDocumentGenerator
         $fileName = "`{$className} <./../../../{$fileName}>`_";
 
         $testFileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);
-        $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
+        $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
         $testFileName = Preg::replace('~(?= <|\.php>)~', 'Test', $testFileName);
 
         $doc .= <<<RST
@@ -317,7 +317,7 @@ final class FixerDocumentGenerator
         $currentGroup = null;
 
         foreach ($fixers as $fixer) {
-            $namespace = Preg::replace('/^.*\\\\(.+)\\\\.+Fixer$/', '$1', \get_class($fixer));
+            $namespace = Preg::replace('/^.*\\\(.+)\\\.+Fixer$/', '$1', \get_class($fixer));
             $group = $overrideGroups[$namespace] ?? Preg::replace('/(?<=[[:lower:]])(?=[[:upper:]])/', ' ', $namespace);
 
             if ($group !== $currentGroup) {

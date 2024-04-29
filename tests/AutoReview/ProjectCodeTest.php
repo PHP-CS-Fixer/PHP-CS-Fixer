@@ -72,7 +72,7 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassHaveTestClass(string $className): void
     {
-        $testClassName = 'PhpCsFixer\\Tests'.substr($className, 10).'Test';
+        $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         self::assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
     }
@@ -506,7 +506,7 @@ final class ProjectCodeTest extends TestCase
 
         self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
         self::assertMatchesRegularExpression('/^iterable\</', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
-        self::assertMatchesRegularExpression('/^iterable\\<(?:(?:int\\|)?string, )?array\\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
+        self::assertMatchesRegularExpression('/^iterable\<(?:(?:int\|)?string, )?array\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
     }
 
     /**
@@ -903,7 +903,7 @@ final class ProjectCodeTest extends TestCase
 
         $classes = array_map(
             static fn (SplFileInfo $file): string => sprintf(
-                '%s\\%s%s%s',
+                '%s\%s%s%s',
                 'PhpCsFixer',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                 '' !== $file->getRelativePath() ? '\\' : '',
@@ -939,7 +939,7 @@ final class ProjectCodeTest extends TestCase
 
         $classes = array_map(
             static fn (SplFileInfo $file): string => sprintf(
-                'PhpCsFixer\\Tests\\%s%s%s',
+                'PhpCsFixer\Tests\%s%s%s',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                 '' !== $file->getRelativePath() ? '\\' : '',
                 $file->getBasename('.'.$file->getExtension())

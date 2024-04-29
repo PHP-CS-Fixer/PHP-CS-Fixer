@@ -1175,7 +1175,7 @@ switch ($foo) {
     public function testFixWithCommentTextWithSpecialRegexpCharacters(): void
     {
         $this->fixer->configure([
-            'comment_text' => '~***(//[No break here.]\\\\)***~',
+            'comment_text' => '~***(//[No break here.]\\\)***~',
         ]);
 
         $this->doTest(
@@ -1183,10 +1183,10 @@ switch ($foo) {
 switch ($foo) {
     case 1:
         foo();
-        // ~***(//[No break here.]\\\\)***~
+        // ~***(//[No break here.]\\\)***~
     case 2:
         bar();
-        // ~***(//[No break here.]\\\\)***~
+        // ~***(//[No break here.]\\\)***~
     default:
         baz();
 }',
@@ -1194,7 +1194,7 @@ switch ($foo) {
 switch ($foo) {
     case 1:
         foo();
-        // ~***(//[No break here.]\\\\)***~
+        // ~***(//[No break here.]\\\)***~
     case 2:
         bar();
     default:

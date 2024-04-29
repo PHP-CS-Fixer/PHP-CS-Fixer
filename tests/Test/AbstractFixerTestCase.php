@@ -570,7 +570,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected function createFixer(): AbstractFixer
     {
-        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
+        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 
         return new $fixerClassName();
     }

@@ -258,7 +258,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
 
         yield 'handle CoversClass' => self::createCase(
             ['class'],
-            '#[CoversClass(\\VendorName\\ClassName::class)]',
+            '#[CoversClass(\VendorName\ClassName::class)]',
             '@covers \VendorName\ClassName',
         );
 
@@ -533,7 +533,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
      */
     private static function createCase(array $scopes, string $expectedAttribute, string $inputAnnotation): array
     {
-        $expectedAttribute = str_replace('#[', '#[\\PHPUnit\\Framework\\Attributes\\', $expectedAttribute);
+        $expectedAttribute = str_replace('#[', '#[\PHPUnit\Framework\Attributes\\', $expectedAttribute);
 
         return [
             sprintf(

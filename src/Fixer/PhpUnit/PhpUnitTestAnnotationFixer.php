@@ -47,14 +47,14 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
             'Adds or removes @test annotations from tests, following configuration.',
             [
                 new CodeSample('<?php
-class Test extends \\PhpUnit\\FrameWork\\TestCase
+class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
      * @test
      */
     public function itDoesSomething() {} }'.$this->whitespacesConfig->getLineEnding()),
                 new CodeSample('<?php
-class Test extends \\PhpUnit\\FrameWork\\TestCase
+class Test extends \PhpUnit\FrameWork\TestCase
 {
 public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEnding(), ['style' => 'annotation']),
             ],

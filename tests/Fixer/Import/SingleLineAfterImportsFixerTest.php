@@ -474,7 +474,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
 
         yield [
             "<?php use some\\a\\{ClassA, ClassZ};\nuse const some\\b\\{ClassB, ClassX};\nuse function some\\d;\n\n",
-            '<?php use some\a\{ClassA, ClassZ};use const some\b\{ClassB, ClassX};use function some\\d;',
+            '<?php use some\a\{ClassA, ClassZ};use const some\b\{ClassB, ClassX};use function some\d;',
         ];
 
         $imports = [
@@ -496,8 +496,8 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
             ];
 
             yield [
-                str_replace('some', '\\some', $case[0]),
-                str_replace('some', '\\some', $case[1]),
+                str_replace('some', '\some', $case[0]),
+                str_replace('some', '\some', $case[1]),
             ];
 
             yield $case;

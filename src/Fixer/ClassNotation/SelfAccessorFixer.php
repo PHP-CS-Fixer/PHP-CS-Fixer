@@ -184,7 +184,7 @@ class Sample
     {
         $namespace = ('' !== $namespace ? '\\'.$namespace : '').'\\';
 
-        foreach (array_reverse(Preg::split('/(\\\\)/', $namespace, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE)) as $piece) {
+        foreach (array_reverse(Preg::split('/(\\\)/', $namespace, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE)) as $piece) {
             $index = $tokens->getPrevMeaningfulToken($index);
             if ('\\' === $piece) {
                 if (!$tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {

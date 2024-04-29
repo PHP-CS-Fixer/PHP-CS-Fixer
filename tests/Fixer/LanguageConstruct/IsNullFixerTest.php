@@ -63,17 +63,17 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = ClassA::is_null(json_decode($x));'];
 
-        yield ['<?php $x = ScopeA\\is_null(json_decode($x));'];
+        yield ['<?php $x = ScopeA\is_null(json_decode($x));'];
 
-        yield ['<?php $x = namespace\\is_null(json_decode($x));'];
+        yield ['<?php $x = namespace\is_null(json_decode($x));'];
 
         yield ['<?php $x = $object->is_null(json_decode($x));'];
 
-        yield ['<?php $x = new \\is_null(json_decode($x));'];
+        yield ['<?php $x = new \is_null(json_decode($x));'];
 
         yield ['<?php $x = new is_null(json_decode($x));'];
 
-        yield ['<?php $x = new ScopeB\\is_null(json_decode($x));'];
+        yield ['<?php $x = new ScopeB\is_null(json_decode($x));'];
 
         yield ['<?php is_nullSmth(json_decode($x));'];
 
@@ -95,21 +95,21 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! is_null( json_decode($x) );'];
 
-        yield ['<?php $x = null === json_decode($x);', '<?php $x = \\is_null(json_decode($x));'];
+        yield ['<?php $x = null === json_decode($x);', '<?php $x = \is_null(json_decode($x));'];
 
-        yield ['<?php $x = null !== json_decode($x);', '<?php $x = !\\is_null(json_decode($x));'];
+        yield ['<?php $x = null !== json_decode($x);', '<?php $x = !\is_null(json_decode($x));'];
 
-        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \\is_null(json_decode($x));'];
+        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \is_null(json_decode($x));'];
 
-        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \\is_null( json_decode($x) );'];
+        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \is_null( json_decode($x) );'];
 
         yield ['<?php $x = null === json_decode($x).".dist";', '<?php $x = is_null(json_decode($x)).".dist";'];
 
         yield ['<?php $x = null !== json_decode($x).".dist";', '<?php $x = !is_null(json_decode($x)).".dist";'];
 
-        yield ['<?php $x = null === json_decode($x).".dist";', '<?php $x = \\is_null(json_decode($x)).".dist";'];
+        yield ['<?php $x = null === json_decode($x).".dist";', '<?php $x = \is_null(json_decode($x)).".dist";'];
 
-        yield ['<?php $x = null !== json_decode($x).".dist";', '<?php $x = !\\is_null(json_decode($x)).".dist";'];
+        yield ['<?php $x = null !== json_decode($x).".dist";', '<?php $x = !\is_null(json_decode($x)).".dist";'];
 
         yield [$multiLinePatternFixed, $multiLinePatternToFix];
 
