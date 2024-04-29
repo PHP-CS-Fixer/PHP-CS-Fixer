@@ -5,22 +5,56 @@ includes:
     - dev-tools/phpstan/baseline.php
 
 parameters:
-    level: 6
+    level: 7
     paths:
         - src
         - tests
     excludePaths:
         - tests/Fixtures
+    polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
     reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
+        # We often need to iterate multiple times within single method and we re-use variable name
+        -
+            message: '/^For loop initial assignment overwrites variable \$(i|index|endIndex)+\.$/'
+            paths:
+                - src/Fixer/Comment/CommentToPhpdocFixer.php
+                - src/Fixer/ControlStructure/YodaStyleFixer.php
+                - src/Fixer/Import/GlobalNamespaceImportFixer.php
+                - src/Fixer/Import/OrderedImportsFixer.php
+                - src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php
+                - src/Fixer/Operator/NoUselessConcatOperatorFixer.php
+                - src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php
+                - src/Fixer/ReturnNotation/ReturnAssignmentFixer.php
+                - src/Fixer/Whitespace/StatementIndentationFixer.php
+                - tests/DocBlock/TypeExpressionTest.php
+        -
+            message: '/^Foreach overwrites \$index with its key variable.$/'
+            paths:
+                - src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php
+                - src/Fixer/Import/GlobalNamespaceImportFixer.php
+                - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
+
+        # Types related to tokens collections are purposefully narrowed, because we expect only tokens there
+        - '/^Parameter #1 \$array \(array<int, PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>\) of method PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Tokens::fromArray\(\) should be contravariant with parameter \$array \(array<int, mixed>\) of method SplFixedArray<PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>::fromArray\(\)$/'
+        - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
+        - '/^Parameter .* of method PhpCsFixer\\Tests\\Test\\TokensWithObservedTransformers::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
+
+        # This one is tricky, because adding @param to PHPDoc causes failures on PHP7.4 with lowest deps (phpdoc_to_param_type), using @phpstan-param causes failures on all PHP versions (phpdoc_add_missing_param_annotation)
+        - '/^Parameter #1 \$class \(string\) of method PhpCsFixer\\StdinFileInfo::get(File|Path)+Info+\(\) should be contravariant with parameter \$class \(string\|null\) of method SplFileInfo::get(File|Path)+Info\(\)$/'
+
+        # Contract for configurable fixers defines `array<string, mixed>`, but we want narrowed array shape for each fixer
+        # See: https://github.com/phpstan/phpstan/discussions/9686
+        - '/^Parameter #1 \$configuration \(.*\) of method PhpCsFixer\\Fixer\\.*::configure\(\) should be contravariant with parameter \$configuration \(array<string, mixed>\) of method PhpCsFixer\\(AbstractFixer|Fixer\\ConfigurableFixerInterface)+::configure\(\)$/'
+
         # PHPUnit data providers return type were not maintained originally, this exception should shrink over time (eg with help of custom, re-usable type)
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 1019
+            count: 1017
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
