@@ -782,7 +782,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
+	'message' => '#^Only numeric types are allowed in \\+, int\\<0, max\\>\\|false given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];
@@ -1047,11 +1047,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Token.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:getTokenKindsForNames\\(\\) should return array\\<int, int\\> but returns array\\<int\\|string, mixed\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Token.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:toJson\\(\\) should return string but returns string\\|false\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Token.php',
@@ -1207,7 +1202,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int\\|false given on the right side\\.$#',
+	'message' => '#^Only booleans are allowed in &&, int\\<0, max\\>\\|false given on the right side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
 ];
@@ -1300,21 +1295,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<object\\>, string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Console/Output/Progress/ProgressOutputFactoryTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Static property PhpCsFixer\\\\Tests\\\\Console\\\\Report\\\\FixReport\\\\CheckstyleReporterTest\\:\\:\\$xsd \\(string\\|null\\) does not accept string\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/CheckstyleReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Static property PhpCsFixer\\\\Tests\\\\Console\\\\Report\\\\FixReport\\\\JunitReporterTest\\:\\:\\$xsd \\(string\\|null\\) does not accept string\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/JunitReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Static property PhpCsFixer\\\\Tests\\\\Console\\\\Report\\\\FixReport\\\\XmlReporterTest\\:\\:\\$xsd \\(string\\|null\\) does not accept string\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/XmlReporterTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Basic\\\\EncodingFixerTest\\:\\:prepareTestCase\\(\\) should return array\\{string, string\\|null, SplFileInfo\\} but returns array\\{string\\|false, string\\|false\\|null, SplFileInfo\\}\\.$#',

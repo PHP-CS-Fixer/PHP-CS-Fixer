@@ -1,15 +1,15 @@
 {
     "require": {
         "php": "^8.3",
-        "ergebnis/composer-normalize": "^2.24.1",
+        "ergebnis/composer-normalize": "^2.42.0",
         "icanhazstring/composer-unused": "^0.8.11",
-        "maglnet/composer-require-checker": "^4.8.0",
+        "maglnet/composer-require-checker": "^4.11.0",
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpmd/phpmd": "^2.15.0",
         "phpstan/extension-installer": "^1.3.1",
-        "phpstan/phpstan": "^1.10.62",
+        "phpstan/phpstan": "^1.10.67",
         "phpstan/phpstan-phpunit": "^1.3.16",
-        "phpstan/phpstan-strict-rules": "^1.5.3"
+        "phpstan/phpstan-strict-rules": "^1.5.5"
     },
     "config": {
         "allow-plugins": {
