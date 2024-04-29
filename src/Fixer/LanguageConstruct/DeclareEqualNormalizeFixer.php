@@ -30,21 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class DeclareEqualNormalizeFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var callable(Tokens, int): void
-     */
-    private $callback;
-
-    public function configure(array $configuration): void
-    {
-        parent::configure($configuration);
-
-        $this->callback = [
-            $this,
-            'none' === $this->configuration['space'] ? 'removeWhitespaceAroundToken' : 'ensureWhitespaceAroundToken',
-        ];
-    }
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -71,10 +56,6 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
         return $tokens->isTokenKindFound(T_DECLARE);
     }
 
-    /**
-     * @uses ensureWhitespaceAroundToken()
-     * @uses removeWhitespaceAroundToken()
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
@@ -87,7 +68,11 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
 
             for ($i = $closeParenthesisIndex; $i > $openParenthesisIndex; --$i) {
                 if ($tokens[$i]->equals('=')) {
-                    \call_user_func_array($this->callback, [$tokens, $i]);
+                    if ('none' === $this->configuration['space']) {
+                        $this->removeWhitespaceAroundToken($tokens, $i);
+                    } else {
+                        $this->ensureWhitespaceAroundToken($tokens, $i);
+                    }
                 }
             }
         }

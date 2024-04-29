@@ -38,17 +38,11 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private $candidateTokenKind;
 
-    /**
-     * @var callable(Tokens, int): void
-     */
-    private $fixCallback;
-
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
         $this->resolveCandidateTokenKind();
-        $this->resolveFixCallback();
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -82,15 +76,15 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         return $tokens->isTokenKindFound($this->candidateTokenKind);
     }
 
-    /**
-     * @uses fixToShortArraySyntax()
-     * @uses fixToLongArraySyntax()
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                \call_user_func_array($this->fixCallback, [$tokens, $index]);
+                if ('short' === $this->configuration['syntax']) {
+                    $this->fixToShortArraySyntax($tokens, $index);
+                } else {
+                    $this->fixToLongArraySyntax($tokens, $index);
+                }
             }
         }
     }
@@ -124,11 +118,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         $tokens[$closeIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-    }
-
-    private function resolveFixCallback(): void
-    {
-        $this->fixCallback = [$this, 'short' === $this->configuration['syntax'] ? 'fixToShortArraySyntax' : 'fixToLongArraySyntax'];
     }
 
     private function resolveCandidateTokenKind(): void

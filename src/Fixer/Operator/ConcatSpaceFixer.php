@@ -30,21 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var callable(Tokens, int): void
-     */
-    private $fixCallback;
-
-    public function configure(array $configuration): void
-    {
-        parent::configure($configuration);
-
-        $this->fixCallback = [
-            $this,
-            'one' === $this->configuration['spacing'] ? 'fixConcatenationToSingleSpace' : 'fixConcatenationToNoSpace',
-        ];
-    }
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -80,15 +65,15 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         return $tokens->isTokenKindFound('.');
     }
 
-    /**
-     * @uses fixConcatenationToSingleSpace()
-     * @uses fixConcatenationToNoSpace()
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->equals('.')) {
-                \call_user_func_array($this->fixCallback, [$tokens, $index]);
+                if ('one' === $this->configuration['spacing']) {
+                    $this->fixConcatenationToSingleSpace($tokens, $index);
+                } else {
+                    $this->fixConcatenationToNoSpace($tokens, $index);
+                }
             }
         }
     }
