@@ -2683,23 +2683,31 @@ function foo($a) {}',
 
 namespace Foo\Test;
 use Other\ClassAttr;
+use Other\ClassAttr2;
 use Other\MethodAttr;
+use Other\MethodAttr2;
 use Other\PromotedAttr;
+use Other\PromotedAttr2;
 use Other\PropertyAttr;
+use Other\PropertyAttr2;
 
 #[ClassAttr]
+#[ClassAttr, ClassAttr2]
 #[\AllowDynamicProperties]
 class Foo
 {
     #[PropertyAttr]
+    #[PropertyAttr, PropertyAttr2]
     public int $prop;
 
     public function __construct(
         #[PromotedAttr]
+        #[PromotedAttr, PromotedAttr2]
         public int $arg
     ) {}
 
     #[MethodAttr]
+    #[MethodAttr, MethodAttr2]
     public function foo(): void {}
 }
             ',
@@ -2708,18 +2716,22 @@ class Foo
 namespace Foo\Test;
 
 #[\Other\ClassAttr]
+#[\Other\ClassAttr, \Other\ClassAttr2]
 #[\AllowDynamicProperties]
 class Foo
 {
     #[\Other\PropertyAttr]
+    #[\Other\PropertyAttr, \Other\PropertyAttr2]
     public int $prop;
 
     public function __construct(
         #[\Other\PromotedAttr]
+        #[\Other\PromotedAttr, \Other\PromotedAttr2]
         public int $arg
     ) {}
 
     #[\Other\MethodAttr]
+    #[\Other\MethodAttr, \Other\MethodAttr2]
     public function foo(): void {}
 }
             ',
