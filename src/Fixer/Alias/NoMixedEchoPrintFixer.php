@@ -32,11 +32,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var callable(Tokens, int): void
-     */
-    private $callBack;
-
-    /**
      * @var T_ECHO|T_PRINT
      */
     private int $candidateTokenType;
@@ -45,13 +40,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     {
         parent::configure($configuration);
 
-        if ('echo' === $this->configuration['use']) {
-            $this->candidateTokenType = T_PRINT;
-            $this->callBack = [$this, 'fixPrintToEcho'];
-        } else {
-            $this->candidateTokenType = T_ECHO;
-            $this->callBack = [$this, 'fixEchoToPrint'];
-        }
+        $this->candidateTokenType = 'echo' === $this->configuration['use'] ? T_PRINT : T_ECHO;
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -80,15 +69,15 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         return $tokens->isTokenKindFound($this->candidateTokenType);
     }
 
-    /**
-     * @uses fixPrintToEcho()
-     * @uses fixEchoToPrint()
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($this->candidateTokenType)) {
-                \call_user_func_array($this->callBack, [$tokens, $index]);
+                if (T_PRINT === $this->candidateTokenType) {
+                    $this->fixPrintToEcho($tokens, $index);
+                } else {
+                    $this->fixEchoToPrint($tokens, $index);
+                }
             }
         }
     }
