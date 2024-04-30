@@ -442,11 +442,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<list\\<int\\>\\|string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$sequence of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findSequence\\(\\) expects non\\-empty\\-list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, array\\<int, list\\<int\\|string\\>\\|string\\> given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php',
@@ -712,11 +707,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/LongToShorthandOperatorFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<list\\<int\\|string\\>\\|string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\.\\.\\.\\$arg1 of function max expects non\\-empty\\-array, array\\<int\\> given\\.$#',
 	'count' => 6,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
@@ -790,16 +780,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$lines of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:updateLines\\(\\) expects list\\<PhpCsFixer\\\\DocBlock\\\\Line\\>, array\\<PhpCsFixer\\\\DocBlock\\\\Line\\> given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$other of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equals\\(\\) expects array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string, list\\<int\\|string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$token of class PhpCsFixer\\\\Tokenizer\\\\Token constructor expects array\\{int, string\\}\\|string, list\\<int\\|string\\> given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, array\\<int\\>\\|null given\\.$#',
