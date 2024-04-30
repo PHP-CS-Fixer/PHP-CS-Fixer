@@ -315,7 +315,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     /**
-     * @var array<string, list<list<int|string>>>
+     * @var array<string, list<array{int, string}>>
      */
     private array $conversionMap = [
         self::CALL_TYPE_THIS => [[T_OBJECT_OPERATOR, '->'], [T_VARIABLE, '$this']],
