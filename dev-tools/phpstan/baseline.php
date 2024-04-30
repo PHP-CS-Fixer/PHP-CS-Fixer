@@ -7,11 +7,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/AbstractProxyFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$fixers of static method PhpCsFixer\\\\Utils\\:\\:sortFixers\\(\\) expects list\\<PhpCsFixer\\\\Fixer\\\\FixerInterface\\>, array\\<PhpCsFixer\\\\Fixer\\\\FixerInterface\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/AbstractProxyFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Cache/Signature.php',
@@ -40,11 +35,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$fixers of class PhpCsFixer\\\\Runner\\\\Runner constructor expects list\\<PhpCsFixer\\\\Fixer\\\\FixerInterface\\>, array\\<PhpCsFixer\\\\Fixer\\\\FixerInterface\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
@@ -212,29 +202,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, array\\<int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$tokenKinds of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:isAnyTokenKindsFound\\(\\) expects list\\<int\\|string\\>, array\\<int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NonPrintableCharacterFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$string of function strlen expects string, string\\|false given\\.$#',
 	'count' => 3,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, array\\<int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Casing/LowercaseKeywordsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$tokenKinds of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:isAnyTokenKindsFound\\(\\) expects list\\<int\\|string\\>, array\\<int, int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Casing/LowercaseKeywordsFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$tokens of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevTokenOfKind\\(\\) expects list\\<array\\{int\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<list\\<int\\>\\|string\\> given\\.$#',
@@ -487,11 +457,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, array\\<int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, array\\<int, array\\<int, int\\|string\\>\\> given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php',
@@ -702,26 +667,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, array\\<string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/LongToShorthandOperatorFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\.\\.\\.\\$arg1 of function max expects non\\-empty\\-array, array\\<int\\> given\\.$#',
-	'count' => 6,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\.\\.\\.\\$arg1 of function min expects non\\-empty\\-array, array\\<int\\> given\\.$#',
-	'count' => 4,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$items of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:insertAt\\(\\) expects list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|PhpCsFixer\\\\Tokenizer\\\\Tokens, array\\<PhpCsFixer\\\\Tokenizer\\\\Token\\> given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/OperatorLinebreakFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\TernaryToElvisOperatorFixer\\:\\:getAfterOperator\\(\\) should return array\\{start\\: int, end\\: int\\} but returns array\\{start\\: int\\|null, end\\?\\: int\\|null\\}\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php',
@@ -775,21 +720,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\<0, max\\>\\|false given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$lines of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:updateLines\\(\\) expects list\\<PhpCsFixer\\\\DocBlock\\\\Line\\>, array\\<PhpCsFixer\\\\DocBlock\\\\Line\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, array\\<int\\>\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$tokenKinds of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:isAnyTokenKindsFound\\(\\) expects list\\<int\\|string\\>, array\\<int\\>\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/AlignMultilineCommentFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
@@ -852,11 +782,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$groups of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocSeparationFixer\\:\\:shouldBeTogether\\(\\) expects list\\<list\\<string\\>\\>, array\\<array\\<string\\>\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(int\\|string\\)\\: mixed\\)\\|null, Closure\\(string\\)\\: string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
@@ -890,11 +815,6 @@ $ignoreErrors[] = [
 	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Whitespace\\\\BlankLineBeforeStatementFixer\\:\\:\\$fixTokenMap \\(list\\<int\\>\\) does not accept non\\-empty\\-array\\<int\\|string, int\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$allowedValues of class PhpCsFixer\\\\FixerConfiguration\\\\AllowedValueSubset constructor expects list\\<string\\>, array\\<string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset \'new_indent\' might not exist on array\\{type\\: \'statement\', skip\\: bool, end_index\\: int\\|null, end_index_inclusive\\: bool, initial_indent\\: string, new_indent\\?\\: string, is_indented_block\\: bool\\}\\.$#',

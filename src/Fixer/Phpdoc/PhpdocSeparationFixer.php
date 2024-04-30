@@ -48,7 +48,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
     ];
 
     /**
-     * @var string[][]
+     * @var list<list<string>>
      */
     private array $groups;
 
