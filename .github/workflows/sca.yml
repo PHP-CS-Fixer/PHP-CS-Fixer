@@ -29,6 +29,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # We need to fetch base branch because `actions/checkout` only initializes empty repo and fetches PR's meta-branch
+      # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,
+      # because of that `CHANGED_PHP_FILES` is not set, and tools based on diff between branches (like Mess Detector) don't work.
+      - name: Fetch base branch
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git fetch --no-tags --prune --no-recurse-submodules --depth=1 origin $GITHUB_BASE_REF
+
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
