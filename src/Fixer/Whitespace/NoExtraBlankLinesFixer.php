@@ -38,7 +38,7 @@ use PhpCsFixer\Utils;
 final class NoExtraBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private static array $availableTokens = [
         'attribute',

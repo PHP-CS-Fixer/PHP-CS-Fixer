@@ -94,7 +94,7 @@ final class ConfigurationResolver
     private $isDryRun;
 
     /**
-     * @var null|FixerInterface[]
+     * @var null|list<FixerInterface>
      */
     private $fixers;
 
@@ -314,7 +314,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * @return FixerInterface[] An array of FixerInterface
+     * @return list<FixerInterface>
      */
     public function getFixers(): array
     {

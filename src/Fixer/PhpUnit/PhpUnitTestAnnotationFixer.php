@@ -278,9 +278,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     /**
      * Take a one line doc block, and turn it into a multi line doc block.
      *
-     * @param Line[] $lines
+     * @param list<Line> $lines
      *
-     * @return Line[]
+     * @return list<Line>
      */
     private function splitUpDocBlock(array $lines, Tokens $tokens, int $docBlockIndex): array
     {

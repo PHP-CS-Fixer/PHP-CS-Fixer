@@ -39,7 +39,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
     private array $symbolsReplace;
 
     /**
-     * @var int[]
+     * @var list<int>
      */
     private static array $tokens = [
         T_STRING_VARNAME,

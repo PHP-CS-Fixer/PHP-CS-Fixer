@@ -40,7 +40,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
     ];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $operatorTypes;
 
