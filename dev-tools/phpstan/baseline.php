@@ -122,11 +122,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Report/ListSetsReport/ReporterFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Console\\\\WarningsDetector\\:\\:getWarnings\\(\\) should return list\\<string\\> but returns non\\-empty\\-array\\<string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/WarningsDetector.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
@@ -357,16 +352,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$types of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedTypesFixer\\:\\:runTypesThroughSortingAlgorithm\\(\\) expects list\\<array\\<string\\>\\|string\\>, array\\<list\\<array\\<string\\>\\|string\\>\\|string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$types of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedTypesFixer\\:\\:runTypesThroughSortingAlgorithm\\(\\) expects list\\<array\\<string\\>\\|string\\>, array\\<string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, int\\|false\\|null given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
@@ -412,19 +397,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$flags of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\FopenFlagOrderFixer\\:\\:sortFlags\\(\\) expects list\\<string\\>, array\\<string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/FopenFlagOrderFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\ImplodeCallFixer\\:\\:getArgumentIndices\\(\\) should return array\\<int, int\\> but returns array\\<int\\|string, int\\|null\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/ImplodeCallFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\NativeFunctionInvocationFixer\\:\\:normalizeFunctionNames\\(\\) should return array\\<string, true\\> but returns array\\<string\\|true\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, array\\<int, array\\<int, int\\|string\\>\\> given\\.$#',
@@ -527,27 +502,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$indices of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\CombineConsecutiveIssetsFixer\\:\\:clearTokens\\(\\) expects list\\<int\\>, non\\-empty\\-array\\<int\\|null\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$indices of method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\CombineConsecutiveIssetsFixer\\:\\:getTokenClones\\(\\) expects list\\<int\\>, array\\<int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:getReplacementTokenClones\\(\\) should return array\\{int, int, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\} but returns array\\{int, int, array\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\}\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$items of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:insertAt\\(\\) expects list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|PhpCsFixer\\\\Tokenizer\\\\Tokens, array\\<PhpCsFixer\\\\Tokenizer\\\\Token\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:\\$functionsFixMap \\(array\\<string, array\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\) does not accept array\\<int\\|string, array\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:\\$functionsFixMap \\(array\\<string, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\) does not accept non\\-empty\\-array\\<int\\|string, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
 ];
@@ -677,11 +632,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:addTestAnnotation\\(\\) should return array\\<PhpCsFixer\\\\DocBlock\\\\Line\\> but returns array\\<PhpCsFixer\\\\DocBlock\\\\Line\\|string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:updateLines\\(\\) should return list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> but returns array\\<int\\<0, max\\>, PhpCsFixer\\\\DocBlock\\\\Line\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
@@ -727,11 +677,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$types of method PhpCsFixer\\\\DocBlock\\\\DocBlock\\:\\:getAnnotationsOfType\\(\\) expects list\\<string\\>\\|string, array\\<string\\> given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocOrderFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getEnd\\(\\) on PhpCsFixer\\\\DocBlock\\\\Annotation\\|false\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
@@ -747,17 +692,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$names of static method PhpCsFixer\\\\Utils\\:\\:naturalLanguageJoin\\(\\) expects list\\<string\\>, array\\<string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(int\\|string\\)\\: mixed\\)\\|null, Closure\\(string\\)\\: string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$parts of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocTagTypeFixer\\:\\:tagIsSurroundedByText\\(\\) expects list\\<string\\>, array\\<string\\> given\\.$#',
+	'message' => '#^Parameter \\#1 \\$parts of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocTagTypeFixer\\:\\:tagIsSurroundedByText\\(\\) expects list\\<string\\>, array\\<int\\<0, max\\>, string\\> given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
 ];
