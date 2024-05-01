@@ -36,6 +36,7 @@ final class ParallelConfigTest extends TestCase
     ): void {
         $this->expectException(\InvalidArgumentException::class);
 
+        // @phpstan-ignore-next-line False-positive, we pass negative values to the constructor on purpose.
         new ParallelConfig($maxProcesses, $filesPerProcess, $processTimeout);
     }
 

@@ -70,7 +70,7 @@ final class Runner
     private LinterInterface $linter;
 
     /**
-     * @var null|\Traversable<\SplFileInfo>
+     * @var null|\Traversable<array-key, \SplFileInfo>
      */
     private $fileIterator;
 
@@ -90,8 +90,8 @@ final class Runner
     private ?string $configFile;
 
     /**
-     * @param null|\Traversable<\SplFileInfo> $fileIterator
-     * @param list<FixerInterface>            $fixers
+     * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
+     * @param list<FixerInterface>                       $fixers
      */
     public function __construct(
         ?\Traversable $fileIterator,
@@ -109,7 +109,9 @@ final class Runner
         ?InputInterface $input = null,
         ?string $configFile = null
     ) {
-        $this->fileCount = \count($fileIterator ?? []); // Required only for main process (calculating workers count)
+        // Required only for main process (calculating workers count)
+        $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
+
         $this->fileIterator = $fileIterator;
         $this->fixers = $fixers;
         $this->differ = $differ;
@@ -126,7 +128,7 @@ final class Runner
     }
 
     /**
-     * @param iterable<\SplFileInfo> $fileIterator
+     * @param \Traversable<array-key, \SplFileInfo> $fileIterator
      */
     public function setFileIterator(iterable $fileIterator): void
     {
@@ -255,7 +257,11 @@ final class Runner
                                 && !$this->isDryRun
                             )
                         ) {
-                            $this->cacheManager->setFile($fileRelativePath, file_get_contents($fileAbsolutePath));
+                            $fileContent = file_get_contents($fileAbsolutePath);
+
+                            if (false !== $fileContent) {
+                                $this->cacheManager->setFile($fileRelativePath, $fileContent);
+                            }
                         }
 
                         // Worker requests for another file chunk when all files were processed

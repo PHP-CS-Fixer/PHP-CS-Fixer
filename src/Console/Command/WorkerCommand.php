@@ -243,7 +243,7 @@ final class WorkerCommand extends Command
                 'diff' => $input->getOption('diff'),
                 'stop-on-violation' => false, // @TODO Pass this option to the runner
             ],
-            getcwd(),
+            getcwd(), // @phpstan-ignore-line
             $this->toolInfo
         );
 

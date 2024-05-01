@@ -88,7 +88,7 @@ final class WorkerCommandTest extends TestCase
             new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
         );
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
-            $serverPort,
+            $serverPort, // @phpstan-ignore-line
             $processIdentifier,
             new RunnerConfig(true, false, ParallelConfig::sequential())
         )));

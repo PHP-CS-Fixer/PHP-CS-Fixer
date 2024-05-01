@@ -41,10 +41,10 @@ final class Process
     private ?ReactProcess $process = null;
     private ?WritableStreamInterface $in = null;
 
-    /** @var false|resource */
+    /** @var resource */
     private $stdErr;
 
-    /** @var false|resource */
+    /** @var resource */
     private $stdOut;
 
     /** @var callable(mixed[]): void */
@@ -69,15 +69,17 @@ final class Process
      */
     public function start(callable $onData, callable $onError, callable $onExit): void
     {
-        $this->stdOut = tmpfile();
-        if (false === $this->stdOut) {
+        $stdOut = tmpfile();
+        if (false === $stdOut) {
             throw new ParallelisationException('Failed creating temp file for stdOut.');
         }
+        $this->stdOut = $stdOut;
 
-        $this->stdErr = tmpfile();
-        if (false === $this->stdErr) {
+        $stdErr = tmpfile();
+        if (false === $stdErr) {
             throw new ParallelisationException('Failed creating temp file for stdErr.');
         }
+        $this->stdErr = $stdErr;
 
         $this->onData = $onData;
         $this->onError = $onError;

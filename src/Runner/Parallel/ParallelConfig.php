@@ -69,6 +69,10 @@ final class ParallelConfig
         return new self(1);
     }
 
+    /**
+     * @param positive-int $filesPerProcess
+     * @param positive-int $processTimeout
+     */
     public static function detect(
         int $filesPerProcess = self::DEFAULT_FILES_PER_PROCESS,
         int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT
