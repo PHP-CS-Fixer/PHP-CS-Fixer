@@ -862,32 +862,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:addUtf8Modifier\\(\\) should return array\\<string\\>\\|string but returns array\\<array\\<string\\>\\|string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:removeUtf8Modifier\\(\\) should return array\\<string\\>\\|string but returns array\\<array\\<string\\>\\|string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) should return string but returns array\\<int, string\\>\\|string\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of function preg_match expects string, array\\<string\\>\\|string given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of function preg_match_all expects string, array\\<string\\>\\|string given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of function preg_split expects string, array\\<string\\>\\|string given\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Preg.php',
 ];
