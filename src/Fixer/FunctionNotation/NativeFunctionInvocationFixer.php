@@ -391,11 +391,12 @@ $c = get_class($d);
      */
     private function normalizeFunctionNames(array $functionNames): array
     {
-        foreach ($functionNames as $index => $functionName) {
-            $functionNames[strtolower($functionName)] = true;
-            unset($functionNames[$index]);
+        $result = [];
+
+        foreach ($functionNames as $functionName) {
+            $result[strtolower($functionName)] = true;
         }
 
-        return $functionNames;
+        return $result;
     }
 }

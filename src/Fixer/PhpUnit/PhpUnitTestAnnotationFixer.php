@@ -278,7 +278,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     /**
      * Take a one line doc block, and turn it into a multi line doc block.
      *
-     * @param list<Line> $lines
+     * @param non-empty-list<Line> $lines
      *
      * @return list<Line>
      */
@@ -392,6 +392,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             array_splice($lines, -1, 0, $originalIndent.' *'.$lineEnd.$originalIndent.' * @test'.$lineEnd);
         }
 
+        /** @var list<Line> */
         return $lines;
     }
 

@@ -102,6 +102,9 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        /** @var list<string> */
+        $order = $this->configuration['order'];
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -111,7 +114,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
             $content = $token->getContent();
 
             // sort annotations
-            $successors = $this->configuration['order'];
+            $successors = $order;
             while (\count($successors) >= 3) {
                 $predecessor = array_shift($successors);
                 $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
@@ -119,7 +122,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
             // we're parsing the content last time to make sure the internal
             // state of the docblock is correct after the modifications
-            $predecessors = $this->configuration['order'];
+            $predecessors = $order;
             $last = array_pop($predecessors);
             $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
