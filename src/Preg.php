@@ -101,7 +101,7 @@ final class Preg
     }
 
     /**
-     * @param string|string[] $subject
+     * @param string|array<array-key, string> $subject
      *
      * @param-out int $count
      *
