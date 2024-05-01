@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
 final class Tokens extends \SplFixedArray
 {
     /**
-     * @param string[] $ignoredTags
+     * @param list<string> $ignoredTags
      *
      * @throws \InvalidArgumentException
      */
