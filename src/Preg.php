@@ -53,7 +53,7 @@ final class Preg
             return 1 === $result;
         }
 
-        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
     }
 
     /**
@@ -97,7 +97,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
     }
 
     /**
@@ -119,7 +119,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
     }
 
     /**
@@ -139,7 +139,7 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
     }
 
     /**
@@ -159,34 +159,16 @@ final class Preg
             return $result;
         }
 
-        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, (array) $pattern);
+        throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
     }
 
-    /**
-     * @param string|string[] $pattern
-     *
-     * @return string|string[]
-     */
-    private static function addUtf8Modifier($pattern)
+    private static function addUtf8Modifier(string $pattern): string
     {
-        if (\is_array($pattern)) {
-            return array_map(__METHOD__, $pattern);
-        }
-
         return $pattern.'u';
     }
 
-    /**
-     * @param string|string[] $pattern
-     *
-     * @return string|string[]
-     */
-    private static function removeUtf8Modifier($pattern)
+    private static function removeUtf8Modifier(string $pattern): string
     {
-        if (\is_array($pattern)) {
-            return array_map(__METHOD__, $pattern);
-        }
-
         if ('' === $pattern) {
             return '';
         }
@@ -199,44 +181,35 @@ final class Preg
     }
 
     /**
-     * Create PregException.
-     *
-     * Create the generic PregException message and if possible due to finding
-     * an invalid pattern, tell more about such kind of error in the message.
-     *
-     * @param string[] $patterns
+     * Create the generic PregException message and tell more about such kind of error in the message.
      */
-    private static function newPregException(int $error, string $errorMsg, string $method, array $patterns): PregException
+    private static function newPregException(int $error, string $errorMsg, string $method, string $pattern): PregException
     {
-        foreach ($patterns as $pattern) {
-            $result = null;
-            $errorMessage = null;
+        $result = null;
+        $errorMessage = null;
 
-            try {
-                $result = ExecutorWithoutErrorHandler::execute(static fn () => preg_match($pattern, ''));
-            } catch (ExecutorWithoutErrorHandlerException $e) {
-                $result = false;
-                $errorMessage = $e->getMessage();
-            }
-
-            if (false !== $result) {
-                continue;
-            }
-
-            $code = preg_last_error();
-
-            $message = sprintf(
-                '(code: %d) %s',
-                $code,
-                preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage)
-            );
-
-            return new PregException(
-                sprintf('%s(): Invalid PCRE pattern "%s": %s (version: %s)', $method, $pattern, $message, PCRE_VERSION),
-                $code
-            );
+        try {
+            $result = ExecutorWithoutErrorHandler::execute(static fn () => preg_match($pattern, ''));
+        } catch (ExecutorWithoutErrorHandlerException $e) {
+            $result = false;
+            $errorMessage = $e->getMessage();
         }
 
-        return new PregException(sprintf('Error occurred when calling %s: %s.', $method, $errorMsg), $error);
+        if (false !== $result) {
+            return new PregException(sprintf('Unknown error occurred when calling %s: %s.', $method, $errorMsg), $error);
+        }
+
+        $code = preg_last_error();
+
+        $message = sprintf(
+            '(code: %d) %s',
+            $code,
+            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage)
+        );
+
+        return new PregException(
+            sprintf('%s(): Invalid PCRE pattern "%s": %s (version: %s)', $method, $pattern, $message, PCRE_VERSION),
+            $code
+        );
     }
 }
