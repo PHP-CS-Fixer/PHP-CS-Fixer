@@ -61,7 +61,7 @@ final class GroupImportFixer extends AbstractFixer
     /**
      * Gets namespace use analyzers with same namespaces.
      *
-     * @return NamespaceUseAnalysis[]
+     * @return list<NamespaceUseAnalysis>
      */
     private function getSameNamespaces(Tokens $tokens): array
     {
@@ -98,7 +98,7 @@ final class GroupImportFixer extends AbstractFixer
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $statements
+     * @param list<NamespaceUseAnalysis> $statements
      */
     private function removeSingleUseStatements(array $statements, Tokens $tokens): void
     {
@@ -129,7 +129,7 @@ final class GroupImportFixer extends AbstractFixer
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $statements
+     * @param list<NamespaceUseAnalysis> $statements
      */
     private function addGroupUseStatements(array $statements, Tokens $tokens): void
     {
