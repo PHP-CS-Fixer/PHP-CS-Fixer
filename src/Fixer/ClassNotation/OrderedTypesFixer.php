@@ -338,7 +338,7 @@ interface Bar
     /**
      * @param list<list<string>|string> $types
      *
-     * @return list<list<string>|string>
+     * @return ($types is list<string> ? list<string> : list<list<string>>)
      */
     private function runTypesThroughSortingAlgorithm(array $types): array
     {
