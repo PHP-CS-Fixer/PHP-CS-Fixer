@@ -28,7 +28,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     private VersionParser $versionParser;
 
     /**
-     * @var null|string[]
+     * @var null|list<string>
      */
     private $availableVersions;
 
