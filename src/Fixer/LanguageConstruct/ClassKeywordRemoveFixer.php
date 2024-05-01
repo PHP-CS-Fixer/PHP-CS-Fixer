@@ -32,7 +32,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $imports = [];
 
