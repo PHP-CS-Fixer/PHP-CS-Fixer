@@ -389,10 +389,10 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
             $lineEnd = $this->whitespacesConfig->getLineEnding();
 
-            array_splice($lines, -1, 0, $originalIndent.' *'.$lineEnd.$originalIndent.' * @test'.$lineEnd);
+            array_splice($lines, -1, 0, [new Line($originalIndent.' *'.$lineEnd.$originalIndent.' * @test'.$lineEnd)]);
+            \assert(array_is_list($lines)); // we know it's list, but we need to tell PHPStan
         }
 
-        /** @var list<Line> */
         return $lines;
     }
 
