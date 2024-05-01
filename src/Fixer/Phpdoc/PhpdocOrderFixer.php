@@ -132,7 +132,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      * Move all given annotations in before given set of annotations.
      *
      * @param string   $move   Tag of annotations that should be moved
-     * @param string[] $before Tags of annotations that should moved annotations be placed before
+     * @param list<string> $before Tags of annotations that should moved annotations be placed before
      */
     private function moveAnnotationsBefore(string $move, array $before, string $content): string
     {
@@ -171,7 +171,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      * Move all given annotations after given set of annotations.
      *
      * @param string   $move  Tag of annotations that should be moved
-     * @param string[] $after Tags of annotations that should moved annotations be placed after
+     * @param list<string> $after Tags of annotations that should moved annotations be placed after
      */
     private function moveAnnotationsAfter(string $move, array $after, string $content): string
     {
