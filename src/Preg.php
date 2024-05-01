@@ -143,7 +143,7 @@ final class Preg
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      *
      * @throws PregException
      */
