@@ -12,7 +12,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-
 $config = require __DIR__.'/../.php-cs-fixer.dist.php';
 
 $config->setRules([
