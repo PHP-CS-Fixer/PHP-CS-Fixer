@@ -112,7 +112,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      *
      * Or the index to where the method looked for a call.
      *
-     * @return int|array{int, int, int, int}
+     * @return array{int, int, int, int}|int
      */
     private function getPreviousUnsetCall(Tokens $tokens, int $index)
     {
