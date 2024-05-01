@@ -27,7 +27,7 @@ final class WarningsDetector
     private ToolInfoInterface $toolInfo;
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $warnings = [];
 
