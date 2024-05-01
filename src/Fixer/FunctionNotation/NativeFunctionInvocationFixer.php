@@ -385,7 +385,7 @@ $c = get_class($d);
     }
 
     /**
-     * @param string[] $functionNames
+     * @param list<string> $functionNames
      *
      * @return array<string, true> all function names lower cased
      */
