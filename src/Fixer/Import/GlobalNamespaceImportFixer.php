@@ -307,7 +307,7 @@ if (count($x)) {
     {
         [$global, $other] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isClass(), false);
 
-        /** @var DocBlock[] $docBlocks */
+        /** @var array<int, DocBlock> $docBlocks */
         $docBlocks = [];
 
         // find class declarations and class usages in docblocks
