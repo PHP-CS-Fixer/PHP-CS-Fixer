@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NonPrintableCharacterFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string, string[]>
+     * @var array<string, array{string, string}>
      */
     private array $symbolsReplace;
 
