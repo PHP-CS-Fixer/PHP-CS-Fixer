@@ -46,7 +46,7 @@ final class Annotation
     /**
      * The lines that make up the annotation.
      *
-     * @var Line[]
+     * @var array<int, Line>
      */
     private array $lines;
 
@@ -91,16 +91,16 @@ final class Annotation
     private $namespace;
 
     /**
-     * @var NamespaceUseAnalysis[]
+     * @var list<NamespaceUseAnalysis>
      */
     private array $namespaceUses;
 
     /**
      * Create a new line instance.
      *
-     * @param Line[]                 $lines
-     * @param null|NamespaceAnalysis $namespace
-     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param array<int, Line>           $lines
+     * @param null|NamespaceAnalysis     $namespace
+     * @param list<NamespaceUseAnalysis> $namespaceUses
      */
     public function __construct(array $lines, $namespace = null, array $namespaceUses = [])
     {
@@ -108,10 +108,8 @@ final class Annotation
         $this->namespace = $namespace;
         $this->namespaceUses = $namespaceUses;
 
-        $keys = array_keys($lines);
-
-        $this->start = $keys[0];
-        $this->end = end($keys);
+        $this->start = array_key_first($lines);
+        $this->end = array_key_last($lines);
     }
 
     /**

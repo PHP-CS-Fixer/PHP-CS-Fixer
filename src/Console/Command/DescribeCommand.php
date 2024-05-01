@@ -257,7 +257,7 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        /** @var CodeSampleInterface[] $codeSamples */
+        /** @var list<CodeSampleInterface> $codeSamples */
         $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample): bool {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(\PHP_VERSION_ID);
@@ -431,23 +431,25 @@ final class DescribeCommand extends Command
      */
     private function describeList(OutputInterface $output, string $type): void
     {
-        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $describe = [
-                'sets' => $this->getSetNames(),
-                'rules' => $this->getFixers(),
-            ];
-        } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $describe = 'set' === $type ? ['sets' => $this->getSetNames()] : ['rules' => $this->getFixers()];
-        } else {
+        if ($output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
             return;
         }
 
-        /** @var string[] $items */
-        foreach ($describe as $list => $items) {
-            $output->writeln(sprintf('<comment>Defined %s:</comment>', $list));
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE || 'set' === $type) {
+            $output->writeln('<comment>Defined sets:</comment>');
 
-            foreach ($items as $name => $item) {
-                $output->writeln(sprintf('* <info>%s</info>', \is_string($name) ? $name : $item));
+            $items = $this->getSetNames();
+            foreach ($items as $item) {
+                $output->writeln(sprintf('* <info>%s</info>', $item));
+            }
+        }
+
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE || 'rule' === $type) {
+            $output->writeln('<comment>Defined rules:</comment>');
+
+            $items = array_keys($this->getFixers());
+            foreach ($items as $item) {
+                $output->writeln(sprintf('* <info>%s</info>', $item));
             }
         }
     }

@@ -127,11 +127,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/WarningsDetector.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\Annotation\\:\\:\\$end \\(int\\) does not accept int\\|string\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
@@ -377,32 +372,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only numeric types are allowed in \\-, int\\|false given on the left side\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only numeric types are allowed in pre\\-increment, int\\|false given\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:clearAt\\(\\) expects int, int\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:insertAt\\(\\) expects int, int\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\.\\.\\.\\$arg1 of function max expects non\\-empty\\-array, array\\<int\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\.\\.\\.\\$arg1 of function max expects non\\-empty\\-array, list\\<int\\> given\\.$#',
+	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Comment\\\\CommentToPhpdocFixer\\:\\:\\$ignoredTags \\(list\\<string\\>\\) does not accept array\\<string\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
 ];
