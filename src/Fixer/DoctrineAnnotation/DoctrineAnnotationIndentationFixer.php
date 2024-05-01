@@ -105,7 +105,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @return int[]
+     * @return array{int, int}
      */
     private function getLineBracesCount(Tokens $tokens, int $index): array
     {
