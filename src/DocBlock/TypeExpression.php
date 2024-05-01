@@ -220,12 +220,12 @@ final class TypeExpression
     private ?NamespaceAnalysis $namespace;
 
     /**
-     * @var NamespaceUseAnalysis[]
+     * @var list<NamespaceUseAnalysis>
      */
     private array $namespaceUses;
 
     /**
-     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param list<NamespaceUseAnalysis> $namespaceUses
      */
     public function __construct(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses)
     {

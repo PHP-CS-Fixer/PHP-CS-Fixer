@@ -296,7 +296,7 @@ final class FixerDocumentGenerator
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      */
     public function generateFixersDocumentationIndex(array $fixers): string
     {

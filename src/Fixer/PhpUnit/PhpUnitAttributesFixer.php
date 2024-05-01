@@ -438,7 +438,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     }
 
     /**
-     * @return array<string>
+     * @return list<string>
      */
     private static function getMatches(Annotation $annotation): array
     {
@@ -447,6 +447,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
             $annotation->getContent(),
             $matches,
         );
+
+        \assert(array_is_list($matches)); // preg_match matches is not well typed, it depends on used regex, let's assure the type to instruct SCA
 
         return $matches;
     }

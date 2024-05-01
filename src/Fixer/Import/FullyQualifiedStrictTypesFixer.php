@@ -804,7 +804,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      *
      * @param array<string, string> $uses
      *
-     * @return null|Token[]
+     * @return null|list<Token>
      */
     private function determineShortType(string $typeName, array $uses, string $namespaceName): ?array
     {

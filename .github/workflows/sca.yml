@@ -77,12 +77,6 @@ jobs:
       - name: Check - phpstan
         run: ./dev-tools/vendor/bin/phpstan analyse --ansi
 
-      - name: Check - well defined array keys
-        run: |
-          echo "Array types must explicitly declare key-type, i.e. as \`array<type-of-key, type-of-value>\`, \`list<type-of-value>\` or \`array{...}\` - instead of \`array<type-of-value>\` or \`type-of-value[]\`."
-          echo "Hint: don't apply those rules blindly, provide array key type explicitly\!"
-          ./php-cs-fixer check --rules=phpdoc_list_type,phpdoc_array_type tests/ --path-mode=intersection # @TODO run for whole project, when no more violations
-
       - name: Check - composer-unused
         run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
 
@@ -114,6 +108,13 @@ jobs:
             git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" >> $GITHUB_ENV
             echo 'EOF' >> $GITHUB_ENV
           fi
+
+      - name: Check - well defined array keys
+        if: ${{ env.CHANGED_PHP_FILES }}
+        run: |
+          echo "Array types must explicitly declare key-type, i.e. as \`array<type-of-key, type-of-value>\`, \`list<type-of-value>\` or \`array{...}\` - instead of \`array<type-of-value>\` or \`type-of-value[]\`."
+          echo "Hint: don't apply those rules blindly, provide array key type explicitly\!"
+          ./php-cs-fixer check --config=dev-tools/.php-cs-fixer.well-defined-arrays.php --path-mode=intersection $CHANGED_PHP_FILES
 
       - name: Check - Mess Detector (phpmd)
         if: ${{ env.CHANGED_PHP_FILES }}

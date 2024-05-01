@@ -36,7 +36,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var int[]
+     * @var list<int>
      */
     private const BLOCK_TYPES = [
         Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,

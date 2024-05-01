@@ -278,7 +278,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     /**
      * Take a one line doc block, and turn it into a multi line doc block.
      *
-     * @param list<Line> $lines
+     * @param non-empty-list<Line> $lines
      *
      * @return list<Line>
      */
@@ -298,7 +298,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     /**
      * @todo check whether it's doable to use \PhpCsFixer\DocBlock\DocBlock::getSingleLineDocBlockEntry instead
      *
-     * @param Line[] $lines
+     * @param non-empty-list<Line> $lines
      */
     private function getSingleLineDocBlockEntry(array $lines): string
     {
@@ -377,9 +377,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     }
 
     /**
-     * @param Line[] $lines
+     * @param list<Line> $lines
      *
-     * @return Line[]
+     * @return list<Line>
      */
     private function addTestAnnotation(array $lines, Tokens $tokens, int $docBlockIndex): array
     {
@@ -389,7 +389,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
             $lineEnd = $this->whitespacesConfig->getLineEnding();
 
-            array_splice($lines, -1, 0, $originalIndent.' *'.$lineEnd.$originalIndent.' * @test'.$lineEnd);
+            array_splice($lines, -1, 0, [new Line($originalIndent.' *'.$lineEnd.$originalIndent.' * @test'.$lineEnd)]);
+            \assert(array_is_list($lines)); // we know it's list, but we need to tell PHPStan
         }
 
         return $lines;

@@ -116,7 +116,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     /**
      * @param int $index of T_ISSET
      *
-     * @return int[] indices of meaningful tokens belonging to the isset statement
+     * @return list<int> indices of meaningful tokens belonging to the isset statement
      */
     private function getIssetInfo(Tokens $tokens, int $index): array
     {

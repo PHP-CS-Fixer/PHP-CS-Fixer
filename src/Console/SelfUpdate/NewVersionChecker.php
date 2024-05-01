@@ -28,7 +28,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     private VersionParser $versionParser;
 
     /**
-     * @var null|string[]
+     * @var null|list<string>
      */
     private $availableVersions;
 
@@ -94,6 +94,9 @@ final class NewVersionChecker implements NewVersionCheckerInterface
             }
         }
 
-        $this->availableVersions = Semver::rsort($this->availableVersions);
+        $versions = Semver::rsort($this->availableVersions);
+        \assert(array_is_list($versions)); // Semver::rsort provides soft `array` type, let's validate and ensure proper type for SCA
+
+        $this->availableVersions = $versions;
     }
 }
