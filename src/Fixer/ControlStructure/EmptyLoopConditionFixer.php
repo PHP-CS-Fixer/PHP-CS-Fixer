@@ -131,7 +131,7 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * @param Token[] $replacement
+     * @param list<Token> $replacement
      */
     private static function cloneAndInsert(Tokens $tokens, int $index, array $replacement): void
     {
