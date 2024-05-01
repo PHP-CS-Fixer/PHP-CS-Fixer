@@ -40,7 +40,7 @@ final class ErrorOutput
     }
 
     /**
-     * @param Error[] $errors
+     * @param list<Error> $errors
      */
     public function listErrors(string $process, array $errors): void
     {
