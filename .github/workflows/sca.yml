@@ -114,7 +114,7 @@ jobs:
         run: |
           echo "Array types must explicitly declare key-type, i.e. as \`array<type-of-key, type-of-value>\`, \`list<type-of-value>\` or \`array{...}\` - instead of \`array<type-of-value>\` or \`type-of-value[]\`."
           echo "Hint: don't apply those rules blindly, provide array key type explicitly\!"
-          ./php-cs-fixer check --rules=phpdoc_list_type,phpdoc_array_type --path-mode=intersection $CHANGED_PHP_FILES
+          ./php-cs-fixer check --config=dev-tools/.php-cs-fixer.well-defined-arrays.php --path-mode=intersection $CHANGED_PHP_FILES
 
       - name: Check - Mess Detector (phpmd)
         if: ${{ env.CHANGED_PHP_FILES }}
