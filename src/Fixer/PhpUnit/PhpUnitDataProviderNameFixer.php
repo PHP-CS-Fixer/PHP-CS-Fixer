@@ -101,7 +101,7 @@ class FooTest extends TestCase {
         );
     }
 
-    public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('prefix', 'Prefix that replaces "test".'))
