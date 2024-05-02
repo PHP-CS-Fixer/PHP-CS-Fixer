@@ -197,11 +197,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$tokens of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevTokenOfKind\\(\\) expects list\\<array\\{int\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<list\\<int\\>\\|string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Casing/NativeTypeDeclarationCasingFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'elements\' on array\\{index\\: int, open\\: int\\|null, close\\: int\\<0, max\\>, elements\\: list\\<array\\{token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: \'case\'\\|\'const\'\\|\'method\'\\|\'property\'\\|\'trait_import\', index\\: int, start\\: int, end\\: int\\}\\>\\}\\|false\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
@@ -367,34 +362,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sequence of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findSequence\\(\\) expects non\\-empty\\-list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, array\\<int, list\\<int\\|string\\>\\|string\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, list\\<int\\|string\\> given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'end\' on array\\{indices\\: list\\<int\\>, secondArgument\\?\\: int, levels\\: int, end\\: int\\}\\|true\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'indices\' on array\\{indices\\: list\\<int\\>, secondArgument\\?\\: int, levels\\: int, end\\: int\\}\\|true\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, array\\<string, array\\<int, int\\>\\|int\\>\\|bool given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$dirnameInfoArray of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\CombineNestedDirnameFixer\\:\\:combineDirnames\\(\\) expects list\\<array\\{indices\\: list\\<int\\>, secondArgument\\?\\: int, levels\\: int, end\\: int\\}\\>, non\\-empty\\-list\\<array\\{indices\\: list\\<int\\>, secondArgument\\?\\: int, levels\\: int, end\\: int\\}\\|true\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\ImplodeCallFixer\\:\\:getArgumentIndices\\(\\) should return array\\<int, int\\> but returns array\\<int\\|string, int\\|null\\>\\.$#',
