@@ -101,6 +101,16 @@ class FooTest extends TestCase {
         );
     }
 
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    public function isRisky(): bool
+    {
+        return true;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -113,16 +123,6 @@ class FooTest extends TestCase {
                 ->setDefault('Cases')
                 ->getOption(),
         ]);
-    }
-
-    public function getPriority(): int
-    {
-        return 0;
-    }
-
-    public function isRisky(): bool
-    {
-        return true;
     }
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
