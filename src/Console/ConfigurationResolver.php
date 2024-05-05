@@ -954,6 +954,7 @@ final class ConfigurationResolver
     {
         return $this->toolInfo->isInstalledAsPhar()
             || $this->toolInfo->isInstalledByComposer()
-            || $this->toolInfo->isRunInsideDocker();
+            || $this->toolInfo->isRunInsideDocker()
+            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), FILTER_VALIDATE_BOOL);
     }
 }
