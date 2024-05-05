@@ -25,5 +25,5 @@ interface CacheManagerInterface
 
     public function setFile(string $file, string $fileContent): void;
 
-    public function setFileHash(string $file, string $hash): void {}
+    public function setFileHash(string $file, string $hash): void;
 }
