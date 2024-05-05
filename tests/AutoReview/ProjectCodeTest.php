@@ -566,7 +566,7 @@ final class ProjectCodeTest extends TestCase
 
         $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
 
-        self::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File for "%s" should only contains a single classy.', $className));
+        self::assertNull($tokens->getNextMeaningfulToken($classyEndIndex), sprintf('File for "%s" should only contains a single classy.', $className));
     }
 
     /**
