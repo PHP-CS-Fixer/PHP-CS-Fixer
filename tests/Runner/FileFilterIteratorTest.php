@@ -229,6 +229,11 @@ final class FileFilterIteratorTest extends TestCase
             {
                 throw new \LogicException('Not implemented.');
             }
+
+            public function setFileHash(string $file, string $hash): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
         };
     }
 }
