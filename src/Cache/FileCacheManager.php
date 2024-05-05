@@ -103,9 +103,12 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function setFile(string $file, string $fileContent): void
     {
-        $file = $this->cacheDirectory->getRelativePathTo($file);
+        $this->setFileHash($file, $this->calcHash($fileContent));
+    }
 
-        $hash = $this->calcHash($fileContent);
+    public function setFileHash(string $file, string $hash): void
+    {
+        $file = $this->cacheDirectory->getRelativePathTo($file);
 
         if ($this->isDryRun && $this->cache->has($file) && $this->cache->get($file) !== $hash) {
             $this->cache->clear($file);
