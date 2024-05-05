@@ -136,7 +136,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -198,7 +198,7 @@ namespace Foo {
 
         yield [
             '<?php
-            namespace Foo8\\A;
+            namespace Foo8\A;
                 function Bar(){}
              ?>',
             "<?php

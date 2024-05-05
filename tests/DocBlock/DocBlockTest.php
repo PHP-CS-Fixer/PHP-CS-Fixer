@@ -156,7 +156,7 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideMakeMultiLIneCases
      */
-    public function testMakeMultiLIne(string $inputDocBlock, string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
+    public function testMakeMultiLIne(string $inputDocBlock, ?string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeMultiLine($indent, $newLine);
@@ -204,7 +204,7 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideMakeSingleLineCases
      */
-    public function testMakeSingleLine(string $inputDocBlock, string $outputDocBlock = null): void
+    public function testMakeSingleLine(string $inputDocBlock, ?string $outputDocBlock = null): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeSingleLine();

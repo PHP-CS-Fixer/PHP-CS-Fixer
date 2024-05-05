@@ -65,6 +65,6 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
 
     protected function normalize(string $type): string
     {
-        return Preg::replace('/array(?=<(?:[^,<]|<[^>]+>)+(>|{|\\())/i', 'list', $type);
+        return Preg::replace('/array(?=<(?:[^,<]|<[^>]+>)+(>|{|\())/i', 'list', $type);
     }
 }

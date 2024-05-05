@@ -32,14 +32,14 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     use AssertTokensTrait;
 
     /**
-     * @param Token[]      $expected
-     * @param null|Token[] $input
+     * @param list<Token>      $expected
+     * @param null|list<Token> $input
      *
      * @dataProvider provideProcessCases
      *
      * @requires PHP 8.0
      */
-    public function testProcess(array $expected, array $input = null): void
+    public function testProcess(array $expected, ?array $input = null): void
     {
         $expectedTokens = Tokens::fromArray($expected);
         $tokens = null === $input
@@ -157,7 +157,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param Token[] $expected
+     * @param list<Token> $expected
      *
      * @dataProvider providePriorityCases
      */
@@ -248,7 +248,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
                 new Token([T_STRING, 'Transformer']),
                 new Token(';'),
             ],
-            '<?php namespace\\Transformer;',
+            '<?php namespace\Transformer;',
         ];
 
         yield [

@@ -60,7 +60,7 @@ final class TokensTest extends TestCase
         ?array $expected,
         array $sequence,
         int $start = 0,
-        int $end = null,
+        ?int $end = null,
         $caseSensitive = true
     ): void {
         $tokens = Tokens::fromCode($source);
@@ -294,7 +294,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param array<mixed> $sequence
+     * @param list<mixed> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -503,7 +503,7 @@ final class TokensTest extends TestCase
             PHP;
         $tokens = Tokens::fromCode($source);
 
-        /** @var Token[] $found */
+        /** @var array<int, Token> $found */
         $found = $tokens->findGivenKind(T_CLASS);
         self::assertCount(1, $found);
         self::assertArrayHasKey(1, $found);
@@ -538,8 +538,8 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param int[]   $indexes  to clear
-     * @param Token[] $expected tokens
+     * @param list<int>   $indexes  to clear
+     * @param list<Token> $expected tokens
      *
      * @dataProvider provideClearTokenAndMergeSurroundingWhitespaceCases
      */
@@ -1150,7 +1150,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveLeadingWhitespaceCases
      */
-    public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
+    public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
 
@@ -1221,7 +1221,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveTrailingWhitespaceCases
      */
-    public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
+    public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
 
@@ -1701,8 +1701,8 @@ $bar;',
         }
 
         yield 'overlapping inserts of bunch of comments ' => [
-            Tokens::fromCode(sprintf("<?php\n%s/* line 1 */\n%s/* line 2 */\n%s/* line 3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
-            Tokens::fromCode("<?php\n/* line 1 */\n/* line 2 */\n/* line 3 */"),
+            Tokens::fromCode(sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
+            Tokens::fromCode("<?php\n/* line #1 */\n/* line #2 */\n/* line #3 */"),
             [1 => $sets[0]['tokens'], 3 => $sets[1]['tokens'], 5 => $sets[2]['tokens'], 6 => $sets[3]['tokens']],
         ];
     }
@@ -1850,10 +1850,10 @@ $bar;',
     }
 
     /**
-     * @param null|Token[] $expected
-     * @param null|Token[] $input
+     * @param null|array<int, Token> $expected
+     * @param null|array<int, Token> $input
      */
-    private static function assertEqualsTokensArray(array $expected = null, array $input = null): void
+    private static function assertEqualsTokensArray(?array $expected = null, ?array $input = null): void
     {
         if (null === $expected) {
             self::assertNull($input);
@@ -1876,8 +1876,8 @@ $bar;',
     }
 
     /**
-     * @param int[]   $indexes
-     * @param Token[] $expected
+     * @param list<int>   $indexes
+     * @param list<Token> $expected
      */
     private function doTestClearTokens(string $source, array $indexes, array $expected): void
     {

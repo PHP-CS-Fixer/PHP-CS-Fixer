@@ -111,7 +111,7 @@ use Bar;
     }
 
     /**
-     * @param int[] $uses
+     * @param list<int> $uses
      */
     private function walkOverUses(Tokens $tokens, array $uses): void
     {

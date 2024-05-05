@@ -26,7 +26,7 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -197,14 +197,14 @@ namespace Foo {
                 \Closure::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
+                \A\B\Bar::bind(fn () => null, null, new class {});
             ',
             '<?php
                 CLOSURE::bind(fn () => null, null, new class {});
                 \CLOSURE::bind(fn () => null, null, new class {});
 
                 Foo\Bar::bind(fn () => null, null, new class {});
-                \A\B\\Bar::bind(fn () => null, null, new class {});
+                \A\B\Bar::bind(fn () => null, null, new class {});
             ',
         ];
 

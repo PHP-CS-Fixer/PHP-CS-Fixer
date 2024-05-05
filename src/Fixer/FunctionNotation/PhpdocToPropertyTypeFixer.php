@@ -214,7 +214,7 @@ class Foo {
 
     /**
      * @param array<string, int> $propertyIndices
-     * @param Annotation[]       $annotations
+     * @param list<Annotation>   $annotations
      *
      * @return ?_CommonTypeInfo
      */

@@ -27,12 +27,12 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 final class TypeExpressionTest extends TestCase
 {
     /**
-     * @param null|string[] $expectedTypes
+     * @param null|list<string> $expectedTypes
      *
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
-    public function testGetTypes(string $typesExpression, array $expectedTypes = null): void
+    public function testGetTypes(string $typesExpression, ?array $expectedTypes = null): void
     {
         if (null === $expectedTypes) {
             $expectedTypes = [$typesExpression];
@@ -43,12 +43,12 @@ final class TypeExpressionTest extends TestCase
 
         $unionTestNs = '__UnionTest__';
         $unionExpression = $this->parseTypeExpression(
-            $unionTestNs.'\\A|'.$typesExpression.'|'.$unionTestNs.'\\Z',
+            $unionTestNs.'\A|'.$typesExpression.'|'.$unionTestNs.'\Z',
             null,
             []
         );
         self::assertSame(
-            [$unionTestNs.'\\A', ...$expectedTypes, $unionTestNs.'\\Z'],
+            [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
             [...$unionExpression->getTypes()]
         );
     }
@@ -165,6 +165,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['OBJECT { x: 1 }'];
 
+        yield ['array{a: int, b: int, with-dash: int}'];
+
         yield ['callable'];
 
         yield ['callable(string)'];
@@ -189,25 +191,43 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure(string)'];
 
-        yield ['\\closure(string): void'];
+        yield ['\closure(string): void'];
 
         yield [\Closure::class];
 
-        yield ['\\Closure()'];
+        yield ['\Closure()'];
 
-        yield ['\\Closure(string)'];
+        yield ['\Closure(string)'];
 
-        yield ['\\Closure(string, bool)'];
+        yield ['\Closure(string, bool)'];
 
-        yield ['\\Closure(string|int, bool)'];
+        yield ['\Closure(string|int, bool)'];
 
-        yield ['\\Closure(string):bool'];
+        yield ['\Closure(string):bool'];
 
-        yield ['\\Closure(string): bool'];
+        yield ['\Closure(string): bool'];
 
-        yield ['\\Closure(string|int, bool): bool'];
+        yield ['\Closure(string|int, bool): bool'];
 
-        yield ['\\Closure(float|int): (bool|int)'];
+        yield ['\Closure(float|int): (bool|int)'];
+
+        yield ['Closure<T>(): T'];
+
+        yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty}'];
+
+        yield ['array  <  int   , callable  (  string  )  :   bool  >'];
+
+        yield ['Closure<T of Foo>(T): T'];
+
+        yield ['Closure< T1 of Foo, T2 AS Foo >(T1): T2'];
+
+        yield ['Closure<T = Foo>(T): T'];
+
+        yield ['Closure<T1=int, T2 of Foo = Foo2>(T1): T2'];
+
+        yield ['Closure<T of string = \'\'>(T): T'];
+
+        yield ['Closure<Closure_can_be_regular_class>'];
 
         yield ['Closure(int $a)'];
 
@@ -223,17 +243,19 @@ final class TypeExpressionTest extends TestCase
 
         yield ['(int)'];
 
-        yield ['(int|\\Exception)'];
+        yield ['(int|\Exception)'];
 
         yield ['($foo is int ? false : true)'];
 
         yield ['($foo🚀3 is int ? false : true)'];
 
-        yield ['\'a\\\'s"\\\\\n\r\t\'|"b\\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\\"s\'\\\\\n\r\t"']];
+        yield ['\'a\\\'s"\\\\\n\r\t\'|"b\"s\'\\\\\n\r\t"', ['\'a\\\'s"\\\\\n\r\t\'', '"b\"s\'\\\\\n\r\t"']];
 
-        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, with-dash: int}'];
+        yield ['string'.str_repeat('[]', 128)];
 
-        yield ['array{a: int, b: int, c: int, d: int, e: int, f: int, g: int, h: int, i: int, j: int, k: int, l: int, with-dash: int}'];
+        yield [str_repeat('array<', 128).'string'.str_repeat('>', 128)];
+
+        yield [self::makeLongArrayShapeType()];
     }
 
     public static function provideGetConstTypesCases(): iterable
@@ -303,9 +325,9 @@ final class TypeExpressionTest extends TestCase
 
         yield ['class cannot contain space'];
 
-        yield ['\\\\class_with_double_backslash'];
+        yield ['\\\class_with_double_backslash'];
 
-        yield ['class\\\\with_double_backslash'];
+        yield ['class\\\with_double_backslash'];
 
         yield ['class_with_end_backslash\\'];
 
@@ -376,6 +398,12 @@ final class TypeExpressionTest extends TestCase
         yield ['\' unclosed string \\\''];
 
         yield 'generic with no arguments' => ['f<>'];
+
+        yield 'generic Closure with no arguments' => ['Closure<>(): void'];
+
+        yield 'generic Closure with non-identifier template argument' => ['Closure<A|B>(): void'];
+
+        yield [substr(self::makeLongArrayShapeType(), 0, -1)];
     }
 
     public function testHugeType(): void
@@ -389,8 +417,7 @@ final class TypeExpressionTest extends TestCase
         $expression = new TypeExpression($str, null, []);
         self::assertSame($types, $expression->getTypes());
 
-        $nRecursive = 100;
-        for ($i = 0; $i < $nRecursive; ++$i) {
+        for ($i = 0; $i < 100; ++$i) {
             $str = 'array'.(1 === $i % 2 ? '{' : '<').$str.(1 === $i % 2 ? '}' : '>');
         }
 
@@ -409,6 +436,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedTypesGlue, $expression->getTypesGlue());
     }
 
+    /**
+     * @return iterable<array{0: '&'|'|', 1: string}>
+     */
     public static function provideGetTypesGlueCases(): iterable
     {
         yield ['|', 'string']; // for backward behaviour
@@ -427,6 +457,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedIsUnionType, $expression->isUnionType());
     }
 
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
     public static function provideIsUnionTypeCases(): iterable
     {
         yield [false, 'string'];
@@ -445,11 +478,11 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param list<NamespaceUseAnalysis> $namespaceUses
      *
      * @dataProvider provideGetCommonTypeCases
      */
-    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
+    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, ?NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
         self::assertSame($expectedCommonType, $expression->getCommonType());
@@ -814,6 +847,21 @@ final class TypeExpressionTest extends TestCase
             'array<string, array{ \Closure(mixed, string, $this): (float|int)|string }|string>|false',
         ];
 
+        yield 'generic Closure' => [
+            'Closure<B, A>(y|x, U<p|o>|B|A): (Y|B|X)',
+            'Closure<B, A>(x|y, A|B|U<o|p>): (B|X|Y)',
+        ];
+
+        yield 'generic Closure with bound template' => [
+            'Closure<B of J|I, C, A of V|U, D of object>(B|A): array{B, A, B, C, D}',
+            'Closure<B of I|J, C, A of U|V, D of object>(A|B): array{B, A, B, C, D}',
+        ];
+
+        yield 'generic Closure with template with default' => [
+            'Closure<T = B&A>(T): void',
+            'Closure<T = A&B>(T): void',
+        ];
+
         yield 'nullable generic' => [
             '?array<Foo|Bar>',
             '?array<Bar|Foo>',
@@ -882,6 +930,17 @@ final class TypeExpressionTest extends TestCase
         ];
     }
 
+    private static function makeLongArrayShapeType(): string
+    {
+        return 'array{'.implode(
+            ', ',
+            array_map(
+                static fn (int $k): string => sprintf('key%sno%d: int', 0 === $k % 2 ? '-' : '_', $k),
+                range(1, 1_000),
+            ),
+        ).'}';
+    }
+
     /**
      * Return type is recursive.
      *
@@ -924,7 +983,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * Parse type expression with and without PCRE JIT.
      *
-     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param list<NamespaceUseAnalysis> $namespaceUses
      */
     private function parseTypeExpression(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses): TypeExpression
     {

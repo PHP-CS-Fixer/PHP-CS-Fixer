@@ -88,7 +88,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private const SUPPORTED_OPERATORS = [
         '=',
@@ -150,7 +150,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     private int $currentLevel;
 
     /**
-     * @var array<null|string>
+     * @var list<null|string>
      */
     private static array $allowedValues = [
         self::ALIGN,

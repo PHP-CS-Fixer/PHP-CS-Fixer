@@ -339,7 +339,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param array<string> $paths
+     * @param list<string> $paths
      *
      * @dataProvider provideRejectInvalidPathCases
      */
@@ -1062,7 +1062,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param string[] $rules
+     * @param list<string> $rules
      *
      * @dataProvider provideResolveRenamedRulesWithUnknownRulesCases
      */
@@ -1284,7 +1284,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      *
      * @group legacy
      *
-     * @param array<string> $successors
+     * @param list<string> $successors
      */
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {
@@ -1378,9 +1378,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     private function createConfigurationResolver(
         array $options,
-        Config $config = null,
+        ?Config $config = null,
         string $cwdPath = '',
-        ToolInfoInterface $toolInfo = null
+        ?ToolInfoInterface $toolInfo = null
     ): ConfigurationResolver {
         return new ConfigurationResolver(
             $config ?? new Config(),

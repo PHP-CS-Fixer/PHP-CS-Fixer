@@ -173,7 +173,7 @@ namespace Foo {
 
         yield [
             '<?php
-            namespace Foo8\\A;
+            namespace Foo8\A;
                 function Bar(){}
              ?>',
             "<?php
@@ -210,7 +210,7 @@ namespace Foo {
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

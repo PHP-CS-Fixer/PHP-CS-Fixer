@@ -26,7 +26,7 @@ class Config implements ConfigInterface
     private string $cacheFile = '.php-cs-fixer.cache';
 
     /**
-     * @var FixerInterface[]
+     * @var list<FixerInterface>
      */
     private array $customFixers = [];
 

@@ -64,7 +64,7 @@ final class PregTest extends TestCase
 
         yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
 
-        yield 'php_version_dependent' => ['([\\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
+        yield 'php_version_dependent' => ['([\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
 
         yield 'null_byte_injection' => ['()'."\0", null, PregException::class, '/NUL( byte)? is not a valid modifier|Null byte in regex/'];
     }
@@ -179,8 +179,8 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|string[] $pattern
-     * @param string|string[] $subject
+     * @param list<string>|string $pattern
+     * @param list<string>|string $subject
      *
      * @dataProvider provideCommonCases
      */
@@ -201,8 +201,8 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|string[] $pattern
-     * @param string|string[] $subject
+     * @param list<string>|string $pattern
+     * @param list<string>|string $subject
      *
      * @dataProvider provideCommonCases
      */

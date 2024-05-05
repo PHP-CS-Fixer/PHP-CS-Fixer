@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $ignoredTags = [];
     private bool $allowBeforeReturnStatement = false;
@@ -111,7 +111,7 @@ function returnClassName() {
         );
     }
 
-    public function configure(array $configuration = null): void
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -158,7 +158,7 @@ function returnClassName() {
                 continue;
             }
 
-            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\\-]+)\b~', $token->getContent(), $matches)) {
+            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\-]+)\b~', $token->getContent(), $matches)) {
                 foreach ($matches[1] as $match) {
                     if (\in_array(strtolower($match), $this->ignoredTags, true)) {
                         continue 2;

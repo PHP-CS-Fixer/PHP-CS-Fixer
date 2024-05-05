@@ -77,11 +77,12 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
             return;
         }
 
-        $this->ensureIsDockBlockWithAnnotation(
+        $this->ensureIsDocBlockWithAnnotation(
             $tokens,
             $classIndex,
             'internal',
-            ['internal']
+            ['internal'],
+            [],
         );
     }
 

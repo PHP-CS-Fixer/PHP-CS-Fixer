@@ -51,7 +51,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid class 2' => [
-            '<?php class Foo { /** @var \\Foo\\\\Bar */ private $foo; }',
+            '<?php class Foo { /** @var \Foo\\\Bar */ private $foo; }',
         ];
 
         yield 'multiple returns' => [
@@ -523,7 +523,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

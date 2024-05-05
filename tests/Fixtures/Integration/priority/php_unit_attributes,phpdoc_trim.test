@@ -1,0 +1,36 @@
+--TEST--
+Integration of fixers: php_unit_attributes,phpdoc_trim.
+--RULESET--
+{"php_unit_attributes": true, "phpdoc_trim": true }
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+namespace Foo;
+use PHPUnit\Framework\TestCase;
+class BarTest extends TestCase
+{
+    /**
+     * @see food
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getData')]
+    public function testSomething()
+    {
+    }
+}
+
+--INPUT--
+<?php
+namespace Foo;
+use PHPUnit\Framework\TestCase;
+class BarTest extends TestCase
+{
+    /**
+     * @see food
+     *
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+}

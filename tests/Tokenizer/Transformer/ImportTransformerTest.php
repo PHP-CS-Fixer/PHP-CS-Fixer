@@ -69,7 +69,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php use const Foo\\BAR;',
+            '<?php use const Foo\BAR;',
             [
                 3 => CT::T_CONST_IMPORT,
             ],
@@ -104,7 +104,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php use function Foo\\bar;',
+            '<?php use function Foo\bar;',
             [
                 3 => CT::T_FUNCTION_IMPORT,
             ],

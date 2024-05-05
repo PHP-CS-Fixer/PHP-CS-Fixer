@@ -38,7 +38,7 @@ use PhpCsFixer\Utils;
 final class NoExtraBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private static array $availableTokens = [
         'attribute',
@@ -58,12 +58,12 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     ];
 
     /**
-     * @var array<int, string> key is token id, value is name of callback
+     * @var array<int, callable(int): void> key is token id
      */
     private array $tokenKindCallbackMap;
 
     /**
-     * @var array<string, string> token prototype, value is name of callback
+     * @var array<string, callable(int): void> key is token's content
      */
     private array $tokenEqualsMap;
 
@@ -84,26 +84,27 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         $this->tokenEqualsMap = [];
 
         if (\in_array('curly_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
+            $this->tokenEqualsMap['{'] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
         }
 
         if (\in_array('parenthesis_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['('] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+            $this->tokenEqualsMap['('] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
         }
 
-        static $configMap = [
-            'attribute' => [CT::T_ATTRIBUTE_CLOSE, 'fixAfterToken'],
-            'break' => [T_BREAK, 'fixAfterToken'],
-            'case' => [T_CASE, 'fixAfterCaseToken'],
-            'continue' => [T_CONTINUE, 'fixAfterToken'],
-            'default' => [T_DEFAULT, 'fixAfterToken'],
-            'extra' => [T_WHITESPACE, 'removeMultipleBlankLines'],
-            'return' => [T_RETURN, 'fixAfterToken'],
-            'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, 'fixStructureOpenCloseIfMultiLine'],
-            'switch' => [T_SWITCH, 'fixAfterToken'],
-            'throw' => [T_THROW, 'fixAfterThrowToken'],
-            'use' => [T_USE, 'removeBetweenUse'],
-            'use_trait' => [CT::T_USE_TRAIT, 'removeBetweenUse'],
+        // Each item requires explicit array-like callable, otherwise PHPStan will complain about unused private methods.
+        $configMap = [
+            'attribute' => [CT::T_ATTRIBUTE_CLOSE, [$this, 'fixAfterToken']],
+            'break' => [T_BREAK, [$this, 'fixAfterToken']],
+            'case' => [T_CASE, [$this, 'fixAfterCaseToken']],
+            'continue' => [T_CONTINUE, [$this, 'fixAfterToken']],
+            'default' => [T_DEFAULT, [$this, 'fixAfterToken']],
+            'extra' => [T_WHITESPACE, [$this, 'removeMultipleBlankLines']],
+            'return' => [T_RETURN, [$this, 'fixAfterToken']],
+            'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
+            'switch' => [T_SWITCH, [$this, 'fixAfterToken']],
+            'throw' => [T_THROW, [$this, 'fixAfterThrowToken']],
+            'use' => [T_USE, [$this, 'removeBetweenUse']],
+            'use_trait' => [CT::T_USE_TRAIT, [$this, 'removeBetweenUse']],
         ];
 
         $this->tokenKindCallbackMap = [];
@@ -289,6 +290,14 @@ switch($a) {
         ]);
     }
 
+    /**
+     * @uses fixAfterToken()
+     * @uses fixAfterCaseToken()
+     * @uses fixAfterThrowToken()
+     * @uses fixStructureOpenCloseIfMultiLine()
+     * @uses removeBetweenUse()
+     * @uses removeMultipleBlankLines()
+     */
     private function fixByToken(Token $token, int $index): void
     {
         foreach ($this->tokenKindCallbackMap as $kind => $callback) {
@@ -296,7 +305,7 @@ switch($a) {
                 continue;
             }
 
-            $this->{$callback}($index);
+            \call_user_func_array($this->tokenKindCallbackMap[$token->getId()], [$index]);
 
             return;
         }
@@ -306,7 +315,7 @@ switch($a) {
                 continue;
             }
 
-            $this->{$callback}($index);
+            \call_user_func_array($this->tokenEqualsMap[$token->getContent()], [$index]);
 
             return;
         }

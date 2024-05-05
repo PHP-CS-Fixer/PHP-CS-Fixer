@@ -70,7 +70,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @param string[] $edges
+     * @param list<string> $edges
      *
      * @dataProvider provideFixersPriorityCasesHaveIntegrationTestCases
      */
@@ -327,7 +327,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return array<string, string[]>
+     * @return array<string, list<string>>
      */
     private static function getFixersPriorityGraph(): array
     {
@@ -442,6 +442,9 @@ final class FixerFactoryTest extends TestCase
                 'heredoc_to_nowdoc',
                 'single_quote',
             ],
+            'explicit_string_variable' => [
+                'no_useless_concat_operator',
+            ],
             'final_class' => [
                 'protected_to_private',
                 'self_static_accessor',
@@ -452,6 +455,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'fully_qualified_strict_types' => [
                 'no_superfluous_phpdoc_tags',
+                'ordered_attributes',
                 'ordered_imports',
                 'ordered_interfaces',
                 'statement_indentation',
@@ -726,6 +730,12 @@ final class FixerFactoryTest extends TestCase
             ],
             'ordered_types' => [
                 'types_spaces',
+            ],
+            'php_unit_attributes' => [
+                'fully_qualified_strict_types',
+                'phpdoc_separation',
+                'phpdoc_trim',
+                'phpdoc_trim_consecutive_blank_line_separation',
             ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',

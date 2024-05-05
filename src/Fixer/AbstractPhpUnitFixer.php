@@ -18,6 +18,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -28,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpUnitFixer extends AbstractFixer
 {
-    final public function isCandidate(Tokens $tokens): bool
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
     }
@@ -68,15 +70,21 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @param array<string> $preventingAnnotations
+     * @param list<string>       $preventingAnnotations
+     * @param list<class-string> $preventingAttributes
      */
-    final protected function ensureIsDockBlockWithAnnotation(
+    final protected function ensureIsDocBlockWithAnnotation(
         Tokens $tokens,
         int $index,
         string $annotation,
-        array $preventingAnnotations
+        array $preventingAnnotations,
+        array $preventingAttributes
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
+
+        if (self::isPreventedByAttribute($tokens, $index, $preventingAttributes)) {
+            return;
+        }
 
         if ($this->isPHPDoc($tokens, $docBlockIndex)) {
             $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
@@ -115,7 +123,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @param array<string> $preventingAnnotations
+     * @param list<string> $preventingAnnotations
      */
     private function updateDocBlockIfNeeded(
         Tokens $tokens,
@@ -137,7 +145,57 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @return array<Line>
+     * @param list<class-string> $preventingAttributes
+     */
+    private static function isPreventedByAttribute(Tokens $tokens, int $index, array $preventingAttributes): bool
+    {
+        if ([] === $preventingAttributes) {
+            return false;
+        }
+
+        $attributeIndex = $tokens->getPrevMeaningfulToken($index);
+        if (!$tokens[$attributeIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            return false;
+        }
+        $attributeIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $attributeIndex);
+
+        foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+            foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                if (\in_array(self::getFullyQualifiedName($tokens, $attribute['name']), $preventingAttributes, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static function getFullyQualifiedName(Tokens $tokens, string $name): string
+    {
+        $name = strtolower($name);
+
+        $names = [];
+        foreach ((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {
+            $names[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
+        }
+
+        foreach ($names as $shortName => $fullName) {
+            if ($name === $shortName) {
+                return $fullName;
+            }
+
+            if (!str_starts_with($name, $shortName.'\\')) {
+                continue;
+            }
+
+            return $fullName.substr($name, \strlen($shortName));
+        }
+
+        return $name;
+    }
+
+    /**
+     * @return list<Line>
      */
     private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation): array
     {

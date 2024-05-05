@@ -35,7 +35,7 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, null|string, 2?: array{elements?: array<string>}}>
+     * @return iterable<array{string, null|string, 2?: array{elements?: list<string>}}>
      */
     public static function provideFixCases(): iterable
     {
@@ -487,7 +487,7 @@ $a#
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

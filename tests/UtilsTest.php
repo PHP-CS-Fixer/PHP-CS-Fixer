@@ -53,7 +53,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
-    public function testCamelCaseToUnderscore(string $expected, string $input = null): void
+    public function testCamelCaseToUnderscore(string $expected, ?string $input = null): void
     {
         if (null !== $input) {
             self::assertSame($expected, Utils::camelCaseToUnderscore($input));
@@ -124,6 +124,11 @@ final class UtilsTest extends TestCase
         yield [
             'voyage_éclair',
             'VoyageÉclair',
+        ];
+
+        yield [
+            'i_want_to_fully_be_a_snake',
+            'i_wantTo_fully_be_A_Snake',
         ];
     }
 

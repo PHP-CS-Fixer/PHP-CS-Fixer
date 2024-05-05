@@ -34,12 +34,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NonPrintableCharacterFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string, string[]>
+     * @var array<string, array{string, string}>
      */
     private array $symbolsReplace;
 
     /**
-     * @var int[]
+     * @var list<int>
      */
     private static array $tokens = [
         T_STRING_VARNAME,
@@ -144,7 +144,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 }
 
                 if ($stringTypeChanged) {
-                    $content = Preg::replace('/(\\\\{1,2})/', '\\\\\\\\', $content);
+                    $content = Preg::replace('/(\\\{1,2})/', '\\\\\\\\', $content);
                     $content = str_replace('$', '\$', $content);
                 }
 

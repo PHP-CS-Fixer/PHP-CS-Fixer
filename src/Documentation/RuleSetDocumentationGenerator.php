@@ -33,7 +33,7 @@ final class RuleSetDocumentationGenerator
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      */
     public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers): string
     {
@@ -87,11 +87,11 @@ final class RuleSetDocumentationGenerator
             $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
             $doc .= "\n\n".implode(
                 "\n",
-                array_filter([
+                [
                     $warningsHeader,
                     $warningsHeaderLine,
                     ...$warnings,
-                ])
+                ]
             );
         }
 

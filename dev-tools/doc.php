@@ -19,8 +19,9 @@ require __DIR__.'/../vendor/autoload.php';
 
 use PhpCsFixer\Console\Command\DocumentationCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
 
-$command = new DocumentationCommand();
+$command = new DocumentationCommand(new Filesystem());
 
 $application = new Application();
 $application->add($command);

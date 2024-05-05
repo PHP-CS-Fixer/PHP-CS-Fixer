@@ -77,7 +77,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                 $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace(
                     '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(?!(?:self|static)::)(\w.*)$~m',
-                    '$1\\\\$2',
+                    '$1\\\$2',
                     $tokens[$index]->getContent()
                 )]);
             }

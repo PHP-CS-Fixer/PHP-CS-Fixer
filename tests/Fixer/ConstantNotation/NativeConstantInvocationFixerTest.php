@@ -106,7 +106,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ]);
 
         $before = '<?php var_dump(m_pi, M_PI);';
-        $after = '<?php var_dump(m_pi, \\M_PI);';
+        $after = '<?php var_dump(m_pi, \M_PI);';
 
         $this->doTest($before);
 
@@ -161,7 +161,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
         yield ['<?php namespace Foo; use Bar as M_PI;'];
 
-        yield ['<?php echo Foo\\M_PI\\Bar;'];
+        yield ['<?php echo Foo\M_PI\Bar;'];
 
         yield ['<?php M_PI::foo();'];
 
@@ -176,19 +176,19 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         yield ['<?php M_PI: goto M_PI;'];
 
         yield [
-            '<?php echo \\M_PI;',
+            '<?php echo \M_PI;',
             '<?php echo M_PI;',
         ];
 
         yield [
-            '<?php namespace Foo; use M_PI; echo \\M_PI;',
+            '<?php namespace Foo; use M_PI; echo \M_PI;',
             '<?php namespace Foo; use M_PI; echo M_PI;',
         ];
 
         yield [
             // Here we are just testing the algorithm.
             // A user likely would add this M_PI to its excluded list.
-            '<?php namespace M_PI; const M_PI = 1; return \\M_PI;',
+            '<?php namespace M_PI; const M_PI = 1; return \M_PI;',
             '<?php namespace M_PI; const M_PI = 1; return M_PI;',
         ];
 
@@ -234,12 +234,12 @@ try {
     public static function provideFixWithConfiguredCustomIncludeCases(): iterable
     {
         yield [
-            '<?php echo \\FOO_BAR_BAZ . \\M_PI;',
+            '<?php echo \FOO_BAR_BAZ . \M_PI;',
             '<?php echo FOO_BAR_BAZ . M_PI;',
         ];
 
         yield [
-            '<?php class Foo { public function bar($foo) { return \\FOO_BAR_BAZ . \\M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return \FOO_BAR_BAZ . \M_PI; } }',
             '<?php class Foo { public function bar($foo) { return FOO_BAR_BAZ . M_PI; } }',
         ];
     }
@@ -262,12 +262,12 @@ try {
     public static function provideFixWithConfiguredOnlyIncludeCases(): iterable
     {
         yield [
-            '<?php echo PHP_SAPI . FOO_BAR_BAZ . \\M_PI;',
+            '<?php echo PHP_SAPI . FOO_BAR_BAZ . \M_PI;',
             '<?php echo PHP_SAPI . FOO_BAR_BAZ . M_PI;',
         ];
 
         yield [
-            '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . \\M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . \M_PI; } }',
             '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . M_PI; } }',
         ];
     }
@@ -289,12 +289,12 @@ try {
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
         yield [
-            '<?php echo \\PHP_SAPI . M_PI;',
+            '<?php echo \PHP_SAPI . M_PI;',
             '<?php echo PHP_SAPI . M_PI;',
         ];
 
         yield [
-            '<?php class Foo { public function bar($foo) { return \\PHP_SAPI . M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return \PHP_SAPI . M_PI; } }',
             '<?php class Foo { public function bar($foo) { return PHP_SAPI . M_PI; } }',
         ];
     }
@@ -500,17 +500,17 @@ try {
     {
         $this->doTest(
             '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
+echo \/**/M_PI;
+echo \ M_PI;
+echo \#
 #
 M_PI;
-echo \\M_PI;
+echo \M_PI;
 ',
             '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
+echo \/**/M_PI;
+echo \ M_PI;
+echo \#
 #
 M_PI;
 echo M_PI;
@@ -541,5 +541,58 @@ echo M_PI;
         yield ['<?php try { foo(); } catch(\InvalidArgumentException|\LogicException $e) {}'];
 
         yield ['<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}'];
+    }
+
+    /**
+     * @dataProvider provideFixPhp82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFixPhp82(string $expected): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest($expected);
+    }
+
+    /**
+     * @return iterable<array{0: string}>
+     */
+    public static function provideFixPhp82Cases(): iterable
+    {
+        yield ['<?php class Foo { public (\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var; }'];
+
+        yield ['<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}'];
+    }
+
+    /**
+     * @dataProvider provideFixPhp83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFixPhp83(string $expected, string $input): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1: string}>
+     */
+    public static function provideFixPhp83Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {
+                public const string C1 = \PHP_EOL;
+                protected const string|int C2 = \PHP_EOL;
+                private const string|(A&B) C3 = BAR;
+                public const EnumA C4 = EnumA::FOO;
+            }',
+            '<?php class Foo {
+                public const string C1 = PHP_EOL;
+                protected const string|int C2 = \PHP_EOL;
+                private const string|(A&B) C3 = \BAR;
+                public const EnumA C4 = EnumA::FOO;
+            }',
+        ];
     }
 }

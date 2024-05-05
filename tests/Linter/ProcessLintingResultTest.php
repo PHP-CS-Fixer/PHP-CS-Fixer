@@ -29,7 +29,7 @@ final class ProcessLintingResultTest extends TestCase
     public function testCheckOK(): void
     {
         $process = new class([]) extends Process {
-            public function wait(callable $callback = null): int
+            public function wait(?callable $callback = null): int
             {
                 return 0;
             }
@@ -49,7 +49,7 @@ final class ProcessLintingResultTest extends TestCase
     public function testCheckFail(): void
     {
         $process = new class([]) extends Process {
-            public function wait(callable $callback = null): int
+            public function wait(?callable $callback = null): int
             {
                 return 0;
             }

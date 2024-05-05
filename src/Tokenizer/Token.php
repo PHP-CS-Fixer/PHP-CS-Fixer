@@ -306,7 +306,7 @@ final class Token
     /**
      * Generate array containing all keywords that exists in PHP version in use.
      *
-     * @return array<int, int>
+     * @return list<int>
      */
     public static function getKeywords(): array
     {

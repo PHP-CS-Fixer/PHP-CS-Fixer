@@ -125,13 +125,16 @@ final class FixerDocumentGenerator
             }
 
             $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
-            $doc .= "\n\n".implode("\n", array_filter([
-                $warningsHeader,
-                $warningsHeaderLine,
-                $deprecationDescription,
-                $experimentalDescription,
-                $riskyDescription,
-            ]));
+            $doc .= "\n\n".implode("\n", array_filter(
+                [
+                    $warningsHeader,
+                    $warningsHeaderLine,
+                    $deprecationDescription,
+                    $experimentalDescription,
+                    $riskyDescription,
+                ],
+                static fn (string $text): bool => '' !== $text
+            ));
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
@@ -253,7 +256,7 @@ final class FixerDocumentGenerator
         $fileName = "`{$className} <./../../../{$fileName}>`_";
 
         $testFileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);
-        $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
+        $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
         $testFileName = Preg::replace('~(?= <|\.php>)~', 'Test', $testFileName);
 
         $doc .= <<<RST
@@ -293,7 +296,7 @@ final class FixerDocumentGenerator
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      */
     public function generateFixersDocumentationIndex(array $fixers): string
     {
@@ -314,7 +317,7 @@ final class FixerDocumentGenerator
         $currentGroup = null;
 
         foreach ($fixers as $fixer) {
-            $namespace = Preg::replace('/^.*\\\\(.+)\\\\.+Fixer$/', '$1', \get_class($fixer));
+            $namespace = Preg::replace('/^.*\\\(.+)\\\.+Fixer$/', '$1', \get_class($fixer));
             $group = $overrideGroups[$namespace] ?? Preg::replace('/(?<=[[:lower:]])(?=[[:upper:]])/', ' ', $namespace);
 
             if ($group !== $currentGroup) {

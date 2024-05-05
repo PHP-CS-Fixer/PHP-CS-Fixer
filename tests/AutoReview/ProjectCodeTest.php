@@ -17,14 +17,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\Console\Command\DocumentationCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Documentation\DocumentationLocator;
-use PhpCsFixer\Documentation\FixerDocumentGenerator;
-use PhpCsFixer\Documentation\RstUtils;
-use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerFactory;
@@ -65,21 +60,6 @@ final class ProjectCodeTest extends TestCase
      */
     private static array $tokensCache = [];
 
-    /**
-     * This structure contains older classes that are not yet covered by tests.
-     *
-     * It may only shrink, never add anything to it.
-     *
-     * @var string[]
-     */
-    private static $classesWithoutTests = [
-        DocumentationCommand::class,
-        DocumentationLocator::class,
-        FixerDocumentGenerator::class,
-        RstUtils::class,
-        RuleSetDocumentationGenerator::class,
-    ];
-
     public static function tearDownAfterClass(): void
     {
         self::$srcClassCases = null;
@@ -87,27 +67,12 @@ final class ProjectCodeTest extends TestCase
         self::$tokensCache = [];
     }
 
-    public function testThatClassesWithoutTestsVarIsProper(): void
-    {
-        $unknownClasses = array_filter(
-            self::$classesWithoutTests,
-            static fn (string $class): bool => !class_exists($class) && !trait_exists($class),
-        );
-
-        self::assertSame([], $unknownClasses);
-    }
-
     /**
      * @dataProvider provideThatSrcClassHaveTestClassCases
      */
     public function testThatSrcClassHaveTestClass(string $className): void
     {
-        $testClassName = 'PhpCsFixer\\Tests'.substr($className, 10).'Test';
-
-        if (\in_array($className, self::$classesWithoutTests, true)) {
-            self::assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, self::class));
-            self::markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
-        }
+        $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         self::assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
     }
@@ -340,7 +305,7 @@ final class ProjectCodeTest extends TestCase
         $doc = $reflectionClass->getDocComment();
         self::assertNotFalse($doc);
 
-        if (Preg::match('/@coversNothing/', $doc, $matches)) {
+        if (Preg::match('/@coversNothing/', $doc)) {
             return;
         }
 
@@ -541,7 +506,7 @@ final class ProjectCodeTest extends TestCase
 
         self::assertCount(1, $types, sprintf('DataProvider `%s@return` must provide single type.', $methodId));
         self::assertMatchesRegularExpression('/^iterable\</', $types[0], sprintf('DataProvider `%s@return` must return iterable.', $methodId));
-        self::assertMatchesRegularExpression('/^iterable\\<(?:(?:int\\|)?string, )?array\\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
+        self::assertMatchesRegularExpression('/^iterable\<(?:(?:int\|)?string, )?array\{/', $types[0], sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
     }
 
     /**
@@ -938,7 +903,7 @@ final class ProjectCodeTest extends TestCase
 
         $classes = array_map(
             static fn (SplFileInfo $file): string => sprintf(
-                '%s\\%s%s%s',
+                '%s\%s%s%s',
                 'PhpCsFixer',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                 '' !== $file->getRelativePath() ? '\\' : '',
@@ -974,7 +939,7 @@ final class ProjectCodeTest extends TestCase
 
         $classes = array_map(
             static fn (SplFileInfo $file): string => sprintf(
-                'PhpCsFixer\\Tests\\%s%s%s',
+                'PhpCsFixer\Tests\%s%s%s',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                 '' !== $file->getRelativePath() ? '\\' : '',
                 $file->getBasename('.'.$file->getExtension())
@@ -990,7 +955,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param \ReflectionClass<object> $rc
      *
-     * @return string[]
+     * @return list<string>
      */
     private function getPublicMethodNames(\ReflectionClass $rc): array
     {

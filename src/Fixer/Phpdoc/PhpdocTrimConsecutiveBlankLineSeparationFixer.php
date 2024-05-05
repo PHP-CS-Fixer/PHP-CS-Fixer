@@ -63,7 +63,7 @@ function fnc($foo) {}
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpUnitAttributesFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
@@ -165,11 +165,14 @@ function fnc($foo) {}
 
     private function findFirstAnnotationOrEnd(DocBlock $doc): int
     {
-        $index = null;
         foreach ($doc->getLines() as $index => $line) {
             if ($line->containsATag()) {
                 return $index;
             }
+        }
+
+        if (!isset($index)) {
+            throw new \LogicException('PHPDoc has empty lines collection.');
         }
 
         return $index; // no Annotation, return the last line

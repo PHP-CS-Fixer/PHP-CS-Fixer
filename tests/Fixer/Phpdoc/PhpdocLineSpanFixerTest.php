@@ -581,7 +581,7 @@ class Foo
      *
      * @param array<string, mixed> $config
      */
-    public function testFix80(string $expected, string $input = null, array $config = []): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -729,7 +729,7 @@ class Foo
      *
      * @param array<string, mixed> $config
      */
-    public function testFix81(string $expected, string $input = null, array $config = []): void
+    public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);

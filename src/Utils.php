@@ -43,7 +43,7 @@ final class Utils
      */
     public static function camelCaseToUnderscore(string $string): string
     {
-        return mb_strtolower(Preg::replace('/(?<!^)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/', '_', $string));
+        return mb_strtolower(Preg::replace('/(?<!^)(?<!_)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/', '_', $string));
     }
 
     /**
@@ -123,7 +123,7 @@ final class Utils
     /**
      * Join names in natural language using specified wrapper (double quote by default).
      *
-     * @param string[] $names
+     * @param list<string> $names
      *
      * @throws \InvalidArgumentException
      */
@@ -151,7 +151,7 @@ final class Utils
     /**
      * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
      *
-     * @param string[] $names
+     * @param list<string> $names
      *
      * @throws \InvalidArgumentException
      */

@@ -350,7 +350,7 @@ function __Tostring() {}',
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, string $input = null): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

@@ -75,11 +75,11 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 
             // Fix opening
             if ($token->isGivenKind(T_COMMENT)) {
-                $newContent = Preg::replace('/^\\/\\*{2,}(?!\\/)/', '/*', $newContent);
+                $newContent = Preg::replace('/^\/\*{2,}(?!\/)/', '/*', $newContent);
             }
 
             // Fix closing
-            $newContent = Preg::replace('/(?<!\\/)\\*{2,}\\/$/', '*/', $newContent);
+            $newContent = Preg::replace('/(?<!\/)\*{2,}\/$/', '*/', $newContent);
 
             if ($newContent !== $originalContent) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);

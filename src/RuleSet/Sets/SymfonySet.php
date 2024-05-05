@@ -135,6 +135,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_useless_nullsafe_operator' => true,
             'no_whitespace_before_comma_in_array' => true,
             'normalize_index_brace' => true,
+            'nullable_type_declaration' => true,
             'nullable_type_declaration_for_default_null_value' => true,
             'object_operator_without_whitespace' => true,
             'operator_linebreak' => [

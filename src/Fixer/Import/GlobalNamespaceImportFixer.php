@@ -146,8 +146,6 @@ if (count($x)) {
             $this->fullyQualifyClasses($tokens, $useDeclarations);
         }
 
-        $newImports = array_filter($newImports);
-
         if (\count($newImports) > 0) {
             if (\count($useDeclarations) > 0) {
                 $useDeclaration = end($useDeclarations);
@@ -180,7 +178,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      *
      * @return array<string, string>
      */
@@ -251,7 +249,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      *
      * @return array<string, string>
      */
@@ -301,7 +299,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      *
      * @return array<string, string>
      */
@@ -309,7 +307,7 @@ if (count($x)) {
     {
         [$global, $other] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isClass(), false);
 
-        /** @var DocBlock[] $docBlocks */
+        /** @var array<int, DocBlock> $docBlocks */
         $docBlocks = [];
 
         // find class declarations and class usages in docblocks
@@ -415,7 +413,7 @@ if (count($x)) {
     /**
      * Removes the leading slash at the given indices (when the name is not already used).
      *
-     * @param int[]                      $indices
+     * @param list<int>                  $indices
      * @param array<string, string|true> $global
      * @param array<string, true>        $other
      *
@@ -446,7 +444,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      */
     private function fullyQualifyConstants(Tokens $tokens, array $useDeclarations): void
     {
@@ -486,7 +484,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      */
     private function fullyQualifyFunctions(Tokens $tokens, array $useDeclarations): void
     {
@@ -526,7 +524,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      */
     private function fullyQualifyClasses(Tokens $tokens, array $useDeclarations): void
     {
@@ -584,7 +582,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $declarations
+     * @param list<NamespaceUseAnalysis> $declarations
      *
      * @return array{0: array<string, string|true>, 1: array<string, true>}
      */
