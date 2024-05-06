@@ -31,4 +31,6 @@ final class ReadonlyCacheManager implements CacheManagerInterface
     }
 
     public function setFile(string $file, string $fileContent): void {}
+
+    public function setFileHash(string $file, string $hash): void {}
 }

@@ -79,6 +79,11 @@ final class ReadonlyCacheManagerTest extends TestCase
             {
                 throw new \LogicException('Should not be called.');
             }
+
+            public function setFileHash(string $file, string $hash): void
+            {
+                throw new \LogicException('Should not be called.');
+            }
         };
     }
 }
