@@ -88,7 +88,6 @@ class Config implements ConfigInterface
      */
     public function getFinder(): iterable
     {
-        // to master line
         $this->finder ??= new Finder();
 
         return $this->finder;
