@@ -154,8 +154,8 @@ final class Runner
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
 
-        $newHash = $oldHash;
         $new = $old;
+        $newHash = $oldHash;
 
         $appliedFixers = [];
 
@@ -266,7 +266,7 @@ final class Runner
             }
         }
 
-        $this->cacheManager->setFile($name, $new);
+        $this->cacheManager->setFileHash($name, $newHash);
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
