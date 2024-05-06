@@ -208,7 +208,6 @@ final class Runner
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
-                'hash' => $newHash,
             ];
 
             try {

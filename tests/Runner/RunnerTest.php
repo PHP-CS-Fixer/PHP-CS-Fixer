@@ -52,7 +52,6 @@ final class RunnerTest extends TestCase
         $expectedChangedInfo = [
             'appliedFixers' => ['visibility_required'],
             'diff' => '',
-            'hash' => 'a1ee49839de1f0394e4ec7a748216ce6',
         ];
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
