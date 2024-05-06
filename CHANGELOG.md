@@ -3,6 +3,31 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.55.0
+---------------------
+
+* feat: Introduce `OrderedAttributesFixer` (#7395)
+* chore: few SCA fixes and dev-tools update (#7969)
+* chore: fix phpdoc types (#7977)
+* chore: narrow PHPDoc types (#7979)
+* chore: Normalize implicit backslahes in single quoted strings internally (#7786)
+* chore: phpdoc - rely on strict list/tuple/assoc instead of array (#7978)
+* chore: PhpUnitDataProviderNameFixer - follow config creation pattern (#7980)
+* chore: Preg - drop half-support for array-pattern (#7976)
+* chore: re-use CodeHasher (#7984)
+* chore: RuleSetsTest - assert that Fixer is configurable (#7961)
+* chore: sugar syntax (#7986)
+* chore: Tokens should be always a list (#7698)
+* CI: Ad-hoc fix for MacOS jobs (#7970)
+* CI: Fix calculating diff between branches in PRs (#7973)
+* DX: allow to enforce cache mechanism by env var (#7983)
+* DX: do not typehint fixed-length arrays as lists (#7974)
+* DX: Prevent having deprecated fixers listed as successors of other deprecated fixers (#7967)
+* DX: Resolve/Ignore PHPStan issues on level 6 + bump to level 7 with new baseline (#7971)
+* DX: use `list` type in PHPDoc (#7975)
+* fix: `PhpUnitAttributesFixer` - fix for `#[RequiresPhp]` exceeding its constructor parameters (#7966)
+* test: don't count comment after class as another classy element (#7982)
+
 Changelog for v3.54.0
 ---------------------
 
