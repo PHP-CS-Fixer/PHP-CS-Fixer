@@ -272,7 +272,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 ) : ' sequentially'
             ));
 
-            // @TODO remove when parallel runner is mature enough and works as expected
+            // @TODO v4 remove the warning
             if ($isParallel) {
                 $stdErr->writeln(
                     sprintf(

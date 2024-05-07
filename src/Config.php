@@ -49,7 +49,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private string $name;
 
-    private ?ParallelConfig $parallelConfig;
+    private ParallelConfig $parallelConfig;
 
     /**
      * @var null|string
@@ -74,6 +74,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         } else {
             $this->name = $name;
             $this->rules = ['@PSR12' => true];
+        }
+
+        // @TODO 4.0 cleanup
+        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), FILTER_VALIDATE_BOOL)) {
+            $this->parallelConfig = ParallelConfigFactory::detect();
+        } else {
+            $this->parallelConfig = ParallelConfigFactory::sequential();
         }
     }
 
@@ -124,8 +131,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     public function getParallelConfig(): ParallelConfig
     {
-        $this->parallelConfig ??= ParallelConfigFactory::sequential();
-
         return $this->parallelConfig;
     }
 
