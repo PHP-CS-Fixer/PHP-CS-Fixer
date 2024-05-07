@@ -674,7 +674,7 @@ $a
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
 
-        yield [
+        yield 'function-like language constructs' => [
             '<?php
 isset(
     $a,
