@@ -251,22 +251,13 @@ final class Runner
                         if (isset($workerResponse['fixInfo'])) {
                             $changed[$fileRelativePath] = $workerResponse['fixInfo'];
                         }
+
+                        if (isset($workerResponse['fileHash'])) {
+                            $this->cacheManager->setFileHash($fileRelativePath, $workerResponse['fileHash']);
+                        }
+
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($workerResponse['status']));
-
-                        if (
-                            FixerFileProcessedEvent::STATUS_NO_CHANGES === (int) $workerResponse['status']
-                            || (
-                                FixerFileProcessedEvent::STATUS_FIXED === (int) $workerResponse['status']
-                                && !$this->isDryRun
-                            )
-                        ) {
-                            $fileContent = file_get_contents($fileAbsolutePath);
-
-                            if (false !== $fileContent) {
-                                $this->cacheManager->setFile($fileRelativePath, $fileContent);
-                            }
-                        }
 
                         // Worker requests for another file chunk when all files were processed
                         foreach ($workerResponse['errors'] ?? [] as $workerError) {
@@ -529,7 +520,7 @@ final class Runner
 
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
-            new FixerFileProcessedEvent(null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES)
+            new FixerFileProcessedEvent(null !== $fixInfo ? FixerFileProcessedEvent::STATUS_FIXED : FixerFileProcessedEvent::STATUS_NO_CHANGES, $name, $newHash)
         );
 
         return $fixInfo;

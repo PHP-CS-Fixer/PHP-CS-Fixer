@@ -16,6 +16,7 @@ namespace PhpCsFixer\Console\Command;
 
 use Clue\React\NDJson\Decoder;
 use Clue\React\NDJson\Encoder;
+use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
@@ -23,7 +24,6 @@ use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
-use PhpCsFixer\Runner\Parallel\ReadonlyCacheManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use React\EventLoop\StreamSelectLoop;
@@ -169,6 +169,7 @@ final class WorkerCommand extends Command
                             $out->write([
                                 'action' => ParallelAction::RUNNER_RESULT,
                                 'file' => $absolutePath,
+                                'fileHash' => $this->events[0]->getFileHash(),
                                 'status' => $this->events[0]->getStatus(),
                                 'fixInfo' => array_pop($analysisResult),
                                 'errors' => $this->errorsManager->forPath($absolutePath),
@@ -230,7 +231,7 @@ final class WorkerCommand extends Command
             $this->errorsManager,
             $this->configurationResolver->getLinter(),
             $this->configurationResolver->isDryRun(),
-            new ReadonlyCacheManager($this->configurationResolver->getCacheManager()),
+            new NullCacheManager(), // IMPORTANT! We pass null cache, as cache is read&write in main process and we do not need to do it again.
             $this->configurationResolver->getDirectory(),
             $this->configurationResolver->shouldStopOnViolation(),
             ParallelConfigFactory::sequential(), // IMPORTANT! Worker must run in sequential mode.
