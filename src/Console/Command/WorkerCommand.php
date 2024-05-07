@@ -144,28 +144,33 @@ final class WorkerCommand extends Command
                             return;
                         }
 
-                        // At this point we only expect analysis requests, so let's return early for any other message
                         if (ParallelAction::WORKER_RUN !== $action) {
-                            return;
+                            // At this point we only expect analysis requests, if any other action happen, we need to fix the code.
+                            throw new \LogicException(sprintf('Unexpected action ParallelAction::%s.', $action));
                         }
 
                         /** @var iterable<int, string> $files */
                         $files = $json['files'];
 
                         foreach ($files as $absolutePath) {
-                            $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
-
                             // Reset events because we want to collect only those coming from analysed files chunk
                             $this->events = [];
                             $runner->setFileIterator(new \ArrayIterator([new \SplFileInfo($absolutePath)]));
                             $analysisResult = $runner->fix();
 
+                            if (1 !== \count($this->events)) {
+                                throw new ParallelisationException('Runner did not report a fixing event or reported too many.');
+                            }
+
+                            if (1 < \count($analysisResult)) {
+                                throw new ParallelisationException('Runner returned more analysis results than expected.');
+                            }
+
                             $out->write([
                                 'action' => ParallelAction::RUNNER_RESULT,
                                 'file' => $absolutePath,
-                                // @phpstan-ignore-next-line False-positive caused by assigning empty array to $events property
-                                'status' => isset($this->events[0]) ? $this->events[0]->getStatus() : null,
-                                'fixInfo' => $analysisResult[$relativePath] ?? null,
+                                'status' => $this->events[0]->getStatus(),
+                                'fixInfo' => array_pop($analysisResult),
                                 'errors' => $this->errorsManager->forPath($absolutePath),
                             ]);
                         }

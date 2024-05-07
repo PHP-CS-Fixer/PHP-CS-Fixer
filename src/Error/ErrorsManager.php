@@ -91,17 +91,13 @@ final class ErrorsManager
         return [] === $this->errors && [] === $this->workerErrors;
     }
 
-    /**
-     * @param Error|WorkerError $error
-     */
-    public function report($error): void
+    public function report(Error $error): void
     {
-        if ($error instanceof WorkerError) {
-            $this->workerErrors[] = $error;
-
-            return;
-        }
-
         $this->errors[] = $error;
+    }
+
+    public function reportWorkerError(WorkerError $error): void
+    {
+        $this->workerErrors[] = $error;
     }
 }

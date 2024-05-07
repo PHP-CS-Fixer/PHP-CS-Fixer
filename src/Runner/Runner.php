@@ -301,7 +301,7 @@ final class Runner
                     }
 
                     if (ParallelAction::RUNNER_ERROR_REPORT === $workerResponse['action']) {
-                        $this->errorsManager->report(new WorkerError(
+                        $this->errorsManager->reportWorkerError(new WorkerError(
                             $workerResponse['message'],
                             $workerResponse['file'],
                             (int) $workerResponse['line'],
@@ -317,7 +317,7 @@ final class Runner
 
                 // [REACT] Handle errors encountered during worker's execution
                 function (\Throwable $error) use ($processPool): void {
-                    $this->errorsManager->report(new WorkerError(
+                    $this->errorsManager->reportWorkerError(new WorkerError(
                         $error->getMessage(),
                         $error->getFile(),
                         $error->getLine(),
@@ -344,7 +344,7 @@ final class Runner
 
                     if ($errorsReported > 0) {
                         $error = json_decode($matches[1][0], true);
-                        $this->errorsManager->report(new WorkerError(
+                        $this->errorsManager->reportWorkerError(new WorkerError(
                             $error['message'],
                             $error['file'],
                             (int) $error['line'],

@@ -111,7 +111,7 @@ final class ErrorsManagerTest extends TestCase
         $error = new WorkerError('Boom!', 'foo.php', 123, 1, '#0 Foo\n#1 Bar');
         $errorsManager = new ErrorsManager();
 
-        $errorsManager->report($error);
+        $errorsManager->reportWorkerError($error);
 
         self::assertFalse($errorsManager->isEmpty());
 
