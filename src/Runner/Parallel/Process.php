@@ -47,7 +47,7 @@ final class Process
     /** @var resource */
     private $stdOut;
 
-    /** @var callable(mixed[]): void */
+    /** @var callable(array<array-key, mixed>): void */
     private $onData;
 
     /** @var callable(\Throwable): void */
@@ -63,7 +63,7 @@ final class Process
     }
 
     /**
-     * @param callable(mixed[] $json): void                  $onData  callback to be called when data is received from the parallelisation operator
+     * @param callable(array<array-key, mixed> $json): void  $onData  callback to be called when data is received from the parallelisation operator
      * @param callable(\Throwable $exception): void          $onError callback to be called when an exception occurs
      * @param callable(?int $exitCode, string $output): void $onExit  callback to be called when the process exits
      */
@@ -115,7 +115,7 @@ final class Process
     /**
      * Handles requests from parallelisation operator to its worker (spawned process).
      *
-     * @param mixed[] $data
+     * @param array<array-key, mixed> $data
      */
     public function request(array $data): void
     {

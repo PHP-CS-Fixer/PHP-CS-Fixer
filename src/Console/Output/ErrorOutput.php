@@ -120,7 +120,7 @@ final class ErrorOutput
     }
 
     /**
-     * @param array<WorkerError> $errors
+     * @param list<WorkerError> $errors
      */
     public function listWorkerErrors(array $errors): void
     {
