@@ -674,6 +674,38 @@ $a
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
 
+        yield 'function-like language constructs' => [
+            '<?php
+isset(
+    $a,
+    $b,
+);
+unset(
+    $a,
+    $b,
+);
+list(
+    $a,
+    $b,
+) = $foo;
+            ',
+            '<?php
+isset(
+    $a,
+    $b
+);
+unset(
+    $a,
+    $b
+);
+list(
+    $a,
+    $b
+) = $foo;
+            ',
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
+        ];
+
         yield 'match' => [
             '<?php
 $m = match ($a) {
