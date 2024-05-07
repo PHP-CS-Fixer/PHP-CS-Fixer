@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner\Parallel;
 
+use Fidry\CpuCoreCounter\CpuCoreCounter;
+use Fidry\CpuCoreCounter\Finder\DummyCpuCoreFinder;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 
@@ -21,8 +23,6 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\ParallelConfigFactory
- *
- * @TODO Test `detect()` method, but first discuss the best way to do it.
  */
 final class ParallelConfigFactoryTest extends TestCase
 {
@@ -33,12 +33,25 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(1, $config->getMaxProcesses());
     }
 
+    /**
+     * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777#discussion_r1591623367
+     */
     public function testDetectConfigurationWithoutParams(): void
     {
+        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
+        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
+        $cpuDetector->setAccessible(true);
+        $cpuDetector->setValue($parallelConfigFactoryReflection, new CpuCoreCounter([
+            new DummyCpuCoreFinder(7),
+        ]));
+
         $config = ParallelConfigFactory::detect();
 
+        self::assertSame(7, $config->getMaxProcesses());
         self::assertSame(10, $config->getFilesPerProcess());
         self::assertSame(120, $config->getProcessTimeout());
+
+        $cpuDetector->setValue($parallelConfigFactoryReflection, null);
     }
 
     public function testDetectConfigurationWithParams(): void
