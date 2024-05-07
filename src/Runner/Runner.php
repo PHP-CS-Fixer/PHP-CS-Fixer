@@ -259,16 +259,15 @@ final class Runner
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($workerResponse['status']));
 
-                        // Worker requests for another file chunk when all files were processed
-                        foreach ($workerResponse['errors'] ?? [] as $workerError) {
+                        foreach ($workerResponse['errors'] ?? [] as $error) {
                             $this->errorsManager->report(new Error(
-                                $workerError['type'],
-                                $workerError['filePath'],
-                                null !== $workerError['source']
-                                    ? ParallelisationException::forWorkerError($workerError['source'])
+                                $error['type'],
+                                $error['filePath'],
+                                null !== $error['source']
+                                    ? ParallelisationException::forWorkerError($error['source'])
                                     : null,
-                                $workerError['appliedFixers'],
-                                $workerError['diff']
+                                $error['appliedFixers'],
+                                $error['diff']
                             ));
                         }
 
