@@ -16,13 +16,14 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface, ParallelRunnerConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface
 {
     private string $cacheFile = '.php-cs-fixer.cache';
 
@@ -48,7 +49,7 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     private string $name;
 
-    private ?ParallelConfig $parallelRunnerConfig;
+    private ?ParallelConfig $parallelConfig;
 
     /**
      * @var null|string
@@ -123,7 +124,9 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     public function getParallelConfig(): ParallelConfig
     {
-        return $this->parallelRunnerConfig ?? ParallelConfig::sequential();
+        $this->parallelConfig ??= ParallelConfigFactory::sequential();
+
+        return $this->parallelConfig;
     }
 
     public function getPhpExecutable(): ?string
@@ -199,7 +202,7 @@ class Config implements ConfigInterface, ParallelRunnerConfigInterface
 
     public function setParallelConfig(ParallelConfig $config): ConfigInterface
     {
-        $this->parallelRunnerConfig = $config;
+        $this->parallelConfig = $config;
 
         return $this;
     }

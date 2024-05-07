@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Runner\Parallel;
 
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\Process;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
@@ -124,7 +124,7 @@ final class ProcessPoolTest extends TestCase
             new RunnerConfig(
                 true,
                 false,
-                ParallelConfig::sequential()
+                ParallelConfigFactory::sequential()
             ),
             $identifier,
             10_000

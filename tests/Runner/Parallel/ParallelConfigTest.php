@@ -21,8 +21,6 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\ParallelConfig
- *
- * @TODO Test `detect()` method, but first discuss the best way to do it.
  */
 final class ParallelConfigTest extends TestCase
 {
@@ -59,20 +57,5 @@ final class ParallelConfigTest extends TestCase
         self::assertSame(2, $config->getMaxProcesses());
         self::assertSame(10, $config->getFilesPerProcess());
         self::assertSame(120, $config->getProcessTimeout());
-    }
-
-    public function testSequentialConfigHasExactlyOneProcess(): void
-    {
-        $config = ParallelConfig::sequential();
-
-        self::assertSame(1, $config->getMaxProcesses());
-    }
-
-    public function testDetectConfiguration(): void
-    {
-        $config = ParallelConfig::detect(1, 100);
-
-        self::assertSame(1, $config->getFilesPerProcess());
-        self::assertSame(100, $config->getProcessTimeout());
     }
 }

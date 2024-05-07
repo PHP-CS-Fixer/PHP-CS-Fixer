@@ -32,6 +32,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -60,7 +61,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testDefaultParallelConfigFallbacksToSequential(): void
     {
         $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
-        $defaultParallelConfig = ParallelConfig::sequential();
+        $defaultParallelConfig = ParallelConfigFactory::sequential();
 
         self::assertSame($defaultParallelConfig->getMaxProcesses(), $parallelConfig->getMaxProcesses());
         self::assertSame($defaultParallelConfig->getFilesPerProcess(), $parallelConfig->getFilesPerProcess());

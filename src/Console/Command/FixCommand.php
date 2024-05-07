@@ -214,7 +214,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
-                new InputOption('sequential', 's', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
+                new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
             ]
         );
     }

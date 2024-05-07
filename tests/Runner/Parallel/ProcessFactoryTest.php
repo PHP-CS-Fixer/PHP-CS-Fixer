@@ -16,7 +16,7 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\RunnerConfig;
@@ -128,6 +128,6 @@ final class ProcessFactoryTest extends TestCase
 
     private static function createRunnerConfig(bool $dryRun): RunnerConfig
     {
-        return new RunnerConfig($dryRun, false, ParallelConfig::sequential());
+        return new RunnerConfig($dryRun, false, ParallelConfigFactory::sequential());
     }
 }

@@ -21,7 +21,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
-use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ReadonlyCacheManager;
 use PhpCsFixer\Runner\Runner;
@@ -77,43 +77,13 @@ final class WorkerCommand extends Command
     {
         $this->setDefinition(
             [
-                new InputOption(
-                    'port',
-                    null,
-                    InputOption::VALUE_REQUIRED,
-                    'Specifies parallelisation server\'s port.'
-                ),
-                new InputOption(
-                    'identifier',
-                    null,
-                    InputOption::VALUE_REQUIRED,
-                    'Specifies parallelisation process\' identifier.'
-                ),
-                new InputOption(
-                    'allow-risky',
-                    '',
-                    InputOption::VALUE_REQUIRED,
-                    'Are risky fixers allowed (can be `yes` or `no`).'
-                ),
+                new InputOption('port', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation server\'s port.'),
+                new InputOption('identifier', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation process\' identifier.'),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).'),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
-                new InputOption(
-                    'dry-run',
-                    '',
-                    InputOption::VALUE_NONE,
-                    'Only shows which files would have been modified.'
-                ),
-                new InputOption(
-                    'rules',
-                    '',
-                    InputOption::VALUE_REQUIRED,
-                    'List of rules that should be run against configured paths.'
-                ),
-                new InputOption(
-                    'using-cache',
-                    '',
-                    InputOption::VALUE_REQUIRED,
-                    'Should cache be used (can be `yes` or `no`).'
-                ),
+                new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
+                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
             ]
@@ -182,7 +152,7 @@ final class WorkerCommand extends Command
                         /** @var iterable<int, string> $files */
                         $files = $json['files'];
 
-                        foreach ($files as $i => $absolutePath) {
+                        foreach ($files as $absolutePath) {
                             $relativePath = $this->configurationResolver->getDirectory()->getRelativePathTo($absolutePath);
 
                             // Reset events because we want to collect only those coming from analysed files chunk
@@ -237,7 +207,7 @@ final class WorkerCommand extends Command
                 'dry-run' => $input->getOption('dry-run'),
                 'rules' => $passedRules,
                 'path' => [],
-                'path-mode' => ConfigurationResolver::PATH_MODE_OVERRIDE,
+                'path-mode' => ConfigurationResolver::PATH_MODE_OVERRIDE, // IMPORTANT! WorkerCommand is called with file that already passed filtering, so here we can rely on PATH_MODE_OVERRIDE.
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
                 'diff' => $input->getOption('diff'),
@@ -258,7 +228,7 @@ final class WorkerCommand extends Command
             new ReadonlyCacheManager($this->configurationResolver->getCacheManager()),
             $this->configurationResolver->getDirectory(),
             $this->configurationResolver->shouldStopOnViolation(),
-            ParallelConfig::sequential(), // IMPORTANT! Worker must run in sequential mode
+            ParallelConfigFactory::sequential(), // IMPORTANT! Worker must run in sequential mode.
             null,
             $this->configurationResolver->getConfigFile()
         );

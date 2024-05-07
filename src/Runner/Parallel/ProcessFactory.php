@@ -49,6 +49,8 @@ final class ProcessFactory
     }
 
     /**
+     * @private
+     *
      * @return list<string>
      */
     public function getCommandArgs(int $serverPort, ProcessIdentifier $identifier, RunnerConfig $runnerConfig): array

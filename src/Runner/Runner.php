@@ -34,6 +34,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
@@ -122,7 +123,7 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?? new Directory('');
         $this->stopOnViolation = $stopOnViolation;
-        $this->parallelConfig = $parallelConfig ?? ParallelConfig::sequential();
+        $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
     }
@@ -132,6 +133,8 @@ final class Runner
      */
     public function setFileIterator(iterable $fileIterator): void
     {
+        // @TODO consider to drop this method and make iterator parameter obligatory in constructor,
+        // more in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777/files#r1590447581
         $this->fileIterator = $fileIterator;
     }
 
@@ -166,13 +169,14 @@ final class Runner
         }
 
         $processPool = new ProcessPool($server);
+        $maxFilesPerProcess = $this->parallelConfig->getFilesPerProcess();
         $fileIterator = $this->getFilteringFileIterator();
         $fileIterator->rewind();
 
-        $fileChunk = function () use ($fileIterator): array {
+        $getFileChunk = static function () use ($fileIterator, $maxFilesPerProcess): array {
             $files = [];
 
-            while (\count($files) < $this->parallelConfig->getFilesPerProcess()) {
+            while (\count($files) < $maxFilesPerProcess) {
                 $current = $fileIterator->current();
 
                 if (null === $current) {
@@ -188,13 +192,13 @@ final class Runner
         };
 
         // [REACT] Handle worker's handshake (init connection)
-        $server->on('connection', static function (ConnectionInterface $connection) use ($processPool, $fileChunk): void {
+        $server->on('connection', static function (ConnectionInterface $connection) use ($processPool, $getFileChunk): void {
             $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
             $decoder = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
             $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
-            $decoder->on('data', static function (array $data) use ($processPool, $fileChunk, $decoder, $encoder): void {
+            $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
                 if (ParallelAction::RUNNER_HELLO !== $data['action']) {
                     return;
                 }
@@ -202,16 +206,16 @@ final class Runner
                 $identifier = ProcessIdentifier::fromRaw($data['identifier']);
                 $process = $processPool->getProcess($identifier);
                 $process->bindConnection($decoder, $encoder);
-                $job = $fileChunk();
+                $fileChunk = $getFileChunk();
 
-                if (0 === \count($job)) {
+                if (0 === \count($fileChunk)) {
                     $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
                     $processPool->endProcessIfKnown($identifier);
 
                     return;
                 }
 
-                $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $job]);
+                $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $fileChunk]);
             });
         });
 
@@ -237,7 +241,7 @@ final class Runner
             $processPool->addProcess($identifier, $process);
             $process->start(
                 // [REACT] Handle workers' responses (multiple actions possible)
-                function (array $workerResponse) use ($processPool, $process, $identifier, $fileChunk, &$changed): void {
+                function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
                     if (ParallelAction::RUNNER_RESULT === $workerResponse['action']) {
                         $fileAbsolutePath = $workerResponse['file'];
@@ -282,16 +286,16 @@ final class Runner
 
                     if (ParallelAction::RUNNER_GET_FILE_CHUNK === $workerResponse['action']) {
                         // Request another chunk of files, if still available
-                        $job = $fileChunk();
+                        $fileChunk = $getFileChunk();
 
-                        if (0 === \count($job)) {
+                        if (0 === \count($fileChunk)) {
                             $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
                             $processPool->endProcessIfKnown($identifier);
 
                             return;
                         }
 
-                        $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $job]);
+                        $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $fileChunk]);
 
                         return;
                     }

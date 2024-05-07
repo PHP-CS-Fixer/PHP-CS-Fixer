@@ -19,9 +19,9 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 /**
  * @author Greg Korba <greg@codito.dev>
  *
- * @TODO 4.0 Include parallel runner config in main config
+ * @TODO 4.0 Include parallel runner config in main ConfigInterface
  */
-interface ParallelRunnerConfigInterface extends ConfigInterface
+interface ParallelAwareConfigInterface extends ConfigInterface
 {
     public function getParallelConfig(): ParallelConfig;
 

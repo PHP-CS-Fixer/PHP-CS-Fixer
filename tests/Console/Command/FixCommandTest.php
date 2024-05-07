@@ -84,7 +84,7 @@ final class FixCommandTest extends TestCase
 
             \$config = require '{$pathToDistConfig}';
             \$config->setRules(['header_comment' => ['header' => 'SEQUENTIAL!']]);
-            \$config->setParallelConfig(\\PhpCsFixer\\Runner\\Parallel\\ParallelConfig::sequential());
+            \$config->setParallelConfig(\\PhpCsFixer\\Runner\\Parallel\\ParallelConfigFactory::sequential());
 
             return \$config;
             PHP;

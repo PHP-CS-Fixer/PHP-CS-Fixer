@@ -21,7 +21,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
-use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
@@ -90,7 +90,7 @@ final class WorkerCommandTest extends TestCase
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
-            new RunnerConfig(true, false, ParallelConfig::sequential())
+            new RunnerConfig(true, false, ParallelConfigFactory::sequential())
         )));
 
         /**
