@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.56.0
+---------------------
+
+* feat: `TrailingCommaInMultilineFixer` - handle trailing comma in language constructs (#7989)
+* fix: `TrailingCommaInMultilineFixer` - language constructs should be covered by arguments, not parameters (#7990)
+* chore: remove invalid comment (#7987)
+* DX: Cache optimisation (#7985)
+
 Changelog for v3.55.0
 ---------------------
 
