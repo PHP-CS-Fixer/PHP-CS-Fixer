@@ -530,6 +530,38 @@ $a
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
 
+        yield 'function-like language constructs' => [
+            '<?php
+isset(
+    $a,
+    $b,
+);
+unset(
+    $a,
+    $b,
+);
+list(
+    $a,
+    $b,
+) = $foo;
+            ',
+            '<?php
+isset(
+    $a,
+    $b
+);
+unset(
+    $a,
+    $b
+);
+list(
+    $a,
+    $b
+) = $foo;
+            ',
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
+        ];
+
         yield [
             '<?php
                     array(
@@ -671,38 +703,6 @@ $a
                     $x,
                     $y
                 ) => $x + $y;',
-            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
-        ];
-
-        yield 'function-like language constructs' => [
-            '<?php
-isset(
-    $a,
-    $b,
-);
-unset(
-    $a,
-    $b,
-);
-list(
-    $a,
-    $b,
-) = $foo;
-            ',
-            '<?php
-isset(
-    $a,
-    $b
-);
-unset(
-    $a,
-    $b
-);
-list(
-    $a,
-    $b
-) = $foo;
-            ',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
 

@@ -142,7 +142,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
             if ($fixArguments
-                && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC]])
+                && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC], [T_ISSET], [T_UNSET], [T_LIST]])
                 && !$tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
                 $this->fixBlock($tokens, $index);
@@ -155,7 +155,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 && (
                     $tokens[$prevIndex]->isGivenKind(T_STRING)
                     && $tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
-                    || $tokens[$prevIndex]->isGivenKind([T_FN, T_FUNCTION, T_ISSET, T_UNSET, T_LIST])
+                    || $tokens[$prevIndex]->isGivenKind([T_FN, T_FUNCTION])
                 )
             ) {
                 $this->fixBlock($tokens, $index);
