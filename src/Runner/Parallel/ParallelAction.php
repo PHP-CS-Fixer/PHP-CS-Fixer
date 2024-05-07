@@ -21,15 +21,15 @@ namespace PhpCsFixer\Runner\Parallel;
  */
 final class ParallelAction
 {
-    // Actions handled by the runner
-    public const RUNNER_ERROR_REPORT = 'errorReport';
-    public const RUNNER_HELLO = 'hello';
-    public const RUNNER_RESULT = 'result';
-    public const RUNNER_GET_FILE_CHUNK = 'getFileChunk';
+    // Actions executed by the runner (main process)
+    public const RUNNER_REQUEST_ANALYSIS = 'requestAnalysis';
+    public const RUNNER_THANK_YOU = 'thankYou';
 
-    // Actions handled by the worker
-    public const WORKER_RUN = 'run';
-    public const WORKER_THANK_YOU = 'thankYou';
+    // Actions executed by the worker
+    public const WORKER_ERROR_REPORT = 'errorReport';
+    public const WORKER_GET_FILE_CHUNK = 'getFileChunk';
+    public const WORKER_HELLO = 'hello';
+    public const WORKER_RESULT = 'result';
 
     private function __construct() {}
 }

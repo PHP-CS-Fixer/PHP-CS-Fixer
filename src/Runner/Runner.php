@@ -199,7 +199,7 @@ final class Runner
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
-                if (ParallelAction::RUNNER_HELLO !== $data['action']) {
+                if (ParallelAction::WORKER_HELLO !== $data['action']) {
                     return;
                 }
 
@@ -209,13 +209,13 @@ final class Runner
                 $fileChunk = $getFileChunk();
 
                 if (0 === \count($fileChunk)) {
-                    $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
+                    $process->request(['action' => ParallelAction::RUNNER_THANK_YOU]);
                     $processPool->endProcessIfKnown($identifier);
 
                     return;
                 }
 
-                $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $fileChunk]);
+                $process->request(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => $fileChunk]);
             });
         });
 
@@ -243,7 +243,7 @@ final class Runner
                 // [REACT] Handle workers' responses (multiple actions possible)
                 function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
-                    if (ParallelAction::RUNNER_RESULT === $workerResponse['action']) {
+                    if (ParallelAction::WORKER_RESULT === $workerResponse['action']) {
                         $fileAbsolutePath = $workerResponse['file'];
                         $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
 
@@ -274,23 +274,23 @@ final class Runner
                         return;
                     }
 
-                    if (ParallelAction::RUNNER_GET_FILE_CHUNK === $workerResponse['action']) {
+                    if (ParallelAction::WORKER_GET_FILE_CHUNK === $workerResponse['action']) {
                         // Request another chunk of files, if still available
                         $fileChunk = $getFileChunk();
 
                         if (0 === \count($fileChunk)) {
-                            $process->request(['action' => ParallelAction::WORKER_THANK_YOU]);
+                            $process->request(['action' => ParallelAction::RUNNER_THANK_YOU]);
                             $processPool->endProcessIfKnown($identifier);
 
                             return;
                         }
 
-                        $process->request(['action' => ParallelAction::WORKER_RUN, 'files' => $fileChunk]);
+                        $process->request(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => $fileChunk]);
 
                         return;
                     }
 
-                    if (ParallelAction::RUNNER_ERROR_REPORT === $workerResponse['action']) {
+                    if (ParallelAction::WORKER_ERROR_REPORT === $workerResponse['action']) {
                         $this->errorsManager->reportWorkerError(new WorkerError(
                             $workerResponse['message'],
                             $workerResponse['file'],

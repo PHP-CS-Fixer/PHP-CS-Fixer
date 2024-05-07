@@ -118,11 +118,11 @@ final class WorkerCommand extends Command
                     $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
 
                     // [REACT] Initialise connection with the parallelisation operator
-                    $out->write(['action' => ParallelAction::RUNNER_HELLO, 'identifier' => $identifier]);
+                    $out->write(['action' => ParallelAction::WORKER_HELLO, 'identifier' => $identifier]);
 
                     $handleError = static function (\Throwable $error) use ($out): void {
                         $out->write([
-                            'action' => ParallelAction::RUNNER_ERROR_REPORT,
+                            'action' => ParallelAction::WORKER_ERROR_REPORT,
                             'message' => $error->getMessage(),
                             'file' => $error->getFile(),
                             'line' => $error->getLine(),
@@ -138,13 +138,13 @@ final class WorkerCommand extends Command
                         $action = $json['action'] ?? null;
 
                         // Parallelisation operator does not have more to do, let's close the connection
-                        if (ParallelAction::WORKER_THANK_YOU === $action) {
+                        if (ParallelAction::RUNNER_THANK_YOU === $action) {
                             $loop->stop();
 
                             return;
                         }
 
-                        if (ParallelAction::WORKER_RUN !== $action) {
+                        if (ParallelAction::RUNNER_REQUEST_ANALYSIS !== $action) {
                             // At this point we only expect analysis requests, if any other action happen, we need to fix the code.
                             throw new \LogicException(sprintf('Unexpected action ParallelAction::%s.', $action));
                         }
@@ -167,7 +167,7 @@ final class WorkerCommand extends Command
                             }
 
                             $out->write([
-                                'action' => ParallelAction::RUNNER_RESULT,
+                                'action' => ParallelAction::WORKER_RESULT,
                                 'file' => $absolutePath,
                                 'fileHash' => $this->events[0]->getFileHash(),
                                 'status' => $this->events[0]->getStatus(),
@@ -177,7 +177,7 @@ final class WorkerCommand extends Command
                         }
 
                         // Request another file chunk (if available, the parallelisation operator will request new "run" action)
-                        $out->write(['action' => ParallelAction::RUNNER_GET_FILE_CHUNK]);
+                        $out->write(['action' => ParallelAction::WORKER_GET_FILE_CHUNK]);
                     });
                 },
                 static function (\Throwable $error) use ($errorOutput): void {

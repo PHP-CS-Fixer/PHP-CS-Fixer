@@ -127,8 +127,8 @@ final class WorkerCommandTest extends TestCase
                         $workerScope['messages'][] = $data;
                         $ds = \DIRECTORY_SEPARATOR;
 
-                        if (ParallelAction::RUNNER_HELLO === $data['action']) {
-                            $encoder->write(['action' => ParallelAction::WORKER_RUN, 'files' => [
+                        if (ParallelAction::WORKER_HELLO === $data['action']) {
+                            $encoder->write(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => [
                                 realpath(__DIR__.$ds.'..'.$ds.'..').$ds.'Fixtures'.$ds.'FixerTest'.$ds.'fix'.$ds.'somefile.php',
                             ]]);
 
@@ -136,7 +136,7 @@ final class WorkerCommandTest extends TestCase
                         }
 
                         if (3 === \count($workerScope['messages'])) {
-                            $encoder->write(['action' => ParallelAction::WORKER_THANK_YOU]);
+                            $encoder->write(['action' => ParallelAction::RUNNER_THANK_YOU]);
                         }
                     }
                 );
@@ -152,10 +152,10 @@ final class WorkerCommandTest extends TestCase
 
         self::assertSame(Command::SUCCESS, $process->getExitCode());
         self::assertCount(3, $workerScope['messages']);
-        self::assertSame(ParallelAction::RUNNER_HELLO, $workerScope['messages'][0]['action']);
-        self::assertSame(ParallelAction::RUNNER_RESULT, $workerScope['messages'][1]['action']);
+        self::assertSame(ParallelAction::WORKER_HELLO, $workerScope['messages'][0]['action']);
+        self::assertSame(ParallelAction::WORKER_RESULT, $workerScope['messages'][1]['action']);
         self::assertSame(FixerFileProcessedEvent::STATUS_FIXED, $workerScope['messages'][1]['status']);
-        self::assertSame(ParallelAction::RUNNER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
+        self::assertSame(ParallelAction::WORKER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
 
         $server->close();
     }
