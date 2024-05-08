@@ -86,6 +86,7 @@ final class WorkerCommand extends Command
                 new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
+                new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
             ]
         );
     }
@@ -217,7 +218,7 @@ final class WorkerCommand extends Command
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
                 'diff' => $input->getOption('diff'),
-                'stop-on-violation' => false, // @TODO Pass this option to the runner
+                'stop-on-violation' => $input->getOption('stop-on-violation'),
             ],
             getcwd(), // @phpstan-ignore-line
             $this->toolInfo

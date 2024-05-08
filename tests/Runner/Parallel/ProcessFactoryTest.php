@@ -105,6 +105,8 @@ final class ProcessFactoryTest extends TestCase
 
         yield 'diff enabled' => [['--diff' => true], self::createRunnerConfig(false), '--diff'];
 
+        yield 'stop-on-violation enabled' => [['--stop-on-violation' => true], self::createRunnerConfig(false), '--stop-on-violation'];
+
         yield 'allow risky' => [['--allow-risky' => 'yes'], self::createRunnerConfig(false), '--allow-risky \'yes\''];
 
         yield 'config' => [['--config' => 'foo.php'], self::createRunnerConfig(false), '--config \'foo.php\''];
@@ -124,9 +126,10 @@ final class ProcessFactoryTest extends TestCase
                 '--config' => 'conf.php',
                 '--diff' => true,
                 '--using-cache' => 'yes',
+                '--stop-on-violation' => true,
             ],
             self::createRunnerConfig(true),
-            '--dry-run --diff --config \'conf.php\' --using-cache \'yes\'',
+            '--dry-run --diff --stop-on-violation --config \'conf.php\' --using-cache \'yes\'',
         ];
     }
 

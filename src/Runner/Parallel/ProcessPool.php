@@ -69,7 +69,7 @@ final class ProcessPool
     public function endAll(): void
     {
         foreach (array_keys($this->processes) as $identifier) {
-            $this->endProcess(ProcessIdentifier::fromRaw($identifier));
+            $this->endProcessIfKnown(ProcessIdentifier::fromRaw($identifier));
         }
     }
 

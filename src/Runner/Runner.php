@@ -247,17 +247,15 @@ final class Runner
                         $fileAbsolutePath = $workerResponse['file'];
                         $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
 
-                        // Pass-back information about applied changes (only if there are any)
-                        if (isset($workerResponse['fixInfo'])) {
-                            $changed[$fileRelativePath] = $workerResponse['fixInfo'];
-                        }
+                        // Dispatch an event for each file processed and dispatch its status (required for progress output)
+                        $this->dispatchEvent(
+                            FixerFileProcessedEvent::NAME,
+                            new FixerFileProcessedEvent($workerResponse['status'])
+                        );
 
                         if (isset($workerResponse['fileHash'])) {
                             $this->cacheManager->setFileHash($fileRelativePath, $workerResponse['fileHash']);
                         }
-
-                        // Dispatch an event for each file processed and dispatch its status (required for progress output)
-                        $this->dispatchEvent(FixerFileProcessedEvent::NAME, new FixerFileProcessedEvent($workerResponse['status']));
 
                         foreach ($workerResponse['errors'] ?? [] as $error) {
                             $this->errorsManager->report(new Error(
@@ -269,6 +267,17 @@ final class Runner
                                 $error['appliedFixers'],
                                 $error['diff']
                             ));
+                        }
+
+                        // Pass-back information about applied changes (only if there are any)
+                        if (isset($workerResponse['fixInfo'])) {
+                            $changed[$fileRelativePath] = $workerResponse['fixInfo'];
+
+                            if ($this->stopOnViolation) {
+                                $processPool->endAll();
+
+                                return;
+                            }
                         }
 
                         return;

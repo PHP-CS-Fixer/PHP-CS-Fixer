@@ -182,6 +182,53 @@ final class RunnerTest extends TestCase
     }
 
     /**
+     * @requires OS Darwin|Windows
+     *
+     * @TODO v4 do not switch on parallel execution by default while this test is not passing on Linux.
+     *
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     *
+     * @dataProvider provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases
+     */
+    public function testParallelFixStopsOnFirstViolationIfSuchOptionIsEnabled(bool $stopOnViolation, int $expectedChanges): void
+    {
+        $errorsManager = new ErrorsManager();
+
+        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
+        $runner = new Runner(
+            Finder::create()->in($path),
+            [
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ],
+            new NullDiffer(),
+            null,
+            $errorsManager,
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            null,
+            $stopOnViolation,
+            new ParallelConfig(2, 1, 3),
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+        );
+
+        self::assertCount($expectedChanges, $runner->fix());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: int}>
+     */
+    public static function provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases(): iterable
+    {
+        yield 'do NOT stop on violation' => [false, 2];
+
+        yield 'stop on violation' => [true, 1];
+    }
+
+    /**
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */

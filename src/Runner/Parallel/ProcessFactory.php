@@ -91,6 +91,10 @@ final class ProcessFactory
             $commandArgs[] = '--diff';
         }
 
+        if (filter_var($this->input->getOption('stop-on-violation'), FILTER_VALIDATE_BOOLEAN)) {
+            $commandArgs[] = '--stop-on-violation';
+        }
+
         foreach (['allow-risky', 'config', 'rules', 'using-cache', 'cache-file'] as $option) {
             $optionValue = $this->input->getOption($option);
 
