@@ -424,6 +424,7 @@ if (count($x)) {
         $imports = [];
 
         foreach ($indices as $index) {
+            /** @var class-string $name */
             $name = $tokens[$index]->getContent();
             $checkName = $caseSensitive ? $name : strtolower($name);
 

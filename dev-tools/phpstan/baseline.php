@@ -377,16 +377,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$indexEnd of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\RegularCallableCallFixer\\:\\:getTokensSubcollection\\(\\) expects int, int\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/RegularCallableCallFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#5 \\$firstArgEndIndex of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\RegularCallableCallFixer\\:\\:replaceCallUserFuncWithCallback\\(\\) expects int, int\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/RegularCallableCallFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
@@ -410,11 +400,6 @@ $ignoreErrors[] = [
 	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Import\\\\FullyQualifiedStrictTypesFixer\\:\\:\\$symbolsForImport \\(array\\{const\\?\\: array\\<string, class\\-string\\>, class\\?\\: array\\<string, class\\-string\\>, function\\?\\: array\\<string, class\\-string\\>\\}\\) does not accept array\\{const\\?\\: array\\<string, string\\>, class\\?\\: array\\<string, string\\>, function\\?\\: array\\<string, string\\>\\}\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:prepareImports\\(\\) should return array\\<string, class\\-string\\> but returns array\\<string, string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$types of method PhpCsFixer\\\\DocBlock\\\\Annotation\\:\\:setTypes\\(\\) expects list\\<string\\>, array\\<int\\<0, max\\>, string\\> given\\.$#',
@@ -577,11 +562,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$slices of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:insertSlices\\(\\) expects array\\<int, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|PhpCsFixer\\\\Tokenizer\\\\Tokens\\>, array\\<\'\'\\|int, array\\{PhpCsFixer\\\\Tokenizer\\\\Token, PhpCsFixer\\\\Tokenizer\\\\Token\\}\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|false\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
@@ -615,11 +595,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:getArgumentsInfo\\(\\) should return array\\<non\\-empty\\-string, array\\{types\\: list\\<string\\>, allows_null\\: bool\\}\\> but returns array\\<string, array\\{types\\: list\\<string\\>, allows_null\\: bool\\}\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocAlignFixer\\:\\:getMatches\\(\\) should return array\\{indent\\: string\\|null, tag\\: string\\|null, hint\\: string, var\\: string\\|null, static\\: string, desc\\?\\: string\\|null\\}\\|null but returns array\\<string\\>\\.$#',
@@ -663,11 +638,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(int\\|string\\)\\: mixed\\)\\|null, Closure\\(string\\)\\: string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$parts of method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocTagTypeFixer\\:\\:tagIsSurroundedByText\\(\\) expects list\\<string\\>, array\\<int\\<0, max\\>, string\\> given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
 ];

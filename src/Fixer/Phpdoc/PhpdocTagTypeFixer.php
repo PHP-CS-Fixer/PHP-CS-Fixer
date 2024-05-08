@@ -182,7 +182,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
     }
 
     /**
-     * @param list<string> $parts
+     * @param array<int,string> $parts
      */
     private function tagIsSurroundedByText(array $parts, int $index): bool
     {

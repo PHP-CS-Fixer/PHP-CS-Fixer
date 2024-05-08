@@ -117,6 +117,8 @@ class FooTest extends TestCase {
                     continue;
                 }
             }
+
+            /** @var int $functionIndex */
             $functionIndex = $tokens->getPrevTokenOfKind($dataProviderDefinitionIndex->getNameIndex(), [[T_FUNCTION]]);
 
             $methodAttributes = $tokensAnalyzer->getMethodAttributes($functionIndex);
