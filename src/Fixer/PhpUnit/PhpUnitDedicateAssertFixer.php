@@ -47,7 +47,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     {
         parent::__construct();
 
-        if (self::$fixMap === []) {
+        if ([] === self::$fixMap) {
             self::$fixMap = $this->getFixMap();
         }
     }
@@ -111,22 +111,30 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_9_1)) {
             self::$fixMap = array_merge(self::$fixMap, [
-                'is_readable' => [
-                    ...self::$fixMap['is_readable'] ?? [],
-                    'negative' => 'assertIsNotReadable',
-                ],
-                'is_writable' => [
-                    ...self::$fixMap['is_writable'] ?? [],
-                    'negative' => 'assertIsNotWritable',
-                ],
-                'file_exists' => [
-                    ...self::$fixMap['file_exists'] ?? [],
-                    'negative' => 'assertFileDoesNotExist',
-                ],
-                'is_dir' => [
-                    ...self::$fixMap['is_dir'] ?? [],
-                    'negative' => 'assertDirectoryDoesNotExist',
-                ],
+                'is_readable' => array_merge(
+                    self::$fixMap['is_readable'] ?? [],
+                    [
+                        'negative' => 'assertIsNotReadable',
+                    ]
+                ),
+                'is_writable' => array_merge(
+                    self::$fixMap['is_writable'] ?? [],
+                    [
+                        'negative' => 'assertIsNotWritable',
+                    ]
+                ),
+                'file_exists' => array_merge(
+                    self::$fixMap['file_exists'] ?? [],
+                    [
+                        'negative' => 'assertFileDoesNotExist',
+                    ]
+                ),
+                'is_dir' => array_merge(
+                    self::$fixMap['is_dir'] ?? [],
+                    [
+                        'negative' => 'assertDirectoryDoesNotExist',
+                    ]
+                ),
             ]);
         } else {
             self::$fixMap = $this->getFixMap();

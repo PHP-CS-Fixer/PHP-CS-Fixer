@@ -357,6 +357,7 @@ $a#
             ),
             ['target' => PhpUnitTargetVersion::VERSION_9_1],
         ];
+
         yield [
             self::generateTest(
                 '
@@ -372,6 +373,7 @@ $a#
             ),
             ['target' => PhpUnitTargetVersion::VERSION_9_1],
         ];
+
         yield [
             self::generateTest(
                 '
