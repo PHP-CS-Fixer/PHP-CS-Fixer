@@ -59,13 +59,13 @@ final class WorkerCommandTest extends TestCase
         self::expectException(ParallelisationException::class);
         self::expectExceptionMessage('Missing parallelisation options');
 
-        $commandTester = $this->doTestExecute(['--identifier' => (string) ProcessIdentifier::create()]);
+        $commandTester = $this->doTestExecute(['--identifier' => ProcessIdentifier::create()->toString()]);
     }
 
     public function testWorkerCantConnectToServerWhenExecutedDirectly(): void
     {
         $commandTester = $this->doTestExecute([
-            '--identifier' => (string) ProcessIdentifier::create(),
+            '--identifier' => ProcessIdentifier::create()->toString(),
             '--port' => 12_345,
         ]);
 
@@ -107,7 +107,7 @@ final class WorkerCommandTest extends TestCase
          * } $workerScope
          */
         $workerScope = [
-            'identifier' => (string) $processIdentifier,
+            'identifier' => $processIdentifier->toString(),
             'messages' => [],
             'connected' => false,
             'chunkRequested' => false,

@@ -80,7 +80,7 @@ final class ProcessFactoryTest extends TestCase
             trim(
                 sprintf(
                     'worker --port 1234 --identifier \'%s\' %s',
-                    (string) $identifier,
+                    $identifier->toString(),
                     trim($expectedAdditionalArgs)
                 )
             ),

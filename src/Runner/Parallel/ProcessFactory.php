@@ -80,7 +80,7 @@ final class ProcessFactory
             '--port',
             (string) $serverPort,
             '--identifier',
-            escapeshellarg((string) $identifier),
+            escapeshellarg($identifier->toString()),
         ];
 
         if ($runnerConfig->isDryRun()) {

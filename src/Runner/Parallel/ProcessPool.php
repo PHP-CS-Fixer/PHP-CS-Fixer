@@ -45,21 +45,21 @@ final class ProcessPool
 
     public function getProcess(ProcessIdentifier $identifier): Process
     {
-        if (!isset($this->processes[(string) $identifier])) {
+        if (!isset($this->processes[$identifier->toString()])) {
             throw ParallelisationException::forUnknownIdentifier($identifier);
         }
 
-        return $this->processes[(string) $identifier];
+        return $this->processes[$identifier->toString()];
     }
 
     public function addProcess(ProcessIdentifier $identifier, Process $process): void
     {
-        $this->processes[(string) $identifier] = $process;
+        $this->processes[$identifier->toString()] = $process;
     }
 
     public function endProcessIfKnown(ProcessIdentifier $identifier): void
     {
-        if (!isset($this->processes[(string) $identifier])) {
+        if (!isset($this->processes[$identifier->toString()])) {
             return;
         }
 
@@ -77,7 +77,7 @@ final class ProcessPool
     {
         $this->getProcess($identifier)->quit();
 
-        unset($this->processes[(string) $identifier]);
+        unset($this->processes[$identifier->toString()]);
 
         if (0 === \count($this->processes)) {
             $this->server->close();

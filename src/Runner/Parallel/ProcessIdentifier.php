@@ -21,7 +21,7 @@ namespace PhpCsFixer\Runner\Parallel;
  *
  * @internal
  */
-final class ProcessIdentifier implements \Stringable
+final class ProcessIdentifier
 {
     private const IDENTIFIER_PREFIX = 'php-cs-fixer_parallel_';
 
@@ -32,7 +32,7 @@ final class ProcessIdentifier implements \Stringable
         $this->identifier = $identifier;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->identifier;
     }

@@ -29,7 +29,7 @@ final class ProcessIdentifierTest extends TestCase
     {
         $identifier = ProcessIdentifier::create();
 
-        self::assertStringStartsWith('php-cs-fixer_parallel_', (string) $identifier);
+        self::assertStringStartsWith('php-cs-fixer_parallel_', $identifier->toString());
     }
 
     /**
@@ -42,7 +42,7 @@ final class ProcessIdentifierTest extends TestCase
         }
 
         $identifier = ProcessIdentifier::fromRaw($rawIdentifier);
-        self::assertSame($rawIdentifier, (string) $identifier);
+        self::assertSame($rawIdentifier, $identifier->toString());
     }
 
     /**
