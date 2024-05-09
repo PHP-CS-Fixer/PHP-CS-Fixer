@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string, array<string, bool|int|string>|true>
+     * @var array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
      */
     private static array $fixMap = [
         'array_key_exists' => [
