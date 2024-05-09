@@ -14,18 +14,21 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
  */
-final class PHPUnit100MigrationRiskySet extends AbstractMigrationSetDescription
+final class PHPUnit91MigrationRiskySet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
         return [
-            '@PHPUnit91Migration:risky' => true,
-            'php_unit_data_provider_static' => ['force' => true],
+            '@PHPUnit84Migration:risky' => true,
+            'php_unit_dedicate_assert' => [
+                'target' => PhpUnitTargetVersion::VERSION_9_1,
+            ],
         ];
     }
 }

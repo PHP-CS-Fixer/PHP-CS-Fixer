@@ -36,25 +36,88 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var array<string, array<string, bool|int|string>|true>
      */
-    private static array $fixMap = [];
+    private array $fixMap = [
+        'array_key_exists' => [
+            'positive' => 'assertArrayHasKey',
+            'negative' => 'assertArrayNotHasKey',
+            'argument_count' => 2,
+        ],
+        'empty' => [
+            'positive' => 'assertEmpty',
+            'negative' => 'assertNotEmpty',
+        ],
+        'file_exists' => [
+            'positive' => 'assertFileExists',
+            'negative' => 'assertFileNotExists',
+        ],
+        'is_array' => true,
+        'is_bool' => true,
+        'is_callable' => true,
+        'is_dir' => [
+            'positive' => 'assertDirectoryExists',
+            'negative' => 'assertDirectoryNotExists',
+        ],
+        'is_double' => true,
+        'is_float' => true,
+        'is_infinite' => [
+            'positive' => 'assertInfinite',
+            'negative' => 'assertFinite',
+        ],
+        'is_int' => true,
+        'is_integer' => true,
+        'is_long' => true,
+        'is_nan' => [
+            'positive' => 'assertNan',
+            'negative' => false,
+        ],
+        'is_null' => [
+            'positive' => 'assertNull',
+            'negative' => 'assertNotNull',
+        ],
+        'is_numeric' => true,
+        'is_object' => true,
+        'is_readable' => [
+            'positive' => 'assertIsReadable',
+            'negative' => 'assertNotIsReadable',
+        ],
+        'is_real' => true,
+        'is_resource' => true,
+        'is_scalar' => true,
+        'is_string' => true,
+        'is_writable' => [
+            'positive' => 'assertIsWritable',
+            'negative' => 'assertNotIsWritable',
+        ],
+        'str_contains' => [ // since 7.5
+            'positive' => 'assertStringContainsString',
+            'negative' => 'assertStringNotContainsString',
+            'argument_count' => 2,
+            'swap_arguments' => true,
+        ],
+        'str_ends_with' => [ // since 3.4
+            'positive' => 'assertStringEndsWith',
+            'negative' => 'assertStringEndsNotWith',
+            'argument_count' => 2,
+            'swap_arguments' => true,
+        ],
+        'str_starts_with' => [ // since 3.4
+            'positive' => 'assertStringStartsWith',
+            'negative' => 'assertStringStartsNotWith',
+            'argument_count' => 2,
+            'swap_arguments' => true,
+        ],
+    ];
 
     /**
      * @var list<string>
      */
     private array $functions = [];
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        if ([] === self::$fixMap) {
-            self::$fixMap = $this->getFixMap();
-        }
-    }
-
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
+
+        $this->fixMap = $this->getFixMap();
 
         // assertions added in 3.0: assertArrayNotHasKey assertArrayHasKey assertFileNotExists assertFileExists assertNotNull, assertNull
         $this->functions = [
@@ -110,34 +173,32 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         }
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_9_1)) {
-            self::$fixMap = array_merge(self::$fixMap, [
+            $this->fixMap = array_merge($this->fixMap, [
                 'is_readable' => array_merge(
-                    self::$fixMap['is_readable'] ?? [],
+                    $this->fixMap['is_readable'] ?? [],
                     [
                         'negative' => 'assertIsNotReadable',
                     ]
                 ),
                 'is_writable' => array_merge(
-                    self::$fixMap['is_writable'] ?? [],
+                    $this->fixMap['is_writable'] ?? [],
                     [
                         'negative' => 'assertIsNotWritable',
                     ]
                 ),
                 'file_exists' => array_merge(
-                    self::$fixMap['file_exists'] ?? [],
+                    $this->fixMap['file_exists'] ?? [],
                     [
                         'negative' => 'assertFileDoesNotExist',
                     ]
                 ),
                 'is_dir' => array_merge(
-                    self::$fixMap['is_dir'] ?? [],
+                    $this->fixMap['is_dir'] ?? [],
                     [
                         'negative' => 'assertDirectoryDoesNotExist',
                     ]
                 ),
             ]);
-        } else {
-            self::$fixMap = $this->getFixMap();
         }
     }
 
@@ -283,8 +344,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $arguments = $argumentsAnalyzer->getArguments($tokens, $testOpenIndex, $testCloseIndex);
         $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
-        if (\is_array(self::$fixMap[$content])) {
-            $expectedCount = self::$fixMap[$content]['argument_count'] ?? 1;
+        if (\is_array($this->fixMap[$content])) {
+            $expectedCount = $this->fixMap[$content]['argument_count'] ?? 1;
 
             if ($expectedCount !== \count($arguments)) {
                 return;
@@ -292,14 +353,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $isPositive = $isPositive ? 'positive' : 'negative';
 
-            if (false === self::$fixMap[$content][$isPositive]) {
+            if (false === $this->fixMap[$content][$isPositive]) {
                 return;
             }
 
-            $tokens[$assertCall['index']] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
+            $tokens[$assertCall['index']] = new Token([T_STRING, $this->fixMap[$content][$isPositive]]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
-            if (self::$fixMap[$content]['swap_arguments'] ?? false) {
+            if ($this->fixMap[$content]['swap_arguments'] ?? false) {
                 if (2 !== $expectedCount) {
                     throw new \RuntimeException('Can only swap two arguments, please update map or logic.');
                 }

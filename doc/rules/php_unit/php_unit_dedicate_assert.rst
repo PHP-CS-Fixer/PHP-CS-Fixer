@@ -21,7 +21,7 @@ Configuration
 
 Target version of PHPUnit.
 
-Allowed values: ``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'`` and ``'newest'``
+Allowed values: ``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'9.1'`` and ``'newest'``
 
 Default value: ``'newest'``
 
@@ -133,9 +133,13 @@ The rule is part of the following rule sets:
 
   ``['target' => '5.6']``
 
+- `@PHPUnit91Migration:risky <./../../ruleSets/PHPUnit91MigrationRisky.rst>`_ with config:
+
+  ``['target' => '9.1']``
+
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
-  ``['target' => '5.6']``
+  ``['target' => '9.1']``
 
 
 References
