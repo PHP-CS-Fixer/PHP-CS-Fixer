@@ -34,9 +34,79 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array|array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
+     * @var array{
+     *      array_key_exists: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int
+     *      },
+     *      empty: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      file_exists: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_array: bool,
+     *      is_bool: bool,
+     *      is_callable: bool,
+     *      is_dir: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_double: bool,
+     *      is_float: bool,
+     *      is_infinite: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_int: bool,
+     *      is_integer: bool,
+     *      is_long: bool,
+     *      is_nan: array{
+     *          positive: string,
+     *          negative: bool
+     *      },
+     *      is_null: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_numeric: bool,
+     *      is_object: bool,
+     *      is_readable: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_real: bool,
+     *      is_resource: bool,
+     *      is_scalar: bool,
+     *      is_string: bool,
+     *      is_writable: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      str_contains: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int,
+     *          swap_arguments: bool
+     *      },
+     *      str_ends_with: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int,
+     *          swap_arguments: bool
+     *      },
+     *      str_starts_with: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int,
+     *          swap_arguments: bool
+     *      }
+     *  }
      */
-    private array $fixMap = [];
+    private array $fixMap;
 
     /**
      * @var list<string>
@@ -283,11 +353,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $isPositive = $isPositive ? 'positive' : 'negative';
 
-            if (false === $this->fixMap[$content][$isPositive]) {
+            $replace = $this->fixMap[$content][$isPositive];
+            if (false === $replace) {
                 return;
             }
 
-            $tokens[$assertCall['index']] = new Token([T_STRING, $this->fixMap[$content][$isPositive]]);
+            $tokens[$assertCall['index']] = new Token([T_STRING, (string) $replace]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
             if ($this->fixMap[$content]['swap_arguments'] ?? false) {
@@ -444,7 +515,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         $lowerContent = strtolower($tokens[$countCallIndex]->getContent());
 
-        if ('count' !== $lowerContent && 'sizeof' !== $lowerContent) {
+        if (!\in_array($lowerContent, ['count', 'sizeof'], true)) {
             return; // not a call to "count" or "sizeOf"
         }
 
@@ -587,7 +658,77 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array|array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
+     * @return array{
+     *      array_key_exists: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int
+     *      },
+     *      empty: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      file_exists: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_array: bool,
+     *      is_bool: bool,
+     *      is_callable: bool,
+     *      is_dir: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_double: bool,
+     *      is_float: bool,
+     *      is_infinite: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_int: bool,
+     *      is_integer: bool,
+     *      is_long: bool,
+     *      is_nan: array{
+     *          positive: string,
+     *          negative: bool
+     *      },
+     *      is_null: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_numeric: bool,
+     *      is_object: bool,
+     *      is_readable: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      is_real: bool,
+     *      is_resource: bool,
+     *      is_scalar: bool,
+     *      is_string: bool,
+     *      is_writable: array{
+     *          positive: string,
+     *          negative: string
+     *      },
+     *      str_contains: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int,
+     *          swap_arguments: bool
+     *      },
+     *      str_ends_with: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int,
+     *          swap_arguments: bool
+     *      },
+     *      str_starts_with: array{
+     *          positive: string,
+     *          negative: string,
+     *          argument_count: int,
+     *          swap_arguments: bool
+     *      }
+     *  }
      */
     private function getFixMap(): array
     {
