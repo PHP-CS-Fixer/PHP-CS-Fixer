@@ -34,79 +34,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
+     * @var array|array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
      */
-    private array $fixMap = [
-        'array_key_exists' => [
-            'positive' => 'assertArrayHasKey',
-            'negative' => 'assertArrayNotHasKey',
-            'argument_count' => 2,
-        ],
-        'empty' => [
-            'positive' => 'assertEmpty',
-            'negative' => 'assertNotEmpty',
-        ],
-        'file_exists' => [
-            'positive' => 'assertFileExists',
-            'negative' => 'assertFileNotExists',
-        ],
-        'is_array' => true,
-        'is_bool' => true,
-        'is_callable' => true,
-        'is_dir' => [
-            'positive' => 'assertDirectoryExists',
-            'negative' => 'assertDirectoryNotExists',
-        ],
-        'is_double' => true,
-        'is_float' => true,
-        'is_infinite' => [
-            'positive' => 'assertInfinite',
-            'negative' => 'assertFinite',
-        ],
-        'is_int' => true,
-        'is_integer' => true,
-        'is_long' => true,
-        'is_nan' => [
-            'positive' => 'assertNan',
-            'negative' => false,
-        ],
-        'is_null' => [
-            'positive' => 'assertNull',
-            'negative' => 'assertNotNull',
-        ],
-        'is_numeric' => true,
-        'is_object' => true,
-        'is_readable' => [
-            'positive' => 'assertIsReadable',
-            'negative' => 'assertNotIsReadable',
-        ],
-        'is_real' => true,
-        'is_resource' => true,
-        'is_scalar' => true,
-        'is_string' => true,
-        'is_writable' => [
-            'positive' => 'assertIsWritable',
-            'negative' => 'assertNotIsWritable',
-        ],
-        'str_contains' => [ // since 7.5
-            'positive' => 'assertStringContainsString',
-            'negative' => 'assertStringNotContainsString',
-            'argument_count' => 2,
-            'swap_arguments' => true,
-        ],
-        'str_ends_with' => [ // since 3.4
-            'positive' => 'assertStringEndsWith',
-            'negative' => 'assertStringEndsNotWith',
-            'argument_count' => 2,
-            'swap_arguments' => true,
-        ],
-        'str_starts_with' => [ // since 3.4
-            'positive' => 'assertStringStartsWith',
-            'negative' => 'assertStringStartsNotWith',
-            'argument_count' => 2,
-            'swap_arguments' => true,
-        ],
-    ];
+    private array $fixMap = [];
 
     /**
      * @var list<string>
@@ -656,6 +586,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return $clone;
     }
 
+    /**
+     * @return array|array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
+     */
     private function getFixMap(): array
     {
         return [
