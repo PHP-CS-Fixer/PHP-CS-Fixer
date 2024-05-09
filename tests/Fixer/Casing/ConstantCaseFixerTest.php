@@ -333,7 +333,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
                 class Foo5  { const Foo|NULL       NULL  = NULL;  }
                 class Foo6  { const NULL|Foo       NULL  = NULL;  }
                 class Foo7  { const NULL|(Foo&Bar) NULL  = NULL;  }
-                class Foo8  { const BOOL           TRUE  = TRUE;  }
+                class Foo8  { const bool           TRUE  = TRUE;  }
                 class Foo9  { const FALSE          FALSE = FALSE; }
                 class Foo10 { const TRUE           TRUE  = TRUE;  }
                 PHP,
