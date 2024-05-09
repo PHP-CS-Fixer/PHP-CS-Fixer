@@ -572,7 +572,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$token of class PhpCsFixer\\\\Tokenizer\\\\Token constructor expects array\\{int, string\\}\\|string, array\\{262, int\\|string\\|true\\} given\\.$#',
+	'message' => '#^Parameter \\#1 \\$token of class PhpCsFixer\\\\Tokenizer\\\\Token constructor expects array\\{int, string\\}\\|string, array\\{[0-9]+, int\\|string\\|true\\} given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
 ];
