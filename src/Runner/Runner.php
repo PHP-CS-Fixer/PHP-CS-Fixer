@@ -158,6 +158,7 @@ final class Runner
         $newHash = $oldHash;
 
         $appliedFixers = [];
+        $extraInfoFixers = [];
 
         try {
             foreach ($this->fixers as $fixer) {
@@ -176,6 +177,10 @@ final class Runner
                     $tokens->clearEmptyTokens();
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
+
+                    if (!isset($extraInfoFixers['helpUri'][$fixer->getName()])) {
+                        $extraInfoFixers['helpUri'][$fixer->getName()] = $fixer->getHelpUri();
+                    }
                 }
             }
         } catch (\ParseError $e) {
@@ -208,6 +213,7 @@ final class Runner
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
+                'extraInfoFixers' => $extraInfoFixers,
             ];
 
             try {

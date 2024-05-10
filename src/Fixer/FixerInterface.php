@@ -55,6 +55,12 @@ interface FixerInterface
     public function getDefinition(): FixerDefinitionInterface;
 
     /**
+     * Returns the absolute URI [RFC3986](http://www.rfc-editor.org/info/rfc3986)
+     * of the primary documentation for the fixer.
+     */
+    public function getHelpUri(): string;
+
+    /**
      * Returns the name of the fixer.
      *
      * The name must be all lowercase and without any spaces.

@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\FixReport;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -39,8 +41,10 @@ final class TextReporter implements ReporterInterface
 
             if ($reportSummary->shouldAddAppliedFixers()) {
                 $output .= $this->getAppliedFixers(
+                    $reportSummary->getVerbosity(),
                     $reportSummary->isDecoratedOutput(),
                     $fixResult['appliedFixers'],
+                    $fixResult['extraInfoFixers']
                 );
             }
 
@@ -60,11 +64,29 @@ final class TextReporter implements ReporterInterface
     /**
      * @param list<string> $appliedFixers
      */
-    private function getAppliedFixers(bool $isDecoratedOutput, array $appliedFixers): string
+    private function getAppliedFixers(int $verbosity, bool $isDecoratedOutput, array $appliedFixers, array $extraInfoFixers = []): string
     {
-        return sprintf(
-            $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-            implode(', ', $appliedFixers)
+        if (!isset($extraInfoFixers['helpUri']) || $verbosity < OutputInterface::VERBOSITY_VERY_VERBOSE) {
+            return sprintf(
+                $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
+                implode(', ', $appliedFixers)
+            );
+        }
+
+        $fixers = [];
+
+        foreach ($appliedFixers as $appliedFixer) {
+            $url = $extraInfoFixers['helpUri'][$appliedFixer] ?? '';
+            if ($isDecoratedOutput && '' !== $url) {
+                $fixers[] = sprintf('      <comment>%s</comment>%s      : <href=%s>%s</>', $appliedFixer, PHP_EOL, OutputFormatter::escape($url), $url);
+            } else {
+                $fixers[] = sprintf('      %s', $appliedFixer);
+            }
+        }
+
+        return PHP_EOL.sprintf(
+            '%s',
+            implode(PHP_EOL, $fixers)
         );
     }
 

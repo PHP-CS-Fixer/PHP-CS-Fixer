@@ -317,7 +317,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
-            $output->isDecorated()
+            $output->isDecorated(),
+            $verbosity
         );
 
         $output->isDecorated()

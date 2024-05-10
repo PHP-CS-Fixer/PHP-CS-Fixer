@@ -81,6 +81,19 @@ abstract class AbstractFixer implements FixerInterface
         return false;
     }
 
+    public function getHelpUri(): string
+    {
+        $nameParts = explode('\\', static::class);
+        $group = $nameParts[\count($nameParts) - 2];
+        $name = substr(end($nameParts), 0, -\strlen('Fixer'));
+
+        return sprintf(
+            'https://cs.symfony.com/doc/rules/%s/%s.html',
+            Utils::camelCaseToUnderscore($group),
+            Utils::camelCaseToUnderscore($name)
+        );
+    }
+
     public function getName(): string
     {
         $nameParts = explode('\\', static::class);
