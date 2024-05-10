@@ -41,7 +41,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.56.1-DEV';
+    public const VERSION = '3.56.1';
     public const VERSION_CODENAME = '15 Keys Accelerate';
 
     private ToolInfo $toolInfo;
