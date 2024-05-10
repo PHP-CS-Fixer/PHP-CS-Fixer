@@ -2620,6 +2620,12 @@ function foo($a) {}',
                 PHP,
             ['import_symbols' => true],
         ];
+
+        yield 'Import also classes from global namespace' => [
+            '<?php use \Exception; function foo(Exception $e) {}',
+            '<?php function foo(\Exception $e) {}',
+          ['import_symbols' => true],
+        ];
     }
 
     /**
