@@ -52,6 +52,9 @@ final class RunnerTest extends TestCase
         $expectedChangedInfo = [
             'appliedFixers' => ['visibility_required'],
             'diff' => '',
+            'extraInfoFixers' => [
+                'helpUri' => ['visibility_required' => 'https://cs.symfony.com/doc/rules/class_notation/visibility_required.html'],
+            ],
         ];
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
