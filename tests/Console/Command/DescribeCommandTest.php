@@ -379,6 +379,11 @@ $/s',
                 return new FixerDefinition('Fixes stuff.', []);
             }
 
+            public function getHelpUri(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function getName(): string
             {
                 return 'Foo/bar_baz';
@@ -576,6 +581,11 @@ Fixing examples:
                     'Replaces bad stuff with good stuff.',
                     'Can break stuff.'
                 );
+            }
+
+            public function getHelpUri(): string
+            {
+                throw new \LogicException('Not implemented.');
             }
 
             public function getName(): string

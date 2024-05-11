@@ -479,6 +479,11 @@ final class UtilsTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function getHelpUri(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function fix(\SplFileInfo $file, Tokens $tokens): void
             {
                 throw new \LogicException('Not implemented.');

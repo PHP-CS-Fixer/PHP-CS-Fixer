@@ -168,6 +168,11 @@ final class AbstractProxyFixerTest extends TestCase
                 throw new \BadMethodCallException('Not implemented.');
             }
 
+            public function getHelpUri(): string
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
             public function getName(): string
             {
                 return uniqid('abstract_proxy_test_');
@@ -207,6 +212,11 @@ final class AbstractProxyFixerTest extends TestCase
             }
 
             public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function getHelpUri(): string
             {
                 throw new \BadMethodCallException('Not implemented.');
             }

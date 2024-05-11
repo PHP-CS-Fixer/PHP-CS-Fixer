@@ -365,6 +365,11 @@ final class FixerFactoryTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function getHelpUri(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function getName(): string
             {
                 return 'foo';
@@ -458,6 +463,11 @@ final class FixerFactoryTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function getHelpUri(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function getName(): string
             {
                 return 'foo';
@@ -531,6 +541,11 @@ final class FixerFactoryTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function getHelpUri(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function getName(): string
             {
                 return 'foo';
@@ -582,6 +597,11 @@ final class FixerFactoryTest extends TestCase
             }
 
             public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getHelpUri(): string
             {
                 throw new \LogicException('Not implemented.');
             }
