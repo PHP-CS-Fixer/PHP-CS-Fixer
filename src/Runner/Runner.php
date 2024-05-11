@@ -92,7 +92,7 @@ final class Runner
     }
 
     /**
-     * @return array<string, array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{}|array{helpUri: array<string, string>}}>
+     * @return array<string, array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}>
      */
     public function fix(): array
     {
@@ -130,7 +130,7 @@ final class Runner
     }
 
     /**
-     * @return null|array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{}|array{helpUri: array<string, string>}}
+     * @return null|array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
