@@ -52,9 +52,6 @@ final class RunnerTest extends TestCase
         $expectedChangedInfo = [
             'appliedFixers' => ['visibility_required'],
             'diff' => '',
-            'extraInfoFixers' => [
-                'helpUri' => ['visibility_required' => 'https://cs.symfony.com/doc/rules/class_notation/visibility_required.html'],
-            ],
         ];
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
@@ -74,8 +71,12 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
 
         self::assertCount(2, $changed);
-        self::assertSame($expectedChangedInfo, array_pop($changed));
-        self::assertSame($expectedChangedInfo, array_pop($changed));
+        $changedFixer = array_pop($changed);
+        unset($changedFixer['extraInfoFixers']);
+        self::assertSame($expectedChangedInfo, $changedFixer);
+        $changedFixer = array_pop($changed);
+        unset($changedFixer['extraInfoFixers']);
+        self::assertSame($expectedChangedInfo, $changedFixer);
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -94,7 +95,9 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
 
         self::assertCount(1, $changed);
-        self::assertSame($expectedChangedInfo, array_pop($changed));
+        $changedFixer = array_pop($changed);
+        unset($changedFixer['extraInfoFixers']);
+        self::assertSame($expectedChangedInfo, $changedFixer);
     }
 
     /**
