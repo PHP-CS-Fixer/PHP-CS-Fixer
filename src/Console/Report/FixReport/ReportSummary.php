@@ -38,8 +38,6 @@ final class ReportSummary
 
     private bool $isDecoratedOutput;
 
-    private int $verbosity;
-
     /**
      * @param array<string, array{appliedFixers: list<string>, diff: string}> $changed
      * @param int                                                             $time    duration in milliseconds
@@ -52,8 +50,7 @@ final class ReportSummary
         int $memory,
         bool $addAppliedFixers,
         bool $isDryRun,
-        bool $isDecoratedOutput,
-        int $verbosity
+        bool $isDecoratedOutput
     ) {
         $this->changed = $changed;
         $this->filesCount = $filesCount;
@@ -62,12 +59,6 @@ final class ReportSummary
         $this->addAppliedFixers = $addAppliedFixers;
         $this->isDryRun = $isDryRun;
         $this->isDecoratedOutput = $isDecoratedOutput;
-        $this->verbosity = $verbosity;
-    }
-
-    public function getVerbosity(): int
-    {
-        return $this->verbosity;
     }
 
     public function isDecoratedOutput(): bool
