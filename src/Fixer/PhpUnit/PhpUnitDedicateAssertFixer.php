@@ -723,38 +723,24 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        switch ($assertCall['loweredName']) {
-            case 'assertnotisreadable':
-                $tokens[$assertCall['index']] = new Token([
-                    T_STRING,
-                    'assertIsNotReadable',
-                ]);
-
-                break;
-
-            case 'assertnotiswritable':
-                $tokens[$assertCall['index']] = new Token([
-                    T_STRING,
-                    'assertIsNotWritable',
-                ]);
-
-                break;
-
-            case 'assertdirectorynotexists':
-                $tokens[$assertCall['index']] = new Token([
-                    T_STRING,
-                    'assertDirectoryDoesNotExist',
-                ]);
-
-                break;
-
-            case 'assertfilenotexists':
-                $tokens[$assertCall['index']] = new Token([
-                    T_STRING,
-                    'assertFileDoesNotExist',
-                ]);
-
-                break;
+        $replacement = null;
+        if ('assertnotisreadable' === $assertCall['loweredName']) {
+            $replacement = 'assertIsNotReadable';
+        } elseif ('assertnotiswritable' === $assertCall['loweredName']) {
+            $replacement = 'assertIsNotWritable';
+        } elseif ('assertdirectorynotexists' === $assertCall['loweredName']) {
+            $replacement = 'assertDirectoryDoesNotExist';
+        } elseif ('assertfilenotexists' === $assertCall['loweredName']) {
+            $replacement = 'assertFileDoesNotExist';
         }
+
+        if (null === $replacement) {
+            return;
+        }
+
+        $tokens[$assertCall['index']] = new Token([
+            T_STRING,
+            $replacement,
+        ]);
     }
 }
