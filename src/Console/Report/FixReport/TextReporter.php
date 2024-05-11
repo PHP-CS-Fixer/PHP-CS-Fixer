@@ -78,7 +78,7 @@ final class TextReporter implements ReporterInterface
         }
 
         return sprintf(
-            ' (<comment>%s</comment>)',
+            $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
             implode(', ', $fixers)
         );
     }
