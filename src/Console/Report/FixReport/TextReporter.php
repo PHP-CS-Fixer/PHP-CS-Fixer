@@ -78,15 +78,15 @@ final class TextReporter implements ReporterInterface
         foreach ($appliedFixers as $appliedFixer) {
             $url = $extraInfoFixers['helpUri'][$appliedFixer] ?? '';
             if ($isDecoratedOutput && '' !== $url) {
-                $fixers[] = sprintf('      <comment>%s</comment>%s      : <href=%s>%s</>', $appliedFixer, PHP_EOL, OutputFormatter::escape($url), $url);
+                $fixers[] = sprintf('<href=%s;fg=yellow>%s</>', OutputFormatter::escape($url), $appliedFixer);
             } else {
-                $fixers[] = sprintf('      %s', $appliedFixer);
+                $fixers[] = $appliedFixer;
             }
         }
 
-        return PHP_EOL.sprintf(
-            '%s',
-            implode(PHP_EOL, $fixers)
+        return sprintf(
+            ' (<comment>%s</comment>)',
+            implode(', ', $fixers)
         );
     }
 
