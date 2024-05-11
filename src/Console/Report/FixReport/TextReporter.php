@@ -61,6 +61,7 @@ final class TextReporter implements ReporterInterface
 
     /**
      * @param list<string> $appliedFixers
+     * @param array{}|array{helpUri: array{}|array<string, string>} $extraInfoFixers
      */
     private function getAppliedFixers(bool $isDecoratedOutput, array $appliedFixers, array $extraInfoFixers = []): string
     {
