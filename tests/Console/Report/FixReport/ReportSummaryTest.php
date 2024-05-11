@@ -30,6 +30,7 @@ final class ReportSummaryTest extends TestCase
             'someFile.php' => [
                 'appliedFixers' => ['some_fixer_name_here'],
                 'diff' => 'this text is a diff ;)',
+                'extraInfoFixers' => [],
             ],
         ];
         $filesCount = 10;

@@ -94,6 +94,7 @@ abstract class AbstractReporterTestCase extends TestCase
      {
      }
  }',
+                        'extraInfoFixers' => [],
                     ],
                 ],
                 10,
@@ -122,6 +123,7 @@ abstract class AbstractReporterTestCase extends TestCase
      {
      }
  }',
+                        'extraInfoFixers' => [],
                     ],
                 ],
                 10,
@@ -140,6 +142,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     'someFile.php' => [
                         'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
                         'diff' => '',
+                        'extraInfoFixers' => [],
                     ],
                 ],
                 10,
@@ -168,6 +171,7 @@ abstract class AbstractReporterTestCase extends TestCase
      {
      }
  }',
+                        'extraInfoFixers' => [],
                     ],
                 ],
                 10,
@@ -186,10 +190,12 @@ abstract class AbstractReporterTestCase extends TestCase
                     'someFile.php' => [
                         'appliedFixers' => ['some_fixer_name_here_1', 'some_fixer_name_here_2'],
                         'diff' => 'this text is a diff ;)',
+                        'extraInfoFixers' => [],
                     ],
                     'anotherFile.php' => [
                         'appliedFixers' => ['another_fixer_name_here'],
                         'diff' => 'another diff here ;)',
+                        'extraInfoFixers' => [],
                     ],
                 ],
                 10,
