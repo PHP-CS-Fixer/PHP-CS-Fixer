@@ -106,7 +106,78 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
      *      }
      *  }
      */
-    private array $fixMap;
+    private static array $fixMap = [
+        'array_key_exists' => [
+            'positive' => 'assertArrayHasKey',
+            'negative' => 'assertArrayNotHasKey',
+            'argument_count' => 2,
+        ],
+        'empty' => [
+            'positive' => 'assertEmpty',
+            'negative' => 'assertNotEmpty',
+        ],
+        'file_exists' => [
+            'positive' => 'assertFileExists',
+            'negative' => 'assertFileNotExists',
+        ],
+        'is_array' => true,
+        'is_bool' => true,
+        'is_callable' => true,
+        'is_dir' => [
+            'positive' => 'assertDirectoryExists',
+            'negative' => 'assertDirectoryNotExists',
+        ],
+        'is_double' => true,
+        'is_float' => true,
+        'is_infinite' => [
+            'positive' => 'assertInfinite',
+            'negative' => 'assertFinite',
+        ],
+        'is_int' => true,
+        'is_integer' => true,
+        'is_long' => true,
+        'is_nan' => [
+            'positive' => 'assertNan',
+            'negative' => false,
+        ],
+        'is_null' => [
+            'positive' => 'assertNull',
+            'negative' => 'assertNotNull',
+        ],
+        'is_numeric' => true,
+        'is_object' => true,
+        'is_readable' => [
+            'positive' => 'assertIsReadable',
+            'negative' => 'assertNotIsReadable',
+        ],
+        'is_real' => true,
+        'is_resource' => true,
+        'is_scalar' => true,
+        'is_string' => true,
+        'is_writable' => [
+            'positive' => 'assertIsWritable',
+            'negative' => 'assertNotIsWritable',
+        ],
+        'str_contains' => [ // since 7.5
+            'positive' => 'assertStringContainsString',
+            'negative' => 'assertStringNotContainsString',
+            'argument_count' => 2,
+            'swap_arguments' => true,
+        ],
+        'str_ends_with' => [ // since 3.4
+            'positive' => 'assertStringEndsWith',
+            'negative' => 'assertStringEndsNotWith',
+            'argument_count' => 2,
+            'swap_arguments' => true,
+        ],
+        'str_starts_with' => [ // since 3.4
+            'positive' => 'assertStringStartsWith',
+            'negative' => 'assertStringStartsNotWith',
+            'argument_count' => 2,
+            'swap_arguments' => true,
+        ],
+        'assertNotIsReadable' => true,
+    ];
 
     /**
      * @var list<string>
@@ -116,8 +187,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
-
-        $this->fixMap = $this->getFixMap();
 
         // assertions added in 3.0: assertArrayNotHasKey assertArrayHasKey assertFileNotExists assertFileExists assertNotNull, assertNull
         $this->functions = [
@@ -173,31 +242,11 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         }
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_9_1)) {
-            $this->fixMap = array_merge($this->fixMap, [
-                'is_readable' => array_merge(
-                    $this->fixMap['is_readable'] ?? [],
-                    [
-                        'negative' => 'assertIsNotReadable',
-                    ]
-                ),
-                'is_writable' => array_merge(
-                    $this->fixMap['is_writable'] ?? [],
-                    [
-                        'negative' => 'assertIsNotWritable',
-                    ]
-                ),
-                'file_exists' => array_merge(
-                    $this->fixMap['file_exists'] ?? [],
-                    [
-                        'negative' => 'assertFileDoesNotExist',
-                    ]
-                ),
-                'is_dir' => array_merge(
-                    $this->fixMap['is_dir'] ?? [],
-                    [
-                        'negative' => 'assertDirectoryDoesNotExist',
-                    ]
-                ),
+            $this->functions = array_merge($this->functions, [
+                'assertdirectorynotexists',
+                'assertnotisreadable',
+                'assertnotiswritable',
+                'assertfilenotexists',
             ]);
         }
     }
@@ -261,20 +310,23 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         foreach ($this->getPreviousAssertCall($tokens, $startIndex, $endIndex) as $assertCall) {
             // test and fix for assertTrue/False to dedicated asserts
-            if ('asserttrue' === $assertCall['loweredName'] || 'assertfalse' === $assertCall['loweredName']) {
+            if (\in_array($assertCall['loweredName'], ['asserttrue', 'assertfalse'], true)) {
                 $this->fixAssertTrueFalse($tokens, $argumentsAnalyzer, $assertCall);
 
                 continue;
             }
 
-            if (
-                'assertsame' === $assertCall['loweredName']
-                || 'assertnotsame' === $assertCall['loweredName']
-                || 'assertequals' === $assertCall['loweredName']
-                || 'assertnotequals' === $assertCall['loweredName']
-            ) {
+            if (\in_array(
+                $assertCall['loweredName'],
+                ['assertsame', 'assertnotsame', 'assertequals', 'assertnotequals'],
+                true
+            )) {
                 $this->fixAssertSameEquals($tokens, $assertCall);
             }
+        }
+
+        foreach ($this->getPreviousAssertCall($tokens, $startIndex, $endIndex) as $assertCall) {
+            $this->fixAssertNewNames($tokens, $assertCall);
         }
     }
 
@@ -344,8 +396,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $arguments = $argumentsAnalyzer->getArguments($tokens, $testOpenIndex, $testCloseIndex);
         $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
-        if (\is_array($this->fixMap[$content])) {
-            $expectedCount = $this->fixMap[$content]['argument_count'] ?? 1;
+        if (\is_array(self::$fixMap[$content])) {
+            $expectedCount = self::$fixMap[$content]['argument_count'] ?? 1;
 
             if ($expectedCount !== \count($arguments)) {
                 return;
@@ -353,7 +405,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $isPositive = $isPositive ? 'positive' : 'negative';
 
-            $replace = $this->fixMap[$content][$isPositive];
+            $replace = self::$fixMap[$content][$isPositive];
             if (false === $replace) {
                 return;
             }
@@ -361,7 +413,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens[$assertCall['index']] = new Token([T_STRING, (string) $replace]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
-            if ($this->fixMap[$content]['swap_arguments'] ?? false) {
+            if (self::$fixMap[$content]['swap_arguments'] ?? false) {
                 if (2 !== $expectedCount) {
                     throw new \RuntimeException('Can only swap two arguments, please update map or logic.');
                 }
@@ -658,150 +710,51 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array{
-     *      array_key_exists: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int
-     *      },
-     *      empty: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      file_exists: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_array: bool,
-     *      is_bool: bool,
-     *      is_callable: bool,
-     *      is_dir: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_double: bool,
-     *      is_float: bool,
-     *      is_infinite: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_int: bool,
-     *      is_integer: bool,
-     *      is_long: bool,
-     *      is_nan: array{
-     *          positive: string,
-     *          negative: bool
-     *      },
-     *      is_null: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_numeric: bool,
-     *      is_object: bool,
-     *      is_readable: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_real: bool,
-     *      is_resource: bool,
-     *      is_scalar: bool,
-     *      is_string: bool,
-     *      is_writable: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      str_contains: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int,
-     *          swap_arguments: bool
-     *      },
-     *      str_ends_with: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int,
-     *          swap_arguments: bool
-     *      },
-     *      str_starts_with: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int,
-     *          swap_arguments: bool
-     *      }
-     *  }
+     * @param array{
+     *     index: int,
+     *     loweredName: string,
+     *     openBraceIndex: int,
+     *     closeBraceIndex: int,
+     * } $assertCall
      */
-    private function getFixMap(): array
+    private function fixAssertNewNames(Tokens $tokens, array $assertCall): void
     {
-        return [
-            'array_key_exists' => [
-                'positive' => 'assertArrayHasKey',
-                'negative' => 'assertArrayNotHasKey',
-                'argument_count' => 2,
-            ],
-            'empty' => [
-                'positive' => 'assertEmpty',
-                'negative' => 'assertNotEmpty',
-            ],
-            'file_exists' => [
-                'positive' => 'assertFileExists',
-                'negative' => 'assertFileNotExists',
-            ],
-            'is_array' => true,
-            'is_bool' => true,
-            'is_callable' => true,
-            'is_dir' => [
-                'positive' => 'assertDirectoryExists',
-                'negative' => 'assertDirectoryNotExists',
-            ],
-            'is_double' => true,
-            'is_float' => true,
-            'is_infinite' => [
-                'positive' => 'assertInfinite',
-                'negative' => 'assertFinite',
-            ],
-            'is_int' => true,
-            'is_integer' => true,
-            'is_long' => true,
-            'is_nan' => [
-                'positive' => 'assertNan',
-                'negative' => false,
-            ],
-            'is_null' => [
-                'positive' => 'assertNull',
-                'negative' => 'assertNotNull',
-            ],
-            'is_numeric' => true,
-            'is_object' => true,
-            'is_readable' => [
-                'positive' => 'assertIsReadable',
-                'negative' => 'assertNotIsReadable',
-            ],
-            'is_real' => true,
-            'is_resource' => true,
-            'is_scalar' => true,
-            'is_string' => true,
-            'is_writable' => [
-                'positive' => 'assertIsWritable',
-                'negative' => 'assertNotIsWritable',
-            ],
-            'str_contains' => [ // since 7.5
-                'positive' => 'assertStringContainsString',
-                'negative' => 'assertStringNotContainsString',
-                'argument_count' => 2,
-                'swap_arguments' => true,
-            ],
-            'str_ends_with' => [ // since 3.4
-                'positive' => 'assertStringEndsWith',
-                'negative' => 'assertStringEndsNotWith',
-                'argument_count' => 2,
-                'swap_arguments' => true,
-            ],
-            'str_starts_with' => [ // since 3.4
-                'positive' => 'assertStringStartsWith',
-                'negative' => 'assertStringStartsNotWith',
-                'argument_count' => 2,
-                'swap_arguments' => true,
-            ],
-        ];
+        if (!\in_array($assertCall['loweredName'], $this->functions, true)) {
+            return;
+        }
+
+        switch ($assertCall['loweredName']) {
+            case 'assertnotisreadable':
+                $tokens[$assertCall['index']] = new Token([
+                    T_STRING,
+                    'assertIsNotReadable',
+                ]);
+
+                break;
+
+            case 'assertnotiswritable':
+                $tokens[$assertCall['index']] = new Token([
+                    T_STRING,
+                    'assertIsNotWritable',
+                ]);
+
+                break;
+
+            case 'assertdirectorynotexists':
+                $tokens[$assertCall['index']] = new Token([
+                    T_STRING,
+                    'assertDirectoryDoesNotExist',
+                ]);
+
+                break;
+
+            case 'assertfilenotexists':
+                $tokens[$assertCall['index']] = new Token([
+                    T_STRING,
+                    'assertFileDoesNotExist',
+                ]);
+
+                break;
+        }
     }
 }
