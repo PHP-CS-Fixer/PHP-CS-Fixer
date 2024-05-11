@@ -20,6 +20,7 @@ use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\FixerReportInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -33,7 +34,7 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  *
  * @internal
  */
-abstract class AbstractFixer implements FixerInterface
+abstract class AbstractFixer implements FixerInterface, FixerReportInterface
 {
     /**
      * @var null|array<string, mixed>
@@ -65,6 +66,15 @@ abstract class AbstractFixer implements FixerInterface
         }
     }
 
+    public function getExtraInfoFixers(): array
+    {
+        return [
+            'helpUri' => $this->getHelpUri(),
+            'definition' => $this->getDefinition(),
+            'risky' => $this->isRisky(),
+        ];
+    }
+
     final public function fix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ($this instanceof ConfigurableFixerInterface && null === $this->configuration) {
@@ -79,19 +89,6 @@ abstract class AbstractFixer implements FixerInterface
     public function isRisky(): bool
     {
         return false;
-    }
-
-    public function getHelpUri(): string
-    {
-        $nameParts = explode('\\', static::class);
-        $group = $nameParts[\count($nameParts) - 2];
-        $name = substr(end($nameParts), 0, -\strlen('Fixer'));
-
-        return sprintf(
-            'https://cs.symfony.com/doc/rules/%s/%s.html',
-            Utils::camelCaseToUnderscore($group),
-            Utils::camelCaseToUnderscore($name)
-        );
     }
 
     public function getName(): string
@@ -181,6 +178,19 @@ abstract class AbstractFixer implements FixerInterface
         }
 
         $this->whitespacesConfig = $config;
+    }
+
+    protected function getHelpUri(): string
+    {
+        $nameParts = explode('\\', static::class);
+        $group = $nameParts[\count($nameParts) - 2];
+        $name = substr(end($nameParts), 0, -\strlen('Fixer'));
+
+        return sprintf(
+            'https://cs.symfony.com/doc/rules/%s/%s.html',
+            Utils::camelCaseToUnderscore($group),
+            Utils::camelCaseToUnderscore($name)
+        );
     }
 
     abstract protected function applyFix(\SplFileInfo $file, Tokens $tokens): void;

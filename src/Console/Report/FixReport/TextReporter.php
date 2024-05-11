@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\FixReport;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -60,22 +61,15 @@ final class TextReporter implements ReporterInterface
     }
 
     /**
-     * @param list<string>                                          $appliedFixers
-     * @param array{helpUri: array<string, string>|array{}}|array{} $extraInfoFixers
+     * @param list<string>                                                                                      $appliedFixers
+     * @param array<string, array{"helpUri"?: string, "definition"?: FixerDefinitionInterface, "risky"?: bool}> $extraInfoFixers
      */
     private function getAppliedFixers(bool $isDecoratedOutput, array $appliedFixers, array $extraInfoFixers = []): string
     {
-        if (!isset($extraInfoFixers['helpUri'])) {
-            return sprintf(
-                $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-                implode(', ', $appliedFixers)
-            );
-        }
-
         $fixers = [];
 
         foreach ($appliedFixers as $appliedFixer) {
-            $url = $extraInfoFixers['helpUri'][$appliedFixer] ?? '';
+            $url = $extraInfoFixers[$appliedFixer]['helpUri'] ?? '';
             if ($isDecoratedOutput && '' !== $url) {
                 $fixers[] = sprintf('<href=%s;fg=yellow>%s</>', OutputFormatter::escape($url), $appliedFixer);
             } else {

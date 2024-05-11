@@ -23,6 +23,8 @@ use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\FixerReportInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
@@ -92,7 +94,11 @@ final class Runner
     }
 
     /**
-     * @return array<string, array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}>
+     * @return array<string, array{
+     *      appliedFixers: list<string>,
+     *      diff: string,
+     *      extraInfoFixers: array<string, array{"helpUri"?: string, "definition"?: FixerDefinitionInterface, "risky"?: bool}>
+     *  }>
      */
     public function fix(): array
     {
@@ -130,7 +136,11 @@ final class Runner
     }
 
     /**
-     * @return null|array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}
+     * @return null|array{
+     *      appliedFixers: list<string>,
+     *      diff: string,
+     *      extraInfoFixers: array<string, array{"helpUri"?: string, "definition"?: FixerDefinitionInterface, "risky"?: bool}>
+     *  }
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
@@ -178,8 +188,8 @@ final class Runner
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
 
-                    if (!isset($extraInfoFixers['helpUri'][$fixer->getName()])) {
-                        $extraInfoFixers['helpUri'][$fixer->getName()] = $fixer->getHelpUri();
+                    if ($fixer instanceof FixerReportInterface) {
+                        $extraInfoFixers[$fixer->getName()] = $fixer->getExtraInfoFixers();
                     }
                 }
             }

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -22,7 +24,11 @@ namespace PhpCsFixer\Console\Report\FixReport;
 final class ReportSummary
 {
     /**
-     * @var array<string, array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}>
+     * @var array<string, array{
+     *      appliedFixers: list<string>,
+     *      diff: string,
+     *      extraInfoFixers: array<string, array{"helpUri"?: string, "definition"?: FixerDefinitionInterface, "risky"?: bool}>
+     *  }>
      */
     private array $changed;
 
@@ -39,9 +45,11 @@ final class ReportSummary
     private bool $isDecoratedOutput;
 
     /**
-     * @param array<string, array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}> $changed
-     * @param int                                                                                                                             $time    duration in milliseconds
-     * @param int                                                                                                                             $memory  memory usage in bytes
+     * @param array<string, array{
+     *      appliedFixers: list<string>,
+     *      diff: string,
+     *      extraInfoFixers: array<string, array{"helpUri"?: string, "definition"?: FixerDefinitionInterface, "risky"?: bool}>
+     *  }> $changed
      */
     public function __construct(
         array $changed,
@@ -72,7 +80,11 @@ final class ReportSummary
     }
 
     /**
-     * @return array<string, array{appliedFixers: list<string>, diff: string, extraInfoFixers: array{helpUri: array<string, string>}|array{}}>
+     * @return array<string, array{
+     *      appliedFixers: list<string>,
+     *      diff: string,
+     *      extraInfoFixers: array<string, array{"helpUri"?: string, "definition"?: FixerDefinitionInterface, "risky"?: bool}>
+     *  }>
      */
     public function getChanged(): array
     {
