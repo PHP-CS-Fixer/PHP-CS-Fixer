@@ -99,6 +99,7 @@ final class FixCommandTest extends TestCase
         );
 
         self::assertStringContainsString('Running analysis on 1 core sequentially.', $cmdTester->getDisplay());
+        self::assertStringContainsString('You can enable parallel runner and speed up the analysis!', $cmdTester->getDisplay());
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
     }
@@ -134,6 +135,7 @@ final class FixCommandTest extends TestCase
         );
 
         self::assertStringContainsString('Running analysis on 2 cores with 1 file per process.', $cmdTester->getDisplay());
+        self::assertStringContainsString('Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!', $cmdTester->getDisplay());
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
     }
