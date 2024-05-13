@@ -31,6 +31,8 @@ Example #1
         }
 References
 ----------
+References
+----------
 
 - Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixer <./../../../src/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixer.php>`_
 - Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\PhpdocReadonlyClassCommentToKeywordFixerTest <./../../../tests/Fixer/ClassNotation/PhpdocReadonlyClassCommentToKeywordFixerTest.php>`_

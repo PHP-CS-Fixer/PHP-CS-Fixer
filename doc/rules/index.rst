@@ -587,6 +587,9 @@ Operator
 - `no_useless_nullsafe_operator <./operator/no_useless_nullsafe_operator.rst>`_
 
   There should not be useless Null-safe operator ``?->`` used.
+- `not_operator_to_false <./operator/not_operator_to_false.rst>`_ *(risky)*
+
+  Not operator should be replaced by false ==
 - `not_operator_with_space <./operator/not_operator_with_space.rst>`_
 
   Logical NOT operators (``!``) should have leading and trailing whitespaces.

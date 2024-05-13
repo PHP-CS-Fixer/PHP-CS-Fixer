@@ -36,6 +36,11 @@ final class NotOperatorToFalseFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield [
+            '<?php if ($a != $b);',
+            '<?php if ($a != $b);',
+        ];
+
+        yield [
             '<?php if (!strpos("abcd", "a"));',
             '<?php if (false == strpos("abcd", "a"))',
         ];
