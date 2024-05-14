@@ -33,19 +33,4 @@ final class ParallelisationExceptionTest extends TestCase
         self::assertSame('Unknown process identifier: php-cs-fixer_parallel_foo', $exception->getMessage());
         self::assertSame(0, $exception->getCode());
     }
-
-    public function testCreateForWorkerError(): void
-    {
-        $exception = ParallelisationException::forWorkerError([
-            'message' => 'foo',
-            'code' => 1,
-            'file' => 'foo.php',
-            'line' => 1,
-        ]);
-
-        self::assertSame('foo', $exception->getMessage());
-        self::assertSame(1, $exception->getCode());
-        self::assertSame('foo.php', $exception->getFile());
-        self::assertSame(1, $exception->getLine());
-    }
 }

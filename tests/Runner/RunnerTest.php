@@ -25,9 +25,9 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
-use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -175,7 +175,7 @@ final class RunnerTest extends TestCase
 
         $error = $errors[0];
 
-        self::assertInstanceOf(ParallelisationException::class, $error->getSource());
+        self::assertInstanceOf(LintingException::class, $error->getSource());
 
         self::assertSame(Error::TYPE_INVALID, $error->getType());
         self::assertSame($pathToInvalidFile, $error->getFilePath());

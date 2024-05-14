@@ -36,8 +36,7 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
         bool $hasChangedFiles,
         bool $hasInvalidErrors,
         bool $hasExceptionErrors,
-        bool $hasLintErrorsAfterFixing,
-        bool $hasWorkerErrors
+        bool $hasLintErrorsAfterFixing
     ): void {
         $calculator = new FixCommandExitStatusCalculator();
 
@@ -48,40 +47,37 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
                 $hasChangedFiles,
                 $hasInvalidErrors,
                 $hasExceptionErrors,
-                $hasLintErrorsAfterFixing,
-                $hasWorkerErrors
+                $hasLintErrorsAfterFixing
             )
         );
     }
 
     public static function provideCalculateCases(): iterable
     {
-        yield [0, true, false, false, false, false, false];
+        yield [0, true, false, false, false, false];
 
-        yield [0, false, false, false, false, false, false];
+        yield [0, false, false, false, false, false];
 
-        yield [8, true, true, false, false, false, false];
+        yield [8, true, true, false, false, false];
 
-        yield [0, false, true, false, false, false, false];
+        yield [0, false, true, false, false, false];
 
-        yield [4, true, false, true, false, false, false];
+        yield [4, true, false, true, false, false];
 
-        yield [0, false, false, true, false, false, false];
+        yield [0, false, false, true, false, false];
 
-        yield [12, true, true, true, false, false, false];
+        yield [12, true, true, true, false, false];
 
-        yield [0, false, true, true, false, false, false];
+        yield [0, false, true, true, false, false];
 
-        yield [76, true, true, true, true, false, false];
+        yield [76, true, true, true, true, false];
 
-        yield [64, false, false, false, false, true, false];
+        yield [64, false, false, false, false, true];
 
-        yield [64, false, false, false, true, false, false];
+        yield [64, false, false, false, true, false];
 
-        yield [64, false, false, false, true, true, false];
+        yield [64, false, false, false, true, true];
 
-        yield [64, false, false, false, false, false, true];
-
-        yield [8 | 64, true, true, false, true, true, false];
+        yield [8 | 64, true, true, false, true, true];
     }
 }

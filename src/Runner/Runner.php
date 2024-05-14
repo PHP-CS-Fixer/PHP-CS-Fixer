@@ -24,7 +24,7 @@ use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Error\WorkerError;
+use PhpCsFixer\Error\SourceExceptionFactory;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
@@ -39,6 +39,7 @@ use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
+use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\Tokenizer\Tokens;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
@@ -262,7 +263,7 @@ final class Runner
                                 $error['type'],
                                 $error['filePath'],
                                 null !== $error['source']
-                                    ? ParallelisationException::forWorkerError($error['source'])
+                                    ? SourceExceptionFactory::fromArray($error['source'])
                                     : null,
                                 $error['appliedFixers'],
                                 $error['diff']
@@ -300,35 +301,21 @@ final class Runner
                     }
 
                     if (ParallelAction::WORKER_ERROR_REPORT === $workerResponse['action']) {
-                        $this->errorsManager->reportWorkerError(new WorkerError(
-                            $workerResponse['message'],
-                            $workerResponse['file'],
-                            (int) $workerResponse['line'],
-                            (int) $workerResponse['code'],
-                            $workerResponse['trace']
-                        ));
-
-                        return;
+                        throw WorkerException::fromRaw($workerResponse); // @phpstan-ignore-line
                     }
 
                     throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
                 },
 
                 // [REACT] Handle errors encountered during worker's execution
-                function (\Throwable $error) use ($processPool): void {
-                    $this->errorsManager->reportWorkerError(new WorkerError(
-                        $error->getMessage(),
-                        $error->getFile(),
-                        $error->getLine(),
-                        $error->getCode(),
-                        $error->getTraceAsString()
-                    ));
-
+                static function (\Throwable $error) use ($processPool): void {
                     $processPool->endAll();
+
+                    throw new ParallelisationException($error->getMessage(), $error->getCode(), $error);
                 },
 
                 // [REACT] Handle worker's shutdown
-                function ($exitCode, string $output) use ($processPool, $identifier): void {
+                static function ($exitCode, string $output) use ($processPool, $identifier): void {
                     $processPool->endProcessIfKnown($identifier);
 
                     if (0 === $exitCode || null === $exitCode) {
@@ -342,14 +329,7 @@ final class Runner
                     );
 
                     if ($errorsReported > 0) {
-                        $error = json_decode($matches[1][0], true);
-                        $this->errorsManager->reportWorkerError(new WorkerError(
-                            $error['message'],
-                            $error['file'],
-                            (int) $error['line'],
-                            (int) $error['code'],
-                            $error['trace']
-                        ));
+                        throw WorkerException::fromRaw(json_decode($matches[1][0], true));
                     }
                 }
             );

@@ -25,6 +25,7 @@ use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\PharChecker;
+use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\ToolInfo;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
@@ -184,6 +185,7 @@ final class Application extends BaseApplication
         if ($this->executedCommand instanceof WorkerCommand) {
             $output->writeln(WorkerCommand::ERROR_PREFIX.json_encode(
                 [
+                    'class' => \get_class($e),
                     'message' => $e->getMessage(),
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
@@ -196,5 +198,12 @@ final class Application extends BaseApplication
         }
 
         parent::doRenderThrowable($e, $output);
+
+        if ($output->isVeryVerbose() && $e instanceof WorkerException) {
+            $output->writeln('<comment>Original trace from worker:</comment>');
+            $output->writeln('');
+            $output->writeln($e->getOriginalTraceAsString());
+            $output->writeln('');
+        }
     }
 }

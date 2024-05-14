@@ -33,8 +33,7 @@ final class FixCommandExitStatusCalculator
         bool $hasChangedFiles,
         bool $hasInvalidErrors,
         bool $hasExceptionErrors,
-        bool $hasLintErrorsAfterFixing,
-        bool $hasWorkerErrors
+        bool $hasLintErrorsAfterFixing
     ): int {
         $exitStatus = 0;
 
@@ -48,7 +47,7 @@ final class FixCommandExitStatusCalculator
             }
         }
 
-        if ($hasExceptionErrors || $hasLintErrorsAfterFixing || $hasWorkerErrors) {
+        if ($hasExceptionErrors || $hasLintErrorsAfterFixing) {
             $exitStatus |= self::EXIT_STATUS_FLAG_EXCEPTION_IN_APP;
         }
 

@@ -27,16 +27,4 @@ final class ParallelisationException extends \RuntimeException
     {
         return new self('Unknown process identifier: '.$identifier->toString());
     }
-
-    /**
-     * @param array{message: string, code: int, file: string, line: int} $error
-     */
-    public static function forWorkerError(array $error): self
-    {
-        $exception = new self($error['message'], $error['code']);
-        $exception->file = $error['file'];
-        $exception->line = $error['line'];
-
-        return $exception;
-    }
 }

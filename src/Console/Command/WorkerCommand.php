@@ -124,6 +124,7 @@ final class WorkerCommand extends Command
                     $handleError = static function (\Throwable $error) use ($out): void {
                         $out->write([
                             'action' => ParallelAction::WORKER_ERROR_REPORT,
+                            'class' => \get_class($error),
                             'message' => $error->getMessage(),
                             'file' => $error->getFile(),
                             'line' => $error->getLine(),
@@ -182,6 +183,7 @@ final class WorkerCommand extends Command
                     });
                 },
                 static function (\Throwable $error) use ($errorOutput): void {
+                    // @TODO Verify onRejected behaviour → https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777#discussion_r1590399285
                     $errorOutput->writeln($error->getMessage());
                 }
             )

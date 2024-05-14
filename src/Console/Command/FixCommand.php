@@ -357,17 +357,12 @@ use Symfony\Component\Stopwatch\Stopwatch;
             ? $output->write($reporter->generate($reportSummary))
             : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
 
-        $workerErrors = $this->errorsManager->getWorkerErrors();
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         $exceptionErrors = $this->errorsManager->getExceptionErrors();
         $lintErrors = $this->errorsManager->getLintErrors();
 
         if (null !== $stdErr) {
             $errorOutput = new ErrorOutput($stdErr);
-
-            if (\count($workerErrors) > 0) {
-                $errorOutput->listWorkerErrors($workerErrors);
-            }
 
             if (\count($invalidErrors) > 0) {
                 $errorOutput->listErrors('linting before fixing', $invalidErrors);
@@ -389,8 +384,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             \count($changed) > 0,
             \count($invalidErrors) > 0,
             \count($exceptionErrors) > 0,
-            \count($lintErrors) > 0,
-            \count($workerErrors) > 0
+            \count($lintErrors) > 0
         );
     }
 

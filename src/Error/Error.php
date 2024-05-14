@@ -97,7 +97,7 @@ final class Error implements \JsonSerializable
      * @return array{
      *     type: self::TYPE_*,
      *     filePath: string,
-     *     source: null|array{message: string, code: int, file: string, line: int},
+     *     source: null|array{class: class-string, message: string, code: int, file: string, line: int},
      *     appliedFixers: list<string>,
      *     diff: null|string
      * }
@@ -109,6 +109,7 @@ final class Error implements \JsonSerializable
             'filePath' => $this->filePath,
             'source' => null !== $this->source
                 ? [
+                    'class' => \get_class($this->source),
                     'message' => $this->source->getMessage(),
                     'code' => $this->source->getCode(),
                     'file' => $this->source->getFile(),

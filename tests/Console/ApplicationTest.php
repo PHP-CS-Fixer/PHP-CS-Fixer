@@ -51,7 +51,7 @@ final class ApplicationTest extends TestCase
         $appTester->run(['worker']);
 
         self::assertStringContainsString(
-            WorkerCommand::ERROR_PREFIX.'{"message":"Missing parallelisation options"',
+            WorkerCommand::ERROR_PREFIX.'{"class":"PhpCsFixer\\\Runner\\\Parallel\\\ParallelisationException","message":"Missing parallelisation options"',
             $appTester->getDisplay()
         );
     }
