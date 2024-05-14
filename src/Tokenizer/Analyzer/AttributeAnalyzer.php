@@ -110,7 +110,9 @@ final class AttributeAnalyzer
         }
 
         $startIndex = $index;
-        if ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
             // Include comments/PHPDoc if they are present
             $startIndex = $tokens->getNextNonWhitespace($prevIndex);
         }
