@@ -842,12 +842,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:matchAll\\(\\) has @param\\-out PHPDoc tag for parameter \\$matches with no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
 	// identifier: return.type
 	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) should return string but returns array\\<int, string\\>\\|string\\.$#',
 	'count' => 2,
