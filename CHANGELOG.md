@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.56.2
+---------------------
+
+* chore: update PHPStan (#8010)
+* DX: Fix Mess Detector violations (#8007)
+* DX: Install PCov extension for local Docker (#8006)
+
 Changelog for v3.56.1
 ---------------------
 
