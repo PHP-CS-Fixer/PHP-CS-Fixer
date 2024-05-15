@@ -74,7 +74,7 @@ final class Preg
      *                         ? list<array<?string>>
      *                         : ($flags is int-mask<PREG_SET_ORDER, PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL>&770
      *                             ? list<array<array{?string, int}>>
-     *                             : array
+     *                             : ($flags is 0 ? array<list<string>> : array<mixed>)
      *                         )
      *                     )
      *                 )
