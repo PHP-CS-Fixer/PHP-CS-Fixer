@@ -370,6 +370,14 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
+
+        yield 'with attribute on final class' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                final class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
     }
 
     /**
