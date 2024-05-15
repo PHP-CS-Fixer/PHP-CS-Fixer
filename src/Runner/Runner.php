@@ -130,13 +130,17 @@ final class Runner
     }
 
     /**
+     * @TODO consider to drop this method and make iterator parameter obligatory in constructor,
+     * more in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777/files#r1590447581
+     *
      * @param \Traversable<array-key, \SplFileInfo> $fileIterator
      */
     public function setFileIterator(iterable $fileIterator): void
     {
-        // @TODO consider to drop this method and make iterator parameter obligatory in constructor,
-        // more in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777/files#r1590447581
         $this->fileIterator = $fileIterator;
+
+        // Required only for main process (calculating workers count)
+        $this->fileCount = \count(iterator_to_array($fileIterator));
     }
 
     /**
@@ -144,6 +148,10 @@ final class Runner
      */
     public function fix(): array
     {
+        if (0 === $this->fileCount) {
+            return [];
+        }
+
         // @TODO Remove condition for the input argument in 4.0, as it should be required in the constructor
         return $this->parallelConfig->getMaxProcesses() > 1 && null !== $this->input
             ? $this->fixParallel()
@@ -222,7 +230,10 @@ final class Runner
 
         $processesToSpawn = min(
             $this->parallelConfig->getMaxProcesses(),
-            (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess())
+            max(
+                1,
+                (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess()),
+            )
         );
         $processFactory = new ProcessFactory($this->input);
 
