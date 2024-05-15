@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.57.0
+---------------------
+
+* feat: Ability to run Fixer with parallel runner 🎉 (#7777)
+
 Changelog for v3.56.2
 ---------------------
 
