@@ -58,7 +58,7 @@ final class ModernizeStrposFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Replace `strpos()` calls with `str_starts_with()` or `str_contains()` if possible.',
+            'Replace `strpos()` and `stripos` calls with `str_starts_with()` or `str_contains()` if possible.',
             [
                 new CodeSample(
                     '<?php
@@ -66,11 +66,15 @@ if (strpos($haystack, $needle) === 0) {}
 if (strpos($haystack, $needle) !== 0) {}
 if (strpos($haystack, $needle) !== false) {}
 if (strpos($haystack, $needle) === false) {}
+if (stripos($haystack, $needle) === 0) {}
+if (stripos($haystack, $needle) !== 0) {}
+if (stripos($haystack, $needle) !== false) {}
+if (stripos($haystack, $needle) === false) {}
 '
                 ),
             ],
             null,
-            'Risky if `strpos`, `str_starts_with` or `str_contains` functions are overridden.'
+            'Risky if `strpos`, `stripos`, `str_starts_with`, `str_contains` or `strtolower` functions are overridden.'
         );
     }
 
@@ -102,7 +106,7 @@ if (strpos($haystack, $needle) === false) {}
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
             // find candidate function call
-            if (!$tokens[$index]->equals([T_STRING, 'strpos'], false) || !$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$tokens[$index]->equalsAny([[T_STRING, 'strpos'], [T_STRING, 'stripos']], false) || !$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
 
@@ -123,7 +127,8 @@ if (strpos($haystack, $needle) === false) {}
             }
 
             if (null !== $compareTokens) {
-                $this->fixCall($tokens, $index, $compareTokens);
+                $isCaseInsensitive = $tokens[$index]->equals([T_STRING, 'stripos'], false);
+                $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive);
             }
         }
     }
@@ -131,7 +136,7 @@ if (strpos($haystack, $needle) === false) {}
     /**
      * @param array{operator_index: int, operand_index: int} $operatorIndices
      */
-    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices): void
+    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices, bool $isCaseInsensitive): void
     {
         foreach (self::REPLACEMENTS as $replacement) {
             if (!$tokens[$operatorIndices['operator_index']]->equals($replacement['operator'])) {
@@ -160,8 +165,52 @@ if (strpos($haystack, $needle) === false) {}
 
             $tokens->insertAt($functionIndex, new Token($replacement['replacement']));
 
+            if ($isCaseInsensitive) {
+                $this->wrapArgumentsWithStrToLower($tokens, $functionIndex);
+            }
+
             break;
         }
+    }
+
+    private function wrapArgumentsWithStrToLower(Tokens $tokens, int $functionIndex): void
+    {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+        $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(T_NS_SEPARATOR);
+
+        $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
+
+        $firstArgumentIndexStart = array_key_first($arguments);
+        $firstArgumentIndexEnd = $arguments[array_key_first($arguments)] + 3 + ($shouldAddNamespace ? 1 : 0);
+
+        $isSecondArgumentTokenWhiteSpace = $tokens[array_key_last($arguments)]->isGivenKind(T_WHITESPACE);
+
+        if ($isSecondArgumentTokenWhiteSpace) {
+            $secondArgumentIndexStart = $tokens->getNextMeaningfulToken(array_key_last($arguments));
+        } else {
+            $secondArgumentIndexStart = array_key_last($arguments);
+        }
+
+        $secondArgumentIndexStart += 3 + ($shouldAddNamespace ? 1 : 0);
+        $secondArgumentIndexEnd = $arguments[array_key_last($arguments)] + 6 + ($shouldAddNamespace ? 1 : 0) + ($isSecondArgumentTokenWhiteSpace ? 1 : 0);
+
+        if ($shouldAddNamespace) {
+            $tokens->insertAt($firstArgumentIndexStart, new Token([T_NS_SEPARATOR, '\\']));
+            ++$firstArgumentIndexStart;
+        }
+
+        $tokens->insertAt($firstArgumentIndexStart, [new Token([T_STRING, 'strtolower']), new Token('(')]);
+        $tokens->insertAt($firstArgumentIndexEnd, new Token(')'));
+
+        if ($shouldAddNamespace) {
+            $tokens->insertAt($secondArgumentIndexStart, new Token([T_NS_SEPARATOR, '\\']));
+            ++$secondArgumentIndexStart;
+        }
+
+        $tokens->insertAt($secondArgumentIndexStart, [new Token([T_STRING, 'strtolower']), new Token('(')]);
+        $tokens->insertAt($secondArgumentIndexEnd, new Token(')'));
     }
 
     /**
