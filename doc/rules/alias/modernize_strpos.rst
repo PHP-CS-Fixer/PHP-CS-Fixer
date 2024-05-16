@@ -2,8 +2,8 @@
 Rule ``modernize_strpos``
 =========================
 
-Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if
-possible.
+Replace ``strpos()`` and ``stripos`` calls with ``str_starts_with()`` or
+``str_contains()`` if possible.
 
 Warning
 -------
@@ -11,8 +11,8 @@ Warning
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
-overridden.
+Risky if ``strpos``, ``stripos``, ``str_starts_with``, ``str_contains`` or
+``strtolower`` functions are overridden.
 
 Examples
 --------
@@ -29,10 +29,18 @@ Example #1
    -if (strpos($haystack, $needle) !== 0) {}
    -if (strpos($haystack, $needle) !== false) {}
    -if (strpos($haystack, $needle) === false) {}
+   -if (stripos($haystack, $needle) === 0) {}
+   -if (stripos($haystack, $needle) !== 0) {}
+   -if (stripos($haystack, $needle) !== false) {}
+   -if (stripos($haystack, $needle) === false) {}
    +if (str_starts_with($haystack, $needle)  ) {}
    +if (!str_starts_with($haystack, $needle)  ) {}
    +if (str_contains($haystack, $needle)  ) {}
    +if (!str_contains($haystack, $needle)  ) {}
+   +if (str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
+   +if (!str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
+   +if (str_contains(strtolower($haystack), strtolower($needle))  ) {}
+   +if (!str_contains(strtolower($haystack), strtolower($needle))  ) {}
 
 Rule sets
 ---------
