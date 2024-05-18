@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.57.1
+---------------------
+
+* chore: update PHPDoc in `Preg::matchAll` (#8012)
+* fix: Runner - handle no files while in parallel runner (#8015)
+
 Changelog for v3.57.0
 ---------------------
 

@@ -90,7 +90,7 @@ final class TextReporter implements ReporterInterface
         }
 
         return PHP_EOL.sprintf(
-            '%s %d of %d %s in %.3f seconds, %.3f MB memory used'.PHP_EOL,
+            '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.PHP_EOL,
             $isDryRun ? 'Found' : 'Fixed',
             $identifiedFiles,
             $files,
