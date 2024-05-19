@@ -230,7 +230,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             'The tags that should be aligned. Allowed values are tags with name (`\''.implode('\', \'', self::TAGS_WITH_NAME).'\'`), tags with method signature (`\''.implode('\', \'', self::TAGS_WITH_METHOD_SIGNATURE).'\'`) and any custom tag with description (e.g. `@tag <desc>`).'
         );
         $tags
-            ->setAllowedTypes(['array'])
+            ->setAllowedTypes(['string[]'])
             ->setDefault(self::DEFAULT_TAGS)
         ;
 

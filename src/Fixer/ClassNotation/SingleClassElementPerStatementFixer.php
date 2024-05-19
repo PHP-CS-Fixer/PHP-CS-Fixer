@@ -102,7 +102,7 @@ final class Example
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'List of strings which element should be modified.'))
                 ->setDefault($values)
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($values)])
                 ->getOption(),
         ]);

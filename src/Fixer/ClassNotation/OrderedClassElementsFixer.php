@@ -286,7 +286,7 @@ Custom values:
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([
                     static function (array $values) use ($builtIns): bool {
                         foreach ($values as $value) {

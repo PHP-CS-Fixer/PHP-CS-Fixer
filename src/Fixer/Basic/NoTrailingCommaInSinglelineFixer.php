@@ -53,7 +53,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Which elements to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($elements)])
                 ->setDefault($elements)
                 ->getOption(),

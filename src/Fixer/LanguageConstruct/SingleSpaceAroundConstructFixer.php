@@ -384,17 +384,17 @@ yield  from  baz();
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('constructs_contain_a_single_space', 'List of constructs which must contain a single space.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($tokenMapContainASingleSpaceKeys)])
                 ->setDefault($tokenMapContainASingleSpaceKeys)
                 ->getOption(),
             (new FixerOptionBuilder('constructs_preceded_by_a_single_space', 'List of constructs which must be preceded by a single space.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($tokenMapPrecededByASingleSpaceKeys)])
                 ->setDefault($tokenMapPrecededByASingleSpaceKeys)
                 ->getOption(),
             (new FixerOptionBuilder('constructs_followed_by_a_single_space', 'List of constructs which must be followed by a single space.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($tokenMapFollowedByASingleSpaceKeys)])
                 ->setDefault($tokenMapFollowedByASingleSpaceKeys)
                 ->getOption(),

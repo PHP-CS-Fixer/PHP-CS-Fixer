@@ -188,9 +188,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('annotations', 'List of annotations to order, e.g. `["covers"]`.'))
-                ->setAllowedTypes([
-                    'array',
-                ])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([
                     new AllowedValueSubset($allowedValues),
                 ])

@@ -108,7 +108,7 @@ final class Example
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setDefault([
                     'property-read' => 'property',
                     'property-write' => 'property',

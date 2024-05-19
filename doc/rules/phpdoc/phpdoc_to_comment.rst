@@ -21,7 +21,7 @@ Default value: ``false``
 
 List of ignored tags (matched case insensitively).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

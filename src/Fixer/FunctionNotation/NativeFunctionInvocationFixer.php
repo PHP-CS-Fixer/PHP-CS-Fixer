@@ -202,7 +202,7 @@ $c = get_class($d);
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('exclude', 'List of functions to ignore.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
                         if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
@@ -218,7 +218,7 @@ $c = get_class($d);
                 ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder('include', 'List of function names or sets to fix. Defined sets are `@internal` (all native functions), `@all` (all global functions) and `@compiler_optimized` (functions that are specially optimized by Zend).'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
                         if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {

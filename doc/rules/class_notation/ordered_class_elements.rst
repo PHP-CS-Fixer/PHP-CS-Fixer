@@ -46,7 +46,7 @@ Default value: ``false``
 
 List of strings defining order of elements.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
 

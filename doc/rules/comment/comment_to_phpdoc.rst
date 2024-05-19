@@ -21,7 +21,7 @@ Configuration
 
 List of ignored tags.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

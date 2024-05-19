@@ -13,7 +13,7 @@ Configuration
 A list of FQCNs of attributes defining the desired order used when custom
 sorting algorithm is configured.
 
-Allowed types: ``string[]``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

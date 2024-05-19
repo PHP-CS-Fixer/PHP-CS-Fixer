@@ -226,7 +226,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 'phpdoc_tags',
                 'Collection of PHPDoc annotation tags where FQCNs should be processed. As of now only simple tags with `@tag \F\Q\C\N` format are supported (no complex types).'
             ))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setDefault([
                     'param',
                     'phpstan-param',

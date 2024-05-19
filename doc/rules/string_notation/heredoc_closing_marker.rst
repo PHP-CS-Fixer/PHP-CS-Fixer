@@ -30,7 +30,7 @@ Default value: ``false``
 
 Reserved closing markers to be kept unchanged.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['CSS', 'DIFF', 'HTML', 'JS', 'JSON', 'MD', 'PHP', 'PYTHON', 'RST', 'TS', 'SQL', 'XML', 'YAML']``
 
