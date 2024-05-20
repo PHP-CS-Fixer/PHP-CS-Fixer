@@ -121,7 +121,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($assertMethods)])
                 ->setDefault($assertMethods)
                 ->getOption(),

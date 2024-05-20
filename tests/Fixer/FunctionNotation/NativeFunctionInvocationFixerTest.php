@@ -48,13 +48,10 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidConfigurationElement($element): void
+    public function testConfigureRejectsInvalidConfigurationElement($element, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            get_debug_type($element)
-        ));
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->fixer->configure([
             'exclude' => [
@@ -65,21 +62,45 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideConfigureRejectsInvalidConfigurationElementCases(): iterable
     {
-        yield 'null' => [null];
+        yield 'null' => [
+            null,
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "null".',
+        ];
 
-        yield 'false' => [false];
+        yield 'false' => [
+            false,
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
 
-        yield 'true' => [false];
+        yield 'true' => [
+            true,
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
 
-        yield 'int' => [1];
+        yield 'int' => [
+            1,
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
+        ];
 
-        yield 'array' => [[]];
+        yield 'array' => [
+            [],
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "array".',
+        ];
 
-        yield 'float' => [0.1];
+        yield 'float' => [
+            0.1,
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "float".',
+        ];
 
-        yield 'object' => [new \stdClass()];
+        yield 'object' => [
+            new \stdClass(),
+            '[native_function_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "stdClass".',
+        ];
 
-        yield 'not-trimmed' => ['  is_string  '];
+        yield 'not-trimmed' => [
+            '  is_string  ',
+            '[native_function_invocation] Invalid configuration: Each element must be a non-empty, trimmed string, got "string" instead.',
+        ];
     }
 
     /**
@@ -97,7 +118,9 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
             $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));
         }
 
-        $this->fixer->configure(['include' => $include]);
+        $this->fixer->configure([
+            'include' => $include,
+        ]);
 
         if (null === $expectedExceptionClass) {
             $this->addToAssertionCount(1);

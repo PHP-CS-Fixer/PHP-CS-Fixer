@@ -249,7 +249,7 @@ use Bar;
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
             (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
-                ->setAllowedTypes(['array', 'null'])
+                ->setAllowedTypes(['string[]', 'null'])
                 ->setAllowedValues([static function (?array $value) use ($supportedSortTypes): bool {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);

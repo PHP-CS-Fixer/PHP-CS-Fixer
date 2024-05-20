@@ -84,7 +84,7 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tags', 'List of tags to fix with their expected casing.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setDefault(['inheritDoc'])
                 ->getOption(),
         ]);

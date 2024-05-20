@@ -89,7 +89,7 @@ class Foo
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Structural elements where the spacing after the type declaration should be fixed.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(['function', 'property'])])
                 ->setDefault(['function', 'property'])
                 ->getOption(),

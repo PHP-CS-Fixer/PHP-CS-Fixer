@@ -15,7 +15,7 @@ Configuration
 Sets of annotation types to be grouped together. Use ``*`` to match any tag
 character.
 
-Allowed types: ``string[][]``
+Allowed types: ``list<string[]>``
 
 Default value: ``[['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]``
 

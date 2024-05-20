@@ -135,7 +135,7 @@ class Sample
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setNormalizer(static function (Options $options, array $value) use ($default): array {
                     $normalizedValue = [];
 

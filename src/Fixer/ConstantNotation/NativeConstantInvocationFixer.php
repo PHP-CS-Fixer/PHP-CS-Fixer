@@ -205,12 +205,12 @@ namespace {
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder('include', 'List of additional constants to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([$constantChecker])
                 ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder('exclude', 'List of constants to ignore.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([$constantChecker])
                 ->setDefault(['null', 'false', 'true'])
                 ->getOption(),

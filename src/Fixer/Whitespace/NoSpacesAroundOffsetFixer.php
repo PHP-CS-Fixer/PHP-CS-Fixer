@@ -90,7 +90,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($values)])
                 ->setDefault($values)
                 ->getOption(),

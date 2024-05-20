@@ -148,7 +148,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Type groups to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($possibleGroups)])
                 ->setDefault($possibleGroups)
                 ->getOption(),

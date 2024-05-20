@@ -23,7 +23,7 @@ Configuration
 Class level attribute or annotation tags that must be omitted to fix the class,
 even if all of the white list ones are used as well (case insensitive).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
 
@@ -35,7 +35,7 @@ Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', 
 Class level attribute or annotation tags that must be set in order to fix the
 class (case insensitive).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['@internal']``
 
@@ -54,7 +54,7 @@ Default value: ``false``
 Class level attribute or annotation tags that must be omitted to fix the class,
 even if all of the white list ones are used as well (case insensitive).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Mapping\\Entity', 'Document', 'ODM\\Document']``
 
@@ -64,7 +64,7 @@ Default value: ``['final', 'Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Map
 Class level attribute or annotation tags that must be set in order to fix the
 class (case insensitive).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['internal']``
 

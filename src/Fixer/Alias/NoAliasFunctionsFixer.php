@@ -313,7 +313,7 @@ mbereg_search_getregs();
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sets', $list))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(array_keys($sets))])
                 ->setDefault(['@internal', '@IMAP', '@pg'])
                 ->getOption(),

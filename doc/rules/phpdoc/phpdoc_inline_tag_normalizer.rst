@@ -12,7 +12,7 @@ Configuration
 
 The list of tags to normalize.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['example', 'id', 'internal', 'inheritdoc', 'inheritdocs', 'link', 'source', 'toc', 'tutorial']``
 
