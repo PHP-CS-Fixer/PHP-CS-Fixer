@@ -43,13 +43,10 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidExcludeConfigurationElement($element): void
+    public function testConfigureRejectsInvalidExcludeConfigurationElement($element, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            get_debug_type($element)
-        ));
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->fixer->configure([
             'exclude' => [
@@ -63,13 +60,12 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidIncludeConfigurationElement($element): void
+    public function testConfigureRejectsInvalidIncludeConfigurationElement($element, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            get_debug_type($element)
-        ));
+        $this->expectExceptionMessage(
+            str_replace('"exclude"', '"include"', $expectedExceptionMessage)
+        );
 
         $this->fixer->configure([
             'include' => [
@@ -80,21 +76,45 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideInvalidConfigurationElementCases(): iterable
     {
-        yield 'null' => [null];
+        yield 'null' => [
+            null,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "null".',
+        ];
 
-        yield 'false' => [false];
+        yield 'false' => [
+            false,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
 
-        yield 'true' => [true];
+        yield 'true' => [
+            true,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
 
-        yield 'int' => [1];
+        yield 'int' => [
+            1,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
+        ];
 
-        yield 'array' => [[]];
+        yield 'array' => [
+            [],
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "array".',
+        ];
 
-        yield 'float' => [0.1];
+        yield 'float' => [
+            0.1,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "float".',
+        ];
 
-        yield 'object' => [new \stdClass()];
+        yield 'object' => [
+            new \stdClass(),
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "stdClass".',
+        ];
 
-        yield 'not-trimmed' => ['  M_PI  '];
+        yield 'not-trimmed' => [
+            '  M_PI  ',
+            '[native_constant_invocation] Invalid configuration: Each element must be a non-empty, trimmed string, got "string" instead.',
+        ];
     }
 
     public function testConfigureResetsExclude(): void
