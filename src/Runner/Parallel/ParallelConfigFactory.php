@@ -48,10 +48,9 @@ final class ParallelConfigFactory
         }
 
         return new ParallelConfig(
-            ...array_filter(
-                [self::$cpuDetector->getCount(), $filesPerProcess, $processTimeout],
-                static fn ($value): bool => null !== $value
-            )
+            self::$cpuDetector->getCount(),
+            $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
+            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
         );
     }
 }
