@@ -144,7 +144,7 @@ final class DocumentationTest extends TestCase
         $fixers = self::getFixers();
         $paths = [];
 
-        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
+        foreach (RuleSets::getBuiltInSetDefinitions() as $name => $definition) {
             $path = $locator->getRuleSetsDocumentationFilePath($name);
             $paths[$path] = $definition;
 
@@ -169,7 +169,7 @@ final class DocumentationTest extends TestCase
         $generator = new DocumentationLocator();
 
         self::assertCount(
-            \count(RuleSets::getSetDefinitions()) + 1,
+            \count(RuleSets::getBuiltInSetDefinitions()) + 1,
             (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
         );
     }

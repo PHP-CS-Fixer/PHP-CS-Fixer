@@ -23,8 +23,6 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
@@ -241,7 +239,8 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @param list<class-string> $ruleSets
+     * @param null|class-string<\Throwable> $expectedException
+     * @param list<class-string>            $ruleSets
      *
      * @dataProvider provideRegisterCustomRuleSetsCases
      */
@@ -252,15 +251,10 @@ final class ConfigTest extends TestCase
         }
 
         $config = new Config();
-        $config->registerCustomRuleSets($ruleSets);
+        $config->registerCustomRuleSets($ruleSets); // @phpstan-ignore argument.type
 
         if (null === $expectedException) {
-            foreach ($ruleSets as $ruleSetClass) {
-                /** @var RuleSetDescriptionInterface $ruleSet */
-                $ruleSet = new $ruleSetClass();
-
-                self::assertContains($ruleSet->getName(), RuleSets::getSetDefinitionNames());
-            }
+            self::assertSame($ruleSets, $config->getCustomRuleSets());
         }
     }
 
@@ -317,7 +311,7 @@ final class ConfigTest extends TestCase
     {
         yield [null, [SampleRulesOk::class]];
 
-        yield [\InvalidArgumentException::class, [SampleRulesBad::class]];
+        yield [\UnexpectedValueException::class, [SampleRulesBad::class]];
     }
 
     public function testConfigConstructorWithName(): void

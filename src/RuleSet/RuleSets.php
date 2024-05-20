@@ -29,33 +29,54 @@ final class RuleSets
     /**
      * @var null|array<string, RuleSetDescriptionInterface>
      */
-    private static ?array $setDefinitions = null;
+    private static ?array $builtInSetDefinitions = null;
+
+    /**
+     * @var array<string, RuleSetDescriptionInterface>
+     */
+    private static array $customRuleSetDefinitions = [];
 
     /**
      * @return array<string, RuleSetDescriptionInterface>
      */
     public static function getSetDefinitions(): array
     {
-        if (null === self::$setDefinitions) {
-            self::$setDefinitions = [];
+        $allRuleSets = array_merge(
+            self::getBuiltInSetDefinitions(),
+            self::$customRuleSetDefinitions
+        );
+
+        uksort($allRuleSets, static fn (string $x, string $y): int => strnatcmp($x, $y));
+
+        return $allRuleSets;
+    }
+
+    /**
+     * @return array<string, RuleSetDescriptionInterface>
+     */
+    public static function getBuiltInSetDefinitions(): array
+    {
+        if (null === self::$builtInSetDefinitions) {
+            self::$builtInSetDefinitions = [];
 
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
+                /** @var class-string<RuleSetDescriptionInterface> $class */
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
 
                 /** @var RuleSetDescriptionInterface */
                 $set = new $class();
 
                 if (!RuleSetNameValidator::isValid($set->getName(), false)) {
-                    throw new \UnexpectedValueException(sprintf('Rule set name invalid: %s', $set->getName()));
+                    throw new \InvalidArgumentException(sprintf('Rule set name invalid: %s', $set->getName()));
                 }
 
-                self::$setDefinitions[$set->getName()] = $set;
+                self::$builtInSetDefinitions[$set->getName()] = $set;
             }
 
-            self::sortSetDefinitions();
+            uksort(self::$builtInSetDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
         }
 
-        return self::$setDefinitions;
+        return self::$builtInSetDefinitions;
     }
 
     /**
@@ -80,7 +101,7 @@ final class RuleSets
     /**
      * @param class-string<RuleSetDescriptionInterface> $class
      */
-    public static function registerRuleSet(string $class): void
+    public static function registerCustomRuleSet(string $class): void
     {
         if (!class_exists($class)
             || !\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)
@@ -97,7 +118,7 @@ final class RuleSets
         $ruleset = new $class();
         $name = $ruleset->getName();
 
-        if (!RuleSetNameValidator::isValid($name, false)) {
+        if (!RuleSetNameValidator::isValid($name, true)) {
             throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, colons, dots and hyphens.');
         }
 
@@ -105,19 +126,10 @@ final class RuleSets
             throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
 
-        $preDefinedDefinitions = self::getSetDefinitions();
-
-        if (\array_key_exists($name, $preDefinedDefinitions)) {
+        if (\array_key_exists($name, self::getSetDefinitions())) {
             throw new \InvalidArgumentException(sprintf('Set "%s" is already defined.', $name));
         }
 
-        self::$setDefinitions[$name] = $ruleset;
-
-        self::sortSetDefinitions();
-    }
-
-    private static function sortSetDefinitions(): void
-    {
-        uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
+        self::$customRuleSetDefinitions[$name] = $ruleset;
     }
 }
