@@ -61,4 +61,31 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(22, $config->getFilesPerProcess());
         self::assertSame(2_200, $config->getProcessTimeout());
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testDetectConfigurationWithNamedArgs(): void
+    {
+        // First argument omitted, second one provided via named argument
+        $config1 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['processTimeout' => 300]);
+
+        self::assertSame(10, $config1->getFilesPerProcess());
+        self::assertSame(300, $config1->getProcessTimeout());
+
+        // Flipped order of arguments using named arguments syntax
+        $config2 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], [
+            'processTimeout' => 300,
+            'filesPerProcess' => 5,
+        ]);
+
+        self::assertSame(5, $config2->getFilesPerProcess());
+        self::assertSame(300, $config2->getProcessTimeout());
+
+        // Only first argument provided, but via named argument
+        $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['filesPerProcess' => 7]);
+
+        self::assertSame(7, $config3->getFilesPerProcess());
+        self::assertSame(120, $config3->getProcessTimeout());
+    }
 }
