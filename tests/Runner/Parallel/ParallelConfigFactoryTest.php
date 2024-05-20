@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 
 use Fidry\CpuCoreCounter\CpuCoreCounter;
 use Fidry\CpuCoreCounter\Finder\DummyCpuCoreFinder;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 
@@ -48,8 +49,8 @@ final class ParallelConfigFactoryTest extends TestCase
         $config = ParallelConfigFactory::detect();
 
         self::assertSame(7, $config->getMaxProcesses());
-        self::assertSame(10, $config->getFilesPerProcess());
-        self::assertSame(120, $config->getProcessTimeout());
+        self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
+        self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config->getProcessTimeout());
 
         $cpuDetector->setValue($parallelConfigFactoryReflection, null);
     }
@@ -66,7 +67,7 @@ final class ParallelConfigFactoryTest extends TestCase
     {
         $config = ParallelConfigFactory::detect(null, 60);
 
-        self::assertSame(10, $config->getFilesPerProcess());
+        self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
         self::assertSame(60, $config->getProcessTimeout());
     }
 
@@ -78,7 +79,7 @@ final class ParallelConfigFactoryTest extends TestCase
         // First argument omitted, second one provided via named argument
         $config1 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['processTimeout' => 300]);
 
-        self::assertSame(10, $config1->getFilesPerProcess());
+        self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config1->getFilesPerProcess());
         self::assertSame(300, $config1->getProcessTimeout());
 
         // Flipped order of arguments using named arguments syntax
@@ -94,6 +95,6 @@ final class ParallelConfigFactoryTest extends TestCase
         $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['filesPerProcess' => 7]);
 
         self::assertSame(7, $config3->getFilesPerProcess());
-        self::assertSame(120, $config3->getProcessTimeout());
+        self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config3->getProcessTimeout());
     }
 }
