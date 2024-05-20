@@ -47,19 +47,10 @@ final class ParallelConfigFactory
             ]);
         }
 
-        $args = array_filter(
-            [
-                'maxProcesses' => self::$cpuDetector->getCount(),
-                'filesPerProcess' => $filesPerProcess,
-                'processTimeout' => $processTimeout,
-            ],
-            static fn ($value): bool => null !== $value
+        return new ParallelConfig(
+            self::$cpuDetector->getCount(),
+            $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
+            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
         );
-
-        if (\PHP_VERSION_ID < 8_00_00) {
-            $args = array_values($args);
-        }
-
-        return new ParallelConfig(...$args);
     }
 }

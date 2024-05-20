@@ -62,6 +62,14 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(2_200, $config->getProcessTimeout());
     }
 
+    public function testDetectConfigurationWithDefaultValue(): void
+    {
+        $config = ParallelConfigFactory::detect(null, 60);
+
+        self::assertSame(10, $config->getFilesPerProcess());
+        self::assertSame(60, $config->getProcessTimeout());
+    }
+
     /**
      * @requires PHP 8.0
      */
