@@ -39,11 +39,12 @@ final class RuleSetsTest extends TestCase
     {
         parent::setUp();
 
-        // Since we register custom rule sets statically, we need to clear resolved rule sets between runs.
+        // Since we register custom rule sets statically, we need to clear custom rule sets between runs.
+        // We don't need to clear the built-in rule sets, because they don't change between runs.
         $reflection = new \ReflectionClass(RuleSets::class);
-        $reflectionProperty = $reflection->getProperty('setDefinitions');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($reflection, null);
+        $customRuleSetDefinitionsProperty = $reflection->getProperty('customRuleSetDefinitions');
+        $customRuleSetDefinitionsProperty->setAccessible(true);
+        $customRuleSetDefinitionsProperty->setValue($reflection, []);
     }
 
     public function testGetSetDefinitionNames(): void
@@ -56,7 +57,7 @@ final class RuleSetsTest extends TestCase
 
     public function testGetSetDefinitions(): void
     {
-        $sets = RuleSets::getSetDefinitions();
+        $sets = RuleSets::getBuiltInSetDefinitions();
 
         foreach ($sets as $name => $set) {
             self::assertIsString($name);
@@ -207,30 +208,30 @@ Integration of %s.
         }
     }
 
-    public function testRegisterRuleSetMissingClass(): void
+    public function testRegisteringNonExistingRulesetCausesException(): void
     {
         self::expectException(\InvalidArgumentException::class);
         // @phpstan-ignore-next-line
-        RuleSets::registerRuleSet('\This\Class\Does\Not\Exists');
+        RuleSets::registerCustomRuleSet('\This\Class\Does\Not\Exists');
     }
 
-    public function testRegisterRuleSetOverlappingName(): void
+    public function testRegisteringRulesetMultipleTimesCausesAnException(): void
     {
-        RuleSets::registerRuleSet(SampleRulesOk::class);
+        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet(SampleRulesOk::class);
+        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
     }
 
-    public function testRegisterRuleSetInvalidClass(): void
+    public function testRegisterRuleSetThatDoesNotSatisfyContractCausesException(): void
     {
         self::expectException(\InvalidArgumentException::class);
 
-        RuleSets::registerRuleSet(SampleRulesBad::class); // @phpstan-ignore-line
+        RuleSets::registerCustomRuleSet(SampleRulesBad::class); // @phpstan-ignore-line
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerRuleSet(SampleRulesOk::class);
+        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
         $set = RuleSets::getSetDefinition('@Vendor/RulesOk');
         self::assertSame('@Vendor/RulesOk', $set->getName());
     }
