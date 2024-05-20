@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.57.2
+---------------------
+
+* docs: better ConfigurableFixer allowed types (#8024)
+* docs: Improve Docker usage example (#8021)
+* feat: Report used memory to 2 decimal digits only (#8017)
+* fix: Support named args in `ParallelConfigFactory::detect()` (#8026)
+* fix: `php_unit_test_class_requires_covers` Attribute detection when class is final (#8016)
+
 Changelog for v3.57.1
 ---------------------
 
