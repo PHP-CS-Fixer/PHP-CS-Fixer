@@ -19,7 +19,9 @@ namespace PhpCsFixer\Runner\Parallel;
  */
 final class ParallelConfig
 {
+    /** @internal */
     public const DEFAULT_FILES_PER_PROCESS = 10;
+    /** @internal */
     public const DEFAULT_PROCESS_TIMEOUT = 120;
 
     private int $filesPerProcess;
