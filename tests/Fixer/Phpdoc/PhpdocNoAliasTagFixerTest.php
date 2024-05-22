@@ -38,7 +38,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase2(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace to from "a" must be a string\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: The option "replacements" with value array is expected to be of type "string\[\]", but one of the elements is of type "null"\.$#');
 
         $this->fixer->configure(['replacements' => ['a' => null]]);
     }

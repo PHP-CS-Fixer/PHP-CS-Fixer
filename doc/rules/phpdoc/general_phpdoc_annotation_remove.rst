@@ -12,7 +12,7 @@ Configuration
 
 List of annotations to remove, e.g. ``["author"]``.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

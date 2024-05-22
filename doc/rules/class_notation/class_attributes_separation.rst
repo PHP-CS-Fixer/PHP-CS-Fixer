@@ -14,7 +14,7 @@ Configuration
 Dictionary of ``const|method|property|trait_import|case`` =>
 ``none|one|only_if_meta`` values.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']``
 

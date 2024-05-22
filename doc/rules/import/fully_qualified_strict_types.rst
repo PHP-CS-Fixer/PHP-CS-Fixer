@@ -33,7 +33,7 @@ Default value: ``false``
 Collection of PHPDoc annotation tags where FQCNs should be processed. As of now
 only simple tags with ``@tag \F\Q\C\N`` format are supported (no complex types).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['param', 'phpstan-param', 'phpstan-property', 'phpstan-property-read', 'phpstan-property-write', 'phpstan-return', 'phpstan-var', 'property', 'property-read', 'property-write', 'psalm-param', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-return', 'psalm-var', 'return', 'see', 'throws', 'var']``
 

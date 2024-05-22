@@ -275,21 +275,30 @@ get_called_class#1
      *
      * @dataProvider provideInvalidConfigurationKeysCases
      */
-    public function testInvalidConfigurationKeys(array $config): void
+    public function testInvalidConfigurationKeys(array $config, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->fixer->configure($config);
     }
 
     public static function provideInvalidConfigurationKeysCases(): iterable
     {
-        yield [['functions' => ['a']]];
+        yield [
+            ['functions' => ['a']],
+            '[function_to_constant] Invalid configuration: The option "functions" with value array is invalid.',
+        ];
 
-        yield [['functions' => [false => 1]]];
+        yield [
+            ['functions' => [false => 1]],
+            '[function_to_constant] Invalid configuration: The option "functions" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
+        ];
 
-        yield [['functions' => ['abc' => true]]];
+        yield [
+            ['functions' => ['abc' => true]],
+            '[function_to_constant] Invalid configuration: The option "functions" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
     }
 
     public function testInvalidConfigurationValue(): void

@@ -144,7 +144,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('functions', 'List of function names to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($functionNames)])
                 ->setDefault([
                     'get_called_class',

@@ -40,7 +40,7 @@ Default value: ``false``
 
 List of global functions to exclude from removing ``@``.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

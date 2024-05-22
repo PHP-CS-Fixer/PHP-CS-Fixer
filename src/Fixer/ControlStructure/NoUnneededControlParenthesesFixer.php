@@ -271,7 +271,7 @@ while ($y) { continue (2); }
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(self::CONFIG_OPTIONS)])
                 ->setDefault(array_values($defaults))
                 ->getOption(),

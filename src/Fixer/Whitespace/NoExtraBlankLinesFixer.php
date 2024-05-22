@@ -283,7 +283,7 @@ switch($a) {
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(self::$availableTokens)])
                 ->setDefault(['extra'])
                 ->getOption(),

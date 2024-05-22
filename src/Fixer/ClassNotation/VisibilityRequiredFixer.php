@@ -85,7 +85,7 @@ class Sample
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
                 ->setDefault(['property', 'method', 'const'])
                 ->getOption(),

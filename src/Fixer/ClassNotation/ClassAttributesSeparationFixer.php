@@ -199,7 +199,7 @@ class Sample
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import|case` => `none|one|only_if_meta` values.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $type => $spacing) {
                         $supportedTypes = ['const', 'method', 'property', 'trait_import', 'case'];
