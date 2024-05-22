@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\NoAliasLanguageConstructCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\NoAliasLanguageConstructCallFixer>
  */
 final class NoAliasLanguageConstructCallFixerTest extends AbstractFixerTestCase
 {

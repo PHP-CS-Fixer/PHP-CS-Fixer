@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixer>
  */
 final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 {

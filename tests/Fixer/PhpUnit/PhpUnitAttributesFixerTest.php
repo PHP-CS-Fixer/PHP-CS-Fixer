@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer>
  */
 final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
 {

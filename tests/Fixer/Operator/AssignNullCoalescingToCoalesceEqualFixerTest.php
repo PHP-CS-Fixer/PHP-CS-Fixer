@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer>
  */
 final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTestCase
 {

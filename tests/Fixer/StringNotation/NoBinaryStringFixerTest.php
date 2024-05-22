@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer>
  */
 final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 {

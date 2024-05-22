@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer>
  */
 final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
 {

@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer>
  */
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {

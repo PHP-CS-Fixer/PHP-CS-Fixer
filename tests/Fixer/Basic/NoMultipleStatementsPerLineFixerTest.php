@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer>
  */
 final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 {

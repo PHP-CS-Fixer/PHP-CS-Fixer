@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer>
  */
 final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 {

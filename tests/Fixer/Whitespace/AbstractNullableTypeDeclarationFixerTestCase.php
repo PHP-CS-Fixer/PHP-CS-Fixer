@@ -14,12 +14,17 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Jack Cherng <jfcherng@gmail.com>
  *
+ * @template TFixer of AbstractFixer
+ *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<TFixer>
  */
 abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixerTestCase
 {

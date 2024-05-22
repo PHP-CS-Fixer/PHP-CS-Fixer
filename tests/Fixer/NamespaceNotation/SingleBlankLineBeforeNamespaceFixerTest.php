@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer>
  */
 final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {

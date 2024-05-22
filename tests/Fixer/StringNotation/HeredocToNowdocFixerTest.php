@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer>
  */
 final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 {

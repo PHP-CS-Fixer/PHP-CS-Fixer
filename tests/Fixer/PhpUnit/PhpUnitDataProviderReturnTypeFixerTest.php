@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer>
  */
 final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
 {
