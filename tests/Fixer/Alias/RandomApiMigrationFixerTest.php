@@ -62,8 +62,8 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
         self::assertSame(
             ['replacements' => [
-                'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
-            ],
+                'rand' => 'random_int',
+            ]],
             $reflectionProperty->getValue($this->fixer)
         );
     }
