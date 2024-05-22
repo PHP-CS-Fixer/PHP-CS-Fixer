@@ -46,13 +46,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
-
-        foreach ($this->configuration['replacements'] as $functionName => $replacement) {
-            $this->configuration['replacements'][$functionName] = [
-                'alternativeName' => $replacement,
-                'argumentCount' => self::$argumentCounts[$functionName],
-            ];
-        }
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -80,7 +73,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         foreach ($this->configuration['replacements'] as $functionIdentity => $functionReplacement) {
-            if ($functionIdentity === $functionReplacement['alternativeName']) {
+            if ($functionIdentity === $functionReplacement) {
                 continue;
             }
 
@@ -98,15 +91,15 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 [$functionName, $openParenthesis, $closeParenthesis] = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
 
-                if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
+                if (!\in_array($count, self::$argumentCounts[$functionIdentity], true)) {
                     continue 2;
                 }
 
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
-                $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
+                $tokens[$functionName] = new Token([T_STRING, $functionReplacement]);
 
-                if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
+                if (0 === $count && 'random_int' === $functionReplacement) {
                     $tokens->insertAt($currIndex + 1, [
                         new Token([T_LNUMBER, '0']),
                         new Token(','),
