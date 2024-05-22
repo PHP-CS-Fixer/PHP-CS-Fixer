@@ -382,6 +382,7 @@ abstract class AbstractFixerTestCase extends TestCase
             if (\in_array($fixerName, [
                 // DO NOT add anything to this list at ease, align with core contributors whether it makes sense to insert tokens individually or by bulk for your case.
                 // The original list of the fixers being exceptions and insert tokens individually came from legacy reasons when it was the only available methods to insert tokens.
+                'PhpCsFixerInternal/configurable_fixer_template',
                 'blank_line_after_namespace',
                 'blank_line_after_opening_tag',
                 'blank_line_before_statement',

@@ -94,7 +94,7 @@ trait ConfigurableFixerTrait
         $this->configurePostNormalisation();
     }
 
-    public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+    final public function getConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         if (null === $this->configurationDefinition) {
             $this->configurationDefinition = $this->createConfigurationDefinition();
@@ -106,16 +106,21 @@ trait ConfigurableFixerTrait
     abstract public function getName(): string;
 
     /**
+     * One can override me.
+     *
      * @param TFixerInputConfig $configuration
      */
     protected function configurePreNormalisation(array &$configuration): void
     {
-        // one can override me
+        // 🤔 ideally this method won't be needed, maybe we can remove it over time
     }
 
+    /**
+     * One can override me.
+     */
     protected function configurePostNormalisation(): void
     {
-        // one can override me
+        // 🤔 ideally this method won't be needed, maybe we can remove it over time
     }
 
     abstract protected function createConfigurationDefinition(): FixerConfigurationResolverInterface;

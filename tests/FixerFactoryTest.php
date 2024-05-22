@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -100,7 +101,11 @@ final class FixerFactoryTest extends TestCase
             static function (string $className): bool {
                 $class = new \ReflectionClass($className);
 
-                return !$class->isAbstract() && !$class->isAnonymous() && $class->implementsInterface(FixerInterface::class) && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
+                return !$class->isAbstract()
+                    && !$class->isAnonymous()
+                    && $class->implementsInterface(FixerInterface::class)
+                    && !$class->implementsInterface(InternalFixerInterface::class)
+                    && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
             }
         );
 

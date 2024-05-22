@@ -130,6 +130,7 @@ namespace {
             }
         }
 
+        /** @var list<string> */
         $constantsToEscape = array_diff(
             array_unique($constantsToEscape),
             $uniqueConfiguredExclude

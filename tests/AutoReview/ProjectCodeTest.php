@@ -15,12 +15,14 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
@@ -102,6 +104,7 @@ final class ProjectCodeTest extends TestCase
             'getConfigurationDefinition', // due to AbstractFixer::getConfigurationDefinition
             'getDefaultConfiguration', // due to AbstractFixer::getDefaultConfiguration
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
+            'createConfigurationDefinition', // due to AbstractProxyFixer calling `createConfigurationDefinition` of proxied rule
         ];
 
         $definedMethods = $this->getPublicMethodNames($rc);
@@ -153,8 +156,10 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionPropsPerClass = [
             AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
+            AbstractPhpdocToTypeDeclarationFixer::class => ['configuration'],
             AbstractPhpdocTypesFixer::class => ['tags'],
             AbstractProxyFixer::class => ['proxyFixers'],
+            ConfigurableFixerTrait::class => ['configuration'],
             FixCommand::class => ['defaultDescription', 'defaultName'],
         ];
 
