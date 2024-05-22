@@ -28,7 +28,7 @@ You can also fix files in parallel, utilising more CPU cores. You can do this by
     <?php
 
     return (new PhpCsFixer\Config())
-        ->setParallelConfig(ParallelConfigFactory::detect())
+        ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ;
 
 However, in some case you may want to fine-tune parallelisation with explicit values (e.g. in environments where auto-detection does not work properly and suggests more cores than it should):
@@ -38,7 +38,7 @@ However, in some case you may want to fine-tune parallelisation with explicit va
     <?php
 
     return (new PhpCsFixer\Config())
-        ->setParallelConfig(new ParallelConfig(4, 20))
+        ->setParallelConfig(new PhpCsFixer\Runner\Parallel\ParallelConfig(4, 20))
     ;
 
 You can limit process to given file or files in a given directory and its subdirectories:
