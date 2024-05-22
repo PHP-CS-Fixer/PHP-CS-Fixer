@@ -46,13 +46,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
-
-        foreach ($this->configuration['replacements'] as $functionName => $replacement) {
-            $this->configuration['replacements'][$functionName] = [
-                'alternativeName' => $replacement,
-                'argumentCount' => self::$argumentCounts[$functionName],
-            ];
-        }
     }
 
     public function getDefinition(): FixerDefinitionInterface
