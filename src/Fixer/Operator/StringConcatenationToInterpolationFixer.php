@@ -505,14 +505,20 @@ function get_T_CONSTANT_ENCAPSED_STRING_content(Token $token): string
     return substr($token->getContent(), 1, -1);
 }
 
+function escape_quote(string $string): string
+{
+    return str_replace('"', '\"', $string);
+}
+
 /**
  * Transforms `'string'` to `string`.
  */
 function get_raw_string_token(Token $token): Token
 {
+    $raw_string = get_T_CONSTANT_ENCAPSED_STRING_content($token);
     return new Token([
         T_ENCAPSED_AND_WHITESPACE,
-        get_T_CONSTANT_ENCAPSED_STRING_content($token),
+        escape_quote($raw_string),
     ]);
 }
 

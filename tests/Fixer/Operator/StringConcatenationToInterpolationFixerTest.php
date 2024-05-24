@@ -37,6 +37,7 @@ final class StringConcatenationToInterpolationFixerTest extends AbstractFixerTes
     {
         yield ['<?php $str = \'str\';'];
         yield ['<?php $str = "str";'];
+        yield ['<?php $str = \'"quoted"\';'];
         yield ['<?php $str = "left " . date("c");'];
         yield ['<?php $str = date("c") . " right";'];
         yield ['<?php $str = "left " . date("c") . " right";'];
@@ -108,6 +109,12 @@ final class StringConcatenationToInterpolationFixerTest extends AbstractFixerTes
         yield [
             '<?php $str = "left {$var} right";',
             '<?php $str = "left " . $var . " right";',
+        ];
+        yield [
+            '<?php $str = "left \"{$var}\" right";',
+            <<<'PHP'
+                <?php $str = 'left "' . $var . '" right';
+                PHP,
         ];
         yield [
             '<?php $str = $var;',
