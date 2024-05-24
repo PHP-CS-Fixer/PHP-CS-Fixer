@@ -385,7 +385,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
      *
      * @requires PHP 8.2
      */
-    public function testFix82(string $expected, ?string $input): void
+    public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -411,6 +411,22 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                     abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}
             ',
             null,
+        ];
+
+        yield 'with attribute on readonly class' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                readonly class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'with attribute on final readonly class' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                final readonly class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
         ];
     }
 }
