@@ -507,7 +507,7 @@ function get_T_CONSTANT_ENCAPSED_STRING_content(Token $token): string
 
 function escape_quote(string $string): string
 {
-    return str_replace('"', '\"', $string);
+    return addslashes(stripslashes($string));
 }
 
 /**
