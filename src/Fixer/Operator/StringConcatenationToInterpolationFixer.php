@@ -26,11 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class StringConcatenationToInterpolationFixer extends AbstractFixer
 {
-    public function getName(): string
-    {
-        return 'Infoclimat/string_concatenation_to_interpolation';
-    }
-
     public function getDefinition(): FixerDefinition
     {
         // Return a definition of the fixer, it will be used in the documentation.
