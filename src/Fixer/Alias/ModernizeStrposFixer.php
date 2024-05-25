@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -26,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Alexander M. Turek <me@derrabus.de>
  */
-final class ModernizeStrposFixer extends AbstractFixer
+final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const REPLACEMENTS = [
         [
@@ -55,6 +59,17 @@ final class ModernizeStrposFixer extends AbstractFixer
         ],
     ];
 
+    private bool $modernizeStripos = false;
+
+    public function configure(array $configuration): void
+    {
+        parent::configure($configuration);
+
+        if (isset($this->configuration['modernize_stripos']) && true === $this->configuration['modernize_stripos']) {
+            $this->modernizeStripos = true;
+        }
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -66,11 +81,20 @@ if (strpos($haystack, $needle) === 0) {}
 if (strpos($haystack, $needle) !== 0) {}
 if (strpos($haystack, $needle) !== false) {}
 if (strpos($haystack, $needle) === false) {}
+',
+                ),
+                new CodeSample(
+                    '<?php
+if (strpos($haystack, $needle) === 0) {}
+if (strpos($haystack, $needle) !== 0) {}
+if (strpos($haystack, $needle) !== false) {}
+if (strpos($haystack, $needle) === false) {}
 if (stripos($haystack, $needle) === 0) {}
 if (stripos($haystack, $needle) !== 0) {}
 if (stripos($haystack, $needle) !== false) {}
 if (stripos($haystack, $needle) === false) {}
-'
+',
+                    ['modernize_stripos' => true]
                 ),
             ],
             null,
@@ -99,6 +123,16 @@ if (stripos($haystack, $needle) === false) {}
         return true;
     }
 
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('modernize_stripos', 'Whether to modernize `stripos` calls as well.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
@@ -106,7 +140,12 @@ if (stripos($haystack, $needle) === false) {}
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
             // find candidate function call
-            if (!$tokens[$index]->equalsAny([[T_STRING, 'strpos'], [T_STRING, 'stripos']], false) || !$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            $modernizeCandidates = [[T_STRING, 'strpos']];
+            if ($this->modernizeStripos) {
+                $modernizeCandidates[] = [T_STRING, 'stripos'];
+            }
+
+            if (!$tokens[$index]->equalsAny($modernizeCandidates, false) || !$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
 

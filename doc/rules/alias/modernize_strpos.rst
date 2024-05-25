@@ -14,11 +14,44 @@ Using this rule is risky
 Risky if ``strpos``, ``stripos``, ``str_starts_with``, ``str_contains`` or
 ``strtolower`` functions are overridden.
 
+Configuration
+-------------
+
+``modernize_stripos``
+~~~~~~~~~~~~~~~~~~~~~
+
+Whether to modernize ``stripos`` calls as well.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -if (strpos($haystack, $needle) === 0) {}
+   -if (strpos($haystack, $needle) !== 0) {}
+   -if (strpos($haystack, $needle) !== false) {}
+   -if (strpos($haystack, $needle) === false) {}
+   +if (str_starts_with($haystack, $needle)  ) {}
+   +if (!str_starts_with($haystack, $needle)  ) {}
+   +if (str_contains($haystack, $needle)  ) {}
+   +if (!str_contains($haystack, $needle)  ) {}
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['modernize_stripos' => true]``.
 
 .. code-block:: diff
 

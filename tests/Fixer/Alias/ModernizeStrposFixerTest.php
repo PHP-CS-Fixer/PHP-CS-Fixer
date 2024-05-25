@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -25,11 +26,35 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 {
+    public function testConfigure(): void
+    {
+        $this->fixer->configure(['modernize_stripos' => true]);
+
+        $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        self::assertSame(
+            ['modernize_stripos' => true],
+            $reflectionProperty->getValue($this->fixer)
+        );
+    }
+
+    public function testInvalidConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[modernize_strpos] Invalid configuration: The option "invalid" does not exist. Defined options are: "modernize_stripos".');
+
+        $this->fixer->configure(['invalid' => true]);
+    }
+
     /**
+     * @param array<string, mixed> $configuration
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
@@ -43,6 +68,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive yoda ===' => [
             '<?php if (  str_starts_with(strtolower($haystack1), strtolower($needle))) {}',
             '<?php if (0 === stripos($haystack1, $needle)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield 'not zero yoda !==' => [
@@ -53,6 +79,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive not zero yoda !==' => [
             '<?php if (  !str_starts_with(strtolower($haystack2), strtolower($needle))) {}',
             '<?php if (0 !== stripos($haystack2, $needle)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield 'false yoda ===' => [
@@ -63,6 +90,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive false yoda ===' => [
             '<?php if (  !str_contains(strtolower($haystack), strtolower($needle))) {}',
             '<?php if (false === stripos($haystack, $needle)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -73,6 +101,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php if (str_starts_with(strtolower($haystack3), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack3, $needle) === 0) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield 'casing call' => [
@@ -83,6 +112,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive casing call' => [
             '<?php if (str_starts_with(strtolower($haystack4), strtolower($needle))  ) {}',
             '<?php if (STRIPOS($haystack4, $needle) === 0) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield 'leading namespace' => [
@@ -93,6 +123,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive leading namespace' => [
             '<?php if (\str_starts_with(\strtolower($haystack5), \strtolower($needle))  ) {}',
             '<?php if (\stripos($haystack5, $needle) === 0) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield 'leading namespace with yoda' => [
@@ -103,6 +134,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive leading namespace with yoda' => [
             '<?php if (  \str_starts_with(\strtolower($haystack5), \strtolower($needle))) {}',
             '<?php if (0 === \stripos($haystack5, $needle)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -113,6 +145,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php if (!str_starts_with(strtolower($haystack6), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack6, $needle) !== 0) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -123,6 +156,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php if (!str_starts_with(strtolower($haystack6), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack6, $needle) !== 0) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -130,10 +164,10 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (0 !== \strpos($haystack6, $needle)) {}',
         ];
 
-        // TODO: Should add global namespace to strtolower?
         yield [
             '<?php if (  !\str_starts_with(\strtolower($haystack6), \strtolower($needle))) {}',
             '<?php if (0 !== \stripos($haystack6, $needle)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield 'casing operand' => [
@@ -144,6 +178,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive casing operand' => [
             '<?php if (str_contains(strtolower($haystack7), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack7, $needle) !== FALSE) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -154,6 +189,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php if (!str_contains(strtolower($haystack8), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack8, $needle) === false) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -164,6 +200,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php if (  !str_starts_with(strtolower($haystack9), strtolower($needle))) {}',
             '<?php if (0 !== stripos($haystack9, $needle)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -174,6 +211,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $a = !str_starts_with(strtolower($haystack9a), strtolower($needle))  ;',
             '<?php $a = stripos($haystack9a, $needle) !== 0;',
+            ['modernize_stripos' => true],
         ];
 
         yield 'comments inside, no spacing' => [
@@ -184,6 +222,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield 'case insensitive comments inside, no spacing' => [
             '<?php if (/* foo *//* bar */str_contains(strtolower($haystack10),strtolower($a))) {}',
             '<?php if (/* foo */false/* bar */!==stripos($haystack10,$a)) {}',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -194,6 +233,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $a =   !str_contains(strtolower($haystack11), strtolower($needle))?>',
             '<?php $a = false === stripos($haystack11, $needle)?>',
+            ['modernize_stripos' => true],
         ];
 
         yield [
@@ -204,21 +244,25 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $a = $input &&   str_contains(strtolower($input), strtolower($method))   ? $input : null;',
             '<?php $a = $input &&   stripos($input, $method) !== FALSE ? $input : null;',
+            ['modernize_stripos' => true],
         ];
 
         yield [
             '<?php   !str_starts_with(strtolower($file), strtolower($needle.\DIRECTORY_SEPARATOR));',
             '<?php 0 !== stripos($file, $needle.\DIRECTORY_SEPARATOR);',
+            ['modernize_stripos' => true],
         ];
 
         yield [
             '<?php   !str_starts_with(strtolower($file.\DIRECTORY_SEPARATOR), strtolower($needle.\DIRECTORY_SEPARATOR));',
             '<?php 0 !== stripos($file.\DIRECTORY_SEPARATOR, $needle.\DIRECTORY_SEPARATOR);',
+            ['modernize_stripos' => true],
         ];
 
         yield [
             '<?php   !str_starts_with(strtolower($file.\DIRECTORY_SEPARATOR), strtolower($needle));',
             '<?php 0 !== stripos($file.\DIRECTORY_SEPARATOR, $needle);',
+            ['modernize_stripos' => true],
         ];
 
         // do not fix
@@ -239,6 +283,16 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
                 // if (false === strpos($haystack12, $needle)) {}
                 /** if (false === strpos($haystack13, $needle)) {} */
             ',
+        ];
+
+        yield 'disabled stripos (default)' => [
+            '<?php if (stripos($haystack3, $needle) === 0) {}',
+        ];
+
+        yield 'disabled stripos' => [
+            '<?php if (stripos($haystack3, $needle) === 0) {}',
+            null,
+            ['modernize_stripos' => false],
         ];
 
         yield 'different namespace' => [
