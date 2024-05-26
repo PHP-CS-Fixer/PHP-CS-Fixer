@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -116,6 +117,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
         if ($tokens[$docBlockIndex]->isGivenKind(T_DOC_COMMENT)) {
@@ -150,7 +153,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 /** @phpstan-ignore-next-line */
                 $tokensToInsert = self::{$this->fixingMap[$annotationName]}($tokens, $index, $annotation);
 
-                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert);
+                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($fullyQualifiedNameAnalyzer, $tokens, $index, $tokensToInsert);
 
                 if ($presentAttributes[$annotationName]) {
                     continue;
@@ -238,8 +241,12 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     /**
      * @param list<Token> $tokensToInsert
      */
-    private static function isAttributeAlreadyPresent(Tokens $tokens, int $index, array $tokensToInsert): bool
-    {
+    private static function isAttributeAlreadyPresent(
+        FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer,
+        Tokens $tokens,
+        int $index,
+        array $tokensToInsert
+    ): bool {
         $attributeIndex = $tokens->getNextMeaningfulToken($index);
         if (!$tokens[$attributeIndex]->isGivenKind(T_ATTRIBUTE)) {
             return false;
