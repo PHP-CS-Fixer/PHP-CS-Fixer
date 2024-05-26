@@ -388,7 +388,7 @@ use function Foo\b;
 use const Foo\X;
 use const Foo\Y;
 ',
-            ['group_types' => [GroupImportFixer::GROUP_CLASS_LIKES]],
+            ['group_types' => [GroupImportFixer::GROUP_CLASSY]],
         ];
 
         yield 'only functions' => [
@@ -467,7 +467,7 @@ use Foo\E;
 use const Foo\X;
 use const Foo\Y;
 ',
-            ['group_types' => [GroupImportFixer::GROUP_CLASS_LIKES, GroupImportFixer::GROUP_FUNCTIONS]],
+            ['group_types' => [GroupImportFixer::GROUP_CLASSY, GroupImportFixer::GROUP_FUNCTIONS]],
         ];
 
         yield 'class-likes and constants' => [
@@ -492,7 +492,7 @@ use Foo\E;
 use const Foo\X;
 use const Foo\Y;
 ',
-            ['group_types' => [GroupImportFixer::GROUP_CLASS_LIKES, GroupImportFixer::GROUP_CONSTANTS]],
+            ['group_types' => [GroupImportFixer::GROUP_CLASSY, GroupImportFixer::GROUP_CONSTANTS]],
         ];
 
         yield 'functions and constants' => [

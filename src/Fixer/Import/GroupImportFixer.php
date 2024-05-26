@@ -36,9 +36,14 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    public const GROUP_CLASS_LIKES = 'class-likes';
-    public const GROUP_FUNCTIONS = 'functions';
+    /** @internal */
+    public const GROUP_CLASSY = 'classy';
+
+    /** @internal */
     public const GROUP_CONSTANTS = 'constants';
+
+    /** @internal */
+    public const GROUP_FUNCTIONS = 'functions';
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -58,7 +63,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
                         use function B\bar;
 
                         PHP,
-                    ['group_types' => [self::GROUP_CLASS_LIKES]]
+                    ['group_types' => [self::GROUP_CLASSY]]
                 ),
             ]
         );
@@ -71,7 +76,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $allowedTypes = [self::GROUP_CLASS_LIKES, self::GROUP_FUNCTIONS, self::GROUP_CONSTANTS];
+        $allowedTypes = [self::GROUP_CLASSY, self::GROUP_FUNCTIONS, self::GROUP_CONSTANTS];
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('group_types', 'Defines the order of import types.'))
@@ -105,7 +110,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
         }
 
         $typeMap = [
-            NamespaceUseAnalysis::TYPE_CLASS => self::GROUP_CLASS_LIKES,
+            NamespaceUseAnalysis::TYPE_CLASS => self::GROUP_CLASSY,
             NamespaceUseAnalysis::TYPE_FUNCTION => self::GROUP_FUNCTIONS,
             NamespaceUseAnalysis::TYPE_CONSTANT => self::GROUP_CONSTANTS,
         ];

@@ -14,7 +14,7 @@ Defines the order of import types.
 
 Allowed types: ``list<string>``
 
-Default value: ``['class-likes', 'functions', 'constants']``
+Default value: ``['classy', 'functions', 'constants']``
 
 Examples
 --------
@@ -36,7 +36,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['group_types' => ['class-likes']]``.
+With configuration: ``['group_types' => ['classy']]``.
 
 .. code-block:: diff
 
