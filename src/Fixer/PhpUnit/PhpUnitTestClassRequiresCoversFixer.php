@@ -68,10 +68,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return; // don't add `@covers` annotation for abstract base classes
         }
 
-        if (isset($modifiers['final'])) {
-            $classIndex = $tokens->getPrevMeaningfulToken($classIndex);
-        }
-
         $this->ensureIsDocBlockWithAnnotation(
             $tokens,
             $classIndex,
