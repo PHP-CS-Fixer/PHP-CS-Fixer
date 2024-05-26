@@ -686,12 +686,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$string of function substr expects string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 1 might not exist on array\\<string\\>\\.$#',
 	'count' => 1,
@@ -2442,6 +2436,12 @@ $ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on array\\<list\\<string\\>\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/DataProviderAnalyzer.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
+	'message' => '#^Offset int might not exist on array\\<int, list\\<PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\NamespaceUseAnalysis\\>\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/FullyQualifiedNameAnalyzer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
