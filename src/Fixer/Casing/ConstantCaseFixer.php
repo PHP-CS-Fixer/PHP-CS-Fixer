@@ -22,7 +22,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -81,77 +80,39 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $fixFunction = $this->fixFunction;
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->isNativeConstant()) {
-                continue;
-            }
-
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-
-            if (
-                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index))
-                && $this->isNeighbourAccepted($tokens, $nextIndex)
-                && !$tokens[$nextIndex]->equals('=')
-                && !$this->isEnumCaseName($tokens, $index)
-            ) {
-                $tokens[$index] = new Token([$token->getId(), $fixFunction($token->getContent())]);
-            }
-        }
-    }
-
-    private function isNeighbourAccepted(Tokens $tokens, int $index): bool
-    {
-        static $forbiddenTokens = null;
-
-        if (null === $forbiddenTokens) {
-            $forbiddenTokens = [
-                T_AS,
-                T_CLASS,
+        static $forbiddenPrevKinds = null;
+        if (null === $forbiddenPrevKinds) {
+            $forbiddenPrevKinds = [
                 T_EXTENDS,
                 T_IMPLEMENTS,
                 T_INSTANCEOF,
-                T_INSTEADOF,
-                T_INTERFACE,
+                T_NAMESPACE,
                 T_NEW,
                 T_NS_SEPARATOR,
-                T_PAAMAYIM_NEKUDOTAYIM,
-                T_TRAIT,
-                T_USE,
-                CT::T_USE_TRAIT,
-                CT::T_USE_LAMBDA,
                 ...Token::getObjectOperatorKinds(),
             ];
         }
 
-        $token = $tokens[$index];
+        foreach ($tokens as $index => $token) {
+            if (!$token->equalsAny([[T_STRING, 'true'], [T_STRING, 'false'], [T_STRING, 'null']], false)) {
+                continue;
+            }
 
-        if ($token->equalsAny(['{', '}'])) {
-            return false;
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevIndex]->isGivenKind($forbiddenPrevKinds)) {
+                continue;
+            }
+
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if ($tokens[$nextIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM) || $tokens[$nextIndex]->equalsAny(['='], false)) {
+                continue;
+            }
+
+            if ($tokens[$prevIndex]->isGivenKind(T_CASE) && $tokens[$nextIndex]->equals(';')) {
+                continue;
+            }
+
+            $tokens[$index] = new Token([$token->getId(), ($this->fixFunction)($token->getContent())]);
         }
-
-        return !$token->isGivenKind($forbiddenTokens);
-    }
-
-    private function isEnumCaseName(Tokens $tokens, int $index): bool
-    {
-        if (!\defined('T_ENUM') || !$tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
-            return false;
-        }
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if (null === $prevIndex || !$tokens[$prevIndex]->isGivenKind(T_CASE)) {
-            return false;
-        }
-
-        if (!$tokens->isTokenKindFound(T_SWITCH)) {
-            return true;
-        }
-
-        $prevIndex = $tokens->getPrevTokenOfKind($prevIndex, [[T_ENUM], [T_SWITCH]]);
-
-        return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ENUM);
     }
 }
