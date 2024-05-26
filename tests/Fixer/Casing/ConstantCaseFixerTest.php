@@ -85,6 +85,8 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = False::foo();'];
 
+        yield ['<?php namespace Null;'];
+
         yield ['<?php namespace Foo\Null;'];
 
         yield ['<?php class Foo extends True {}'];
