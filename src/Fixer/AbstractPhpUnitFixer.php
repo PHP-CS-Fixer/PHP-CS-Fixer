@@ -19,7 +19,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -168,37 +168,13 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
         foreach (AttributeAnalyzer::collect($tokens, $index) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                if (\in_array(self::getFullyQualifiedName($tokens, $attribute['name']), $preventingAttributes, true)) {
+                if (\in_array(strtolower(FullyQualifiedNameAnalyzer::getFullyQualifiedName($tokens, $attribute['name'], $attribute['start'])), $preventingAttributes, true)) {
                     return true;
                 }
             }
         }
 
         return false;
-    }
-
-    private static function getFullyQualifiedName(Tokens $tokens, string $name): string
-    {
-        $name = strtolower($name);
-
-        $names = [];
-        foreach ((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {
-            $names[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
-        }
-
-        foreach ($names as $shortName => $fullName) {
-            if ($name === $shortName) {
-                return $fullName;
-            }
-
-            if (!str_starts_with($name, $shortName.'\\')) {
-                continue;
-            }
-
-            return $fullName.substr($name, \strlen($shortName));
-        }
-
-        return $name;
     }
 
     /**

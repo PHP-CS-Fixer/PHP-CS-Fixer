@@ -225,12 +225,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$string of function substr expects string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$string of function strlen expects string, string\\|false given\\.$#',
 	'count' => 3,
 	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',

@@ -17,13 +17,13 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -220,24 +220,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
             $insertedClassName .= $token->getContent();
         }
 
-        // @TODO: refactor OrderedAttributesFixer::determineAttributeFullyQualifiedName to shared analyzer
-        static $determineAttributeFullyQualifiedName = null;
-        static $orderedAttributesFixer = null;
-        if (null === $determineAttributeFullyQualifiedName) {
-            $orderedAttributesFixer = new OrderedAttributesFixer();
-            $reflection = new \ReflectionObject($orderedAttributesFixer);
-            $determineAttributeFullyQualifiedName = $reflection->getMethod('determineAttributeFullyQualifiedName');
-            $determineAttributeFullyQualifiedName->setAccessible(true);
-        }
-
         foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                $className = ltrim($determineAttributeFullyQualifiedName->invokeArgs(
-                    $orderedAttributesFixer,
-                    [$tokens,
-                        $attribute['name'],
-                        $attribute['start']],
-                ), '\\');
+                $className = FullyQualifiedNameAnalyzer::getFullyQualifiedName($tokens, $attribute['name'], $attribute['start']);
 
                 if ($insertedClassName === $className) {
                     return true;
