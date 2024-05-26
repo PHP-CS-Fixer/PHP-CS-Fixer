@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace Tokenizer\Analyzer;
+namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
