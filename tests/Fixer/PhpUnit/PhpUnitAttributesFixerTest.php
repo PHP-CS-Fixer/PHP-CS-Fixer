@@ -94,7 +94,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                  */
                 #[\FirstAttributeToMakeSureMultipleAttributesWorks]
                 #[\PHPUnit\Framework\Attributes\RequiresPhp('^7.1')]
-                #[\ThitdAttributeToMakeSureMultipleAttributesWorks]
+                #[\ThirdAttributeToMakeSureMultipleAttributesWorks]
                 public function testFoo() {}
             }
             PHP];
