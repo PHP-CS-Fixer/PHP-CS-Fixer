@@ -77,7 +77,11 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
             $classIndex,
             $this->configuration['group'],
             self::SIZES,
-            [],
+            [
+                'phpunit\framework\attributes\small',
+                'phpunit\framework\attributes\medium',
+                'phpunit\framework\attributes\large',
+            ],
         );
     }
 

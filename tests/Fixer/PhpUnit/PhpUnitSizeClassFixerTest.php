@@ -328,13 +328,13 @@ class Test3 extends TestCase
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, 1?: ?string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -432,6 +432,33 @@ class Test3 extends TestCase
             {
             }
             ',
+        ];
+
+        yield 'already with attribute Small' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\Small]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with attribute Medium' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\Medium;
+                #[Medium]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with attribute Large' => [
+            <<<'PHP'
+                <?php
+                namespace Tests;
+                use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+                #[PHPUnitAttributes\Large]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
         ];
     }
 }
