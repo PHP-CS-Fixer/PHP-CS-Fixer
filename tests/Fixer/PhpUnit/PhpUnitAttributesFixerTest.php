@@ -86,6 +86,78 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             }
             PHP];
 
+        yield 'do not fix when there is already attribute of related class' => [<<<'PHP'
+            <?php
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^8.2
+                 */
+                #[\FirstAttributeToMakeSureMultipleAttributesWorks]
+                #[\PHPUnit\Framework\Attributes\RequiresPhp('^7.1')]
+                #[\ThirdAttributeToMakeSureMultipleAttributesWorks]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used without leading slash' => [<<<'PHP'
+            <?php
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.1
+                 */
+                #[PHPUnit\Framework\Attributes\RequiresPhp('^6.1')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with import' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes\RequiresPhp;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.2
+                 */
+                #[RequiresPhp('^6.2')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with partial import' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.2
+                 */
+                #[Attributes\RequiresPhp('^6.2')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with alias' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes\RequiresPhp as PHPUnitRequiresPhp;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.0
+                 */
+                #[PHPUnitRequiresPhp('^6.0')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with partial alias' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.0
+                 */
+                #[PHPUnitAttributes\RequiresPhp('^6.0')]
+                public function testFoo() {}
+            }
+            PHP];
+
         yield 'fix multiple annotations' => [
             <<<'PHP'
                 <?php
