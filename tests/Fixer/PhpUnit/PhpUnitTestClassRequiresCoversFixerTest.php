@@ -317,10 +317,10 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
         yield 'already with imported attribute' => [
             <<<'PHP'
                 <?php
-                use PHPUnit\Framework\TestCas;
+                use PHPUnit\Framework\TestCase;
                 use PHPUnit\Framework\Attributes\CoversClass;
                 #[CoversClass(Foo::class)]
-                class FooTest extends TestCas {}
+                class FooTest extends TestCase {}
                 PHP,
         ];
 
