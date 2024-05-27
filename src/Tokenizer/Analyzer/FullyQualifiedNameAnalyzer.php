@@ -31,7 +31,7 @@ final class FullyQualifiedNameAnalyzer
     private array $namespaceAnalyses = [];
 
     /**
-     * @var array<string, list<NamespaceUseAnalysis>>
+     * @var array<int, list<NamespaceUseAnalysis>>
      */
     private array $namespaceUseAnalyses = [];
 
@@ -58,11 +58,11 @@ final class FullyQualifiedNameAnalyzer
         }
 
         $namespaceAnalysis = $this->getNamespaceAnalysis($indexInNamespace);
-        $namespaceName = $namespaceAnalysis->getFullName();
-        if (!isset($this->namespaceUseAnalyses[$namespaceName])) {
-            $this->namespaceUseAnalyses[$namespaceName] = (new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($this->tokens, $namespaceAnalysis);
+
+        if (!isset($this->namespaceUseAnalyses[$namespaceAnalysis->getStartIndex()])) {
+            $this->namespaceUseAnalyses[$namespaceAnalysis->getStartIndex()] = (new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($this->tokens, $namespaceAnalysis);
         }
-        $namespaceUseAnalyses = $this->namespaceUseAnalyses[$namespaceName];
+        $namespaceUseAnalyses = $this->namespaceUseAnalyses[$namespaceAnalysis->getStartIndex()];
 
         $declarations = [];
         foreach ($namespaceUseAnalyses as $namespaceUseAnalysis) {
@@ -85,7 +85,7 @@ final class FullyQualifiedNameAnalyzer
             return $fullName.substr($name, \strlen($lowercaseShortName));
         }
 
-        return $namespaceName.'\\'.$name;
+        return $namespaceAnalysis->getFullName().'\\'.$name;
     }
 
     private function getNamespaceAnalysis(int $index): NamespaceAnalysis

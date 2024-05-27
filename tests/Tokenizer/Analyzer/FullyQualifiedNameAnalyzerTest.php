@@ -207,7 +207,6 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             51 => ['Foo', 'Namespace3\Foo'],
             55 => ['Bar', 'Namespace3\Bar'],
         ];
-
         foreach ($indexToNameMap as $index => [$shortName, $fullName]) {
             yield sprintf('multiple namespaces with class %s', $fullName) => [
                 $fullName,
@@ -229,15 +228,14 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
         $analyzer = new FullyQualifiedNameAnalyzer(Tokens::fromCode(
             <<<'PHP'
                 <?php
-                namespace N;
-                function f1(Foo $x) {}
-                function f2(Bar $x) {}
-                function f3(Baz $x) {}
+                namespace Namespace1 { use Vendor1\Foo; function f(Foo $x) {} }
+                namespace Namespace2 { use Vendor1\Bar; function f(Bar $x) {} }
+                namespace Namespace1 { use Vendor2\Foo; function f(Foo $x) {} }
                 PHP
         ));
 
-        self::assertSame('N\Foo', $analyzer->getFullyQualifiedName('Foo', 10, NamespaceUseAnalysis::TYPE_CLASS));
-        self::assertSame('N\Bar', $analyzer->getFullyQualifiedName('Bar', 22, NamespaceUseAnalysis::TYPE_CLASS));
-        self::assertSame('N\Baz', $analyzer->getFullyQualifiedName('Baz', 34, NamespaceUseAnalysis::TYPE_CLASS));
+        self::assertSame('Vendor1\Foo', $analyzer->getFullyQualifiedName('Foo', 18, NamespaceUseAnalysis::TYPE_CLASS));
+        self::assertSame('Vendor1\Bar', $analyzer->getFullyQualifiedName('Bar', 45, NamespaceUseAnalysis::TYPE_CLASS));
+        self::assertSame('Vendor2\Foo', $analyzer->getFullyQualifiedName('Foo', 72, NamespaceUseAnalysis::TYPE_CLASS));
     }
 }
