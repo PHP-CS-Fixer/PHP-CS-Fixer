@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
@@ -141,6 +142,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
+        $tokens->getNamespaceDeclarations();
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
     }
 
@@ -166,9 +168,11 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         }
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         foreach (AttributeAnalyzer::collect($tokens, $index) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                if (\in_array(strtolower(FullyQualifiedNameAnalyzer::getFullyQualifiedName($tokens, $attribute['name'], $attribute['start'])), $preventingAttributes, true)) {
+                if (\in_array(strtolower($fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS)), $preventingAttributes, true)) {
                     return true;
                 }
             }

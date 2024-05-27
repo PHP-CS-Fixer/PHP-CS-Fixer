@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -146,13 +147,15 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
             /** @var list<array{name: string, start: int, end: int}> $elements */
-            $elements = array_map(function (AttributeAnalysis $attributeAnalysis) use ($tokens): array {
+            $elements = array_map(function (AttributeAnalysis $attributeAnalysis) use ($fullyQualifiedNameAnalyzer, $tokens): array {
                 return [
-                    'name' => $this->sortAttributes($tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
+                    'name' => $this->sortAttributes($fullyQualifiedNameAnalyzer, $tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
                     'start' => $attributeAnalysis->getStartIndex(),
                     'end' => $attributeAnalysis->getEndIndex(),
                 ];
@@ -181,14 +184,14 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
     /**
      * @param _AttributeItems $attributes
      */
-    private function sortAttributes(Tokens $tokens, int $index, array $attributes): string
+    private function sortAttributes(FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer, Tokens $tokens, int $index, array $attributes): string
     {
         if (1 === \count($attributes)) {
-            return $this->getAttributeName($tokens, $attributes[0]['name'], $attributes[0]['start']);
+            return $this->getAttributeName($fullyQualifiedNameAnalyzer, $attributes[0]['name'], $attributes[0]['start']);
         }
 
         foreach ($attributes as &$attribute) {
-            $attribute['name'] = $this->getAttributeName($tokens, $attribute['name'], $attribute['start']);
+            $attribute['name'] = $this->getAttributeName($fullyQualifiedNameAnalyzer, $attribute['name'], $attribute['start']);
         }
 
         $sortedElements = $this->sortElements($attributes);
@@ -202,10 +205,10 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
         return $sortedElements[0]['name'];
     }
 
-    private function getAttributeName(Tokens $tokens, string $name, int $index): string
+    private function getAttributeName(FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer, string $name, int $index): string
     {
         if (self::ORDER_CUSTOM === $this->configuration['sort_algorithm']) {
-            return FullyQualifiedNameAnalyzer::getFullyQualifiedName($tokens, $name, $index);
+            return $fullyQualifiedNameAnalyzer->getFullyQualifiedName($name, $index, NamespaceUseAnalysis::TYPE_CLASS);
         }
 
         return ltrim($name, '\\');

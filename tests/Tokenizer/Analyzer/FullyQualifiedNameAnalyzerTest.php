@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -27,12 +28,15 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider provideGetFullyQualifiedNameCases
+     *
+     * @param NamespaceUseAnalysis::TYPE_* $importType
      */
-    public function testGetFullyQualifiedName(string $fullyQualifiedName, string $code, string $name, int $index): void
+    public function testGetFullyQualifiedName(string $fullyQualifiedName, string $code, string $name, int $indexInNamespace, int $importType): void
     {
+        $analyzer = new FullyQualifiedNameAnalyzer(Tokens::fromCode($code));
         self::assertSame(
             $fullyQualifiedName,
-            FullyQualifiedNameAnalyzer::getFullyQualifiedName(Tokens::fromCode($code), $name, $index)
+            $analyzer->getFullyQualifiedName($name, $indexInNamespace, $importType)
         );
     }
 
@@ -46,6 +50,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php function f(Foo\Bar\Baz $x) {}',
             'Foo\Bar\Baz',
             5,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'no namespace and import' => [
@@ -53,6 +58,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php use Foo\Bar\Baz; function f(Baz $x) {}',
             'Baz',
             14,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'no namespace and import with leading slash' => [
@@ -60,6 +66,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php use \Foo\Bar\Baz; function f(Baz $x) {}',
             'Baz',
             15,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'no namespace and partial import' => [
@@ -67,6 +74,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php use Foo\Bar; function f(Bar\Baz $x) {}',
             'Bar\Baz',
             12,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'no namespace and aliased import' => [
@@ -74,6 +82,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php use Foo\Bar\Baz as TheClass; function f(TheClass $x) {}',
             'TheClass',
             18,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'no namespace and partial aliased import' => [
@@ -81,6 +90,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php use Foo\Bar as TheClass; function f(TheClass\Baz $x) {}',
             'TheClass\Baz',
             16,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'namespaced with no import' => [
@@ -88,6 +98,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php namespace N; function f(\Foo\Bar\Baz $x) {}',
             '\Foo\Bar\Baz',
             10,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'namespaced with import' => [
@@ -95,6 +106,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php namespace N; use Foo\Bar\Baz; function f(Baz $x) {}',
             'Baz',
             19,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'namespaced with import with leading slash' => [
@@ -102,6 +114,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php namespace N; use \Foo\Bar\Baz; function f(Baz $x) {}',
             'Baz',
             20,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'namespaced with partial import' => [
@@ -109,6 +122,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php namespace N; use Foo\Bar; function f(Bar\Baz $x) {}',
             'Bar\Baz',
             17,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'namespaced with aliased import' => [
@@ -116,6 +130,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php namespace N; use Foo\Bar\Baz as TheClass; function f(TheClass $x) {}',
             'TheClass',
             23,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'namespaced with partial aliased import' => [
@@ -123,6 +138,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
             '<?php namespace N; use Foo\Bar as TheClass; function f(TheClass\Baz $x) {}',
             'TheClass\Baz',
             21,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
         yield 'multiple imports' => [
@@ -137,9 +153,10 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
                 PHP,
             'Bar',
             20,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
 
-        yield 'imports of all kinds' => [
+        yield 'imports of all kinds - resolve classy' => [
             'FooClass\Bar',
             <<<'PHP'
                 <?php
@@ -151,6 +168,76 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
                 PHP,
             'Bar',
             35,
+            NamespaceUseAnalysis::TYPE_CLASS,
         ];
+
+        yield 'imports of all kinds - resolve constant' => [
+            'FooConst\Bar',
+            <<<'PHP'
+                <?php
+                namespace N;
+                use const FooConst\Bar;
+                use FooClass\Bar;
+                use function FooFunction\Bar;
+                function f(Bar $x) {}
+                PHP,
+            'Bar',
+            35,
+            NamespaceUseAnalysis::TYPE_CONSTANT,
+        ];
+
+        yield 'imports of all kinds - resolve function' => [
+            'FooFunction\Bar',
+            <<<'PHP'
+                <?php
+                namespace N;
+                use const FooConst\Bar;
+                use FooClass\Bar;
+                use function FooFunction\Bar;
+                function f(Bar $x) {}
+                PHP,
+            'Bar',
+            35,
+            NamespaceUseAnalysis::TYPE_FUNCTION,
+        ];
+
+        $indexToNameMap = [
+            11 => ['Foo', 'Namespace1\Foo'],
+            31 => ['Foo', 'Namespace2\Foo'],
+            51 => ['Foo', 'Namespace3\Foo'],
+            55 => ['Bar', 'Namespace3\Bar'],
+        ];
+
+        foreach ($indexToNameMap as $index => [$shortName, $fullName]) {
+            yield sprintf('multiple namespaces with class %s', $fullName) => [
+                $fullName,
+                <<<'PHP'
+                    <?php
+                    namespace Namespace1 { function f(Foo $x) {} }
+                    namespace Namespace2 { function f(Foo $x) {} }
+                    namespace Namespace3 { function f(Foo $x, Bar $t) {} }
+                    PHP,
+                $shortName,
+                $index,
+                NamespaceUseAnalysis::TYPE_CLASS,
+            ];
+        }
+    }
+
+    public function testMultipleGetFullyQualifiedNameCalls(): void
+    {
+        $analyzer = new FullyQualifiedNameAnalyzer(Tokens::fromCode(
+            <<<'PHP'
+                <?php
+                namespace N;
+                function f1(Foo $x) {}
+                function f2(Bar $x) {}
+                function f3(Baz $x) {}
+                PHP
+        ));
+
+        self::assertSame('N\Foo', $analyzer->getFullyQualifiedName('Foo', 10, NamespaceUseAnalysis::TYPE_CLASS));
+        self::assertSame('N\Bar', $analyzer->getFullyQualifiedName('Bar', 22, NamespaceUseAnalysis::TYPE_CLASS));
+        self::assertSame('N\Baz', $analyzer->getFullyQualifiedName('Baz', 34, NamespaceUseAnalysis::TYPE_CLASS));
     }
 }
