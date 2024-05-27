@@ -1056,6 +1056,9 @@ class Tokens extends \SplFixedArray
             $this[$index] = new Token($token);
         }
 
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
+
         $this->applyTransformers();
 
         $this->foundTokenKinds = [];
