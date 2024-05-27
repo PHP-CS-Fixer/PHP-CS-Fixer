@@ -144,6 +144,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      * - token is a comment
      * - token is whitespace that is immediately before a comment
      * - token is whitespace that is immediately before the PHP close tag
+     * - token is whitespace that is immediately after a comment and before a semicolon
      */
     private function shouldClearToken(Tokens $tokens, int $index): bool
     {
@@ -159,6 +160,10 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
             }
 
             if ($tokens[$index + 1]->equals([T_CLOSE_TAG])) {
+                return false;
+            }
+
+            if ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';')) {
                 return false;
             }
         }
