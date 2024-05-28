@@ -1047,6 +1047,8 @@ class Tokens extends \SplFixedArray
 
         // clear memory
         $this->setSize(0);
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 
@@ -1055,9 +1057,6 @@ class Tokens extends \SplFixedArray
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
         }
-
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
 
         $this->applyTransformers();
 
