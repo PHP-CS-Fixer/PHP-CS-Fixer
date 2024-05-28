@@ -154,18 +154,16 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
             return false;
         }
 
-        if ($token->isWhitespace()) {
-            if ($tokens[$index + 1]->isComment()) {
-                return false;
-            }
+        if (!$token->isWhitespace()) {
+            return true;
+        }
 
-            if ($tokens[$index + 1]->equals([T_CLOSE_TAG])) {
-                return false;
-            }
-
-            if ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';')) {
-                return false;
-            }
+        if (
+            $tokens[$index + 1]->isComment()
+            || $tokens[$index + 1]->equals([T_CLOSE_TAG])
+            || ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';'))
+        ) {
+            return false;
         }
 
         return true;
