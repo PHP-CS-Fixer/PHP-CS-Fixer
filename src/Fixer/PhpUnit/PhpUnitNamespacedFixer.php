@@ -68,9 +68,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 new CodeSample($codeSample, ['target' => PhpUnitTargetVersion::VERSION_4_8]),
             ],
             "PHPUnit v6 has finally fully switched to namespaces.\n"
-            ."You could start preparing the upgrade by switching from non-namespaced TestCase to namespaced one.\n"
-            .'Forward compatibility layer (`\PHPUnit\Framework\TestCase` class) was backported to PHPUnit v4.8.35 and PHPUnit v5.4.0.'."\n"
-            .'Extended forward compatibility layer (`PHPUnit\Framework\Assert`, `PHPUnit\Framework\BaseTestListener`, `PHPUnit\Framework\TestListener` classes) was introduced in v5.7.0.'."\n",
+                ."You could start preparing the upgrade by switching from non-namespaced TestCase to namespaced one.\n"
+                .'Forward compatibility layer (`\PHPUnit\Framework\TestCase` class) was backported to PHPUnit v4.8.35 and PHPUnit v5.4.0.'."\n"
+                .'Extended forward compatibility layer (`PHPUnit\Framework\Assert`, `PHPUnit\Framework\BaseTestListener`, `PHPUnit\Framework\TestListener` classes) was introduced in v5.7.0.'."\n",
             'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
         );
     }
