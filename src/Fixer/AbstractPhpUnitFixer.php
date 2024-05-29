@@ -168,7 +168,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
         foreach (AttributeAnalyzer::collect($tokens, $index) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                if (\in_array(self::getFullyQualifiedName($tokens, $attribute['name']), $preventingAttributes, true)) {
+                if (\in_array(ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\'), $preventingAttributes, true)) {
                     return true;
                 }
             }
