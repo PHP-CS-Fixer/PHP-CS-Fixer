@@ -310,7 +310,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     continue;
                 }
 
-                $uses[$use->getHumanFriendlyType()][$this->normaliseFqn($use->getFullName())] = $use->getShortName();
+                $uses[$use->getHumanFriendlyType()][ltrim($use->getFullName(), '\\')] = $use->getShortName();
                 $lastUse = $use;
             }
 
@@ -413,7 +413,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             $this->cacheUseShortNameByNameLower = [];
             foreach ($kindUses as $useLongName => $useShortName) {
                 $this->cacheUseNameByShortNameLower[$kind][strtolower($useShortName)] = $useLongName;
-                $this->cacheUseShortNameByNameLower[$kind][$this->normaliseFqn($useLongName)] = $useShortName;
+
+                /** @var class-string $normalisedUseLongName */
+                $normalisedUseLongName = strtolower($useLongName);
+                $this->cacheUseShortNameByNameLower[$kind][$normalisedUseLongName] = $useShortName;
             }
         }
     }
@@ -960,15 +963,5 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     private function createImportProcessor(): ImportProcessor
     {
         return new ImportProcessor($this->whitespacesConfig);
-    }
-
-    /**
-     * @param class-string $fqn
-     *
-     * @return class-string
-     */
-    private function normaliseFqn(string $fqn): string
-    {
-        return ltrim(strtolower($fqn), '\\'); // @phpstan-ignore return.type
     }
 }
