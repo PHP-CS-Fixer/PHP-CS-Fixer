@@ -314,6 +314,14 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
 
+        yield 'already with attribute CoversNothing with leading slash' => [
+            <<<'PHP'
+                <?php
+                #[\PHPUnit\Framework\Attributes\CoversNothing]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
         yield 'already with imported attribute' => [
             <<<'PHP'
                 <?php

@@ -83,6 +83,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         static $forbiddenPrevKinds = null;
         if (null === $forbiddenPrevKinds) {
             $forbiddenPrevKinds = [
+                T_DOUBLE_COLON,
                 T_EXTENDS,
                 T_IMPLEMENTS,
                 T_INSTANCEOF,

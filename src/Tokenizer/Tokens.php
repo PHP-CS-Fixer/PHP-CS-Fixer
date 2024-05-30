@@ -1047,6 +1047,8 @@ class Tokens extends \SplFixedArray
 
         // clear memory
         $this->setSize(0);
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 

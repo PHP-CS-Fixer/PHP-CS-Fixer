@@ -3,6 +3,31 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.58.1
+---------------------
+
+* fix: `ConstantCaseFixer` - do not change class constant usages (#8055)
+* fix: `PhpUnitTestClassRequiresCoversFixer` - do not add annotation when attribute with leading slash present (#8054)
+
+Changelog for v3.58.0
+---------------------
+
+* chore(doc): Use FQCN for parallel config in documentation (#8029)
+* chore: fix typo in `PhpUnitTestClassRequiresCoversFixerTest` (#8047)
+* chore: RandomApiMigrationFixer - do not modify configuration property (#8033)
+* chore: Tokens::setCode - further improvements to cache (#8053)
+* chore: update PHPStan (#8045)
+* docs: Add missing imports in a cookbook about creating custom rules (#8031)
+* docs: fix deprecated string interpolation style (#8036)
+* docs: global_namespace_import - simplify allowed config types (#8023)
+* feat(GroupImportFixer): Ability to configure which type of imports should be grouped (#8046)
+* fix: clear `Tokens::$blockStartCache` and `Tokens::$blockEndCache` when calling `Tokens::setCode` (#8051)
+* fix: correctly handle PHP closing tag with `simplified_null_return` (#8049)
+* fix: `ConstantCaseFixer` - do not change namespace (#8004)
+* fix: `PhpUnitAttributesFixer` - do not add attribute if already present (#8043)
+* fix: `PhpUnitSizeClassFixer` - do not add annotation when there are attributes (#8044)
+* fix: `PhpUnitTestClassRequiresCoversFixer` - attribute detection when class is `readonly` (#8042)
+
 Changelog for v3.57.2
 ---------------------
 

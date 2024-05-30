@@ -92,6 +92,58 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         yield [
             '<?php function foo(): void { return; }',
         ];
+
+        yield ['<?php return ?>', '<?php return null ?>'];
+
+        yield ['<?php return [] ?>'];
+
+        yield [
+            '<?php
+                    return // hello
+                    ?>
+                ',
+            '<?php
+                    return null // hello
+                    ?>
+                ',
+        ];
+
+        yield [
+            '<?php
+                    return
+                    // hello
+                    ?>
+                ',
+            '<?php
+                    return null
+                    // hello
+                    ?>
+                ',
+        ];
+
+        yield [
+            '<?php
+                    return // hello
+                    ;
+                ',
+            '<?php
+                    return null // hello
+                    ;
+                ',
+        ];
+
+        yield [
+            '<?php
+                    return
+                    // hello
+                    ;
+                ',
+            '<?php
+                    return null
+                    // hello
+                    ;
+                ',
+        ];
     }
 
     /**
