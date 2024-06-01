@@ -1143,12 +1143,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$haystack of function str_contains expects string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ReadmeTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
 	'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
 	'count' => 3,
 	'path' => __DIR__ . '/../../tests/ConfigTest.php',
