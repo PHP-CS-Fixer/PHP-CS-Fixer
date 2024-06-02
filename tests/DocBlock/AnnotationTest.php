@@ -676,5 +676,7 @@ final class AnnotationTest extends TestCase
         yield ['* @param int & ...$foo', '$foo'];
 
         yield ['* @param int & ... $foo', '$foo'];
+
+        yield ['* @param int $foo=invalid description', '$foo'];
     }
 }

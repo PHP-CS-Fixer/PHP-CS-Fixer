@@ -2608,6 +2608,17 @@ static fn ($foo): int => 1;',
                 EOD,
             ['allow_hidden_params' => true],
         ];
+
+        yield '@param without space between variable name and description' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param int $bar Bar description
+                 * @param resource|null $baz=null Wrong baz description
+                 */
+                function foo($bar, $baz = null) {}
+                EOD,
+        ];
     }
 
     /**
