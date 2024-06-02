@@ -178,7 +178,7 @@ final class Annotation
     public function getVariableName()
     {
         $type = preg_quote($this->getTypesContent() ?? '', '/');
-        $regex = "/@{$this->tag->getName()}\\s+({$type}\\s*)?(&\\s*)?(\\.{3}\\s*)?(?<variable>\\$.+?)(?:[\\s*]|$)/";
+        $regex = "/@{$this->tag->getName()}\\s+({$type}\\s*)?(&\\s*)?(\\.{3}\\s*)?(?<variable>\\$[a-zA-Z_]+[a-zA-Z0-9_]*)(?:.*|$)/";
 
         if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
             return $matches['variable'];
