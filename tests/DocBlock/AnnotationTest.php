@@ -637,6 +637,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expectedVariableName, $annotation->getVariableName());
     }
 
+    /**
+     * @return iterable<array{string, null|string}>
+     */
     public static function provideGetVariableNameCases(): iterable
     {
         yield ['* @param int $foo', '$foo'];
@@ -677,6 +680,8 @@ final class AnnotationTest extends TestCase
 
         yield ['* @param int & ... $foo', '$foo'];
 
-        yield ['* @param int $foo=invalid description', '$foo'];
+        yield ['* @param ?int $foo=null invalid description', '$foo'];
+
+        yield ['* @param int $počet Special chars in variable name', '$počet'];
     }
 }
