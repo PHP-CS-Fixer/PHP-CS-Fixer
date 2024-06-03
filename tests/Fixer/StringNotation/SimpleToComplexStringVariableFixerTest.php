@@ -130,5 +130,13 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 echo 'Hello $${name}';
                 EXPECTED,
         ];
+
+        yield 'array elements' => [
+            <<<'PHP'
+                <?php
+                "Hello ${array[0]}!";
+                "Hello ${array['index']}!";
+                PHP,
+        ];
     }
 }
