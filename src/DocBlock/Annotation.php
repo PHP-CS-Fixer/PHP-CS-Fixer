@@ -171,14 +171,17 @@ final class Annotation
     }
 
     /**
-     * @return null|string
-     *
      * @internal
      */
-    public function getVariableName()
+    public function getVariableName(): ?string
     {
         $type = preg_quote($this->getTypesContent() ?? '', '/');
-        $regex = "/@{$this->tag->getName()}\\s+({$type}\\s*)?(&\\s*)?(\\.{3}\\s*)?(?<variable>\\$.+?)(?:[\\s*]|$)/";
+        $regex = sprintf(
+            '/@%s\s+(%s\s*)?(&\s*)?(\.{3}\s*)?(?<variable>\$%s)(?:.*|$)/',
+            $this->tag->getName(),
+            $type,
+            TypeExpression::REGEX_IDENTIFIER
+        );
 
         if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
             return $matches['variable'];
