@@ -606,12 +606,14 @@ echo M_PI;
                 protected const string|int C2 = \PHP_EOL;
                 private const string|(A&B) C3 = BAR;
                 public const EnumA C4 = EnumA::FOO;
+                private const array CONNECTION_TIMEOUT = [\'foo\'];
             }',
             '<?php class Foo {
                 public const string C1 = PHP_EOL;
                 protected const string|int C2 = \PHP_EOL;
                 private const string|(A&B) C3 = \BAR;
                 public const EnumA C4 = EnumA::FOO;
+                private const array CONNECTION_TIMEOUT = [\'foo\'];
             }',
         ];
     }

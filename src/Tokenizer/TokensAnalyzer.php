@@ -379,7 +379,7 @@ final class TokensAnalyzer
             return false;
         }
 
-        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, T_NS_SEPARATOR, T_STRING])) {
+        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT])) {
             $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
         }
 
