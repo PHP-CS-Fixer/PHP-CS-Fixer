@@ -32,7 +32,7 @@ body:
     id: version
     attributes:
       label: Fixer version
-      description: Provide PHP CS Fixer version in X.Y.Z format (run `php-cs-fixer -v` to get it)
+      description: Provide PHP CS Fixer version in X.Y.Z format (run `php-cs-fixer --version` to get it)
     validations:
       required: true
   - type: input
