@@ -51,27 +51,24 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(7, $config->getMaxProcesses());
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config->getProcessTimeout());
-        self::assertSame(ParallelConfig::DEFAULT_BUFFER_SIZE, $config->getBufferSize());
 
         $cpuDetector->setValue($parallelConfigFactoryReflection, null);
     }
 
     public function testDetectConfigurationWithParams(): void
     {
-        $config = ParallelConfigFactory::detect(22, 2_200, 56_789);
+        $config = ParallelConfigFactory::detect(22, 2_200);
 
         self::assertSame(22, $config->getFilesPerProcess());
         self::assertSame(2_200, $config->getProcessTimeout());
-        self::assertSame(56_789, $config->getBufferSize());
     }
 
     public function testDetectConfigurationWithDefaultValue(): void
     {
-        $config = ParallelConfigFactory::detect(null, null, 56_789);
+        $config = ParallelConfigFactory::detect(null, 60);
 
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
-        self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config->getProcessTimeout());
-        self::assertSame(56_789, $config->getBufferSize());
+        self::assertSame(60, $config->getProcessTimeout());
     }
 
     /**
@@ -84,24 +81,20 @@ final class ParallelConfigFactoryTest extends TestCase
 
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config1->getFilesPerProcess());
         self::assertSame(300, $config1->getProcessTimeout());
-        self::assertSame(ParallelConfig::DEFAULT_BUFFER_SIZE, $config1->getBufferSize());
 
         // Flipped order of arguments using named arguments syntax
         $config2 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], [
-            'bufferSize' => 56_789,
             'processTimeout' => 300,
             'filesPerProcess' => 5,
         ]);
 
         self::assertSame(5, $config2->getFilesPerProcess());
         self::assertSame(300, $config2->getProcessTimeout());
-        self::assertSame(56_789, $config2->getBufferSize());
 
         // Only first argument provided, but via named argument
         $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['filesPerProcess' => 7]);
 
         self::assertSame(7, $config3->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config3->getProcessTimeout());
-        self::assertSame(ParallelConfig::DEFAULT_BUFFER_SIZE, $config3->getBufferSize());
     }
 }

@@ -25,34 +25,27 @@ final class ParallelConfig
     /** @internal */
     public const DEFAULT_PROCESS_TIMEOUT = 120;
 
-    /** @internal */
-    public const DEFAULT_BUFFER_SIZE = 65_536;
-
     private int $filesPerProcess;
     private int $maxProcesses;
     private int $processTimeout;
-    private int $bufferSize;
 
     /**
      * @param positive-int $maxProcesses
      * @param positive-int $filesPerProcess
      * @param positive-int $processTimeout
-     * @param positive-int $bufferSize
      */
     public function __construct(
         int $maxProcesses = 2,
         int $filesPerProcess = self::DEFAULT_FILES_PER_PROCESS,
-        int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT,
-        int $bufferSize = self::DEFAULT_BUFFER_SIZE
+        int $processTimeout = self::DEFAULT_PROCESS_TIMEOUT
     ) {
-        if ($maxProcesses <= 0 || $filesPerProcess <= 0 || $processTimeout <= 0 || $bufferSize <= 0) {
+        if ($maxProcesses <= 0 || $filesPerProcess <= 0 || $processTimeout <= 0) {
             throw new \InvalidArgumentException('Invalid parallelisation configuration: only positive integers are allowed');
         }
 
         $this->maxProcesses = $maxProcesses;
         $this->filesPerProcess = $filesPerProcess;
         $this->processTimeout = $processTimeout;
-        $this->bufferSize = $bufferSize;
     }
 
     public function getFilesPerProcess(): int
@@ -68,10 +61,5 @@ final class ParallelConfig
     public function getProcessTimeout(): int
     {
         return $this->processTimeout;
-    }
-
-    public function getBufferSize(): int
-    {
-        return $this->bufferSize;
     }
 }

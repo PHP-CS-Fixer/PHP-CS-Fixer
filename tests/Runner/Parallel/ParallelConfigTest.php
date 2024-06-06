@@ -30,13 +30,12 @@ final class ParallelConfigTest extends TestCase
     public function testExceptionIsThrownOnNegativeValues(
         int $maxProcesses,
         int $filesPerProcess,
-        int $processTimeout,
-        int $bufferSize
+        int $processTimeout
     ): void {
         $this->expectException(\InvalidArgumentException::class);
 
         // @phpstan-ignore-next-line False-positive, we pass negative values to the constructor on purpose.
-        new ParallelConfig($maxProcesses, $filesPerProcess, $processTimeout, $bufferSize);
+        new ParallelConfig($maxProcesses, $filesPerProcess, $processTimeout);
     }
 
     /**
@@ -44,22 +43,19 @@ final class ParallelConfigTest extends TestCase
      */
     public static function provideExceptionIsThrownOnNegativeValuesCases(): iterable
     {
-        yield [-1, 1, 1, 1];
+        yield [-1, 1, 1];
 
-        yield [1, -1, 1, 1];
+        yield [1, -1, 1];
 
-        yield [1, 1, -1, 1];
-
-        yield [1, 1, 1, -1];
+        yield [1, 1, -1];
     }
 
     public function testGettersAreReturningProperValues(): void
     {
-        $config = new ParallelConfig(2, 10, 120, 12_345);
+        $config = new ParallelConfig(2, 10, 120);
 
         self::assertSame(2, $config->getMaxProcesses());
         self::assertSame(10, $config->getFilesPerProcess());
         self::assertSame(120, $config->getProcessTimeout());
-        self::assertSame(12_345, $config->getBufferSize());
     }
 }

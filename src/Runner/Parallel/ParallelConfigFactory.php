@@ -35,12 +35,10 @@ final class ParallelConfigFactory
     /**
      * @param null|positive-int $filesPerProcess
      * @param null|positive-int $processTimeout
-     * @param null|positive-int $bufferSize
      */
     public static function detect(
         ?int $filesPerProcess = null,
-        ?int $processTimeout = null,
-        ?int $bufferSize = null
+        ?int $processTimeout = null
     ): ParallelConfig {
         if (null === self::$cpuDetector) {
             self::$cpuDetector = new CpuCoreCounter([
@@ -52,8 +50,7 @@ final class ParallelConfigFactory
         return new ParallelConfig(
             self::$cpuDetector->getCount(),
             $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
-            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT,
-            $bufferSize ?? ParallelConfig::DEFAULT_BUFFER_SIZE
+            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
         );
     }
 }
