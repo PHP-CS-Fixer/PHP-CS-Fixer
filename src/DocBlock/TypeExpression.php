@@ -393,7 +393,9 @@ final class TypeExpression
             $consumedValueLength = \strlen($matches[0][0]);
             $index += $consumedValueLength;
 
-            if (\strlen($this->value) === $index) {
+            if (\strlen($this->value) <= $index) {
+                \assert(\strlen($this->value) === $index);
+
                 return;
             }
         }
