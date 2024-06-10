@@ -277,6 +277,7 @@ final class TypeExpression
             'start_index' => $startIndexOrig,
             'expression' => $inner,
         ]) {
+            // @phpstan-ignore-next-line https://github.com/phpstan/phpstan/issues/11171
             $this->innerTypeExpressions[$k]['start_index'] += $startIndexOffset;
 
             $innerLengthOrig = \strlen($inner->toString());
