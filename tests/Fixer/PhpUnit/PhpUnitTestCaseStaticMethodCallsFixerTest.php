@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Utils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,7 +43,13 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             }
         }
 
-        self::assertSame([], $missingMethods, sprintf('The following static methods from "%s" are missing from "%s::$staticMethods"', TestCase::class, PhpUnitTestCaseStaticMethodCallsFixer::class));
+        self::assertSame([], $missingMethods, sprintf(
+            'The following static methods from "%s" are missing from "%s::$staticMethods": %s',
+            TestCase::class,
+            PhpUnitTestCaseStaticMethodCallsFixer::class,
+            // `Utils::naturalLanguageJoin` does not accept empty array, so let's use it only if there's an actual difference.
+            [] === $missingMethods ? '' : Utils::naturalLanguageJoin($missingMethods)
+        ));
     }
 
     public function testWrongConfigTypeForMethodsKey(): void
