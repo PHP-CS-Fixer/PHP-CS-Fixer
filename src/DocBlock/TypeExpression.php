@@ -271,20 +271,26 @@ final class TypeExpression
      */
     public function walkTypes(\Closure $callback): void
     {
-        foreach (array_reverse($this->innerTypeExpressions) as [
-            'start_index' => $startIndex,
+        $startIndexOffset = 0;
+
+        foreach ($this->innerTypeExpressions as $k => [
+            'start_index' => $startIndexOrig,
             'expression' => $inner,
         ]) {
-            $initialValueLength = \strlen($inner->toString());
+            $this->innerTypeExpressions[$k]['start_index'] += $startIndexOffset;
+
+            $innerLengthOrig = \strlen($inner->toString());
 
             $inner->walkTypes($callback);
 
             $this->value = substr_replace(
                 $this->value,
                 $inner->toString(),
-                $startIndex,
-                $initialValueLength
+                $startIndexOrig + $startIndexOffset,
+                $innerLengthOrig
             );
+
+            $startIndexOffset += \strlen($inner->toString()) - $innerLengthOrig;
         }
 
         $callback($this);
