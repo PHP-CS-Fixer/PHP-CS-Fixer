@@ -601,8 +601,8 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php
                 /**
-                 * @group foo
                  */
+                #[\PHPUnit\Framework\Attributes\Group('foo')]
                 #[\PHPUnit\Framework\Attributes\Group('bar')]
                 class TheTest extends \PHPUnit\Framework\TestCase {}
                 PHP,
