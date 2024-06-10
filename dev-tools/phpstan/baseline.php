@@ -819,12 +819,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$path of method PhpCsFixer\\\\FileRemoval\\:\\:observe\\(\\) expects string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$path of method PhpCsFixer\\\\Linter\\\\ProcessLinter\\:\\:createProcessForFile\\(\\) expects string, string\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
@@ -832,12 +826,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#4 \\$path of class Symfony\\\\Component\\\\Filesystem\\\\Exception\\\\IOException constructor expects string\\|null, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Linter\\\\ProcessLinter\\:\\:\\$temporaryFile \\(string\\|null\\) does not accept string\\|false\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
 ];
@@ -1368,30 +1356,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\|string, string\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Smoke/CiIntegrationTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$dirs of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:mkdir\\(\\) expects iterable\\|string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Smoke/InstallViaComposerTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$filename of function unlink expects string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Smoke/InstallViaComposerTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$files of method Symfony\\\\Component\\\\Filesystem\\\\Filesystem\\:\\:remove\\(\\) expects iterable\\|string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Smoke/InstallViaComposerTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#2 \\$cwd of static method PhpCsFixer\\\\Tests\\\\Smoke\\\\InstallViaComposerTest\\:\\:assertCommandsWork\\(\\) expects string, string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Smoke/InstallViaComposerTest.php',
 ];
 $ignoreErrors[] = [
 	// identifier: ternary.condNotBoolean
