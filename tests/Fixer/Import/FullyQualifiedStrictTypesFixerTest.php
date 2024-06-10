@@ -2163,6 +2163,31 @@ function foo($v) {}',
             ['import_symbols' => true],
         ];
 
+        yield 'Test complex PHPDoc with imports' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use X\A;
+
+                /**
+                 * @param \Closure(A&\X\B, '\Y\A&(\Y\B|\Y\C)', array{A: B}): ($v is string ? Foo : Bar) $v
+                 */
+                function foo($v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                /**
+                 * @param \Closure(\X\A&\X\B, '\Y\A&(\Y\B|\Y\C)', array{A: B}): ($v is string ? \Ns\Foo : \Ns\Bar) $v
+                 */
+                function foo($v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'Test PHPDoc string must be kept as is' => [
             '<?php
 
