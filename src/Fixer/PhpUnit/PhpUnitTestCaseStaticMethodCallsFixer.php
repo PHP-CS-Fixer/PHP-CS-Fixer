@@ -196,6 +196,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertObjectEquals' => true,
         'assertObjectHasAttribute' => true,
         'assertObjectHasProperty' => true,
+        'assertObjectNotEquals' => true,
         'assertObjectNotHasAttribute' => true,
         'assertObjectNotHasProperty' => true,
         'assertRegExp' => true,
