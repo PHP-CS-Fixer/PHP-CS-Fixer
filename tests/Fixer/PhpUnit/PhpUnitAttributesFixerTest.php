@@ -596,6 +596,25 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'handle multiple annotations of the same name' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @group foo
+                 */
+                #[\PHPUnit\Framework\Attributes\Group('bar')]
+                class TheTest extends \PHPUnit\Framework\TestCase {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @group foo
+                 * @group bar
+                 */
+                class TheTest extends \PHPUnit\Framework\TestCase {}
+                PHP,
+        ];
     }
 
     /**
