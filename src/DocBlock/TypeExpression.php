@@ -329,6 +329,8 @@ final class TypeExpression
      */
     public function sortTypes(\Closure $compareCallback): void
     {
+        // TODO make this class immutable and change walkTypes to mapTypes
+
         $this->walkTypes(static function (self $type) use ($compareCallback): void {
             if ($type->isUnionType) {
                 $type->innerTypeExpressions = Utils::stableSort(

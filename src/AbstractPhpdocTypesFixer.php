@@ -104,15 +104,14 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             function (string $type): string {
                 $typeExpression = new TypeExpression($type, null, []);
 
-                $typeExpression->walkTypes(function (TypeExpression $type): void {
+                $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
                     if (!$type->isUnionType()) {
                         $value = $this->normalize($type->toString());
 
-                        // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
-                        \Closure::bind(static function () use ($type, $value): void {
-                            $type->value = $value;
-                        }, null, TypeExpression::class)();
+                        return new TypeExpression($value, null, []);
                     }
+
+                    return $type;
                 });
 
                 return $typeExpression->toString();
