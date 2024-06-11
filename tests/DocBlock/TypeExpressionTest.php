@@ -721,26 +721,6 @@ final class TypeExpressionTest extends TestCase
     {
         $typeExpression = new TypeExpression('Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))', null, []);
 
-        $addLeadingSlashFx = static function (TypeExpression $type): void {
-            \Closure::bind(static function () use ($type): void {
-                $value = $type->toString();
-                if (!str_starts_with($value, '\\') && !str_starts_with($value, '(')) {
-                    $value = '\\'.$value;
-                }
-                $type->value = $value;
-            }, null, TypeExpression::class)();
-        };
-
-        $removeLeadingSlashFx = static function (TypeExpression $type): void {
-            \Closure::bind(static function () use ($type): void {
-                $value = $type->toString();
-                if (str_starts_with($value, '\\')) {
-                    $value = substr($value, 1);
-                }
-                $type->value = $value;
-            }, null, TypeExpression::class)();
-        };
-
         $callLog = [];
         $typeExpression->walkTypes(static function (TypeExpression $type) use (&$callLog): void {
             $callLog[] = $type->toString();
@@ -760,21 +740,6 @@ final class TypeExpressionTest extends TestCase
             '($v is \Closure(X, Y): Z ? U : (V&W))',
             'Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))',
         ], $callLog);
-
-        $typeExpression->walkTypes($addLeadingSlashFx);
-        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($addLeadingSlashFx);
-        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($removeLeadingSlashFx);
-        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($removeLeadingSlashFx);
-        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($addLeadingSlashFx);
-        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
     }
 
     /**
@@ -787,11 +752,14 @@ final class TypeExpressionTest extends TestCase
 
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 
-        $expression->sortTypes($sortCaseFx);
+        $expression = $expression->sortTypes($sortCaseFx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
         self::assertSame($expectResult, $expression->toString());
 
-        $expression->sortTypes($sortCrc32Fx);
-        $expression->sortTypes($sortCaseFx);
+        $expression = $expression->sortTypes($sortCrc32Fx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
+        $expression = $expression->sortTypes($sortCaseFx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
         self::assertSame($expectResult, $expression->toString());
     }
 
