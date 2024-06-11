@@ -271,15 +271,14 @@ final class TypeExpression
      */
     public function walkTypes(\Closure $callback): void
     {
+        $innerValueOrig = $this->value;
+
         $startIndexOffset = 0;
 
         foreach ($this->innerTypeExpressions as $k => [
             'start_index' => $startIndexOrig,
             'expression' => $inner,
         ]) {
-            // @phpstan-ignore-next-line https://github.com/phpstan/phpstan/issues/11171
-            $this->innerTypeExpressions[$k]['start_index'] += $startIndexOffset;
-
             $innerLengthOrig = \strlen($inner->toString());
 
             $inner->walkTypes($callback);
@@ -295,6 +294,14 @@ final class TypeExpression
         }
 
         $callback($this);
+
+        if ($this->value !== $innerValueOrig) {
+            $this->isUnionType = false;
+            $this->typesGlue = '|';
+            $this->innerTypeExpressions = [];
+
+            $this->parse();
+        }
     }
 
     /**
