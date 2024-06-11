@@ -652,7 +652,8 @@ final class TypeExpressionTest extends TestCase
     public function testWalkTypes(): void
     {
         $typeExpression = new TypeExpression('Foo|Bar|Baz', null, []);
-        $addLeadingSlash = static function (TypeExpression $type): void {
+
+        $addLeadingSlashFx = static function (TypeExpression $type): void {
             \Closure::bind(static function () use ($type): void {
                 $value = $type->toString();
                 if (!str_starts_with($value, '\\')) {
@@ -662,10 +663,29 @@ final class TypeExpressionTest extends TestCase
             }, null, TypeExpression::class)();
         };
 
-        $typeExpression->walkTypes($addLeadingSlash);
+        $removeLeadingSlashFx = static function (TypeExpression $type): void {
+            \Closure::bind(static function () use ($type): void {
+                $value = $type->toString();
+                if (str_starts_with($value, '\\')) {
+                    $value = substr($value, 1);
+                }
+                $type->value = $value;
+            }, null, TypeExpression::class)();
+        };
+
+        $typeExpression->walkTypes($addLeadingSlashFx);
         self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
 
-        $typeExpression->walkTypes($addLeadingSlash);
+        $typeExpression->walkTypes($addLeadingSlashFx);
+        self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
+
+        $typeExpression->walkTypes($removeLeadingSlashFx);
+        self::assertSame('Foo|Bar|Baz', $typeExpression->toString());
+
+        $typeExpression->walkTypes($removeLeadingSlashFx);
+        self::assertSame('Foo|Bar|Baz', $typeExpression->toString());
+
+        $typeExpression->walkTypes($addLeadingSlashFx);
         self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
     }
 
