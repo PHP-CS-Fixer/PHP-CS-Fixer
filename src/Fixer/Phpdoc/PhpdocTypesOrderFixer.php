@@ -169,12 +169,12 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
      */
     private function sortTypes(TypeExpression $typeExpression): array
     {
-        $normalizeType = static fn (string $type): string => Preg::replace('/^\(*\??\\\?/', '', $type);
+        $normalizeTypeFx = static fn (string $type): string => Preg::replace('/^\(*\??\\\?/', '', $type);
 
-        $typeExpression->sortTypes(
-            function (TypeExpression $a, TypeExpression $b) use ($normalizeType): int {
-                $a = $normalizeType($a->toString());
-                $b = $normalizeType($b->toString());
+        $res = $typeExpression->sortTypes(
+            function (TypeExpression $a, TypeExpression $b) use ($normalizeTypeFx): int {
+                $a = $normalizeTypeFx($a->toString());
+                $b = $normalizeTypeFx($b->toString());
                 $lowerCaseA = strtolower($a);
                 $lowerCaseB = strtolower($b);
 
@@ -195,6 +195,6 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
             }
         );
 
-        return $typeExpression->getTypes();
+        return $res->getTypes();
     }
 }
