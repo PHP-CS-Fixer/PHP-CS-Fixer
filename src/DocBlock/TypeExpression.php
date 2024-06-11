@@ -275,7 +275,7 @@ final class TypeExpression
 
         $startIndexOffset = 0;
 
-        foreach ($this->innerTypeExpressions as $k => [
+        foreach ($this->innerTypeExpressions as [
             'start_index' => $startIndexOrig,
             'expression' => $inner,
         ]) {
