@@ -657,7 +657,7 @@ final class TypeExpressionTest extends TestCase
     {
         $typeExpression = new TypeExpression('Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))', null, []);
 
-        $addLeadingSlash = static function (TypeExpression $type): void {
+        $addLeadingSlashFx = static function (TypeExpression $type): void {
             \Closure::bind(static function () use ($type): void {
                 $value = $type->toString();
                 if (!str_starts_with($value, '\\') && !str_starts_with($value, '(')) {
@@ -667,7 +667,7 @@ final class TypeExpressionTest extends TestCase
             }, null, TypeExpression::class)();
         };
 
-        $removeLeadingSlash = static function (TypeExpression $type): void {
+        $removeLeadingSlashFx = static function (TypeExpression $type): void {
             \Closure::bind(static function () use ($type): void {
                 $value = $type->toString();
                 if (str_starts_with($value, '\\')) {
@@ -677,19 +677,19 @@ final class TypeExpressionTest extends TestCase
             }, null, TypeExpression::class)();
         };
 
-        $typeExpression->walkTypes($addLeadingSlash);
+        $typeExpression->walkTypes($addLeadingSlashFx);
         self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
 
-        $typeExpression->walkTypes($addLeadingSlash);
+        $typeExpression->walkTypes($addLeadingSlashFx);
         self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
 
-        $typeExpression->walkTypes($removeLeadingSlash);
+        $typeExpression->walkTypes($removeLeadingSlashFx);
         self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
 
-        $typeExpression->walkTypes($removeLeadingSlash);
+        $typeExpression->walkTypes($removeLeadingSlashFx);
         self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
 
-        $typeExpression->walkTypes($addLeadingSlash);
+        $typeExpression->walkTypes($addLeadingSlashFx);
         self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
     }
 
