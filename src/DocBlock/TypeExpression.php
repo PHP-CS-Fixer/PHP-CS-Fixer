@@ -267,35 +267,55 @@ final class TypeExpression
     }
 
     /**
-     * @param \Closure(self): void $callback
+     * @param \Closure(self): self $callback
      */
-    public function walkTypes(\Closure $callback): void
+    public function mapTypes(\Closure $callback): self
     {
-        $innerValueOrig = $this->value;
-
+        $value = $this->value;
         $startIndexOffset = 0;
 
         foreach ($this->innerTypeExpressions as [
             'start_index' => $startIndexOrig,
             'expression' => $inner,
         ]) {
-            $innerLengthOrig = \strlen($inner->toString());
+            $innerValueOrig = $inner->value;
 
-            $inner->walkTypes($callback);
+            $inner = $inner->mapTypes($callback);
 
-            $this->value = substr_replace(
-                $this->value,
-                $inner->toString(),
-                $startIndexOrig + $startIndexOffset,
-                $innerLengthOrig
-            );
+            if ($inner->value !== $innerValueOrig) {
+                $value = substr_replace(
+                    $value,
+                    $inner->value,
+                    $startIndexOrig + $startIndexOffset,
+                    \strlen($innerValueOrig)
+                );
 
-            $startIndexOffset += \strlen($inner->toString()) - $innerLengthOrig;
+                $startIndexOffset += \strlen($inner->value) - \strlen($innerValueOrig);
+            }
         }
 
-        $callback($this);
+        $type = $value === $this->value
+            ? $this
+            : new self($value, $this->namespace, $this->namespaceUses);
 
-        if ($this->value !== $innerValueOrig) {
+        return $callback($type);
+    }
+
+    /**
+     * @param \Closure(self): void $callback
+     */
+    public function walkTypes(\Closure $callback): void
+    {
+        $innerValueOrig = $this->value;
+
+        $type = $this->mapTypes(static function (self $type) use ($callback) {
+            $callback($type);
+
+            return $type;
+        });
+
+        if ($type->value !== $innerValueOrig) {
+            $this->value = $type->value;
             $this->isUnionType = false;
             $this->typesGlue = '|';
             $this->innerTypeExpressions = [];
