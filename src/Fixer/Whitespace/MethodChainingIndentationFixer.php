@@ -62,7 +62,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
             $endParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', ',', [T_CLOSE_TAG]]);
 
-            if (null === $endParenthesisIndex || !$tokens[$endParenthesisIndex]->equals('(')) {
+            if (null === $endParenthesisIndex) {
                 continue;
             }
 
@@ -88,6 +88,10 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
             if ($currentIndent !== $expectedIndent) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, $lineEnding.$expectedIndent]);
+            }
+
+            if (!$tokens[$endParenthesisIndex]->equals('(')) {
+                continue;
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endParenthesisIndex);
