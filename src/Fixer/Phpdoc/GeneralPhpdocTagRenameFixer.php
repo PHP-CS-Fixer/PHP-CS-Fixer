@@ -100,13 +100,6 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                             throw new InvalidOptionsException('Tag to replace must be a string.');
                         }
 
-                        if (!\is_string($to)) {
-                            throw new InvalidOptionsException(sprintf(
-                                'Tag to replace to from "%s" must be a string.',
-                                $from
-                            ));
-                        }
-
                         if (!Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',

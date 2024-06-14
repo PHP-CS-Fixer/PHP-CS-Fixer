@@ -294,7 +294,7 @@ Custom values:
                                 return true;
                             }
 
-                            if (\is_string($value) && 'method:' === substr($value, 0, 7)) {
+                            if ('method:' === substr($value, 0, 7)) {
                                 return true;
                             }
                         }
