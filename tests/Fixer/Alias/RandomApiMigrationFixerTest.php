@@ -48,7 +48,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'wrong replacement' => [
-            '[random_api_migration] Invalid configuration: Replacement for function "rand" must be a string, "null" given.',
+            '[random_api_migration] Invalid configuration: The option "replacements" with value array is expected to be of type "string[]", but one of the elements is of type "null".',
             ['replacements' => ['rand' => null]],
         ];
     }

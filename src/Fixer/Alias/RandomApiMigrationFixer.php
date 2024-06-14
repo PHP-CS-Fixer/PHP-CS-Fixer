@@ -128,14 +128,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                                 $functionName
                             ));
                         }
-
-                        if (!\is_string($replacement)) {
-                            throw new InvalidOptionsException(sprintf(
-                                'Replacement for function "%s" must be a string, "%s" given.',
-                                $functionName,
-                                get_debug_type($replacement)
-                            ));
-                        }
                     }
 
                     return true;
