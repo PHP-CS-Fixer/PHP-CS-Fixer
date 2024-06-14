@@ -22,7 +22,7 @@ Configuration
 
 Mapping between replaced functions with the new ones.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' => 'mt_srand']``
 
