@@ -131,7 +131,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     {
         $annotationsAsserts = [static function (array $values): bool {
             foreach ($values as $value) {
-                if (!\is_string($value) || '' === $value) {
+                if ('' === $value) {
                     return false;
                 }
             }

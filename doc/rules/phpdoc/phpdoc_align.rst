@@ -27,7 +27,7 @@ spacingForB]``. If you want to define default spacing to more than 1 space use
 ``_default`` key in config array, e.g.: ``['tagA' => spacingForA, 'tagB' =>
 spacingForB, '_default' => spacingForAllOthers]``.
 
-Allowed types: ``int`` and ``list<int>``
+Allowed types: ``int`` and ``array<string, int>``
 
 Default value: ``1``
 

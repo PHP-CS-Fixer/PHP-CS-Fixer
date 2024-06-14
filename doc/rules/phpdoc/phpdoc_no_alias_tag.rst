@@ -12,7 +12,7 @@ Configuration
 
 Mapping between replaced annotations with new ones.
 
-Allowed types: ``list<string>``
+Allowed types: ``array<string, string>``
 
 Default value: ``['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']``
 

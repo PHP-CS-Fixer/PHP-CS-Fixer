@@ -26,7 +26,7 @@ the default strategy. Supported are: ``=``, ``*``, ``/``, ``%``, ``<``, ``>``,
 ``or``, ``xor``, ``-=``, ``%=``, ``*=``, ``|=``, ``+=``, ``<<``, ``<<=``,
 ``>>``, ``>>=``, ``^=``, ``**``, ``**=``, ``<=>``, ``??`` and ``??=``.
 
-Allowed types: ``array``
+Allowed types: ``array<string, ?string>``
 
 Default value: ``[]``
 
