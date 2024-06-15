@@ -101,9 +101,13 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
                 $allowedTypesNormalised = array_map(
                     static function (string $type): string {
                         $matches = [];
-                        if (true === Preg::match('/array<\w+,\s*(\??\w+)>/', $type, $matches)) {
+                        if (true === Preg::match('/array<\w+,\s*(\??[\w\'|]+)>/', $type, $matches)) {
                             if ('?' === $matches[1][0]) {
                                 return 'array';
+                            }
+
+                            if ("'" === $matches[1][0]) {
+                                return 'string[]';
                             }
 
                             return $matches[1].'[]';
