@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.59.0
+---------------------
+
+* feat(Docker): Multi-arch build (support for `arm64`) (#8079)
+* feat: `@PhpCsFixer` ruleset - normalise implicit backslashes in single quoted strings (#7965)
+* feat: `SimpleToComplexStringVariableFixer` - support variable being an array (#8064)
+* fix: Look up for PHPDoc's variable name by only chars allowed in the variables (#8062)
+* fix: Update `PhpUnitTestCaseStaticMethodCallsFixer::STATIC_METHODS` (#8073)
+* fix: `native_constant_invocation` - array constants with native constant names (#8008)
+* chore: update PHPStan (#8060)
+* CI: Update PHPStan to 1.11.4 (#8074)
+* docs: don't expose list as config type for dicts (#8081)
+* docs: Make wording in `final_class` docs less dismissive (#8065)
+* docs: Update 1-bug_report.yml (#8067)
+* DX: Remove version from Docker Compose files (#8061)
+
 Changelog for v3.58.1
 ---------------------
 
