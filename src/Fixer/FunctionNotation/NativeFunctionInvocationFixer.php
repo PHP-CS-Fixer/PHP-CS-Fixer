@@ -205,7 +205,7 @@ $c = get_class($d);
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                        if ('' === trim($functionName) || trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
@@ -221,7 +221,7 @@ $c = get_class($d);
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                        if ('' === trim($functionName) || trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)

@@ -91,20 +91,13 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder('replacements', 'A map of tags to replace.'))
-                ->setAllowedTypes(['string[]'])
+                ->setAllowedTypes(['array<string, string>'])
                 ->setNormalizer(static function (Options $options, array $value): array {
                     $normalizedValue = [];
 
                     foreach ($value as $from => $to) {
                         if (!\is_string($from)) {
                             throw new InvalidOptionsException('Tag to replace must be a string.');
-                        }
-
-                        if (!\is_string($to)) {
-                            throw new InvalidOptionsException(sprintf(
-                                'Tag to replace to from "%s" must be a string.',
-                                $from
-                            ));
                         }
 
                         if (!Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {

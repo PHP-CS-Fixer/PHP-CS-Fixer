@@ -13,7 +13,7 @@ Configuration
 
 Mapping between replaced return types with new ones.
 
-Allowed types: ``list<string>``
+Allowed types: ``array<string, string>``
 
 Default value: ``['this' => '$this', '@this' => '$this', '$self' => 'self', '@self' => 'self', '$static' => 'static', '@static' => 'static']``
 
