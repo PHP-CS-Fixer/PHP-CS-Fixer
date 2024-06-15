@@ -135,7 +135,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tags', 'The list of tags to fix.'))
-                ->setAllowedTypes(['array<string, string>'])
+                ->setAllowedTypes(["array<string, 'annotation'|'inline'>"])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $type) {
                         if (!\in_array($type, ['annotation', 'inline'], true)) {
