@@ -3,6 +3,161 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.59.1
+---------------------
+
+* fix: Bump React's JSON decoder buffer size (#8068)
+* docs: options - handle enums in dicts (#8082)
+
+Changelog for v3.59.0
+---------------------
+
+* feat(Docker): Multi-arch build (support for `arm64`) (#8079)
+* feat: `@PhpCsFixer` ruleset - normalise implicit backslashes in single quoted strings (#7965)
+* feat: `SimpleToComplexStringVariableFixer` - support variable being an array (#8064)
+* fix: Look up for PHPDoc's variable name by only chars allowed in the variables (#8062)
+* fix: Update `PhpUnitTestCaseStaticMethodCallsFixer::STATIC_METHODS` (#8073)
+* fix: `native_constant_invocation` - array constants with native constant names (#8008)
+* chore: update PHPStan (#8060)
+* CI: Update PHPStan to 1.11.4 (#8074)
+* docs: don't expose list as config type for dicts (#8081)
+* docs: Make wording in `final_class` docs less dismissive (#8065)
+* docs: Update 1-bug_report.yml (#8067)
+* DX: Remove version from Docker Compose files (#8061)
+
+Changelog for v3.58.1
+---------------------
+
+* fix: `ConstantCaseFixer` - do not change class constant usages (#8055)
+* fix: `PhpUnitTestClassRequiresCoversFixer` - do not add annotation when attribute with leading slash present (#8054)
+
+Changelog for v3.58.0
+---------------------
+
+* chore(doc): Use FQCN for parallel config in documentation (#8029)
+* chore: fix typo in `PhpUnitTestClassRequiresCoversFixerTest` (#8047)
+* chore: RandomApiMigrationFixer - do not modify configuration property (#8033)
+* chore: Tokens::setCode - further improvements to cache (#8053)
+* chore: update PHPStan (#8045)
+* docs: Add missing imports in a cookbook about creating custom rules (#8031)
+* docs: fix deprecated string interpolation style (#8036)
+* docs: global_namespace_import - simplify allowed config types (#8023)
+* feat(GroupImportFixer): Ability to configure which type of imports should be grouped (#8046)
+* fix: clear `Tokens::$blockStartCache` and `Tokens::$blockEndCache` when calling `Tokens::setCode` (#8051)
+* fix: correctly handle PHP closing tag with `simplified_null_return` (#8049)
+* fix: `ConstantCaseFixer` - do not change namespace (#8004)
+* fix: `PhpUnitAttributesFixer` - do not add attribute if already present (#8043)
+* fix: `PhpUnitSizeClassFixer` - do not add annotation when there are attributes (#8044)
+* fix: `PhpUnitTestClassRequiresCoversFixer` - attribute detection when class is `readonly` (#8042)
+
+Changelog for v3.57.2
+---------------------
+
+* docs: better ConfigurableFixer allowed types (#8024)
+* docs: Improve Docker usage example (#8021)
+* feat: Report used memory to 2 decimal digits only (#8017)
+* fix: Support named args in `ParallelConfigFactory::detect()` (#8026)
+* fix: `php_unit_test_class_requires_covers` Attribute detection when class is final (#8016)
+
+Changelog for v3.57.1
+---------------------
+
+* chore: update PHPDoc in `Preg::matchAll` (#8012)
+* fix: Runner - handle no files while in parallel runner (#8015)
+
+Changelog for v3.57.0
+---------------------
+
+* feat: Ability to run Fixer with parallel runner 🎉 (#7777)
+
+Changelog for v3.56.2
+---------------------
+
+* chore: update PHPStan (#8010)
+* DX: Fix Mess Detector violations (#8007)
+* DX: Install PCov extension for local Docker (#8006)
+
+Changelog for v3.56.1
+---------------------
+
+* chore: improve PHPDoc typehints (#7994)
+* CI: Allow any integer in PHPStan error for Token's constructor (#8000)
+* fix: Better array shape in `PhpUnitDedicateAssertFixer` (#7999)
+* fix: `ConstantCaseFixer` - do not touch typed constants (#7998)
+
+Changelog for v3.56.0
+---------------------
+
+* feat: `TrailingCommaInMultilineFixer` - handle trailing comma in language constructs (#7989)
+* fix: `TrailingCommaInMultilineFixer` - language constructs should be covered by arguments, not parameters (#7990)
+* chore: remove invalid comment (#7987)
+* DX: Cache optimisation (#7985)
+
+Changelog for v3.55.0
+---------------------
+
+* feat: Introduce `OrderedAttributesFixer` (#7395)
+* chore: few SCA fixes and dev-tools update (#7969)
+* chore: fix phpdoc types (#7977)
+* chore: narrow PHPDoc types (#7979)
+* chore: Normalize implicit backslahes in single quoted strings internally (#7786)
+* chore: phpdoc - rely on strict list/tuple/assoc instead of array (#7978)
+* chore: PhpUnitDataProviderNameFixer - follow config creation pattern (#7980)
+* chore: Preg - drop half-support for array-pattern (#7976)
+* chore: re-use CodeHasher (#7984)
+* chore: RuleSetsTest - assert that Fixer is configurable (#7961)
+* chore: sugar syntax (#7986)
+* chore: Tokens should be always a list (#7698)
+* CI: Ad-hoc fix for MacOS jobs (#7970)
+* CI: Fix calculating diff between branches in PRs (#7973)
+* DX: allow to enforce cache mechanism by env var (#7983)
+* DX: do not typehint fixed-length arrays as lists (#7974)
+* DX: Prevent having deprecated fixers listed as successors of other deprecated fixers (#7967)
+* DX: Resolve/Ignore PHPStan issues on level 6 + bump to level 7 with new baseline (#7971)
+* DX: use `list` type in PHPDoc (#7975)
+* fix: `PhpUnitAttributesFixer` - fix for `#[RequiresPhp]` exceeding its constructor parameters (#7966)
+* test: don't count comment after class as another classy element (#7982)
+
+Changelog for v3.54.0
+---------------------
+
+* feat: introduce `PhpUnitAttributesFixer` (#7831)
+* chore: Properly determine self-approval trigger commit (#7936)
+* chore: Revert ref for self-approval Git checkout (#7944)
+* CI: check if proper array key is declared (#7912)
+* DX: cleanup `FullyQualifiedStrictTypesFixerTest` (#7954)
+* DX: cleanup `PhpdocNoAccessFixerTest` (#7933)
+* DX: cleanup `PhpUnitMethodCasingFixerTest` (#7948)
+* DX: cleanup `PhpUnitStrictFixerTest` (#7938)
+* DX: Improve internal dist config for Fixer (#7952)
+* DX: Improve issue templates (#7942)
+* DX: there is no namespace if there is no PHP code (#7953)
+* DX: update .gitattributes (#7931)
+* fix: Remove Infection during Docker release (#7937)
+* fix: `FullyQualifiedStrictTypesFixer` - do not add imports before PHP opening tag (#7955)
+* fix: `PhpUnitMethodCasingFixer` - do not double underscore (#7949)
+* fix: `PhpUnitTestClassRequiresCoversFixer` - do not add annotation when there are attributes (#7880)
+* test: Ignore PHP version related mutations (#7935)
+
+Changelog for v3.53.0
+---------------------
+
+* chore: Use `list` over `array` in more places (#7905)
+* CI: allow for self-approvals for maintainers (#7921)
+* CI: Improve Infection setup (#7913)
+* CI: no need to trigger enable auto-merge when self-approve (#7929)
+* DX: reduce `array_filter` function usages (#7923)
+* DX: remove duplicated character from `trim` call (#7930)
+* DX: update actions producing warnings (#7925)
+* DX: update actions producing warnings (#7928)
+* DX: update `phpstan/phpstan-strict-rules` (#7924)
+* feat: Add trailing comma in multiline to PER-CS 2.0 (#7916)
+* feat: Introduce `AttributeAnalysis` (#7909)
+* feat: `@PHP84Migration` introduction (#7774)
+* fix: Constant invocation detected in typed constants (#7892)
+* fix: `PhpdocArrayTypeFixer` - JIT stack limit exhausted (#7895)
+* test: Introduce Infection for mutation tests (#7874)
+
 Changelog for v3.52.1
 ---------------------
 

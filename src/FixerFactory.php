@@ -89,7 +89,7 @@ final class FixerFactory
             /** @var SplFileInfo $file */
             foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer')->name('*Fixer.php')->depth(1) as $file) {
                 $relativeNamespace = $file->getRelativePath();
-                $fixerClass = 'PhpCsFixer\\Fixer\\'.('' !== $relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
+                $fixerClass = 'PhpCsFixer\Fixer\\'.('' !== $relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
                 $builtInFixers[] = $fixerClass;
             }
         }

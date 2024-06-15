@@ -33,7 +33,7 @@ use Symfony\Component\OptionsResolver\Options;
 final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private static array $toTypes = [
         '$this',
@@ -135,7 +135,7 @@ class Sample
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['array<string, string>'])
                 ->setNormalizer(static function (Options $options, array $value) use ($default): array {
                     $normalizedValue = [];
 

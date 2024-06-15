@@ -20,7 +20,7 @@ Configuration
 
 List of functions to ignore.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 
@@ -31,7 +31,7 @@ List of function names or sets to fix. Defined sets are ``@internal`` (all
 native functions), ``@all`` (all global functions) and ``@compiler_optimized``
 (functions that are specially optimized by Zend).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['@compiler_optimized']``
 

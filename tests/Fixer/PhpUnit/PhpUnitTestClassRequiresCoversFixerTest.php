@@ -284,11 +284,116 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'already with attribute CoversClass' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with attribute CoversNothing' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with attribute CoversNothing with leading slash' => [
+            <<<'PHP'
+                <?php
+                #[\PHPUnit\Framework\Attributes\CoversNothing]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with imported attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\TestCase;
+                use PHPUnit\Framework\Attributes\CoversClass;
+                #[CoversClass(Foo::class)]
+                class FooTest extends TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially imported attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes;
+                #[Attributes\CoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with aliased attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversClass as PHPUnitCoversClass;
+                #[PHPUnitCoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially aliased attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+                #[PHPUnitAttributes\CoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'with attribute from different namespace' => [
+            <<<'PHP'
+                <?php
+                use Foo\CoversClass;
+                use PHPUnit\Framework\Attributes\CoversClass as PHPUnitCoversClass;
+                /**
+                 * @coversNothing
+                 */
+                #[CoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+            <<<'PHP'
+                <?php
+                use Foo\CoversClass;
+                use PHPUnit\Framework\Attributes\CoversClass as PHPUnitCoversClass;
+                #[CoversClass(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'with attribute on final class' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                final class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+    }
+
+    /**
      * @dataProvider provideFix82Cases
      *
      * @requires PHP 8.2
      */
-    public function testFix82(string $expected, ?string $input): void
+    public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -314,6 +419,22 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                     abstract readonly class FooTest extends \PHPUnit_Framework_TestCase {}
             ',
             null,
+        ];
+
+        yield 'with attribute on readonly class' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                readonly class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'with attribute on final readonly class' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversNothing]
+                final readonly class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
         ];
     }
 }

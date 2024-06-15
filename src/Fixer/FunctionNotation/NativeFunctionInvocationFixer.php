@@ -202,10 +202,10 @@ $c = get_class($d);
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('exclude', 'List of functions to ignore.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                        if ('' === trim($functionName) || trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
@@ -218,10 +218,10 @@ $c = get_class($d);
                 ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder('include', 'List of function names or sets to fix. Defined sets are `@internal` (all native functions), `@all` (all global functions) and `@compiler_optimized` (functions that are specially optimized by Zend).'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                        if ('' === trim($functionName) || trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
@@ -385,17 +385,18 @@ $c = get_class($d);
     }
 
     /**
-     * @param string[] $functionNames
+     * @param list<string> $functionNames
      *
      * @return array<string, true> all function names lower cased
      */
     private function normalizeFunctionNames(array $functionNames): array
     {
-        foreach ($functionNames as $index => $functionName) {
-            $functionNames[strtolower($functionName)] = true;
-            unset($functionNames[$index]);
+        $result = [];
+
+        foreach ($functionNames as $functionName) {
+            $result[strtolower($functionName)] = true;
         }
 
-        return $functionNames;
+        return $result;
     }
 }

@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    private const REGEX_CLASS = '(?:\\\\?+'.TypeExpression::REGEX_IDENTIFIER
+    private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
         .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
 
     /**

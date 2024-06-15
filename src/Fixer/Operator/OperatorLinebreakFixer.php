@@ -40,7 +40,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
     private string $position = 'beginning';
 
     /**
-     * @var list<list<int|string>|string>
+     * @var list<array{int}|string>
      */
     private array $operators = [];
 
@@ -144,7 +144,7 @@ function foo() {
     }
 
     /**
-     * @param int[] $operatorIndices
+     * @param non-empty-list<int> $operatorIndices
      */
     private function fixOperatorLinebreak(Tokens $tokens, array $operatorIndices): void
     {
@@ -176,7 +176,7 @@ function foo() {
     }
 
     /**
-     * @param int[] $operatorIndices
+     * @param non-empty-list<int> $operatorIndices
      */
     private function fixMoveToTheBeginning(Tokens $tokens, array $operatorIndices): void
     {
@@ -201,7 +201,7 @@ function foo() {
     }
 
     /**
-     * @param int[] $operatorIndices
+     * @param non-empty-list<int> $operatorIndices
      */
     private function fixMoveToTheEnd(Tokens $tokens, array $operatorIndices): void
     {
@@ -226,9 +226,9 @@ function foo() {
     }
 
     /**
-     * @param int[] $indices
+     * @param list<int> $indices
      *
-     * @return Token[]
+     * @return list<Token>
      */
     private function getReplacementsAndClear(Tokens $tokens, array $indices, int $direction): array
     {

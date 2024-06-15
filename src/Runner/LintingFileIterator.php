@@ -24,7 +24,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
  *
  * @extends \IteratorIterator<mixed, \SplFileInfo, \Traversable<\SplFileInfo>>
  */
-final class FileLintingIterator extends \IteratorIterator
+final class LintingFileIterator extends \IteratorIterator implements LintingResultAwareFileIteratorInterface
 {
     /**
      * @var null|LintingResultInterface

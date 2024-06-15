@@ -230,7 +230,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             'The tags that should be aligned. Allowed values are tags with name (`\''.implode('\', \'', self::TAGS_WITH_NAME).'\'`), tags with method signature (`\''.implode('\', \'', self::TAGS_WITH_METHOD_SIGNATURE).'\'`) and any custom tag with description (e.g. `@tag <desc>`).'
         );
         $tags
-            ->setAllowedTypes(['array'])
+            ->setAllowedTypes(['string[]'])
             ->setDefault(self::DEFAULT_TAGS)
         ;
 
@@ -245,7 +245,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             'spacing',
             'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`. If you want to define default spacing to more than 1 space use `_default` key in config array, e.g.: `[\'tagA\' => spacingForA, \'tagB\' => spacingForB, \'_default\' => spacingForAllOthers]`.'
         );
-        $spacing->setAllowedTypes(['int', 'int[]'])
+        $spacing->setAllowedTypes(['int', 'array<string, int>'])
             ->setAllowedValues([$allowPositiveIntegers])
             ->setDefault(self::DEFAULT_SPACING)
         ;

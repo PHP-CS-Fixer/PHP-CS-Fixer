@@ -53,7 +53,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Which elements to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($elements)])
                 ->setDefault($elements)
                 ->getOption(),
@@ -95,7 +95,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
 
     private function shouldBeCleared(Tokens $tokens, int $openIndex): bool
     {
-        /** @var string[] $elements */
+        /** @var list<string> $elements */
         $elements = $this->configuration['elements'];
 
         if ($tokens[$openIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {

@@ -164,7 +164,7 @@ $c = 3;
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('comment_types', 'List of comment types to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(['asterisk', 'hash'])])
                 ->setDefault(['asterisk', 'hash'])
                 ->getOption(),

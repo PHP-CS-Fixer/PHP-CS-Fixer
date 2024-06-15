@@ -12,7 +12,7 @@ Configuration
 
 List of tags to fix with their expected casing.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['inheritDoc']``
 

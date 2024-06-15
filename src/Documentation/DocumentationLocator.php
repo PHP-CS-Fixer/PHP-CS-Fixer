@@ -43,7 +43,7 @@ final class DocumentationLocator
     public function getFixerDocumentationFilePath(FixerInterface $fixer): string
     {
         return $this->getFixersDocumentationDirectoryPath().'/'.Preg::replaceCallback(
-            '/^.*\\\\(.+)\\\\(.+)Fixer$/',
+            '/^.*\\\(.+)\\\(.+)Fixer$/',
             static fn (array $matches): string => Utils::camelCaseToUnderscore($matches[1]).'/'.Utils::camelCaseToUnderscore($matches[2]),
             \get_class($fixer)
         ).'.rst';

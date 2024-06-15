@@ -31,12 +31,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionToConstantFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string, Token[]>
+     * @var array<string, list<Token>>
      */
     private static $availableFunctions;
 
     /**
-     * @var array<string, Token[]>
+     * @var array<string, list<Token>>
      */
     private array $functionsFixMap;
 
@@ -144,7 +144,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('functions', 'List of function names to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($functionNames)])
                 ->setDefault([
                     'get_called_class',
@@ -159,7 +159,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * @param Token[] $replacements
+     * @param list<Token> $replacements
      */
     private function fixFunctionCallToConstant(Tokens $tokens, int $index, int $braceOpenIndex, int $braceCloseIndex, array $replacements): void
     {

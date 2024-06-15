@@ -33,7 +33,7 @@ final class RuleSetDocumentationGenerator
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      */
     public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers): string
     {

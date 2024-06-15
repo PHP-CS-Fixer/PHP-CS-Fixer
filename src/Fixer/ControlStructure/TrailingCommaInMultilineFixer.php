@@ -95,7 +95,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder('elements', sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS])])
                 ->setDefault([self::ELEMENTS_ARRAYS])
                 ->setNormalizer(static function (Options $options, array $value) {
@@ -142,7 +142,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
             if ($fixArguments
-                && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC]])
+                && $tokens[$prevIndex]->equalsAny([']', [T_CLASS], [T_STRING], [T_VARIABLE], [T_STATIC], [T_ISSET], [T_UNSET], [T_LIST]])
                 && !$tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
             ) {
                 $this->fixBlock($tokens, $index);
@@ -153,7 +153,8 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             if (
                 $fixParameters
                 && (
-                    $tokens[$prevIndex]->isGivenKind(T_STRING) && $tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
+                    $tokens[$prevIndex]->isGivenKind(T_STRING)
+                    && $tokens[$prevPrevIndex]->isGivenKind(T_FUNCTION)
                     || $tokens[$prevIndex]->isGivenKind([T_FN, T_FUNCTION])
                 )
             ) {

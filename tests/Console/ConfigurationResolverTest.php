@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
@@ -30,6 +31,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -46,6 +49,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ConfigurationResolverTest extends TestCase
 {
+    public function testResolveParallelConfig(): void
+    {
+        $parallelConfig = new ParallelConfig();
+        $config = (new Config())->setParallelConfig($parallelConfig);
+        $resolver = $this->createConfigurationResolver([], $config);
+
+        self::assertSame($parallelConfig, $resolver->getParallelConfig());
+    }
+
+    public function testDefaultParallelConfigFallbacksToSequential(): void
+    {
+        $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
+        $defaultParallelConfig = ParallelConfigFactory::sequential();
+
+        self::assertSame($defaultParallelConfig->getMaxProcesses(), $parallelConfig->getMaxProcesses());
+        self::assertSame($defaultParallelConfig->getFilesPerProcess(), $parallelConfig->getFilesPerProcess());
+        self::assertSame($defaultParallelConfig->getProcessTimeout(), $parallelConfig->getProcessTimeout());
+    }
+
+    public function testCliSequentialOptionOverridesParallelConfig(): void
+    {
+        $config = (new Config())->setParallelConfig(new ParallelConfig(10));
+        $resolver = $this->createConfigurationResolver(['sequential' => true], $config);
+
+        self::assertSame(1, $resolver->getParallelConfig()->getMaxProcesses());
+    }
+
     public function testSetOptionWithUndefinedOption(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -1142,7 +1172,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -1378,7 +1408,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     private function createConfigurationResolver(
         array $options,
-        ?Config $config = null,
+        ?ConfigInterface $config = null,
         string $cwdPath = '',
         ?ToolInfoInterface $toolInfo = null
     ): ConfigurationResolver {

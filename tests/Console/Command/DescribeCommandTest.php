@@ -525,7 +525,7 @@ Fixing examples:
 
                 return new FixerConfigurationResolver([
                     (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-                        ->setAllowedTypes(['array'])
+                        ->setAllowedTypes(['string[]'])
                         ->setAllowedValues([new AllowedValueSubset($functionNames)])
                         ->setDefault($functionNames)
                         ->getOption(),

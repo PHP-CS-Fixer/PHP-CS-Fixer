@@ -1528,6 +1528,26 @@ abstract class Baz
     {
         yield [
             [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const string FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const int FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const bool FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 13 => false, 18 => true],
+            '<?php class Foo { public const array FOO = [BAR]; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
             '<?php class Foo { public const A FOO = BAR; }',
         ];
 

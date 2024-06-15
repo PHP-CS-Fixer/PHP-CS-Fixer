@@ -188,7 +188,7 @@ namespace {
     {
         $constantChecker = static function (array $value): bool {
             foreach ($value as $constantName) {
-                if (!\is_string($constantName) || '' === trim($constantName) || trim($constantName) !== $constantName) {
+                if (trim($constantName) !== $constantName) {
                     throw new InvalidOptionsException(sprintf(
                         'Each element must be a non-empty, trimmed string, got "%s" instead.',
                         get_debug_type($constantName)
@@ -205,12 +205,12 @@ namespace {
                 ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder('include', 'List of additional constants to fix.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([$constantChecker])
                 ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder('exclude', 'List of constants to ignore.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([$constantChecker])
                 ->setDefault(['null', 'false', 'true'])
                 ->getOption(),

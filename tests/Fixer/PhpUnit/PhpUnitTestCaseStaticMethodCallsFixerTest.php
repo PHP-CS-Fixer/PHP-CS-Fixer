@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Utils;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,13 +43,19 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             }
         }
 
-        self::assertSame([], $missingMethods, sprintf('The following static methods from "%s" are missing from "%s::$staticMethods"', TestCase::class, PhpUnitTestCaseStaticMethodCallsFixer::class));
+        self::assertSame([], $missingMethods, sprintf(
+            'The following static methods from "%s" are missing from "%s::$staticMethods": %s',
+            TestCase::class,
+            PhpUnitTestCaseStaticMethodCallsFixer::class,
+            // `Utils::naturalLanguageJoin` does not accept empty array, so let's use it only if there's an actual difference.
+            [] === $missingMethods ? '' : Utils::naturalLanguageJoin($missingMethods)
+        ));
     }
 
     public function testWrongConfigTypeForMethodsKey(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/Unexpected "methods" key, expected any of ".*", got "integer#123"\.$/');
+        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".');
 
         $this->fixer->configure(['methods' => [123 => 1]]);
     }
@@ -56,7 +63,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     public function testWrongConfigTypeForMethodsValue(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/Unexpected value for method "assertSame", expected any of ".*", got "integer#123"\.$/');
+        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".');
 
         $this->fixer->configure(['methods' => ['assertSame' => 123]]);
     }

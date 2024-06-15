@@ -25,61 +25,64 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
 {
-    public function testFixAccess(): void
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
     {
-        $expected = <<<'EOF'
-            <?php
-                /**
-                 */
-
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
-                /**
-                 * @access public
-                 */
-
-            EOF;
-
         $this->doTest($expected, $input);
     }
 
-    public function testFixMany(): void
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixCases(): iterable
     {
-        $expected = <<<'EOF'
-            <?php
-            /**
-             * Hello!
-             * @notaccess bar
-             */
+        yield 'access' => [
+            <<<'PHP'
+                <?php
+                    /**
+                     */
 
-            EOF;
+                PHP,
+            <<<'PHP'
+                <?php
+                    /**
+                     * @access public
+                     */
 
-        $input = <<<'EOF'
-            <?php
-            /**
-             * Hello!
-             * @access private
-             * @notaccess bar
-             * @access foo
-             */
+                PHP
+        ];
 
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testDoNothing(): void
-    {
-        $expected = <<<'EOF'
-            <?php
+        yield 'many' => [
+            <<<'PHP'
+                <?php
                 /**
-                 * @var access
+                 * Hello!
+                 * @notaccess bar
                  */
 
-            EOF;
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * Hello!
+                 * @access private
+                 * @notaccess bar
+                 * @access foo
+                 */
 
-        $this->doTest($expected);
+                PHP
+        ];
+
+        yield 'do nothing' => [
+            <<<'PHP'
+                <?php
+                    /**
+                     * @var access
+                     */
+
+                PHP
+        ];
     }
 }

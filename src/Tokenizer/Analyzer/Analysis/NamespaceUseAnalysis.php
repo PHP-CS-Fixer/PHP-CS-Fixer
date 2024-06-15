@@ -68,6 +68,8 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 
     /**
      * The type of import: class, function or constant.
+     *
+     * @var self::TYPE_*
      */
     private int $type;
 
@@ -140,6 +142,9 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         return $this->chunkEndIndex;
     }
 
+    /**
+     * @return self::TYPE_*
+     */
     public function getType(): int
     {
         return $this->type;

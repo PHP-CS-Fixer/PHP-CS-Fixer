@@ -173,7 +173,7 @@ namespace Foo {
 
         yield [
             '<?php
-            namespace Foo8\\A;
+            namespace Foo8\A;
                 function Bar(){}
              ?>',
             "<?php

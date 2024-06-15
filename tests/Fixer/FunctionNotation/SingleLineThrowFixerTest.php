@@ -82,15 +82,15 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw new SomeVendor\\Exception("Foo.");',
-            '<?php throw new SomeVendor\\Exception(
+            '<?php throw new SomeVendor\Exception("Foo.");',
+            '<?php throw new SomeVendor\Exception(
                 "Foo."
             );',
         ];
 
         yield [
-            '<?php throw new \SomeVendor\\Exception("Foo.");',
-            '<?php throw new \SomeVendor\\Exception(
+            '<?php throw new \SomeVendor\Exception("Foo.");',
+            '<?php throw new \SomeVendor\Exception(
                 "Foo."
             );',
         ];

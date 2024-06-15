@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PhpCsFixer.
+--RULESET--
+{"@PhpCsFixer": true}

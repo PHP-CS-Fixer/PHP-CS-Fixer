@@ -88,10 +88,10 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
                 '"' === $content[0]
                 && (true === $this->configuration['strings_containing_single_quote_chars'] || !str_contains($content, "'"))
                 // regex: odd number of backslashes, not followed by double quote or dollar
-                && !Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
+                && !Preg::match('/(?<!\\\)(?:\\\{2})*\\\(?!["$\\\])/', $content)
             ) {
                 $content = substr($content, 1, -1);
-                $content = str_replace(['\\"', '\\$', '\''], ['"', '$', '\\\''], $content);
+                $content = str_replace(['\"', '\$', '\''], ['"', '$', '\\\''], $content);
                 $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\'']);
             }
         }

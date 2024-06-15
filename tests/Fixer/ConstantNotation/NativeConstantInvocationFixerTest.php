@@ -43,13 +43,10 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidExcludeConfigurationElement($element): void
+    public function testConfigureRejectsInvalidExcludeConfigurationElement($element, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            get_debug_type($element)
-        ));
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->fixer->configure([
             'exclude' => [
@@ -63,13 +60,12 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidIncludeConfigurationElement($element): void
+    public function testConfigureRejectsInvalidIncludeConfigurationElement($element, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            get_debug_type($element)
-        ));
+        $this->expectExceptionMessage(
+            str_replace('"exclude"', '"include"', $expectedExceptionMessage)
+        );
 
         $this->fixer->configure([
             'include' => [
@@ -80,21 +76,45 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
     public static function provideInvalidConfigurationElementCases(): iterable
     {
-        yield 'null' => [null];
+        yield 'null' => [
+            null,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "null".',
+        ];
 
-        yield 'false' => [false];
+        yield 'false' => [
+            false,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
 
-        yield 'true' => [true];
+        yield 'true' => [
+            true,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "bool".',
+        ];
 
-        yield 'int' => [1];
+        yield 'int' => [
+            1,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
+        ];
 
-        yield 'array' => [[]];
+        yield 'array' => [
+            [],
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "array".',
+        ];
 
-        yield 'float' => [0.1];
+        yield 'float' => [
+            0.1,
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "float".',
+        ];
 
-        yield 'object' => [new \stdClass()];
+        yield 'object' => [
+            new \stdClass(),
+            '[native_constant_invocation] Invalid configuration: The option "exclude" with value array is expected to be of type "string[]", but one of the elements is of type "stdClass".',
+        ];
 
-        yield 'not-trimmed' => ['  M_PI  '];
+        yield 'not-trimmed' => [
+            '  M_PI  ',
+            '[native_constant_invocation] Invalid configuration: Each element must be a non-empty, trimmed string, got "string" instead.',
+        ];
     }
 
     public function testConfigureResetsExclude(): void
@@ -106,7 +126,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ]);
 
         $before = '<?php var_dump(m_pi, M_PI);';
-        $after = '<?php var_dump(m_pi, \\M_PI);';
+        $after = '<?php var_dump(m_pi, \M_PI);';
 
         $this->doTest($before);
 
@@ -161,7 +181,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
         yield ['<?php namespace Foo; use Bar as M_PI;'];
 
-        yield ['<?php echo Foo\\M_PI\\Bar;'];
+        yield ['<?php echo Foo\M_PI\Bar;'];
 
         yield ['<?php M_PI::foo();'];
 
@@ -176,19 +196,19 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         yield ['<?php M_PI: goto M_PI;'];
 
         yield [
-            '<?php echo \\M_PI;',
+            '<?php echo \M_PI;',
             '<?php echo M_PI;',
         ];
 
         yield [
-            '<?php namespace Foo; use M_PI; echo \\M_PI;',
+            '<?php namespace Foo; use M_PI; echo \M_PI;',
             '<?php namespace Foo; use M_PI; echo M_PI;',
         ];
 
         yield [
             // Here we are just testing the algorithm.
             // A user likely would add this M_PI to its excluded list.
-            '<?php namespace M_PI; const M_PI = 1; return \\M_PI;',
+            '<?php namespace M_PI; const M_PI = 1; return \M_PI;',
             '<?php namespace M_PI; const M_PI = 1; return M_PI;',
         ];
 
@@ -234,12 +254,12 @@ try {
     public static function provideFixWithConfiguredCustomIncludeCases(): iterable
     {
         yield [
-            '<?php echo \\FOO_BAR_BAZ . \\M_PI;',
+            '<?php echo \FOO_BAR_BAZ . \M_PI;',
             '<?php echo FOO_BAR_BAZ . M_PI;',
         ];
 
         yield [
-            '<?php class Foo { public function bar($foo) { return \\FOO_BAR_BAZ . \\M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return \FOO_BAR_BAZ . \M_PI; } }',
             '<?php class Foo { public function bar($foo) { return FOO_BAR_BAZ . M_PI; } }',
         ];
     }
@@ -262,12 +282,12 @@ try {
     public static function provideFixWithConfiguredOnlyIncludeCases(): iterable
     {
         yield [
-            '<?php echo PHP_SAPI . FOO_BAR_BAZ . \\M_PI;',
+            '<?php echo PHP_SAPI . FOO_BAR_BAZ . \M_PI;',
             '<?php echo PHP_SAPI . FOO_BAR_BAZ . M_PI;',
         ];
 
         yield [
-            '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . \\M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . \M_PI; } }',
             '<?php class Foo { public function bar($foo) { return PHP_SAPI . FOO_BAR_BAZ . M_PI; } }',
         ];
     }
@@ -289,12 +309,12 @@ try {
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
         yield [
-            '<?php echo \\PHP_SAPI . M_PI;',
+            '<?php echo \PHP_SAPI . M_PI;',
             '<?php echo PHP_SAPI . M_PI;',
         ];
 
         yield [
-            '<?php class Foo { public function bar($foo) { return \\PHP_SAPI . M_PI; } }',
+            '<?php class Foo { public function bar($foo) { return \PHP_SAPI . M_PI; } }',
             '<?php class Foo { public function bar($foo) { return PHP_SAPI . M_PI; } }',
         ];
     }
@@ -500,17 +520,17 @@ try {
     {
         $this->doTest(
             '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
+echo \/**/M_PI;
+echo \ M_PI;
+echo \#
 #
 M_PI;
-echo \\M_PI;
+echo \M_PI;
 ',
             '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
+echo \/**/M_PI;
+echo \ M_PI;
+echo \#
 #
 M_PI;
 echo M_PI;
@@ -586,12 +606,14 @@ echo M_PI;
                 protected const string|int C2 = \PHP_EOL;
                 private const string|(A&B) C3 = BAR;
                 public const EnumA C4 = EnumA::FOO;
+                private const array CONNECTION_TIMEOUT = [\'foo\'];
             }',
             '<?php class Foo {
                 public const string C1 = PHP_EOL;
                 protected const string|int C2 = \PHP_EOL;
                 private const string|(A&B) C3 = \BAR;
                 public const EnumA C4 = EnumA::FOO;
+                private const array CONNECTION_TIMEOUT = [\'foo\'];
             }',
         ];
     }

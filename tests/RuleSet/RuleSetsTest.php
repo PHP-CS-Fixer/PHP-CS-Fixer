@@ -14,12 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -187,7 +186,9 @@ Integration of %s.
     {
         $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
 
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
+
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
@@ -283,7 +284,7 @@ Integration of %s.
     private function getDefaultPHPUnitTargetOfRule(string $ruleName): ?string
     {
         $targetVersion = null;
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         if ($fixer instanceof ConfigurableFixerInterface) {
             foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
@@ -296,26 +297,5 @@ Integration of %s.
         }
 
         return $targetVersion;
-    }
-
-    private static function getFixerByName(string $name): AbstractFixer
-    {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
-        $factory->useRuleSet(new RuleSet([$name => true]));
-
-        $fixers = $factory->getFixers();
-
-        if (0 === \count($fixers)) {
-            throw new \RuntimeException('FixerFactory unexpectedly returned empty array.');
-        }
-
-        $fixer = current($fixers);
-
-        if (!$fixer instanceof AbstractFixer) {
-            throw new \RuntimeException(sprintf('Fixer class for "%s" rule does not extend "%s".', $name, AbstractFixer::class));
-        }
-
-        return $fixer;
     }
 }

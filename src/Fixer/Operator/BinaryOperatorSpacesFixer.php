@@ -88,7 +88,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private const SUPPORTED_OPERATORS = [
         '=',
@@ -358,7 +358,7 @@ $array = [
                 ->setAllowedValues(self::$allowedValues)
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: '.Utils::naturalLanguageJoinWithBackticks(self::SUPPORTED_OPERATORS).'.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['array<string, ?string>'])
                 ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $operator => $value) {
                         if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {

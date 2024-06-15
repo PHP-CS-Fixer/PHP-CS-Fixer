@@ -76,7 +76,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
                 continue;
             }
 
-            $lines = Preg::split('/(\\R+)/', $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+            $lines = Preg::split('/(\R+)/', $token->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
             $linesSize = \count($lines);
 
             // fix only multiline whitespaces or singleline whitespaces at the end of file

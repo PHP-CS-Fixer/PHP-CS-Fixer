@@ -164,21 +164,21 @@ if (count($x)) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('import_constants', 'Whether to import, not import or ignore global constants.'))
                 ->setDefault(null)
-                ->setAllowedValues([true, false, null])
+                ->setAllowedTypes(['null', 'bool'])
                 ->getOption(),
             (new FixerOptionBuilder('import_functions', 'Whether to import, not import or ignore global functions.'))
                 ->setDefault(null)
-                ->setAllowedValues([true, false, null])
+                ->setAllowedTypes(['null', 'bool'])
                 ->getOption(),
             (new FixerOptionBuilder('import_classes', 'Whether to import, not import or ignore global classes.'))
                 ->setDefault(true)
-                ->setAllowedValues([true, false, null])
+                ->setAllowedTypes(['null', 'bool'])
                 ->getOption(),
         ]);
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      *
      * @return array<string, string>
      */
@@ -249,7 +249,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      *
      * @return array<string, string>
      */
@@ -299,7 +299,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      *
      * @return array<string, string>
      */
@@ -307,7 +307,7 @@ if (count($x)) {
     {
         [$global, $other] = $this->filterUseDeclarations($useDeclarations, static fn (NamespaceUseAnalysis $declaration): bool => $declaration->isClass(), false);
 
-        /** @var DocBlock[] $docBlocks */
+        /** @var array<int, DocBlock> $docBlocks */
         $docBlocks = [];
 
         // find class declarations and class usages in docblocks
@@ -413,7 +413,7 @@ if (count($x)) {
     /**
      * Removes the leading slash at the given indices (when the name is not already used).
      *
-     * @param int[]                      $indices
+     * @param list<int>                  $indices
      * @param array<string, string|true> $global
      * @param array<string, true>        $other
      *
@@ -424,6 +424,7 @@ if (count($x)) {
         $imports = [];
 
         foreach ($indices as $index) {
+            /** @var class-string $name */
             $name = $tokens[$index]->getContent();
             $checkName = $caseSensitive ? $name : strtolower($name);
 
@@ -444,7 +445,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      */
     private function fullyQualifyConstants(Tokens $tokens, array $useDeclarations): void
     {
@@ -484,7 +485,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      */
     private function fullyQualifyFunctions(Tokens $tokens, array $useDeclarations): void
     {
@@ -524,7 +525,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $useDeclarations
+     * @param list<NamespaceUseAnalysis> $useDeclarations
      */
     private function fullyQualifyClasses(Tokens $tokens, array $useDeclarations): void
     {
@@ -582,7 +583,7 @@ if (count($x)) {
     }
 
     /**
-     * @param NamespaceUseAnalysis[] $declarations
+     * @param list<NamespaceUseAnalysis> $declarations
      *
      * @return array{0: array<string, string|true>, 1: array<string, true>}
      */

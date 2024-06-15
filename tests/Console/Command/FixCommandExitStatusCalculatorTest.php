@@ -30,13 +30,25 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
     /**
      * @dataProvider provideCalculateCases
      */
-    public function testCalculate(int $expected, bool $isDryRun, bool $hasChangedFiles, bool $hasInvalidErrors, bool $hasExceptionErrors, bool $hasLintErrorsAfterFixing): void
-    {
+    public function testCalculate(
+        int $expected,
+        bool $isDryRun,
+        bool $hasChangedFiles,
+        bool $hasInvalidErrors,
+        bool $hasExceptionErrors,
+        bool $hasLintErrorsAfterFixing
+    ): void {
         $calculator = new FixCommandExitStatusCalculator();
 
         self::assertSame(
             $expected,
-            $calculator->calculate($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors, $hasLintErrorsAfterFixing)
+            $calculator->calculate(
+                $isDryRun,
+                $hasChangedFiles,
+                $hasInvalidErrors,
+                $hasExceptionErrors,
+                $hasLintErrorsAfterFixing
+            )
         );
     }
 

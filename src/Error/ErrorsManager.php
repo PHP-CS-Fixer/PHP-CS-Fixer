@@ -59,6 +59,16 @@ final class ErrorsManager
     }
 
     /**
+     * Returns errors reported for specified path.
+     *
+     * @return list<Error>
+     */
+    public function forPath(string $path): array
+    {
+        return array_values(array_filter($this->errors, static fn (Error $error): bool => $path === $error->getFilePath()));
+    }
+
+    /**
      * Returns true if no errors were reported.
      */
     public function isEmpty(): bool

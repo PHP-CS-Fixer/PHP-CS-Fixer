@@ -102,6 +102,9 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        /** @var list<string> */
+        $order = $this->configuration['order'];
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -111,7 +114,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
             $content = $token->getContent();
 
             // sort annotations
-            $successors = $this->configuration['order'];
+            $successors = $order;
             while (\count($successors) >= 3) {
                 $predecessor = array_shift($successors);
                 $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
@@ -119,7 +122,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
             // we're parsing the content last time to make sure the internal
             // state of the docblock is correct after the modifications
-            $predecessors = $this->configuration['order'];
+            $predecessors = $order;
             $last = array_pop($predecessors);
             $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
@@ -131,8 +134,8 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * Move all given annotations in before given set of annotations.
      *
-     * @param string   $move   Tag of annotations that should be moved
-     * @param string[] $before Tags of annotations that should moved annotations be placed before
+     * @param string       $move   Tag of annotations that should be moved
+     * @param list<string> $before Tags of annotations that should moved annotations be placed before
      */
     private function moveAnnotationsBefore(string $move, array $before, string $content): string
     {
@@ -170,8 +173,8 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * Move all given annotations after given set of annotations.
      *
-     * @param string   $move  Tag of annotations that should be moved
-     * @param string[] $after Tags of annotations that should moved annotations be placed after
+     * @param string       $move  Tag of annotations that should be moved
+     * @param list<string> $after Tags of annotations that should moved annotations be placed after
      */
     private function moveAnnotationsAfter(string $move, array $after, string $content): string
     {

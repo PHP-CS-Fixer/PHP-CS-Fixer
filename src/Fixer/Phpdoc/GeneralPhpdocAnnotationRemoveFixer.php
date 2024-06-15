@@ -127,7 +127,7 @@ function foo() {}
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('annotations', 'List of annotations to remove, e.g. `["author"]`.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Should annotations be case sensitive.'))

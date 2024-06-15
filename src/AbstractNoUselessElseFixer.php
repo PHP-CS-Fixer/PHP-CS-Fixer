@@ -93,7 +93,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      *
      * @param int $index T_IF, T_ELSE, T_ELSEIF
      *
-     * @return int[]
+     * @return array{int, int}
      */
     private function getPreviousBlock(Tokens $tokens, int $index): array
     {

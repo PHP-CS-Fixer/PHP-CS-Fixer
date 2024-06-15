@@ -127,7 +127,7 @@ class InvalidName {}
         }
 
         // ignore stubs/fixtures, since they typically contain invalid files for various reasons
-        return !Preg::match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
+        return !Preg::match('{[/\\\](stub|fixture)s?[/\\\]}i', $file->getRealPath());
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

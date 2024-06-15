@@ -127,7 +127,7 @@ function returnClassName() {
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('ignored_tags', 'List of ignored tags (matched case insensitively).'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setDefault([])
                 ->getOption(),
             (new FixerOptionBuilder('allow_before_return_statement', 'Whether to allow PHPDoc before return statement.'))
@@ -158,7 +158,7 @@ function returnClassName() {
                 continue;
             }
 
-            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\\-]+)\b~', $token->getContent(), $matches)) {
+            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\-]+)\b~', $token->getContent(), $matches)) {
                 foreach ($matches[1] as $match) {
                     if (\in_array(strtolower($match), $this->ignoredTags, true)) {
                         continue 2;

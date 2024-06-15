@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
 final class Tokens extends \SplFixedArray
 {
     /**
-     * @param string[] $ignoredTags
+     * @param list<string> $ignoredTags
      *
      * @throws \InvalidArgumentException
      */
@@ -100,14 +100,14 @@ final class Tokens extends \SplFixedArray
                 }
 
                 $lastTokenEndIndex = 0;
-                foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $token) {
-                    if ($token->isType(DocLexer::T_STRING)) {
-                        $token = new Token(
-                            $token->getType(),
-                            '"'.str_replace('"', '""', $token->getContent()).'"',
-                            $token->getPosition()
-                        );
-                    }
+                foreach (\array_slice($scannedTokens, 0, $nbScannedTokensToUse) as $scannedToken) {
+                    $token = $scannedToken->isType(DocLexer::T_STRING)
+                        ? new Token(
+                            $scannedToken->getType(),
+                            '"'.str_replace('"', '""', $scannedToken->getContent()).'"',
+                            $scannedToken->getPosition()
+                        )
+                        : $scannedToken;
 
                     $missingTextLength = $token->getPosition() - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
@@ -246,7 +246,7 @@ final class Tokens extends \SplFixedArray
     public function offsetSet($index, $token): void
     {
         if (null === $token) {
-            throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "null" given.');
+            throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "null" given.');
         }
 
         if (!$token instanceof Token) {
@@ -256,7 +256,7 @@ final class Tokens extends \SplFixedArray
                 $type = \get_class($token);
             }
 
-            throw new \InvalidArgumentException(sprintf('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "%s" given.', $type));
+            throw new \InvalidArgumentException(sprintf('Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "%s" given.', $type));
         }
 
         parent::offsetSet($index, $token);

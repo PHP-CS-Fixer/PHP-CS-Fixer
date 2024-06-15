@@ -304,7 +304,7 @@ interface Bar
     }
 
     /**
-     * @return array{0: list<string|string[]>, 1: string}
+     * @return array{0: list<list<string>|string>, 1: string}
      */
     private function collectDisjunctiveNormalFormTypes(string $type): array
     {
@@ -320,7 +320,7 @@ interface Bar
     }
 
     /**
-     * @return array{0: string[], 1: string}
+     * @return array{0: list<string>, 1: string}
      */
     private function collectUnionOrIntersectionTypes(string $type): array
     {
@@ -336,13 +336,13 @@ interface Bar
     }
 
     /**
-     * @param list<string|string[]> $types
+     * @param list<list<string>|string> $types
      *
-     * @return list<string|string[]>
+     * @return ($types is list<string> ? list<string> : list<list<string>>)
      */
     private function runTypesThroughSortingAlgorithm(array $types): array
     {
-        $normalizeType = static fn (string $type): string => Preg::replace('/^\\\\?/', '', $type);
+        $normalizeType = static fn (string $type): string => Preg::replace('/^\\\?/', '', $type);
 
         usort($types, function ($a, $b) use ($normalizeType): int {
             if (\is_array($a)) {
@@ -379,9 +379,9 @@ interface Bar
     }
 
     /**
-     * @param array<int, string|string[]> $types
+     * @param list<list<string>|string> $types
      *
-     * @return array<int, Token>
+     * @return list<Token>
      */
     private function createTypeDeclarationTokens(array $types, string $glue, bool $isDisjunctive = false): array
     {

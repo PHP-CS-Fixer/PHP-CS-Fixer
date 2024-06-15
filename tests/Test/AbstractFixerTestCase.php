@@ -48,7 +48,6 @@ use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
-use PhpCsFixer\Tests\Fixer\Import\FullyQualifiedStrictTypesFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
@@ -65,7 +64,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAccessFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
@@ -82,8 +80,6 @@ use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitMethodCasingFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
@@ -326,6 +322,27 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
+    final public function testDeprecatedFixersDoNotHaveDeprecatedSuccessor(): void
+    {
+        if (!$this->fixer instanceof DeprecatedFixerInterface || [] === $this->fixer->getSuccessorsNames()) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        foreach ($this->fixer->getSuccessorsNames() as $successorName) {
+            self::assertNotInstanceOf(
+                DeprecatedFixerInterface::class,
+                TestCaseUtils::getFixerByName($successorName),
+                sprintf(
+                    'Successor fixer `%s` for deprecated fixer `%s` is deprecated itself.',
+                    $successorName,
+                    $this->fixer->getName(),
+                )
+            );
+        }
+    }
+
     /**
      * Blur filter that find candidate fixer for performance optimization to use only `insertSlices` instead of multiple `insertAt` if there is no other collection manipulation.
      */
@@ -463,7 +480,6 @@ abstract class AbstractFixerTestCase extends TestCase
             DoctrineAnnotationIndentationFixerTest::class,
             DoctrineAnnotationSpacesFixerTest::class,
             EchoTagSyntaxFixerTest::class,
-            FullyQualifiedStrictTypesFixerTest::class,
             FunctionDeclarationFixerTest::class,
             FunctionToConstantFixerTest::class,
             GeneralPhpdocTagRenameFixerTest::class,
@@ -489,7 +505,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoUselessElseFixerTest::class,
             OrderedImportsFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAccessFixerTest::class,
             PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
@@ -504,8 +519,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocVarWithoutNameFixerTest::class,
             PhpUnitConstructFixerTest::class,
             PhpUnitDedicateAssertFixerTest::class,
-            PhpUnitMethodCasingFixerTest::class,
-            PhpUnitStrictFixerTest::class,
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
@@ -557,7 +570,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     protected function createFixer(): AbstractFixer
     {
-        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
+        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 
         return new $fixerClassName();
     }

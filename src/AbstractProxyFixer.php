@@ -100,7 +100,7 @@ abstract class AbstractProxyFixer extends AbstractFixer
     }
 
     /**
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     abstract protected function createProxyFixers(): array;
 }

@@ -196,6 +196,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertObjectEquals' => true,
         'assertObjectHasAttribute' => true,
         'assertObjectHasProperty' => true,
+        'assertObjectNotEquals' => true,
         'assertObjectNotHasAttribute' => true,
         'assertObjectNotHasProperty' => true,
         'assertRegExp' => true,
@@ -315,7 +316,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     /**
-     * @var array<string, list<list<int|string>>>
+     * @var array<string, list<array{int, string}>>
      */
     private array $conversionMap = [
         self::CALL_TYPE_THIS => [[T_OBJECT_OPERATOR, '->'], [T_VARIABLE, '$this']],
@@ -372,7 +373,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->setDefault('static')
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $method => $value) {
                         if (!isset(self::STATIC_METHODS[$method])) {

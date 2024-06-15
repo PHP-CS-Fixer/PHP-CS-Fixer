@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AlignMultilineCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var null|int[]
+     * @var null|list<int>
      */
     private $tokenKinds;
 

@@ -104,7 +104,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                 'reserved_closing_markers',
                 'Reserved closing markers to be kept unchanged.'
             ))
-                ->setAllowedTypes(['array'])
+                ->setAllowedTypes(['string[]'])
                 ->setDefault(self::RESERVED_CLOSING_MARKERS)
                 ->getOption(),
             (new FixerOptionBuilder(

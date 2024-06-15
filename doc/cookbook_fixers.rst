@@ -64,6 +64,7 @@ Put this content inside:
    namespace PhpCsFixer\Fixer\Comment;
 
    use PhpCsFixer\AbstractFixer;
+   use PhpCsFixer\FixerDefinition\FixerDefinition;
    use PhpCsFixer\Tokenizer\Tokens;
 
    /**
@@ -406,6 +407,8 @@ So the fixer in the end looks like this:
    namespace PhpCsFixer\Fixer\Comment;
 
    use PhpCsFixer\AbstractFixer;
+   use PhpCsFixer\FixerDefinition\CodeSample;
+   use PhpCsFixer\FixerDefinition\FixerDefinition;
    use PhpCsFixer\Tokenizer\Tokens;
 
    /**

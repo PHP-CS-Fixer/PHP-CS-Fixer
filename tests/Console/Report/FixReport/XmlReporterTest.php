@@ -39,7 +39,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
     {
         parent::setUpBeforeClass();
 
-        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/xml.xsd');
+        $content = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/xml.xsd');
+        if (false === $content) {
+            throw new \RuntimeException('Cannot read file.');
+        }
+
+        self::$xsd = $content;
     }
 
     public static function tearDownAfterClass(): void
