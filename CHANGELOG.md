@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.59.3
+---------------------
+
+* refactor: refactor to templated trait+interface (#7988)
+
 Changelog for v3.59.2
 ---------------------
 
