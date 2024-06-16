@@ -13,6 +13,8 @@ parameters:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
     reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
+    reportPossiblyNonexistentGeneralArrayOffset: true # enabled, but huge exceptions count; example fix: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8089
+    reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
@@ -52,5 +54,9 @@ parameters:
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
             count: 1013
+        -
+            identifier: offsetAccess.notFound
+            path: .
+            count: 559
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
