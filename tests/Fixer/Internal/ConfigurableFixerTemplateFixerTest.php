@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer>
+ *
+ * @requires OS Linux|Darwin
  */
 final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
 {
