@@ -33,10 +33,9 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      *
-     * @param mixed $exceptionMessage
-     * @param mixed $configuration
+     * @param array<string, mixed> $configuration
      */
-    public function testInvalidConfiguration($exceptionMessage, $configuration): void
+    public function testInvalidConfiguration(string $exceptionMessage, array $configuration): void
     {
         $this->expectException(InvalidForEnvFixerConfigurationException::class);
         $this->expectExceptionMessage($exceptionMessage);
