@@ -109,6 +109,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
 
             $docBlock = new DocBlock($tokens[$index]->getContent());
 
+            $presentAttributes = [];
             foreach (array_reverse($docBlock->getAnnotations()) as $annotation) {
                 $annotationName = $annotation->getTag()->getName();
 
@@ -122,7 +123,11 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
                 /** @phpstan-ignore-next-line */
                 $tokensToInsert = self::{$this->fixingMap[$annotationName]}($tokens, $index, $annotation);
 
-                if (self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert)) {
+                if (!isset($presentAttributes[$annotationName])) {
+                    $presentAttributes[$annotationName] = self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert);
+                }
+
+                if ($presentAttributes[$annotationName]) {
                     continue;
                 }
 
