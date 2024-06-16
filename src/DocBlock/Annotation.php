@@ -214,9 +214,15 @@ final class Annotation
      */
     public function setTypes(array $types): void
     {
-        $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
+        $origTypesContent = $this->getTypesContent();
+        $newTypesContent = implode($this->getTypeExpression()->getTypesGlue(), $types);
+        if ($origTypesContent === $newTypesContent) {
+            return;
+        }
 
-        $this->lines[0]->setContent(Preg::replace($pattern, implode($this->getTypeExpression()->getTypesGlue(), $types), $this->lines[0]->getContent(), 1));
+        $pattern = '/'.preg_quote($origTypesContent, '/').'/';
+
+        $this->lines[0]->setContent(Preg::replace($pattern, $newTypesContent, $this->lines[0]->getContent(), 1));
 
         $this->clearCache();
     }
