@@ -55,7 +55,8 @@ final class TypeExpression
             (?<nullable>\??\h*)
             (?:
                 (?<array_shape>
-                    (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
+                    (?<array_shape_name>(?i)(?:array|list|object)(?-i))
+                    (?<array_shape_start>\h*\{\h*)
                     (?<array_shape_inners>
                         (?<array_shape_inner>
                             (?<array_shape_inner_key>(?:(?&constant)|(?&identifier)|(?&name))\h*\??\h*:\h*|)
@@ -119,7 +120,8 @@ final class TypeExpression
                 )
                 |
                 (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
-                    (?<generic_start>(?&name)\h*<\h*)
+                    (?<generic_name>(?&name))
+                    (?<generic_start>\h*<\h*)
                     (?<generic_types>
                         (?&types_inner)
                         (?:
@@ -132,7 +134,8 @@ final class TypeExpression
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
-                    (?&name)::\*?(?:(?&identifier)\*?)*
+                    (?<class_constant_name>(?&name))
+                    ::\*?(?:(?&identifier)\*?)*
                 )
                 |
                 (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
@@ -482,23 +485,40 @@ final class TypeExpression
         $this->isUnionType = false;
         $this->typesGlue = '|';
 
-        $nullableLength = \strlen($matches['nullable'][0]);
-        $index = $nullableLength;
+        if ('' !== $matches['nullable'][0]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => \strlen($matches['nullable'][0]),
+                'expression' => $this->inner(substr($matches['type'][0], \strlen($matches['nullable'][0]))),
+            ];
+        } elseif ('' !== $matches['array'][0]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner(substr($matches['type'][0], 0, -\strlen($matches['array'][0]))),
+            ];
+        } elseif ('' !== ($matches['generic'][0] ?? '') && 0 === $matches['generic'][1]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['generic_name'][0]),
+            ];
 
-        if ('' !== ($matches['generic'][0] ?? '') && $matches['generic'][1] === $nullableLength) {
             $this->parseCommaSeparatedInnerTypes(
-                $index + \strlen($matches['generic_start'][0]),
+                \strlen($matches['generic_name'][0]) + \strlen($matches['generic_start'][0]),
                 $matches['generic_types'][0]
             );
-        } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
+        } elseif ('' !== ($matches['callable'][0] ?? '') && 0 === $matches['callable'][1]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['callable_name'][0]),
+            ];
+
             $this->parseCallableTemplateInnerTypes(
-                $index + \strlen($matches['callable_name'][0])
+                \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template_start'][0]),
                 $matches['callable_template_inners'][0]
             );
 
             $this->parseCallableArgumentTypes(
-                $index + \strlen($matches['callable_name'][0])
+                \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template'][0])
                     + \strlen($matches['callable_start'][0]),
                 $matches['callable_arguments'][0]
@@ -510,13 +530,18 @@ final class TypeExpression
                     'expression' => $this->inner($matches['callable_return'][0]),
                 ];
             }
-        } elseif ('' !== ($matches['array_shape'][0] ?? '') && $matches['array_shape'][1] === $nullableLength) {
+        } elseif ('' !== ($matches['array_shape'][0] ?? '') && 0 === $matches['array_shape'][1]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['array_shape_name'][0]),
+            ];
+
             $this->parseArrayShapeInnerTypes(
-                $index + \strlen($matches['array_shape_start'][0]),
+                \strlen($matches['array_shape_name'][0]) + \strlen($matches['array_shape_start'][0]),
                 $matches['array_shape_inners'][0]
             );
-        } elseif ('' !== ($matches['parenthesized'][0] ?? '') && $matches['parenthesized'][1] === $nullableLength) {
-            $index += \strlen($matches['parenthesized_start'][0]);
+        } elseif ('' !== ($matches['parenthesized'][0] ?? '') && 0 === $matches['parenthesized'][1]) {
+            $index = \strlen($matches['parenthesized_start'][0]);
 
             if ('' !== ($matches['conditional'][0] ?? '')) {
                 if ('' !== ($matches['conditional_cond_left_types'][0] ?? '')) {
@@ -552,6 +577,11 @@ final class TypeExpression
                     'expression' => $this->inner($matches['parenthesized_types'][0]),
                 ];
             }
+        } elseif ('' !== $matches['class_constant'][0]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['class_constant_name'][0]),
+            ];
         }
     }
 

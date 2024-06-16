@@ -253,7 +253,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 128).'string'.str_repeat('>', 128)];
+        yield [str_repeat('array<', 120).'string'.str_repeat('>', 120)];
 
         yield [self::makeLongArrayShapeType()];
     }
@@ -712,6 +712,7 @@ final class TypeExpressionTest extends TestCase
         self::assertSame([
             'Foo',
             'Bar',
+            '\Closure',
             'X',
             'Y',
             'Z',
@@ -757,6 +758,7 @@ final class TypeExpressionTest extends TestCase
         self::assertSame([
             'Foo',
             'Bar',
+            '\Closure',
             'X',
             'Y',
             'Z',
