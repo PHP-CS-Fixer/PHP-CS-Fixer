@@ -1232,18 +1232,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/FixerDefinition/VersionSpecificationTest.php',
 ];
 $ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method class@anonymous/tests/FixerFactoryTest\\.php\\:223\\:\\:getRuleConfiguration\\(\\) should return array\\<string, mixed\\> but returns array\\<string, mixed\\>\\|true\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/FixerFactoryTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method class@anonymous/tests/FixerFactoryTest\\.php\\:58\\:\\:getRules\\(\\) should return array\\<string, array\\<string, mixed\\>\\|true\\> but returns array\\<string, array\\<string, mixed\\>\\|bool\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/FixerFactoryTest.php',
-];
-$ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$exception of method PHPUnit\\\\Framework\\\\TestCase\\:\\:expectException\\(\\) expects class\\-string\\<Throwable\\>, string given\\.$#',
 	'count' => 2,

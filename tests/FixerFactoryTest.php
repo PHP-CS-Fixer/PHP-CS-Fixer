@@ -57,9 +57,10 @@ final class FixerFactoryTest extends TestCase
         self::assertSame($factory, $testInstance);
 
         $ruleSet = new class([]) implements RuleSetInterface {
-            /** @var array<string, array<string, mixed>|bool> */
+            /** @var array<string, array<string, mixed>|true> */
             private array $set;
 
+            /** @param array<string, array<string, mixed>|true> $set */
             public function __construct(array $set = [])
             {
                 $this->set = $set;
@@ -236,8 +237,16 @@ final class FixerFactoryTest extends TestCase
             /**
              * @return array<string, mixed>
              */
-            public function getRuleConfiguration(string $rule): array
+            public function getRuleConfiguration(string $rule): ?array
             {
+                if (!$this->hasRule($rule)) {
+                    throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
+                }
+
+                if (true === $this->getRules()[$rule]) {
+                    return null;
+                }
+
                 return $this->getRules()[$rule];
             }
 
