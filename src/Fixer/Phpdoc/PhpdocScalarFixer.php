@@ -44,10 +44,8 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
 
     /**
      * The types to fix.
-     *
-     * @var array<string, string>
      */
-    private static array $types = [
+    private const TYPES_MAP = [
         'boolean' => 'bool',
         'callback' => 'callable',
         'double' => 'float',
@@ -114,7 +112,7 @@ function sample($a, $b, $c)
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $types = array_keys(self::$types);
+        $types = array_keys(self::TYPES_MAP);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('types', 'A list of types to fix.'))
@@ -133,7 +131,7 @@ function sample($a, $b, $c)
         }
 
         if (\in_array($type, $this->configuration['types'], true)) {
-            $type = self::$types[$type];
+            $type = self::TYPES_MAP[$type];
         }
 
         return $type.$suffix;

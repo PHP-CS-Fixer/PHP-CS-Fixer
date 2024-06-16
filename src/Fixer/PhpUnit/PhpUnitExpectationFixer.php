@@ -230,6 +230,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $argStart = array_keys($arguments)[$cnt];
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
 
+                if (!isset($argumentsReplacements[$cnt])) {
+                    throw new \LogicException(sprintf('Unexpected index %d to find replacement method.', $cnt));
+                }
+
                 if ('expectExceptionMessage' === $argumentsReplacements[$cnt]) {
                     $paramIndicatorIndex = $tokens->getNextMeaningfulToken($argBefore);
                     $afterParamIndicatorIndex = $tokens->getNextMeaningfulToken($paramIndicatorIndex);

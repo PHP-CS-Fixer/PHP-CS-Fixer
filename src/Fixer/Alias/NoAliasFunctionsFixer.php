@@ -247,6 +247,10 @@ mbereg_search_getregs();
                 break;
             }
 
+            if (!isset(self::SETS[$set])) {
+                throw new \LogicException(sprintf('Set %s passed option validation, but not part of ::SETS.', $set));
+            }
+
             $this->aliases = array_merge($this->aliases, self::SETS[$set]);
         }
     }
