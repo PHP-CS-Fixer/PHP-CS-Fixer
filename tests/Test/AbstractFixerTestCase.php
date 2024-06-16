@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
@@ -100,6 +101,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @template TFixer of AbstractFixer
+ *
  * @internal
  */
 abstract class AbstractFixerTestCase extends TestCase
@@ -112,7 +115,7 @@ abstract class AbstractFixerTestCase extends TestCase
     protected $linter;
 
     /**
-     * @var null|AbstractFixer
+     * @var null|TFixer
      */
     protected $fixer;
 
@@ -241,7 +244,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 }
             }
 
-            if ($fixerIsConfigurable) {
+            if ($this->fixer instanceof ConfigurableFixerInterface) {
                 // always re-configure as the fixer might have been configured with diff. configuration form previous sample
                 $this->fixer->configure($config ?? []);
             }
@@ -267,7 +270,7 @@ abstract class AbstractFixerTestCase extends TestCase
             );
         }
 
-        if ($fixerIsConfigurable) {
+        if ($this->fixer instanceof ConfigurableFixerInterface) {
             if (isset($configSamplesProvided['default'])) {
                 self::assertSame('default', array_key_first($configSamplesProvided), sprintf('[%s] First sample must be for the default configuration.', $fixerName));
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
@@ -295,7 +298,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
     final public function testFixersAreFinal(): void
     {
-        $reflection = new \ReflectionClass($this->fixer);
+        $reflection = $this->getFixerReflection();
 
         self::assertTrue(
             $reflection->isFinal(),
@@ -311,7 +314,7 @@ abstract class AbstractFixerTestCase extends TestCase
             'Fixer cannot contain word "DEPRECATED" in summary'
         );
 
-        $reflection = new \ReflectionClass($this->fixer);
+        $reflection = $this->getFixerReflection();
         $comment = $reflection->getDocComment();
 
         if ($this->fixer instanceof DeprecatedFixerInterface) {
@@ -348,7 +351,7 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     public function testFixerUseInsertSlicesWhenOnlyInsertionsArePerformed(): void
     {
-        $reflection = new \ReflectionClass($this->fixer);
+        $reflection = $this->getFixerReflection();
 
         $filePath = $reflection->getFileName();
         if (false === $filePath) {
@@ -382,6 +385,7 @@ abstract class AbstractFixerTestCase extends TestCase
             if (\in_array($fixerName, [
                 // DO NOT add anything to this list at ease, align with core contributors whether it makes sense to insert tokens individually or by bulk for your case.
                 // The original list of the fixers being exceptions and insert tokens individually came from legacy reasons when it was the only available methods to insert tokens.
+                'PhpCsFixerInternal/configurable_fixer_template',
                 'blank_line_after_namespace',
                 'blank_line_after_opening_tag',
                 'blank_line_before_statement',
@@ -550,7 +554,7 @@ abstract class AbstractFixerTestCase extends TestCase
             )
         );
 
-        if (\in_array(static::class, $exceptionClasses, true)) {
+        if (\in_array(static::class, $exceptionClasses, true)) { // @phpstan-ignore-line this can evaluate to true, but PHPStan doesn't recognise that (yet?)
             self::assertNotSame(
                 [],
                 $extraMethods,
@@ -568,6 +572,9 @@ abstract class AbstractFixerTestCase extends TestCase
         );
     }
 
+    /**
+     * @return TFixer
+     */
     protected function createFixer(): AbstractFixer
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
@@ -665,6 +672,18 @@ abstract class AbstractFixerTestCase extends TestCase
             substr_count($haystack, $needle),
             sprintf('[%s] `%s` must be in correct casing in %s.', $fixerName, $needle, $descriptionType)
         );
+    }
+
+    /**
+     * @return \ReflectionClass<FixerInterface>
+     */
+    private function getFixerReflection(): \ReflectionClass
+    {
+        if (null === $this->fixer) {
+            throw new \LogicException('Too early call of getFixerReflection(), fixer not yet provided.');
+        }
+
+        return new \ReflectionClass($this->fixer);
     }
 
     private function getLinter(): LinterInterface

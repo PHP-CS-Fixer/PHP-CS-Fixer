@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer>
  */
 final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
 {

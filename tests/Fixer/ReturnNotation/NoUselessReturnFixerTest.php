@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer>
  */
 final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 {

@@ -22,11 +22,15 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
  * @author ntzm
  *
  * @internal
+ *
+ * @template TFixer of AbstractFixer
+ *
+ * @extends AbstractFixerTestCase<TFixer>
  */
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {
     /**
-     * @var null|ConfigurableFixerInterface
+     * @var null|TFixer
      */
     private $fixerWithAliasedConfig;
 

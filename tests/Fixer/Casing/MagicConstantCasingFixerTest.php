@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer>
  */
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {

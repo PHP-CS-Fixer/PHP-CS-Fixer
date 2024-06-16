@@ -24,6 +24,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
@@ -188,6 +189,13 @@ final class DescribeCommand extends Command
         if ($fixer instanceof ExperimentalFixerInterface) {
             $output->writeln('<error>Fixer applying this rule is EXPERIMENTAL.</error>.');
             $output->writeln('It is not covered with backward compatibility promise and may produce unstable or unexpected results.');
+
+            $output->writeln('');
+        }
+
+        if ($fixer instanceof InternalFixerInterface) {
+            $output->writeln('<error>Fixer applying this rule is INTERNAL.</error>.');
+            $output->writeln('It is expected to be used only on PHP CS Fixer project itself.');
 
             $output->writeln('');
         }

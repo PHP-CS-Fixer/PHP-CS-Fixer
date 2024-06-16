@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer>
  */
 final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
 {

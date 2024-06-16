@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer>
  */
 final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCase
 {
