@@ -13,7 +13,7 @@ parameters:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
     reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
-    reportPossiblyNonexistentGeneralArrayOffset: false # should we enable one day?
+    reportPossiblyNonexistentGeneralArrayOffset: false # should we enable one day? example fix: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8089
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
