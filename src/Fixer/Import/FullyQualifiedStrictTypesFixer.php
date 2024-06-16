@@ -666,26 +666,31 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      */
     private function fixPhpDocType(string $type, array $uses, string $namespaceName): string
     {
-        /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
-        $unsupported = false;
+        $typeExpression = new TypeExpression($type, null, []);
 
-        return implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
-            if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
-                $unsupported = true;
+        $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) use ($uses, $namespaceName) {
+            $v = $type->toString();
 
-                return $v;
+            if ($type->isUnionType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
+                return $type;
             }
 
             $shortTokens = $this->determineShortType($v, $uses, $namespaceName);
             if (null === $shortTokens) {
-                return $v;
+                return $type;
             }
 
-            return implode('', array_map(
+            $newV = implode('', array_map(
                 static fn (Token $token) => $token->getContent(),
                 $shortTokens
             ));
-        }, explode('|', $type)));
+
+            return $v === $newV
+                ? $type
+                : new TypeExpression($newV, null, []);
+        });
+
+        return $typeExpression->toString();
     }
 
     /**
