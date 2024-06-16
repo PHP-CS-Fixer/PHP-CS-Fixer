@@ -2491,10 +2491,12 @@ class TestClass {
                 continue;
             }
 
+            $isExpected = $expected[$index] ?? null;
+
             self::assertSame(
-                $expected[$index],
+                $isExpected,
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
-                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $expected[$index] ? '' : 'not ')
+                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
             );
         }
     }
