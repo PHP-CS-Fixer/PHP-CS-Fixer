@@ -72,6 +72,8 @@ final class TypeAnalysisTest extends TestCase
 
         yield ['iterable', true];
 
+        yield ['list', true];
+
         yield ['mixed', true];
 
         yield ['never', true];
