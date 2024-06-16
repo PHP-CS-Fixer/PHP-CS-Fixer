@@ -2193,9 +2193,10 @@ function foo($v) {}',
 
 namespace Ns;
 use Other\Foo;
+use Other\Foo2;
 
 /**
- * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|Foo2 $v
  */
 function foo($v) {}',
             '<?php
@@ -2300,8 +2301,25 @@ namespace Foo\Bar;
 final class SomeClass {}',
         ];
 
-        yield 'PHPDoc with generics must not crash' => [
+        yield 'PHPDoc with generics - without namespace' => [
             '<?php
+
+/**
+ * @param Iterator<mixed, SplFileInfo> $iter
+ */
+function foo($iter) {}',
+            '<?php
+
+/**
+ * @param \Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
+        ];
+
+        yield 'PHPDoc with generics - with namespace' => [
+            '<?php
+
+namespace Ns;
 
 /**
  * @param \Iterator<mixed, \SplFileInfo> $iter
@@ -2512,7 +2530,7 @@ function foo($dateTime, $fx) {}',
  * @phpstan-param positive-int $v
  * @param \'GET\'|\'POST\' $method
  * @param \Closure $fx
- * @psalm-param Closure(): (callable(): Closure) $fx
+ * @psalm-param \Closure(): (callable(): \Closure) $fx
  * @return list<int>
  */
 function foo($v, $method, $fx) {}',
