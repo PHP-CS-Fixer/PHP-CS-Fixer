@@ -57,6 +57,6 @@ parameters:
         -
             identifier: offsetAccess.notFound
             path: .
-            count: 560
+            count: 559
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
