@@ -70,6 +70,13 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 ',
         ];
 
+        yield 'nullable' => [
+            '<?php
+    /** @return ?int */',
+            '<?php
+    /** @return ?inT */',
+        ];
+
         yield 'array stuff' => [
             '<?php
     /**
