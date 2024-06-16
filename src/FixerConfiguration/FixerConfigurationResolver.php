@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -96,7 +97,28 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
             $allowedTypes = $option->getAllowedTypes();
             if (null !== $allowedTypes) {
-                $resolver->setAllowedTypes($name, $allowedTypes);
+                // Symfony OptionsResolver doesn't support `array<foo, bar>` natively, let's simplify the type
+                $allowedTypesNormalised = array_map(
+                    static function (string $type): string {
+                        $matches = [];
+                        if (true === Preg::match('/array<\w+,\s*(\??[\w\'|]+)>/', $type, $matches)) {
+                            if ('?' === $matches[1][0]) {
+                                return 'array';
+                            }
+
+                            if ("'" === $matches[1][0]) {
+                                return 'string[]';
+                            }
+
+                            return $matches[1].'[]';
+                        }
+
+                        return $type;
+                    },
+                    $allowedTypes,
+                );
+
+                $resolver->setAllowedTypes($name, $allowedTypesNormalised);
             }
 
             $normalizer = $option->getNormalizer();

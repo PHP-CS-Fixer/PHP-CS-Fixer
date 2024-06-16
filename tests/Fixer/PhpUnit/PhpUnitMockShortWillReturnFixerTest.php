@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer>
  */
 final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 {

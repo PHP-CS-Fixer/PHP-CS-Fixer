@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer>
  */
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {

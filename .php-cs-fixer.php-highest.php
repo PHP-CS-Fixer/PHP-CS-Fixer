@@ -24,7 +24,7 @@ $config = require __DIR__.'/.php-cs-fixer.dist.php';
 $config->setRules(array_merge($config->getRules(), [
     '@PHP83Migration' => true,
     '@PHP80Migration:risky' => true,
-    'php_unit_attributes' => true,
+    'php_unit_attributes' => false, // as is not yet supported by PhpCsFixerInternal/configurable_fixer_template
 ]));
 
 return $config;

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer>
  */
 final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
 {

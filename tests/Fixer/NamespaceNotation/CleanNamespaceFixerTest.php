@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer>
  */
 final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {

@@ -47,14 +47,10 @@ parameters:
         # This one is tricky, because adding @param to PHPDoc causes failures on PHP7.4 with lowest deps (phpdoc_to_param_type), using @phpstan-param causes failures on all PHP versions (phpdoc_add_missing_param_annotation)
         - '/^Parameter #1 \$class \(string\) of method PhpCsFixer\\StdinFileInfo::get(File|Path)+Info+\(\) should be contravariant with parameter \$class \(string\|null\) of method SplFileInfo::get(File|Path)+Info\(\)$/'
 
-        # Contract for configurable fixers defines `array<string, mixed>`, but we want narrowed array shape for each fixer
-        # See: https://github.com/phpstan/phpstan/discussions/9686
-        - '/^Parameter #1 \$configuration \(.*\) of method PhpCsFixer\\Fixer\\.*::configure\(\) should be contravariant with parameter \$configuration \(array<string, mixed>\) of method PhpCsFixer\\(AbstractFixer|Fixer\\ConfigurableFixerInterface)+::configure\(\)$/'
-
         # PHPUnit data providers return type were not maintained originally, this exception should shrink over time (eg with help of custom, re-usable type)
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 1012
+            count: 1013
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache

@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\StringLengthToEmptyFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLengthToEmptyFixer>
  */
 final class StringLengthToEmptyFixerTest extends AbstractFixerTestCase
 {

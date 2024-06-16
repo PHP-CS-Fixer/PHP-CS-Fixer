@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer>
  */
 final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
 {

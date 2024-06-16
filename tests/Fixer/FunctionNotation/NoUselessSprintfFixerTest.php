@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer>
  */
 final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
 {

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer>
  */
 final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
 {

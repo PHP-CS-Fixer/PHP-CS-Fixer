@@ -138,6 +138,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             }
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
+
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 

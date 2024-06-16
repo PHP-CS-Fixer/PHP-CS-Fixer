@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\PowToExponentiationFixer>
  */
 final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 {

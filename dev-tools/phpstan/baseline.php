@@ -272,12 +272,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassAttributesSeparationFixer\\:\\:\\$classElementTypes \\(array\\<string, string\\>\\) does not accept array\\<int\\|string, mixed\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: return.type
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:getClassyDefinitionInfo\\(\\) should return array\\{start\\: int, classy\\: int, open\\: int, extends\\: array\\{start\\: int, numberOfExtends\\: int, multiLine\\: bool\\}\\|false, implements\\: array\\{start\\: int, numberOfImplements\\: int, multiLine\\: bool\\}\\|false, anonymousClass\\: bool, final\\: int\\|false, abstract\\: int\\|false, \\.\\.\\.\\} but returns array\\{classy\\: int, open\\: int\\|null, extends\\: array\\<string, bool\\|int\\>\\|false, implements\\: array\\<string, bool\\|int\\>\\|false, anonymousClass\\: bool, final\\: int\\|false, abstract\\: int\\|false, readonly\\: int\\|false, \\.\\.\\.\\}\\.$#',
 	'count' => 1,
@@ -374,12 +368,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:\\$typePosition \\(array\\<string, int\\>\\) does not accept array\\<int\\|string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: argument.unpackNonIterable
 	'message' => '#^Only iterables can be unpacked, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given in argument \\#3\\.$#',
 	'count' => 1,
@@ -420,12 +408,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in &&, int\\|false\\|null given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Comment\\\\CommentToPhpdocFixer\\:\\:\\$ignoredTags \\(list\\<string\\>\\) does not accept array\\<string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Comment/CommentToPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: foreach.nonIterable
@@ -548,12 +530,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\FunctionToConstantFixer\\:\\:\\$functionsFixMap \\(array\\<string, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\) does not accept non\\-empty\\-array\\<int\\|string, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: booleanAnd.leftNotBoolean
 	'message' => '#^Only booleans are allowed in &&, bool\\|int given on the left side\\.$#',
 	'count' => 1,
@@ -602,34 +578,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\SingleSpaceAroundConstructFixer\\:\\:\\$fixTokenMapContainASingleSpace \\(array\\<string, int\\>\\) does not accept array\\<int\\|string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\SingleSpaceAroundConstructFixer\\:\\:\\$fixTokenMapFollowedByASingleSpace \\(array\\<string, int\\>\\) does not accept array\\<int\\|string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\LanguageConstruct\\\\SingleSpaceAroundConstructFixer\\:\\:\\$fixTokenMapPrecededByASingleSpace \\(array\\<string, int\\>\\) does not accept array\\<int\\|string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: plus.leftNonNumeric
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/NamespaceNotation/BlankLinesBeforeNamespaceFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\BinaryOperatorSpacesFixer\\:\\:resolveOperatorsFromConfig\\(\\) should return array\\<string, string\\> but returns array\\<int\\|string, mixed\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: booleanNot.exprNotBoolean
@@ -752,18 +704,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(int\\|string\\)\\: mixed\\)\\|null, Closure\\(string\\)\\: string given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocToCommentFixer\\:\\:\\$ignoredTags \\(list\\<string\\>\\) does not accept array\\<string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: ternary.condNotBoolean
 	'message' => '#^Only booleans are allowed in a ternary operator condition, int\\|false given\\.$#',
 	'count' => 1,
@@ -780,12 +720,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$parentScopeEndIndex of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\ArrayIndentationFixer\\:\\:findExpressionEndIndex\\(\\) expects int, int\\|string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Whitespace\\\\BlankLineBeforeStatementFixer\\:\\:\\$fixTokenMap \\(list\\<int\\>\\) does not accept non\\-empty\\-array\\<int\\|string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
@@ -1296,18 +1230,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$maximum of class PhpCsFixer\\\\FixerDefinition\\\\VersionSpecification constructor expects int\\<1, max\\>\\|null, int\\|null given\\.$#',
 	'count' => 3,
 	'path' => __DIR__ . '/../../tests/FixerDefinition/VersionSpecificationTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method class@anonymous/tests/FixerFactoryTest\\.php\\:223\\:\\:getRuleConfiguration\\(\\) should return array\\<string, mixed\\> but returns array\\<string, mixed\\>\\|true\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/FixerFactoryTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method class@anonymous/tests/FixerFactoryTest\\.php\\:58\\:\\:getRules\\(\\) should return array\\<string, array\\<string, mixed\\>\\|true\\> but returns array\\<string, array\\<string, mixed\\>\\|bool\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/FixerFactoryTest.php',
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type

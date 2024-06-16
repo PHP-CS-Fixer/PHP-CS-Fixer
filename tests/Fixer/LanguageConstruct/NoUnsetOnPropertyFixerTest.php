@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer>
  */
 final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 {

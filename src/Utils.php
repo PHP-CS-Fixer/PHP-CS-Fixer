@@ -195,6 +195,14 @@ final class Utils
         return $triggeredDeprecations;
     }
 
+    public static function convertArrayTypeToList(string $type): string
+    {
+        $parts = explode('[]', $type);
+        $count = \count($parts) - 1;
+
+        return str_repeat('list<', $count).$parts[0].str_repeat('>', $count);
+    }
+
     /**
      * @param mixed $value
      */

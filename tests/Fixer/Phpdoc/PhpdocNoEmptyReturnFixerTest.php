@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer>
  */
 final class PhpdocNoEmptyReturnFixerTest extends AbstractFixerTestCase
 {

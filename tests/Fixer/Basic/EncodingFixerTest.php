@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\EncodingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\EncodingFixer>
  */
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
