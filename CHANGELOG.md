@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.59.2
+---------------------
+
+* fix: "list" is reserved type (#8087)
+* chore: add missing type in method prototype (#8088)
+* CI: bump Ubuntu version (#8086)
+* deps: bump infection to unblock PHPUnit 11, and few more as chore (#8083)
+
 Changelog for v3.59.1
 ---------------------
 
