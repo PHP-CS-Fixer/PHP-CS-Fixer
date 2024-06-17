@@ -32,7 +32,7 @@ Default value: ``'static'``
 Dictionary of ``method`` => ``call_type`` values that differ from the default
 strategy.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

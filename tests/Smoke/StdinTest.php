@@ -36,7 +36,7 @@ final class StdinTest extends AbstractSmokeTestCase
     {
         $cwd = __DIR__.'/../..';
 
-        $command = 'php php-cs-fixer fix --rules=@PSR2 --dry-run --diff --using-cache=no';
+        $command = 'php php-cs-fixer fix --sequential --rules=@PSR2 --dry-run --diff --using-cache=no';
         $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-in.php';
 
         $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);

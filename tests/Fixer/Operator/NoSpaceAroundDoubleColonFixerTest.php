@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer
  *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer>
  */
 final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
 {

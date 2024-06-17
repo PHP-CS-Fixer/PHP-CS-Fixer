@@ -17,11 +17,13 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -107,6 +109,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
 
             $docBlock = new DocBlock($tokens[$index]->getContent());
 
+            $presentAttributes = [];
             foreach (array_reverse($docBlock->getAnnotations()) as $annotation) {
                 $annotationName = $annotation->getTag()->getName();
 
@@ -119,6 +122,14 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
 
                 /** @phpstan-ignore-next-line */
                 $tokensToInsert = self::{$this->fixingMap[$annotationName]}($tokens, $index, $annotation);
+
+                if (!isset($presentAttributes[$annotationName])) {
+                    $presentAttributes[$annotationName] = self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert);
+                }
+
+                if ($presentAttributes[$annotationName]) {
+                    continue;
+                }
 
                 if ([] === $tokensToInsert) {
                     continue;
@@ -194,6 +205,52 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         }
 
         return true;
+    }
+
+    /**
+     * @param list<Token> $tokensToInsert
+     */
+    private static function isAttributeAlreadyPresent(Tokens $tokens, int $index, array $tokensToInsert): bool
+    {
+        $attributeIndex = $tokens->getNextMeaningfulToken($index);
+        if (!$tokens[$attributeIndex]->isGivenKind(T_ATTRIBUTE)) {
+            return false;
+        }
+
+        $insertedClassName = '';
+        foreach (\array_slice($tokensToInsert, 3) as $token) {
+            if ($token->equals('(') || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                break;
+            }
+            $insertedClassName .= $token->getContent();
+        }
+
+        // @TODO: refactor OrderedAttributesFixer::determineAttributeFullyQualifiedName to shared analyzer
+        static $determineAttributeFullyQualifiedName = null;
+        static $orderedAttributesFixer = null;
+        if (null === $determineAttributeFullyQualifiedName) {
+            $orderedAttributesFixer = new OrderedAttributesFixer();
+            $reflection = new \ReflectionObject($orderedAttributesFixer);
+            $determineAttributeFullyQualifiedName = $reflection->getMethod('determineAttributeFullyQualifiedName');
+            $determineAttributeFullyQualifiedName->setAccessible(true);
+        }
+
+        foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+            foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                $className = ltrim($determineAttributeFullyQualifiedName->invokeArgs(
+                    $orderedAttributesFixer,
+                    [$tokens,
+                        $attribute['name'],
+                        $attribute['start']],
+                ), '\\');
+
+                if ($insertedClassName === $className) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

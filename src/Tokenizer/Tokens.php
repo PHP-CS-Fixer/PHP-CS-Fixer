@@ -50,6 +50,7 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_ATTRIBUTE = 11;
     public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
     public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
+    public const BLOCK_TYPE_COMPLEX_STRING_VARIABLE = 14;
 
     /**
      * Static class cache.
@@ -273,6 +274,10 @@ class Tokens extends \SplFixedArray
                 self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
                     'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
                     'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
+                ],
+                self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
+                    'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
+                    'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
                 ],
             ];
 
@@ -1047,6 +1052,8 @@ class Tokens extends \SplFixedArray
 
         // clear memory
         $this->setSize(0);
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 

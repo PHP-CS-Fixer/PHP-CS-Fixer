@@ -224,9 +224,9 @@ final class DocumentationTest extends TestCase
      */
     private static function getFixers(): array
     {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerBuiltInFixers();
 
-        return $factory->getFixers();
+        return $fixerFactory->getFixers();
     }
 }

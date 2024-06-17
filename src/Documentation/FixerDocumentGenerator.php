@@ -167,7 +167,7 @@ final class FixerDocumentGenerator
                 if (null === $allowed) {
                     $allowedKind = 'Allowed types';
                     $allowed = array_map(
-                        static fn ($value): string => '``'.$value.'``',
+                        static fn (string $value): string => '``'.Utils::convertArrayTypeToList($value).'``',
                         $option->getAllowedTypes(),
                     );
                 } else {

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  *
  * @requires PHP <8.0
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
  */
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {

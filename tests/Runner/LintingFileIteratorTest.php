@@ -16,29 +16,29 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
-use PhpCsFixer\Runner\FileLintingIterator;
+use PhpCsFixer\Runner\LintingFileIterator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\FileLintingIterator
+ * @covers \PhpCsFixer\Runner\LintingFileIterator
  */
-final class FileLintingIteratorTest extends TestCase
+final class LintingFileIteratorTest extends TestCase
 {
     public function testFileLintingIteratorEmpty(): void
     {
         $iterator = new \ArrayIterator([]);
 
-        $fileLintingIterator = new FileLintingIterator(
+        $lintingFileIterator = new LintingFileIterator(
             $iterator,
             $this->createLinterDouble()
         );
 
-        self::assertNull($fileLintingIterator->current());
-        self::assertNull($fileLintingIterator->currentLintingResult());
-        self::assertSame($iterator, $fileLintingIterator->getInnerIterator());
-        self::assertFalse($fileLintingIterator->valid());
+        self::assertNull($lintingFileIterator->current());
+        self::assertNull($lintingFileIterator->currentLintingResult());
+        self::assertSame($iterator, $lintingFileIterator->getInnerIterator());
+        self::assertFalse($lintingFileIterator->valid());
     }
 
     public function testFileLintingIterator(): void
@@ -54,44 +54,44 @@ final class FileLintingIteratorTest extends TestCase
 
         $iterator = new \ArrayIterator([$file]);
 
-        $fileLintingIterator = new FileLintingIterator(
+        $lintingFileIterator = new LintingFileIterator(
             $iterator,
             $this->createLinterDouble($lintingResult)
         );
 
         // test when not touched current is null
 
-        self::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertNull($lintingFileIterator->currentLintingResult());
 
         // test iterating
 
-        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResult);
+        $this->lintingFileIteratorIterationTest($lintingFileIterator, $file, $lintingResult);
 
         // rewind and test again
 
-        $fileLintingIterator->rewind();
+        $lintingFileIterator->rewind();
 
-        $this->fileLintingIteratorIterationTest($fileLintingIterator, $file, $lintingResult);
+        $this->lintingFileIteratorIterationTest($lintingFileIterator, $file, $lintingResult);
     }
 
-    private function fileLintingIteratorIterationTest(
-        FileLintingIterator $fileLintingIterator,
+    private function lintingFileIteratorIterationTest(
+        LintingFileIterator $lintingFileIterator,
         \SplFileInfo $file,
         LintingResultInterface $lintingResultInterface
     ): void {
         $iterations = 0;
 
-        foreach ($fileLintingIterator as $lintedFile) {
+        foreach ($lintingFileIterator as $lintedFile) {
             self::assertSame($file, $lintedFile);
-            self::assertSame($lintingResultInterface, $fileLintingIterator->currentLintingResult());
+            self::assertSame($lintingResultInterface, $lintingFileIterator->currentLintingResult());
             ++$iterations;
         }
 
         self::assertSame(1, $iterations);
 
-        $fileLintingIterator->next();
+        $lintingFileIterator->next();
 
-        self::assertNull($fileLintingIterator->currentLintingResult());
+        self::assertNull($lintingFileIterator->currentLintingResult());
     }
 
     private function createLinterDouble(?LintingResultInterface $lintingResult = null): LinterInterface

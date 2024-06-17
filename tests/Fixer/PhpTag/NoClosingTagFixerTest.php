@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer>
  */
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {

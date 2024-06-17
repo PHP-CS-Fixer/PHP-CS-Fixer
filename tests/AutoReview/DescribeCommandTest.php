@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Utils;
@@ -38,7 +39,7 @@ final class DescribeCommandTest extends TestCase
      *
      * @param list<string> $successorsNames
      */
-    public function testDescribeCommand(FixerFactory $factory, string $fixerName, ?array $successorsNames): void
+    public function testDescribeCommand(string $fixerName, ?array $successorsNames): void
     {
         if (null !== $successorsNames) {
             $message = "Rule \"{$fixerName}\" is deprecated. "
@@ -55,7 +56,7 @@ final class DescribeCommandTest extends TestCase
             $this->expectDeprecation('Option "use_nullable_type_declaration" for rule "nullable_type_declaration_for_default_null_value" is deprecated and will be removed in version 4.0. Behaviour will follow default one.');
         }
 
-        $command = new DescribeCommand($factory);
+        $command = new DescribeCommand();
 
         $application = new Application();
         $application->add($command);
@@ -71,12 +72,16 @@ final class DescribeCommandTest extends TestCase
 
     public static function provideDescribeCommandCases(): iterable
     {
+        yield [
+            (new ConfigurableFixerTemplateFixer())->getName(),
+            null,
+        ];
+
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
         foreach ($factory->getFixers() as $fixer) {
             yield [
-                $factory,
                 $fixer->getName(),
                 $fixer instanceof DeprecatedFixerInterface ? $fixer->getSuccessorsNames() : null,
             ];

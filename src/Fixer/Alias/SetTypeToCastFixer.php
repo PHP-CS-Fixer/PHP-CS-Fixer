@@ -149,6 +149,7 @@ settype($bar, "null");
             if ('null' === $type) {
                 $this->fixSettypeNullCall($tokens, $functionNameIndex, $argumentToken);
             } else {
+                \assert(isset($map[$type]));
                 $this->fixSettypeCall($tokens, $functionNameIndex, $argumentToken, new Token($map[$type]));
             }
         }

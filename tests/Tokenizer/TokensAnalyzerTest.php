@@ -1528,6 +1528,26 @@ abstract class Baz
     {
         yield [
             [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const string FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const int FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
+            '<?php class Foo { public const bool FOO = BAR; }',
+        ];
+
+        yield [
+            [3 => false, 13 => false, 18 => true],
+            '<?php class Foo { public const array FOO = [BAR]; }',
+        ];
+
+        yield [
+            [3 => false, 11 => false, 13 => false, 17 => true],
             '<?php class Foo { public const A FOO = BAR; }',
         ];
 
@@ -2471,10 +2491,12 @@ class TestClass {
                 continue;
             }
 
+            $isExpected = $expected[$index] ?? null;
+
             self::assertSame(
-                $expected[$index],
+                $isExpected,
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
-                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $expected[$index] ? '' : 'not ')
+                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
             );
         }
     }

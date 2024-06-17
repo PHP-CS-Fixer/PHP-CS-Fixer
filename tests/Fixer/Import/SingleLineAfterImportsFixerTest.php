@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {

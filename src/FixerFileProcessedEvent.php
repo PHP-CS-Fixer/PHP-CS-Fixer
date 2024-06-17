@@ -39,13 +39,28 @@ final class FixerFileProcessedEvent extends Event
 
     private int $status;
 
-    public function __construct(int $status)
+    private ?string $fileRelativePath;
+    private ?string $fileHash;
+
+    public function __construct(int $status, ?string $fileRelativePath = null, ?string $fileHash = null)
     {
         $this->status = $status;
+        $this->fileRelativePath = $fileRelativePath;
+        $this->fileHash = $fileHash;
     }
 
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    public function getFileRelativePath(): ?string
+    {
+        return $this->fileRelativePath;
+    }
+
+    public function getFileHash(): ?string
+    {
+        return $this->fileHash;
     }
 }

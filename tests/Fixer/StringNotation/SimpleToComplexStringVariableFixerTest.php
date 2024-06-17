@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\SimpleToComplexStringVariableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\SimpleToComplexStringVariableFixer>
  */
 final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
 {
@@ -129,6 +131,19 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 $name = 'World';
                 echo 'Hello $${name}';
                 EXPECTED,
+        ];
+
+        yield 'array elements' => [
+            <<<'PHP'
+                <?php
+                "Hello {$array[0]}!";
+                "Hello {$array['index']}!";
+                PHP,
+            <<<'PHP'
+                <?php
+                "Hello ${array[0]}!";
+                "Hello ${array['index']}!";
+                PHP,
         ];
     }
 }

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer>
  */
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {

@@ -61,13 +61,13 @@ For more details and other installation methods, see
 You can use pre-built Docker images to run ``php-cs-fixer``.
 
 ```console
-docker run -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3} fix src
+docker run -it --rm -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3} fix src
 ```
 
 `$FIXER_VERSION` used in example above is an identifier of a release you want to use, which is based on Fixer and PHP versions combined. There are different tags for each Fixer's SemVer level and PHP version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
 
-* `3.47.0-php7.4`
-* `3.47-php8.0`
+* `3.57.0-php7.4`
+* `3.57-php8.0`
 * `3-php8.3`
 
 ### Usage

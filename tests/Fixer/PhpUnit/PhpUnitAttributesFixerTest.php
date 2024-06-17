@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer>
  */
 final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
 {
@@ -83,6 +85,78 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
              */
             class FooTest extends \PHPUnit\Framework\TestCase {
                 public function testFoo() { self::assertTrue(true); }
+            }
+            PHP];
+
+        yield 'do not fix when there is already attribute of related class' => [<<<'PHP'
+            <?php
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^8.2
+                 */
+                #[\FirstAttributeToMakeSureMultipleAttributesWorks]
+                #[\PHPUnit\Framework\Attributes\RequiresPhp('^7.1')]
+                #[\ThirdAttributeToMakeSureMultipleAttributesWorks]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used without leading slash' => [<<<'PHP'
+            <?php
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.1
+                 */
+                #[PHPUnit\Framework\Attributes\RequiresPhp('^6.1')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with import' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes\RequiresPhp;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.2
+                 */
+                #[RequiresPhp('^6.2')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with partial import' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.2
+                 */
+                #[Attributes\RequiresPhp('^6.2')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with alias' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes\RequiresPhp as PHPUnitRequiresPhp;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.0
+                 */
+                #[PHPUnitRequiresPhp('^6.0')]
+                public function testFoo() {}
+            }
+            PHP];
+
+        yield 'do not duplicate attribute when used with partial alias' => [<<<'PHP'
+            <?php
+            use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @requires PHP ^6.0
+                 */
+                #[PHPUnitAttributes\RequiresPhp('^6.0')]
+                public function testFoo() {}
             }
             PHP];
 
@@ -522,6 +596,25 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                      */
                     public function testBar($x) {}
                 }
+                PHP,
+        ];
+
+        yield 'handle multiple annotations of the same name' => [
+            <<<'PHP'
+                <?php
+                /**
+                 */
+                #[\PHPUnit\Framework\Attributes\Group('foo')]
+                #[\PHPUnit\Framework\Attributes\Group('bar')]
+                class TheTest extends \PHPUnit\Framework\TestCase {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @group foo
+                 * @group bar
+                 */
+                class TheTest extends \PHPUnit\Framework\TestCase {}
                 PHP,
         ];
     }
