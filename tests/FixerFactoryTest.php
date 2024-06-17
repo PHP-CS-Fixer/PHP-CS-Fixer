@@ -76,6 +76,11 @@ final class FixerFactoryTest extends TestCase
                 return $this->set;
             }
 
+            public function getRulesSource(): array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function hasRule(string $rule): bool
             {
                 throw new \LogicException('Not implemented.');
@@ -253,6 +258,11 @@ final class FixerFactoryTest extends TestCase
             public function getRules(): array
             {
                 return ['header_comment' => []];
+            }
+
+            public function getRulesSource(): array
+            {
+                return ['header_comment' => 'config'];
             }
 
             public function hasRule(string $rule): bool
