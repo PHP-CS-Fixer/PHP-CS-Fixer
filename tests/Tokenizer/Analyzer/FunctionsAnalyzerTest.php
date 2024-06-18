@@ -709,7 +709,7 @@ class(){};
             self::assertSame(
                 \in_array($index, $sameClassCallIndices, true),
                 $analyzer->isTheSameClassCall($tokens, $index),
-                sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index)
             );
         }
     }
@@ -728,37 +728,37 @@ class(){};
         ';
 
         yield [
-            sprintf($template, '$this->'),
+            \sprintf($template, '$this->'),
             [24],
         ];
 
         yield [
-            sprintf($template, 'self::'),
+            \sprintf($template, 'self::'),
             [24],
         ];
 
         yield [
-            sprintf($template, 'static::'),
+            \sprintf($template, 'static::'),
             [24],
         ];
 
         yield [
-            sprintf($template, '$THIS->'),
+            \sprintf($template, '$THIS->'),
             [24],
         ];
 
         yield [
-            sprintf($template, '$notThis->'),
+            \sprintf($template, '$notThis->'),
             [],
         ];
 
         yield [
-            sprintf($template, 'Bar::'),
+            \sprintf($template, 'Bar::'),
             [],
         ];
 
         yield [
-            sprintf($template, '$this::'),
+            \sprintf($template, '$this::'),
             [24],
         ];
 
@@ -792,7 +792,7 @@ class(){};
             self::assertSame(
                 \in_array($index, $sameClassCallIndices, true),
                 $analyzer->isTheSameClassCall($tokens, $index),
-                sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index)
             );
         }
     }
@@ -874,7 +874,7 @@ class(){};
         self::assertSame(
             $expectedIndices,
             $actualIndices,
-            sprintf(
+            \sprintf(
                 'Global function calls found at positions: [%s], expected at [%s].',
                 implode(', ', $actualIndices),
                 implode(', ', $expectedIndices)

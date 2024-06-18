@@ -125,7 +125,7 @@ class Foo {
 
     protected function createTokensFromRawType(string $type): Tokens
     {
-        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens = Tokens::fromCode(\sprintf(self::TYPE_CHECK_TEMPLATE, $type));
         $typeTokens->clearRange(0, 8);
         $typeTokens->clearRange(\count($typeTokens) - 5, \count($typeTokens) - 1);
         $typeTokens->clearEmptyTokens();
@@ -176,7 +176,7 @@ class Foo {
                 continue;
             }
 
-            if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $propertyType))) {
+            if (!$this->isValidSyntax(\sprintf(self::TYPE_CHECK_TEMPLATE, $propertyType))) {
                 continue;
             }
 

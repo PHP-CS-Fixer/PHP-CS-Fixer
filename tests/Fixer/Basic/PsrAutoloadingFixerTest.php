@@ -50,9 +50,9 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         foreach (['class', 'interface', 'trait'] as $element) {
-            yield sprintf('%s with originally short name', $element) => [
-                sprintf('<?php %s PsrAutoloadingFixerTest {}', $element),
-                sprintf('<?php %s Foo {}', $element),
+            yield \sprintf('%s with originally short name', $element) => [
+                \sprintf('<?php %s PsrAutoloadingFixerTest {}', $element),
+                \sprintf('<?php %s Foo {}', $element),
             ];
         }
 

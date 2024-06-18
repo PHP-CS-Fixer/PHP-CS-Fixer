@@ -282,7 +282,7 @@ echo 1;
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        self::assertTrue($tokens[$startIndex]->isComment(), sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
+        self::assertTrue($tokens[$startIndex]->isComment(), \sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
         $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);

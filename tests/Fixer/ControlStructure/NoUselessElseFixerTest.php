@@ -661,7 +661,7 @@ else?><?php echo 5;',
             ';
 
         foreach ($cases as $index => $case) {
-            yield sprintf('PHP8 Negative case %d', $index) => [sprintf($template, $case)];
+            yield \sprintf('PHP8 Negative case %d', $index) => [\sprintf($template, $case)];
         }
     }
 
@@ -807,7 +807,7 @@ else?><?php echo 5;',
             self::assertSame(
                 $expected,
                 $method->invoke($this->fixer, $tokens, $index, 0),
-                sprintf('Failed in condition without braces check for index %d', $index)
+                \sprintf('Failed in condition without braces check for index %d', $index)
             );
         }
     }
@@ -1012,11 +1012,11 @@ else?><?php echo 5;',
 
             return $ret;';
 
-        yield [sprintf($ifTemplate, $statement)];
+        yield [\sprintf($ifTemplate, $statement)];
 
-        yield [sprintf($ifElseTemplate, $statement)];
+        yield [\sprintf($ifElseTemplate, $statement)];
 
-        yield [sprintf($ifElseIfTemplate, $statement)];
+        yield [\sprintf($ifElseIfTemplate, $statement)];
     }
 
     /**
@@ -1053,13 +1053,13 @@ else?><?php echo 5;',
             'throw new \Exception((string)12+1);',
         ] as $case) {
             if (null === $input) {
-                $cases[] = [sprintf($expected, $case)];
-                $cases[] = [sprintf($expected, strtoupper($case))];
-                $cases[] = [sprintf($expected, strtolower($case))];
+                $cases[] = [\sprintf($expected, $case)];
+                $cases[] = [\sprintf($expected, strtoupper($case))];
+                $cases[] = [\sprintf($expected, strtolower($case))];
             } else {
-                $cases[] = [sprintf($expected, $case), sprintf($input, $case)];
-                $cases[] = [sprintf($expected, strtoupper($case)), sprintf($input, strtoupper($case))];
-                $cases[] = [sprintf($expected, strtolower($case)), sprintf($input, strtolower($case))];
+                $cases[] = [\sprintf($expected, $case), \sprintf($input, $case)];
+                $cases[] = [\sprintf($expected, strtoupper($case)), \sprintf($input, strtoupper($case))];
+                $cases[] = [\sprintf($expected, strtolower($case)), \sprintf($input, strtolower($case))];
             }
         }
 

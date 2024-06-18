@@ -38,7 +38,7 @@ final class SwitchAnalyzerTest extends TestCase
             self::assertSame(
                 \in_array($index, $indices, true),
                 SwitchAnalyzer::belongsToSwitch($tokens, $index),
-                sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index)
             );
         }
     }

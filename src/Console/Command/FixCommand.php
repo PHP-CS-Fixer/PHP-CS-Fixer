@@ -263,10 +263,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $stdErr->writeln(Application::getAboutWithRuntime(true));
             $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
 
-            $stdErr->writeln(sprintf(
+            $stdErr->writeln(\sprintf(
                 'Running analysis on %d core%s.',
                 $resolver->getParallelConfig()->getMaxProcesses(),
-                $isParallel ? sprintf(
+                $isParallel ? \sprintf(
                     's with %d file%s per process',
                     $resolver->getParallelConfig()->getFilesPerProcess(),
                     $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : ''
@@ -275,26 +275,26 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             /** @TODO v4 remove warnings related to parallel runner */
             $usageDocs = 'https://cs.symfony.com/doc/usage.html';
-            $stdErr->writeln(sprintf(
+            $stdErr->writeln(\sprintf(
                 $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
                 $isParallel
                     ? 'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
-                    : sprintf(
+                    : \sprintf(
                         'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
                         $stdErr->isDecorated()
-                            ? sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
+                            ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
                             : $usageDocs
                     )
             ));
 
             $configFile = $resolver->getConfigFile();
-            $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+            $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
 
                 if (is_file($cacheFile)) {
-                    $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
+                    $stdErr->writeln(\sprintf('Using cache file "%s".', $cacheFile));
                 }
             }
         }
@@ -303,7 +303,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(
-                sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
+                \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
             );
         }
 

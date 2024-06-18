@@ -769,7 +769,7 @@ $a#4
 
         foreach ($operators as $operator) {
             yield [
-                sprintf($template, $operator),
+                \sprintf($template, $operator),
                 null,
                 ['always_move_variable' => true],
             ];
@@ -780,14 +780,14 @@ $a#4
 
         foreach ([...$assignmentOperators, ...$logicalOperators] as $operator) {
             yield [
-                sprintf('<?php $a %s 4 === $b ? 2 : 3;', $operator),
-                sprintf('<?php $a %s $b === 4 ? 2 : 3;', $operator),
+                \sprintf('<?php $a %s 4 === $b ? 2 : 3;', $operator),
+                \sprintf('<?php $a %s $b === 4 ? 2 : 3;', $operator),
             ];
         }
 
         foreach ($assignmentOperators as $operator) {
             yield [
-                sprintf('<?php 1 === $x %s 2;', $operator),
+                \sprintf('<?php 1 === $x %s 2;', $operator),
             ];
         }
 

@@ -888,7 +888,7 @@ namespace {
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        self::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        self::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), \sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
@@ -912,27 +912,27 @@ namespace {
     {
         return [
             [
-                sprintf("<?php %s A\n{}", $classy),
-                sprintf('<?php %s    A   {}', $classy),
+                \sprintf("<?php %s A\n{}", $classy),
+                \sprintf('<?php %s    A   {}', $classy),
             ],
             [
-                sprintf("<?php %s B\n{}", $classy),
-                sprintf('<?php %s    B{}', $classy),
+                \sprintf("<?php %s B\n{}", $classy),
+                \sprintf('<?php %s    B{}', $classy),
             ],
             [
-                sprintf("<?php %s C\n{}", $classy),
-                sprintf("<?php %s\n\tC{}", $classy),
+                \sprintf("<?php %s C\n{}", $classy),
+                \sprintf("<?php %s\n\tC{}", $classy),
             ],
             [
-                sprintf("<?php %s D //\n{}", $classy),
-                sprintf("<?php %s    D//\n{}", $classy),
+                \sprintf("<?php %s D //\n{}", $classy),
+                \sprintf("<?php %s    D//\n{}", $classy),
             ],
             [
-                sprintf("<?php %s /**/ E //\n{}", $classy),
-                sprintf("<?php %s/**/E//\n{}", $classy),
+                \sprintf("<?php %s /**/ E //\n{}", $classy),
+                \sprintf("<?php %s/**/E//\n{}", $classy),
             ],
             [
-                sprintf(
+                \sprintf(
                     "<?php
 %s A
 {}
@@ -942,7 +942,7 @@ namespace {
                     $classy,
                     $classy
                 ),
-                sprintf(
+                \sprintf(
                     '<?php
 %s
    A
@@ -955,7 +955,7 @@ namespace {
                 ),
             ],
             [
-                sprintf(
+                \sprintf(
                     '<?php
 namespace {
     %s IndentedNameSpacedClass
@@ -964,7 +964,7 @@ namespace {
 }',
                     $classy
                 ),
-                sprintf(
+                \sprintf(
                     '<?php
 namespace {
     %s IndentedNameSpacedClass    {
@@ -980,23 +980,23 @@ namespace {
     {
         return [
             [
-                sprintf("<?php %s AE0 extends B\n{}", $classy),
-                sprintf('<?php %s    AE0    extends B    {}', $classy),
+                \sprintf("<?php %s AE0 extends B\n{}", $classy),
+                \sprintf('<?php %s    AE0    extends B    {}', $classy),
             ],
             [
-                sprintf("<?php %s /**/ AE1 /**/ extends /**/ B /**/\n{}", $classy),
-                sprintf('<?php %s/**/AE1/**/extends/**/B/**/{}', $classy),
+                \sprintf("<?php %s /**/ AE1 /**/ extends /**/ B /**/\n{}", $classy),
+                \sprintf('<?php %s/**/AE1/**/extends/**/B/**/{}', $classy),
             ],
             [
-                sprintf("<?php %s /*%s*/ AE2 extends\nB\n{}", $classy, $classy),
-                sprintf("<?php %s /*%s*/ AE2 extends\nB{}", $classy, $classy),
+                \sprintf("<?php %s /*%s*/ AE2 extends\nB\n{}", $classy, $classy),
+                \sprintf("<?php %s /*%s*/ AE2 extends\nB{}", $classy, $classy),
             ],
             [
-                sprintf('<?php
+                \sprintf('<?php
 %s Test124 extends
 \Exception
 {}', $classy),
-                sprintf('<?php
+                \sprintf('<?php
 %s
 Test124
 

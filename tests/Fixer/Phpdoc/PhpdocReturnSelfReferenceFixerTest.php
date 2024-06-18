@@ -111,7 +111,7 @@ trait SomeTrait
         $config = ['replacements' => [$input => $expected]];
         $this->fixer->configure($config);
 
-        $expected = sprintf('<?php
+        $expected = \sprintf('<?php
 /**
  * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
  */
@@ -129,7 +129,7 @@ class F
 }
 ', $input, $input, $expected, $input);
 
-        $input = sprintf('<?php
+        $input = \sprintf('<?php
 /**
  * Please do not use @return %s|static|self|this|$static|$self|@static|@self|@this as return type declaration
  */
@@ -173,7 +173,7 @@ class F
     public function testInvalidConfiguration(array $configuration, string $message): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
+        $this->expectExceptionMessageMatches(\sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
         $this->fixer->configure($configuration);
     }

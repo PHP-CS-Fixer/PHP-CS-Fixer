@@ -171,8 +171,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
-                sprintf($codeSnippet, 'print'),
-                sprintf($codeSnippet, 'echo'),
+                \sprintf($codeSnippet, 'print'),
+                \sprintf($codeSnippet, 'echo'),
                 ['use' => 'print'],
             ];
         }
@@ -326,8 +326,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
         foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
-                sprintf($codeSnippet, 'echo'),
-                sprintf($codeSnippet, 'print'),
+                \sprintf($codeSnippet, 'echo'),
+                \sprintf($codeSnippet, 'print'),
                 ['use' => 'echo'],
             ];
         }

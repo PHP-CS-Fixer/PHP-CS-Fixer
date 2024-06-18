@@ -91,23 +91,23 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     private static function createCasesFor(string $type): iterable
     {
         yield [
-            sprintf('<?php $b= (%s)$d;', $type),
-            sprintf('<?php $b= (%s)$d;', strtoupper($type)),
+            \sprintf('<?php $b= (%s)$d;', $type),
+            \sprintf('<?php $b= (%s)$d;', strtoupper($type)),
         ];
 
         yield [
-            sprintf('<?php $b=( %s) $d;', $type),
-            sprintf('<?php $b=( %s) $d;', ucfirst($type)),
+            \sprintf('<?php $b=( %s) $d;', $type),
+            \sprintf('<?php $b=( %s) $d;', ucfirst($type)),
         ];
 
         yield [
-            sprintf('<?php $b=(%s ) $d;', $type),
-            sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
+            \sprintf('<?php $b=(%s ) $d;', $type),
+            \sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
         ];
 
         yield [
-            sprintf('<?php $b=(  %s  ) $d;', $type),
-            sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
+            \sprintf('<?php $b=(  %s  ) $d;', $type),
+            \sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
         ];
     }
 }

@@ -935,7 +935,7 @@ final class TypeExpressionTest extends TestCase
         return 'array{'.implode(
             ', ',
             array_map(
-                static fn (int $k): string => sprintf('key%sno%d: int', 0 === $k % 2 ? '-' : '_', $k),
+                static fn (int $k): string => \sprintf('key%sno%d: int', 0 === $k % 2 ? '-' : '_', $k),
                 range(1, 1_000),
             ),
         ).'}';

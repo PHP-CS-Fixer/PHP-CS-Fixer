@@ -30,7 +30,7 @@ trait AssertJsonSchemaTrait
             implode(
                 "\n",
                 array_map(
-                    static fn (array $item): string => sprintf('Property `%s`: %s.', $item['property'], $item['message']),
+                    static fn (array $item): string => \sprintf('Property `%s`: %s.', $item['property'], $item['message']),
                     $validator->getErrors(),
                 )
             )

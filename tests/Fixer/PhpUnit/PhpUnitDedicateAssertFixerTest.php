@@ -174,13 +174,13 @@ $this->assertTrue(is_readable($a));
 
         foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'real', 'scalar', 'string'] as $type) {
             yield [
-                self::generateTest(sprintf('$this->assertInternalType(\'%s\', $a);', $type)),
-                self::generateTest(sprintf('$this->assertTrue(is_%s($a));', $type)),
+                self::generateTest(\sprintf('$this->assertInternalType(\'%s\', $a);', $type)),
+                self::generateTest(\sprintf('$this->assertTrue(is_%s($a));', $type)),
             ];
 
             yield [
-                self::generateTest(sprintf('$this->assertNotInternalType(\'%s\', $a);', $type)),
-                self::generateTest(sprintf('$this->assertFalse(is_%s($a));', $type)),
+                self::generateTest(\sprintf('$this->assertNotInternalType(\'%s\', $a);', $type)),
+                self::generateTest(\sprintf('$this->assertFalse(is_%s($a));', $type)),
             ];
         }
 
@@ -392,9 +392,9 @@ $a#
     public function testAssertCount(string $expected, ?string $input = null): void
     {
         if (null === $input) {
-            $expected = sprintf($expected, 'count');
+            $expected = \sprintf($expected, 'count');
         } else {
-            $input = sprintf($input, 'count');
+            $input = \sprintf($input, 'count');
         }
 
         $this->doTest($expected, $input);
@@ -406,9 +406,9 @@ $a#
     public function testAssertCountFromSizeOf(string $expected, ?string $input = null): void
     {
         if (null === $input) {
-            $expected = sprintf($expected, 'sizeof');
+            $expected = \sprintf($expected, 'sizeof');
         } else {
-            $input = sprintf($input, 'sizeof');
+            $input = \sprintf($input, 'sizeof');
         }
 
         $this->doTest($expected, $input);
@@ -557,8 +557,8 @@ $a# 5
      */
     public function testAssertCountCasing(string $expected, string $input): void
     {
-        $expected = sprintf($expected, 'count');
-        $input = sprintf($input, 'COUNT');
+        $expected = \sprintf($expected, 'count');
+        $input = \sprintf($input, 'COUNT');
 
         $this->doTest($expected, $input);
     }
@@ -568,8 +568,8 @@ $a# 5
      */
     public function testAssertCountFromSizeOfCasing(string $expected, string $input): void
     {
-        $expected = sprintf($expected, 'sizeof');
-        $input = sprintf($input, 'SIZEOF');
+        $expected = \sprintf($expected, 'sizeof');
+        $input = \sprintf($input, 'SIZEOF');
 
         $this->doTest($expected, $input);
     }

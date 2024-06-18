@@ -631,8 +631,8 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
         foreach ($constants as $constant) {
             yield $constant.'+ op' => [
-                sprintf('<?php $a = %s . $b;', $constant),
-                sprintf('<?php $a = (%s) . $b;', $constant),
+                \sprintf('<?php $a = %s . $b;', $constant),
+                \sprintf('<?php $a = (%s) . $b;', $constant),
             ];
         }
 

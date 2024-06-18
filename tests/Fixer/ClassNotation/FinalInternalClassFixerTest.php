@@ -44,8 +44,8 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
         $input = $expected = '<?php ';
 
         for ($i = 1; $i < 10; ++$i) {
-            $input .= sprintf("/** @internal */\nclass class%d\n{\n}\n", $i);
-            $expected .= sprintf("/** @internal */\nfinal class class%d\n{\n}\n", $i);
+            $input .= \sprintf("/** @internal */\nclass class%d\n{\n}\n", $i);
+            $expected .= \sprintf("/** @internal */\nfinal class class%d\n{\n}\n", $i);
         }
 
         yield 'fix multiple classes' => [
@@ -374,7 +374,7 @@ $a = new class{};',
                 'include' => ['@internal123', 'a'],
                 'exclude' => ['@internal123', 'b'],
             ],
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both "include" and "exclude" list, got duplicates: "internal123".', '#')),
+            \sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both "include" and "exclude" list, got duplicates: "internal123".', '#')),
         ];
 
         yield 'both new and old include set' => [
@@ -382,7 +382,7 @@ $a = new class{};',
                 'annotation_include' => ['@internal', 'a'],
                 'include' => ['@internal', 'b'],
             ],
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')),
+            \sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_include" and new option "include".', '#')),
             'Option "annotation_include" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "include" to configure PHPDoc annotations tags and attributes.',
         ];
 
@@ -391,7 +391,7 @@ $a = new class{};',
                 'annotation_exclude' => ['@internal', 'a'],
                 'exclude' => ['@internal', 'b'],
             ],
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')),
+            \sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')),
             'Option "annotation_exclude" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "exclude" to configure PHPDoc annotations tags and attributes.',
         ];
     }

@@ -131,6 +131,6 @@ $foo = bar();', $comment, false);
             $comment = str_replace("\n", "\n    ", $comment);
         }
 
-        return sprintf($php, preg_replace('/^\n+/', '', $comment));
+        return \sprintf($php, preg_replace('/^\n+/', '', $comment));
     }
 }

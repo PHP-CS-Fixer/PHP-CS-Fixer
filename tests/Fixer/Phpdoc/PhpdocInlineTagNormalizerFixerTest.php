@@ -105,58 +105,58 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
 
         foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             yield [
-                sprintf("<?php\n     /**\n      * {@%s}a\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * {@%s}a\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
             ];
 
             yield [
-                sprintf("<?php\n     /**\n      * {@%s} b\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * {{@%s}} b\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * {@%s} b\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * {{@%s}} b\n      */\n", $tag),
             ];
 
             yield [
-                sprintf("<?php\n     /**\n      * c {@%s}\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * c @{{%s}}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c @{{%s}}\n      */\n", $tag),
             ];
 
             yield [
-                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * c @{{%s test}}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c @{{%s test}}\n      */\n", $tag),
             ];
 
             // test unbalanced { tags
             yield [
-                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
             ];
 
             yield [
-                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * c {{@%s test}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {{@%s test}\n      */\n", $tag),
             ];
 
             yield [
-                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
             ];
 
             yield [
-                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
-                sprintf("<?php\n     /**\n      * c @{{%s test}}}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * c @{{%s test}}}\n      */\n", $tag),
             ];
         }
 
         // don't auto inline tags
         foreach (['example', 'id', 'internal', 'inheritdoc', 'foo', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             yield [
-                sprintf("<?php\n     /**\n      * @%s\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * @%s\n      */\n", $tag),
             ];
         }
 
         // don't touch well formatted tags
         foreach (['example', 'id', 'internal', 'inheritdoc', 'foo', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             yield [
-                sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),
+                \sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),
             ];
         }
 

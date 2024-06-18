@@ -209,7 +209,7 @@ namespace {
         $constantChecker = static function (array $value): bool {
             foreach ($value as $constantName) {
                 if (trim($constantName) !== $constantName) {
-                    throw new InvalidOptionsException(sprintf(
+                    throw new InvalidOptionsException(\sprintf(
                         'Each element must be a non-empty, trimmed string, got "%s" instead.',
                         get_debug_type($constantName)
                     ));

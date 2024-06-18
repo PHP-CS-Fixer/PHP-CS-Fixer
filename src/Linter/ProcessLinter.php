@@ -143,7 +143,7 @@ final class ProcessLinter implements LinterInterface
         }
 
         if (false === @file_put_contents($this->temporaryFile, $source)) {
-            throw new IOException(sprintf('Failed to write file "%s".', $this->temporaryFile), 0, null, $this->temporaryFile);
+            throw new IOException(\sprintf('Failed to write file "%s".', $this->temporaryFile), 0, null, $this->temporaryFile);
         }
 
         return $this->createProcessForFile($this->temporaryFile);

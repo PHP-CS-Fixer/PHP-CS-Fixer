@@ -453,8 +453,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     ';
 
         for ($i = 0; $i < 8; ++$i) {
-            $expected .= sprintf($expectedTemplate, $i);
-            $input .= sprintf($inputTemplate, $i);
+            $expected .= \sprintf($expectedTemplate, $i);
+            $input .= \sprintf($inputTemplate, $i);
         }
 
         $expected .= "\n}";

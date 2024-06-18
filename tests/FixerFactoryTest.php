@@ -240,7 +240,7 @@ final class FixerFactoryTest extends TestCase
             public function getRuleConfiguration(string $rule): ?array
             {
                 if (!$this->hasRule($rule)) {
-                    throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
+                    throw new \InvalidArgumentException(\sprintf('Rule "%s" is not in the set.', $rule));
                 }
 
                 if (true === $this->getRules()[$rule]) {

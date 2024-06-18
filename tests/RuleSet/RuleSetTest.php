@@ -63,14 +63,14 @@ final class RuleSetTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        self::assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
+        self::assertArrayHasKey($ruleName, $fixers, \sprintf('RuleSet "%s" contains unknown rule.', $setName));
 
         if (true === $ruleConfig) {
             return; // rule doesn't need configuration.
         }
 
         $fixer = $fixers[$ruleName];
-        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
         try {
             $fixer->configure($ruleConfig); // test fixer accepts the configuration
@@ -107,7 +107,7 @@ final class RuleSetTest extends TestCase
         self::assertNotSame(
             $this->sortNestedArray($defaultConfig, $ruleName),
             $this->sortNestedArray($ruleConfig, $ruleName),
-            sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
+            \sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
         );
     }
 
@@ -118,7 +118,7 @@ final class RuleSetTest extends TestCase
     {
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
-        self::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
+        self::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
     public static function provideAllRulesFromSetsCases(): iterable
@@ -306,7 +306,7 @@ final class RuleSetTest extends TestCase
         self::assertCount(
             0,
             $fixerNames,
-            sprintf(
+            \sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
                 $safe ? 'safe' : 'risky',
                 implode('\', \'', $fixerNames)
@@ -391,7 +391,7 @@ final class RuleSetTest extends TestCase
             return;
         }
 
-        self::fail(sprintf(
+        self::fail(\sprintf(
             '"%s" defines rules the same as it extends from: %s',
             $set->getName(),
             implode(', ', $duplicates),
@@ -411,9 +411,9 @@ final class RuleSetTest extends TestCase
     public function testPhpUnitTargetVersionHasSet(string $version): void
     {
         self::assertContains(
-            sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
+            \sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
             RuleSets::getSetDefinitionNames(),
-            sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
+            \sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
         );
     }
 

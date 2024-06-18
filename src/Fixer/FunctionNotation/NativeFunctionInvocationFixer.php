@@ -223,7 +223,7 @@ $c = get_class($d);
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
                         if ('' === trim($functionName) || trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
                             ));
@@ -239,7 +239,7 @@ $c = get_class($d);
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
                         if ('' === trim($functionName) || trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
                             ));
@@ -252,7 +252,7 @@ $c = get_class($d);
                         ];
 
                         if (str_starts_with($functionName, '@') && !\in_array($functionName, $sets, true)) {
-                            throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are %s.', $functionName, Utils::naturalLanguageJoin($sets)));
+                            throw new InvalidOptionsException(\sprintf('Unknown set "%s", known sets are %s.', $functionName, Utils::naturalLanguageJoin($sets)));
                         }
                     }
 

@@ -131,7 +131,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName => $replacement) {
                         if (!\array_key_exists($functionName, self::$argumentCounts)) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Function "%s" is not handled by the fixer.',
                                 $functionName
                             ));

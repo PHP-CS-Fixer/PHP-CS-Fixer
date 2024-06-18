@@ -61,7 +61,7 @@ final class FileFilterIterator extends \FilterIterator
         $file = $this->current();
         if (!$file instanceof \SplFileInfo) {
             throw new \RuntimeException(
-                sprintf(
+                \sprintf(
                     'Expected instance of "\SplFileInfo", got "%s".',
                     get_debug_type($file)
                 )
