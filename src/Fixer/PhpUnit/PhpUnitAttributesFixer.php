@@ -335,6 +335,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         }
 
         if (str_contains($matches[1], '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $matches[1]);
 
             return self::createAttributeTokens(
@@ -378,6 +379,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         $class = null;
         $method = $depended;
         if (str_contains($depended, '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $depended);
 
             if ('class' === $method) {
@@ -428,6 +430,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         $attributeName = $map[$matches[1]];
 
         if ('RequiresFunction' === $attributeName && str_contains($matches[2], '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $matches[2]);
 
             $attributeName = 'RequiresMethod';
