@@ -307,6 +307,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixCovers(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        \assert(isset($matches[1]));
 
         if (str_starts_with($matches[1], '::')) {
             return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
@@ -334,6 +335,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         }
 
         if (str_contains($matches[1], '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $matches[1]);
 
             return self::createAttributeTokens(
@@ -377,7 +379,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         $class = null;
         $method = $depended;
         if (str_contains($depended, '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $depended);
+
             if ('class' === $method) {
                 $method = null;
                 $nameSuffix = '' === $nameSuffix ? 'OnClass' : ('OnClass'.$nameSuffix);
@@ -407,6 +411,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixRequires(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        \assert(isset($matches[1]));
 
         $map = [
             'extension' => 'RequiresPhpExtension',
@@ -425,9 +430,12 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
         $attributeName = $map[$matches[1]];
 
         if ('RequiresFunction' === $attributeName && str_contains($matches[2], '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $matches[2]);
+
             $attributeName = 'RequiresMethod';
-            $attributeTokens = [...self::toClassConstant($class),
+            $attributeTokens = [
+                ...self::toClassConstant($class),
                 new Token(','),
                 new Token([T_WHITESPACE, ' ']),
                 self::createEscapedStringToken($method),

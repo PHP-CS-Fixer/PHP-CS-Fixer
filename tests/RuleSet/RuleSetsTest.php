@@ -192,7 +192,13 @@ Integration of %s.
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
+                /** @var list<PhpUnitTargetVersion::VERSION_*> */
+                $allowedValues = $option->getAllowedValues();
+
+                $allowedVersionsForFixer = array_diff(
+                    $allowedValues,
+                    [PhpUnitTargetVersion::VERSION_NEWEST]
+                );
 
                 break;
             }
@@ -202,7 +208,7 @@ Integration of %s.
             throw new \Exception(\sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
-        /** @var list<string> $allowedVersionsForRuleset */
+        /** @var list<PhpUnitTargetVersion::VERSION_*> */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
