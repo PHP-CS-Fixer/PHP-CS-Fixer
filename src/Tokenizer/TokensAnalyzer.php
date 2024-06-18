@@ -76,7 +76,7 @@ final class TokensAnalyzer
     public function getClassyModifiers(int $index): array
     {
         if (!$this->tokens[$index]->isClassy()) {
-            throw new \InvalidArgumentException(sprintf('Not an "classy" at given index %d.', $index));
+            throw new \InvalidArgumentException(\sprintf('Not an "classy" at given index %d.', $index));
         }
 
         $readOnlyPossible = \defined('T_READONLY'); // @TODO: drop condition when PHP 8.2+ is required
@@ -159,7 +159,7 @@ final class TokensAnalyzer
     public function isArrayMultiLine(int $index): bool
     {
         if (!$this->isArray($index)) {
-            throw new \InvalidArgumentException(sprintf('Not an array at given index %d.', $index));
+            throw new \InvalidArgumentException(\sprintf('Not an array at given index %d.', $index));
         }
 
         $tokens = $this->tokens;
@@ -178,7 +178,7 @@ final class TokensAnalyzer
         $blockType = Tokens::detectBlockType($tokens[$index]);
 
         if (null === $blockType || !$blockType['isStart']) {
-            throw new \InvalidArgumentException(sprintf('Not an block start at given index %d.', $index));
+            throw new \InvalidArgumentException(\sprintf('Not an block start at given index %d.', $index));
         }
 
         $endIndex = $tokens->findBlockEnd($blockType['type'], $index);
@@ -213,7 +213,7 @@ final class TokensAnalyzer
     public function getMethodAttributes(int $index): array
     {
         if (!$this->tokens[$index]->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
+            throw new \LogicException(\sprintf('No T_FUNCTION at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
         }
 
         $attributes = [
@@ -279,7 +279,7 @@ final class TokensAnalyzer
     public function isAnonymousClass(int $index): bool
     {
         if (!$this->tokens[$index]->isClassy()) {
-            throw new \LogicException(sprintf('No classy token at given index %d.', $index));
+            throw new \LogicException(\sprintf('No classy token at given index %d.', $index));
         }
 
         if (!$this->tokens[$index]->isGivenKind(T_CLASS)) {
@@ -306,7 +306,7 @@ final class TokensAnalyzer
     public function isLambda(int $index): bool
     {
         if (!$this->tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
-            throw new \LogicException(sprintf('No T_FUNCTION or T_FN at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
+            throw new \LogicException(\sprintf('No T_FUNCTION or T_FN at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
         }
 
         $startParenthesisIndex = $this->tokens->getNextMeaningfulToken($index);
@@ -324,7 +324,7 @@ final class TokensAnalyzer
     public function getLastTokenIndexOfArrowFunction(int $index): int
     {
         if (!$this->tokens[$index]->isGivenKind(T_FN)) {
-            throw new \InvalidArgumentException(sprintf('Not an "arrow function" at given index %d.', $index));
+            throw new \InvalidArgumentException(\sprintf('Not an "arrow function" at given index %d.', $index));
         }
 
         $stopTokens = [')', ']', ',', ';', [T_CLOSE_TAG]];
@@ -361,7 +361,7 @@ final class TokensAnalyzer
     public function isConstantInvocation(int $index): bool
     {
         if (!$this->tokens[$index]->isGivenKind(T_STRING)) {
-            throw new \LogicException(sprintf('No T_STRING at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
+            throw new \LogicException(\sprintf('No T_STRING at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
         }
 
         $nextIndex = $this->tokens->getNextMeaningfulToken($index);
@@ -657,7 +657,7 @@ final class TokensAnalyzer
         $token = $tokens[$index];
 
         if (!$token->isGivenKind(T_WHILE)) {
-            throw new \LogicException(sprintf('No T_WHILE at given index %d, got "%s".', $index, $token->getName()));
+            throw new \LogicException(\sprintf('No T_WHILE at given index %d, got "%s".', $index, $token->getName()));
         }
 
         $endIndex = $tokens->getPrevMeaningfulToken($index);
@@ -680,7 +680,7 @@ final class TokensAnalyzer
         $token = $tokens[$caseIndex];
 
         if (!$token->isGivenKind(T_CASE)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'No T_CASE given at index %d, got %s instead.',
                 $caseIndex,
                 $token->getName() ?? $token->getContent()

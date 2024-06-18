@@ -1686,17 +1686,17 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isBinaryOperator($index),
-                    sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
                 );
             }
         }
@@ -1811,17 +1811,17 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isBinaryOperator($index),
-                sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                    sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
                 );
             }
         }
@@ -2033,7 +2033,7 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         self::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
+        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), \sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
     public static function provideIsArrayCases(): iterable
@@ -2119,7 +2119,7 @@ $b;',
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),
-                sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
             );
         }
     }
@@ -2252,12 +2252,12 @@ $b;',
 
         $particularEndOfFile = 'A|(B&C); }';
 
-        yield sprintf('block "%s" at the end of file that is a type', $particularEndOfFile) => [
+        yield \sprintf('block "%s" at the end of file that is a type', $particularEndOfFile) => [
             [],
             '<?php abstract class A { abstract function foo(): '.$particularEndOfFile,
         ];
 
-        yield sprintf('block "%s" at the end of file that is not a type', $particularEndOfFile) => [
+        yield \sprintf('block "%s" at the end of file that is not a type', $particularEndOfFile) => [
             [12 => true, 15 => true],
             '<?php function foo() { return '.$particularEndOfFile,
         ];
@@ -2386,39 +2386,39 @@ class TestClass {
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PRIVATE;
-        $cases[] = [sprintf($template, 'private'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'private'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
-        $cases[] = [sprintf($template, 'public'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'public'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PROTECTED;
-        $cases[] = [sprintf($template, 'protected'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'protected'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = null;
         $attributes['static'] = true;
-        $cases[] = [sprintf($template, 'static'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'static'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
         $attributes['static'] = true;
         $attributes['final'] = true;
-        $cases[] = [sprintf($template, 'final public static'), 14, $attributes];
+        $cases[] = [\sprintf($template, 'final public static'), 14, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = null;
         $attributes['abstract'] = true;
-        $cases[] = [sprintf($template, 'abstract'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'abstract'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
         $attributes['abstract'] = true;
-        $cases[] = [sprintf($template, 'abstract public'), 12, $attributes];
+        $cases[] = [\sprintf($template, 'abstract public'), 12, $attributes];
 
         $attributes = $defaultAttributes;
-        $cases[] = [sprintf($template, ''), 8, $attributes];
+        $cases[] = [\sprintf($template, ''), 8, $attributes];
 
         return $cases;
     }
@@ -2496,7 +2496,7 @@ class TestClass {
             self::assertSame(
                 $isExpected,
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
-                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
+                \sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
             );
         }
     }
@@ -2862,7 +2862,7 @@ class MyTestWithAnonymousClass extends TestCase
         foreach ($superNames as $superName) {
             $cases[] = [
                 true,
-                sprintf('<?php echo %s[0];', $superName),
+                \sprintf('<?php echo %s[0];', $superName),
                 3,
             ];
         }
@@ -3151,7 +3151,7 @@ class MyTestWithAnonymousClass extends TestCase
             self::assertSame(
                 $expectedValue,
                 $tokensAnalyzer->isConstantInvocation($index),
-                sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+                \sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
             );
         }
     }

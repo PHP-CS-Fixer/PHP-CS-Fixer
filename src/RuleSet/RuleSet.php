@@ -44,7 +44,7 @@ final class RuleSet implements RuleSetInterface
             }
 
             if (\is_int($name)) {
-                throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
+                throw new \InvalidArgumentException(\sprintf('Missing value for "%s" rule/set.', $value));
             }
 
             if (!\is_bool($value) && !\is_array($value)) {
@@ -69,7 +69,7 @@ final class RuleSet implements RuleSetInterface
     public function getRuleConfiguration(string $rule): ?array
     {
         if (!$this->hasRule($rule)) {
-            throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
+            throw new \InvalidArgumentException(\sprintf('Rule "%s" is not in the set.', $rule));
         }
 
         if (true === $this->rules[$rule]) {
@@ -97,7 +97,7 @@ final class RuleSet implements RuleSetInterface
         foreach ($rules as $name => $value) {
             if (str_starts_with($name, '@')) {
                 if (!\is_bool($value)) {
-                    throw new \UnexpectedValueException(sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
+                    throw new \UnexpectedValueException(\sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 
                 $set = $this->resolveSubset($name, $value);
@@ -131,7 +131,7 @@ final class RuleSet implements RuleSetInterface
         if ($ruleSet instanceof DeprecatedRuleSetDescriptionInterface) {
             $messageEnd = [] === $ruleSet->getSuccessorsNames()
                 ? 'No replacement available'
-                : sprintf('Use %s instead', Utils::naturalLanguageJoin($ruleSet->getSuccessorsNames()));
+                : \sprintf('Use %s instead', Utils::naturalLanguageJoin($ruleSet->getSuccessorsNames()));
 
             Utils::triggerDeprecation(new \RuntimeException("Rule set \"{$setName}\" is deprecated. {$messageEnd}."));
         }

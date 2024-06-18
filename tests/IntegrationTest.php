@@ -63,7 +63,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                     'priority'.\DIRECTORY_SEPARATOR.'braces,indentation_type,no_break_comment.test',
                     'priority'.\DIRECTORY_SEPARATOR.'standardize_not_equals,binary_operator_spaces.test',
                 ], true)) {
-                    self::markTestIncomplete(sprintf(
+                    self::markTestIncomplete(\sprintf(
                         'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'
                         ."\n".'Either integration test needs to be extended or moved from `priority` to `misc`.'
                         ."\n".'But don\'t do it blindly - it deserves investigation!',
@@ -75,7 +75,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
             self::assertNotSame(
                 $fixedInputCode,
                 $fixedInputCodeWithReversedFixers,
-                sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
+                \sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
             );
         }
     }

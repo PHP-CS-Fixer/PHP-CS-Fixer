@@ -400,7 +400,7 @@ $expressionResult = match ($condition) {
         $tokens = Tokens::fromCode('<?php if(time() > 0){ echo 1; }');
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Unexpected type "%d".', T_IF));
+        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', T_IF));
 
         // we use `iterator_to_array` to ensure generator is consumed and it has possibility to raise exception
         iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_IF]));

@@ -44,7 +44,7 @@ final class PhpUnitTargetVersion
     public static function fulfills(string $candidate, string $target): bool
     {
         if (self::VERSION_NEWEST === $target) {
-            throw new \LogicException(sprintf('Parameter `target` shall not be provided as "%s", determine proper target for tested PHPUnit feature instead.', self::VERSION_NEWEST));
+            throw new \LogicException(\sprintf('Parameter `target` shall not be provided as "%s", determine proper target for tested PHPUnit feature instead.', self::VERSION_NEWEST));
         }
 
         if (self::VERSION_NEWEST === $candidate) {

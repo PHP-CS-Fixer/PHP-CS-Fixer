@@ -155,8 +155,8 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
         }
 
         yield [
-            sprintf('<?php /** @var %s */', $expected),
-            sprintf('<?php /** @var %s */', $input),
+            \sprintf('<?php /** @var %s */', $expected),
+            \sprintf('<?php /** @var %s */', $input),
         ];
     }
 }

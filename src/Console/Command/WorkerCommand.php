@@ -110,7 +110,7 @@ final class WorkerCommand extends Command
         $loop = new StreamSelectLoop();
         $tcpConnector = new TcpConnector($loop);
         $tcpConnector
-            ->connect(sprintf('127.0.0.1:%d', $port))
+            ->connect(\sprintf('127.0.0.1:%d', $port))
             ->then(
                 /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
@@ -148,7 +148,7 @@ final class WorkerCommand extends Command
 
                         if (ParallelAction::RUNNER_REQUEST_ANALYSIS !== $action) {
                             // At this point we only expect analysis requests, if any other action happen, we need to fix the code.
-                            throw new \LogicException(sprintf('Unexpected action ParallelAction::%s.', $action));
+                            throw new \LogicException(\sprintf('Unexpected action ParallelAction::%s.', $action));
                         }
 
                         /** @var iterable<int, string> $files */

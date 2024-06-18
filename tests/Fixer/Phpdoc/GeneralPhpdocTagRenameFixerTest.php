@@ -276,7 +276,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     public function testConfigureWithInvalidReplacements(array $replacements, bool $caseSensitive, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf(
+        $this->expectExceptionMessageMatches(\sprintf(
             '/^\[general_phpdoc_tag_rename\] Invalid configuration: %s$/',
             preg_quote($expectedMessage, '/')
         ));

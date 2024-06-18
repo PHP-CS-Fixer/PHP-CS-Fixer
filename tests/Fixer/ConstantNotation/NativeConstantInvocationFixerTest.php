@@ -35,7 +35,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $key = 'foo';
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf('[native_constant_invocation] Invalid configuration: The option "%s" does not exist.', $key));
+        $this->expectExceptionMessage(\sprintf('[native_constant_invocation] Invalid configuration: The option "%s" does not exist.', $key));
 
         $this->fixer->configure([
             $key => 'bar',

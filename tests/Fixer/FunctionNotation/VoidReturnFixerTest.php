@@ -268,20 +268,20 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
             $name = $magicMethodsDefinition[0];
             $arguments = $magicMethodsDefinition[1] ?? 0;
             $isStatic = $magicMethodsDefinition[2] ?? false;
-            $code = sprintf(
+            $code = \sprintf(
                 '<?php class Test { public%s function %s(%s)%%s {} }',
                 $isStatic ? ' static' : '',
                 $name,
                 implode(',', array_map(
-                    static fn (int $n): string => sprintf('$x%d', $n),
+                    static fn (int $n): string => \sprintf('$x%d', $n),
                     array_keys(array_fill(0, $arguments, true)),
                 ))
             );
 
-            $input = sprintf($code, '');
-            $expected = sprintf($code, \in_array($name, $excluded, true) ? '' : ': void');
+            $input = \sprintf($code, '');
+            $expected = \sprintf($code, \in_array($name, $excluded, true) ? '' : ': void');
 
-            yield sprintf('Test if magic method %s is handled without causing syntax error', $name) => [
+            yield \sprintf('Test if magic method %s is handled without causing syntax error', $name) => [
                 $expected,
                 $expected === $input ? null : $input,
             ];

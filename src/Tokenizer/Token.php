@@ -51,14 +51,14 @@ final class Token
     {
         if (\is_array($token)) {
             if (!\is_int($token[0])) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Id must be an int, got "%s".',
                     get_debug_type($token[0])
                 ));
             }
 
             if (!\is_string($token[1])) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Content must be a string, got "%s".',
                     get_debug_type($token[1])
                 ));
@@ -75,7 +75,7 @@ final class Token
             $this->isArray = false;
             $this->content = $token;
         } else {
-            throw new \InvalidArgumentException(sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
+            throw new \InvalidArgumentException(\sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
         }
     }
 
@@ -220,7 +220,7 @@ final class Token
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
-        Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+        Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
             'Method "%s" is deprecated and will be removed in the next major version.',
             __METHOD__
         )));

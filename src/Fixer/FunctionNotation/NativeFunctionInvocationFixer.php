@@ -223,7 +223,7 @@ $c = get_class($d);
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
                         if ('' === trim($functionName) || trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
                             ));
@@ -239,7 +239,7 @@ $c = get_class($d);
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName) {
                         if ('' === trim($functionName) || trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 get_debug_type($functionName)
                             ));
@@ -252,7 +252,7 @@ $c = get_class($d);
                         ];
 
                         if (str_starts_with($functionName, '@') && !\in_array($functionName, $sets, true)) {
-                            throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are %s.', $functionName, Utils::naturalLanguageJoin($sets)));
+                            throw new InvalidOptionsException(\sprintf('Unknown set "%s", known sets are %s.', $functionName, Utils::naturalLanguageJoin($sets)));
                         }
                     }
 
@@ -378,6 +378,7 @@ $c = get_class($d);
             'is_string',
             'ord',
             'sizeof',
+            'sprintf',
             'strlen',
             'strval',
             // @see https://github.com/php/php-src/blob/php-7.2.6/ext/opcache/Optimizer/pass1_5.c

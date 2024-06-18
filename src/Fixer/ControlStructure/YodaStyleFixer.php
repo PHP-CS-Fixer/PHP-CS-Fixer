@@ -354,7 +354,7 @@ return $foo === count($bar);
     private function fixTokensComparePart(Tokens $tokens, int $start, int $end): Tokens
     {
         $newTokens = $tokens->generatePartialCode($start, $end);
-        $newTokens = $this->fixTokens(Tokens::fromCode(sprintf('<?php %s;', $newTokens)));
+        $newTokens = $this->fixTokens(Tokens::fromCode(\sprintf('<?php %s;', $newTokens)));
         $newTokens->clearAt(\count($newTokens) - 1);
         $newTokens->clearAt(0);
         $newTokens->clearEmptyTokens();
