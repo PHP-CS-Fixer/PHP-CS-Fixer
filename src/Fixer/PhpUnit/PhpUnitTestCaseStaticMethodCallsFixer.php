@@ -393,7 +393,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     foreach ($option as $method => $value) {
                         if (!isset(self::STATIC_METHODS[$method])) {
                             throw new InvalidOptionsException(
-                                sprintf(
+                                \sprintf(
                                     'Unexpected "methods" key, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin(array_keys(self::STATIC_METHODS)),
                                     \gettype($method).'#'.$method
@@ -403,7 +403,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
                         if (!isset(self::ALLOWED_VALUES[$value])) {
                             throw new InvalidOptionsException(
-                                sprintf(
+                                \sprintf(
                                     'Unexpected value for method "%s", expected any of %s, got "%s".',
                                     $method,
                                     Utils::naturalLanguageJoin(array_keys(self::ALLOWED_VALUES)),

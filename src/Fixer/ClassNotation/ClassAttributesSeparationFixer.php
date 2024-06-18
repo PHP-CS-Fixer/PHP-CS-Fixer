@@ -217,7 +217,7 @@ class Sample
 
                         if (!\in_array($type, $supportedTypes, true)) {
                             throw new InvalidOptionsException(
-                                sprintf(
+                                \sprintf(
                                     'Unexpected element type, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin($supportedTypes),
                                     \gettype($type).'#'.$type
@@ -229,7 +229,7 @@ class Sample
 
                         if (!\in_array($spacing, $supportedSpacings, true)) {
                             throw new InvalidOptionsException(
-                                sprintf(
+                                \sprintf(
                                     'Unexpected spacing for element type "%s", expected any of %s, got "%s".',
                                     $spacing,
                                     Utils::naturalLanguageJoin($supportedSpacings),
@@ -363,7 +363,7 @@ class Sample
             return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
-        throw new \RuntimeException(sprintf('Unknown spacing "%s".', $spacing));
+        throw new \RuntimeException(\sprintf('Unknown spacing "%s".', $spacing));
     }
 
     /**

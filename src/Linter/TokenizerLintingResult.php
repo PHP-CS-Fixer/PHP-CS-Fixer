@@ -32,7 +32,7 @@ final class TokenizerLintingResult implements LintingResultInterface
     {
         if (null !== $this->error) {
             throw new LintingException(
-                sprintf('%s: %s on line %d.', $this->getMessagePrefix(), $this->error->getMessage(), $this->error->getLine()),
+                \sprintf('%s: %s on line %d.', $this->getMessagePrefix(), $this->error->getMessage(), $this->error->getLine()),
                 $this->error->getCode(),
                 $this->error
             );

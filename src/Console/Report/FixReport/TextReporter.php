@@ -35,7 +35,7 @@ final class TextReporter implements ReporterInterface
         $identifiedFiles = 0;
         foreach ($reportSummary->getChanged() as $file => $fixResult) {
             ++$identifiedFiles;
-            $output .= sprintf('%4d) %s', $identifiedFiles, $file);
+            $output .= \sprintf('%4d) %s', $identifiedFiles, $file);
 
             if ($reportSummary->shouldAddAppliedFixers()) {
                 $output .= $this->getAppliedFixers(
@@ -62,7 +62,7 @@ final class TextReporter implements ReporterInterface
      */
     private function getAppliedFixers(bool $isDecoratedOutput, array $appliedFixers): string
     {
-        return sprintf(
+        return \sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
             implode(', ', $appliedFixers)
         );
@@ -74,7 +74,7 @@ final class TextReporter implements ReporterInterface
             return '';
         }
 
-        $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, sprintf(
+        $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, \sprintf(
             '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
             PHP_EOL,
             PHP_EOL
@@ -89,7 +89,7 @@ final class TextReporter implements ReporterInterface
             return '';
         }
 
-        return PHP_EOL.sprintf(
+        return PHP_EOL.\sprintf(
             '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.PHP_EOL,
             $isDryRun ? 'Found' : 'Fixed',
             $identifiedFiles,

@@ -178,7 +178,7 @@ final class Runner
         $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
 
         if (!is_numeric($serverPort)) {
-            throw new ParallelisationException(sprintf(
+            throw new ParallelisationException(\sprintf(
                 'Unable to parse server port from "%s"',
                 $server->getAddress() ?? ''
             ));
@@ -347,7 +347,7 @@ final class Runner
                     }
 
                     $errorsReported = Preg::matchAll(
-                        sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
+                        \sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
                         $output,
                         $matches
                     );
@@ -490,7 +490,7 @@ final class Runner
 
                 if (!file_exists($fileName)) {
                     throw new IOException(
-                        sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
+                        \sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
                         0,
                         null,
                         $file->getPathname()
@@ -499,7 +499,7 @@ final class Runner
 
                 if (is_dir($fileName)) {
                     throw new IOException(
-                        sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
+                        \sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
                         0,
                         null,
                         $fileName
@@ -508,7 +508,7 @@ final class Runner
 
                 if (!is_writable($fileName)) {
                     throw new IOException(
-                        sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
+                        \sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
                         0,
                         null,
                         $fileName
@@ -519,7 +519,7 @@ final class Runner
                     $error = error_get_last();
 
                     throw new IOException(
-                        sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
+                        \sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
                         $fileName

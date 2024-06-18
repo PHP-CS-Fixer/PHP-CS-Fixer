@@ -37,7 +37,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         $key = 'foo';
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             '[native_function_invocation] Invalid configuration: The option "%s" does not exist.',
             $key
         ));
@@ -117,7 +117,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     ): void {
         if (null !== $expectedExceptionClass) {
             $this->expectException($expectedExceptionClass);
-            $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));
+            $this->expectExceptionMessageMatches(\sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));
         }
 
         $this->fixer->configure([

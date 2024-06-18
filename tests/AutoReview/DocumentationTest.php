@@ -139,7 +139,7 @@ final class DocumentationTest extends TestCase
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
                 $path,
-                sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
+                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
             );
         }
 
@@ -148,7 +148,7 @@ final class DocumentationTest extends TestCase
         self::assertFileEqualsString(
             $generator->generateRuleSetsDocumentationIndex($paths),
             $indexFilePath,
-            sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
+            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
         );
     }
 
@@ -169,13 +169,13 @@ final class DocumentationTest extends TestCase
         $phpVersion = $composerJson['require']['php'];
         $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
 
-        $minimumVersionInformation = sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
+        $minimumVersionInformation = \sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
 
         self::assertStringContainsString(
             $minimumVersionInformation,
             file_get_contents($installationDocPath),
-            sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
+            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
         );
     }
 
@@ -197,7 +197,7 @@ final class DocumentationTest extends TestCase
         );
 
         foreach ($formats as $format) {
-            self::assertStringContainsString(sprintf('* ``%s``', $format), $usage);
+            self::assertStringContainsString(\sprintf('* ``%s``', $format), $usage);
         }
 
         $lastFormat = array_pop($formats);

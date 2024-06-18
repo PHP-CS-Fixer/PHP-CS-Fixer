@@ -131,7 +131,7 @@ final class DescribeCommand extends Command
 
             $this->describeList($output, $e->getType());
 
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 '%s "%s" not found.%s',
                 ucfirst($e->getType()),
                 $name,
@@ -155,24 +155,24 @@ final class DescribeCommand extends Command
 
         $definition = $fixer->getDefinition();
 
-        $output->writeln(sprintf('<fg=blue>Description of the <info>`%s`</info> rule.</>', $name));
+        $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> rule.</>', $name));
         $output->writeln('');
 
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
+            $output->writeln(\sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
             $output->writeln('');
         }
 
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
             $message = [] === $successors
-                ? sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
-                : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
+                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
 
             $endMessage = '. '.ucfirst($message);
             Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
             $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
-            $output->writeln(sprintf('<error>DEPRECATED</error>: %s.', $message));
+            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
             $output->writeln('');
         }
 
@@ -216,7 +216,7 @@ final class DescribeCommand extends Command
             $configurationDefinition = $fixer->getConfigurationDefinition();
             $options = $configurationDefinition->getOptions();
 
-            $output->writeln(sprintf('Fixer is configurable using following option%s:', 1 === \count($options) ? '' : 's'));
+            $output->writeln(\sprintf('Fixer is configurable using following option%s:', 1 === \count($options) ? '' : 's'));
 
             foreach ($options as $option) {
                 $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
@@ -239,7 +239,7 @@ final class DescribeCommand extends Command
                 $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';
 
                 if ($option->hasDefault()) {
-                    $line .= sprintf(
+                    $line .= \sprintf(
                         'defaults to <comment>%s</comment>',
                         Utils::toString($option->getDefault())
                     );
@@ -290,7 +290,7 @@ final class DescribeCommand extends Command
             $differ = new FullDiffer();
             $diffFormatter = new DiffConsoleFormatter(
                 $output->isDecorated(),
-                sprintf(
+                \sprintf(
                     '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                     PHP_EOL,
                     PHP_EOL
@@ -317,12 +317,12 @@ final class DescribeCommand extends Command
 
                 if ($fixer instanceof ConfigurableFixerInterface) {
                     if (null === $configuration) {
-                        $output->writeln(sprintf(' * Example #%d. Fixing with the <comment>default</comment> configuration.', $index + 1));
+                        $output->writeln(\sprintf(' * Example #%d. Fixing with the <comment>default</comment> configuration.', $index + 1));
                     } else {
-                        $output->writeln(sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, Utils::toString($codeSample->getConfiguration())));
+                        $output->writeln(\sprintf(' * Example #%d. Fixing with configuration: <comment>%s</comment>.', $index + 1, Utils::toString($codeSample->getConfiguration())));
                     }
                 } else {
-                    $output->writeln(sprintf(' * Example #%d.', $index + 1));
+                    $output->writeln(\sprintf(' * Example #%d.', $index + 1));
                 }
 
                 $output->writeln([$diffFormatter->format($diff, '   %s'), '']);
@@ -338,9 +338,9 @@ final class DescribeCommand extends Command
 
             foreach ($ruleSetConfigs as $set => $config) {
                 if (null !== $config) {
-                    $output->writeln(sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set, Utils::toString($config)));
+                    $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set, Utils::toString($config)));
                 } else {
-                    $output->writeln(sprintf('* <info>%s</info> with <comment>default</comment> config', $set));
+                    $output->writeln(\sprintf('* <info>%s</info> with <comment>default</comment> config', $set));
                 }
             }
 
@@ -357,7 +357,7 @@ final class DescribeCommand extends Command
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
         $fixers = $this->getFixers();
 
-        $output->writeln(sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinitions[$name]->getName()));
+        $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinitions[$name]->getName()));
         $output->writeln('');
 
         $output->writeln($this->replaceRstLinks($ruleSetDefinitions[$name]->getDescription()));
@@ -373,7 +373,7 @@ final class DescribeCommand extends Command
         foreach ($ruleSetDefinitions[$name]->getRules() as $rule => $config) {
             if (str_starts_with($rule, '@')) {
                 $set = $ruleSetDefinitions[$rule];
-                $help .= sprintf(
+                $help .= \sprintf(
                     " * <info>%s</info>%s\n   | %s\n\n",
                     $rule,
                     $set->isRisky() ? ' <error>risky</error>' : '',
@@ -387,12 +387,12 @@ final class DescribeCommand extends Command
             $fixer = $fixers[$rule];
 
             $definition = $fixer->getDefinition();
-            $help .= sprintf(
+            $help .= \sprintf(
                 " * <info>%s</info>%s\n   | %s\n%s\n",
                 $rule,
                 $fixer->isRisky() ? ' <error>risky</error>' : '',
                 $definition->getSummary(),
-                true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : ''
+                true !== $config ? \sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : ''
             );
         }
 
@@ -448,7 +448,7 @@ final class DescribeCommand extends Command
 
             $items = $this->getSetNames();
             foreach ($items as $item) {
-                $output->writeln(sprintf('* <info>%s</info>', $item));
+                $output->writeln(\sprintf('* <info>%s</info>', $item));
             }
         }
 
@@ -457,7 +457,7 @@ final class DescribeCommand extends Command
 
             $items = array_keys($this->getFixers());
             foreach ($items as $item) {
-                $output->writeln(sprintf('* <info>%s</info>', $item));
+                $output->writeln(\sprintf('* <info>%s</info>', $item));
             }
         }
     }

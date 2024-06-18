@@ -787,12 +787,12 @@ class Foo
             yield $key => $case;
 
             if (\count($case) > 2) {
-                throw new \BadMethodCallException(sprintf('Method "%s" does not support handling "configuration" input yet, please implement it.', __METHOD__));
+                throw new \BadMethodCallException(\sprintf('Method "%s" does not support handling "configuration" input yet, please implement it.', __METHOD__));
             }
 
             $reversed = array_reverse($case);
 
-            yield sprintf('Inversed %s', $key) => [
+            yield \sprintf('Inversed %s', $key) => [
                 $reversed[0],
                 $reversed[1] ?? null,
                 ['use_nullable_type_declaration' => false],

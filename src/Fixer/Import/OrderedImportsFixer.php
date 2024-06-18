@@ -271,7 +271,7 @@ use Bar;
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
                         if (\count($missing) > 0) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Missing sort %s %s.',
                                 1 === \count($missing) ? 'type' : 'types',
                                 Utils::naturalLanguageJoin($missing)
@@ -280,7 +280,7 @@ use Bar;
 
                         $unknown = array_diff($value, $supportedSortTypes);
                         if (\count($unknown) > 0) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Unknown sort %s %s.',
                                 1 === \count($unknown) ? 'type' : 'types',
                                 Utils::naturalLanguageJoin($unknown)
@@ -562,7 +562,7 @@ use Bar;
 
         // Now insert the new tokens, starting from the end
         foreach (array_reverse($usesOrder, true) as $index => $use) {
-            $code = sprintf(
+            $code = \sprintf(
                 '<?php use %s%s;',
                 self::IMPORT_TYPE_CLASS === $use['importType'] ? '' : ' '.$use['importType'].' ',
                 $use['namespace']

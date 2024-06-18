@@ -267,7 +267,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixWithSingleStringValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\/$)/', $annotation->getTag()->getName()),
+            \sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );
@@ -500,7 +500,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function getMatches(Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\/$)/', $annotation->getTag()->getName()),
+            \sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );

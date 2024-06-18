@@ -42,13 +42,13 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $types = ['string', 'array', 'object'];
 
         foreach ($types as $cast) {
-            yield [sprintf('<?php $b=(%s) $d;', $cast)];
+            yield [\sprintf('<?php $b=(%s) $d;', $cast)];
 
-            yield [sprintf('<?php $b=( %s ) $d;', $cast)];
+            yield [\sprintf('<?php $b=( %s ) $d;', $cast)];
 
-            yield [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
+            yield [\sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
 
-            yield [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
+            yield [\sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
         }
     }
 
@@ -104,28 +104,28 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     private static function createCasesFor(string $from, string $to): iterable
     {
         yield [
-            sprintf('<?php echo ( %s  )$a;', $to),
-            sprintf('<?php echo ( %s  )$a;', $from),
+            \sprintf('<?php echo ( %s  )$a;', $to),
+            \sprintf('<?php echo ( %s  )$a;', $from),
         ];
 
         yield [
-            sprintf('<?php $b=(%s) $d;', $to),
-            sprintf('<?php $b=(%s) $d;', $from),
+            \sprintf('<?php $b=(%s) $d;', $to),
+            \sprintf('<?php $b=(%s) $d;', $from),
         ];
 
         yield [
-            sprintf('<?php $b= (%s)$d;', $to),
-            sprintf('<?php $b= (%s)$d;', strtoupper($from)),
+            \sprintf('<?php $b= (%s)$d;', $to),
+            \sprintf('<?php $b= (%s)$d;', strtoupper($from)),
         ];
 
         yield [
-            sprintf('<?php $b=( %s) $d;', $to),
-            sprintf('<?php $b=( %s) $d;', ucfirst($from)),
+            \sprintf('<?php $b=( %s) $d;', $to),
+            \sprintf('<?php $b=( %s) $d;', ucfirst($from)),
         ];
 
         yield [
-            sprintf('<?php $b=(%s ) $d;', $to),
-            sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
+            \sprintf('<?php $b=(%s ) $d;', $to),
+            \sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
         ];
     }
 }

@@ -248,7 +248,7 @@ mbereg_search_getregs();
             }
 
             if (!isset(self::SETS[$set])) {
-                throw new \LogicException(sprintf('Set %s passed option validation, but not part of ::SETS.', $set));
+                throw new \LogicException(\sprintf('Set %s passed option validation, but not part of ::SETS.', $set));
             }
 
             $this->aliases = array_merge($this->aliases, self::SETS[$set]);
@@ -321,7 +321,7 @@ mbereg_search_getregs();
         $list = "List of sets to fix. Defined sets are:\n\n";
 
         foreach ($sets as $set => $description) {
-            $list .= sprintf("* `%s` (%s);\n", $set, $description);
+            $list .= \sprintf("* `%s` (%s);\n", $set, $description);
         }
 
         $list = rtrim($list, ";\n").'.';

@@ -92,7 +92,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
             return;
         }
 
-        $regularExpression = sprintf(
+        $regularExpression = \sprintf(
             '/({?@(?:%s).*?(?:(?=\s\*\/)|(?=\n)}?))/i',
             implode('|', array_map(
                 static fn (string $tag): string => preg_quote($tag, '/'),

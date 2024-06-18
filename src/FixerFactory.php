@@ -132,11 +132,11 @@ final class FixerFactory
         $name = $fixer->getName();
 
         if (isset($this->fixersByName[$name])) {
-            throw new \UnexpectedValueException(sprintf('Fixer named "%s" is already registered.', $name));
+            throw new \UnexpectedValueException(\sprintf('Fixer named "%s" is already registered.', $name));
         }
 
         if (!$this->nameValidator->isValid($name, $isCustom)) {
-            throw new \UnexpectedValueException(sprintf('Fixer named "%s" has invalid name.', $name));
+            throw new \UnexpectedValueException(\sprintf('Fixer named "%s" has invalid name.', $name));
         }
 
         $this->fixers[] = $fixer;
@@ -159,7 +159,7 @@ final class FixerFactory
         $fixerNames = array_keys($ruleSet->getRules());
         foreach ($fixerNames as $name) {
             if (!\array_key_exists($name, $this->fixersByName)) {
-                throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
+                throw new \UnexpectedValueException(\sprintf('Rule "%s" does not exist.', $name));
             }
 
             $fixer = $this->fixersByName[$name];
@@ -239,7 +239,7 @@ final class FixerFactory
             );
 
             if (\count($report[$fixer]) > 0) {
-                $message .= sprintf("\n- \"%s\" with %s", $fixer, Utils::naturalLanguageJoin($report[$fixer]));
+                $message .= \sprintf("\n- \"%s\" with %s", $fixer, Utils::naturalLanguageJoin($report[$fixer]));
             }
         }
 

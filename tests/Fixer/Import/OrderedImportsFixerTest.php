@@ -1198,7 +1198,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testInvalidSortAlgorithm(array $configuration, string $expectedValue): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value %s is invalid. Accepted values are: "alpha", "length", "none".',
             $expectedValue
         ));

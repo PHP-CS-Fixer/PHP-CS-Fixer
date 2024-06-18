@@ -159,7 +159,7 @@ class Sample
                         }
 
                         if (!isset($default[$from])) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Unknown key "%s", expected any of %s.',
                                 \gettype($from).'#'.$from,
                                 Utils::naturalLanguageJoin(array_keys($default))
@@ -167,7 +167,7 @@ class Sample
                         }
 
                         if (!\in_array($to, self::$toTypes, true)) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Unknown value "%s", expected any of %s.',
                                 \is_object($to) ? \get_class($to) : \gettype($to).(\is_resource($to) ? '' : '#'.$to),
                                 Utils::naturalLanguageJoin(self::$toTypes)

@@ -100,13 +100,13 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
-            yield sprintf('test function with %s modifier', $modifier) => [
+            yield \sprintf('test function with %s modifier', $modifier) => [
                 [
                     new DataProviderAnalysis('provider1', 54, [37]),
                     new DataProviderAnalysis('provider2', 65, [11]),
                     new DataProviderAnalysis('provider3', 76, [24]),
                 ],
-                sprintf('<?php class FooTest extends TestCase {
+                \sprintf('<?php class FooTest extends TestCase {
                     /** @dataProvider provider2 */
                     public function testFoo1() {}
                     /** @dataProvider provider3 */
