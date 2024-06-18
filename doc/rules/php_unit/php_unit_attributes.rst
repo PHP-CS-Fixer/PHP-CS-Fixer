@@ -10,7 +10,8 @@ Configuration
 ``keep_annotations``
 ~~~~~~~~~~~~~~~~~~~~
 
-To keep annotations or not.
+Whether to keep annotations or not. This may be helpful for projects that
+support PHP before version 8 or PHPUnit before version 10.
 
 Allowed types: ``bool``
 

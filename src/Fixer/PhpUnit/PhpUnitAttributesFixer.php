@@ -107,7 +107,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('keep_annotations', 'To keep annotations or not.'))
+            (new FixerOptionBuilder('keep_annotations', 'Whether to keep annotations or not. This may be helpful for projects that support PHP before version 8 or PHPUnit before version 10.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
