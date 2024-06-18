@@ -307,7 +307,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixCovers(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
-        assert(isset($matches[1]));
+        \assert(isset($matches[1]));
 
         if (str_starts_with($matches[1], '::')) {
             return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
@@ -411,7 +411,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer
     private static function fixRequires(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
-        assert(isset($matches[1]));
+        \assert(isset($matches[1]));
 
         $map = [
             'extension' => 'RequiresPhpExtension',
