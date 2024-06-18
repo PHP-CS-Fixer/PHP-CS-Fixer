@@ -378,6 +378,7 @@ $c = get_class($d);
             'is_string',
             'ord',
             'sizeof',
+            'sprintf',
             'strlen',
             'strval',
             // @see https://github.com/php/php-src/blob/php-7.2.6/ext/opcache/Optimizer/pass1_5.c
