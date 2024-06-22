@@ -311,7 +311,7 @@ final class ArgumentsAnalyzerTest extends TestCase
 
         foreach (['public', 'protected', 'private'] as $visibility) {
             yield [
-                sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
+                \sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
                 13,
                 22,
                 new ArgumentAnalysis(

@@ -351,7 +351,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $oldConfigIsSet = $this->configuration[$oldConfigKey] !== $defaults;
 
             if ($newConfigIsSet && $oldConfigIsSet) {
-                throw new InvalidFixerConfigurationException($this->getName(), sprintf('Configuration cannot contain deprecated option "%s" and new option "%s".', $oldConfigKey, $newConfigKey));
+                throw new InvalidFixerConfigurationException($this->getName(), \sprintf('Configuration cannot contain deprecated option "%s" and new option "%s".', $oldConfigKey, $newConfigKey));
             }
 
             if ($oldConfigIsSet) {
@@ -368,7 +368,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $intersect = array_intersect_assoc($this->configuration['include'], $this->configuration['exclude']);
 
         if (\count($intersect) > 0) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: %s.', Utils::naturalLanguageJoin(array_keys($intersect))));
+            throw new InvalidFixerConfigurationException($this->getName(), \sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: %s.', Utils::naturalLanguageJoin(array_keys($intersect))));
         }
     }
 }

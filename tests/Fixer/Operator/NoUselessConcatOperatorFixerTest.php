@@ -61,8 +61,8 @@ final class NoUselessConcatOperatorFixerTest extends AbstractFixerTestCase
 
         foreach ($cases as $label => $case) {
             yield $label => [
-                sprintf($templateExpected, $case[2]),
-                sprintf($templateInput, $case[0], $case[1]),
+                \sprintf($templateExpected, $case[2]),
+                \sprintf($templateInput, $case[0], $case[1]),
             ];
         }
 

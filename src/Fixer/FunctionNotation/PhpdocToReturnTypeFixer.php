@@ -205,7 +205,7 @@ final class Foo {
                 continue;
             }
 
-            if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $returnType))) {
+            if (!$this->isValidSyntax(\sprintf(self::TYPE_CHECK_TEMPLATE, $returnType))) {
                 continue;
             }
 
@@ -224,7 +224,7 @@ final class Foo {
 
     protected function createTokensFromRawType(string $type): Tokens
     {
-        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens = Tokens::fromCode(\sprintf(self::TYPE_CHECK_TEMPLATE, $type));
         $typeTokens->clearRange(0, 7);
         $typeTokens->clearRange(\count($typeTokens) - 3, \count($typeTokens) - 1);
         $typeTokens->clearEmptyTokens();

@@ -64,10 +64,10 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
                 if (\array_key_exists($alias, $configuration)) {
                     if (\array_key_exists($name, $configuration)) {
-                        throw new InvalidOptionsException(sprintf('Aliased option "%s"/"%s" is passed multiple times.', $name, $alias));
+                        throw new InvalidOptionsException(\sprintf('Aliased option "%s"/"%s" is passed multiple times.', $name, $alias));
                     }
 
-                    Utils::triggerDeprecation(new \RuntimeException(sprintf(
+                    Utils::triggerDeprecation(new \RuntimeException(\sprintf(
                         'Option "%s" is deprecated, use "%s" instead.',
                         $alias,
                         $name
@@ -138,7 +138,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
         $name = $option->getName();
 
         if (\in_array($name, $this->registeredNames, true)) {
-            throw new \LogicException(sprintf('The "%s" option is defined multiple times.', $name));
+            throw new \LogicException(\sprintf('The "%s" option is defined multiple times.', $name));
         }
 
         $this->options[] = $option;

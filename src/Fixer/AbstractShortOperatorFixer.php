@@ -241,7 +241,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             return false;
         }
 
-        throw new \InvalidArgumentException(sprintf('Not supported operator "%s".', $operatorToken->toJson()));
+        throw new \InvalidArgumentException(\sprintf('Not supported operator "%s".', $operatorToken->toJson()));
     }
 
     private function belongsToSwitchOrAlternativeSyntax(AlternativeSyntaxAnalyzer $alternativeSyntaxAnalyzer, Tokens $tokens, int $index): bool

@@ -669,7 +669,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
         $expectedAttribute = str_replace('#[', '#[\PHPUnit\Framework\Attributes\\', $expectedAttribute);
 
         return [
-            sprintf(
+            \sprintf(
                 <<<'PHP'
                     <?php
                     %s
@@ -681,16 +681,16 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                     }
                     PHP,
                 \in_array('class', $scopes, true)
-                    ? sprintf("/**\n */\n%s", $expectedAttribute)
-                    : sprintf("/**\n * %s\n */", $inputAnnotation),
+                    ? \sprintf("/**\n */\n%s", $expectedAttribute)
+                    : \sprintf("/**\n * %s\n */", $inputAnnotation),
                 \in_array('method', $scopes, true)
-                    ? sprintf("/**\n     */\n    %s", $expectedAttribute)
-                    : sprintf("/**\n     * %s\n     */", $inputAnnotation),
+                    ? \sprintf("/**\n     */\n    %s", $expectedAttribute)
+                    : \sprintf("/**\n     * %s\n     */", $inputAnnotation),
                 \in_array('method', $scopes, true)
-                    ? sprintf("\n    %s", $expectedAttribute)
-                    : sprintf('/** %s */', $inputAnnotation),
+                    ? \sprintf("\n    %s", $expectedAttribute)
+                    : \sprintf('/** %s */', $inputAnnotation),
             ),
-            sprintf(
+            \sprintf(
                 <<<'PHP'
                     <?php
                     /**

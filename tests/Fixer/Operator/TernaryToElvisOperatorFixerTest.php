@@ -38,9 +38,9 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         $operators = ['+=', '-=', '*=', '**=', '/=', '.=', '%=', '&=', '|=', '^=', '<<=', '>>='];
 
         foreach ($operators as $operator) {
-            yield sprintf('Test with operator "%s".', $operator) => [
-                sprintf('<?php $z = $a %s $b ?  : $c;', $operator),
-                sprintf('<?php $z = $a %s $b ? $b : $c;', $operator),
+            yield \sprintf('Test with operator "%s".', $operator) => [
+                \sprintf('<?php $z = $a %s $b ?  : $c;', $operator),
+                \sprintf('<?php $z = $a %s $b ? $b : $c;', $operator),
             ];
         }
 

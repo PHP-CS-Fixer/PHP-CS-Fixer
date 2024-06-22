@@ -297,7 +297,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     private static function fixWithSingleStringValue(Tokens $tokens, int $index, Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\/$)/', $annotation->getTag()->getName()),
+            \sprintf('/@%s\s+(.*\S)(?:\R|\s*\*+\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );
@@ -337,6 +337,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     private static function fixCovers(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        \assert(isset($matches[1]));
 
         if (str_starts_with($matches[1], '::')) {
             return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
@@ -364,6 +365,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         }
 
         if (str_contains($matches[1], '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $matches[1]);
 
             return self::createAttributeTokens(
@@ -407,7 +409,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         $class = null;
         $method = $depended;
         if (str_contains($depended, '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $depended);
+
             if ('class' === $method) {
                 $method = null;
                 $nameSuffix = '' === $nameSuffix ? 'OnClass' : ('OnClass'.$nameSuffix);
@@ -437,6 +441,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     private static function fixRequires(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
+        \assert(isset($matches[1]));
 
         $map = [
             'extension' => 'RequiresPhpExtension',
@@ -455,9 +460,12 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         $attributeName = $map[$matches[1]];
 
         if ('RequiresFunction' === $attributeName && str_contains($matches[2], '::')) {
+            // @phpstan-ignore offsetAccess.notFound
             [$class, $method] = explode('::', $matches[2]);
+
             $attributeName = 'RequiresMethod';
-            $attributeTokens = [...self::toClassConstant($class),
+            $attributeTokens = [
+                ...self::toClassConstant($class),
                 new Token(','),
                 new Token([T_WHITESPACE, ' ']),
                 self::createEscapedStringToken($method),
@@ -530,7 +538,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     private static function getMatches(Annotation $annotation): array
     {
         Preg::match(
-            sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\/$)/', $annotation->getTag()->getName()),
+            \sprintf('/@%s\s+(\S+)(?:\s+(\S+))?(?:\s+(.+\S))?\s*(?:\R|\*+\/$)/', $annotation->getTag()->getName()),
             $annotation->getContent(),
             $matches,
         );

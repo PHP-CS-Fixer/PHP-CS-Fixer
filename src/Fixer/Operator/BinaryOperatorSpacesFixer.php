@@ -376,7 +376,7 @@ $array = [
                     foreach ($option as $operator => $value) {
                         if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {
                             throw new InvalidOptionsException(
-                                sprintf(
+                                \sprintf(
                                     'Unexpected "operators" key, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin(self::SUPPORTED_OPERATORS),
                                     \gettype($operator).'#'.$operator
@@ -386,7 +386,7 @@ $array = [
 
                         if (!\in_array($value, self::$allowedValues, true)) {
                             throw new InvalidOptionsException(
-                                sprintf(
+                                \sprintf(
                                     'Unexpected value for operator "%s", expected any of %s, got "%s".',
                                     $operator,
                                     Utils::naturalLanguageJoin(array_map(
@@ -631,7 +631,7 @@ $array = [
                 && ('=' !== $content || !$this->isEqualPartOfDeclareStatement($tokens, $index))
                 && $newLineFoundSinceLastPlaceholder
             ) {
-                $tokens[$index] = new Token(sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$content);
+                $tokens[$index] = new Token(\sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$content);
                 $newLineFoundSinceLastPlaceholder = false;
 
                 continue;
@@ -764,7 +764,7 @@ $array = [
                     ++$this->deepestLevel;
                     ++$this->currentLevel;
                 }
-                $tokenContent = sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$token->getContent();
+                $tokenContent = \sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
                 if (!$nextToken->isWhitespace()) {
@@ -871,7 +871,7 @@ $array = [
         $tmpCode = $tokens->generateCode();
 
         for ($j = 0; $j <= $this->deepestLevel; ++$j) {
-            $placeholder = sprintf(self::ALIGN_PLACEHOLDER, $j);
+            $placeholder = \sprintf(self::ALIGN_PLACEHOLDER, $j);
 
             if (!str_contains($tmpCode, $placeholder)) {
                 continue;

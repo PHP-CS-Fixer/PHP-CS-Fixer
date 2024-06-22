@@ -250,11 +250,11 @@ final class BraceTransformer extends AbstractTransformer
     private function naivelyFindCurlyBlockEnd(Tokens $tokens, int $startIndex): int
     {
         if (!$tokens->offsetExists($startIndex)) {
-            throw new \OutOfBoundsException(sprintf('Unavailable index: "%s".', $startIndex));
+            throw new \OutOfBoundsException(\sprintf('Unavailable index: "%s".', $startIndex));
         }
 
         if ('{' !== $tokens[$startIndex]->getContent()) {
-            throw new \InvalidArgumentException(sprintf('Wrong start index: "%s".', $startIndex));
+            throw new \InvalidArgumentException(\sprintf('Wrong start index: "%s".', $startIndex));
         }
 
         $blockLevel = 1;
@@ -273,7 +273,7 @@ final class BraceTransformer extends AbstractTransformer
 
                 if (0 === $blockLevel) {
                     if (!$token->equals('}')) {
-                        throw new \UnexpectedValueException(sprintf('Detected block end for index: "%s" was already transformed into other token type: "%s".', $startIndex, $token->getName()));
+                        throw new \UnexpectedValueException(\sprintf('Detected block end for index: "%s" was already transformed into other token type: "%s".', $startIndex, $token->getName()));
                     }
 
                     return $index;
@@ -281,6 +281,6 @@ final class BraceTransformer extends AbstractTransformer
             }
         }
 
-        throw new \UnexpectedValueException(sprintf('Missing block end for index: "%s".', $startIndex));
+        throw new \UnexpectedValueException(\sprintf('Missing block end for index: "%s".', $startIndex));
     }
 }

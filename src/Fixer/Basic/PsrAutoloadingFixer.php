@@ -113,7 +113,7 @@ class InvalidName {}
         }
 
         try {
-            $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $file->getBasename('.php')));
+            $tokens = Tokens::fromCode(\sprintf('<?php class %s {}', $file->getBasename('.php')));
 
             if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
                 // name cannot be a class name - detected by PHP 5.x
@@ -134,7 +134,7 @@ class InvalidName {}
             $realpath = realpath($this->configuration['dir']);
 
             if (false === $realpath) {
-                throw new \InvalidArgumentException(sprintf('Failed to resolve configured directory "%s".', $this->configuration['dir']));
+                throw new \InvalidArgumentException(\sprintf('Failed to resolve configured directory "%s".', $this->configuration['dir']));
             }
 
             $this->configuration['dir'] = $realpath;
@@ -241,7 +241,7 @@ class InvalidName {}
         $namespaceParts = array_reverse(explode('\\', $maxNamespace));
 
         foreach ($namespaceParts as $namespacePart) {
-            $nameCandidate = sprintf('%s_%s', $namespacePart, $name);
+            $nameCandidate = \sprintf('%s_%s', $namespacePart, $name);
 
             if (strtolower($nameCandidate) !== strtolower(substr($currentName, -\strlen($nameCandidate)))) {
                 break;

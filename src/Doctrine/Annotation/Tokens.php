@@ -256,7 +256,7 @@ final class Tokens extends \SplFixedArray
                 $type = \get_class($token);
             }
 
-            throw new \InvalidArgumentException(sprintf('Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "%s" given.', $type));
+            throw new \InvalidArgumentException(\sprintf('Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "%s" given.', $type));
         }
 
         parent::offsetSet($index, $token);
@@ -270,7 +270,7 @@ final class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         if (!isset($this[$index])) {
-            throw new \OutOfBoundsException(sprintf('Index "%s" is invalid or does not exist.', $index));
+            throw new \OutOfBoundsException(\sprintf('Index "%s" is invalid or does not exist.', $index));
         }
 
         $max = \count($this) - 1;
