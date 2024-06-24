@@ -52,6 +52,10 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
     public const BLOCK_TYPE_COMPLEX_STRING_VARIABLE = 14;
 
+    private const NON_MEANINGFUL_TOKENS = [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT];
+    private const DIRECTION_PREV = -1;
+    private const DIRECTION_NEXT = 1;
+
     /**
      * Static class cache.
      *
@@ -590,7 +594,7 @@ class Tokens extends \SplFixedArray
      */
     public function getNextNonWhitespace(int $index, ?string $whitespaces = null): ?int
     {
-        return $this->getNonWhitespaceSibling($index, 1, $whitespaces);
+        return $this->getNonWhitespaceSibling($index, self::DIRECTION_NEXT, $whitespaces);
     }
 
     /**
@@ -604,7 +608,7 @@ class Tokens extends \SplFixedArray
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        return $this->getTokenOfKindSibling($index, 1, $tokens, $caseSensitive);
+        return $this->getTokenOfKindSibling($index, self::DIRECTION_NEXT, $tokens, $caseSensitive);
     }
 
     /**
@@ -638,7 +642,7 @@ class Tokens extends \SplFixedArray
      */
     public function getPrevNonWhitespace(int $index, ?string $whitespaces = null): ?int
     {
-        return $this->getNonWhitespaceSibling($index, -1, $whitespaces);
+        return $this->getNonWhitespaceSibling($index, self::DIRECTION_PREV, $whitespaces);
     }
 
     /**
@@ -651,7 +655,7 @@ class Tokens extends \SplFixedArray
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        return $this->getTokenOfKindSibling($index, -1, $tokens, $caseSensitive);
+        return $this->getTokenOfKindSibling($index, self::DIRECTION_PREV, $tokens, $caseSensitive);
     }
 
     /**
@@ -722,10 +726,10 @@ class Tokens extends \SplFixedArray
      */
     public function getMeaningfulTokenSibling(int $index, int $direction): ?int
     {
-        return $this->getTokenNotOfKindsSibling(
+        return $this->getTokenNotOfKind(
             $index,
             $direction,
-            [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]
+            fn (int $index): bool => $this[$index]->isGivenKind(self::NON_MEANINGFUL_TOKENS),
         );
     }
 
@@ -756,7 +760,11 @@ class Tokens extends \SplFixedArray
      */
     public function getNextMeaningfulToken(int $index): ?int
     {
-        return $this->getMeaningfulTokenSibling($index, 1);
+        return $this->getTokenNotOfKind(
+            $index,
+            self::DIRECTION_NEXT,
+            fn (int $index): bool => $this[$index]->isGivenKind(self::NON_MEANINGFUL_TOKENS),
+        );
     }
 
     /**
@@ -766,7 +774,11 @@ class Tokens extends \SplFixedArray
      */
     public function getPrevMeaningfulToken(int $index): ?int
     {
-        return $this->getMeaningfulTokenSibling($index, -1);
+        return $this->getTokenNotOfKind(
+            $index,
+            self::DIRECTION_PREV,
+            fn (int $index): bool => $this[$index]->isGivenKind(self::NON_MEANINGFUL_TOKENS),
+        );
     }
 
     /**
@@ -1026,7 +1038,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace(int $index, ?string $whitespaces = null): void
     {
-        $this->removeWhitespaceSafely($index, -1, $whitespaces);
+        $this->removeWhitespaceSafely($index, self::DIRECTION_PREV, $whitespaces);
     }
 
     /**
@@ -1034,7 +1046,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeTrailingWhitespace(int $index, ?string $whitespaces = null): void
     {
-        $this->removeWhitespaceSafely($index, 1, $whitespaces);
+        $this->removeWhitespaceSafely($index, self::DIRECTION_NEXT, $whitespaces);
     }
 
     /**
@@ -1213,7 +1225,7 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        $prevIndex = $this->getNonEmptySibling($index, -1);
+        $prevIndex = $this->getNonEmptySibling($index, self::DIRECTION_PREV);
 
         if ($this[$prevIndex]->isWhitespace()) {
             $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
