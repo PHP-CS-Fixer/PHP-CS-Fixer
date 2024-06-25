@@ -16,7 +16,4 @@ Rules
 -----
 
 - `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
-- `php_unit_dedicate_assert <./../rules/php_unit/php_unit_dedicate_assert.rst>`_ with config:
-
-  ``['target' => '9.1']``
-
+- `php_unit_assert_new_names <./../rules/php_unit/php_unit_assert_new_names.rst>`_

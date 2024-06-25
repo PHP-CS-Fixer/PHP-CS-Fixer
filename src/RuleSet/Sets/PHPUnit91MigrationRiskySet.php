@@ -26,9 +26,7 @@ final class PHPUnit91MigrationRiskySet extends AbstractMigrationSetDescription
     {
         return [
             '@PHPUnit84Migration:risky' => true,
-            'php_unit_dedicate_assert' => [
-                'target' => PhpUnitTargetVersion::VERSION_9_1,
-            ],
+            'php_unit_assert_new_names' => true
         ];
     }
 }

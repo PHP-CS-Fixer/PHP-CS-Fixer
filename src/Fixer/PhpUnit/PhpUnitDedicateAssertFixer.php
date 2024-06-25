@@ -47,77 +47,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     use ConfigurableFixerTrait;
 
     /**
-     * @var array{
-     *      array_key_exists: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int
-     *      },
-     *      empty: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      file_exists: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_array: bool,
-     *      is_bool: bool,
-     *      is_callable: bool,
-     *      is_dir: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_double: bool,
-     *      is_float: bool,
-     *      is_infinite: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_int: bool,
-     *      is_integer: bool,
-     *      is_long: bool,
-     *      is_nan: array{
-     *          positive: string,
-     *          negative: bool
-     *      },
-     *      is_null: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_numeric: bool,
-     *      is_object: bool,
-     *      is_readable: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      is_real: bool,
-     *      is_resource: bool,
-     *      is_scalar: bool,
-     *      is_string: bool,
-     *      is_writable: array{
-     *          positive: string,
-     *          negative: string
-     *      },
-     *      str_contains: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int,
-     *          swap_arguments: bool
-     *      },
-     *      str_ends_with: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int,
-     *          swap_arguments: bool
-     *      },
-     *      str_starts_with: array{
-     *          positive: string,
-     *          negative: string,
-     *          argument_count: int,
-     *          swap_arguments: bool
-     *      }
-     *  }
+     * @var array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
      */
     private static array $fixMap = [
         'array_key_exists' => [
@@ -189,7 +119,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             'argument_count' => 2,
             'swap_arguments' => true,
         ],
-        'assertNotIsReadable' => true,
     ];
 
     /**
@@ -304,15 +233,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'str_contains',
             ]);
         }
-
-        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_9_1)) {
-            $this->functions = array_merge($this->functions, [
-                'assertdirectorynotexists',
-                'assertnotisreadable',
-                'assertnotiswritable',
-                'assertfilenotexists',
-            ]);
-        }
     }
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
@@ -335,10 +255,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $this->fixAssertSameEquals($tokens, $assertCall);
             }
         }
-
-        foreach ($this->getPreviousAssertCall($tokens, $startIndex, $endIndex) as $assertCall) {
-            $this->fixAssertNewNames($tokens, $assertCall);
-        }
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -351,7 +267,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     PhpUnitTargetVersion::VERSION_3_5,
                     PhpUnitTargetVersion::VERSION_5_0,
                     PhpUnitTargetVersion::VERSION_5_6,
-                    PhpUnitTargetVersion::VERSION_9_1,
                     PhpUnitTargetVersion::VERSION_NEWEST,
                 ])
                 ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
@@ -416,12 +331,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $isPositive = $isPositive ? 'positive' : 'negative';
 
-            $replace = self::$fixMap[$content][$isPositive];
-            if (false === $replace) {
+            if (false === self::$fixMap[$content][$isPositive]) {
                 return;
             }
 
-            $tokens[$assertCall['index']] = new Token([T_STRING, (string) $replace]);
+            $tokens[$assertCall['index']] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
             if (self::$fixMap[$content]['swap_arguments'] ?? false) {
@@ -610,52 +524,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    /**
-     * @return iterable<array{
-     *     index: int,
-     *     loweredName: string,
-     *     openBraceIndex: int,
-     *     closeBraceIndex: int,
-     * }>
-     */
-    private function getPreviousAssertCall(Tokens $tokens, int $startIndex, int $endIndex): iterable
-    {
-        $functionsAnalyzer = new FunctionsAnalyzer();
-
-        for ($index = $endIndex; $index > $startIndex; --$index) {
-            $index = $tokens->getPrevTokenOfKind($index, [[T_STRING]]);
-
-            if (null === $index) {
-                return;
-            }
-
-            // test if "assert" something call
-            $loweredContent = strtolower($tokens[$index]->getContent());
-
-            if (!str_starts_with($loweredContent, 'assert')) {
-                continue;
-            }
-
-            // test candidate for simple calls like: ([\]+'some fixable call'(...))
-            $openBraceIndex = $tokens->getNextMeaningfulToken($index);
-
-            if (!$tokens[$openBraceIndex]->equals('(')) {
-                continue;
-            }
-
-            if (!$functionsAnalyzer->isTheSameClassCall($tokens, $index)) {
-                continue;
-            }
-
-            yield [
-                'index' => $index,
-                'loweredName' => $loweredContent,
-                'openBraceIndex' => $openBraceIndex,
-                'closeBraceIndex' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex),
-            ];
-        }
-    }
-
     private function removeFunctionCall(Tokens $tokens, ?int $callNSIndex, int $callIndex, int $openIndex, int $closeIndex): void
     {
         $tokens->clearTokenAndMergeSurroundingWhitespace($callIndex);
@@ -718,40 +586,5 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         return $clone;
-    }
-
-    /**
-     * @param array{
-     *     index: int,
-     *     loweredName: string,
-     *     openBraceIndex: int,
-     *     closeBraceIndex: int,
-     * } $assertCall
-     */
-    private function fixAssertNewNames(Tokens $tokens, array $assertCall): void
-    {
-        if (!\in_array($assertCall['loweredName'], $this->functions, true)) {
-            return;
-        }
-
-        $replacement = null;
-        if ('assertnotisreadable' === $assertCall['loweredName']) {
-            $replacement = 'assertIsNotReadable';
-        } elseif ('assertnotiswritable' === $assertCall['loweredName']) {
-            $replacement = 'assertIsNotWritable';
-        } elseif ('assertdirectorynotexists' === $assertCall['loweredName']) {
-            $replacement = 'assertDirectoryDoesNotExist';
-        } elseif ('assertfilenotexists' === $assertCall['loweredName']) {
-            $replacement = 'assertFileDoesNotExist';
-        }
-
-        if (null === $replacement) {
-            return;
-        }
-
-        $tokens[$assertCall['index']] = new Token([
-            T_STRING,
-            $replacement,
-        ]);
     }
 }

@@ -60,9 +60,9 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         yield [
             self::generateTest('
                     $this->assertFileExists($a);
-                    $this->assertFileDoesNotExist($a);
+                    $this->assertFileNotExists($a);
                     $this->assertFileExists($a);
-                    $this->assertFileDoesNotExist($a);
+                    $this->assertFileNotExists($a);
                 '),
             self::generateTest('
                     $this->assertTrue(file_exists($a));
@@ -328,70 +328,6 @@ $a#
                 $this->assertTrue(!$x instanceof SomeClass);
                 $this->assertTrue(!$y instanceof SomeClass, $message);
             '),
-        ];
-
-        yield [
-            self::generateTest(
-                '
-                    $this->assertFileDoesNotExist($a);
-                    $this->assertFileDoesNotExist($a);
-                '
-            ),
-            self::generateTest(
-                '
-                    $this->assertFalse(file_exists($a));
-                    $this->assertFalse(\file_exists($a));
-                '
-            ),
-            ['target' => PhpUnitTargetVersion::VERSION_9_1],
-        ];
-
-        yield [
-            self::generateTest(
-                '
-                    $this->assertIsNotReadable($a);
-                    $this->assertIsNotReadable($a);
-                '
-            ),
-            self::generateTest(
-                '
-                    $this->assertFalse(is_readable($a));
-                    $this->assertFalse(\is_readable($a));
-                '
-            ),
-            ['target' => PhpUnitTargetVersion::VERSION_9_1],
-        ];
-
-        yield [
-            self::generateTest(
-                '
-                    $this->assertIsNotWritable($a);
-                    $this->assertIsNotWritable($a);
-                '
-            ),
-            self::generateTest(
-                '
-                    $this->assertFalse(is_writable($a));
-                    $this->assertFalse(\is_writable($a));
-                '
-            ),
-            ['target' => PhpUnitTargetVersion::VERSION_9_1],
-        ];
-
-        yield [
-            self::generateTest(
-                '
-                    $this->assertDirectoryDoesNotExist($a);
-                    $this->assertDirectoryDoesNotExist($a);
-                '
-            ),
-            self::generateTest(
-                '
-                    $this->assertFalse(is_dir($a));
-                    $this->assertFalse(\is_dir($a));
-                '
-            ),
-            ['target' => PhpUnitTargetVersion::VERSION_9_1],
         ];
     }
 
