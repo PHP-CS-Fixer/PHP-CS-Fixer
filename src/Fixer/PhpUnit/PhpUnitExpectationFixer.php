@@ -231,7 +231,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
 
                 if (!isset($argumentsReplacements[$cnt])) {
-                    throw new \LogicException(sprintf('Unexpected index %d to find replacement method.', $cnt));
+                    throw new \LogicException(\sprintf('Unexpected index %d to find replacement method.', $cnt));
                 }
 
                 if ('expectExceptionMessage' === $argumentsReplacements[$cnt]) {

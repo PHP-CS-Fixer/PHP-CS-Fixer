@@ -106,7 +106,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             foreach ($this->configuration['annotations'] as $type => $typeLowerCase) {
-                $findPattern = sprintf(
+                $findPattern = \sprintf(
                     '/@%s\s.+@%s\s/s',
                     $type,
                     $type
@@ -125,7 +125,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $annotationMap = [];
 
                 if (\in_array($type, ['property', 'property-read', 'property-write'], true)) {
-                    $replacePattern = sprintf(
+                    $replacePattern = \sprintf(
                         '/(?s)\*\s*@%s\s+(?P<optionalTypes>.+\s+)?\$(?P<comparableContent>\S+).*/',
                         $type
                     );
@@ -135,7 +135,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     $replacePattern = '/(?s)\*\s*@method\s+(?P<optionalReturnTypes>.+\s+)?(?P<comparableContent>.+)\(.*/';
                     $replacement = '\2';
                 } else {
-                    $replacePattern = sprintf(
+                    $replacePattern = \sprintf(
                         '/\*\s*@%s\s+(?P<comparableContent>.+)/',
                         $typeLowerCase
                     );

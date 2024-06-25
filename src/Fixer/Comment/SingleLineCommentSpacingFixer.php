@@ -99,7 +99,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
     // fix space between comment open and leading text
     private function fixCommentLeadingSpace(string $content, string $prefix): string
     {
-        if (Preg::match(sprintf('@^%s\h+.*$@', preg_quote($prefix, '@')), $content)) {
+        if (Preg::match(\sprintf('@^%s\h+.*$@', preg_quote($prefix, '@')), $content)) {
             return $content;
         }
 

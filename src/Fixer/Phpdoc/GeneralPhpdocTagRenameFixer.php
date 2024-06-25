@@ -121,7 +121,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                         }
 
                         if (!Preg::match('#^\S+$#', $to) || str_contains($to, '*/')) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,
                                 $to
@@ -135,7 +135,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                             $lowercaseFrom = strtolower($from);
 
                             if (isset($normalizedValue[$lowercaseFrom]) && $normalizedValue[$lowercaseFrom] !== $to) {
-                                throw new InvalidOptionsException(sprintf(
+                                throw new InvalidOptionsException(\sprintf(
                                     'Tag "%s" cannot be configured to be replaced with several different tags when case sensitivity is off.',
                                     $from
                                 ));
@@ -149,7 +149,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
 
                     foreach ($normalizedValue as $from => $to) {
                         if (isset($normalizedValue[$to]) && $normalizedValue[$to] !== $to) {
-                            throw new InvalidOptionsException(sprintf(
+                            throw new InvalidOptionsException(\sprintf(
                                 'Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".',
                                 $from,
                                 $to,
@@ -185,7 +185,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
 
         $caseInsensitive = false === $this->configuration['case_sensitive'];
         $replacements = $this->configuration['replacements'];
-        $regex = sprintf($regex, implode('|', array_keys($replacements)));
+        $regex = \sprintf($regex, implode('|', array_keys($replacements)));
 
         if ($caseInsensitive) {
             $regex .= 'i';

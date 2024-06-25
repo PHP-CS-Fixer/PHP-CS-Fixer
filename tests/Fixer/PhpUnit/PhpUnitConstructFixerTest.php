@@ -216,8 +216,8 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         foreach (['true', 'false', 'null'] as $type) {
             foreach ($functionTypes as $method => $positive) {
                 $cases[] = [
-                    self::generateTest(sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type)),
-                    self::generateTest(sprintf($inputTemplate, $method, $type, $method, $type)),
+                    self::generateTest(\sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type)),
+                    self::generateTest(\sprintf($inputTemplate, $method, $type, $method, $type)),
                 ];
             }
         }

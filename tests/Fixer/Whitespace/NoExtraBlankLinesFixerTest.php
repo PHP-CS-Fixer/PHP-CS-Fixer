@@ -1296,7 +1296,7 @@ enum Foo
 
         foreach ($enumAttributes as $enumAttribute) {
             yield [
-                sprintf($expectedTemplate, $enumAttribute),
+                \sprintf($expectedTemplate, $enumAttribute),
             ];
         }
     }

@@ -200,12 +200,12 @@ class Foo {
 
         $uses = [];
         for ($i = 0; $i < 25; ++$i) {
-            $uses[] = sprintf('    use A%02d;', $i);
+            $uses[] = \sprintf('    use A%02d;', $i);
         }
 
         yield 'simple, multiple I' => [
-            sprintf("<?php\nclass Foo {\n%s\n}", implode("\n", $uses)),
-            sprintf("<?php\nclass Foo {\n%s\n}", implode("\n", array_reverse($uses))),
+            \sprintf("<?php\nclass Foo {\n%s\n}", implode("\n", $uses)),
+            \sprintf("<?php\nclass Foo {\n%s\n}", implode("\n", array_reverse($uses))),
         ];
 
         yield 'simple, length diff. I' => [

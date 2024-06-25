@@ -1446,7 +1446,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     public function testElementDiscovering(string $element): void
     {
         $this->doTest(
-            sprintf('<?php
+            \sprintf('<?php
                 class Foo
                 {
                     /**
@@ -1455,7 +1455,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     %s
                 }
             ', $element),
-            sprintf('<?php
+            \sprintf('<?php
                 class Foo
                 {
                     /**

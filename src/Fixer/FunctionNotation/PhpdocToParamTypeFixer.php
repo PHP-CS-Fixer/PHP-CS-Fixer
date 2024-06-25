@@ -187,7 +187,7 @@ function bar($foo) {}
                     continue;
                 }
 
-                if (!$this->isValidSyntax(sprintf(self::TYPE_CHECK_TEMPLATE, $paramType))) {
+                if (!$this->isValidSyntax(\sprintf(self::TYPE_CHECK_TEMPLATE, $paramType))) {
                     continue;
                 }
 
@@ -201,7 +201,7 @@ function bar($foo) {}
 
     protected function createTokensFromRawType(string $type): Tokens
     {
-        $typeTokens = Tokens::fromCode(sprintf(self::TYPE_CHECK_TEMPLATE, $type));
+        $typeTokens = Tokens::fromCode(\sprintf(self::TYPE_CHECK_TEMPLATE, $type));
         $typeTokens->clearRange(0, 4);
         $typeTokens->clearRange(\count($typeTokens) - 6, \count($typeTokens) - 1);
         $typeTokens->clearEmptyTokens();

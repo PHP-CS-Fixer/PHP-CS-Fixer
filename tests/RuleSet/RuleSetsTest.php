@@ -54,7 +54,7 @@ final class RuleSetsTest extends TestCase
     {
         $name = 'Unknown';
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^Set "%s" does not exist\.$#', $name));
+        $this->expectExceptionMessageMatches(\sprintf('#^Set "%s" does not exist\.$#', $name));
 
         RuleSets::getSetDefinition($name);
     }
@@ -89,16 +89,16 @@ final class RuleSetsTest extends TestCase
         ];
 
         if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
-            self::markTestIncomplete(sprintf('Set "%s" has no integration test.', $setDefinitionName));
+            self::markTestIncomplete(\sprintf('Set "%s" has no integration test.', $setDefinitionName));
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
         $dir = __DIR__.'/../../tests/Fixtures/Integration/set';
-        $file = sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
+        $file = \sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
 
         self::assertFileExists($file);
-        self::assertFileExists(sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
-        self::assertFileExists(sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
+        self::assertFileExists(\sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
+        self::assertFileExists(\sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
 
         $template = '--TEST--
 Integration of %s.
@@ -106,7 +106,7 @@ Integration of %s.
 {"%s": true}
 ';
         self::assertStringStartsWith(
-            sprintf($template, $setDefinitionName, $setDefinitionName),
+            \sprintf($template, $setDefinitionName, $setDefinitionName),
             file_get_contents($file)
         );
     }
@@ -128,7 +128,7 @@ Integration of %s.
         $sortedSetDefinition = $setDefinition;
         $this->sort($sortedSetDefinition);
 
-        self::assertSame($sortedSetDefinition, $setDefinition, sprintf(
+        self::assertSame($sortedSetDefinition, $setDefinition, \sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key.',
             $setDefinitionName
         ));
@@ -189,27 +189,33 @@ Integration of %s.
 
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
-        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
+                /** @var list<PhpUnitTargetVersion::VERSION_*> */
+                $allowedValues = $option->getAllowedValues();
+
+                $allowedVersionsForFixer = array_diff(
+                    $allowedValues,
+                    [PhpUnitTargetVersion::VERSION_NEWEST]
+                );
 
                 break;
             }
         }
 
         if (!isset($allowedVersionsForFixer)) {
-            throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+            throw new \Exception(\sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
-        /** @var list<string> $allowedVersionsForRuleset */
+        /** @var list<PhpUnitTargetVersion::VERSION_*> */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
         );
 
-        self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), sprintf(
+        self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), \sprintf(
             'Rule "%s" (in rule set "%s") has target "%s", but the rule set is not allowing it (allowed are only "%s")',
             $fixer->getName(),
             $setName,
@@ -220,7 +226,7 @@ Integration of %s.
         rsort($allowedVersionsForRuleset);
         $maximumAllowedVersionForRuleset = reset($allowedVersionsForRuleset);
 
-        self::assertSame($maximumAllowedVersionForRuleset, $actualTargetVersion, sprintf(
+        self::assertSame($maximumAllowedVersionForRuleset, $actualTargetVersion, \sprintf(
             'Rule "%s" (in rule set "%s") has target "%s", but there is higher available target "%s"',
             $fixer->getName(),
             $setName,

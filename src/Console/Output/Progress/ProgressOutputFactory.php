@@ -38,7 +38,7 @@ final class ProgressOutputFactory
 
         if (!$this->isBuiltInType($outputType)) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Something went wrong, "%s" output type is not supported',
                     $outputType
                 )

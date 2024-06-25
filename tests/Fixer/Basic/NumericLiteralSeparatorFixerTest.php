@@ -179,14 +179,14 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
             foreach ($pairs as $withoutSeparator => $withSeparator) {
                 if (null === $withSeparator) {
                     yield "do not modify valid {$pairsType} {$withoutSeparator}" => [
-                        sprintf('<?php echo %s;', $withoutSeparator),
+                        \sprintf('<?php echo %s;', $withoutSeparator),
                         null,
                         ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR],
                     ];
                 } else {
                     yield "add separator to {$pairsType} {$withoutSeparator}" => [
-                        sprintf('<?php echo %s;', $withSeparator),
-                        sprintf('<?php echo %s;', $withoutSeparator),
+                        \sprintf('<?php echo %s;', $withSeparator),
+                        \sprintf('<?php echo %s;', $withoutSeparator),
                         ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_USE_SEPARATOR],
                     ];
                 }
@@ -198,8 +198,8 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
                 }
 
                 yield "remove separator from {$pairsType} {$withoutSeparator}" => [
-                    sprintf('<?php echo %s;', $withoutSeparator),
-                    sprintf('<?php echo %s;', $withSeparator),
+                    \sprintf('<?php echo %s;', $withoutSeparator),
+                    \sprintf('<?php echo %s;', $withSeparator),
                     ['strategy' => NumericLiteralSeparatorFixer::STRATEGY_NO_SEPARATOR],
                 ];
             }

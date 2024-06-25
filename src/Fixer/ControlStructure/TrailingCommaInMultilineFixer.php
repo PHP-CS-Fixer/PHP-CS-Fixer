@@ -109,7 +109,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('elements', sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
+            (new FixerOptionBuilder('elements', \sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS])])
                 ->setDefault([self::ELEMENTS_ARRAYS])
@@ -117,7 +117,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                     if (\PHP_VERSION_ID < 8_00_00) { // @TODO: drop condition when PHP 8.0+ is required
                         foreach ([self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS] as $option) {
                             if (\in_array($option, $value, true)) {
-                                throw new InvalidOptionsForEnvException(sprintf('"%s" option can only be enabled with PHP 8.0+.', $option));
+                                throw new InvalidOptionsForEnvException(\sprintf('"%s" option can only be enabled with PHP 8.0+.', $option));
                             }
                         }
                     }

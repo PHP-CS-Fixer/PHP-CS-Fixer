@@ -47,7 +47,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             }
         }
 
-        self::assertSame([], $missingMethods, sprintf(
+        self::assertSame([], $missingMethods, \sprintf(
             'The following static methods from "%s" are missing from "%s::$staticMethods": %s',
             TestCase::class,
             PhpUnitTestCaseStaticMethodCallsFixer::class,

@@ -62,7 +62,7 @@ final class PharTest extends AbstractSmokeTestCase
         $shouldExpectCodename = Application::VERSION_CODENAME ? 1 : 0;
 
         self::assertMatchesRegularExpression(
-            sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
+            \sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
             self::executePharCommand('--version')->getOutput()
         );
     }
@@ -133,7 +133,7 @@ final class PharTest extends AbstractSmokeTestCase
     public function testReport(string $usingCache): void
     {
         try {
-            $json = self::executePharCommand(sprintf(
+            $json = self::executePharCommand(\sprintf(
                 'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
                 __FILE__,
                 json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),

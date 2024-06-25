@@ -151,7 +151,7 @@ final class DocLexer
     private function scan(string $input): void
     {
         if (!isset($this->regex)) {
-            $this->regex = sprintf(
+            $this->regex = \sprintf(
                 '/(%s)|%s/%s',
                 implode(')|(', $this->getCatchablePatterns()),
                 implode('|', $this->getNonCatchablePatterns()),

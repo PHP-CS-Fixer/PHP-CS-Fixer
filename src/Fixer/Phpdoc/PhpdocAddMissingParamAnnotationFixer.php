@@ -199,7 +199,7 @@ function f9(string $foo, $bar, $baz) {}
                     $type = 'null|'.$type;
                 }
 
-                $newLines[] = new Line(sprintf(
+                $newLines[] = new Line(\sprintf(
                     '%s* @param %s %s%s',
                     $indent,
                     $type,

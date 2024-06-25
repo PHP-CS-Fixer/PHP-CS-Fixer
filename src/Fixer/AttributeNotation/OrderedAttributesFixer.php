@@ -278,7 +278,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                     ($this->configuration['order'][$b['name']] ?? PHP_INT_MAX);
             }
 
-            throw new \InvalidArgumentException(sprintf('Invalid sort algorithm "%s" provided.', $sortAlgorithm));
+            throw new \InvalidArgumentException(\sprintf('Invalid sort algorithm "%s" provided.', $sortAlgorithm));
         });
 
         return $elements;

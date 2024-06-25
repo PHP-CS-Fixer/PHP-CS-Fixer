@@ -1395,8 +1395,8 @@ class TestClass
 
         foreach (['__construct', '__destruct', '__sleep', 'abc'] as $methodName) {
             yield [
-                sprintf($template, $methodName, 'z'),
-                sprintf($template, 'z', $methodName),
+                \sprintf($template, $methodName, 'z'),
+                \sprintf($template, 'z', $methodName),
                 ['order' => ['use_trait'], 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
             ];
         }

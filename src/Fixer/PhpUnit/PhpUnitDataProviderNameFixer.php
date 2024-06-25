@@ -163,8 +163,8 @@ class FooTest extends TestCase {
             $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([T_STRING, $dataProviderNewName]);
 
             $newCommentContent = Preg::replace(
-                sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
-                sprintf('$1%s', $dataProviderNewName),
+                \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
+                \sprintf('$1%s', $dataProviderNewName),
                 $tokens[$usageIndex]->getContent(),
             );
 

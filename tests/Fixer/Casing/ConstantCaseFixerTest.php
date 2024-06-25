@@ -129,37 +129,37 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
 
         foreach (['true', 'false', 'null'] as $case) {
             yield [
-                sprintf('<?php $x = %s;', $case),
-                sprintf('<?php $x = %s;', strtoupper($case)),
+                \sprintf('<?php $x = %s;', $case),
+                \sprintf('<?php $x = %s;', strtoupper($case)),
                 ['case' => 'lower'],
             ];
 
             yield [
-                sprintf('<?php $x = %s;', $case),
-                sprintf('<?php $x = %s;', ucfirst($case)),
+                \sprintf('<?php $x = %s;', $case),
+                \sprintf('<?php $x = %s;', ucfirst($case)),
                 ['case' => 'lower'],
             ];
 
             yield [
-                sprintf('<?php $x = new %s;', ucfirst($case)),
+                \sprintf('<?php $x = new %s;', ucfirst($case)),
                 null,
                 ['case' => 'lower'],
             ];
 
             yield [
-                sprintf('<?php $x = new %s;', strtoupper($case)),
+                \sprintf('<?php $x = new %s;', strtoupper($case)),
                 null,
                 ['case' => 'lower'],
             ];
 
             yield [
-                sprintf('<?php $x = "%s story";', $case),
+                \sprintf('<?php $x = "%s story";', $case),
                 null,
                 ['case' => 'lower'],
             ];
 
             yield [
-                sprintf('<?php $x = "%s";', $case),
+                \sprintf('<?php $x = "%s";', $case),
                 null,
                 ['case' => 'lower'],
             ];
@@ -167,37 +167,37 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
 
         foreach (['true', 'false', 'null'] as $case) {
             yield [
-                sprintf('<?php $x = %s;', strtoupper($case)),
-                sprintf('<?php $x = %s;', $case),
+                \sprintf('<?php $x = %s;', strtoupper($case)),
+                \sprintf('<?php $x = %s;', $case),
                 ['case' => 'upper'],
             ];
 
             yield [
-                sprintf('<?php $x = %s;', strtoupper($case)),
-                sprintf('<?php $x = %s;', ucfirst($case)),
+                \sprintf('<?php $x = %s;', strtoupper($case)),
+                \sprintf('<?php $x = %s;', ucfirst($case)),
                 ['case' => 'upper'],
             ];
 
             yield [
-                sprintf('<?php $x = new %s;', ucfirst($case)),
+                \sprintf('<?php $x = new %s;', ucfirst($case)),
                 null,
                 ['case' => 'upper'],
             ];
 
             yield [
-                sprintf('<?php $x = new %s;', strtoupper($case)),
+                \sprintf('<?php $x = new %s;', strtoupper($case)),
                 null,
                 ['case' => 'upper'],
             ];
 
             yield [
-                sprintf('<?php $x = "%s story";', $case),
+                \sprintf('<?php $x = "%s story";', $case),
                 null,
                 ['case' => 'upper'],
             ];
 
             yield [
-                sprintf('<?php $x = "%s";', $case),
+                \sprintf('<?php $x = "%s";', $case),
                 null,
                 ['case' => 'upper'],
             ];
