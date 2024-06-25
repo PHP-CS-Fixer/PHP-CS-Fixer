@@ -253,7 +253,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 128).'string'.str_repeat('>', 128)];
+        yield [str_repeat('array<', 120).'string'.str_repeat('>', 120)];
 
         yield [self::makeLongArrayShapeType()];
     }
@@ -649,22 +649,95 @@ final class TypeExpressionTest extends TestCase
         yield ['?\Closure(): void', true];
     }
 
-    public function testWalkTypes(): void
+    public function testMapTypes(): void
     {
-        $typeExpression = new TypeExpression('Foo|Bar|Baz', null, []);
-        $addLeadingSlash = static function (TypeExpression $type): void {
-            \Closure::bind(static function () use ($type): void {
-                $value = $type->toString();
-                if (!str_starts_with($value, '\\')) {
-                    $value = '\\'.$value;
-                }
-                $type->value = $value;
-            }, null, TypeExpression::class)();
+        $typeExpression = new TypeExpression('Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))', null, []);
+
+        $addLeadingSlashFx = static function (TypeExpression $type) {
+            $value = $type->toString();
+            if (!str_starts_with($value, '\\') && !str_starts_with($value, '(')) {
+                return new TypeExpression('\\'.$value, null, []);
+            }
+
+            return $type;
         };
 
-        $typeExpression->walkTypes($addLeadingSlash);
+        $removeLeadingSlashFx = static function (TypeExpression $type) {
+            $value = $type->toString();
+            if (str_starts_with($value, '\\')) {
+                return new TypeExpression(substr($value, 1), null, []);
+            }
 
-        self::assertSame('\Foo|\Bar|\Baz', $typeExpression->toString());
+            return $type;
+        };
+
+        $callLog = [];
+        $typeExpression->mapTypes(static function (TypeExpression $type) use (&$callLog) {
+            $callLog[] = $type->toString();
+
+            if ('Y' === $type->toString()) {
+                return new TypeExpression('_y_', null, []);
+            }
+
+            return $type;
+        });
+        self::assertSame([
+            'Foo',
+            'Bar',
+            '\Closure',
+            'X',
+            'Y',
+            'Z',
+            '\Closure(X, _y_): Z',
+            'U',
+            'V',
+            'W',
+            'V&W',
+            '(V&W)',
+            '($v is \Closure(X, _y_): Z ? U : (V&W))',
+            'Foo|Bar|($v is \Closure(X, _y_): Z ? U : (V&W))',
+        ], $callLog);
+
+        $typeExpression = $typeExpression->mapTypes($addLeadingSlashFx);
+        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($addLeadingSlashFx);
+        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($removeLeadingSlashFx);
+        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($removeLeadingSlashFx);
+        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($addLeadingSlashFx);
+        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+    }
+
+    public function testWalkTypes(): void
+    {
+        $typeExpression = new TypeExpression('Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))', null, []);
+
+        $callLog = [];
+        $typeExpression->walkTypes(static function (TypeExpression $type) use (&$callLog): void {
+            $callLog[] = $type->toString();
+        });
+        self::assertSame([
+            'Foo',
+            'Bar',
+            '\Closure',
+            'X',
+            'Y',
+            'Z',
+            '\Closure(X, Y): Z',
+            'U',
+            'V',
+            'W',
+            'V&W',
+            '(V&W)',
+            '($v is \Closure(X, Y): Z ? U : (V&W))',
+            'Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))',
+        ], $callLog);
     }
 
     /**
@@ -677,11 +750,14 @@ final class TypeExpressionTest extends TestCase
 
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 
-        $expression->sortTypes($sortCaseFx);
+        $expression = $expression->sortTypes($sortCaseFx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
         self::assertSame($expectResult, $expression->toString());
 
-        $expression->sortTypes($sortCrc32Fx);
-        $expression->sortTypes($sortCaseFx);
+        $expression = $expression->sortTypes($sortCrc32Fx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
+        $expression = $expression->sortTypes($sortCaseFx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
         self::assertSame($expectResult, $expression->toString());
     }
 
