@@ -119,7 +119,7 @@ function f9(string $foo, $bar, $baz) {}
 
             $tokenContent = $token->getContent();
 
-            if (false !== stripos($tokenContent, 'inheritdoc')) {
+            if (str_contains(strtolower($tokenContent), strtolower('inheritdoc'))) {
                 continue;
             }
 
