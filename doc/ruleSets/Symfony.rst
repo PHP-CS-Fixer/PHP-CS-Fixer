@@ -183,4 +183,5 @@ Rules
 Disabled rules
 --------------
 
+- `single_expression_per_line <./../rules/control_structure/single_expression_per_line.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
