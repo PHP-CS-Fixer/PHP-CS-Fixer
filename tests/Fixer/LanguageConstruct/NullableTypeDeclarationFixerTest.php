@@ -274,5 +274,21 @@ class Infinite
 }
 ',
         ];
+
+        yield 'standalone null' => [
+            '<?php
+class Foo
+{
+    public function bar(null|array $config = null): null {}
+}
+',
+            '<?php
+class Foo
+{
+    public function bar(?array $config = null): null {}
+}
+',
+            ['syntax' => 'union'],
+        ];
     }
 }
