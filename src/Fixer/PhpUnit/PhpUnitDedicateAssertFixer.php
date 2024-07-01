@@ -170,7 +170,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUnusedImportsFixer, PhpUnitDedicateAssertInternalTypeFixer.
+     * Must run before NoUnusedImportsFixer, PhpUnitAssertNewNamesFixer, PhpUnitDedicateAssertInternalTypeFixer.
      * Must run after ModernizeStrposFixer, NoAliasFunctionsFixer, PhpUnitConstructFixer.
      */
     public function getPriority(): int
