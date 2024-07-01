@@ -208,20 +208,16 @@ final class TypeExpression
 
     private string $value;
 
-    private bool $isUnionType = false;
+    private bool $isUnionType;
 
-    private string $typesGlue = '|';
+    private string $typesGlue;
 
-    /**
-     * @var list<array{start_index: int, expression: self}>
-     */
+    /** @var list<array{start_index: int, expression: self}> */
     private array $innerTypeExpressions = [];
 
     private ?NamespaceAnalysis $namespace;
 
-    /**
-     * @var list<NamespaceUseAnalysis>
-     */
+    /** @var list<NamespaceUseAnalysis> */
     private array $namespaceUses;
 
     /**
@@ -267,44 +263,80 @@ final class TypeExpression
     }
 
     /**
+     * @param \Closure(self): self $callback
+     */
+    public function mapTypes(\Closure $callback): self
+    {
+        $value = $this->value;
+        $startIndexOffset = 0;
+
+        foreach ($this->innerTypeExpressions as [
+            'start_index' => $startIndexOrig,
+            'expression' => $inner,
+        ]) {
+            $innerValueOrig = $inner->value;
+
+            $inner = $inner->mapTypes($callback);
+
+            if ($inner->value !== $innerValueOrig) {
+                $value = substr_replace(
+                    $value,
+                    $inner->value,
+                    $startIndexOrig + $startIndexOffset,
+                    \strlen($innerValueOrig)
+                );
+
+                $startIndexOffset += \strlen($inner->value) - \strlen($innerValueOrig);
+            }
+        }
+
+        $type = $value === $this->value
+            ? $this
+            : $this->inner($value);
+
+        return $callback($type);
+    }
+
+    /**
      * @param \Closure(self): void $callback
      */
     public function walkTypes(\Closure $callback): void
     {
-        foreach (array_reverse($this->innerTypeExpressions) as [
-            'start_index' => $startIndex,
-            'expression' => $inner,
-        ]) {
-            $initialValueLength = \strlen($inner->toString());
+        $innerValueOrig = $this->value;
 
-            $inner->walkTypes($callback);
+        $type = $this->mapTypes(static function (self $type) use ($callback) {
+            $callback($type);
 
-            $this->value = substr_replace(
-                $this->value,
-                $inner->toString(),
-                $startIndex,
-                $initialValueLength
-            );
-        }
+            return $type;
+        });
 
-        $callback($this);
+        \assert($type->value === $innerValueOrig);
     }
 
     /**
      * @param \Closure(self, self): (-1|0|1) $compareCallback
      */
-    public function sortTypes(\Closure $compareCallback): void
+    public function sortTypes(\Closure $compareCallback): self
     {
-        $this->walkTypes(static function (self $type) use ($compareCallback): void {
+        return $this->mapTypes(function (self $type) use ($compareCallback): self {
             if ($type->isUnionType) {
-                $type->innerTypeExpressions = Utils::stableSort(
+                $innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
-                    static fn (array $type): self => $type['expression'],
+                    static fn (array $v): self => $v['expression'],
                     $compareCallback,
                 );
 
-                $type->value = implode($type->getTypesGlue(), $type->getTypes());
+                if ($innerTypeExpressions !== $type->innerTypeExpressions) {
+                    $value = implode(
+                        $type->getTypesGlue(),
+                        array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions)
+                    );
+
+                    return $this->inner($value);
+                }
             }
+
+            return $type;
         });
     }
 
@@ -362,6 +394,8 @@ final class TypeExpression
 
     private function parse(): void
     {
+        $typesGlue = null;
+
         $index = 0;
         while (true) {
             Preg::match(
@@ -376,13 +410,12 @@ final class TypeExpression
                 throw new \Exception('Unable to parse phpdoc type '.var_export($this->value, true));
             }
 
-            if (!$this->isUnionType) {
+            if (null === $typesGlue) {
                 if (($matches['glue'][0] ?? '') === '') {
                     break;
                 }
 
-                $this->isUnionType = true;
-                $this->typesGlue = $matches['glue'][0];
+                $typesGlue = $matches['glue'][0];
             }
 
             $this->innerTypeExpressions[] = [
@@ -393,10 +426,20 @@ final class TypeExpression
             $consumedValueLength = \strlen($matches[0][0]);
             $index += $consumedValueLength;
 
-            if (\strlen($this->value) === $index) {
+            if (\strlen($this->value) <= $index) {
+                \assert(\strlen($this->value) === $index);
+
+                $this->isUnionType = true;
+                $this->typesGlue = $typesGlue;
+
                 return;
             }
+
+            \assert($typesGlue === $matches['glue'][0]);
         }
+
+        $this->isUnionType = false;
+        $this->typesGlue = '|';
 
         $nullableLength = \strlen($matches['nullable'][0]);
         $index = $nullableLength;
