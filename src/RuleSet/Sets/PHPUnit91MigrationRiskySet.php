@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
@@ -26,7 +25,7 @@ final class PHPUnit91MigrationRiskySet extends AbstractMigrationSetDescription
     {
         return [
             '@PHPUnit84Migration:risky' => true,
-            'php_unit_assert_new_names' => true
+            'php_unit_assert_new_names' => true,
         ];
     }
 }

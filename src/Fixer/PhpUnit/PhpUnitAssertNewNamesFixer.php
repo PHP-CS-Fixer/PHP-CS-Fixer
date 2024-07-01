@@ -26,7 +26,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitAssertNewNamesFixer extends AbstractPhpUnitFixer
 {
-
     public function isRisky(): bool
     {
         return true;
@@ -96,7 +95,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ];
         $replacement = $replacements[$assertCall['loweredName']] ?? null;
 
-        if ($replacement === null) {
+        if (null === $replacement) {
             return;
         }
 
