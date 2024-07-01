@@ -50,12 +50,14 @@ final class WhitespacesFixerConfigTest extends TestCase
 
         yield ["\t", "\n"];
 
+        yield [str_repeat(' ', 12), "\n"];
+
         yield ['    ', "\r\n"];
 
         yield ["\t", "\r\n"];
 
         yield ['    ', 'asd', 'Invalid "lineEnding" param, expected "\n" or "\r\n".'];
 
-        yield ['std', "\n", 'Invalid "indent" param, expected tab or two or four spaces.'];
+        yield ['std', "\n", 'Invalid "indent" param, expected tab or spaces.'];
     }
 }
