@@ -73,4 +73,9 @@ final class PercentageBarOutput implements ProgressOutputInterface
     }
 
     public function printLegend(): void {}
+
+    public function shouldShowFileSummary(): bool
+    {
+        return true;
+    }
 }

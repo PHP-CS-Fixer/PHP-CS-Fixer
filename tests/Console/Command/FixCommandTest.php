@@ -176,6 +176,7 @@ final class FixCommandTest extends TestCase
             'path' => [__FILE__],
             '--path-mode' => 'override',
             '--allow-risky' => 'yes',
+            '--diff' => true,
             '--dry-run' => true,
             '--using-cache' => 'no',
             '--show-progress' => 'none',

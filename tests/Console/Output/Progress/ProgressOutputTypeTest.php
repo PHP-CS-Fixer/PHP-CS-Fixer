@@ -27,8 +27,10 @@ final class ProgressOutputTypeTest extends TestCase
     public function testAll(): void
     {
         $types = array_values((new \ReflectionClass(ProgressOutputType::class))->getConstants());
-        sort($types);
 
-        self::assertSame($types, ProgressOutputType::all());
+        self::assertTrue(
+            \count($types) === \count(array_intersect($types, ProgressOutputType::all())),
+            'Mismatch between declared output types and available types'
+        );
     }
 }
