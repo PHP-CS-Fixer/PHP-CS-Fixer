@@ -6,11 +6,25 @@ Empty body of class, interface, trait, enum or function must be abbreviated as
 ``{}`` and placed on the same line as the previous symbol, separated by a single
 space.
 
+Configuration
+-------------
+
+``only_for_constructors``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to ONLY fold __construct() methods, nothing else.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -22,6 +36,28 @@ Example #1
    -{
    -}
    +) {}
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['only_for_constructors' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo
+    {
+   -    public function __construct()
+   -    {
+   -    }
+   +    public function __construct() {}
+
+        public function foo()
+        {
+        }
+    }
 
 Rule sets
 ---------
