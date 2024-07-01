@@ -37,6 +37,7 @@ final class PhpUnitTargetVersion
     public const VERSION_6_0 = '6.0';
     public const VERSION_7_5 = '7.5';
     public const VERSION_8_4 = '8.4';
+    public const VERSION_9_1 = '9.1';
     public const VERSION_NEWEST = 'newest';
 
     private function __construct() {}

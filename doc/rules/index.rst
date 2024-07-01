@@ -640,6 +640,9 @@ PHP Tag
 PHPUnit
 -------
 
+- `php_unit_assert_new_names <./php_unit/php_unit_assert_new_names.rst>`_ *(risky)*
+
+  Rename deprecated PHPUnit assertions like ``assertFileNotExists`` to new methods like ``assertFileDoesNotExist``.
 - `php_unit_attributes <./php_unit/php_unit_attributes.rst>`_
 
   PHPUnit attributes must be used over their respective PHPDoc-based annotations.

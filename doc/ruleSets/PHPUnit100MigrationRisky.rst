@@ -15,7 +15,7 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
+- `@PHPUnit91Migration:risky <./PHPUnit91MigrationRisky.rst>`_
 - `php_unit_data_provider_static <./../rules/php_unit/php_unit_data_provider_static.rst>`_ with config:
 
   ``['force' => true]``
