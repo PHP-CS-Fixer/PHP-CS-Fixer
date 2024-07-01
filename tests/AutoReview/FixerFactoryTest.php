@@ -745,6 +745,7 @@ final class FixerFactoryTest extends TestCase
                 'return_type_declaration',
             ],
             'php_unit_dedicate_assert' => [
+                'php_unit_assert_new_names',
                 'no_unused_imports',
                 'php_unit_dedicate_assert_internal_type',
             ],
