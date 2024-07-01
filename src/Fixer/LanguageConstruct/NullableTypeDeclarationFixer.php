@@ -183,11 +183,15 @@ class ValueObject
 
     private function isTypeNormalizable(TypeAnalysis $typeAnalysis): bool
     {
-        if (!$typeAnalysis->isNullable()) {
+        $type = $typeAnalysis->getName();
+
+        if ('null' === $type) {
             return false;
         }
 
-        $type = $typeAnalysis->getName();
+        if (!$typeAnalysis->isNullable()) {
+            return false;
+        }
 
         if (str_contains($type, '&')) {
             return false; // skip DNF types
