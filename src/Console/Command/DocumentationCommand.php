@@ -60,7 +60,7 @@ final class DocumentationCommand extends Command
         $fixerFactory->registerBuiltInFixers();
         $fixers = $fixerFactory->getFixers();
 
-        $setDefinitions = RuleSets::getSetDefinitions();
+        $setDefinitions = RuleSets::getBuiltInSetDefinitions();
 
         $fixerDocumentGenerator = new FixerDocumentGenerator($locator);
         $ruleSetDocumentationGenerator = new RuleSetDocumentationGenerator($locator);
