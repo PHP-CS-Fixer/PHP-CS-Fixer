@@ -44,12 +44,16 @@ final class ClassKeywordFixerTest extends AbstractFixerTestCase
                 echo \'Foo\Bar\Baz\';
                 echo \PhpCsFixer\FixerDefinition\CodeSample::class;
                 echo \PhpCsFixer\FixerDefinition\CodeSample::class;
+                echo "Error";
+                echo \Error::class;
                 ',
             '<?php
                 echo "PhpCsFixer\FixerDefinition\CodeSample";
                 echo \'Foo\Bar\Baz\';
                 echo \'PhpCsFixer\FixerDefinition\CodeSample\';
                 echo \'\PhpCsFixer\FixerDefinition\CodeSample\';
+                echo "Error";
+                echo "\Error";
                 ',
         ];
     }
