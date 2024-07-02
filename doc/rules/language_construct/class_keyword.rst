@@ -43,8 +43,10 @@ Example #1
 
    -$foo = 'PhpCsFixer\Tokenizer\Tokens';
    -$bar = "\PhpCsFixer\Tokenizer\Tokens";
+   -$baz = "\Error";
    +$foo = \PhpCsFixer\Tokenizer\Tokens::class;
    +$bar = \PhpCsFixer\Tokenizer\Tokens::class;
+   +$baz = \Error::class;
 References
 ----------
 
