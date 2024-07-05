@@ -56,3 +56,14 @@ parameters:
             count: 266
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
+
+services:
+    -
+        class: PhpCsFixer\PHPStan\PregMatchParameterOutExtension
+        tags:
+        	- phpstan.staticMethodParameterOutTypeExtension
+
+    -
+        class: PhpCsFixer\PHPStan\PregMatchTypeSpecifyingExtension
+        tags:
+        	- phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
