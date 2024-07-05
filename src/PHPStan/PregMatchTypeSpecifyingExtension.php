@@ -22,10 +22,8 @@ use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\TypeSpecifierAwareExtension;
 use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParameterReflection;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Php\RegexArrayShapeMatcher;
-use PHPStan\Type\StaticMethodParameterOutTypeExtension;
 use PHPStan\Type\StaticMethodTypeSpecifyingExtension;
 
 final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
@@ -36,8 +34,7 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
 
     public function __construct(
         RegexArrayShapeMatcher $regexShapeMatcher
-	)
-	{
+    ) {
         $this->regexShapeMatcher = $regexShapeMatcher;
     }
 
@@ -53,7 +50,7 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
 
     public function isStaticMethodSupported(MethodReflection $staticMethodReflection, StaticCall $node, TypeSpecifierContext $context): bool
     {
-        return $staticMethodReflection->getName() === 'match' && !$context->null();
+        return 'match' === $staticMethodReflection->getName() && !$context->null();
     }
 
     public function specifyTypes(MethodReflection $staticMethodReflection, StaticCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
@@ -64,19 +61,19 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
         $flagsArg = $args[3] ?? null;
 
         if (
-            $patternArg === null || $matchesArg === null
+            null === $patternArg || null === $matchesArg
         ) {
             return new SpecifiedTypes();
         }
 
         $patternType = $scope->getType($patternArg->value);
         $flagsType = null;
-        if ($flagsArg !== null) {
+        if (null !== $flagsArg) {
             $flagsType = $scope->getType($flagsArg->value);
         }
 
         $matchedType = $this->regexShapeMatcher->matchType($patternType, $flagsType, TrinaryLogic::createFromBoolean($context->true()));
-        if ($matchedType === null) {
+        if (null === $matchedType) {
             return new SpecifiedTypes();
         }
 
@@ -95,5 +92,4 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
             $node,
         );
     }
-
 }

@@ -22,6 +22,7 @@ use PHPStan\Reflection\ParameterReflection;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Php\RegexArrayShapeMatcher;
 use PHPStan\Type\StaticMethodParameterOutTypeExtension;
+use PHPStan\Type\Type;
 
 final class PregMatchParameterOutExtension implements StaticMethodParameterOutTypeExtension
 {
@@ -29,20 +30,19 @@ final class PregMatchParameterOutExtension implements StaticMethodParameterOutTy
 
     public function __construct(
         RegexArrayShapeMatcher $regexShapeMatcher
-	)
-	{
+    ) {
         $this->regexShapeMatcher = $regexShapeMatcher;
     }
 
     public function isStaticMethodSupported(MethodReflection $methodReflection, ParameterReflection $parameter): bool
     {
         return
-            $methodReflection->getDeclaringClass()->getName() === Preg::class
-            && $methodReflection->getName() === 'match'
-            && $parameter->getName() === 'matches';
+            Preg::class === $methodReflection->getDeclaringClass()->getName()
+            && 'match' === $methodReflection->getName()
+            && 'matches' === $parameter->getName();
     }
 
-    public function getParameterOutTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, ParameterReflection $parameter, Scope $scope): ?\PHPStan\Type\Type
+    public function getParameterOutTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, ParameterReflection $parameter, Scope $scope): ?Type
     {
         $args = $methodCall->getArgs();
         $patternArg = $args[0] ?? null;
@@ -50,14 +50,14 @@ final class PregMatchParameterOutExtension implements StaticMethodParameterOutTy
         $flagsArg = $args[3] ?? null;
 
         if (
-            $patternArg === null || $matchesArg === null
+            null === $patternArg || null === $matchesArg
         ) {
             return null;
         }
 
         $patternType = $scope->getType($patternArg->value);
         $flagsType = null;
-        if ($flagsArg !== null) {
+        if (null !== $flagsArg) {
             $flagsType = $scope->getType($flagsArg->value);
         }
 
