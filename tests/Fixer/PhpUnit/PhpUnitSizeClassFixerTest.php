@@ -393,7 +393,7 @@ class Test3 extends TestCase
              * @small
              */
             #[SimpleTest]
-            #[Deprecated]
+            #[AnotherAttribute]
             #[Annotated]
             class Test extends TestCase
             {
@@ -402,7 +402,7 @@ class Test3 extends TestCase
             '<?php
 
             #[SimpleTest]
-            #[Deprecated]
+            #[AnotherAttribute]
             #[Annotated]
             class Test extends TestCase
             {
@@ -418,7 +418,7 @@ class Test3 extends TestCase
              * @small
              */
             #[SimpleTest]
-            #[Deprecated]
+            #[AnotherAttribute]
             #[Annotated]
             class Test extends TestCase
             {
@@ -430,7 +430,7 @@ class Test3 extends TestCase
              * @coversNothing
              */
             #[SimpleTest]
-            #[Deprecated]
+            #[AnotherAttribute]
             #[Annotated]
             class Test extends TestCase
             {
