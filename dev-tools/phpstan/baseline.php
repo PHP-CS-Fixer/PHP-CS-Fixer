@@ -477,6 +477,12 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'glue\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'nullable\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -3418,6 +3424,18 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 3 might not exist on non\\-empty\\-array\\<int\\<0, 3\\>, array\\{tokens\\: non\\-empty\\-list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>, content\\: literal\\-string&non\\-falsy\\-string\\}\\>\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/../../tests/Tokenizer/TokensTest.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
+	'message' => '#^Offset 347 might not exist on array\\<int, array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/../../tests/Tokenizer/TokensTest.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
+	'message' => '#^Offset 369 might not exist on array\\<int, array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../tests/Tokenizer/TokensTest.php',
 ];
