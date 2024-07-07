@@ -702,18 +702,23 @@ final class TypeExpressionTest extends TestCase
         ], $callLog);
 
         $typeExpression = $typeExpression->mapTypes($addLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
         self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
 
         $typeExpression = $typeExpression->mapTypes($addLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
         self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
 
         $typeExpression = $typeExpression->mapTypes($removeLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
         self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
 
         $typeExpression = $typeExpression->mapTypes($removeLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
         self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
 
         $typeExpression = $typeExpression->mapTypes($addLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
         self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
     }
 
