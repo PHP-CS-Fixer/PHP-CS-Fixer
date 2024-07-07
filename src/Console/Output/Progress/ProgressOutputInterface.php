@@ -24,4 +24,6 @@ interface ProgressOutputInterface
     public function printLegend(): void;
 
     public function onFixerFileProcessed(FixerFileProcessedEvent $event): void;
+
+    public function shouldShowFileSummary(): bool;
 }

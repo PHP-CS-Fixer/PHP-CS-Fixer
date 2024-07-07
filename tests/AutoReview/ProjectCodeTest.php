@@ -98,6 +98,7 @@ final class ProjectCodeTest extends TestCase
         $allowedMethods[] = '__construct';
         $allowedMethods[] = '__destruct';
         $allowedMethods[] = '__wakeup';
+        $allowedMethods[] = '__sleep';
 
         $exceptionMethods = [
             'configure', // due to AbstractFixer::configure

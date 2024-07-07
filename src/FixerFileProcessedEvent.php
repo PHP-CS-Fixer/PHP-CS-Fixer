@@ -37,24 +37,44 @@ final class FixerFileProcessedEvent extends Event
     public const STATUS_EXCEPTION = 5;
     public const STATUS_LINT = 6;
 
+    /** @var self::STATUS_* */
     private int $status;
 
-    private ?string $fileRelativePath;
+    /** @var list<string> */
+    private array $appliedFixers;
+
+    private string $fileRelativePath;
     private ?string $fileHash;
 
-    public function __construct(int $status, ?string $fileRelativePath = null, ?string $fileHash = null)
+    /**
+     * @param self::STATUS_* $status
+     * @param list<string>   $appliedFixers
+     */
+    public function __construct(int $status, string $fileRelativePath, array $appliedFixers = [], ?string $fileHash = null)
     {
         $this->status = $status;
+        $this->appliedFixers = $appliedFixers;
         $this->fileRelativePath = $fileRelativePath;
         $this->fileHash = $fileHash;
     }
 
+    /**
+     * @return self::STATUS_*
+     */
     public function getStatus(): int
     {
         return $this->status;
     }
 
-    public function getFileRelativePath(): ?string
+    /**
+     * @return list<string>
+     */
+    public function getAppliedFixers(): array
+    {
+        return $this->appliedFixers;
+    }
+
+    public function getFileRelativePath(): string
     {
         return $this->fileRelativePath;
     }

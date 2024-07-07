@@ -165,6 +165,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
             * <comment>none</comment>: disables progress output;
             * <comment>dots</comment>: multiline progress output with number of files and percentage on each line.
             * <comment>bar</comment>: single line progress output with number of files and calculated percentage.
+            * <comment>detail</comment>: multiline progress output with status, path and applied fixers for each file.
+            * <comment>meaningful</comment>: multiline progress output with status, path and applied fixers for each file with meaningful result (non-modified or skipped are ignored).
 
             If the option is not provided, it defaults to <comment>bar</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
@@ -339,7 +341,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $this->stopwatch->stop('fixFiles');
         $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
-        $progressOutput->printLegend();
+        if (\count($changed) > 0) {
+            $progressOutput->printLegend();
+        }
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
@@ -350,7 +354,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
-            $output->isDecorated()
+            $output->isDecorated(),
+            // Some progress output types print file info during analysis, so summary is not required (unless there's diff)
+            $progressOutput->shouldShowFileSummary() || '' !== (current($changed)['diff'] ?? '')
         );
 
         $output->isDecorated()
