@@ -63,7 +63,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixTypes($annotation);
+                $this->fixType($annotation);
             }
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
@@ -76,48 +76,32 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     abstract protected function normalize(string $type): string;
 
     /**
-     * Fix the types at the given line.
+     * Fix the type at the given line.
      *
      * We must be super careful not to modify parts of words.
      *
      * This will be nicely handled behind the scenes for us by the annotation class.
      */
-    private function fixTypes(Annotation $annotation): void
+    private function fixType(Annotation $annotation): void
     {
-        $types = $annotation->getTypes();
+        $typeExpression = $annotation->getTypeExpression();
 
-        $new = $this->normalizeTypes($types);
-
-        if ($types !== $new) {
-            $annotation->setTypes($new);
+        if (null === $typeExpression) {
+            return;
         }
-    }
 
-    /**
-     * @param list<string> $types
-     *
-     * @return list<string>
-     */
-    private function normalizeTypes(array $types): array
-    {
-        return array_map(
-            function (string $type): string {
-                $typeExpression = new TypeExpression($type, null, []);
+        $value = $typeExpression->toString();
 
-                $typeExpression->walkTypes(function (TypeExpression $type): void {
-                    if (!$type->isUnionType()) {
-                        $value = $this->normalize($type->toString());
+        $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
+            if (!$type->isUnionType()) {
+                $value = $this->normalize($type->toString());
 
-                        // TODO TypeExpression should be immutable and walkTypes method should be changed to mapTypes method
-                        \Closure::bind(static function () use ($type, $value): void {
-                            $type->value = $value;
-                        }, null, TypeExpression::class)();
-                    }
-                });
+                return new TypeExpression($value, null, []);
+            }
 
-                return $typeExpression->toString();
-            },
-            $types
-        );
+            return $type;
+        });
+
+        $annotation->setTypes([$typeExpression->toString()]);
     }
 }
