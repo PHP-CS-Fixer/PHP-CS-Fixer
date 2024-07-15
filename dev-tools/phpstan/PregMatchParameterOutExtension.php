@@ -55,12 +55,11 @@ final class PregMatchParameterOutExtension implements StaticMethodParameterOutTy
             return null;
         }
 
-        $patternType = $scope->getType($patternArg->value);
         $flagsType = null;
         if (null !== $flagsArg) {
             $flagsType = $scope->getType($flagsArg->value);
         }
 
-        return $this->regexShapeMatcher->matchType($patternType, $flagsType, TrinaryLogic::createMaybe());
+        return $this->regexShapeMatcher->matchExpr($patternArg->value, $flagsType, TrinaryLogic::createMaybe(), $scope);
     }
 }
