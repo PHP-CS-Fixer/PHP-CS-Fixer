@@ -436,11 +436,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideDynamicClassConstantFetchPre84Cases
+     * @dataProvider provideDynamicClassConstantFetchPhp83Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP ^8.3
      */
-    public function testDynamicClassConstantFetchPre84(array $expectedTokens, string $source): void
+    public function testDynamicClassConstantFetchPhp83(array $expectedTokens, string $source): void
     {
         $this->doTest(
             $source,
@@ -455,7 +455,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @return iterable<array{array<int, int>, string}>
      */
-    public static function provideDynamicClassConstantFetchPre84Cases(): iterable
+    public static function provideDynamicClassConstantFetchPhp83Cases(): iterable
     {
         yield 'static method var, string' => [
             [
