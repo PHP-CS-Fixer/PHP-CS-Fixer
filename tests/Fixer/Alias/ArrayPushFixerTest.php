@@ -175,11 +175,6 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php array_push($a->$c, $b);',
         ];
 
-        yield [
-            '<?php $a->$c[1]->$d{$a--}->$a[7][] = $b;',
-            '<?php array_push($a->$c[1]->$d{$a--}->$a[7], $b);',
-        ];
-
         yield 'push multiple' => [
             '<?php array_push($a6, $b9, $c);',
         ];
@@ -328,6 +323,24 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 array_push($a, $b);
                 $a = array_push(...);
             ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testFixPre84(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixPre84Cases(): iterable
+    {
+        yield [
+            '<?php $a->$c[1]->$d{$a--}->$a[7][] = $b;',
+            '<?php array_push($a->$c[1]->$d{$a--}->$a[7], $b);',
         ];
     }
 }
