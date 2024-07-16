@@ -2050,6 +2050,8 @@ $b;',
      * @param list<int> $expected
      *
      * @dataProvider provideIsBinaryOperatorPre84Cases
+     *
+     * @requires PHP <8.4
      */
     public function testIsBinaryOperatorPre84(array $expected, string $source): void
     {
