@@ -106,67 +106,6 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             ],
         ];
 
-        yield 'array index curly brace open/close' => [
-            '<?php
-                    echo $arr{$index};
-                    echo $arr[$index];
-                    if (1) {}
-                ',
-            [
-                5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-            ],
-        ];
-
-        yield 'array index curly brace open/close, after square index' => [
-            '<?php $b = [1]{0};
-                ',
-            [
-                8 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                10 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-            ],
-        ];
-
-        yield 'array index curly brace open/close, nested' => [
-            '<?php
-                    echo $nestedArray{$index}{$index2}[$index3]{$index4};
-                ',
-            [
-                5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                8 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                10 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                14 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                16 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-            ],
-        ];
-
-        yield 'array index curly brace open/close, repeated' => [
-            '<?php
-                    echo $array{0}->foo;
-                    echo $collection->items{1}->property;
-                ',
-            [
-                5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                17 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                19 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-            ],
-        ];
-
-        yield 'array index curly brace open/close, minimal' => [
-            '<?php
-                    echo [1]{0};
-                    echo array(1){0};
-                ',
-            [
-                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                9 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                18 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                20 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-            ],
-        ];
-
         yield 'mixed' => [
             '<?php echo "This is {$great}";
                     $a = "a{$b->c()}d";
@@ -405,6 +344,102 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 27 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
             ],
             '<?php echo Foo::{\'static_method\'}()::{$$a}(){"const"}::{some_const}::{$other_const}::{$last_static_method}();',
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider providePre84ProcessCases
+     *
+     * @requires PHP <8.4
+     */
+    public function testPre84Process(string $source, array $expectedTokens = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_CURLY_OPEN,
+                CT::T_CURLY_CLOSE,
+                T_DOLLAR_OPEN_CURLY_BRACES,
+                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
+                CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                CT::T_DYNAMIC_VAR_BRACE_OPEN,
+                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                CT::T_GROUP_IMPORT_BRACE_OPEN,
+                CT::T_GROUP_IMPORT_BRACE_CLOSE,
+            ]
+        );
+    }
+
+    /**
+     * @return iterable<array{string, array<int, int>}>
+     */
+    public static function providePre84ProcessCases(): iterable
+    {
+        yield 'array index curly brace open/close' => [
+            '<?php
+                    echo $arr{$index};
+                    echo $arr[$index];
+                    if (1) {}
+                ',
+            [
+                5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'array index curly brace open/close, after square index' => [
+            '<?php $b = [1]{0};
+                ',
+            [
+                8 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                10 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'array index curly brace open/close, nested' => [
+            '<?php
+                    echo $nestedArray{$index}{$index2}[$index3]{$index4};
+                ',
+            [
+                5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                8 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                10 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                14 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                16 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'array index curly brace open/close, repeated' => [
+            '<?php
+                    echo $array{0}->foo;
+                    echo $collection->items{1}->property;
+                ',
+            [
+                5 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                17 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                19 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'array index curly brace open/close, minimal' => [
+            '<?php
+                    echo [1]{0};
+                    echo array(1){0};
+                ',
+            [
+                7 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                9 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                18 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                20 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
         ];
     }
 }
