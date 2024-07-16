@@ -28,6 +28,9 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class DocumentationCommandTest extends TestCase
 {
+    /**
+     * @requires PHP <8.4
+     */
     public function testGeneratingDocumentation(): void
     {
         $filesystem = $this->createFilesystemDouble();

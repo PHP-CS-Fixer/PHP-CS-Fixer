@@ -438,7 +438,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideDynamicClassConstantFetchPhp83Cases
      *
-     * @requires PHP ^8.3
+     * @requires PHP ~8.3.0
      */
     public function testDynamicClassConstantFetchPhp83(array $expectedTokens, string $source): void
     {
