@@ -211,6 +211,15 @@ final class BracesFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
+                    if (1) {
+                        echo $items[0]->foo;
+                        echo $collection->items[1]->property;
+                    }
+                ',
+        ];
+
+        yield [
+            '<?php
     $a = function() {
         $a = 1;
         while (false);
@@ -456,6 +465,17 @@ final class BracesFixerTest extends AbstractFixerTestCase
     }',
             '<?php
     if /* 1 */ (2) {}',
+            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+        ];
+
+        yield [
+            '<?php
+                    if (1) {
+                        echo $items[0]->foo;
+                        echo $collection->items[1]->property;
+                    }
+                ',
+            null,
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
 

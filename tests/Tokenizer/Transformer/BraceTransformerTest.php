@@ -424,12 +424,12 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
 
         yield 'mixed chain' => [
             [
-                18 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                20 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                22 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                24 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                21 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                23 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                25 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                27 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
             ],
-            '<?php echo Foo::{\'static_method\'}()::{$$a}()::{some_const}::{$other_const}::{$last_static_method}();',
+            '<?php echo Foo::{\'static_method\'}()::{$$a}()["const"]::{some_const}::{$other_const}::{$last_static_method}();',
         ];
     }
 

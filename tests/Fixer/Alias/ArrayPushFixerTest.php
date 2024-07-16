@@ -175,6 +175,11 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php array_push($a->$c, $b);',
         ];
 
+        yield [
+            '<?php $a->$c[1]->$d[$a--]->$a[7][] = $b;',
+            '<?php array_push($a->$c[1]->$d[$a--]->$a[7], $b);',
+        ];
+
         yield 'push multiple' => [
             '<?php array_push($a6, $b9, $c);',
         ];
