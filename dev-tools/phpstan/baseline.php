@@ -3531,18 +3531,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 310 might not exist on array\\<int, array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../tests/Tokenizer/TokensTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 333 might not exist on array\\<int, array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../tests/Tokenizer/TokensTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
 	'message' => '#^Offset int might not exist on array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../tests/Tokenizer/TokensTest.php',
