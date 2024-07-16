@@ -199,155 +199,6 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @dataProvider provideNotDynamicClassConstantFetchCases
-     */
-    public function testNotDynamicClassConstantFetch(string $source): void
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
-
-        self::assertFalse(
-            $tokens->isAnyTokenKindsFound(
-                [
-                    CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                    CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                ]
-            )
-        );
-    }
-
-    public static function provideNotDynamicClassConstantFetchCases(): iterable
-    {
-        yield 'negatives' => [
-            '<?php
-                namespace B {$b = Z::B;};
-
-                echo $c::{$static_method}();
-                echo Foo::{$static_method}();
-
-                echo Foo::${static_property};
-                echo Foo::${$static_property};
-
-                echo Foo::class;
-
-                echo $foo::$bar;
-                echo $foo::bar();
-                echo foo()::A();
-
-                {$z = A::C;}
-            ',
-        ];
-    }
-
-    /**
-     * @param array<int, int> $expectedTokens
-     *
-     * @dataProvider provideDynamicClassConstantFetchCases
-     *
-     * @requires PHP 8.3
-     */
-    public function testDynamicClassConstantFetch(array $expectedTokens, string $source): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-        );
-    }
-
-    public static function provideDynamicClassConstantFetchCases(): iterable
-    {
-        yield 'simple' => [
-            [
-                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                7 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            '<?php echo Foo::{$bar};',
-        ];
-
-        yield 'static method var, string' => [
-            [
-                10 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                12 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            "<?php echo Foo::{\$static_method}(){'XYZ'};",
-        ];
-
-        yield 'long way of writing `Bar::class`' => [
-            [
-                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                7 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            "<?php echo Bar::{'class'};",
-        ];
-
-        yield 'variable variable wrapped, close tag' => [
-            [
-                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                10 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            '<?php echo Foo::{${$var}}?>',
-        ];
-
-        yield 'variable variable, comment' => [
-            [
-                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                8 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            '<?php echo Foo::{$$var}/* */;?>',
-        ];
-
-        yield 'static, self' => [
-            [
-                37 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                39 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                46 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                48 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                55 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                57 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            '<?php
-                class Foo
-                {
-                    private const X = 1;
-
-                    public function Bar($var): void
-                    {
-                        echo self::{$var};
-                        echo static::{$var};
-                        echo static::{"X"};
-                    }
-                }
-            ',
-        ];
-
-        yield 'chained' => [
-            [
-                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                7 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                9 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                11 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            "<?php echo Foo::{'BAR'}::{'BLA'}::{static_method}(1,2) ?>",
-        ];
-
-        yield 'mixed chain' => [
-            [
-                17 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                19 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                21 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                23 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                25 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-                27 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-            ],
-            '<?php echo Foo::{\'static_method\'}()::{$$a}(){"const"}::{some_const}::{$other_const}::{$last_static_method}();',
-        ];
-    }
-
-    /**
      * @param array<int, int> $expectedTokens
      *
      * @dataProvider providePre84ProcessCases
@@ -440,6 +291,190 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 18 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
                 20 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideNotDynamicClassConstantFetchCases
+     */
+    public function testNotDynamicClassConstantFetch(string $source): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        self::assertFalse(
+            $tokens->isAnyTokenKindsFound(
+                [
+                    CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                    CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                ]
+            )
+        );
+    }
+
+    public static function provideNotDynamicClassConstantFetchCases(): iterable
+    {
+        yield 'negatives' => [
+            '<?php
+                namespace B {$b = Z::B;};
+
+                echo $c::{$static_method}();
+                echo Foo::{$static_method}();
+
+                echo Foo::${static_property};
+                echo Foo::${$static_property};
+
+                echo Foo::class;
+
+                echo $foo::$bar;
+                echo $foo::bar();
+                echo foo()::A();
+
+                {$z = A::C;}
+            ',
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideDynamicClassConstantFetchCases
+     *
+     * @requires PHP 8.3
+     */
+    public function testDynamicClassConstantFetch(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+        );
+    }
+
+    public static function provideDynamicClassConstantFetchCases(): iterable
+    {
+        yield 'simple' => [
+            [
+                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                7 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            '<?php echo Foo::{$bar};',
+        ];
+
+        yield 'long way of writing `Bar::class`' => [
+            [
+                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                7 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            "<?php echo Bar::{'class'};",
+        ];
+
+        yield 'variable variable wrapped, close tag' => [
+            [
+                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                10 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            '<?php echo Foo::{${$var}}?>',
+        ];
+
+        yield 'variable variable, comment' => [
+            [
+                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                8 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            '<?php echo Foo::{$$var}/* */;?>',
+        ];
+
+        yield 'static, self' => [
+            [
+                37 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                39 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                46 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                48 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                55 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                57 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            '<?php
+                class Foo
+                {
+                    private const X = 1;
+
+                    public function Bar($var): void
+                    {
+                        echo self::{$var};
+                        echo static::{$var};
+                        echo static::{"X"};
+                    }
+                }
+            ',
+        ];
+
+        yield 'chained' => [
+            [
+                5 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                7 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                9 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                11 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            "<?php echo Foo::{'BAR'}::{'BLA'}::{static_method}(1,2) ?>",
+        ];
+
+        yield 'mixed chain' => [
+            [
+                18 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                20 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                22 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                24 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            '<?php echo Foo::{\'static_method\'}()::{$$a}()::{some_const}::{$other_const}::{$last_static_method}();',
+        ];
+    }
+
+    /**
+     * @param array<int, int> $expectedTokens
+     *
+     * @dataProvider provideDynamicClassConstantFetchPre84Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testDynamicClassConstantFetchPre84(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+        );
+    }
+
+    /**
+     * @return iterable<array{array<int, int>, string}>
+     */
+    public static function provideDynamicClassConstantFetchPre84Cases(): iterable
+    {
+        yield 'static method var, string' => [
+            [
+                10 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                12 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            "<?php echo Foo::{\$static_method}(){'XYZ'};",
+        ];
+
+        yield 'mixed chain' => [
+            [
+                17 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                19 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                21 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                23 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+                25 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
+                27 => CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            ],
+            '<?php echo Foo::{\'static_method\'}()::{$$a}(){"const"}::{some_const}::{$other_const}::{$last_static_method}();',
         ];
     }
 }

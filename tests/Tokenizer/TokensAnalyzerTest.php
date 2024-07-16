@@ -1663,13 +1663,38 @@ abstract class Baz
             [5 => true],
             '<?php $a["foo"]++;',
         ];
+    }
 
-        if (\PHP_VERSION_ID < 8_03_00) {
-            yield 'array curly access' => [
-                [5 => true],
-                '<?php $a{"foo"}++;',
-            ];
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isUnary) {
+            self::assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
+
+            if ($isUnary) {
+                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                self::assertFalse($tokensAnalyzer->isBinaryOperator($index));
+            }
         }
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
+    {
+        yield 'array curly access' => [
+            [5 => true],
+            '<?php $a{"foo"}++;',
+        ];
     }
 
     /**
@@ -1835,13 +1860,6 @@ abstract class Baz
             [8],
             '<?php echo $a[1] + 1;',
         ];
-
-        if (\PHP_VERSION_ID < 8_03_00) {
-            yield [
-                [8],
-                '<?php echo $a{1} + 1;',
-            ];
-        }
 
         yield [
             [3],
@@ -2025,6 +2043,49 @@ $b;',
         yield [
             [5, 11],
             '<?php fn() => $object->property & A_CONSTANT;',
+        ];
+    }
+
+    /**
+     * @param list<int> $expected
+     *
+     * @dataProvider provideIsBinaryOperatorPre84Cases
+     */
+    public function testIsBinaryOperatorPre84(array $expected, string $source): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($tokens as $index => $token) {
+            $expect = \in_array($index, $expected, true);
+
+            self::assertSame(
+                $expect,
+                $tokensAnalyzer->isBinaryOperator($index),
+                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+            );
+
+            if ($expect) {
+                self::assertFalse(
+                    $tokensAnalyzer->isUnarySuccessorOperator($index),
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
+                self::assertFalse(
+                    $tokensAnalyzer->isUnaryPredecessorOperator($index),
+                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                );
+            }
+        }
+    }
+
+    /**
+     * @return iterable<array{list<int>, string}>
+     */
+    public static function provideIsBinaryOperatorPre84Cases(): iterable
+    {
+        yield [
+            [8],
+            '<?php echo $a{1} + 1;',
         ];
     }
 
