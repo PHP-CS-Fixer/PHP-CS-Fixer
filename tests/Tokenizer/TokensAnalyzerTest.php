@@ -1664,10 +1664,12 @@ abstract class Baz
             '<?php $a["foo"]++;',
         ];
 
-        yield 'array curly access' => [
-            [5 => true],
-            '<?php $a{"foo"}++;',
-        ];
+        if (\PHP_VERSION_ID < 8_03_00) {
+            yield 'array curly access' => [
+                [5 => true],
+                '<?php $a{"foo"}++;',
+            ];
+        }
     }
 
     /**
@@ -1834,10 +1836,12 @@ abstract class Baz
             '<?php echo $a[1] + 1;',
         ];
 
-        yield [
-            [8],
-            '<?php echo $a{1} + 1;',
-        ];
+        if (\PHP_VERSION_ID < 8_03_00) {
+            yield [
+                [8],
+                '<?php echo $a{1} + 1;',
+            ];
+        }
 
         yield [
             [3],
