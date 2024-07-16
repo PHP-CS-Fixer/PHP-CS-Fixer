@@ -336,6 +336,9 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixPre84Cases(): iterable
     {
         yield [
