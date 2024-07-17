@@ -185,7 +185,7 @@ class ValueObject
     {
         $type = $typeAnalysis->getName();
 
-        if ('null' === $type || !$typeAnalysis->isNullable()) {
+        if ('null' === strtolower($type) || !$typeAnalysis->isNullable()) {
             return false;
         }
 

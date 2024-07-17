@@ -280,12 +280,14 @@ class Infinite
 class Foo
 {
     public function bar(null|array $config = null): null {}
+    public function baz(null|array $config = NULL): NULL {}
 }
 ',
             '<?php
 class Foo
 {
     public function bar(?array $config = null): null {}
+    public function baz(?array $config = NULL): NULL {}
 }
 ',
             ['syntax' => 'union'],
