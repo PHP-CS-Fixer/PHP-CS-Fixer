@@ -1674,16 +1674,7 @@ abstract class Baz
      */
     public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isUnary) {
-            self::assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
-
-            if ($isUnary) {
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isBinaryOperator($index));
-            }
-        }
+        $this->testIsUnarySuccessorOperator($expected, $source);
     }
 
     /**
@@ -2055,29 +2046,7 @@ $b;',
      */
     public function testIsBinaryOperatorPre84(array $expected, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($tokens as $index => $token) {
-            $expect = \in_array($index, $expected, true);
-
-            self::assertSame(
-                $expect,
-                $tokensAnalyzer->isBinaryOperator($index),
-                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
-            );
-
-            if ($expect) {
-                self::assertFalse(
-                    $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
-                );
-                self::assertFalse(
-                    $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
-                );
-            }
-        }
+        $this->testIsBinaryOperator($expected, $source);
     }
 
     /**
