@@ -730,8 +730,6 @@ final class TokensTest extends TestCase
 
         yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
 
-        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
-
         yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2];
 
         yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1];
@@ -846,6 +844,26 @@ final class TokensTest extends TestCase
                 $startEnd[0],
             ];
         }
+    }
+
+    /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     *
+     * @dataProvider provideFindBlockEndPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
+    {
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    /**
+     * @return iterable<array{int, string, int, int}>
+     */
+    public static function provideFindBlockEndPre84Cases(): iterable
+    {
+        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
     }
 
     public function testFindBlockEndInvalidType(): void

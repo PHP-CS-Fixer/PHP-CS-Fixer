@@ -1663,7 +1663,25 @@ abstract class Baz
             [5 => true],
             '<?php $a["foo"]++;',
         ];
+    }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
+    {
+        $this->testIsUnarySuccessorOperator($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
+    {
         yield 'array curly access' => [
             [5 => true],
             '<?php $a{"foo"}++;',
@@ -1832,11 +1850,6 @@ abstract class Baz
         yield [
             [8],
             '<?php echo $a[1] + 1;',
-        ];
-
-        yield [
-            [8],
-            '<?php echo $a{1} + 1;',
         ];
 
         yield [
@@ -2021,6 +2034,29 @@ $b;',
         yield [
             [5, 11],
             '<?php fn() => $object->property & A_CONSTANT;',
+        ];
+    }
+
+    /**
+     * @param list<int> $expected
+     *
+     * @dataProvider provideIsBinaryOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsBinaryOperatorPre84(array $expected, string $source): void
+    {
+        $this->testIsBinaryOperator($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{list<int>, string}>
+     */
+    public static function provideIsBinaryOperatorPre84Cases(): iterable
+    {
+        yield [
+            [8],
+            '<?php echo $a{1} + 1;',
         ];
     }
 
