@@ -20,5 +20,7 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer
+ *
+ * @extends AbstractNullableTypeDeclarationFixerTestCase<\PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer>
  */
 final class CompactNullableTypeDeclarationFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}

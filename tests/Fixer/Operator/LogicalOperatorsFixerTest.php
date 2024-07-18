@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer>
  */
 final class LogicalOperatorsFixerTest extends AbstractFixerTestCase
 {

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer>
  */
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
@@ -416,15 +418,15 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
         foreach (['break', 'continue'] as $ops) {
             yield [
-                sprintf('<?php while(true) {%s ;}', $ops),
-                sprintf('<?php while(true) {%s 1;}', $ops),
+                \sprintf('<?php while(true) {%s ;}', $ops),
+                \sprintf('<?php while(true) {%s 1;}', $ops),
             ];
         }
 
         foreach (['1', '1.0', '"foo"', '$foo'] as $noop) {
             yield [
                 '<?php echo "foo";  ',
-                sprintf('<?php echo "foo"; %s ;', $noop),
+                \sprintf('<?php echo "foo"; %s ;', $noop),
             ];
         }
 

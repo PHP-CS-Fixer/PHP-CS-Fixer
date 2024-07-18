@@ -173,7 +173,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixturesDir = realpath($dir);
 
         if (!is_dir($fixturesDir)) {
-            throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', \is_string($fixturesDir) ? $fixturesDir : $dir));
+            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', \is_string($fixturesDir) ? $fixturesDir : $dir));
         }
 
         $factory = static::createIntegrationCaseFactory();
@@ -222,17 +222,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $phpLowerLimit = $case->getRequirement('php');
         if (\PHP_VERSION_ID < $phpLowerLimit) {
-            self::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $phpLowerLimit, $case->getFileName(), \PHP_VERSION_ID));
+            self::markTestSkipped(\sprintf('PHP %d (or later) is required for "%s", current "%d".', $phpLowerLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
         $phpUpperLimit = $case->getRequirement('php<');
         if (\PHP_VERSION_ID >= $phpUpperLimit) {
-            self::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
+            self::markTestSkipped(\sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
         if (!\in_array(PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
             self::markTestSkipped(
-                sprintf(
+                \sprintf(
                     'Unsupported OS (%s) for "%s", allowed are: %s.',
                     PHP_OS,
                     $case->getFileName(),
@@ -249,7 +249,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $tmpFile = static::getTempFile();
 
         if (false === @file_put_contents($tmpFile, $input)) {
-            throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+            throw new IOException(\sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
         $errorsManager = new ErrorsManager();
@@ -271,19 +271,19 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (!$errorsManager->isEmpty()) {
             $errors = $errorsManager->getExceptionErrors();
-            self::assertEmpty($errors, sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertEmpty($errors, \sprintf('Errors reported during fixing of file "%s": %s', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getInvalidErrors();
-            self::assertEmpty($errors, sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertEmpty($errors, \sprintf('Errors reported during linting before fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
 
             $errors = $errorsManager->getLintErrors();
-            self::assertEmpty($errors, sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
+            self::assertEmpty($errors, \sprintf('Errors reported during linting after fixing file "%s": %s.', $case->getFileName(), $this->implodeErrors($errors)));
         }
 
         if (!$case->hasInputCode()) {
             self::assertEmpty(
                 $changed,
-                sprintf(
+                \sprintf(
                     "Expected no changes made to test \"%s\" in \"%s\".\nFixers applied:\n%s.\nDiff.:\n%s.",
                     $case->getTitle(),
                     $case->getFileName(),
@@ -295,12 +295,12 @@ abstract class AbstractIntegrationTestCase extends TestCase
             return;
         }
 
-        self::assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+        self::assertNotEmpty($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
         $fixedInputCode = file_get_contents($tmpFile);
         self::assertThat(
             $fixedInputCode,
             new IsIdenticalString($expected),
-            sprintf(
+            \sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
                 $case->getFileName(),
@@ -311,7 +311,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         if (1 < \count($fixers)) {
             $tmpFile = static::getTempFile();
             if (false === @file_put_contents($tmpFile, $input)) {
-                throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
+                throw new IOException(\sprintf('Failed to write to tmp. file "%s".', $tmpFile));
             }
 
             $runner = new Runner(
@@ -344,7 +344,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     static fn (FixerInterface $fixer): int => $fixer->getPriority(),
                     self::createFixers($case)
                 ))),
-                sprintf(
+                \sprintf(
                     'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
                     $case->getFileName()
                 )
@@ -377,7 +377,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorStr = '';
         foreach ($errors as $error) {
             $source = $error->getSource();
-            $errorStr .= sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
+            $errorStr .= \sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
         }
 
         return $errorStr;

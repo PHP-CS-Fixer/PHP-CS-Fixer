@@ -10,6 +10,7 @@
 /infection.json5.dist export-ignore
 /phpstan.dist.neon export-ignore
 /phpunit.xml.dist export-ignore
+/src/Fixer/Internal/ export-ignore
 /tests/ export-ignore
 
 *       text=auto eol=lf

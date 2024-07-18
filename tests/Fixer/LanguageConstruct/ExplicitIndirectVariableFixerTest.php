@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\ExplicitIndirectVariableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ExplicitIndirectVariableFixer>
  */
 final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 {

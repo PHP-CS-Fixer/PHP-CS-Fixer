@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer>
  */
 final class SingleLineThrowFixerTest extends AbstractFixerTestCase
 {

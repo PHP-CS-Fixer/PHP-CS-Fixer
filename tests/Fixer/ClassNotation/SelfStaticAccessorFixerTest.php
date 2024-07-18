@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer>
  */
 final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 {

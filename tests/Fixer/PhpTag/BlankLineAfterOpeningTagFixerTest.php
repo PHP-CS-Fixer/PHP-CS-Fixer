@@ -24,6 +24,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer>
  */
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {

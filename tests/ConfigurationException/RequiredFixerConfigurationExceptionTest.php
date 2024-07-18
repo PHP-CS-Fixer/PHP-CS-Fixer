@@ -37,7 +37,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         self::assertNull($exception->getPrevious());
     }
@@ -54,7 +54,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         self::assertSame($previous, $exception->getPrevious());
     }

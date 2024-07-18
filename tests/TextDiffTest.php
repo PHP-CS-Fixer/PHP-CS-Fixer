@@ -52,11 +52,11 @@ final class TextDiffTest extends TestCase
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
-            self::markTestSkipped(sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
+            self::markTestSkipped(\sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
         if ($isDecorated !== $commandTester->getOutput()->getFormatter()->isDecorated()) {
-            self::markTestSkipped(sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
+            self::markTestSkipped(\sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
         self::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));

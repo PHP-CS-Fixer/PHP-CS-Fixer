@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer>
  */
 final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {

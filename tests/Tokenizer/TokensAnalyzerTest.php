@@ -1663,7 +1663,25 @@ abstract class Baz
             [5 => true],
             '<?php $a["foo"]++;',
         ];
+    }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
+    {
+        $this->testIsUnarySuccessorOperator($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
+    {
         yield 'array curly access' => [
             [5 => true],
             '<?php $a{"foo"}++;',
@@ -1686,17 +1704,17 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isBinaryOperator($index),
-                    sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
                 );
             }
         }
@@ -1811,17 +1829,17 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isBinaryOperator($index),
-                sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                    sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
                 );
             }
         }
@@ -1832,11 +1850,6 @@ abstract class Baz
         yield [
             [8],
             '<?php echo $a[1] + 1;',
-        ];
-
-        yield [
-            [8],
-            '<?php echo $a{1} + 1;',
         ];
 
         yield [
@@ -2025,6 +2038,29 @@ $b;',
     }
 
     /**
+     * @param list<int> $expected
+     *
+     * @dataProvider provideIsBinaryOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsBinaryOperatorPre84(array $expected, string $source): void
+    {
+        $this->testIsBinaryOperator($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{list<int>, string}>
+     */
+    public static function provideIsBinaryOperatorPre84Cases(): iterable
+    {
+        yield [
+            [8],
+            '<?php echo $a{1} + 1;',
+        ];
+    }
+
+    /**
      * @dataProvider provideIsArrayCases
      */
     public function testIsArray(string $source, int $tokenIndex, bool $isMultiLineArray = false): void
@@ -2033,7 +2069,7 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         self::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
+        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), \sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
     public static function provideIsArrayCases(): iterable
@@ -2119,7 +2155,7 @@ $b;',
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),
-                sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
             );
         }
     }
@@ -2252,12 +2288,12 @@ $b;',
 
         $particularEndOfFile = 'A|(B&C); }';
 
-        yield sprintf('block "%s" at the end of file that is a type', $particularEndOfFile) => [
+        yield \sprintf('block "%s" at the end of file that is a type', $particularEndOfFile) => [
             [],
             '<?php abstract class A { abstract function foo(): '.$particularEndOfFile,
         ];
 
-        yield sprintf('block "%s" at the end of file that is not a type', $particularEndOfFile) => [
+        yield \sprintf('block "%s" at the end of file that is not a type', $particularEndOfFile) => [
             [12 => true, 15 => true],
             '<?php function foo() { return '.$particularEndOfFile,
         ];
@@ -2386,39 +2422,39 @@ class TestClass {
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PRIVATE;
-        $cases[] = [sprintf($template, 'private'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'private'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
-        $cases[] = [sprintf($template, 'public'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'public'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PROTECTED;
-        $cases[] = [sprintf($template, 'protected'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'protected'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = null;
         $attributes['static'] = true;
-        $cases[] = [sprintf($template, 'static'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'static'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
         $attributes['static'] = true;
         $attributes['final'] = true;
-        $cases[] = [sprintf($template, 'final public static'), 14, $attributes];
+        $cases[] = [\sprintf($template, 'final public static'), 14, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = null;
         $attributes['abstract'] = true;
-        $cases[] = [sprintf($template, 'abstract'), 10, $attributes];
+        $cases[] = [\sprintf($template, 'abstract'), 10, $attributes];
 
         $attributes = $defaultAttributes;
         $attributes['visibility'] = T_PUBLIC;
         $attributes['abstract'] = true;
-        $cases[] = [sprintf($template, 'abstract public'), 12, $attributes];
+        $cases[] = [\sprintf($template, 'abstract public'), 12, $attributes];
 
         $attributes = $defaultAttributes;
-        $cases[] = [sprintf($template, ''), 8, $attributes];
+        $cases[] = [\sprintf($template, ''), 8, $attributes];
 
         return $cases;
     }
@@ -2491,10 +2527,12 @@ class TestClass {
                 continue;
             }
 
+            $isExpected = $expected[$index] ?? null;
+
             self::assertSame(
-                $expected[$index],
+                $isExpected,
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
-                sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $expected[$index] ? '' : 'not ')
+                \sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
             );
         }
     }
@@ -2860,7 +2898,7 @@ class MyTestWithAnonymousClass extends TestCase
         foreach ($superNames as $superName) {
             $cases[] = [
                 true,
-                sprintf('<?php echo %s[0];', $superName),
+                \sprintf('<?php echo %s[0];', $superName),
                 3,
             ];
         }
@@ -3149,7 +3187,7 @@ class MyTestWithAnonymousClass extends TestCase
             self::assertSame(
                 $expectedValue,
                 $tokensAnalyzer->isConstantInvocation($index),
-                sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+                \sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
             );
         }
     }

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer>
  */
 final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
 {

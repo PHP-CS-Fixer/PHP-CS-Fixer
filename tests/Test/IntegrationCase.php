@@ -109,7 +109,7 @@ final class IntegrationCase
     public function getRequirement(string $name)
     {
         if (!\array_key_exists($name, $this->requirements)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Unknown requirement key "%s", expected any of "%s".',
                 $name,
                 implode('","', array_keys($this->requirements))

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer>
  */
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 {

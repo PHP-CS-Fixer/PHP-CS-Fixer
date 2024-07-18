@@ -50,7 +50,7 @@ final class WarningsDetector
         if ($this->toolInfo->isInstalledByComposer()) {
             $details = $this->toolInfo->getComposerInstallationDetails();
             if (ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME === $details['name']) {
-                $this->warnings[] = sprintf(
+                $this->warnings[] = \sprintf(
                     'You are running PHP CS Fixer installed with old vendor `%s`. Please update to `%s`.',
                     ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME,
                     ToolInfo::COMPOSER_PACKAGE_NAME

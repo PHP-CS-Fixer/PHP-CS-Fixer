@@ -14,11 +14,16 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AbstractDoctrineAnnotationFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @template TFixer of AbstractDoctrineAnnotationFixer
+ *
+ * @extends AbstractFixerTestCase<TFixer>
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
@@ -126,6 +131,6 @@ $foo = bar();', $comment, false);
             $comment = str_replace("\n", "\n    ", $comment);
         }
 
-        return sprintf($php, preg_replace('/^\n+/', '', $comment));
+        return \sprintf($php, preg_replace('/^\n+/', '', $comment));
     }
 }

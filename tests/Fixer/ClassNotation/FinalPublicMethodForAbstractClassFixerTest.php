@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer>
  */
 final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTestCase
 {
@@ -112,7 +114,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         ];
 
         yield 'anonymous-class' => [
-            sprintf(
+            \sprintf(
                 '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
                 self::getClassElementStubs()
             ),

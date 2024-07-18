@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer>
  */
 final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 {

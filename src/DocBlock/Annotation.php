@@ -176,7 +176,7 @@ final class Annotation
     public function getVariableName(): ?string
     {
         $type = preg_quote($this->getTypesContent() ?? '', '/');
-        $regex = sprintf(
+        $regex = \sprintf(
             '/@%s\s+(%s\s*)?(&\s*)?(\.{3}\s*)?(?<variable>\$%s)(?:.*|$)/',
             $this->tag->getName(),
             $type,

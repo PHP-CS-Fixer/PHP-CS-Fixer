@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer>
  */
 final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
 {

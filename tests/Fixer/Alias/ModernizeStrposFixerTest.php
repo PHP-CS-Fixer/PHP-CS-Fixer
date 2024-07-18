@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\ModernizeStrposFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\ModernizeStrposFixer>
  */
 final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 {

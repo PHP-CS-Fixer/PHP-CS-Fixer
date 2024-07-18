@@ -92,7 +92,7 @@ final class CiConfigurationTest extends TestCase
         foreach ($ciVersionsForDeployments as $ciVersionsForDeployment) {
             self::assertTrue(
                 version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-                sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
             );
         }
     }
@@ -105,7 +105,7 @@ final class CiConfigurationTest extends TestCase
         $range = [];
 
         for ($version = $from; $version <= $to; $version += 0.1) {
-            $range[] = sprintf('%.1f', $version);
+            $range[] = \sprintf('%.1f', $version);
         }
 
         return $range;
@@ -132,13 +132,13 @@ final class CiConfigurationTest extends TestCase
 
         self::assertThat($ciVersions, self::logicalOr(
             // if `$lastsupportedVersion` is already a snapshot version
-            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion)),
+            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion)),
             // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
             new TraversableContainsIdentical('nightly'),
-            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
-            new TraversableContainsIdentical(sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContainsIdentical(sprintf('%.1f', round($lastSupportedVersion + 1.0)))
+            new TraversableContainsIdentical(\sprintf('%.1f', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical(\sprintf('%.1f', round($lastSupportedVersion + 1.0)))
         ));
     }
 
@@ -158,7 +158,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertThat($ciVersions, self::logicalOr(
             new TraversableContainsIdentical($lastSupportedVersion),
-            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion))
+            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion))
         ));
     }
 
@@ -167,7 +167,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
-        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']), $this->getGitHubDeploymentJobs());
+        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : \sprintf('%.1f', $job['php-version']), $this->getGitHubDeploymentJobs());
     }
 
     /**
@@ -182,10 +182,10 @@ final class CiConfigurationTest extends TestCase
     {
         $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
         if (!$matchResult) {
-            throw new \LogicException(sprintf('Can\'t parse version "%s" id.', $verId));
+            throw new \LogicException(\sprintf('Can\'t parse version "%s" id.', $verId));
         }
 
-        return sprintf('%d.%d', $capture['major'], $capture['minor']);
+        return \sprintf('%d.%d', $capture['major'], $capture['minor']);
     }
 
     private function getMaxPhpVersionFromEntryFile(): string

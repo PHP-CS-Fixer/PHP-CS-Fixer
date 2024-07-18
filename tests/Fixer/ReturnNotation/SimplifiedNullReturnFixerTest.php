@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer>
  */
 final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 {

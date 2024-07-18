@@ -32,7 +32,7 @@ final class DataProviderAnalysis
     public function __construct(string $name, int $nameIndex, array $usageIndices)
     {
         if (!array_is_list($usageIndices)) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Parameter "usageIndices" should be a list. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));

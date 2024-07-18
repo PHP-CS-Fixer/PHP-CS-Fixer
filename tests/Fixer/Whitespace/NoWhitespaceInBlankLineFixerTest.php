@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer>
  */
 final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
 {

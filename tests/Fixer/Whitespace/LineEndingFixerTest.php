@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\LineEndingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\LineEndingFixer>
  */
 final class LineEndingFixerTest extends AbstractFixerTestCase
 {

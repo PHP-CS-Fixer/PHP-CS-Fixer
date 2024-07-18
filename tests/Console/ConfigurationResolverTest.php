@@ -26,6 +26,7 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -1318,12 +1319,12 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {
-        $this->expectDeprecation(sprintf(
+        $this->expectDeprecation(\sprintf(
             'Rule set "%s" is deprecated. %s.',
             $ruleSet,
             [] === $successors
                 ? 'No replacement available'
-                : sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
+                : \sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
         ));
 
         $config = new Config();
@@ -1423,6 +1424,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
     {
         return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+            /** @use ConfigurableFixerTrait<array<string, mixed>, array<string, mixed>> */
+            use ConfigurableFixerTrait;
+
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \LogicException('Not implemented.');
