@@ -112,15 +112,7 @@ Bar3:
      */
     public function testGotoLabel80(string $source, array $expectedTrue): void
     {
-        $tokens = Tokens::fromCode($source);
-        $analyzer = new GotoLabelAnalyzer();
-
-        foreach ($tokens as $index => $isClassy) {
-            self::assertSame(
-                \in_array($index, $expectedTrue, true),
-                $analyzer->belongsToGoToLabel($tokens, $index)
-            );
-        }
+        $this->testGotoLabel($source, $expectedTrue);
     }
 
     /**
