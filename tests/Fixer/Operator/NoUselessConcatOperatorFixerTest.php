@@ -158,7 +158,9 @@ $text2 = "intro:   "."   "." #a
             '<?php
                 echo "abc $d" . "e $f";
                 echo "abc $d" . "e";
+                echo "abc $d" . "　e"; // contains full-width space
                 echo "abc $d" . \'e\';
+                echo "abc $d" . \'　e\'; // contains full-width space
                 echo "abc $d" . "😃"; // with emoji
                 echo "私の名前は$name" . "です"; // multibyte characters (Japanese)
             ',
