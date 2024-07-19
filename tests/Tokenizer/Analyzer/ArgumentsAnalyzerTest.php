@@ -96,11 +96,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArguments80(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        self::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
     }
 
     public static function provideArguments80Cases(): iterable
@@ -125,11 +121,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArguments81(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        self::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
     }
 
     public static function provideArguments81Cases(): iterable
@@ -285,10 +277,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
     }
 
     public static function provideArgumentInfo80Cases(): iterable
@@ -335,10 +324,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
     }
 
     public static function provideArgumentInfo81Cases(): iterable
