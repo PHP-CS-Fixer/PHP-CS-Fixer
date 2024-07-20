@@ -2899,7 +2899,7 @@ class MyTestWithAnonymousClass extends TestCase
      */
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {
-        $this->testGetClassyModifiers($expectedModifiers, $index,$source);
+        $this->testGetClassyModifiers($expectedModifiers, $index, $source);
     }
 
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable
