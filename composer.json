@@ -124,6 +124,7 @@
         "self-check": [
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
+            "@composer dump-autoload --dry-run --optimize --strict-psr",
             "@normalize",
             "@unused-deps",
             "@require-checker",
