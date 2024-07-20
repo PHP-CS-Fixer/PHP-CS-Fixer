@@ -969,24 +969,7 @@ preg_replace_callback(
                         return [];
                     };',
         ];
-    }
 
-    /**
-     * @param array<int, bool> $expected
-     *
-     * @dataProvider provideIsLambda74Cases
-     */
-    public function testIsLambda74(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            self::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
-    }
-
-    public static function provideIsLambda74Cases(): iterable
-    {
         yield [
             [5 => true],
             '<?php $fn = fn() => [];',
