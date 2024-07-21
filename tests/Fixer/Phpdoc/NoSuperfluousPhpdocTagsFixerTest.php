@@ -1519,6 +1519,25 @@ class Foo {
 }',
         ];
 
+        yield 'same ?type declaration reversed' => [
+            '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(?Bar $bar): ?Baz {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param ?Bar $bar
+     *
+     * @return ?Baz
+     */
+    public function doFoo(?Bar $bar): ?Baz {}
+}',
+        ];
+
         yield 'same nullable type declaration with description' => [
             '<?php
 class Foo {
