@@ -77,6 +77,9 @@ jobs:
       - name: Check - duplicate test methods
         run: php ./dev-tools/check_duplicate_test_methods.php
 
+      - name: Check - Composer's autoload
+        run: composer dump-autoload --dry-run --optimize --strict-psr
+
       - name: Check - phpstan
         run: ./dev-tools/vendor/bin/phpstan analyse --ansi
 
