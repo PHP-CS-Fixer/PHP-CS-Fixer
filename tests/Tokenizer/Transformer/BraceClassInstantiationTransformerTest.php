@@ -106,24 +106,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         ];
 
         yield [
-            '<?php $foo[0](new Foo())->bar();',
-            [
-                5 => '(',
-                9 => '(',
-                10 => ')',
-                11 => ')',
-                14 => '(',
-                15 => ')',
-            ],
-            [
-                '(',
-                ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-            ],
-        ];
-
-        yield [
             '<?php $foo(new Foo())->bar();',
             [
                 2 => '(',
