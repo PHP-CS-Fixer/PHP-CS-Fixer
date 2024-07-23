@@ -49,15 +49,15 @@ foreach ($testClassNames as $testClassName) {
             continue;
         }
 
-        $found = false;
-        foreach ($duplicates as $name => $body) {
-            if ($content === $body) {
-                echo 'Duplicate in ', $testClassName, ': methods ', $name, ' and ', $method->getName(), PHP_EOL;
+        $foundInDuplicates = false;
+        foreach ($duplicates as $duplicateKey => $duplicateContent) {
+            if ($content === $duplicateContent) {
+                echo 'Duplicate in ', $testClassName, ': methods ', $duplicateKey, ' and ', $method->getName(), PHP_EOL;
                 $duplicatesFound = true;
-                $found = true;
+                $foundInDuplicates = true;
             }
         }
-        if (!$found) {
+        if (!$foundInDuplicates) {
             $duplicates[$method->getName()] = $content;
         }
     }
