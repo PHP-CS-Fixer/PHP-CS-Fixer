@@ -125,25 +125,25 @@ foreach ($testClassNames as $testClassName) {
             continue;
         }
 
-        $duplicates = [];
-        foreach ($method->invoke($method->getDeclaringClass()->newInstanceWithoutConstructor()) as $key => $data) {
-            $data = serialize($data);
+        $alreadyFoundCases = [];
+        foreach ($method->invoke($method->getDeclaringClass()->newInstanceWithoutConstructor()) as $candidateKey => $candidateData) {
+            $candidateData = serialize($candidateData);
             $foundInDuplicates = false;
-            foreach ($duplicates as $duplicateKey => $duplicateData) {
-                if ($data === $duplicateData) {
+            foreach ($alreadyFoundCases as $caseKey => $caseData) {
+                if ($candidateData === $caseData) {
                     printf(
                         'Duplicate in %s::%s: %s and %s.'.PHP_EOL,
                         $testClassName,
                         $method->getName(),
-                        is_int($duplicateKey) ? '#'.$duplicateKey : '"'.$duplicateKey.'"',
-                        is_int($key) ? '#'.$key : '"'.$key.'"',
+                        is_int($caseKey) ? '#'.$caseKey : '"'.$caseKey.'"',
+                        is_int($candidateKey) ? '#'.$candidateKey : '"'.$candidateKey.'"',
                     );
                     $duplicatesFound = true;
                     $foundInDuplicates = true;
                 }
             }
             if (!$foundInDuplicates) {
-                $duplicates[$key] = $data;
+                $alreadyFoundCases[$candidateKey] = $candidateData;
             }
         }
     }

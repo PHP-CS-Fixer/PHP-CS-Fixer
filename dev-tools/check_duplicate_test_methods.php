@@ -31,7 +31,7 @@ $duplicatesFound = false;
 foreach ($testClassNames as $testClassName) {
     $class = new ReflectionClass($testClassName);
 
-    $duplicates = [];
+    $alreadyFoundMethods = [];
     foreach ($class->getMethods() as $method) {
         if (!str_starts_with($method->getName(), 'test')) {
             continue;
@@ -44,21 +44,21 @@ foreach ($testClassNames as $testClassName) {
         }
 
         $source = file($method->getFileName());
-        $content = implode('', array_slice($source, $startLine, $length));
-        if (str_contains($content, '$this->doTest(')) {
+        $candidateContent = implode('', array_slice($source, $startLine, $length));
+        if (str_contains($candidateContent, '$this->doTest(')) {
             continue;
         }
 
         $foundInDuplicates = false;
-        foreach ($duplicates as $duplicateKey => $duplicateContent) {
-            if ($content === $duplicateContent) {
-                echo 'Duplicate in ', $testClassName, ': methods ', $duplicateKey, ' and ', $method->getName(), PHP_EOL;
+        foreach ($alreadyFoundMethods as $methodKey => $methodContent) {
+            if ($candidateContent === $methodContent) {
+                echo 'Duplicate in ', $testClassName, ': methods ', $methodKey, ' and ', $method->getName(), PHP_EOL;
                 $duplicatesFound = true;
                 $foundInDuplicates = true;
             }
         }
         if (!$foundInDuplicates) {
-            $duplicates[$method->getName()] = $content;
+            $alreadyFoundMethods[$method->getName()] = $candidateContent;
         }
     }
 }
