@@ -44,7 +44,8 @@ foreach ($testClassNames as $testClassName) {
             continue;
         }
 
-        $exceptionsBecauseOfSerialization = [ // should only shrink
+        $exceptions = [ // should only shrink
+            // because of Serialization
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
             'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
@@ -54,12 +55,7 @@ foreach ($testClassNames as $testClassName) {
             'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
             'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
             'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
-        ];
-        if (in_array($testClassName.'::'.$method->getName(), $exceptionsBecauseOfSerialization, true)) {
-            continue;
-        }
-
-        $exceptionsBecauseOfMoreThanOneDuplicate = [ // should only shrink
+            // because of more than one duplicate
             'PhpCsFixer\Tests\Console\Command\SelfUpdateCommandTest::provideExecuteCases',
             'PhpCsFixer\Tests\Console\Output\Progress\DotsOutputTest::provideDotsProgressOutputCases',
             'PhpCsFixer\Tests\Fixer\ArrayNotation\TrimArraySpacesFixerTest::provideFixCases',
@@ -86,12 +82,7 @@ foreach ($testClassNames as $testClassName) {
             'PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest::provideIsGlobalFunctionCallCases',
             'PhpCsFixer\Tests\Tokenizer\TokenTest::provideIsMagicConstantCases',
             'PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::provideIsBinaryOperatorCases',
-        ];
-        if (in_array($testClassName.'::'.$method->getName(), $exceptionsBecauseOfMoreThanOneDuplicate, true)) {
-            continue;
-        }
-
-        $exceptionsBecauseOfOneDuplicate = [ // should only shrink
+            // because of one duplicate
             'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideGetTypesCases',
             'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideGetConstTypesCases',
             'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideParseInvalidExceptionCases',
@@ -121,7 +112,7 @@ foreach ($testClassNames as $testClassName) {
             'PhpCsFixer\Tests\Tokenizer\Analyzer\ClassyAnalyzerTest::provideIsClassyInvocationCases',
             'PhpCsFixer\Tests\Tokenizer\Transformer\ReturnRefTransformerTest::provideProcessCases',
         ];
-        if (in_array($testClassName.'::'.$method->getName(), $exceptionsBecauseOfOneDuplicate, true)) {
+        if (in_array($testClassName.'::'.$method->getName(), $exceptions, true)) {
             continue;
         }
 
