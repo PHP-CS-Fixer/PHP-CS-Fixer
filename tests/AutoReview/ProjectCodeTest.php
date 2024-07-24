@@ -721,13 +721,63 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
-    public function testNoDuplicatedDataInDataProvider(string $className): void
+    public function testThatTestMethodsAreNotDuplicated(string $className): void
     {
+        $class = new \ReflectionClass($className);
+
+        $alreadyFoundMethods = [];
         $duplicates = [];
-        foreach ((new \ReflectionClass($className))->getMethods() as $method) {
-            if (!$method->isPublic()) {
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if (!str_starts_with($method->getName(), 'test')) {
                 continue;
             }
+
+            $startLine = (int) $method->getStartLine();
+            $length = (int) $method->getEndLine() - $startLine;
+            if (3 === $length) { // open and closing brace are included - this checks for single line methods
+                continue;
+            }
+
+            /** @var list<string> $source */
+            $source = file((string) $method->getFileName());
+
+            $candidateContent = implode('', \array_slice($source, $startLine, $length));
+            if (str_contains($candidateContent, '$this->doTest(')) {
+                continue;
+            }
+
+            $foundInDuplicates = false;
+            foreach ($alreadyFoundMethods as $methodKey => $methodContent) {
+                if ($candidateContent === $methodContent) {
+                    $duplicates[] = \sprintf('%s is duplicate of %s', $methodKey, $method->getName());
+                    $foundInDuplicates = true;
+                }
+            }
+            if (!$foundInDuplicates) {
+                $alreadyFoundMethods[$method->getName()] = $candidateContent;
+            }
+        }
+
+        self::assertSame(
+            [],
+            $duplicates,
+            \sprintf(
+                "Duplicated methods found in %s:\n - %s",
+                $className,
+                implode("\n - ", $duplicates)
+            )
+        );
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThatDataFromDataProvidersIsNotDuplicated(string $className): void
+    {
+        $duplicates = [];
+        foreach ((new \ReflectionClass($className))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->getDeclaringClass()->getName() !== $className) {
                 continue;
             }

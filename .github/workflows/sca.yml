@@ -74,9 +74,6 @@ jobs:
       - name: Check - trailing spaces
         run: ./dev-tools/check_trailing_spaces.sh
 
-      - name: Check - duplicate test methods
-        run: php ./dev-tools/check_duplicate_test_methods.php
-
       - name: Check - Composer's autoload
         run: composer dump-autoload --dry-run --optimize --strict-psr
 
