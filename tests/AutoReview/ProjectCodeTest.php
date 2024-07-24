@@ -717,6 +717,121 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
+     */
+    public function testNoDuplicatedDataInDataProvider(string $className): void
+    {
+        $duplicates = [];
+        foreach ((new \ReflectionClass($className))->getMethods() as $method) {
+            if (!$method->isPublic()) {
+                continue;
+            }
+            if ($method->getDeclaringClass()->getName() !== $className) {
+                continue;
+            }
+            if (!str_starts_with($method->getName(), 'provide')) {
+                continue;
+            }
+
+            $exceptions = [ // should only shrink
+                // because of Serialization
+                'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
+                'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
+                'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
+                'PhpCsFixer\Tests\AutoReview\ProjectCodeTest::provideDataProviderMethodCases',
+                'PhpCsFixer\Tests\Console\Command\DescribeCommandTest::provideExecuteOutputCases',
+                'PhpCsFixer\Tests\Console\Command\HelpCommandTest::provideGetDisplayableAllowedValuesCases',
+                'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
+                'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
+                // because of more than one duplicate
+                'PhpCsFixer\Tests\Console\Command\SelfUpdateCommandTest::provideExecuteCases',
+                'PhpCsFixer\Tests\Console\Output\Progress\DotsOutputTest::provideDotsProgressOutputCases',
+                'PhpCsFixer\Tests\Fixer\ArrayNotation\TrimArraySpacesFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::provideFixClassyBracesCases',
+                'PhpCsFixer\Tests\Fixer\Basic\BracesPositionFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Basic\CurlyBracesPositionFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\ClassNotation\FinalClassFixerTest::provideFix80Cases',
+                'PhpCsFixer\Tests\Fixer\Basic\PsrAutoloadingFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\ClassNotation\FinalClassFixerTest::provideFix82Cases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::provideFixAllCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::provideFixIfElseIfElseCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::provideFixIfElseCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::providePHP71Cases',
+                'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::provideFixWithColonCases',
+                'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundParenthesesOnlyCases',
+                'PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixerTest::provideFixWithUseCases',
+                'PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest::provideFixWithUseCases',
+                'PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocInlineTagNormalizerFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Tokenizer\Analyzer\AlternativeSyntaxAnalyzerTest::provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases',
+                'PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest::provideIsGlobalFunctionCallCases',
+                'PhpCsFixer\Tests\Tokenizer\TokenTest::provideIsMagicConstantCases',
+                'PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::provideIsBinaryOperatorCases',
+                // because of one duplicate
+                'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideGetTypesCases',
+                'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideGetConstTypesCases',
+                'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideParseInvalidExceptionCases',
+                'PhpCsFixer\Tests\FixerNameValidatorTest::provideIsValidCases',
+                'PhpCsFixer\Tests\Fixer\Alias\EregToPregFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\ArrayNotation\ArraySyntaxFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::provideFixMultiLineStructuresCases',
+                'PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::provideFunctionImportCases',
+                'PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::provideFixWithDefaultConfigurationCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::provideFixWithDifferentCommentTextCases',
+                'PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::provideFixWithDifferentLineEndingCases',
+                'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAllCases',
+                'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundCommasOnlyCases',
+                'PhpCsFixer\Tests\Fixer\FunctionNotation\PhpdocToParamTypeFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Operator\StandardizeIncrementFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTargetVersionTest::provideFulfillsCases',
+                'PhpCsFixer\Tests\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest::provideFixWithNullFirstCases',
+                'PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Whitespace\MethodChainingIndentationFixerTest::provideFixCases',
+                'PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::provideDefaultFixCases',
+                'PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::provideSpacesFixCases',
+                'PhpCsFixer\Tests\Tokenizer\Analyzer\AttributeAnalyzerTest::provideIsAttributeCases',
+                'PhpCsFixer\Tests\Tokenizer\Analyzer\ClassyAnalyzerTest::provideIsClassyInvocationCases',
+                'PhpCsFixer\Tests\Tokenizer\Transformer\ReturnRefTransformerTest::provideProcessCases',
+            ];
+            if (\in_array($className.'::'.$method->getName(), $exceptions, true)) {
+                continue;
+            }
+
+            $alreadyFoundCases = [];
+            foreach ($method->invoke($method->getDeclaringClass()->newInstanceWithoutConstructor()) as $candidateKey => $candidateData) {
+                $candidateData = serialize($candidateData);
+                $foundInDuplicates = false;
+                foreach ($alreadyFoundCases as $caseKey => $caseData) {
+                    if ($candidateData === $caseData) {
+                        $duplicates[] = \sprintf(
+                            'Duplicate in %s::%s: %s and %s.'.PHP_EOL,
+                            $className,
+                            $method->getName(),
+                            \is_int($caseKey) ? '#'.$caseKey : '"'.$caseKey.'"',
+                            \is_int($candidateKey) ? '#'.$candidateKey : '"'.$candidateKey.'"',
+                        );
+                        $foundInDuplicates = true;
+                    }
+                }
+                if (!$foundInDuplicates) {
+                    $alreadyFoundCases[$candidateKey] = $candidateData;
+                }
+            }
+        }
+        self::assertSame([], $duplicates);
+    }
+
+    /**
      * @return iterable<string, array{class-string<TestCase>}>
      */
     public static function provideTestClassCases(): iterable
