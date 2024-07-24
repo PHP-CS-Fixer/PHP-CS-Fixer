@@ -717,6 +717,61 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideTestClassCases
+     */
+    public function testNoDuplicatedMethods(string $className): void
+    {
+        $class = new \ReflectionClass($className);
+
+        $alreadyFoundMethods = [];
+        $duplicates = [];
+        foreach ($class->getMethods() as $method) {
+            if (!str_starts_with($method->getName(), 'test')) {
+                continue;
+            }
+
+            $startLine = $method->getStartLine();
+            $length = $method->getEndLine() - $startLine;
+            if (3 === $length) { // open and closing brace are included - this checks for single line methods
+                continue;
+            }
+
+            $source = file($method->getFileName());
+            $candidateContent = implode('', array_slice($source, $startLine, $length));
+            if (str_contains($candidateContent, '$this->doTest(')) {
+                continue;
+            }
+
+            $foundInDuplicates = false;
+            foreach ($alreadyFoundMethods as $methodKey => $methodContent) {
+                if ($candidateContent === $methodContent) {
+                    $duplicates[] = [$methodKey,$method->getName(), ];
+                    $foundInDuplicates = true;
+                }
+            }
+            if (!$foundInDuplicates) {
+                $alreadyFoundMethods[$method->getName()] = $candidateContent;
+            }
+        }
+
+        self::assertSame(
+            [],
+            $duplicates,
+            sprintf(
+                "Duplicated methods found in %s:\n - %s",
+                $className,
+                implode(
+                    "\n - ",
+                    array_map(
+                        fn (array $duplicates):string => sprintf('%s is duplicate of %s', ...$duplicates),
+                        $duplicates
+                    )
+                )
+            )
+        );
+    }
+
+    /**
      * @return iterable<string, array{class-string<TestCase>}>
      */
     public static function provideTestClassCases(): iterable
