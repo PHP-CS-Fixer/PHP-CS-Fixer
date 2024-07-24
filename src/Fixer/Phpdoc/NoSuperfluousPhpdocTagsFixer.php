@@ -620,7 +620,10 @@ class Foo {
 
         // retry comparison with annotation type unioned with null
         // phpstan implies the null presence from the native type
-        return $actualTypes === $this->toComparableNames(array_merge($annotationTypes, ['null']), null, null, []);
+        $annotationTypes = array_merge($annotationTypes, ['null']);
+        sort($annotationTypes);
+
+        return $actualTypes === $annotationTypes;
     }
 
     /**
