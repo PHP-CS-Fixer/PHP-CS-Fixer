@@ -727,7 +727,7 @@ final class ProjectCodeTest extends TestCase
 
         $alreadyFoundMethods = [];
         $duplicates = [];
-        foreach ($class->getMethods() as $method) {
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if (!str_starts_with($method->getName(), 'test')) {
                 continue;
             }
@@ -777,10 +777,7 @@ final class ProjectCodeTest extends TestCase
     public function testThatDataFromDataProvidersIsNotDuplicated(string $className): void
     {
         $duplicates = [];
-        foreach ((new \ReflectionClass($className))->getMethods() as $method) {
-            if (!$method->isPublic()) {
-                continue;
-            }
+        foreach ((new \ReflectionClass($className))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ($method->getDeclaringClass()->getName() !== $className) {
                 continue;
             }
