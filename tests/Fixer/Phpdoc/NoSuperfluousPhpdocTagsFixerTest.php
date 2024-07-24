@@ -1775,9 +1775,9 @@ class Foo {
         yield 'dont remove when used with reference' => [
             '<?php class Foo {
                     /**
-                     * @param string ...$x Description
+                     * @param string &$x Description
                      */
-                     function f(string ...$x) {}
+                     function f(string &$x) {}
                 }',
         ];
 
