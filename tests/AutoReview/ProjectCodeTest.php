@@ -721,7 +721,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
-    public function testNoDuplicatedMethods(string $className): void
+    public function testThatTestMethodsAreNotDuplicated(string $className): void
     {
         $class = new \ReflectionClass($className);
 
