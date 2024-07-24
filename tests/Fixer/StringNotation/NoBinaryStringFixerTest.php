@@ -73,11 +73,6 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php echo "hello world";',
-            '<?php echo B"hello world";',
-        ];
-
-        yield [
             '<?php echo /* foo */"hello world";',
             '<?php echo /* foo */B"hello world";',
         ];

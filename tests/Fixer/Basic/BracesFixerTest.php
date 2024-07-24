@@ -4781,46 +4781,6 @@ if (1) {
 
         yield [
             '<?php
-if (1) {
-    $message = (new class() extends Foo
-    {
-        public function bar() {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-        ];
-
-        yield [
-            '<?php
-if (1) {
-    $message = (new class() extends Foo
-    {
-        public function bar() {
-            echo 1;
-        }
-    });
-}',
-            '<?php
-if (1) {
-  $message = (new class() extends Foo
-  {
-    public function bar() { echo 1; }
-  });
-}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_ANONYMOUS_POSITION_NEXT_LINE,
-        ];
-
-        yield [
-            '<?php
 if (1)
 {
     $message = (new class() extends Foo

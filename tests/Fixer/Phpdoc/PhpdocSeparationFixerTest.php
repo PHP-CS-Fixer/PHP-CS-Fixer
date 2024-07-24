@@ -945,40 +945,6 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
-        yield 'default_groups_all_tags' => [
-            <<<'EOF'
-                <?php
-                /**
-                 * Hello there!
-                 *
-                 * @author John Doe
-                 *
-                 * @throws Exception|RuntimeException foo
-                 *
-                 * @custom Test!
-                 *
-                 * @param string $foo
-                 * @param bool   $bar Bar
-                 *
-                 * @return int  Return the number of changes.
-                 */
-
-                EOF,
-            <<<'EOF'
-                <?php
-                /**
-                 * Hello there!
-                 * @author John Doe
-                 * @throws Exception|RuntimeException foo
-                 * @custom Test!
-                 * @param string $foo
-                 * @param bool   $bar Bar
-                 * @return int  Return the number of changes.
-                 */
-
-                EOF,
-        ];
-
         yield 'Separated unlisted tags with default config' => [
             <<<'EOF'
                 <?php
