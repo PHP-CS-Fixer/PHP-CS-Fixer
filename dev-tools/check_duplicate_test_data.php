@@ -13,6 +13,57 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use PhpCsFixer\Tests\AutoReview\CommandTest;
+use PhpCsFixer\Tests\AutoReview\DocumentationTest;
+use PhpCsFixer\Tests\AutoReview\FixerFactoryTest;
+use PhpCsFixer\Tests\AutoReview\ProjectCodeTest;
+use PhpCsFixer\Tests\Console\Command\DescribeCommandTest;
+use PhpCsFixer\Tests\Console\Command\HelpCommandTest;
+use PhpCsFixer\Tests\Console\Command\SelfUpdateCommandTest;
+use PhpCsFixer\Tests\Console\Output\Progress\DotsOutputTest;
+use PhpCsFixer\Tests\DocBlock\TypeExpressionTest;
+use PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest;
+use PhpCsFixer\Tests\Fixer\Alias\EregToPregFixerTest;
+use PhpCsFixer\Tests\Fixer\ArrayNotation\ArraySyntaxFixerTest;
+use PhpCsFixer\Tests\Fixer\ArrayNotation\TrimArraySpacesFixerTest;
+use PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest;
+use PhpCsFixer\Tests\Fixer\Basic\BracesPositionFixerTest;
+use PhpCsFixer\Tests\Fixer\Basic\CurlyBracesPositionFixerTest;
+use PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest;
+use PhpCsFixer\Tests\Fixer\Basic\PsrAutoloadingFixerTest;
+use PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest;
+use PhpCsFixer\Tests\Fixer\ClassNotation\FinalClassFixerTest;
+use PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest;
+use PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest;
+use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
+use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
+use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
+use PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest;
+use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest;
+use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
+use PhpCsFixer\Tests\Fixer\FunctionNotation\PhpdocToParamTypeFixerTest;
+use PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest;
+use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixerTest;
+use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
+use PhpCsFixer\Tests\Fixer\Operator\StandardizeIncrementFixerTest;
+use PhpCsFixer\Tests\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixerTest;
+use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocInlineTagNormalizerFixerTest;
+use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest;
+use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest;
+use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTargetVersionTest;
+use PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest;
+use PhpCsFixer\Tests\Fixer\Whitespace\MethodChainingIndentationFixerTest;
+use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
+use PhpCsFixer\Tests\FixerNameValidatorTest;
+use PhpCsFixer\Tests\Tokenizer\Analyzer\AlternativeSyntaxAnalyzerTest;
+use PhpCsFixer\Tests\Tokenizer\Analyzer\AttributeAnalyzerTest;
+use PhpCsFixer\Tests\Tokenizer\Analyzer\ClassyAnalyzerTest;
+use PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest;
+use PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest;
+use PhpCsFixer\Tests\Tokenizer\TokenTest;
+use PhpCsFixer\Tests\Tokenizer\Transformer\ReturnRefTransformerTest;
+use PhpCsFixer\Tests\UtilsTest;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 $testClassNames = array_filter(
@@ -44,74 +95,81 @@ foreach ($testClassNames as $testClassName) {
             continue;
         }
 
-        $exceptions = [ // should only shrink
-            // because of Serialization
-            'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
-            'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
-            'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
-            'PhpCsFixer\Tests\AutoReview\ProjectCodeTest::provideDataProviderMethodCases',
-            'PhpCsFixer\Tests\Console\Command\DescribeCommandTest::provideExecuteOutputCases',
-            'PhpCsFixer\Tests\Console\Command\HelpCommandTest::provideGetDisplayableAllowedValuesCases',
-            'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
-            'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
-            // because of more than one duplicate
-            'PhpCsFixer\Tests\Console\Command\SelfUpdateCommandTest::provideExecuteCases',
-            'PhpCsFixer\Tests\Console\Output\Progress\DotsOutputTest::provideDotsProgressOutputCases',
-            'PhpCsFixer\Tests\Fixer\ArrayNotation\TrimArraySpacesFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::provideFixClassyBracesCases',
-            'PhpCsFixer\Tests\Fixer\Basic\BracesPositionFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Basic\CurlyBracesPositionFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ClassNotation\FinalClassFixerTest::provideFix80Cases',
-            'PhpCsFixer\Tests\Fixer\Basic\PsrAutoloadingFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ClassNotation\FinalClassFixerTest::provideFix82Cases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::provideFixAllCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::provideFixIfElseIfElseCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::provideFixIfElseCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest::providePHP71Cases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::provideFixWithColonCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundParenthesesOnlyCases',
-            'PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixerTest::provideFixWithUseCases',
-            'PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest::provideFixWithUseCases',
-            'PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocInlineTagNormalizerFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Tokenizer\Analyzer\AlternativeSyntaxAnalyzerTest::provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases',
-            'PhpCsFixer\Tests\Tokenizer\Analyzer\FunctionsAnalyzerTest::provideIsGlobalFunctionCallCases',
-            'PhpCsFixer\Tests\Tokenizer\TokenTest::provideIsMagicConstantCases',
-            'PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::provideIsBinaryOperatorCases',
-            // because of one duplicate
-            'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideGetTypesCases',
-            'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideGetConstTypesCases',
-            'PhpCsFixer\Tests\DocBlock\TypeExpressionTest::provideParseInvalidExceptionCases',
-            'PhpCsFixer\Tests\FixerNameValidatorTest::provideIsValidCases',
-            'PhpCsFixer\Tests\Fixer\Alias\EregToPregFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ArrayNotation\ArraySyntaxFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::provideFixMultiLineStructuresCases',
-            'PhpCsFixer\Tests\Fixer\Basic\BracesFixerTest::provideFunctionImportCases',
-            'PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest::provideFixWithDefaultConfigurationCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::provideFixWithDifferentCommentTextCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest::provideFixWithDifferentLineEndingCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAllCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundCommasOnlyCases',
-            'PhpCsFixer\Tests\Fixer\FunctionNotation\PhpdocToParamTypeFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Operator\StandardizeIncrementFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTargetVersionTest::provideFulfillsCases',
-            'PhpCsFixer\Tests\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest::provideFixWithNullFirstCases',
-            'PhpCsFixer\Tests\Fixer\StringNotation\SingleQuoteFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Whitespace\MethodChainingIndentationFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::provideDefaultFixCases',
-            'PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest::provideSpacesFixCases',
-            'PhpCsFixer\Tests\Tokenizer\Analyzer\AttributeAnalyzerTest::provideIsAttributeCases',
-            'PhpCsFixer\Tests\Tokenizer\Analyzer\ClassyAnalyzerTest::provideIsClassyInvocationCases',
-            'PhpCsFixer\Tests\Tokenizer\Transformer\ReturnRefTransformerTest::provideProcessCases',
-        ];
+        $exceptions = array_map(
+            static function (Closure $dataProvider): string {
+                $reflection = new ReflectionFunction($dataProvider);
+
+                return $reflection->getClosureCalledClass()->getName().'::'.$reflection->getName();
+            },
+            [ // should only shrink
+                // because of Serialization
+                CommandTest::provideCommandHasNameConstCases(...),
+                DocumentationTest::provideFixerDocumentationFileIsUpToDateCases(...),
+                FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases(...),
+                ProjectCodeTest::provideDataProviderMethodCases(...),
+                DescribeCommandTest::provideExecuteOutputCases(...),
+                HelpCommandTest::provideGetDisplayableAllowedValuesCases(...),
+                FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases(...),
+                EncodingFixerTest::provideFixCases(...),
+                UtilsTest::provideStableSortCases(...),
+                // because of more than one duplicate
+                SelfUpdateCommandTest::provideExecuteCases(...),
+                DotsOutputTest::provideDotsProgressOutputCases(...),
+                TrimArraySpacesFixerTest::provideFixCases(...),
+                BracesFixerTest::provideFixClassyBracesCases(...),
+                BracesPositionFixerTest::provideFixCases(...),
+                CurlyBracesPositionFixerTest::provideFixCases(...),
+                FinalClassFixerTest::provideFix80Cases(...),
+                PsrAutoloadingFixerTest::provideFixCases(...),
+                LowercaseCastFixerTest::provideFixCases(...),
+                FinalClassFixerTest::provideFix82Cases(...),
+                NoUnneededControlParenthesesFixerTest::provideFixAllCases(...),
+                NoUselessElseFixerTest::provideFixIfElseIfElseCases(...),
+                NoUselessElseFixerTest::provideFixIfElseCases(...),
+                YodaStyleFixerTest::provideFixCases(...),
+                YodaStyleFixerTest::providePHP71Cases(...),
+                DoctrineAnnotationArrayAssignmentFixerTest::provideFixCases(...),
+                DoctrineAnnotationArrayAssignmentFixerTest::provideFixWithColonCases(...),
+                DoctrineAnnotationSpacesFixerTest::provideFixAroundParenthesesOnlyCases(...),
+                SingleSpaceAfterConstructFixerTest::provideFixWithUseCases(...),
+                SingleSpaceAroundConstructFixerTest::provideFixWithUseCases(...),
+                PhpUnitStrictFixerTest::provideFixCases(...),
+                PhpdocInlineTagNormalizerFixerTest::provideFixCases(...),
+                AlternativeSyntaxAnalyzerTest::provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases(...),
+                FunctionsAnalyzerTest::provideIsGlobalFunctionCallCases(...),
+                TokenTest::provideIsMagicConstantCases(...),
+                TokensAnalyzerTest::provideIsBinaryOperatorCases(...),
+                // because of one duplicate
+                TypeExpressionTest::provideGetTypesCases(...),
+                TypeExpressionTest::provideGetConstTypesCases(...),
+                TypeExpressionTest::provideParseInvalidExceptionCases(...),
+                FixerNameValidatorTest::provideIsValidCases(...),
+                EregToPregFixerTest::provideFixCases(...),
+                ArraySyntaxFixerTest::provideFixCases(...),
+                BracesFixerTest::provideFixMultiLineStructuresCases(...),
+                BracesFixerTest::provideFunctionImportCases(...),
+                NoEmptyCommentFixerTest::provideFixCases(...),
+                NativeConstantInvocationFixerTest::provideFixWithDefaultConfigurationCases(...),
+                NoBreakCommentFixerTest::provideFixCases(...),
+                NoBreakCommentFixerTest::provideFixWithDifferentCommentTextCases(...),
+                NoBreakCommentFixerTest::provideFixWithDifferentLineEndingCases(...),
+                DoctrineAnnotationSpacesFixerTest::provideFixAllCases(...),
+                DoctrineAnnotationSpacesFixerTest::provideFixAroundCommasOnlyCases(...),
+                PhpdocToParamTypeFixerTest::provideFixCases(...),
+                OrderedImportsFixerTest::provideFixCases(...),
+                StandardizeIncrementFixerTest::provideFixCases(...),
+                PhpUnitTargetVersionTest::provideFulfillsCases(...),
+                NoSuperfluousPhpdocTagsFixerTest::provideFixCases(...),
+                PhpdocTypesOrderFixerTest::provideFixWithNullFirstCases(...),
+                SingleQuoteFixerTest::provideFixCases(...),
+                MethodChainingIndentationFixerTest::provideFixCases(...),
+                SpacesInsideParenthesesFixerTest::provideDefaultFixCases(...),
+                SpacesInsideParenthesesFixerTest::provideSpacesFixCases(...),
+                AttributeAnalyzerTest::provideIsAttributeCases(...),
+                ClassyAnalyzerTest::provideIsClassyInvocationCases(...),
+                ReturnRefTransformerTest::provideProcessCases(...),
+            ],
+        );
         if (in_array($testClassName.'::'.$method->getName(), $exceptions, true)) {
             continue;
         }
