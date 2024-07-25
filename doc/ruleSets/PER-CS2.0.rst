@@ -19,6 +19,10 @@ Rules
   ``['closure_fn_spacing' => 'none']``
 
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
+- `new_with_parentheses <./../rules/operator/new_with_parentheses.rst>`_ with config:
+
+  ``['anonymous_class' => false]``
+
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
 
