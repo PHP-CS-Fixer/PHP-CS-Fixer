@@ -58,6 +58,11 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
+     * @var null|array<string, array{string}>
+     */
+    private static ?array $dataProviderMethodCases = null;
+
+    /**
      * @var array<class-string, Tokens>
      */
     private static array $tokensCache = [];
@@ -279,19 +284,24 @@ final class ProjectCodeTest extends TestCase
 
     public static function provideDataProviderMethodCases(): iterable
     {
-        foreach (self::provideTestClassCases() as $testClassName) {
-            $testClassName = reset($testClassName);
-            $reflectionClass = new \ReflectionClass($testClassName);
+        if (null === self::$dataProviderMethodCases) {
+            self::$dataProviderMethodCases = [];
+            foreach (self::provideTestClassCases() as $testClassName) {
+                $testClassName = reset($testClassName);
+                $reflectionClass = new \ReflectionClass($testClassName);
 
-            $methods = array_filter(
-                $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-                static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
-            );
+                $methods = array_filter(
+                    $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
+                );
 
-            foreach ($methods as $method) {
-                yield $testClassName.'::'.$method->getName() => [$testClassName, $method];
+                foreach ($methods as $method) {
+                    self::$dataProviderMethodCases[$testClassName.'::'.$method->getName()] = [$testClassName, $method];
+                }
             }
         }
+
+        yield from self::$dataProviderMethodCases;
     }
 
     /**
