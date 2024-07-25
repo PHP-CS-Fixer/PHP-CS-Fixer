@@ -31,6 +31,8 @@ final class ProgressOutputFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideValidProcessOutputIsCreatedCases
+     *
+     * @param class-string<\Throwable> $expectedOutputClass
      */
     public function testValidProcessOutputIsCreated(
         string $outputType,

@@ -71,6 +71,8 @@ final class PregTest extends TestCase
 
     /**
      * @dataProvider providePatternValidationCases
+     *
+     * @param null|class-string<\Throwable> $expectedException
      */
     public function testPatternValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
@@ -111,6 +113,8 @@ final class PregTest extends TestCase
 
     /**
      * @dataProvider providePatternValidationCases
+     *
+     * @param null|class-string<\Throwable> $expectedException
      */
     public function testPatternsValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
