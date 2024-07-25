@@ -86,6 +86,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideThatSrcClassesNotAbuseInterfacesCases
+     *
+     * @param class-string $className
      */
     public function testThatSrcClassesNotAbuseInterfaces(string $className): void
     {
@@ -134,6 +136,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $className
      */
     public function testThatSrcClassesNotExposeProperties(string $className): void
     {
@@ -196,6 +200,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testThatTestClassesAreTraitOrAbstractOrFinal(string $testClassName): void
     {
@@ -209,6 +215,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
@@ -223,6 +231,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testThatTestClassesPublicMethodsAreCorrectlyNamed(string $testClassName): void
     {
@@ -250,6 +260,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideDataProviderMethodCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testThatTestDataProvidersAreUsed(string $testClassName, string $dataProviderName): void
     {
@@ -302,6 +314,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testThatTestClassCoversAreCorrect(string $testClassName): void
     {
@@ -324,6 +338,8 @@ final class ProjectCodeTest extends TestCase
         self::assertGreaterThanOrEqual(1, $covers, \sprintf('Missing @covers in PHPDoc of test class "%s".', $testClassName));
 
         array_shift($matches);
+
+        /** @var class-string $class */
         $class = '\\'.str_replace('PhpCsFixer\Tests\\', 'PhpCsFixer\\', substr($testClassName, 0, -4));
         $parentClass = (new \ReflectionClass($class))->getParentClass();
         $parentClassName = false === $parentClass ? null : '\\'.$parentClass->getName();
@@ -340,6 +356,8 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
      */
     public function testThereIsNoUsageOfExtract(string $className): void
     {
@@ -351,6 +369,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
+     *
+     * @param class-string $className
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
@@ -368,6 +388,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string<TestCase> $className
      */
     public function testNoPHPUnitMockUsed(string $className): void
     {
@@ -389,6 +411,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testExpectedInputOrder(string $testClassName): void
     {
@@ -446,6 +470,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideDataProviderMethodCases
+     *
+     * @param class-string<TestCase> $testClassName
      */
     public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, string $dataProviderName): void
     {
@@ -521,6 +547,8 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
@@ -580,6 +608,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $className
      */
     public function testInheritdocIsNotAbused(string $className): void
     {
@@ -912,6 +942,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
+     *
+     * @param class-string $className
      */
     public function testPhpUnitFixerExtendsAbstractPhpUnitFixer(string $className): void
     {
@@ -946,6 +978,8 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
      */
     public function testConstantsAreInUpperCase(string $className): void
     {
@@ -966,6 +1000,8 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string $className
+     *
      * @return list<string>
      */
     private function extractFunctionNamesCalledInClass(string $className): array
@@ -1018,6 +1054,8 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string<TestCase> $testClassName
+     *
      * @return iterable<string, string>
      */
     private function getUsedDataProviderMethodNames(string $testClassName): iterable
@@ -1030,6 +1068,8 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string<TestCase> $testClassName
+     *
      * @return iterable<string, Annotation>
      */
     private function getAnnotationsOfTestClass(string $testClassName, string $annotation): iterable
@@ -1072,6 +1112,7 @@ final class ProjectCodeTest extends TestCase
             ])
         ;
 
+        /** @var list<class-string> $classes */
         $classes = array_map(
             static fn (SplFileInfo $file): string => \sprintf(
                 '%s\%s%s%s',
@@ -1108,6 +1149,7 @@ final class ProjectCodeTest extends TestCase
             ])
         ;
 
+        /** @var list<class-string<TestCase>> $classes */
         $classes = array_map(
             static fn (SplFileInfo $file): string => \sprintf(
                 'PhpCsFixer\Tests\%s%s%s',
