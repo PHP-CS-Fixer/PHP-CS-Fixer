@@ -58,7 +58,7 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
-     * @var null|array<string, array{string}>
+     * @var null|array<string, array{class-string, string}>
      */
     private static ?array $dataProviderMethodCases = null;
 
@@ -251,7 +251,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
-    public function testThatTestDataProvidersAreUsed(string $testClassName, \ReflectionMethod $dataProvider): void
+    public function testThatTestDataProvidersAreUsed(string $testClassName, string $dataProviderName): void
     {
         $usedDataProviderMethodNames = [];
 
@@ -259,26 +259,22 @@ final class ProjectCodeTest extends TestCase
             $usedDataProviderMethodNames[] = $providerName;
         }
 
-        $dataProviderName = $dataProvider->getName();
-
         self::assertContains(
             $dataProviderName,
             $usedDataProviderMethodNames,
-            \sprintf('Data provider in "%s" with name "%s" is not used.', $dataProvider->getDeclaringClass()->getName(), $dataProviderName)
+            \sprintf('Data provider "%s::%s" is not used.', $testClassName, $dataProviderName),
         );
     }
 
     /**
      * @dataProvider provideDataProviderMethodCases
      */
-    public function testThatTestDataProvidersAreCorrectlyNamed(string $testClassName, \ReflectionMethod $dataProvider): void
+    public function testThatTestDataProvidersAreCorrectlyNamed(string $testClassName, string $dataProviderName): void
     {
-        $dataProviderName = $dataProvider->getShortName();
-
         self::assertMatchesRegularExpression('/^provide[A-Z]\S+Cases$/', $dataProviderName, \sprintf(
-            'Data provider in "%s" with name "%s" is not correctly named.',
+            'Data provider "%s::%s" is not correctly named.',
             $testClassName,
-            $dataProviderName
+            $dataProviderName,
         ));
     }
 
@@ -290,13 +286,13 @@ final class ProjectCodeTest extends TestCase
                 $testClassName = reset($testClassName);
                 $reflectionClass = new \ReflectionClass($testClassName);
 
-                $methods = array_filter(
+                $dataProviderNames = array_filter(
                     $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
                     static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
                 );
 
-                foreach ($methods as $method) {
-                    self::$dataProviderMethodCases[$testClassName.'::'.$method->getName()] = [$testClassName, $method];
+                foreach ($dataProviderNames as $dataProviderName) {
+                    self::$dataProviderMethodCases[$testClassName.'::'.$dataProviderName->getName()] = [$testClassName, $dataProviderName->getName()];
                 }
             }
         }
@@ -451,11 +447,8 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
-    public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, \ReflectionMethod $dataProvider): void
+    public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, string $dataProviderName): void
     {
-        $dataProviderName = $dataProvider->getName();
-        $methodId = $testClassName.'::'.$dataProviderName;
-
         $tokens = $this->createTokensForClass($testClassName);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $dataProviderElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($tokens, $dataProviderName) {
@@ -466,7 +459,7 @@ final class ProjectCodeTest extends TestCase
         }, ARRAY_FILTER_USE_BOTH);
 
         if (1 !== \count($dataProviderElements)) {
-            throw new \UnexpectedValueException(\sprintf('DataProvider `%s` should be found exactly once, got %d times.', $methodId, \count($dataProviderElements)));
+            throw new \UnexpectedValueException(\sprintf('Data provider "%s::%s" should be found exactly once, got %d times.', $testClassName, $dataProviderName, \count($dataProviderElements)));
         }
 
         $methodIndex = array_key_first($dataProviderElements);
@@ -487,8 +480,9 @@ final class ProjectCodeTest extends TestCase
             0,
             $versionTokens,
             \sprintf(
-                "DataProvider '%s' should not check PHP version and provide different cases depends on it. It leads to situation when DataProvider provides 'sometimes 10, sometimes 11' test cases, depends on PHP version. That makes John Doe to see 'you run 10/10' and thinking all tests are executed, instead of actually seeing 'you run 10/11 and 1 skipped'.",
-                $methodId,
+                'Data provider "%s::%s" should not check PHP version and provide different cases depends on it. It leads to situation when DataProvider provides "sometimes 10, sometimes 11" test cases, depends on PHP version. That makes John Doe to see "you run 10/10" and thinking all tests are executed, instead of actually seeing "you run 10/11 and 1 skipped".',
+                $testClassName,
+                $dataProviderName,
             ),
         );
     }
@@ -496,18 +490,18 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
-    public function testDataProvidersDeclaredReturnType(string $testClassName, \ReflectionMethod $method): void
+    public function testDataProvidersDeclaredReturnType(string $testClassName, string $dataProviderName): void
     {
-        $methodId = $testClassName.'::'.$method->getName();
+        $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
 
-        self::assertSame('iterable', $method->hasReturnType() && $method->getReturnType() instanceof \ReflectionNamedType ? $method->getReturnType()->getName() : null, \sprintf('DataProvider `%s` must provide `iterable` as return in method prototype.', $methodId));
+        self::assertSame('iterable', $dataProvider->hasReturnType() && $dataProvider->getReturnType() instanceof \ReflectionNamedType ? $dataProvider->getReturnType()->getName() : null, \sprintf('Data provider "%s::%s" must provide `iterable` as return in method prototype.', $testClassName, $dataProviderName));
 
-        $doc = new DocBlock(false !== $method->getDocComment() ? $method->getDocComment() : '/** */');
+        $doc = new DocBlock(false !== $dataProvider->getDocComment() ? $dataProvider->getDocComment() : '/** */');
 
         $returnDocs = $doc->getAnnotationsOfType('return');
 
         if (\count($returnDocs) > 1) {
-            throw new \UnexpectedValueException(\sprintf('Multiple `%s@return` annotations.', $methodId));
+            throw new \UnexpectedValueException(\sprintf('Multiple "%s::%s@return" annotations.', $testClassName, $dataProviderName));
         }
 
         if (1 !== \count($returnDocs)) {
@@ -519,9 +513,9 @@ final class ProjectCodeTest extends TestCase
         $returnDoc = $returnDocs[0];
         $types = $returnDoc->getTypes();
 
-        self::assertCount(1, $types, \sprintf('DataProvider `%s@return` must provide single type.', $methodId));
-        self::assertMatchesRegularExpression('/^iterable\</', $types[0], \sprintf('DataProvider `%s@return` must return iterable.', $methodId));
-        self::assertMatchesRegularExpression('/^iterable\<(?:(?:int\|)?string, )?array\{/', $types[0], \sprintf('DataProvider `%s@return` must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $methodId));
+        self::assertCount(1, $types, \sprintf('Data provider "%s::%s@return" must provide single type.', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/^iterable\</', $types[0], \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/^iterable\<(?:(?:int\|)?string, )?array\{/', $types[0], \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
     }
 
     /**
