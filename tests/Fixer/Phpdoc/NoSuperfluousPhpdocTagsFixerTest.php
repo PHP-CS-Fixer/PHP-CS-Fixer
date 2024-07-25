@@ -1519,7 +1519,7 @@ class Foo {
 }',
         ];
 
-        yield 'same ?type declaration reversed' => [
+        yield 'same ?type declaration' => [
             '<?php
 class Foo {
     /**
