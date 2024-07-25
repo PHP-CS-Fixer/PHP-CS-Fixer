@@ -358,7 +358,7 @@ $/s',
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
-        $fixer = new class() implements FixerInterface {
+        $fixer = new class implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
                 throw new \LogicException('Not implemented.');
@@ -510,7 +510,7 @@ Fixing examples:
 
     private static function createConfigurableDeprecatedFixerDouble(): FixerInterface
     {
-        return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
+        return new class implements ConfigurableFixerInterface, DeprecatedFixerInterface {
             /** @var array<string, mixed> */
             private array $configuration;
 

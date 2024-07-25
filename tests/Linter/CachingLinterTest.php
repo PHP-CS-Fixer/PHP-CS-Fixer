@@ -156,7 +156,7 @@ final class CachingLinterTest extends TestCase
 
     private function createLintingResultDouble(): LintingResultInterface
     {
-        return new class() implements LintingResultInterface {
+        return new class implements LintingResultInterface {
             public function check(): void
             {
                 throw new \LogicException('Not implemented.');
