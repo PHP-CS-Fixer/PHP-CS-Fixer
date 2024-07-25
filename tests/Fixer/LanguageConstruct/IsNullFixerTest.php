@@ -85,8 +85,6 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
         yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 
-        yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
-
         yield ['<?php "test" . "is_null" . "in concatenation";'];
 
         yield ['<?php $x = null === json_decode($x);', '<?php $x = is_null(json_decode($x));'];

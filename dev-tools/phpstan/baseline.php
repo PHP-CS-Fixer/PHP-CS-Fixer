@@ -2793,12 +2793,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'methodName\' might not exist on array\\<string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 0 might not exist on array\\<SimpleXMLElement\\|false\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
