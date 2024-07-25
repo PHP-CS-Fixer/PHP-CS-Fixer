@@ -637,6 +637,8 @@ class Foo {
      */
     private function toComparableNames(array $types, ?string $namespace, ?string $currentSymbol, array $symbolShortNames): array
     {
+        \assert(0 !== \count($types));
+
         if ('?' === $types[0][0]) {
             $types = [
                 substr($types[0], 1),
