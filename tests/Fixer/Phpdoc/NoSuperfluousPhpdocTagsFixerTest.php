@@ -2882,6 +2882,82 @@ new #[Bar] class() extends Foo {
     public function bar(self $other, int $superfluous): self {}
 };',
         ];
+
+        yield 'same nullable type declaration v2' => [
+            '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(null|Bar $bar): ?Baz {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param Bar|null $bar
+     *
+     * @return Baz|null
+     */
+    public function doFoo(null|Bar $bar): ?Baz {}
+}',
+        ];
+
+        yield 'same nullable type declaration v3' => [
+            '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(Bar|null $bar): ?Baz {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param Bar|null $bar
+     *
+     * @return Baz|null
+     */
+    public function doFoo(Bar|null $bar): ?Baz {}
+}',
+        ];
+
+        yield 'same ?type declaration v2' => [
+            '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(null|Bar $bar): ?Baz {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param ?Bar $bar
+     *
+     * @return ?Baz
+     */
+    public function doFoo(null|Bar $bar): ?Baz {}
+}',
+        ];
+
+        yield 'same ?type declaration v3' => [
+            '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo(Bar|null $bar): ?Baz {}
+}',
+            '<?php
+class Foo {
+    /**
+     * @param ?Bar $bar
+     *
+     * @return ?Baz
+     */
+    public function doFoo(Bar|null $bar): ?Baz {}
+}',
+        ];
     }
 
     /**
