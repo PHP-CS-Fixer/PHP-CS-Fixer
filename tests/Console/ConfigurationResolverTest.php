@@ -224,6 +224,8 @@ final class ConfigurationResolverTest extends TestCase
 
     /**
      * @dataProvider provideResolveConfigFileChooseFileCases
+     *
+     * @param class-string<ConfigInterface> $expectedClass
      */
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
@@ -1202,6 +1204,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
+     * @param class-string     $expected
      * @param null|bool|string $diffConfig
      *
      * @dataProvider provideResolveDifferCases
