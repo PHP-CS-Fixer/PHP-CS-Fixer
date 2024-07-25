@@ -3,6 +3,36 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.60.0
+---------------------
+
+* feat: Add sprintf in the list of compiler optimized functions (#8092)
+* feat: `PhpUnitAttributesFixer` - add option to keep annotations (#8090)
+* chore: cleanup tests that had `@requires PHP 7.4` ages ago (#8122)
+* chore: cleanup `TokensAnalyzerTest` (#8123)
+* chore: fix example issue reported by reportPossiblyNonexistentGeneralArrayOffset from PHPStan (#8089)
+* chore: NoSuperfluousPhpdocTagsFixer - no need to call heavy toComparableNames method to add null type (#8132)
+* chore: PHPStan 11 array rules (#8011)
+* chore: PhpUnitSizeClassFixerTest - solve PHP 8.4 issues (#8105)
+* chore: reduce PHPStan errors in PhpUnitAttributesFixer (#8091)
+* chore: reuse test methods (#8119)
+* CI: check autoload (#8121)
+* CI: Update PHPStan to 1.11.8 (#8133)
+* deps: upgrade dev-tools (#8102)
+* DX: check for duplicated test data (#8131)
+* DX: check for duplicated test methods (#8124)
+* DX: check for duplicated test methods (as AutoReview test) (#8134)
+* DX: do not exclude duplicates that are clearly mistakes (#8135)
+* DX: Dump `offsetAccess.notFound` errors to baseline (#8107)
+* fix: Better way of walking types in `TypeExpression` (#8076)
+* fix: CI for PHP 8.4 (#8114)
+* fix: update `TokensTest` to shrink PHPStan's baseline (#8112)
+* fix: `no_useless_concat_operator` - do not break variable (2) (#7927)
+* fix: `NullableTypeDeclarationFixer` - don't convert standalone `null` into nullable union type (#8098)
+* fix: `NullableTypeDeclarationFixer` - don't convert standalone `NULL` into nullable union type (#8111)
+* fix: `NullableTypeDeclarationFixer` - insert correct token (#8118)
+* fix: `PhpUnitAttributesFixer` - handle multiple annotations of the same name (#8075)
+
 Changelog for v3.59.3
 ---------------------
 
