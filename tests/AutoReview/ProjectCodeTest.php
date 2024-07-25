@@ -800,7 +800,6 @@ final class ProjectCodeTest extends TestCase
                 'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
                 'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
                 'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
-                'PhpCsFixer\Tests\AutoReview\ProjectCodeTest::provideDataProviderMethodCases',
                 'PhpCsFixer\Tests\Console\Command\DescribeCommandTest::provideExecuteOutputCases',
                 'PhpCsFixer\Tests\Console\Command\HelpCommandTest::provideGetDisplayableAllowedValuesCases',
                 'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
