@@ -208,8 +208,6 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param ?int $tokenId
-     *
      * @dataProvider provideIsMagicConstantCases
      */
     public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void

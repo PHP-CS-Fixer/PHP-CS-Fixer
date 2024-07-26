@@ -640,6 +640,15 @@ class Foo {
      */
     private function toComparableNames(array $types, ?string $namespace, ?string $currentSymbol, array $symbolShortNames): array
     {
+        \assert(0 !== \count($types));
+
+        if ('?' === $types[0][0]) {
+            $types = [
+                substr($types[0], 1),
+                'null',
+            ];
+        }
+
         $normalized = array_map(
             function (string $type) use ($namespace, $currentSymbol, $symbolShortNames): string {
                 if (str_contains($type, '&')) {
