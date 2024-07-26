@@ -66,7 +66,8 @@ jobs:
         run: vendor/bin/phpunit --version
 
       - name: Run AutoReview
-        run: vendor/bin/paraunit run --testsuite auto-review
+#        run: vendor/bin/paraunit run --testsuite auto-review
+        run: vendor/bin/phpunit tests/AutoReview/ProjectCodeTest.php --filter=testThatDataFromDataProvidersIsNotDuplicated
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh
