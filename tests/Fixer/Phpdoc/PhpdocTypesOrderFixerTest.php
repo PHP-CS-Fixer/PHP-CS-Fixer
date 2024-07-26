@@ -203,10 +203,6 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
-        ];
-
-        yield [
             '<?php /** @return Closure(Iterator<TKey, T>): Generator<int, array<TKey, T>> */',
         ];
 

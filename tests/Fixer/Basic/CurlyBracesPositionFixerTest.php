@@ -312,35 +312,6 @@ final class CurlyBracesPositionFixerTest extends AbstractFixerTestCase
             ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
-        yield 'try catch finally (default)' => [
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo();
-                }',
-            '<?php
-                switch ($foo)
-                {
-                    case 1:
-                        foo();
-                }',
-        ];
-
-        yield 'try catch finally (next line)' => [
-            '<?php
-                switch ($foo)
-                {
-                    case 1:
-                        foo();
-                }',
-            '<?php
-                switch ($foo) {
-                    case 1:
-                        foo();
-                }',
-            ['control_structures_opening_brace' => 'next_line_unless_newline_at_signature_end'],
-        ];
-
         yield 'class (default)' => [
             '<?php
                 class Foo

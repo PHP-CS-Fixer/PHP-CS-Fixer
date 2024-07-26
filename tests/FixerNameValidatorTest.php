@@ -69,8 +69,6 @@ final class FixerNameValidatorTest extends TestCase
 
         yield ['4vendor/foo', true, false];
 
-        yield ['Vendor/foo', true, true];
-
         yield ['FooBar/foo', true, true];
 
         yield ['Foo-Bar/foo', true, false];

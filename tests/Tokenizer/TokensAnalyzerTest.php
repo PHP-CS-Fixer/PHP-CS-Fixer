@@ -1835,23 +1835,8 @@ abstract class Baz
         ];
 
         yield [
-            [3],
-            '<?php $a && $b;',
-        ];
-
-        yield [
-            [3],
-            '<?php $a & $b;',
-        ];
-
-        yield [
             [4],
             '<?php [] + [];',
-        ];
-
-        yield [
-            [3],
-            '<?php $a + $b;',
         ];
 
         yield [
@@ -1991,11 +1976,6 @@ $b;',
         yield [
             [],
             '<?php try {} catch (A | B $e) {}',
-        ];
-
-        yield [
-            [3],
-            '<?php $a ??= $b;',
         ];
 
         yield [

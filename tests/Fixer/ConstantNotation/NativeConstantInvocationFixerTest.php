@@ -181,8 +181,6 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
         yield ['<?php class Foo { function bar() { $this->M_PI(self::M_PI); } }'];
 
-        yield ['<?php namespace Foo; use M_PI;'];
-
         yield ['<?php namespace Foo; use Bar as M_PI;'];
 
         yield ['<?php echo Foo\M_PI\Bar;'];

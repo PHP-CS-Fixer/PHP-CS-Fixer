@@ -428,11 +428,6 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @param Foo[]|Traversable $foo */ function my_foo($foo) {}',
         ];
 
-        yield 'array of object and iterable' => [
-            '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
-            '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
-        ];
-
         yield 'array of string and array of int' => [
             '<?php /** @param string[]|int[] $foo */ function my_foo(array $foo) {}',
             '<?php /** @param string[]|int[] $foo */ function my_foo($foo) {}',
