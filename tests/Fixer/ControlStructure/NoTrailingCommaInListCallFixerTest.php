@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer>
  */
 final class NoTrailingCommaInListCallFixerTest extends AbstractFixerTestCase
 {

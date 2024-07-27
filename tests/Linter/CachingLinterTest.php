@@ -131,7 +131,7 @@ final class CachingLinterTest extends TestCase
             public function lintFile(string $path): LintingResultInterface
             {
                 if (!isset($this->allowedLintFileCalls[$path])) {
-                    throw new \LogicException(sprintf('File "%s" should not be linted.', $path));
+                    throw new \LogicException(\sprintf('File "%s" should not be linted.', $path));
                 }
 
                 $result = $this->allowedLintFileCalls[$path];
@@ -143,7 +143,7 @@ final class CachingLinterTest extends TestCase
             public function lintSource(string $source): LintingResultInterface
             {
                 if (!isset($this->allowedLintSourceCalls[$source])) {
-                    throw new \LogicException(sprintf('File "%s" should not be linted.', $source));
+                    throw new \LogicException(\sprintf('File "%s" should not be linted.', $source));
                 }
 
                 $result = $this->allowedLintSourceCalls[$source];

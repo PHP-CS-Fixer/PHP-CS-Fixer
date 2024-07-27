@@ -586,10 +586,7 @@ class(){};
      */
     public function testFunctionArgumentInfoPre80(string $code, int $methodIndex, array $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        self::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
     }
 
     /**
@@ -667,11 +664,7 @@ class(){};
      */
     public function testFunctionReturnTypeInfoPre80(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
-
-        self::assertSame(serialize($expected), serialize($actual));
+        $this->testFunctionReturnTypeInfo($code, $methodIndex, $expected);
     }
 
     /**
@@ -709,7 +702,7 @@ class(){};
             self::assertSame(
                 \in_array($index, $sameClassCallIndices, true),
                 $analyzer->isTheSameClassCall($tokens, $index),
-                sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index)
             );
         }
     }
@@ -728,37 +721,37 @@ class(){};
         ';
 
         yield [
-            sprintf($template, '$this->'),
+            \sprintf($template, '$this->'),
             [24],
         ];
 
         yield [
-            sprintf($template, 'self::'),
+            \sprintf($template, 'self::'),
             [24],
         ];
 
         yield [
-            sprintf($template, 'static::'),
+            \sprintf($template, 'static::'),
             [24],
         ];
 
         yield [
-            sprintf($template, '$THIS->'),
+            \sprintf($template, '$THIS->'),
             [24],
         ];
 
         yield [
-            sprintf($template, '$notThis->'),
+            \sprintf($template, '$notThis->'),
             [],
         ];
 
         yield [
-            sprintf($template, 'Bar::'),
+            \sprintf($template, 'Bar::'),
             [],
         ];
 
         yield [
-            sprintf($template, '$this::'),
+            \sprintf($template, '$this::'),
             [24],
         ];
 
@@ -785,16 +778,7 @@ class(){};
      */
     public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            self::assertSame(
-                \in_array($index, $sameClassCallIndices, true),
-                $analyzer->isTheSameClassCall($tokens, $index),
-                sprintf('Index %d failed check.', $index)
-            );
-        }
+        $this->testIsTheSameClassCall($code, $sameClassCallIndices);
     }
 
     /**
@@ -823,10 +807,7 @@ class(){};
      */
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        self::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
     }
 
     public static function provideFunctionArgumentInfoPhp80Cases(): iterable
@@ -874,7 +855,7 @@ class(){};
         self::assertSame(
             $expectedIndices,
             $actualIndices,
-            sprintf(
+            \sprintf(
                 'Global function calls found at positions: [%s], expected at [%s].',
                 implode(', ', $actualIndices),
                 implode(', ', $expectedIndices)

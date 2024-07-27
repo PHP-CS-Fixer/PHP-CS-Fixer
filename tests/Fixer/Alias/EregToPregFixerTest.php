@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {
@@ -125,8 +127,8 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'binary uppercase' => [
-            '<?php $x = preg_split(b"/[A-Z]/Di", $m);',
-            '<?php $x = spliti(b"[A-Z]", $m);',
+            '<?php $x = preg_split(B"/[A-Z]/Di", $m);',
+            '<?php $x = spliti(B"[A-Z]", $m);',
         ];
     }
 

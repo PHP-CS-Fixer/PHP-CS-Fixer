@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer>
  */
 final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
 {

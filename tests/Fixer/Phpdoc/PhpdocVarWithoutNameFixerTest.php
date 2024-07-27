@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer>
  */
 final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {

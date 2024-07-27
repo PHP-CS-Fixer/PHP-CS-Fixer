@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\SingleTraitInsertPerStatementFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SingleTraitInsertPerStatementFixer>
  */
 final class SingleTraitInsertPerStatementFixerTest extends AbstractFixerTestCase
 {

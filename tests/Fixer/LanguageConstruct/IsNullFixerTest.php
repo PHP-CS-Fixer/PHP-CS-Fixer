@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
@@ -80,8 +82,6 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         yield ['<?php smth_is_null(json_decode($x));'];
 
         yield ['<?php namespace Foo; function &is_null($x) { return null === $x; }'];
-
-        yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 
         yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 

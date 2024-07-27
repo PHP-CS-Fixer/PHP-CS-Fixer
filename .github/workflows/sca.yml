@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system:
-          - ubuntu-20.04
+          - ubuntu-24.04
         php-version:
           - 8.3
 
@@ -73,6 +73,9 @@ jobs:
 
       - name: Check - trailing spaces
         run: ./dev-tools/check_trailing_spaces.sh
+
+      - name: Check - Composer's autoload
+        run: composer dump-autoload --dry-run --optimize --strict-psr
 
       - name: Check - phpstan
         run: ./dev-tools/vendor/bin/phpstan analyse --ansi

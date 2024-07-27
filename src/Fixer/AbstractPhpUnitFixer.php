@@ -138,6 +138,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             }
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
+
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
@@ -153,15 +154,22 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             return false;
         }
 
-        $attributeIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$attributeIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        $modifiers = [T_FINAL];
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
+            $modifiers[] = T_READONLY;
+        }
+
+        do {
+            $index = $tokens->getPrevMeaningfulToken($index);
+        } while ($tokens[$index]->isGivenKind($modifiers));
+        if (!$tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
             return false;
         }
-        $attributeIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $attributeIndex);
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
-        foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+        foreach (AttributeAnalyzer::collect($tokens, $index) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                if (\in_array(self::getFullyQualifiedName($tokens, $attribute['name']), $preventingAttributes, true)) {
+                if (\in_array(ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\'), $preventingAttributes, true)) {
                     return true;
                 }
             }

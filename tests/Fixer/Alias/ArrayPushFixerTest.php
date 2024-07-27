@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\ArrayPushFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\ArrayPushFixer>
  */
 final class ArrayPushFixerTest extends AbstractFixerTestCase
 {
@@ -174,8 +176,8 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a->$c[1]->$d{$a--}->$a[7][] = $b;',
-            '<?php array_push($a->$c[1]->$d{$a--}->$a[7], $b);',
+            '<?php $a->$c[1]->$d[$a--]->$a[7][] = $b;',
+            '<?php array_push($a->$c[1]->$d[$a--]->$a[7], $b);',
         ];
 
         yield 'push multiple' => [
@@ -242,7 +244,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
 
         foreach ($precedenceCases as $precedenceCase) {
             yield [
-                sprintf(
+                \sprintf(
                     '<?php array_push($a, %s);',
                     $precedenceCase
                 ),
@@ -326,6 +328,27 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 array_push($a, $b);
                 $a = array_push(...);
             ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testFixPre84(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFixPre84Cases(): iterable
+    {
+        yield [
+            '<?php $a->$c[1]->$d{$a--}->$a[7][] = $b;',
+            '<?php array_push($a->$c[1]->$d{$a--}->$a[7], $b);',
         ];
     }
 }

@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer>
  */
 final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixerTestCase
 {

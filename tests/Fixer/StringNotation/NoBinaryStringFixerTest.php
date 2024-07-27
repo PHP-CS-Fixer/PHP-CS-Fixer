@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer>
  */
 final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 {
@@ -63,11 +65,6 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
         yield [
             '<?php echo \'hello world\';',
             '<?php echo B\'hello world\';',
-        ];
-
-        yield [
-            '<?php echo "hello world";',
-            '<?php echo B"hello world";',
         ];
 
         yield [

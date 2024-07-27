@@ -350,18 +350,7 @@ final class AttributeAnalyzerTest extends TestCase
      */
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
     {
-        $tokens = Tokens::fromCode($code);
-        $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
-
-        foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
-            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
-        }
-
-        self::assertSame(
-            serialize($expectedAnalyses),
-            serialize($actualAnalyses),
-        );
+        $this->testGetAttributeDeclarations($code, $startIndex, $expectedAnalyses);
     }
 
     /**

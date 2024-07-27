@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\StrictParamFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\StrictParamFixer>
  */
 final class StrictParamFixerTest extends AbstractFixerTestCase
 {

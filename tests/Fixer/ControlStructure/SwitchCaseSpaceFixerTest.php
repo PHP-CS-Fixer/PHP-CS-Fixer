@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer>
  */
 final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 {

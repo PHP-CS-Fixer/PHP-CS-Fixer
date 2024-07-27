@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer>
  */
 final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {

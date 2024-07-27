@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer>
  */
 final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
 {
@@ -169,8 +171,8 @@ class FooTest extends TestCase {
         ];
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
-            yield sprintf('test function with %s modifier', $modifier) => [
-                sprintf('<?php
+            yield \sprintf('test function with %s modifier', $modifier) => [
+                \sprintf('<?php
                     abstract class FooTest extends TestCase {
                         /**
                          * @dataProvider provideFooCases
@@ -179,7 +181,7 @@ class FooTest extends TestCase {
                         public function provideFooCases(): iterable {}
                     }
                 ', $modifier, 'abstract' === $modifier ? ';' : '{}'),
-                sprintf('<?php
+                \sprintf('<?php
                     abstract class FooTest extends TestCase {
                         /**
                          * @dataProvider provideFooCases
@@ -237,7 +239,7 @@ class FooTest extends TestCase {
 }';
 
         return array_map(
-            static fn (string $type): string => sprintf($template, $type),
+            static fn (string $type): string => \sprintf($template, $type),
             $types
         );
     }

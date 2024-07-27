@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer>
  */
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {

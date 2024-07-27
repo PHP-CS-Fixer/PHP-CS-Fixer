@@ -21,7 +21,7 @@ Default value: ``false``
 
 Defines the order of import types.
 
-Allowed types: ``array`` and ``null``
+Allowed types: ``list<string>`` and ``null``
 
 Default value: ``null``
 

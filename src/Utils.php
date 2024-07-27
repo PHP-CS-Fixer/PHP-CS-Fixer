@@ -54,7 +54,7 @@ final class Utils
     public static function calculateTrailingWhitespaceIndent(Token $token): string
     {
         if (!$token->isWhitespace()) {
-            throw new \InvalidArgumentException(sprintf('The given token must be whitespace, got "%s".', $token->getName()));
+            throw new \InvalidArgumentException(\sprintf('The given token must be whitespace, got "%s".', $token->getName()));
         }
 
         $str = strrchr(
@@ -137,7 +137,7 @@ final class Utils
             throw new \InvalidArgumentException('Wrapper should be a single-char string or empty.');
         }
 
-        $names = array_map(static fn (string $name): string => sprintf('%2$s%1$s%2$s', $name, $wrapper), $names);
+        $names = array_map(static fn (string $name): string => \sprintf('%2$s%1$s%2$s', $name, $wrapper), $names);
 
         $last = array_pop($names);
 
@@ -193,6 +193,14 @@ final class Utils
         sort($triggeredDeprecations);
 
         return $triggeredDeprecations;
+    }
+
+    public static function convertArrayTypeToList(string $type): string
+    {
+        $parts = explode('[]', $type);
+        $count = \count($parts) - 1;
+
+        return str_repeat('list<', $count).$parts[0].str_repeat('>', $count);
     }
 
     /**

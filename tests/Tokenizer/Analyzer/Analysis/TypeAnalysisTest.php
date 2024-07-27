@@ -72,6 +72,8 @@ final class TypeAnalysisTest extends TestCase
 
         yield ['iterable', true];
 
+        yield ['list', true];
+
         yield ['mixed', true];
 
         yield ['never', true];
@@ -135,8 +137,7 @@ final class TypeAnalysisTest extends TestCase
      */
     public function testIsNullable80(bool $expected, string $input): void
     {
-        $analysis = new TypeAnalysis($input, 1, 2);
-        self::assertSame($expected, $analysis->isNullable());
+        $this->testIsNullable($expected, $input);
     }
 
     /**
@@ -198,8 +199,7 @@ final class TypeAnalysisTest extends TestCase
      */
     public function testIsNullable81(bool $expected, string $input): void
     {
-        $analysis = new TypeAnalysis($input, 1, 2);
-        self::assertSame($expected, $analysis->isNullable());
+        $this->testIsNullable($expected, $input);
     }
 
     /**
@@ -221,8 +221,7 @@ final class TypeAnalysisTest extends TestCase
      */
     public function testIsNullable82(bool $expected, string $input): void
     {
-        $analysis = new TypeAnalysis($input, 1, 2);
-        self::assertSame($expected, $analysis->isNullable());
+        $this->testIsNullable($expected, $input);
     }
 
     /**

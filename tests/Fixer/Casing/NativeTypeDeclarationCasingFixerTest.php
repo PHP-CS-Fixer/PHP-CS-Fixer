@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer>
  */
 final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
@@ -375,24 +377,24 @@ function Foo(INTEGER $a) {}
         ];
 
         foreach (['true', 'false', 'null'] as $type) {
-            yield sprintf('standalone type `%s` in class method', $type) => [
-                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
-                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in class method', $type) => [
+                \sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
+                \sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s` in function', $type) => [
-                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
-                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in function', $type) => [
+                \sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
+                \sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s` in closure', $type) => [
-                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
-                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in closure', $type) => [
+                \sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
+                \sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s` in arrow function', $type) => [
-                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
-                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in arrow function', $type) => [
+                \sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
+                \sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
             ];
         }
 

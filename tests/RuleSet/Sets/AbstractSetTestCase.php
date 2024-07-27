@@ -40,26 +40,26 @@ abstract class AbstractSetTestCase extends TestCase
 
         self::assertSanityString($setName);
         self::assertSanityString($setDescription);
-        self::assertStringEndsWith('.', $setDescription, sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
+        self::assertStringEndsWith('.', $setDescription, \sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
         self::assertRules($setRules, $factory, $setName);
 
         if (1 === preg_match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
             self::assertStringEndsWith(
-                sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
+                \sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
                 $setDescription,
-                sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
+                \sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
             );
         }
 
         try {
             $factory->useRuleSet(new RuleSet($set->getRules()));
         } catch (InvalidForEnvFixerConfigurationException $e) {
-            self::markTestSkipped(sprintf('Cannot test set "%s" on this environment. %s', $setName, $e->getMessage()));
+            self::markTestSkipped(\sprintf('Cannot test set "%s" on this environment. %s', $setName, $e->getMessage()));
         }
 
         foreach ($factory->getFixers() as $fixer) {
             $fixerName = $fixer->getName();
-            self::assertSame($isRiskySet, $fixer->isRisky(), sprintf('Is risky mismatch between set "%s" and rule "%s".', $setName, $fixerName));
+            self::assertSame($isRiskySet, $fixer->isRisky(), \sprintf('Is risky mismatch between set "%s" and rule "%s".', $setName, $fixerName));
 
             if (isset($setRules[$fixerName])) {
                 self::assertTrue(\is_bool($setRules[$fixerName]) || \is_array($setRules[$fixerName]));
@@ -91,7 +91,7 @@ abstract class AbstractSetTestCase extends TestCase
             self::assertIsString($rule, $setName);
 
             if (str_starts_with($rule, '@')) {
-                self::assertFalse($sawRule, sprintf('Ruleset "%s" should define all sets it extends first and than list by rule configuration overrides.', $setName));
+                self::assertFalse($sawRule, \sprintf('Ruleset "%s" should define all sets it extends first and than list by rule configuration overrides.', $setName));
                 RuleSets::getSetDefinition($setName);
             } else {
                 $sawRule = true;

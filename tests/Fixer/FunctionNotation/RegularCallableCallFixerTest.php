@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer>
  */
 final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 {

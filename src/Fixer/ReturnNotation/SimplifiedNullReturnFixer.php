@@ -79,7 +79,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      */
     private function clear(Tokens $tokens, int $index): void
     {
-        while (!$tokens[++$index]->equals(';')) {
+        while (!$tokens[++$index]->equalsAny([';', [T_CLOSE_TAG]])) {
             if ($this->shouldClearToken($tokens, $index)) {
                 $tokens->clearAt($index);
             }
@@ -96,13 +96,16 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
         }
 
         $content = '';
-        while (!$tokens[$index]->equals(';')) {
+        while (!$tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
             $index = $tokens->getNextMeaningfulToken($index);
             $content .= $tokens[$index]->getContent();
         }
 
+        $lastTokenContent = $tokens[$index]->getContent();
+        $content = substr($content, 0, -\strlen($lastTokenContent));
+
         $content = ltrim($content, '(');
-        $content = rtrim($content, ');');
+        $content = rtrim($content, ')');
 
         return 'null' === strtolower($content);
     }
@@ -137,13 +140,32 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     /**
      * Should we clear the specific token?
      *
-     * If the token is a comment, or is whitespace that is immediately before a
-     * comment, then we'll leave it alone.
+     * We'll leave it alone if
+     * - token is a comment
+     * - token is whitespace that is immediately before a comment
+     * - token is whitespace that is immediately before the PHP close tag
+     * - token is whitespace that is immediately after a comment and before a semicolon
      */
     private function shouldClearToken(Tokens $tokens, int $index): bool
     {
         $token = $tokens[$index];
 
-        return !$token->isComment() && !($token->isWhitespace() && $tokens[$index + 1]->isComment());
+        if ($token->isComment()) {
+            return false;
+        }
+
+        if (!$token->isWhitespace()) {
+            return true;
+        }
+
+        if (
+            $tokens[$index + 1]->isComment()
+            || $tokens[$index + 1]->equals([T_CLOSE_TAG])
+            || ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';'))
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer>
  */
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {

@@ -527,12 +527,16 @@ final class TokensTest extends TestCase
 
         // test offset and limits of the search
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 10);
+        self::assertArrayHasKey(T_CLASS, $found);
         self::assertCount(0, $found[T_CLASS]);
+        self::assertArrayHasKey(T_FUNCTION, $found);
         self::assertCount(1, $found[T_FUNCTION]);
         self::assertArrayHasKey(26, $found[T_FUNCTION]);
 
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 2, 10);
+        self::assertArrayHasKey(T_CLASS, $found);
         self::assertCount(0, $found[T_CLASS]);
+        self::assertArrayHasKey(T_FUNCTION, $found);
         self::assertCount(1, $found[T_FUNCTION]);
         self::assertArrayHasKey(9, $found[T_FUNCTION]);
     }
@@ -643,7 +647,6 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param ?int                          $expectedIndex
      * @param -1|1                          $direction
      * @param list<array{int}|string|Token> $findTokens
      *
@@ -726,8 +729,6 @@ final class TokensTest extends TestCase
 
         yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
 
-        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
-
         yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2];
 
         yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1];
@@ -747,6 +748,8 @@ final class TokensTest extends TestCase
         yield [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5];
 
         yield [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1];
+
+        yield [8, '<?php "start__${array[key]}__end";', Tokens::BLOCK_TYPE_COMPLEX_STRING_VARIABLE, 3];
     }
 
     /**
@@ -840,6 +843,26 @@ final class TokensTest extends TestCase
                 $startEnd[0],
             ];
         }
+    }
+
+    /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     *
+     * @dataProvider provideFindBlockEndPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
+    {
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    /**
+     * @return iterable<array{int, string, int, int}>
+     */
+    public static function provideFindBlockEndPre84Cases(): iterable
+    {
+        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
     }
 
     public function testFindBlockEndInvalidType(): void
@@ -1126,7 +1149,7 @@ echo $a;',
                     }
             }';
 
-        $tokens = Tokens::fromCode(sprintf($template, ''));
+        $tokens = Tokens::fromCode(\sprintf($template, ''));
         $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);
 
         $tokens->insertAt(
@@ -1141,7 +1164,7 @@ echo $a;',
 
         self::assertTrue($tokens->isChanged());
 
-        $expected = Tokens::fromCode(sprintf($template, 'private $name;'));
+        $expected = Tokens::fromCode(\sprintf($template, 'private $name;'));
         self::assertFalse($expected->isChanged());
 
         self::assertTokens($expected, $tokens);
@@ -1613,22 +1636,22 @@ $bar;',
         $template = "<?php\n%s\n/* single token test header */%s\necho 1;\n%s";
         $commentContent = '/* test */';
         $commentToken = new Token([T_COMMENT, $commentContent]);
-        $from = Tokens::fromCode(sprintf($template, '', '', ''));
+        $from = Tokens::fromCode(\sprintf($template, '', '', ''));
 
         yield 'single insert @ 1' => [
-            Tokens::fromCode(sprintf($template, $commentContent, '', '')),
+            Tokens::fromCode(\sprintf($template, $commentContent, '', '')),
             clone $from,
             [1 => $commentToken],
         ];
 
         yield 'single insert @ 3' => [
-            Tokens::fromCode(sprintf($template, '', $commentContent, '')),
+            Tokens::fromCode(\sprintf($template, '', $commentContent, '')),
             clone $from,
             [3 => Tokens::fromArray([$commentToken])],
         ];
 
         yield 'single insert @ 9' => [
-            Tokens::fromCode(sprintf($template, '', '', $commentContent)),
+            Tokens::fromCode(\sprintf($template, '', '', $commentContent)),
             clone $from,
             [9 => [$commentToken]],
         ];
@@ -1674,14 +1697,14 @@ $bar;',
 
         $template = "<?php\n%s\n/* header */%s\necho 789;\n%s";
         $expected = Tokens::fromCode(
-            sprintf(
+            \sprintf(
                 $template,
                 'echo "new";',
                 ' /* new comment */',
                 "\$new = 8899;\n"
             )
         );
-        $from = Tokens::fromCode(sprintf($template, '', '', ''));
+        $from = Tokens::fromCode(\sprintf($template, '', '', ''));
 
         yield 'insert 3 token collections' => [$expected, $from, [9 => $setThree, 1 => $setOne, 3 => $setTwo]];
 
@@ -1691,7 +1714,7 @@ $bar;',
             $set = ['tokens' => [], 'content' => ''];
 
             for ($i = 0; $i < 10; ++$i) {
-                $content = sprintf('/* new %d|%s */', $j, $i);
+                $content = \sprintf('/* new %d|%s */', $j, $i);
 
                 $set['tokens'][] = new Token([T_COMMENT, $content]);
                 $set['content'] .= $content;
@@ -1701,7 +1724,7 @@ $bar;',
         }
 
         yield 'overlapping inserts of bunch of comments ' => [
-            Tokens::fromCode(sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
+            Tokens::fromCode(\sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
             Tokens::fromCode("<?php\n/* line #1 */\n/* line #2 */\n/* line #3 */"),
             [1 => $sets[0]['tokens'], 3 => $sets[1]['tokens'], 5 => $sets[2]['tokens'], 6 => $sets[3]['tokens']],
         ];
@@ -1870,7 +1893,7 @@ $bar;',
         foreach ($expected as $index => $expectedToken) {
             self::assertTrue(
                 $expectedToken->equals($input[$index]),
-                sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
+                \sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
             );
         }
     }
@@ -1892,7 +1915,7 @@ $bar;',
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
 
-            self::assertTrue($token->equals($expectedPrototype), sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype, JSON_THROW_ON_ERROR), $token->toJson()));
+            self::assertTrue($token->equals($expectedPrototype), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype, JSON_THROW_ON_ERROR), $token->toJson()));
         }
     }
 }

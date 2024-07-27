@@ -50,6 +50,7 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_ATTRIBUTE = 11;
     public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
     public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
+    public const BLOCK_TYPE_COMPLEX_STRING_VARIABLE = 14;
 
     /**
      * Static class cache.
@@ -167,7 +168,7 @@ class Tokens extends \SplFixedArray
         $tokens = new self(\count($array));
 
         if (false !== $saveIndices && !array_is_list($array)) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Parameter "array" should be a list. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -274,6 +275,10 @@ class Tokens extends \SplFixedArray
                     'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
                     'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
                 ],
+                self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
+                    'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
+                    'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
+                ],
             ];
 
             // @TODO: drop condition when PHP 8.0+ is required
@@ -314,7 +319,7 @@ class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         if (\count($this) - 1 !== $index) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - only the last index can be unset. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -348,7 +353,7 @@ class Tokens extends \SplFixedArray
     public function offsetSet($index, $newval): void
     {
         if (0 > $index || \count($this) <= $index) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(sprintf(
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - index must be within the existing range. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -806,11 +811,11 @@ class Tokens extends \SplFixedArray
             }
 
             if ($token->isGivenKind($nonMeaningFullKind)) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: "%s".', $key));
+                throw new \InvalidArgumentException(\sprintf('Non-meaningful token at position: "%s".', $key));
             }
 
             if ('' === $token->getContent()) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful (empty) token at position: "%s".', $key));
+                throw new \InvalidArgumentException(\sprintf('Non-meaningful (empty) token at position: "%s".', $key));
             }
         }
 
@@ -925,7 +930,7 @@ class Tokens extends \SplFixedArray
 
         // We check only the farthest index, if it's within the size of collection, other indices will be valid too.
         if (!\is_int($farthestSliceIndex) || $farthestSliceIndex > $oldSize) {
-            throw new \OutOfBoundsException(sprintf('Cannot insert index "%s" outside of collection.', $farthestSliceIndex));
+            throw new \OutOfBoundsException(\sprintf('Cannot insert index "%s" outside of collection.', $farthestSliceIndex));
         }
 
         $previousSliceIndex = $oldSize;
@@ -934,7 +939,7 @@ class Tokens extends \SplFixedArray
         // that way we get around additional overhead this class adds with overridden offset* methods.
         foreach ($slices as $index => $slice) {
             if (!\is_int($index) || $index < 0) {
-                throw new \OutOfBoundsException(sprintf('Invalid index "%s".', $index));
+                throw new \OutOfBoundsException(\sprintf('Invalid index "%s".', $index));
             }
 
             $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
@@ -1047,6 +1052,8 @@ class Tokens extends \SplFixedArray
 
         // clear memory
         $this->setSize(0);
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 
@@ -1285,7 +1292,7 @@ class Tokens extends \SplFixedArray
         $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
 
         if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: "%s".', $type));
+            throw new \InvalidArgumentException(\sprintf('Invalid param type: "%s".', $type));
         }
 
         if ($findEnd && isset($this->blockStartCache[$searchIndex])) {
@@ -1309,7 +1316,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block "%s".', $findEnd ? 'start' : 'end'));
+            throw new \InvalidArgumentException(\sprintf('Invalid param $startIndex - not a proper block "%s".', $findEnd ? 'start' : 'end'));
         }
 
         $blockLevel = 0;
@@ -1333,7 +1340,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException(sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
+            throw new \UnexpectedValueException(\sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
         }
 
         if ($startIndex < $index) {
@@ -1365,7 +1372,7 @@ class Tokens extends \SplFixedArray
     private static function getCache(string $key): self
     {
         if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
+            throw new \OutOfBoundsException(\sprintf('Unknown cache key: "%s".', $key));
         }
 
         return self::$cache[$key];

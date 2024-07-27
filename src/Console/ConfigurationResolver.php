@@ -348,7 +348,7 @@ final class ConfigurationResolver
                 );
 
                 if (\count($riskyFixers) > 0) {
-                    throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', Utils::naturalLanguageJoin($riskyFixers)));
+                    throw new InvalidConfigurationException(\sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', Utils::naturalLanguageJoin($riskyFixers)));
                 }
             }
         }
@@ -392,7 +392,7 @@ final class ConfigurationResolver
                             : $cwd.\DIRECTORY_SEPARATOR.$path;
 
                         if (!file_exists($absolutePath)) {
-                            throw new InvalidConfigurationException(sprintf(
+                            throw new InvalidConfigurationException(\sprintf(
                                 'The path "%s" is not readable.',
                                 $path
                             ));
@@ -422,7 +422,7 @@ final class ConfigurationResolver
                         ? ProgressOutputType::NONE
                         : ProgressOutputType::BAR;
                 } elseif (!\in_array($progressType, ProgressOutputType::all(), true)) {
-                    throw new InvalidConfigurationException(sprintf(
+                    throw new InvalidConfigurationException(\sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
                         Utils::naturalLanguageJoin(ProgressOutputType::all())
@@ -452,7 +452,7 @@ final class ConfigurationResolver
                 $formats = $reporterFactory->getFormats();
                 sort($formats);
 
-                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, Utils::naturalLanguageJoin($formats)));
+                throw new InvalidConfigurationException(\sprintf('The format "%s" is not defined, supported are %s.', $format, Utils::naturalLanguageJoin($formats)));
             }
         }
 
@@ -551,7 +551,7 @@ final class ConfigurationResolver
 
         if (null !== $configFile) {
             if (false === file_exists($configFile) || false === is_readable($configFile)) {
-                throw new InvalidConfigurationException(sprintf('Cannot read config file "%s".', $configFile));
+                throw new InvalidConfigurationException(\sprintf('Cannot read config file "%s".', $configFile));
             }
 
             return [$configFile];
@@ -660,7 +660,7 @@ final class ConfigurationResolver
             $rules = json_decode($rules, true);
 
             if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new InvalidConfigurationException(sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
+                throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
             }
 
             return $rules;
@@ -701,7 +701,7 @@ final class ConfigurationResolver
 
         foreach ($rules as $key => $value) {
             if (\is_int($key)) {
-                throw new InvalidConfigurationException(sprintf('Missing value for "%s" rule/set.', $value));
+                throw new InvalidConfigurationException(\sprintf('Missing value for "%s" rule/set.', $value));
             }
 
             $ruleSet[$key] = true;
@@ -777,7 +777,7 @@ final class ConfigurationResolver
             foreach ($unknownFixers as $unknownFixer) {
                 if (isset($renamedRules[$unknownFixer])) { // Check if present as old renamed rule
                     $hasOldRule = true;
-                    $message .= sprintf(
+                    $message .= \sprintf(
                         '"%s" is renamed (did you mean "%s"?%s), ',
                         $unknownFixer,
                         $renamedRules[$unknownFixer]['new_name'],
@@ -786,7 +786,7 @@ final class ConfigurationResolver
                 } else { // Go to normal matcher if it is not a renamed rule
                     $matcher = new WordMatcher($availableFixers);
                     $alternative = $matcher->match($unknownFixer);
-                    $message .= sprintf(
+                    $message .= \sprintf(
                         '"%s"%s, ',
                         $unknownFixer,
                         null === $alternative ? '' : ' (did you mean "'.$alternative.'"?)'
@@ -808,8 +808,8 @@ final class ConfigurationResolver
             if (isset($rules[$fixerName]) && $fixer instanceof DeprecatedFixerInterface) {
                 $successors = $fixer->getSuccessorsNames();
                 $messageEnd = [] === $successors
-                    ? sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
-                    : sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
+                    ? \sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
+                    : \sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
 
                 Utils::triggerDeprecation(new \RuntimeException("Rule \"{$fixerName}\" is deprecated{$messageEnd}"));
             }
@@ -836,7 +836,7 @@ final class ConfigurationResolver
             $modes,
             true
         )) {
-            throw new InvalidConfigurationException(sprintf(
+            throw new InvalidConfigurationException(\sprintf(
                 'The path-mode "%s" is not defined, supported are %s.',
                 $this->options['path-mode'],
                 Utils::naturalLanguageJoin($modes)
@@ -926,7 +926,7 @@ final class ConfigurationResolver
     private function setOption(string $name, $value): void
     {
         if (!\array_key_exists($name, $this->options)) {
-            throw new InvalidConfigurationException(sprintf('Unknown option name: "%s".', $name));
+            throw new InvalidConfigurationException(\sprintf('Unknown option name: "%s".', $name));
         }
 
         $this->options[$name] = $value;
@@ -937,7 +937,7 @@ final class ConfigurationResolver
         $value = $this->options[$optionName];
 
         if (!\is_string($value)) {
-            throw new InvalidConfigurationException(sprintf('Expected boolean or string value for option "%s".', $optionName));
+            throw new InvalidConfigurationException(\sprintf('Expected boolean or string value for option "%s".', $optionName));
         }
 
         if ('yes' === $value) {
@@ -948,7 +948,7 @@ final class ConfigurationResolver
             return false;
         }
 
-        throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, $value));
+        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, $value));
     }
 
     private static function separatedContextLessInclude(string $path): ConfigInterface
@@ -957,7 +957,7 @@ final class ConfigurationResolver
 
         // verify that the config has an instance of Config
         if (!$config instanceof ConfigInterface) {
-            throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "PhpCsFixer\ConfigInterface" instance. Got: "%s".', $path, \is_object($config) ? \get_class($config) : \gettype($config)));
+            throw new InvalidConfigurationException(\sprintf('The config file: "%s" does not return a "PhpCsFixer\ConfigInterface" instance. Got: "%s".', $path, \is_object($config) ? \get_class($config) : \gettype($config)));
         }
 
         return $config;

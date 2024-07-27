@@ -54,7 +54,7 @@ final class DescribeCommandTest extends TestCase
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
         if ($fixer instanceof DeprecatedFixerInterface) {
-            $this->expectDeprecation(sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
+            $this->expectDeprecation(\sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
         }
 
         // @TODO 4.0 Remove these expectations:
@@ -525,7 +525,7 @@ Fixing examples:
 
                 return new FixerConfigurationResolver([
                     (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-                        ->setAllowedTypes(['array'])
+                        ->setAllowedTypes(['string[]'])
                         ->setAllowedValues([new AllowedValueSubset($functionNames)])
                         ->setDefault($functionNames)
                         ->getOption(),

@@ -438,7 +438,7 @@ final class SelfUpdateCommandTest extends TestCase
 
             public function getPharDownloadUri(string $version): string
             {
-                return sprintf('%s/%s.phar', $this->directory->url(), $version);
+                return \sprintf('%s/%s.phar', $this->directory->url(), $version);
             }
         };
     }

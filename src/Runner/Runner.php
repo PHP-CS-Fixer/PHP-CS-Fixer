@@ -57,6 +57,13 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class Runner
 {
+    /**
+     * Buffer size used in the NDJSON decoder for communication between main process and workers.
+     *
+     * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8068
+     */
+    private const PARALLEL_BUFFER_SIZE = 16 * (1_024 * 1_024 /* 1MB */);
+
     private DifferInterface $differ;
 
     private ?DirectoryInterface $directory;
@@ -171,7 +178,7 @@ final class Runner
         $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
 
         if (!is_numeric($serverPort)) {
-            throw new ParallelisationException(sprintf(
+            throw new ParallelisationException(\sprintf(
                 'Unable to parse server port from "%s"',
                 $server->getAddress() ?? ''
             ));
@@ -203,7 +210,13 @@ final class Runner
         // [REACT] Handle worker's handshake (init connection)
         $server->on('connection', static function (ConnectionInterface $connection) use ($processPool, $getFileChunk): void {
             $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-            $decoder = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+            $decoder = new Decoder(
+                $connection,
+                true,
+                512,
+                $jsonInvalidUtf8Ignore,
+                self::PARALLEL_BUFFER_SIZE
+            );
             $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
@@ -334,7 +347,7 @@ final class Runner
                     }
 
                     $errorsReported = Preg::matchAll(
-                        sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
+                        \sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
                         $output,
                         $matches
                     );
@@ -477,7 +490,7 @@ final class Runner
 
                 if (!file_exists($fileName)) {
                     throw new IOException(
-                        sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
+                        \sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
                         0,
                         null,
                         $file->getPathname()
@@ -486,7 +499,7 @@ final class Runner
 
                 if (is_dir($fileName)) {
                     throw new IOException(
-                        sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
+                        \sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
                         0,
                         null,
                         $fileName
@@ -495,7 +508,7 @@ final class Runner
 
                 if (!is_writable($fileName)) {
                     throw new IOException(
-                        sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
+                        \sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
                         0,
                         null,
                         $fileName
@@ -506,7 +519,7 @@ final class Runner
                     $error = error_get_last();
 
                     throw new IOException(
-                        sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
+                        \sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
                         $fileName
