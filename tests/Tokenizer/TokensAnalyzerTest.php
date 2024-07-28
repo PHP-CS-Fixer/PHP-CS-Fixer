@@ -774,11 +774,7 @@ enum Foo: string
      */
     public function testIsAnonymousClass80(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
-        }
+        $this->testIsAnonymousClass($expected, $source);
     }
 
     /**
@@ -806,11 +802,7 @@ enum Foo: string
      */
     public function testIsAnonymousClass81(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
-        }
+        $this->testIsAnonymousClass($expected, $source);
     }
 
     /**
@@ -833,11 +825,7 @@ enum Foo: string
      */
     public function testIsAnonymousClass83(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            self::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
-        }
+        $this->testIsAnonymousClass($expected, $source);
     }
 
     /**
@@ -969,24 +957,7 @@ preg_replace_callback(
                         return [];
                     };',
         ];
-    }
 
-    /**
-     * @param array<int, bool> $expected
-     *
-     * @dataProvider provideIsLambda74Cases
-     */
-    public function testIsLambda74(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            self::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
-    }
-
-    public static function provideIsLambda74Cases(): iterable
-    {
         yield [
             [5 => true],
             '<?php $fn = fn() => [];',
@@ -1007,11 +978,7 @@ preg_replace_callback(
      */
     public function testIsLambda80(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            self::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
+        $this->testIsLambda($expected, $source);
     }
 
     public static function provideIsLambda80Cases(): iterable
@@ -1663,7 +1630,25 @@ abstract class Baz
             [5 => true],
             '<?php $a["foo"]++;',
         ];
+    }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
+    {
+        $this->testIsUnarySuccessorOperator($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
+    public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
+    {
         yield 'array curly access' => [
             [5 => true],
             '<?php $a{"foo"}++;',
@@ -1832,11 +1817,6 @@ abstract class Baz
         yield [
             [8],
             '<?php echo $a[1] + 1;',
-        ];
-
-        yield [
-            [8],
-            '<?php echo $a{1} + 1;',
         ];
 
         yield [
@@ -2139,7 +2119,7 @@ $b;',
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsBinaryOperator80Cases
      *
@@ -2147,48 +2127,39 @@ $b;',
      */
     public function testIsBinaryOperator80(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
+        $this->testIsBinaryOperator($expected, $source);
     }
 
     public static function provideIsBinaryOperator80Cases(): iterable
     {
         yield [
-            [6 => false],
+            [],
             '<?php function foo(array|string $x) {}',
         ];
 
         yield [
-            [6 => false],
+            [],
             '<?php function foo(string|array $x) {}',
         ];
 
         yield [
-            [6 => false],
+            [],
             '<?php function foo(int|callable $x) {}',
         ];
 
         yield [
-            [6 => false],
+            [],
             '<?php function foo(callable|int $x) {}',
         ];
 
         yield [
-            [6 => false],
+            [],
             '<?php function foo(bool|int &$x) {}',
         ];
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsBinaryOperator81Cases
      *
@@ -2196,28 +2167,19 @@ $b;',
      */
     public function testIsBinaryOperator81(array $expected, string $source): void
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
+        $this->testIsBinaryOperator($expected, $source);
     }
 
     public static function provideIsBinaryOperator81Cases(): iterable
     {
         yield 'type intersection' => [
-            [6 => false],
+            [],
             '<?php function foo(array&string $x) {}',
         ];
     }
 
     /**
-     * @param array<int, bool> $expected
+     * @param list<int> $expected
      *
      * @dataProvider provideIsBinaryOperator82Cases
      *
@@ -2225,17 +2187,7 @@ $b;',
      */
     public function testIsBinaryOperator82(array $expected, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        foreach ($tokens as $index => $token) {
-            $isBinary = isset($expected[$index]);
-            self::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-            if ($isBinary) {
-                self::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                self::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
+        $this->testIsBinaryOperator($expected, $source);
     }
 
     public static function provideIsBinaryOperator82Cases(): iterable
@@ -2258,8 +2210,31 @@ $b;',
         ];
 
         yield \sprintf('block "%s" at the end of file that is not a type', $particularEndOfFile) => [
-            [12 => true, 15 => true],
+            [12, 15],
             '<?php function foo() { return '.$particularEndOfFile,
+        ];
+    }
+
+    /**
+     * @param list<int> $expected
+     *
+     * @dataProvider provideIsBinaryOperatorPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testIsBinaryOperatorPre84(array $expected, string $source): void
+    {
+        $this->testIsBinaryOperator($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{list<int>, string}>
+     */
+    public static function provideIsBinaryOperatorPre84Cases(): iterable
+    {
+        yield [
+            [8],
+            '<?php echo $a{1} + 1;',
         ];
     }
 
@@ -2924,10 +2899,7 @@ class MyTestWithAnonymousClass extends TestCase
      */
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        self::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
+        $this->testGetClassyModifiers($expectedModifiers, $index, $source);
     }
 
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable

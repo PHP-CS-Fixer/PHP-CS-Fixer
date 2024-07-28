@@ -699,8 +699,6 @@ else?><?php echo 5;',
 
         yield [[13, 24], $source, 26];
 
-        yield [[13, 24], $source, 26];
-
         yield [[26, 39], $source, 41];
 
         $source = '<?php

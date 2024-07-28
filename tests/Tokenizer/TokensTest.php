@@ -527,12 +527,16 @@ final class TokensTest extends TestCase
 
         // test offset and limits of the search
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 10);
+        self::assertArrayHasKey(T_CLASS, $found);
         self::assertCount(0, $found[T_CLASS]);
+        self::assertArrayHasKey(T_FUNCTION, $found);
         self::assertCount(1, $found[T_FUNCTION]);
         self::assertArrayHasKey(26, $found[T_FUNCTION]);
 
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 2, 10);
+        self::assertArrayHasKey(T_CLASS, $found);
         self::assertCount(0, $found[T_CLASS]);
+        self::assertArrayHasKey(T_FUNCTION, $found);
         self::assertCount(1, $found[T_FUNCTION]);
         self::assertArrayHasKey(9, $found[T_FUNCTION]);
     }
@@ -643,7 +647,6 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param ?int                          $expectedIndex
      * @param -1|1                          $direction
      * @param list<array{int}|string|Token> $findTokens
      *
@@ -725,8 +728,6 @@ final class TokensTest extends TestCase
         yield [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2];
 
         yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
-
-        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
 
         yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2];
 
@@ -842,6 +843,26 @@ final class TokensTest extends TestCase
                 $startEnd[0],
             ];
         }
+    }
+
+    /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     *
+     * @dataProvider provideFindBlockEndPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
+    {
+        self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    /**
+     * @return iterable<array{int, string, int, int}>
+     */
+    public static function provideFindBlockEndPre84Cases(): iterable
+    {
+        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
     }
 
     public function testFindBlockEndInvalidType(): void

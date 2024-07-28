@@ -28,6 +28,8 @@ final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
      * @dataProvider provideFulfillsCases
+     *
+     * @param null|class-string<\Throwable> $exception
      */
     public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {
