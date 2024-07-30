@@ -412,5 +412,16 @@ class Dispatcher
 }
 ',
         ];
+
+        yield [
+            '<?php
+$foo->bar()    /** comment */
+    ->baz();
+',
+            '<?php
+$foo->bar()/** comment */
+    ->baz();
+',
+        ];
     }
 }
