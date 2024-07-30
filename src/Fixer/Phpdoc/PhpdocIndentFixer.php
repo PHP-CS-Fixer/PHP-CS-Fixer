@@ -103,7 +103,7 @@ class DocBlocks
                 if ('' !== $indent) {
                     $tokens->insertAt($index, new Token($indent));
                 }
-            } else if ('' !== $newPrevContent) {
+            } elseif ('' !== $newPrevContent) {
                 if ($prevToken->isArray()) {
                     $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
                 } else {
