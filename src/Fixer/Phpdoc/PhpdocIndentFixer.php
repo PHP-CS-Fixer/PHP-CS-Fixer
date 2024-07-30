@@ -101,7 +101,7 @@ class DocBlocks
 
             if (!$prevToken->isWhitespace()) {
                 if ('' !== $indent) {
-                    $tokens->insertAt($index, new Token($indent));
+                    $tokens->insertAt($index, new Token([T_WHITESPACE, $indent]));
                 }
             } elseif ('' !== $newPrevContent) {
                 if ($prevToken->isArray()) {
