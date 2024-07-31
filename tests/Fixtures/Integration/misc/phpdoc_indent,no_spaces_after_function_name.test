@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: phpdoc_indent,no_spaces_after_function_name
+--RULESET--
+{"phpdoc_indent": true, "no_spaces_after_function_name": true}
+--EXPECT--
+<?php
+$foo->bar()    /** comment */
+    ->baz();
+
+--INPUT--
+<?php
+$foo->bar()/** comment */
+    ->baz();

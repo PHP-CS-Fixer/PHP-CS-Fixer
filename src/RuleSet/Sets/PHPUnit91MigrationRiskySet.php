@@ -19,13 +19,13 @@ use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 /**
  * @internal
  */
-final class PHPUnit100MigrationRiskySet extends AbstractMigrationSetDescription
+final class PHPUnit91MigrationRiskySet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
         return [
-            '@PHPUnit91Migration:risky' => true,
-            'php_unit_data_provider_static' => ['force' => true],
+            '@PHPUnit84Migration:risky' => true,
+            'php_unit_assert_new_names' => true,
         ];
     }
 }
