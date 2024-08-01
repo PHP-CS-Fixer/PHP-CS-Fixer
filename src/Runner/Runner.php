@@ -162,14 +162,14 @@ final class Runner
         // @TODO 4.0: Remove condition and its body, as no longer needed when param will be required in the constructor.
         // This is a fallback only in case someone calls `new Runner()` in a custom repo and does not provide v4-ready params in v3-codebase.
         if (null === $this->input) {
-            $this->fixSequential();
+            return $this->fixSequential();
         }
 
         if (
             1 === $this->parallelConfig->getMaxProcesses()
             || $this->fileCount <= $this->parallelConfig->getFilesPerProcess()
         ) {
-            $this->fixSequential();
+            return $this->fixSequential();
         }
 
         return $this->fixParallel();
