@@ -165,8 +165,6 @@ final class Runner
             $this->fixSequential();
         }
 
-        $allowFallbackToSequentialWhenNotEnoughFiles = true;
-
         if (
             1 === $this->parallelConfig->getMaxProcesses()
             || (
