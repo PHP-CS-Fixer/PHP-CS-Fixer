@@ -165,9 +165,19 @@ final class Runner
             $this->fixSequential();
         }
 
-        return $this->parallelConfig->getMaxProcesses() > 1
-            ? $this->fixParallel()
-            : $this->fixSequential();
+        $allowFallbackToSequentialWhenNotEnoughFiles = true;
+
+        if (
+            1 === $this->parallelConfig->getMaxProcesses()
+            || (
+                false === filter_var(getenv('PHP_CS_FIXER_PARALLEL_PREVENT_FALLBACK_TO_SEQUENTIAL_WHEN_NOT_ENOUGH_FILES'), FILTER_VALIDATE_BOOL)
+                && $this->fileCount <= $this->parallelConfig->getFilesPerProcess()
+            )
+        ) {
+            $this->fixSequential();
+        }
+
+        return $this->fixParallel();
     }
 
     /**
