@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.61.1
+---------------------
+
+* fix: `NoSuperfluousPhpdocTagsFixer` - fix "Undefined array key 0" error (#8150)
+
 Changelog for v3.61.0
 ---------------------
 
