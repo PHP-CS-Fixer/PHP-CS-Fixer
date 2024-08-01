@@ -159,8 +159,13 @@ final class Runner
             return [];
         }
 
-        // @TODO Remove condition for the input argument in 4.0, as it should be required in the constructor
-        return $this->parallelConfig->getMaxProcesses() > 1 && null !== $this->input
+        // @TODO 4.0: Remove condition and it's body, as no longer required when param will be required in the constructor.
+        // This is fallback only for case someone calling `new Runner()` in custom repo and not providing v4 params in v3.
+        if (null === $this->input) {
+            $this->fixSequential();
+        }
+
+        return $this->parallelConfig->getMaxProcesses() > 1
             ? $this->fixParallel()
             : $this->fixSequential();
     }
