@@ -159,8 +159,8 @@ final class Runner
             return [];
         }
 
-        // @TODO 4.0: Remove condition and it's body, as no longer required when param will be required in the constructor.
-        // This is fallback only for case someone calling `new Runner()` in custom repo and not providing v4 params in v3.
+        // @TODO 4.0: Remove condition and its body, as no longer needed when param will be required in the constructor.
+        // This is a fallback only in case someone calls `new Runner()` in a custom repo and does not provide v4-ready params in v3-codebase.
         if (null === $this->input) {
             $this->fixSequential();
         }
