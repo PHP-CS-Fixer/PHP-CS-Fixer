@@ -2,7 +2,7 @@
 Rule ``modernize_strpos``
 =========================
 
-Replace ``strpos()`` and ``stripos`` calls with ``str_starts_with()`` or
+Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or
 ``str_contains()`` if possible.
 
 Warning

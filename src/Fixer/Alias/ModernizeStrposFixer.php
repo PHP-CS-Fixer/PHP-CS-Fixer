@@ -77,7 +77,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Replace `strpos()` and `stripos` calls with `str_starts_with()` or `str_contains()` if possible.',
+            'Replace `strpos()` and `stripos()` calls with `str_starts_with()` or `str_contains()` if possible.',
             [
                 new CodeSample(
                     '<?php
