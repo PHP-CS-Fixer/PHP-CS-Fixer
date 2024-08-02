@@ -139,7 +139,7 @@ if (stripos($haystack, $needle) === false) {}
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('modernize_stripos', 'Whether to modernize `stripos` calls as well.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(false) // @TODO change to "true" on next major 4.0
                 ->getOption(),
         ]);
     }
