@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.61.1
+---------------------
+
+* fix: `NoSuperfluousPhpdocTagsFixer` - fix "Undefined array key 0" error (#8150)
+
+Changelog for v3.61.0
+---------------------
+
+* feat: no_superfluous_phpdoc_tags - also cover ?type (#8125)
+* feat: support PHPUnit v9.1 naming for some asserts (#7997)
+* fix: Do not mangle non-whitespace token in `PhpdocIndentFixer` (#8147)
+* DX: add more typehints for `class-string` (#8139)
+* DX: refactor `ProjectCodeTest::provideDataProviderMethodCases` (#8138)
+
 Changelog for v3.60.0
 ---------------------
 
