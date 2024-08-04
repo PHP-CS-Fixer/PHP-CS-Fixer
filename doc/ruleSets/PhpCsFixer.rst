@@ -52,6 +52,7 @@ Rules
 
   ``['after_heredoc' => true]``
 
+- `no_whitespace_in_empty_array <./../rules/array_notation/no_whitespace_in_empty_array.rst>`_
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
 - `ordered_types <./../rules/class_notation/ordered_types.rst>`_
 - `php_unit_internal_class <./../rules/php_unit/php_unit_internal_class.rst>`_

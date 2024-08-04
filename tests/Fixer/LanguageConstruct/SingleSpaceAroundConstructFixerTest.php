@@ -3312,8 +3312,7 @@ $bar; }',
     public static function provideFixWithYieldFromCases(): iterable
     {
         $configFollowed = [
-            'constructs_contain_a_single_space' => [
-            ],
+            'constructs_contain_a_single_space' => [],
             'constructs_followed_by_a_single_space' => [
                 'yield_from',
             ],
@@ -3322,8 +3321,7 @@ $bar; }',
             'constructs_contain_a_single_space' => [
                 'yield_from',
             ],
-            'constructs_followed_by_a_single_space' => [
-            ],
+            'constructs_followed_by_a_single_space' => [],
         ];
         $configAll = [
             'constructs_contain_a_single_space' => [
