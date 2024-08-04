@@ -355,6 +355,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'array_syntax' => [
                 'binary_operator_spaces',
+                'no_whitespace_in_empty_array',
                 'single_space_after_construct',
                 'single_space_around_construct',
                 'ternary_operator_spaces',
@@ -609,6 +610,7 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
                 'no_whitespace_in_blank_line',
+                'no_whitespace_in_empty_array',
             ],
             'no_empty_phpdoc' => [
                 'no_extra_blank_lines',
