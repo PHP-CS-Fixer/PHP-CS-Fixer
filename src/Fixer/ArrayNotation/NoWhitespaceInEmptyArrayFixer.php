@@ -40,6 +40,8 @@ final class NoWhitespaceInEmptyArrayFixer extends AbstractFixer
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Must run after ArraySyntaxFixer, NoEmptyCommentFixer.
      */
     public function getPriority(): int
