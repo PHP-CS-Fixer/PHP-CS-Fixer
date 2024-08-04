@@ -54,6 +54,9 @@ Array Notation
 - `no_whitespace_before_comma_in_array <./array_notation/no_whitespace_before_comma_in_array.rst>`_ *(configurable)*
 
   In array declaration, there MUST NOT be a whitespace before each comma.
+- `no_whitespace_in_empty_array <./array_notation/no_whitespace_in_empty_array.rst>`_
+
+  Empty arrays should not contain any whitespace.
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
