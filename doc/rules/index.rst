@@ -324,6 +324,9 @@ Control Structure
 - `simplified_if_return <./control_structure/simplified_if_return.rst>`_
 
   Simplify ``if`` control structures that return the boolean result of their condition.
+- `single_expression_per_line <./control_structure/single_expression_per_line.rst>`_
+
+  Multi-line arrays, arguments list, parameters list, control structures, ``switch`` cases and ``match`` expressions should have one element by line.
 - `switch_case_semicolon_to_colon <./control_structure/switch_case_semicolon_to_colon.rst>`_
 
   A case should be followed by a colon and not a semicolon.

@@ -48,11 +48,11 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
      * {@inheritdoc}
      *
      * Must run before AlignMultilineCommentFixer, BinaryOperatorSpacesFixer.
-     * Must run after MethodArgumentSpaceFixer.
+     * Must run after MethodArgumentSpaceFixer, SingleExpressionPerLineFixer.
      */
     public function getPriority(): int
     {
-        return 29;
+        return 28;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
