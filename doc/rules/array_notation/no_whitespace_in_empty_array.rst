@@ -19,6 +19,14 @@ Example #1
    -$foo = [
    -];
    +$foo = [];
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
 References
 ----------
 
