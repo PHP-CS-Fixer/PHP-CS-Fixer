@@ -48,12 +48,12 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
         $this->typeSpecifier = $typeSpecifier;
     }
 
-    public function isStaticMethodSupported(MethodReflection $staticMethodReflection, StaticCall $node, TypeSpecifierContext $context): bool
+    public function isStaticMethodSupported(MethodReflection $methodReflection, StaticCall $node, TypeSpecifierContext $context): bool
     {
-        return 'match' === $staticMethodReflection->getName() && !$context->null();
+        return in_array($methodReflection->getName(), ['match', 'matchAll'], true)  && !$context->null();
     }
 
-    public function specifyTypes(MethodReflection $staticMethodReflection, StaticCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
+    public function specifyTypes(MethodReflection $methodReflection, StaticCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
     {
         $args = $node->getArgs();
         $patternArg = $args[0] ?? null;
@@ -71,7 +71,12 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
             $flagsType = $scope->getType($flagsArg->value);
         }
 
-        $matchedType = $this->regexShapeMatcher->matchExpr($patternArg->value, $flagsType, TrinaryLogic::createFromBoolean($context->true()), $scope);
+        if ($methodReflection->getName() === 'match') {
+            $matchedType = $this->regexShapeMatcher->matchExpr($patternArg->value, $flagsType, TrinaryLogic::createFromBoolean($context->true()), $scope);
+        } else {
+            $matchedType = $this->regexShapeMatcher->matchAllExpr($patternArg->value, $flagsType, TrinaryLogic::createFromBoolean($context->true()), $scope);
+        }
+
         if (null === $matchedType) {
             return new SpecifiedTypes();
         }

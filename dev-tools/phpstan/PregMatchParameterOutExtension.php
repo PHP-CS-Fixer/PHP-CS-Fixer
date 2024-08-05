@@ -38,7 +38,7 @@ final class PregMatchParameterOutExtension implements StaticMethodParameterOutTy
     {
         return
             Preg::class === $methodReflection->getDeclaringClass()->getName()
-            && 'match' === $methodReflection->getName()
+            && in_array($methodReflection->getName(), ['match', 'matchAll'], true)
             && 'matches' === $parameter->getName();
     }
 
@@ -60,6 +60,9 @@ final class PregMatchParameterOutExtension implements StaticMethodParameterOutTy
             $flagsType = $scope->getType($flagsArg->value);
         }
 
-        return $this->regexShapeMatcher->matchExpr($patternArg->value, $flagsType, TrinaryLogic::createMaybe(), $scope);
+        if ($methodReflection->getName() === 'match') {
+            return $this->regexShapeMatcher->matchExpr($patternArg->value, $flagsType, TrinaryLogic::createMaybe(), $scope);
+        }
+        return $this->regexShapeMatcher->matchAllExpr($patternArg->value, $flagsType, TrinaryLogic::createMaybe(), $scope);
     }
 }
