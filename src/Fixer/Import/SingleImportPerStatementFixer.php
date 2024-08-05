@@ -214,10 +214,6 @@ use Space\Models\ {
         [$groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment] = $this->getGroupDeclaration($tokens, $index);
         $statements = $this->getGroupStatements($tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment);
 
-        if (\count($statements) < 2) {
-            return;
-        }
-
         $tokens->clearRange($index, $groupCloseIndex);
         if ($tokens[$endIndex]->equals(';')) {
             $tokens->clearAt($endIndex);
