@@ -498,7 +498,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         }
 
         if (AbstractPhpdocToTypeDeclarationFixer::class === $className) {
-            return new class() extends AbstractPhpdocToTypeDeclarationFixer {
+            return new class extends AbstractPhpdocToTypeDeclarationFixer {
                 protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');
@@ -525,7 +525,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 }
             };
         } elseif (AbstractDoctrineAnnotationFixer::class === $className) {
-            return new class() extends AbstractPhpdocToTypeDeclarationFixer {
+            return new class extends AbstractPhpdocToTypeDeclarationFixer {
                 protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');

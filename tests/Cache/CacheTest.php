@@ -205,7 +205,7 @@ final class CacheTest extends TestCase
 
     private function createSignatureDouble(): SignatureInterface
     {
-        return new class() implements SignatureInterface {
+        return new class implements SignatureInterface {
             public function getPhpVersion(): string
             {
                 return '7.1.0';

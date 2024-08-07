@@ -515,7 +515,7 @@ final class SelfUpdateCommandTest extends TestCase
             public function compareVersions(string $versionA, string $versionB): int
             {
                 return (new NewVersionChecker(
-                    new class() implements GithubClientInterface {
+                    new class implements GithubClientInterface {
                         public function getTags(): array
                         {
                             throw new \LogicException('Not implemented.');
@@ -528,7 +528,7 @@ final class SelfUpdateCommandTest extends TestCase
 
     private function createPharCheckerDouble(): PharCheckerInterface
     {
-        return new class() implements PharCheckerInterface {
+        return new class implements PharCheckerInterface {
             public function checkFileValidity(string $filename): ?string
             {
                 return null;
