@@ -1221,19 +1221,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Import\\\\FullyQualifiedStrictTypesFixer\\:\\:\\$discoveredSymbols \\(array\\{const\\?\\: list\\<class\\-string\\>, class\\?\\: list\\<class\\-string\\>, function\\?\\: list\\<class\\-string\\>\\}\\|null\\) does not accept array\\{const\\?\\: list\\<class\\-string\\>, class\\: non\\-empty\\-list\\<string\\>, function\\?\\: list\\<class\\-string\\>\\}\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
 	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Import\\\\FullyQualifiedStrictTypesFixer\\:\\:\\$reservedIdentifiersByLevel \\(array\\<int\\<0, max\\>, array\\<string, true\\>\\>\\) does not accept non\\-empty\\-array\\<int, array\\<string, true\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Import\\\\FullyQualifiedStrictTypesFixer\\:\\:\\$symbolsForImport \\(array\\{const\\?\\: array\\<string, class\\-string\\>, class\\?\\: array\\<string, class\\-string\\>, function\\?\\: array\\<string, class\\-string\\>\\}\\) does not accept array\\{const\\?\\: array\\<string, string\\>, class\\?\\: array\\<string, string\\>, function\\?\\: array\\<string, string\\>\\}\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
 ];
