@@ -15,24 +15,45 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class SingleLineEmptyBodyFixer extends AbstractFixer
+final class SingleLineEmptyBodyFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Empty body of class, interface, trait, enum or function must be abbreviated as `{}` and placed on the same line as the previous symbol, separated by a single space.',
-            [new CodeSample('<?php function foo(
+            [
+                new CodeSample('<?php function foo(
     int $x
 )
 {
 }
-')],
+'
+                ),
+                new CodeSample('<?php
+class Foo
+{
+    public function __construct()
+    {
+    }
+
+    public function foo()
+    {
+    }
+}
+',
+                    ['only_for_constructors' => true]
+                )
+            ],
         );
     }
 
@@ -44,6 +65,16 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
     public function getPriority(): int
     {
         return -19;
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_for_constructors', 'Whether to ONLY fold __construct() methods, nothing else.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     public function isCandidate(Tokens $tokens): bool
@@ -60,6 +91,13 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if (!$tokens[$index]->isGivenKind([...Token::getClassyTokenKinds(), T_FUNCTION])) {
                 continue;
+            }
+
+            if (true === $this->configuration['only_for_constructors']) {
+                $funcNameIndex = $tokens->getNextNonWhitespace($index);
+                if ('__construct' !== $tokens[$funcNameIndex]->getContent()) {
+                    continue;
+                }
             }
 
             $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
