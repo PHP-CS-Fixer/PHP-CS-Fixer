@@ -215,23 +215,11 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 999, 'There is no token at index 999.'];
 
-        yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 999, 'There is no token at index 999.'];
-
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 999, 'There is no token at index 999.'];
-
-        yield ['<?php if ($foo): foo(); else: bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); else: bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); else: bar(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php for (;;): foo(); endfor;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
 

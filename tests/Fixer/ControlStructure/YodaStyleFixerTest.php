@@ -203,11 +203,6 @@ if ($a = $obj instanceof A === true) {
         ];
 
         yield [
-            '<?php 1 === new $a ? 1 : 2;',
-            '<?php new $a === 1 ? 1 : 2;',
-        ];
-
-        yield [
             '<?php $a = 1 === new b ? 1 : 2;',
             '<?php $a = new b === 1 ? 1 : 2;',
         ];
@@ -537,12 +532,6 @@ $a#4
         ];
 
         yield [
-            '<?php $e = count($this->array[$var]) === $a;',
-            '<?php $e = $a === count($this->array[$var]);',
-            ['always_move_variable' => true],
-        ];
-
-        yield [
             '<?php $g = ($a789 & self::MY_BITMASK) === $a;',
             null,
             ['always_move_variable' => true],
@@ -731,11 +720,6 @@ $a#4
         ];
 
         yield [
-            '<?php $a %= 4 === $b ? 2 : 3;',
-            '<?php $a %= $b === 4 ? 2 : 3;',
-        ];
-
-        yield [
             '<?php return array() === $array;',
             '<?php return $array === array();',
         ];
@@ -890,11 +874,6 @@ switch ($a) {
                 'less_and_greater' => false,
             ],
         ];
-
-        yield [
-            '<?php $a ??= 4 === $b ? 2 : 3;',
-            '<?php $a ??= $b === 4 ? 2 : 3;',
-        ];
     }
 
     /**
@@ -1020,15 +999,9 @@ switch ($a) {
 
         yield ['<?php ["a" => $a, "b" => $b, "c" => $c] = $a[0];'];
 
-        yield ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'];
-
         yield ['<?php $b = 7 === [$a] = [7];']; // makes no sense, but valid PHP syntax
 
-        yield ['<?php $b = 7 === [$a] = [7];'];
-
         yield ['<?php [$a] = $c === array(1) ? $b : $d;'];
-
-        yield ['<?php $b = 7 === [$a] = [7];'];
 
         yield ['<?php $z = $n == [$a] = $b;'];
 

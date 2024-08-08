@@ -239,8 +239,6 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure_can_be_aliased(): (u|v)'];
 
-        yield ['array  <  int   , callable  (  string  )  :   bool  >'];
-
         yield ['(int)'];
 
         yield ['(int|\Exception)'];
@@ -288,7 +286,6 @@ final class TypeExpressionTest extends TestCase
             '-123.',
             '-123.4',
             '-.123',
-            '-123.',
             '-123e-4',
             '-12.3e-4',
             '-1_2.3_4e5_6',
@@ -348,8 +345,6 @@ final class TypeExpressionTest extends TestCase
         yield ['class//with_double_slash'];
 
         yield ['class$with_dollar'];
-
-        yield ['class:with_colon'];
 
         yield ['class;with_semicolon'];
 
