@@ -831,7 +831,6 @@ final class ProjectCodeTest extends TestCase
             'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundParenthesesOnlyCases',
             'PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::provideFixCases',
             'PhpCsFixer\Tests\Tokenizer\TokenTest::provideIsMagicConstantCases',
-            'PhpCsFixer\Tests\Tokenizer\TokensAnalyzerTest::provideIsBinaryOperatorCases',
             // because of one duplicate
             'PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::provideFixCases',
             'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAllCases',
