@@ -363,7 +363,7 @@ class PsrAutoloadingFixer {}
             'T_TRAIT_C' => '__TRAIT__',
         ] as $tokenType => $tokenValue) {
             if (\defined($tokenType)) {
-                $cases[] = $tokenValue.'.php';
+                $cases[] = strtoupper($tokenValue).'.php';
                 $cases[] = strtolower($tokenValue).'.php';
             }
         }
