@@ -1,0 +1,33 @@
+[files]
+extend-exclude = [
+    ".git/",
+    "tests/Fixtures/Integration/misc/",
+    "tests/Fixtures/Integration/priority/",
+]
+ignore-hidden = false
+
+[default]
+extend-ignore-re = [
+    "Sebastiaan Stok",
+    "mettre sur",
+    "posa sur",
+    "\\S+…",
+    "\\$thi Hello!",
+    # Mixed case
+    "function __construcT",
+    "lIst\\{",
+    "const foO",
+    "\\$a->ba\\b",
+    "function foO",
+    "use BaRr",
+    "new foO",
+    "StatiC",
+    "__consTRUCT",
+    "__IsseT",
+    "\\bbaR",
+    "__clasS__",
+    "sTRING",
+]
+
+[default.extend-words]
+"invokable" = "invokable"
