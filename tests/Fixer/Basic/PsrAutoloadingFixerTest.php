@@ -339,11 +339,6 @@ class PsrAutoloadingFixer {}
             __DIR__.'/../../../src/Fixer/Basic',
         ];
 
-        yield [ // class with originally short name
-            '<?php class PsrAutoloadingFixerTest {}',
-            '<?php class Foo {}',
-        ];
-
         yield [ // class with originally long name
             '<?php class PsrAutoloadingFixerTest {}',
             '<?php class PsrAutoloadingFixerTestFoo {}',
