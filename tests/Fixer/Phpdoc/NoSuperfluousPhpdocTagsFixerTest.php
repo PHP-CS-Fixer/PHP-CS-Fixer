@@ -2642,6 +2642,16 @@ static fn ($foo): int => 1;',
                 function foo($bar, $baz = null) {}
                 EOD,
         ];
+
+        yield 'splat operator with iterable' => [
+            <<<'PHP'
+                <?php
+                    /**
+                     * @param iterable<int> ...$x
+                     */
+                    function foo(...$x) {}
+                PHP,
+        ];
     }
 
     /**
@@ -2957,6 +2967,16 @@ class Foo {
      */
     public function doFoo(Bar|null $bar): ?Baz {}
 }',
+        ];
+
+        yield 'an attribute before parameter type' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param list<int> $data
+                 */
+                function foo(#[AnAttribute] array $data) {}
+                PHP,
         ];
     }
 

@@ -101,7 +101,7 @@ final class NewVersionCheckerTest extends TestCase
 
     private function createGithubClientDouble(): GithubClientInterface
     {
-        return new class() implements GithubClientInterface {
+        return new class implements GithubClientInterface {
             public function getTags(): array
             {
                 return [

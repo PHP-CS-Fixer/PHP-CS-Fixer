@@ -49,6 +49,9 @@ parameters:
         # This one is tricky, because adding @param to PHPDoc causes failures on PHP7.4 with lowest deps (phpdoc_to_param_type), using @phpstan-param causes failures on all PHP versions (phpdoc_add_missing_param_annotation)
         - '/^Parameter #1 \$class \(string\) of method PhpCsFixer\\StdinFileInfo::get(File|Path)+Info+\(\) should be contravariant with parameter \$class \(string\|null\) of method SplFileInfo::get(File|Path)+Info\(\)$/'
 
+        # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
+        - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
+
         # PHPUnit data providers return type were not maintained originally, this exception should shrink over time (eg with help of custom, re-usable type)
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'

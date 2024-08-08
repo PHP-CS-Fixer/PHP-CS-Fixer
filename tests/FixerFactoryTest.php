@@ -226,7 +226,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('Configuration must be an array and may not be empty.');
 
-        $testRuleSet = new class() implements RuleSetInterface {
+        $testRuleSet = new class implements RuleSetInterface {
             public function __construct(array $set = [])
             {
                 if ([] !== $set) {
@@ -441,7 +441,7 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = new class() implements ConfigurableFixerInterface {
+        $fixer = new class implements ConfigurableFixerInterface {
             public function configure(array $configuration): void
             {
                 throw new \LogicException('Not implemented.');
@@ -514,7 +514,7 @@ final class FixerFactoryTest extends TestCase
 
     public function testConfigurableFixerIsConfigured(): void
     {
-        $fixer = new class() implements ConfigurableFixerInterface {
+        $fixer = new class implements ConfigurableFixerInterface {
             public function configure(array $configuration): void
             {
                 TestCase::assertSame(['bar' => 'baz'], $configuration);

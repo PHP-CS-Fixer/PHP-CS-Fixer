@@ -89,7 +89,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
                 ->getOption(),
             (new FixerOptionBuilder('anonymous_class', 'Whether anonymous classes should be followed by parentheses.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(true)
+                ->setDefault(true) // @TODO 4.0: set to `false`
                 ->getOption(),
         ]);
     }
