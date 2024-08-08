@@ -47,14 +47,14 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 
         yield [self::generateTest('$self->foo();')];
 
+        yield [self::generateTest('$this->assertEquals;')];
+
         foreach (self::getMethodsMap() as $methodBefore => $methodAfter) {
             yield [self::generateTest("\$sth->{$methodBefore}(1, 1);")];
 
             yield [self::generateTest("\$sth->{$methodAfter}(1, 1);")];
 
             yield [self::generateTest("\$this->{$methodBefore}(1, 2, 'message', \$toMuch);")];
-
-            yield [self::generateTest('$this->assertEquals;')];
 
             yield [
                 self::generateTest("\$this->{$methodAfter}(1, 2);"),

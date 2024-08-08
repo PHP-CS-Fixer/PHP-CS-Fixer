@@ -339,11 +339,6 @@ class PsrAutoloadingFixer {}
             __DIR__.'/../../../src/Fixer/Basic',
         ];
 
-        yield [ // class with originally short name
-            '<?php class PsrAutoloadingFixerTest {}',
-            '<?php class Foo {}',
-        ];
-
         yield [ // class with originally long name
             '<?php class PsrAutoloadingFixerTest {}',
             '<?php class PsrAutoloadingFixerTestFoo {}',
@@ -368,7 +363,7 @@ class PsrAutoloadingFixer {}
             'T_TRAIT_C' => '__TRAIT__',
         ] as $tokenType => $tokenValue) {
             if (\defined($tokenType)) {
-                $cases[] = $tokenValue.'.php';
+                $cases[] = strtoupper($tokenValue).'.php';
                 $cases[] = strtolower($tokenValue).'.php';
             }
         }

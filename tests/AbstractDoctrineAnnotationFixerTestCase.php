@@ -73,12 +73,12 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
                 isset($commentCase[1]) ? self::withMethodDocBlock($commentCase[1]) : null,
             ];
 
-            $cases[] = [
+            $cases[$commentCase[0]] = [
                 self::withWrongElementDocBlock($commentCase[0]),
             ];
         }
 
-        return $cases;
+        return array_values($cases);
     }
 
     private static function withClassDocBlock(string $comment): string

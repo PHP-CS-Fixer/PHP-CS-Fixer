@@ -1053,11 +1053,15 @@ else?><?php echo 5;',
             if (null === $input) {
                 $cases[] = [\sprintf($expected, $case)];
                 $cases[] = [\sprintf($expected, strtoupper($case))];
-                $cases[] = [\sprintf($expected, strtolower($case))];
+                if ($case !== strtolower($case)) {
+                    $cases[] = [\sprintf($expected, strtolower($case))];
+                }
             } else {
                 $cases[] = [\sprintf($expected, $case), \sprintf($input, $case)];
                 $cases[] = [\sprintf($expected, strtoupper($case)), \sprintf($input, strtoupper($case))];
-                $cases[] = [\sprintf($expected, strtolower($case)), \sprintf($input, strtolower($case))];
+                if ($case !== strtolower($case)) {
+                    $cases[] = [\sprintf($expected, strtolower($case)), \sprintf($input, strtolower($case))];
+                }
             }
         }
 
