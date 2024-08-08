@@ -52,11 +52,13 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
             ['
 /**
  * @Foo
- */'],
+ */',
+            ],
             ['
 /**
  * @Foo()
- */'],
+ */',
+            ],
             ['
 /**
  * @Foo(bar="baz")
@@ -85,7 +87,8 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
             ['
 /**
  * See {@link https://help Help} or {@see BarClass} for details.
- */'],
+ */',
+            ],
         ]);
 
         yield [
