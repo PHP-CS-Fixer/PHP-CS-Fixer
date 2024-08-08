@@ -236,11 +236,15 @@ final class TokenTest extends TestCase
             yield [$case[0], strtolower($case[1])];
         }
 
-        foreach ([self::getForeachToken(), self::getBraceToken()] as $token) {
-            yield [$token->getId(), $token->getContent(), false];
+        $foreachToken = self::getForeachToken();
 
-            yield [$token->getId(), strtolower($token->getContent()), false];
-        }
+        yield [$foreachToken->getId(), $foreachToken->getContent(), false];
+
+        yield [$foreachToken->getId(), strtoupper($foreachToken->getContent()), false];
+
+        $braceToken = self::getBraceToken();
+
+        yield [$braceToken->getId(), $braceToken->getContent(), false];
     }
 
     /**
