@@ -811,7 +811,6 @@ final class ProjectCodeTest extends TestCase
     public function testThatDataFromDataProvidersIsNotDuplicated(string $testClassName, string $dataProviderName): void
     {
         $exceptions = [ // should only shrink
-            // because of Serialization
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
             'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
@@ -820,21 +819,6 @@ final class ProjectCodeTest extends TestCase
             'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
             'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
             'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
-            // because of more than one duplicate
-            'PhpCsFixer\Tests\Fixer\Basic\PsrAutoloadingFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\CastNotation\LowercaseCastFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest::provideFixAllCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::provideFixIfElseIfElseCases',
-            'PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest::provideFixIfElseCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest::provideFixWithColonCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundParenthesesOnlyCases',
-            'PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitStrictFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Tokenizer\TokenTest::provideIsMagicConstantCases',
-            // because of one duplicate
-            'PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAllCases',
-            'PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest::provideFixAroundCommasOnlyCases',
         ];
         if (\in_array($testClassName.'::'.$dataProviderName, $exceptions, true)) {
             $this->addToAssertionCount(1);
