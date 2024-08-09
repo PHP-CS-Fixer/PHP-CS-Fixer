@@ -90,7 +90,7 @@ function foo () {}
      */
     private function isCorrectlyFormatted(string $content): bool
     {
-        if (false !== stripos($content, '{@inheritdoc}')) {
+        if (str_contains(strtolower($content), strtolower('{@inheritdoc}'))) {
             return true;
         }
 
