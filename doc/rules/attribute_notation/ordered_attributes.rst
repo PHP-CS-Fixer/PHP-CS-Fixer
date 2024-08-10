@@ -11,7 +11,7 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``order``,
-``sort_algorithm``.
+``secondary_sort``, ``sort_algorithm``.
 
 Configuration
 -------------
@@ -25,6 +25,16 @@ sorting algorithm is configured.
 Allowed types: ``list<string>``
 
 Default value: ``[]``
+
+``secondary_sort``
+~~~~~~~~~~~~~~~~~~
+
+Whether an alphabetical sort should be applied when the custom sort results in
+identical positions.
+
+Allowed types: ``bool``
+
+Default value: ``false``
 
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
@@ -88,6 +98,33 @@ With configuration: ``['sort_algorithm' => 'custom', 'order' => ['A\\B\\Qux', 'A
    -#[AB\Qux(new Bar(5))]
     #[\A\B\Corge(a: 'test')]
    +#[Foo]
+    class Sample1 {}
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['sort_algorithm' => 'custom', 'order' => ['*', 'D\\E\\F\\Baz', 'D\\E\\F\\Qux', 'A\\B\\C\\*', 'G\\H\\I\\G*'], 'secondary_sort' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+   +#[\G\H\I\Corge]
+   +#[\G\H\I\Quux]
+   +#[\D\E\F\Baz]
+   +#[\D\E\F\Qux]
+   +#[\A\B\C\Bar]
+    #[\A\B\C\Foo]
+   -#[\A\B\C\Bar]
+   +#[\G\H\I\Garply]
+    #[\G\H\I\Grault]
+   -#[\G\H\I\Garply]
+   -#[\D\E\F\Qux]
+   -#[\D\E\F\Baz]
+   -#[\G\H\I\Quux]
+   -#[\G\H\I\Corge]
     class Sample1 {}
 
 References
