@@ -30,7 +30,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
