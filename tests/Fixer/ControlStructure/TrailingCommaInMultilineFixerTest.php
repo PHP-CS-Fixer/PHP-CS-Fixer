@@ -747,7 +747,7 @@ $x = match ($a) { 1 => 0,
             ['elements' => ['match']],
         ];
 
-        yield '' => [
+        yield 'match and parameters' => [
             '<?php function foo(
                 $a,
             ) {
@@ -762,7 +762,7 @@ $x = match ($a) { 1 => 0,
                     1
                 ];
             }',
-            'elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS],
+            ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
     }
 }
