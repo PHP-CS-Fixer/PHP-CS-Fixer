@@ -1,0 +1,50 @@
+--TEST--
+Integration of fixers: php_unit_attributes,php_unit_data_provider_name,php_unit_data_provider_return_type,php_unit_data_provider_static.
+--RULESET--
+{
+    "php_unit_attributes": true,
+    "php_unit_data_provider_name": true,
+    "php_unit_data_provider_return_type": true,
+    "php_unit_data_provider_static": true
+}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+namespace Foo;
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    /**
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideSomethingCases')]
+    public function testSomething(): void {}
+
+    public static function provideSomethingCases(): iterable
+    {
+        yield from range(1, 10);
+    }
+}
+
+--INPUT--
+<?php
+
+namespace Foo;
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething(): void {}
+
+    public function getData()
+    {
+        yield from range(1, 10);
+    }
+}
