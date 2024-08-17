@@ -1141,9 +1141,6 @@ $foo;',
             'constructs_followed_by_a_single_space' => [
                 'else',
             ],
-            'constructs_preceded_by_a_single_space' => [
-                'else',
-            ],
         ]);
 
         $this->doTest($expected, $input);
@@ -1161,19 +1158,48 @@ $foo;',
 
         yield [
             '<?php if (true) {} else {}',
-            '<?php if (true) {}else  {}',
+            '<?php if (true) {} else  {}',
         ];
 
         yield [
-            '<?php if (true) {} else {}',
-            '<?php if (true) {} else
+            '<?php if (true){} else {}',
+            '<?php if (true){} else
 
 {}',
         ];
 
         yield [
             '<?php if (true) {} else /* foo */{}',
-            '<?php if (true) {}     else/* foo */{}',
+            '<?php if (true) {} else/* foo */{}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithElsePrecededCases
+     */
+    public function testFixWithElsePreceded(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'constructs_preceded_by_a_single_space' => [
+                'else',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixWithElsePrecededCases(): iterable
+    {
+        yield 'A' => [
+            '<?php if ($a222) {} else {}',
+            '<?php if ($a222) {}else{}',
+        ];
+
+        yield 'B' => [
+            "<?php if (\$b333) {}//foo X\nelse {}",
         ];
     }
 
@@ -1184,9 +1210,6 @@ $foo;',
     {
         $this->fixer->configure([
             'constructs_followed_by_a_single_space' => [
-                'elseif',
-            ],
-            'constructs_preceded_by_a_single_space' => [
                 'elseif',
             ],
         ]);
@@ -1200,8 +1223,8 @@ $foo;',
     public static function provideFixWithElseIfCases(): iterable
     {
         yield [
-            '<?php if (true) {} elseif (false) {}',
-            '<?php if (true) {} elseif(false) {}',
+            '<?php if (true) {}elseif (false) {}',
+            '<?php if (true) {}elseif(false) {}',
         ];
 
         yield [
@@ -1211,14 +1234,48 @@ $foo;',
 
         yield [
             '<?php if (true) {} elseif (false) {}',
-            '<?php if (true) {}elseif
+            '<?php if (true) {} elseif
 
 (false) {}',
         ];
 
         yield [
             '<?php if (true) {} elseif /* foo */(false) {}',
-            '<?php if (true) {}   elseif/* foo */(false) {}',
+            '<?php if (true) {} elseif/* foo */(false) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithElseIfPrecededCases
+     */
+    public function testFixWithElseIfPreceded(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'constructs_preceded_by_a_single_space' => [
+                'elseif',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixWithElseIfPrecededCases(): iterable
+    {
+        yield [
+            '<?php if ($y1x) {} elseif (false) {}',
+            '<?php if ($y1x) {}elseif(false) {}',
+        ];
+
+        yield [
+            '<?php if ($y2y) {} elseif (false) {}',
+            '<?php if ($y2y) {}    elseif   (false) {}',
+        ];
+
+        yield [
+            "<?php if (\$y3t) {}//foo Y\nelseif (false) {}",
         ];
     }
 

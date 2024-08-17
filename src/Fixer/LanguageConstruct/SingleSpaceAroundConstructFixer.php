@@ -316,7 +316,9 @@ yield  from  baz();
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if ($tokens[$index]->isGivenKind($tokenKindsPrecededByASingleSpace)) {
-                $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
+                if (!$this->isFullLineCommentBefore($tokens, $index)) {
+                    $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
+                }
             }
         }
 
@@ -496,5 +498,18 @@ yield  from  baz();
         }
 
         return $hasMoreThanOneConstant && $isMultilineConstant;
+    }
+
+    private function isFullLineCommentBefore(Tokens $tokens, int $index): bool
+    {
+        $beforeIndex = $tokens->getPrevNonWhitespace($index);
+
+        if (!$tokens[$beforeIndex]->isGivenKind([T_COMMENT])) {
+            return false;
+        }
+
+        $content = $tokens[$beforeIndex]->getContent();
+
+        return str_starts_with($content, '#') || str_starts_with($content, '//');
     }
 }
