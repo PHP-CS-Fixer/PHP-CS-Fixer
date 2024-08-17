@@ -414,7 +414,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 ',
         ];
 
-        yield 'array and object aliased as traversable in a namespace' => [
+        yield 'array and objects aliased as traversable in a namespace' => [
             '<?php
                      namespace App;
                      use Foo as Traversable;
@@ -423,17 +423,17 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 ',
         ];
 
-        yield 'array of object and traversable' => [
+        yield 'array of objects and traversable' => [
             '<?php /** @param Foo[]|Traversable $foo */ function my_foo(iterable $foo) {}',
             '<?php /** @param Foo[]|Traversable $foo */ function my_foo($foo) {}',
         ];
 
-        yield 'array of object and iterable' => [
-            '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
-            '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
+        yield 'array of objects and iterable' => [
+            '<?php /** @param object[]|iterable $foo */ function my_foo(iterable $foo) {}',
+            '<?php /** @param object[]|iterable $foo */ function my_foo($foo) {}',
         ];
 
-        yield 'array of string and array of int' => [
+        yield 'array of strings and array of ints' => [
             '<?php /** @param string[]|int[] $foo */ function my_foo(array $foo) {}',
             '<?php /** @param string[]|int[] $foo */ function my_foo($foo) {}',
         ];

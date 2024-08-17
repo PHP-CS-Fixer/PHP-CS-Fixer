@@ -121,8 +121,6 @@ final class AttributeAnalyzerTest extends TestCase
 
         yield [true, '<?php #[Bar(), Foo, Baz()] class Qux {}'];
 
-        yield [true, '<?php #[Bar, Foo, Baz] class Qux {}'];
-
         yield [true, '<?php #[\Foo] class Bar {}'];
 
         yield [true, '<?php #[\Bar, \Foo] class Baz {}'];

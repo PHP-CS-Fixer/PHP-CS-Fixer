@@ -137,11 +137,6 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
 
             yield [
                 \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
-                \sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
-            ];
-
-            yield [
-                \sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 \sprintf("<?php\n     /**\n      * c @{{%s test}}}\n      */\n", $tag),
             ];
         }

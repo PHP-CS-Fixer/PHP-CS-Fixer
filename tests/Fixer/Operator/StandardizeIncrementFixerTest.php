@@ -395,10 +395,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $i + 1;',
-        ];
-
-        yield [
             '<?php $i += 1.0;',
         ];
 

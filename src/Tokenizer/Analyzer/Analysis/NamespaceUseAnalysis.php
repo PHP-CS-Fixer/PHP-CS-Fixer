@@ -19,6 +19,8 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @phpstan-type _ImportType 'class'|'constant'|'function'
  */
 final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 {
@@ -28,6 +30,8 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 
     /**
      * The fully qualified use namespace.
+     *
+     * @var class-string
      */
     private string $fullName;
 
@@ -75,6 +79,7 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 
     /**
      * @param self::TYPE_* $type
+     * @param class-string $fullName
      */
     public function __construct(
         int $type,
@@ -102,6 +107,9 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         $this->chunkEndIndex = $chunkEndIndex;
     }
 
+    /**
+     * @return class-string
+     */
     public function getFullName(): string
     {
         return $this->fullName;
@@ -148,6 +156,18 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
     public function getType(): int
     {
         return $this->type;
+    }
+
+    /**
+     * @return _ImportType
+     */
+    public function getHumanFriendlyType(): string
+    {
+        return [
+            self::TYPE_CLASS => 'class',
+            self::TYPE_FUNCTION => 'function',
+            self::TYPE_CONSTANT => 'constant',
+        ][$this->type];
     }
 
     public function isClass(): bool

@@ -71,6 +71,14 @@ function test(\Foo\Bar $x) {}',
 function test(int $x): void {}',
         ];
 
+        yield 'ignore class resolution shortening when imported symbol is a function' => [
+            '<?php
+
+use function Symfony\Component\String\u;
+
+echo Symfony\Component\String\u::class;',
+        ];
+
         yield 'namespace cases' => [
             '<?php
 

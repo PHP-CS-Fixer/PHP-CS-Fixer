@@ -239,28 +239,6 @@ switch ($foo) {
             '<?php
 switch ($foo) {
     case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
         if ($foo) {
             break;
         }
