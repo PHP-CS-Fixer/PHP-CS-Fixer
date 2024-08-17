@@ -377,7 +377,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixAroundParenthesesOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo
@@ -631,7 +631,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixAroundCommasOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo
@@ -897,7 +897,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo ="foo", bar ={"foo":"foo", "bar"="bar"})
@@ -945,7 +945,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -993,7 +993,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo= "foo", bar= {"foo":"foo", "bar"="bar"})
@@ -1041,7 +1041,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1089,7 +1089,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar" ="bar"})
@@ -1137,7 +1137,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1185,7 +1185,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"= "bar"})
@@ -1233,7 +1233,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1281,7 +1281,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo" :"foo", "bar"="bar"})
@@ -1329,7 +1329,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})
@@ -1377,7 +1377,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo": "foo", "bar"="bar"})
@@ -1425,7 +1425,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
 
     public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * @Foo(foo="foo", bar={"foo":"foo", "bar"="bar"})

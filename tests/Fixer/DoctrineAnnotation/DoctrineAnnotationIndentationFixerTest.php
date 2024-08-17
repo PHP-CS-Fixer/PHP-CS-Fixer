@@ -367,7 +367,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
 
     public static function provideFixWithIndentedMixedLinesCases(): iterable
     {
-        return self::createTestCases([
+        yield from self::createTestCases([
             ['
 /**
  * Foo.
