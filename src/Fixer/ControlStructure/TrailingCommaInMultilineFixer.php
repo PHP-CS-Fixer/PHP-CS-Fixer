@@ -111,7 +111,15 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 ->getOption(),
             (new FixerOptionBuilder('elements', \sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([new AllowedValueSubset([self::ELEMENTS_ARRAYS, self::ELEMENTS_ARGUMENTS, self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS, self::ARRAY_DESTRUCTURING])])
+                ->setAllowedValues([
+                    new AllowedValueSubset([
+                        self::ARRAY_DESTRUCTURING,
+                        self::ELEMENTS_ARGUMENTS,
+                        self::ELEMENTS_ARRAYS,
+                        self::ELEMENTS_PARAMETERS,
+                        self::MATCH_EXPRESSIONS,
+                    ]),
+                ])
                 ->setDefault([self::ELEMENTS_ARRAYS])
                 ->getOption(),
         ]);
