@@ -116,9 +116,14 @@ class FooTest extends TestCase {
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpUnitAttributesFixer.
+     */
     public function getPriority(): int
     {
-        return 0;
+        return 9;
     }
 
     public function isRisky(): bool
