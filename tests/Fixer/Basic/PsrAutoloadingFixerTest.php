@@ -360,11 +360,11 @@ class PsrAutoloadingFixer {}
             'T_FINALLY' => 'finally',
             'T_INSTEADOF' => 'insteadof',
             'T_TRAIT' => 'trait',
-            'T_TRAIT_C' => '__TRAIT__',
+            'T_TRAIT_C' => '__trait__',
         ] as $tokenType => $tokenValue) {
             if (\defined($tokenType)) {
+                $cases[] = $tokenValue.'.php';
                 $cases[] = strtoupper($tokenValue).'.php';
-                $cases[] = strtolower($tokenValue).'.php';
             }
         }
 
