@@ -1141,6 +1141,9 @@ $foo;',
             'constructs_followed_by_a_single_space' => [
                 'else',
             ],
+            'constructs_preceded_by_a_single_space' => [
+                'else',
+            ],
         ]);
 
         $this->doTest($expected, $input);
@@ -1158,7 +1161,7 @@ $foo;',
 
         yield [
             '<?php if (true) {} else {}',
-            '<?php if (true) {} else  {}',
+            '<?php if (true) {}else  {}',
         ];
 
         yield [
@@ -1170,7 +1173,7 @@ $foo;',
 
         yield [
             '<?php if (true) {} else /* foo */{}',
-            '<?php if (true) {} else/* foo */{}',
+            '<?php if (true) {}     else/* foo */{}',
         ];
     }
 
@@ -1181,6 +1184,9 @@ $foo;',
     {
         $this->fixer->configure([
             'constructs_followed_by_a_single_space' => [
+                'elseif',
+            ],
+            'constructs_preceded_by_a_single_space' => [
                 'elseif',
             ],
         ]);
@@ -1205,14 +1211,14 @@ $foo;',
 
         yield [
             '<?php if (true) {} elseif (false) {}',
-            '<?php if (true) {} elseif
+            '<?php if (true) {}elseif
 
 (false) {}',
         ];
 
         yield [
             '<?php if (true) {} elseif /* foo */(false) {}',
-            '<?php if (true) {} elseif/* foo */(false) {}',
+            '<?php if (true) {}   elseif/* foo */(false) {}',
         ];
     }
 

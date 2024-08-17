@@ -45,6 +45,10 @@ Rules
 
   ``['group_to_single_imports' => false]``
 
+- `single_space_around_construct <./../rules/language_construct/single_space_around_construct.rst>`_ with config:
+
+  ``['constructs_followed_by_a_single_space' => ['abstract', 'as', 'case', 'catch', 'class', 'const_import', 'do', 'else', 'elseif', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'if', 'insteadof', 'interface', 'namespace', 'new', 'private', 'protected', 'public', 'static', 'switch', 'trait', 'try', 'use', 'use_lambda', 'while'], 'constructs_preceded_by_a_single_space' => ['as', 'else', 'elseif', 'use_lambda']]``
+
 - `single_trait_insert_per_statement <./../rules/class_notation/single_trait_insert_per_statement.rst>`_
 - `ternary_operator_spaces <./../rules/operator/ternary_operator_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_ with config:

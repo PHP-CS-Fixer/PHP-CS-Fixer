@@ -184,43 +184,15 @@ final class RuleSetTest extends TestCase
     public function testResolveRulesWithNestedSet(): void
     {
         $ruleSet = new RuleSet([
-            '@PSR2' => true,
+            '@PHP70Migration' => true,
             'strict_comparison' => true,
         ]);
 
         self::assertSameRules(
             [
-                'blank_line_after_namespace' => true,
-                'class_definition' => true,
-                'constant_case' => true,
-                'control_structure_braces' => true,
-                'control_structure_continuation_position' => true,
-                'braces_position' => true,
-                'elseif' => true,
-                'encoding' => true,
-                'full_opening_tag' => true,
-                'function_declaration' => true,
-                'indentation_type' => true,
-                'line_ending' => true,
-                'lowercase_keywords' => true,
-                'method_argument_space' => ['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline'],
-                'no_break_comment' => true,
-                'no_closing_tag' => true,
-                'no_multiple_statements_per_line' => true,
-                'no_space_around_double_colon' => true,
-                'no_spaces_after_function_name' => true,
-                'no_trailing_whitespace' => true,
-                'no_trailing_whitespace_in_comment' => true,
-                'single_blank_line_at_eof' => true,
-                'single_class_element_per_statement' => ['elements' => ['property']],
-                'single_import_per_statement' => true,
-                'single_line_after_imports' => true,
-                'spaces_inside_parentheses' => true,
-                'statement_indentation' => true,
+                'array_syntax' => true,
                 'strict_comparison' => true,
-                'switch_case_semicolon_to_colon' => true,
-                'switch_case_space' => true,
-                'visibility_required' => ['elements' => ['method', 'property']],
+                'ternary_to_null_coalescing' => true,
             ],
             $ruleSet->getRules()
         );
@@ -229,42 +201,15 @@ final class RuleSetTest extends TestCase
     public function testResolveRulesWithDisabledSet(): void
     {
         $ruleSet = new RuleSet([
-            '@PSR2' => true,
-            '@PSR1' => false,
-            'encoding' => true,
+            '@PHP70Migration' => true,
+            '@PHP54Migration' => false,
+            'strict_comparison' => true,
         ]);
 
         self::assertSameRules(
             [
-                'blank_line_after_namespace' => true,
-                'constant_case' => true,
-                'class_definition' => true,
-                'control_structure_braces' => true,
-                'control_structure_continuation_position' => true,
-                'braces_position' => true,
-                'elseif' => true,
-                'encoding' => true,
-                'function_declaration' => true,
-                'indentation_type' => true,
-                'line_ending' => true,
-                'lowercase_keywords' => true,
-                'method_argument_space' => ['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline'],
-                'no_break_comment' => true,
-                'no_closing_tag' => true,
-                'no_multiple_statements_per_line' => true,
-                'no_spaces_after_function_name' => true,
-                'no_space_around_double_colon' => true,
-                'no_trailing_whitespace' => true,
-                'no_trailing_whitespace_in_comment' => true,
-                'single_blank_line_at_eof' => true,
-                'single_class_element_per_statement' => ['elements' => ['property']],
-                'single_import_per_statement' => true,
-                'single_line_after_imports' => true,
-                'spaces_inside_parentheses' => true,
-                'statement_indentation' => true,
-                'switch_case_semicolon_to_colon' => true,
-                'switch_case_space' => true,
-                'visibility_required' => ['elements' => ['method', 'property']],
+                'strict_comparison' => true,
+                'ternary_to_null_coalescing' => true,
             ],
             $ruleSet->getRules()
         );
