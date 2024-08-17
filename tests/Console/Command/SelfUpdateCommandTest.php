@@ -158,10 +158,6 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-        yield [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
-
         // new minor version available
         yield [$minorRelease, $minorRelease, [], true, $minorContents, $newMinorDisplay];
 
@@ -184,18 +180,10 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay];
 
-        yield [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay];
-
-        yield [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay];
-
         // new minor version and new major version available
         yield [$majorRelease, $minorRelease, [], true, $minorContents, $majorInfoNewMinorDisplay];
 
         yield [$majorRelease, $minorRelease, [], false, $minorContents, $majorInfoNewMinorDisplay];
-
-        yield [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay];
-
-        yield [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay];
 
         yield [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay];
 
@@ -210,17 +198,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-        yield ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
-
         yield ['v0.1.0', null, [], true, $currentContents, $upToDateDisplay];
 
         yield ['v0.1.0', null, [], false, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
         yield ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay];
 
@@ -234,17 +214,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-        yield ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
-
         yield [Application::VERSION, 'v0.1.0', [], true, $currentContents, $upToDateDisplay];
 
         yield [Application::VERSION, 'v0.1.0', [], false, $currentContents, $upToDateDisplay];
-
-        yield [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
 
         yield [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
 
@@ -515,7 +487,7 @@ final class SelfUpdateCommandTest extends TestCase
             public function compareVersions(string $versionA, string $versionB): int
             {
                 return (new NewVersionChecker(
-                    new class() implements GithubClientInterface {
+                    new class implements GithubClientInterface {
                         public function getTags(): array
                         {
                             throw new \LogicException('Not implemented.');
@@ -528,7 +500,7 @@ final class SelfUpdateCommandTest extends TestCase
 
     private function createPharCheckerDouble(): PharCheckerInterface
     {
-        return new class() implements PharCheckerInterface {
+        return new class implements PharCheckerInterface {
             public function checkFileValidity(string $filename): ?string
             {
                 return null;

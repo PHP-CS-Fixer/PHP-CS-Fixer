@@ -128,16 +128,6 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $foo = array("foo");',
-            '<?php $foo = array( "foo" );',
-        ];
-
-        yield [
-            '<?php $foo = ["foo"];',
-            '<?php $foo = [ "foo" ];',
-        ];
-
-        yield [
             '<?php $foo = array($y ? true : false);',
             '<?php $foo = array( $y ? true : false );',
         ];
@@ -235,16 +225,6 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $foo = [["foo"], ["bar"]];',
             '<?php $foo = [[ "foo" ], [ "bar" ]];',
-        ];
-
-        yield [
-            '<?php $foo = array(array("foo"), array("bar"));',
-            '<?php $foo = array( array( "foo" ), array( "bar" ) );',
-        ];
-
-        yield [
-            '<?php $foo = [["foo"], ["bar"]];',
-            '<?php $foo = [ [ "foo" ], [ "bar" ] ];',
         ];
 
         yield [

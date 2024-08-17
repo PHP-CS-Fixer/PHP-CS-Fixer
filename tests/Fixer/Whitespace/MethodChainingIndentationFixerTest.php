@@ -408,24 +408,6 @@ $foo
         ];
 
         yield [
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-        ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-        ->setEmailConfirmationCode("123456",    );
-',
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-
-     ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-->setEmailConfirmationCode("123456",    );
-',
-        ];
-
-        yield [
             '<?php return $foo
 ->bar;',
         ];

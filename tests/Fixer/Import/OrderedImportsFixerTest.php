@@ -892,17 +892,6 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
 
         yield [
             '<?php
-use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
-use Foo\Bir;
-',
-            '<?php
-use Foo\Bar\Baz, Foo\Bir;
-use Foo\Bar\{ClassC, ClassB, ClassA};
-',
-        ];
-
-        yield [
-            '<?php
 use Foo\Bar\{ClassA, ClassB, ClassC};
 use Foo\Bir\{
     ClassD,

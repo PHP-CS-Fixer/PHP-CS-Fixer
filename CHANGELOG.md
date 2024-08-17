@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.62.0
+---------------------
+
+* feat: set new_with_parentheses for anonymous_class to false in PER-CS2.0 (#8140)
+* chore: NewWithParenthesesFixer - create TODO to change the default configuration to match PER-CS2 (#8148)
+
 Changelog for v3.61.1
 ---------------------
 

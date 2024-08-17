@@ -1426,7 +1426,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
     {
-        return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+        return new class extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
             /** @use ConfigurableFixerTrait<array<string, mixed>, array<string, mixed>> */
             use ConfigurableFixerTrait;
 
@@ -1463,7 +1463,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createToolInfoDouble(): ToolInfoInterface
     {
-        return new class() implements ToolInfoInterface {
+        return new class implements ToolInfoInterface {
             public function getComposerInstallationDetails(): array
             {
                 throw new \BadMethodCallException();

@@ -2730,11 +2730,6 @@ const Foo\BAR;',
         ];
 
         yield [
-            '<?php use /* foo */const Foo\BAR;',
-            '<?php use/* foo */const Foo\BAR;',
-        ];
-
-        yield [
             '<?php use function Foo\bar;',
             '<?php use  function Foo\bar;',
         ];
@@ -2744,11 +2739,6 @@ const Foo\BAR;',
             '<?php use
 
 function Foo\bar;',
-        ];
-
-        yield [
-            '<?php use /* foo */function Foo\bar;',
-            '<?php use/* foo */function Foo\bar;',
         ];
 
         yield [

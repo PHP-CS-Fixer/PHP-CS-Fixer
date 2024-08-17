@@ -177,7 +177,7 @@ jobs:
         if: env.PHP_MAX == matrix.php-version && matrix.run-migration-rules == 'yes'
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
-        run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
+        run: php php-cs-fixer fix --diff --config .php-cs-fixer.php-highest.php
 
       - name: Custom PHPUnit config for code coverage
         if: matrix.collect-code-coverage == 'yes' || matrix.run-mutation-tests

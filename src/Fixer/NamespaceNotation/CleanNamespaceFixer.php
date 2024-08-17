@@ -52,7 +52,7 @@ final class CleanNamespaceFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 3;
+        return 10;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

@@ -64,7 +64,7 @@ class Bar extends Foo
 }
 
 // https://www.php.net/manual/en/migration83.new-features.php#migration83.new-features.core.readonly-modifier-improvements
-$a = new readonly class() {};
+$a = new readonly class {};
 
 --INPUT--
 <?php

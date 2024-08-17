@@ -3009,26 +3009,6 @@ function foo()
     trait TFoo {public $a;}',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
-
-        yield [
-            '<?php
-    trait TFoo
-    {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
-        ];
-
-        yield [
-            '<?php
-    trait TFoo {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
     }
 
     /**
@@ -3981,21 +3961,6 @@ class Foo
 
         yield [
             '<?php
-    if (true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if(true === true
-        && true === true
-    )
-    {
-    }',
-            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-        ];
-
-        yield [
-            '<?php
     if ($foo)
     {
     }
@@ -4368,13 +4333,6 @@ declare   (   ticks   =   1   )   {
     if (true) {
     }',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-        ];
-
-        yield [
-            '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
         ];
     }
 
