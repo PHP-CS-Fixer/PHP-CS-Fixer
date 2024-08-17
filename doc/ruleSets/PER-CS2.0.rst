@@ -9,6 +9,7 @@ Rules
 
 - `@PER-CS1.0 <./PER-CS1.0.rst>`_
 - `array_indentation <./../rules/whitespace/array_indentation.rst>`_
+- `array_syntax <./../rules/array_notation/array_syntax.rst>`_
 - `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_ with config:
 
