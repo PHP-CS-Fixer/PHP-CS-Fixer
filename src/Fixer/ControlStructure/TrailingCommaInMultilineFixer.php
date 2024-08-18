@@ -74,7 +74,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Multi-line arrays, arguments list, parameters list,  `match` and array destructuring list expressions must have a trailing comma.',
+            'Arguments lists, array destructuring lists, arrays that are multi-line, `match`s and parameters lists must have a trailing comma.',
             [
                 new CodeSample("<?php\narray(\n    1,\n    2\n);\n"),
                 new CodeSample(

@@ -2,8 +2,8 @@
 Rule ``trailing_comma_in_multiline``
 ====================================
 
-Multi-line arrays, arguments list, parameters list,  ``match`` and array
-destructuring list expressions must have a trailing comma.
+Arguments lists, array destructuring lists, arrays that are multi-line,
+``match``s and parameters lists must have a trailing comma.
 
 Configuration
 -------------
