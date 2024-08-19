@@ -1250,12 +1250,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#2 \\$imports of method PhpCsFixer\\\\Tokenizer\\\\Processor\\\\ImportProcessor\\:\\:insertImports\\(\\) expects array\\{const\\?\\: array\\<int\\|string, class\\-string\\>, class\\?\\: array\\<int\\|string, class\\-string\\>, function\\?\\: array\\<int\\|string, class\\-string\\>\\}, array\\{const\\?\\: array\\<string, string\\>, function\\?\\: array\\<string, string\\>, class\\?\\: array\\<string, string\\>\\}&non\\-empty\\-array given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 0 might not exist on list\\<PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\NamespaceUseAnalysis\\>\\.$#',
 	'count' => 1,
