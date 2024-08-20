@@ -18,6 +18,18 @@ Example #1
 
    -foo(bar : 'baz', qux /* corge */ : 3);
    +foo(bar: 'baz', qux/* corge */: 3);
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+
 References
 ----------
 
