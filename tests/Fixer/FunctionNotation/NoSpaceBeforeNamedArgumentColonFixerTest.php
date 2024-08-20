@@ -63,5 +63,17 @@ final class NoSpaceBeforeNamedArgumentColonFixerTest extends AbstractFixerTestCa
                 );
             ',
         ];
+
+        yield [
+            '<?php foo(bar/* a *//* b *//* c */: \'baz\');',
+            '<?php foo(bar  /* a *//* b *//* c */  : \'baz\');',
+        ];
+
+        yield [
+            '<?php foo(bar//x
+: 1);',
+            '<?php foo(bar//x
+                : 1);',
+        ];
     }
 }
