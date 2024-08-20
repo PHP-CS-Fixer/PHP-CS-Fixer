@@ -197,7 +197,7 @@ if (count($x)) {
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, string>
+     * @return array<string, class-string>
      */
     private function importConstants(Tokens $tokens, array $useDeclarations): array
     {
@@ -268,7 +268,7 @@ if (count($x)) {
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, string>
+     * @return array<string, class-string>
      */
     private function importFunctions(Tokens $tokens, array $useDeclarations): array
     {
@@ -318,7 +318,7 @@ if (count($x)) {
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, string>
+     * @return array<string, class-string>
      */
     private function importClasses(Tokens $tokens, array $useDeclarations): array
     {
@@ -403,7 +403,9 @@ if (count($x)) {
                     return $type;
                 }
 
+                /** @var class-string $name */
                 $name = substr($type, 1);
+
                 $checkName = strtolower($name);
 
                 if (str_contains($checkName, '\\') || isset($other[$checkName])) {
