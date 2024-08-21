@@ -1148,7 +1148,7 @@ do {
     }
 
     /**
-     * @yield array
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixWithYieldCases(): iterable
     {
@@ -1310,7 +1310,7 @@ function foo() {
     }
 
     /**
-     * @yield array
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixWithYieldFromCases(): iterable
     {
