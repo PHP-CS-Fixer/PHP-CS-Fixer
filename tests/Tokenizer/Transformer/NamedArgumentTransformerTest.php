@@ -95,6 +95,9 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         self::assertNotChange($source);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideDoNotChangeCases(): iterable
     {
         yield 'switch/case/constants' => [

@@ -1472,6 +1472,9 @@ class TestClass
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -1621,6 +1624,9 @@ class A
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [

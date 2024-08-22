@@ -48,6 +48,9 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield from self::createTestCases([
@@ -365,6 +368,9 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithIndentedMixedLinesCases(): iterable
     {
         yield from self::createTestCases([

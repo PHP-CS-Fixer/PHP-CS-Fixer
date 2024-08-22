@@ -38,6 +38,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixImportConstantsCases(): iterable
     {
         yield 'non-global names' => [
@@ -243,6 +246,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixImportFunctionsCases(): iterable
     {
         yield 'non-global names' => [
@@ -450,6 +456,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixImportClassesCases(): iterable
     {
         yield 'non-global names' => [
@@ -778,6 +787,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixImportClasses80Cases(): iterable
     {
         yield 'try catch without variable' => [
@@ -826,6 +838,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixFullyQualifyConstantsCases(): iterable
     {
         yield 'already fqn or sub namespace' => [
@@ -883,6 +898,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixFullyQualifyFunctionsCases(): iterable
     {
         yield 'already fqn or sub namespace' => [
@@ -947,6 +965,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixFullyQualifyClassesCases(): iterable
     {
         yield 'already fqn or sub namespace' => [
@@ -1111,6 +1132,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixFullyQualifyClasses80Cases(): iterable
     {
         yield 'try catch without variable' => [
@@ -1161,6 +1185,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideMultipleNamespacesCases(): iterable
     {
         yield [
@@ -1267,6 +1294,9 @@ class Bar
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'ignore enum methods' => [

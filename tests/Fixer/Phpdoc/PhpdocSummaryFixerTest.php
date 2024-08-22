@@ -392,6 +392,9 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideWithInheritDocCases(): iterable
     {
         yield [
@@ -434,6 +437,9 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideMessyWhitespacesCases(): iterable
     {
         yield [

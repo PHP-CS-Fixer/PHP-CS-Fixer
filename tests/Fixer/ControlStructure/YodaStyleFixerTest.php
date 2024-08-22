@@ -896,6 +896,9 @@ switch ($a) {
         $this->doTest($input, $expected);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideLessGreaterCases(): iterable
     {
         yield [
@@ -986,6 +989,9 @@ switch ($a) {
         }
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function providePHP71Cases(): iterable
     {
         // no fix cases
@@ -1090,6 +1096,9 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
@@ -1175,6 +1184,9 @@ if ($a = $obj instanceof (foo()) === true) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'does not make a lot of sense but is valid syntax, do not break 1' => [

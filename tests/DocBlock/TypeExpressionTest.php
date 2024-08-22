@@ -256,6 +256,9 @@ final class TypeExpressionTest extends TestCase
         yield [self::makeLongArrayShapeType()];
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideGetConstTypesCases(): iterable
     {
         foreach ([
@@ -312,6 +315,9 @@ final class TypeExpressionTest extends TestCase
         new TypeExpression($value, null, []);
     }
 
+    /**
+     * @return iterable<int|string, array{string}>
+     */
     public static function provideParseInvalidExceptionCases(): iterable
     {
         yield [''];
@@ -621,6 +627,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectNullAllowed, $expression->allowsNull());
     }
 
+    /**
+     * @return iterable<array{string, bool}>
+     */
     public static function provideAllowsNullCases(): iterable
     {
         yield ['null', true];
@@ -702,6 +711,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectResult, $expression->toString());
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideSortTypesCases(): iterable
     {
         yield 'not a union type' => [

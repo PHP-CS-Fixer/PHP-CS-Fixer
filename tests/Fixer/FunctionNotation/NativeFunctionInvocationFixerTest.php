@@ -206,6 +206,9 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
         yield [
@@ -310,6 +313,9 @@ strlen($foo);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
         yield [
@@ -344,6 +350,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string, 2?: string}>
+     */
     public static function provideFixWithNamespaceConfigurationCases(): iterable
     {
         yield [

@@ -755,6 +755,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
@@ -773,6 +776,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'anonymous class, single attribute' => [
@@ -796,6 +802,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -824,6 +833,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'final readonly works' => [
@@ -858,6 +870,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix83Cases(): iterable
     {
         yield 'anonymous class, readonly, missing spacing' => [
@@ -908,6 +923,9 @@ namespace {
         self::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     private static function provideClassyCases(string $classy): iterable
     {
         return [
@@ -976,6 +994,9 @@ namespace {
         ];
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     private static function provideClassyExtendingCases(string $classy): iterable
     {
         return [
@@ -1006,6 +1027,9 @@ extends
         ];
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     private static function provideClassyImplementsCases(): iterable
     {
         return [

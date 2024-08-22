@@ -46,6 +46,9 @@ final class PregTest extends TestCase
         self::assertSame($expectedMatches, $actualMatches);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1: null|bool, 2?: string, 3?: string}>
+     */
     public static function providePatternValidationCases(): iterable
     {
         yield 'invalid_blank' => ['', null, PregException::class];
@@ -220,6 +223,9 @@ final class PregTest extends TestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideCommonCases(): iterable
     {
         yield ['/u/u', 'u'];

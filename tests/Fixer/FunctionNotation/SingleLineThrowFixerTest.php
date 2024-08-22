@@ -33,6 +33,9 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php throw new Exception; foo(
@@ -311,6 +314,9 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

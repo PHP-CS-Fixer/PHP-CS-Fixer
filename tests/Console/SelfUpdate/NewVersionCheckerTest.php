@@ -42,6 +42,9 @@ final class NewVersionCheckerTest extends TestCase
         self::assertSame($expectedVersion, $checker->getLatestVersionOfMajor($majorVersion));
     }
 
+    /**
+     * @return iterable<array{int, null|string}>
+     */
     public static function provideGetLatestVersionOfMajorCases(): iterable
     {
         yield [1, 'v1.13.2'];
@@ -68,6 +71,9 @@ final class NewVersionCheckerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{string, string, int}>
+     */
     public static function provideCompareVersionsCases(): iterable
     {
         foreach ([

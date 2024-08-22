@@ -76,6 +76,9 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideCommentsCases(): iterable
     {
         yield [
@@ -118,6 +121,9 @@ $a = $b[ # z
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixSpaceOutsideOffsetCases(): iterable
     {
         yield [
@@ -190,6 +196,9 @@ $baz [0]
         ];
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixSpaceInsideOffsetCases(): iterable
     {
         yield [

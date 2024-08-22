@@ -62,6 +62,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAll($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixAllCases(): iterable
     {
         yield from self::createTestCases([
@@ -375,6 +378,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundParenthesesOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixAroundParenthesesOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -629,6 +635,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundCommasOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixAroundCommasOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -895,6 +904,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -943,6 +955,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -991,6 +1006,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1039,6 +1057,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1087,6 +1108,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1135,6 +1159,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1183,6 +1210,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1231,6 +1261,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1279,6 +1312,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1327,6 +1363,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1375,6 +1414,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1423,6 +1465,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
         yield from self::createTestCases([
@@ -1467,6 +1512,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         );
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideElementDiscoveringCases(): iterable
     {
         yield ['private $foo;'];

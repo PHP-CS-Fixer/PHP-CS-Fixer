@@ -588,6 +588,9 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixDefaultsCases(): iterable
     {
         yield [
@@ -833,6 +836,9 @@ $b;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideUnalignEqualsCases(): iterable
     {
         yield [
@@ -1012,6 +1018,9 @@ $b;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideUnalignDoubleArrowCases(): iterable
     {
         yield [
@@ -1427,6 +1436,9 @@ $b;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixAlignEqualsCases(): iterable
     {
         yield [
@@ -1786,6 +1798,9 @@ $start = (
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixAlignDoubleArrowCases(): iterable
     {
         yield [
@@ -2530,6 +2545,9 @@ function test()
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixAlignScopedDoubleArrowCases(): iterable
     {
         yield [

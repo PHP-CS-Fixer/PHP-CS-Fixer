@@ -39,6 +39,9 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string, 2?: bool}>
+     */
     public static function provideLongToShortFormatCases(): iterable
     {
         yield ['<?= \'Foo\';', '<?php echo \'Foo\';'];
@@ -115,6 +118,9 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string, string}>
+     */
     public static function provideShortToLongFormatCases(): iterable
     {
         $cases = [
