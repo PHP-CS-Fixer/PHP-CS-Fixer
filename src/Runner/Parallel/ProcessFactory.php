@@ -56,6 +56,7 @@ final class ProcessFactory
     public function getCommandArgs(int $serverPort, ProcessIdentifier $identifier, RunnerConfig $runnerConfig): array
     {
         $phpBinary = (new PhpExecutableFinder())->find(false);
+        $phpBinary = str_replace(" ", "\\ ", $phpBinary);
 
         if (false === $phpBinary) {
             throw new ParallelisationException('Cannot find PHP executable.');
