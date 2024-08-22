@@ -37,6 +37,9 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'already with annotation: @covers' => [
@@ -268,6 +271,9 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
@@ -400,6 +406,9 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'without docblock #2 (class is final)' => [

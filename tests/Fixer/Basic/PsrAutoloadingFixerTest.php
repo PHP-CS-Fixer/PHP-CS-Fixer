@@ -47,6 +47,9 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: null|string, 2?: null|string, 3?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         foreach (['class', 'interface', 'trait'] as $element) {
@@ -429,6 +432,9 @@ class ClassTwo {};
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'anonymous + annotation' => [
@@ -451,6 +457,9 @@ class extends stdClass {};
         $this->doTest($expected, $input, new \SplFileInfo(__FILE__));
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'enum with wrong casing' => [

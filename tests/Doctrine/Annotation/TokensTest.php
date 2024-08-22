@@ -53,6 +53,9 @@ final class TokensTest extends TestCase
         $tokens[1] = $wrongType;
     }
 
+    /**
+     * @return iterable<array{string, null|string}>
+     */
     public static function provideOffSetOtherThanTokenCases(): iterable
     {
         yield [

@@ -38,6 +38,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithBracesCases(): iterable
     {
         yield from self::createTestCases([
@@ -293,6 +296,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithoutBracesCases(): iterable
     {
         yield from self::createTestCases([
@@ -565,6 +571,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [

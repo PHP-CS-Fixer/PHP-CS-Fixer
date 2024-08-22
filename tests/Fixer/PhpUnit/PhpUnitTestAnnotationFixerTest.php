@@ -1045,6 +1045,9 @@ class Test extends \PhpUnit\FrameWork\TestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [

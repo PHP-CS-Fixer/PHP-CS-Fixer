@@ -158,6 +158,9 @@ final class CacheTest extends TestCase
         self::assertSame($hash, $cached->get($file));
     }
 
+    /**
+     * @return iterable<array{Signature}>
+     */
     public static function provideCanConvertToAndFromJsonCases(): iterable
     {
         $toolInfo = new ToolInfo();

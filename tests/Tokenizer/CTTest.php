@@ -70,6 +70,9 @@ final class CTTest extends TestCase
         self::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
     }
 
+    /**
+     * @return iterable<array{string, int}>
+     */
     public static function provideConstantsCases(): iterable
     {
         foreach (self::getConstants() as $name => $value) {

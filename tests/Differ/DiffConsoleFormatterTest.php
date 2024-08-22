@@ -38,6 +38,9 @@ final class DiffConsoleFormatterTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{string, bool, string, string, string}>
+     */
     public static function provideDiffConsoleFormatterCases(): iterable
     {
         yield [

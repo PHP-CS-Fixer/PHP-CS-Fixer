@@ -140,6 +140,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     */
     public static function provideArgumentInfoCases(): iterable
     {
         yield ['<?php function($a){};', 3, 3, new ArgumentAnalysis(
@@ -280,6 +283,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
     }
 
+    /**
+     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     */
     public static function provideArgumentInfo80Cases(): iterable
     {
         yield [
@@ -327,6 +333,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
     }
 
+    /**
+     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     */
     public static function provideArgumentInfo81Cases(): iterable
     {
         yield [

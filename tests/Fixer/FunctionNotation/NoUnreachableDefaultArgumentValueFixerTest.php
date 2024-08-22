@@ -33,6 +33,9 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -216,6 +219,9 @@ $bar) {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'handle trailing comma' => [
@@ -259,6 +265,9 @@ $bar) {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'do not crash' => [

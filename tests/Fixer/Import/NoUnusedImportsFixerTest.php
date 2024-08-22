@@ -33,6 +33,9 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
@@ -1501,6 +1504,9 @@ use /**/A\B/**/;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -1573,6 +1579,9 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'final const' => [

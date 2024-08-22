@@ -34,6 +34,9 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $fixerReflection = new \ReflectionClass(MagicMethodCasingFixer::class);
@@ -357,6 +360,9 @@ function __Tostring() {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'static call to "__set_state".' => [

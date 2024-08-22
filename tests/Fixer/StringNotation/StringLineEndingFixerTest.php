@@ -36,6 +36,9 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";

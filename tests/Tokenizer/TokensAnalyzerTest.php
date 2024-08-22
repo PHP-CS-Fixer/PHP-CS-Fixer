@@ -1996,6 +1996,9 @@ $b;',
         self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), \sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
+    /**
+     * @return iterable<array{0: string, 1: int, 2?: bool}>
+     */
     public static function provideIsArrayCases(): iterable
     {
         yield [
@@ -2241,6 +2244,9 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
+    /**
+     * @return iterable<array{string, int}>
+     */
     public static function provideArrayExceptionsCases(): iterable
     {
         yield ['<?php $a;', 1];
@@ -2272,6 +2278,9 @@ $b;',
         self::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
     }
 
+    /**
+     * @return iterable<array{bool, string, int}>
+     */
     public static function provideIsBlockMultilineCases(): iterable
     {
         yield [
@@ -2798,6 +2807,9 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
+    /**
+     * @return iterable<array{bool, string, int}>
+     */
     public static function provideIsSuperGlobalCases(): iterable
     {
         $superNames = [

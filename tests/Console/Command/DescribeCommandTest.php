@@ -70,6 +70,9 @@ final class DescribeCommandTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{string, bool, bool, FixerInterface}>
+     */
     public static function provideExecuteOutputCases(): iterable
     {
         yield 'rule is configurable, risky and deprecated' => [

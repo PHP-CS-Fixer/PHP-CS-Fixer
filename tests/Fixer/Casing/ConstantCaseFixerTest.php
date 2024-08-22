@@ -214,6 +214,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield ' nullsafe operator' => ['<?php class Foo { public function Bar() { return $this?->False; } }'];
@@ -229,6 +232,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'final class const' => [

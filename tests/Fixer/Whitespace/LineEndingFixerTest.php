@@ -36,6 +36,9 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield from self::provideCommonCases();
@@ -84,6 +87,9 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield from array_map(static fn (array $case): array => array_reverse($case), self::provideCommonCases());

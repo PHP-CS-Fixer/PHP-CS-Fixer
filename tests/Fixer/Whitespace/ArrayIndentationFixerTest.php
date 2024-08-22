@@ -34,6 +34,9 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield from self::withLongArraySyntaxCases([
@@ -843,6 +846,9 @@ $foo = [
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield from self::withLongArraySyntaxCases([
@@ -929,6 +935,9 @@ $foo = [
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'attribute' => [

@@ -398,6 +398,9 @@ final class RuleSetTest extends TestCase
         ));
     }
 
+    /**
+     * @return iterable<string, array{RuleSetDescriptionInterface}>
+     */
     public static function provideDuplicateRuleConfigurationInSetDefinitionsCases(): iterable
     {
         foreach (RuleSets::getSetDefinitions() as $name => $set) {
@@ -417,6 +420,9 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function providePhpUnitTargetVersionHasSetCases(): iterable
     {
         foreach ((new \ReflectionClass(PhpUnitTargetVersion::class))->getConstants() as $constant) {
