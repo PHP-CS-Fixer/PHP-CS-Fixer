@@ -3050,6 +3050,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixerTest.php',
 ];
 $ignoreErrors[] = [
+	// identifier: generator.valueType
+	'message' => '#^Generator expects value type array\\{0\\: string, 1\\?\\: string\\}, array\\{0\\?\\: string, 1\\: string\\} given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../tests/Fixer/Operator/IncrementStyleFixerTest.php',
+];
+$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'operators\' might not exist on array\\<string, mixed\\>\\.$#',
 	'count' => 1,
@@ -3090,12 +3096,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#2 \\$array of function array_map expects array, iterable given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Whitespace/LineEndingFixerTest.php',
 ];
 $ignoreErrors[] = [
 	// identifier: new.resultUnused
