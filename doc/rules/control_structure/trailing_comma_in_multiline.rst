@@ -2,8 +2,8 @@
 Rule ``trailing_comma_in_multiline``
 ====================================
 
-Multi-line arrays, arguments list, parameters list and ``match`` expressions
-must have a trailing comma.
+Arguments lists, array destructuring lists, arrays that are multi-line,
+``match``-lines and parameters lists must have a trailing comma.
 
 Configuration
 -------------
@@ -23,7 +23,7 @@ Default value: ``false``
 Where to fix multiline trailing comma (PHP >= 8.0 for ``parameters`` and
 ``match``).
 
-Allowed values: a subset of ``['arguments', 'arrays', 'match', 'parameters']``
+Allowed values: a subset of ``['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']``
 
 Default value: ``['arrays']``
 
