@@ -32,7 +32,7 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
 
     public function getRules(): array
     {
-        $rules = [
+        return [
             '@PER-CS1.0' => true,
             'array_indentation' => true,
             'array_syntax' => true,
@@ -103,8 +103,6 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
                 ],
             ],
         ];
-
-        return $rules;
     }
 
     public function getDescription(): string
