@@ -44,6 +44,11 @@ final class PSR12Set extends AbstractRuleSetDescription
             'lowercase_static_reference' => true,
             'new_with_parentheses' => true,
             'no_blank_lines_after_class_opening' => true,
+            'no_extra_blank_lines' => [
+                'tokens' => [
+                    'use', // defined in PSR12 ¶3. Declare Statements, Namespace, and Import Statements
+                ],
+            ],
             'no_leading_import_slash' => true,
             'no_whitespace_in_blank_line' => true,
             'ordered_class_elements' => [
