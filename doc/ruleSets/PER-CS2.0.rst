@@ -31,5 +31,5 @@ Rules
 
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['arguments', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
 

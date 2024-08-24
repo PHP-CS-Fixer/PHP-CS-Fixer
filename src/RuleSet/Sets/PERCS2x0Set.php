@@ -94,14 +94,15 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
             ],
             'trailing_comma_in_multiline' => [
                 'after_heredoc' => true,
-                'elements' => ['arguments', 'arrays'],
+                'elements' => [
+                    'arguments',
+                    'array_destructuring',
+                    'arrays',
+                    'match',
+                    'parameters',
+                ],
             ],
         ];
-
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            $rules['trailing_comma_in_multiline']['elements'][] = 'match';
-            $rules['trailing_comma_in_multiline']['elements'][] = 'parameters';
-        }
 
         return $rules;
     }
