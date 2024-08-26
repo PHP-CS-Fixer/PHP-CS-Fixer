@@ -44,7 +44,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.62.1-DEV';
+    public const VERSION = '3.63.0';
     public const VERSION_CODENAME = '7th Gear';
 
     private ToolInfo $toolInfo;
