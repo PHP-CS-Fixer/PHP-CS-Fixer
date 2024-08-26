@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.63.1
+---------------------
+
+* dummy release
+
 Changelog for v3.63.0
 ---------------------
 
