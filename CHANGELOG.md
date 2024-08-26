@@ -3,6 +3,25 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.63.0
+---------------------
+
+* feat: Add `array_destructuring` as option for `trailing_comma_in_multiline` (#8172)
+* feat: remove braces even for single import (#8156)
+* feat: TrailingCommaInMultilineFixer - dynamically evaluate config against PHP version (#8167)
+* fix: Do not shorten FQN for class resolution if imported symbol is not a class (#7705)
+* fix: Ensure PHP binary path is used as a single CLI argument in parallel worker process (#8180)
+* fix: `PhpUnitAttributesFixer` - fix priorities with `PhpUnitDataProvider(.+)Fixer` (#8169)
+* chore: add  tags for data providers that will change PHPStan's baseline (#8178)
+* chore: add `@return` tags for data providers already having PHPDoc (#8176)
+* chore: add `@return` tags for data providers that do not have array in data (#8179)
+* chore: remove duplicates from data providers (#8164)
+* chore: remove duplicates from data providers that are copies in code (#8145)
+* chore: remove `beStrictAboutTodoAnnotatedTests` from PHPUnit's config (#8160)
+* CI: Update PHPStan to 1.11.10 (#8163)
+* CI: Update PHPStan to 1.11.11 and fix error that changed (#8174)
+* docs: fix indent on rule `date_time_create_from_format_call` (#8173)
+
 Changelog for v3.62.0
 ---------------------
 
