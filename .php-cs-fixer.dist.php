@@ -50,7 +50,5 @@ return (new Config())
             ->ignoreVCSIgnored(true)
             ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
             ->in(__DIR__)
-            ->sortByName()
-            ->reverseSorting()
     )
 ;
