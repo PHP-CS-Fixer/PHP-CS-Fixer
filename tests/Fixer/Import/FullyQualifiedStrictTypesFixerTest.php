@@ -2632,6 +2632,22 @@ function foo($a) {}',
                 PHP,
             ['import_symbols' => true],
         ];
+
+        yield 'do not do weird stuff' => [
+            <<<'PHP'
+                <?php
+                namespace Foo\Bar {
+                    use Foo\Exception as Chumbawamba;
+                    class ThatMustExtendsSomething extends Something {}
+                }
+                namespace Foo {
+                    interface I
+                    {
+                        public function f(Exception $exception);
+                    }
+                }
+                PHP,
+        ];
     }
 
     /**
