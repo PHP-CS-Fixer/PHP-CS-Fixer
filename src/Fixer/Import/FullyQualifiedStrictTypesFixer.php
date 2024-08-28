@@ -409,9 +409,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         $this->cacheUsesLast = $uses;
 
+        $this->cacheUseNameByShortNameLower = [];
+        $this->cacheUseShortNameByNameLower = [];
+
         foreach ($uses as $kind => $kindUses) {
-            $this->cacheUseNameByShortNameLower = [];
-            $this->cacheUseShortNameByNameLower = [];
             foreach ($kindUses as $useLongName => $useShortName) {
                 $this->cacheUseNameByShortNameLower[$kind][strtolower($useShortName)] = $useLongName;
 
