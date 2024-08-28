@@ -66,7 +66,7 @@ final class Runner
 
     private DifferInterface $differ;
 
-    private ?DirectoryInterface $directory;
+    private DirectoryInterface $directory;
 
     private ?EventDispatcherInterface $eventDispatcher;
 
