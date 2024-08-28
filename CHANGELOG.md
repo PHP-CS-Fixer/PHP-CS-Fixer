@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.63.2
+---------------------
+
+* fix: `FullyQualifiedStrictTypesFixer` - reset cache even if there is no `use` (#8183)
+
 Changelog for v3.63.1
 ---------------------
 
