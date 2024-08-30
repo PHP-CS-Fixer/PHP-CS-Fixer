@@ -1473,7 +1473,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'as\'\\|\'use_lambda\' might not exist on array\\<string, int\\|null\\>\\.$#',
+	'message' => '#^Offset \'as\'\\|\'else\'\\|\'elseif\'\\|\'use_lambda\' might not exist on array\\<string, int\\|null\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
 ];
