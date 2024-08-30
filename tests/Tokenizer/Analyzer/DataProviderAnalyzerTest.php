@@ -166,4 +166,37 @@ final class DataProviderAnalyzerTest extends TestCase
             }',
         ];
     }
+
+    /**
+     * @param list<DataProviderAnalysis> $expected
+     *
+     * @requires PHP ^8.0
+     *
+     * @dataProvider provideGettingDataProviders80Cases
+     */
+    public function testGettingDataProviders80(array $expected, string $code, int $startIndex = 0, ?int $endIndex = null): void
+    {
+        $this->testGettingDataProviders($expected, $code, $startIndex, $endIndex);
+    }
+
+    /**
+     * @return iterable<array{list<DataProviderAnalysis>, string}>
+     */
+    public static function provideGettingDataProviders80Cases(): iterable
+    {
+        yield 'with an attribute between PHPDoc and test method' => [
+            [new DataProviderAnalysis('provideFooCases', 35, [11])],
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    #[CustomAttribute]
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                }
+                PHP,
+        ];
+    }
 }
