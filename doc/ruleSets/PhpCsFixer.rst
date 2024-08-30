@@ -67,7 +67,10 @@ Rules
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
 - `string_implicit_backslashes <./../rules/string_notation/string_implicit_backslashes.rst>`_
-- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays']]``
+
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_ with config:
 
   ``['ensure_single_space' => true]``
