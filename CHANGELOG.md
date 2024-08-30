@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.64.0
+---------------------
+
+* feat: Symfony - adjust configuration for sets (#8188)
+* feat: Symfony.trailing_comma_in_multiline - adjust configuration (#8161)
+* feat: Update PSR2, PSR12 and PER-CS2 with `single_space_around_construct` config (#8171)
+* CI: Update PHPStan to 1.12.0 and fix the error that appeared (#8184)
+
 Changelog for v3.63.2
 ---------------------
 
