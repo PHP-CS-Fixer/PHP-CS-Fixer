@@ -53,7 +53,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                 class Bar
                 {
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -66,7 +66,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                 <?php
 
                 class Foo { private function bar1($x) { return 1; } protected $abc = 'abc'; const C1 = 1; public function baz($y, $z) {} }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -119,7 +119,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
                     public function def();
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -286,7 +286,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                         }
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -323,7 +323,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     const C = 1;
                     public function baz() {}
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -352,7 +352,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
 
                     use BazTrait;
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -387,7 +387,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     use FooTrait;
                 }
 
-                EOT
+                EOT,
         ];
 
         yield [
@@ -1306,7 +1306,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
                     protected const C4 = 4;
                     public const C3 = 3;
                 }
-                EOT
+                EOT,
         ];
 
         yield [

@@ -183,7 +183,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                  */
 
                 include 'vendor/autoload.php';
-                EOF
+                EOF,
         ];
 
         yield [
@@ -194,7 +194,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                  */
 
                 include_once 'vendor/autoload.php';
-                EOF
+                EOF,
         ];
 
         yield [
@@ -205,7 +205,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                  */
 
                 require 'vendor/autoload.php';
-                EOF
+                EOF,
         ];
 
         yield [
@@ -216,7 +216,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                  */
 
                 require_once 'vendor/autoload.php';
-                EOF
+                EOF,
         ];
     }
 
@@ -402,7 +402,7 @@ class Foo {}'
                         return $tag->getDescription();
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield [
@@ -418,7 +418,7 @@ class Foo {}'
                         throw new Exception($tag->getDescription());
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield [
@@ -436,7 +436,7 @@ class Foo {}'
 
                 FOO:
                 }
-                EOF
+                EOF,
         ];
 
         yield [
@@ -454,7 +454,7 @@ class Foo {}'
                         }
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield [
@@ -472,7 +472,7 @@ class Foo {}'
                         }
                     }
                 }
-                EOF
+                EOF,
         ];
     }
 }

@@ -95,7 +95,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 EOF,
             <<<'EOF'
                 <?php $a = "\\foo\\bar\\\\";
-                EOF
+                EOF,
         ];
 
         yield [
@@ -146,7 +146,7 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
         yield [
             <<<'EOF'
                 <?php $a = "\\\n";
-                EOF
+                EOF,
         ];
 
         yield [

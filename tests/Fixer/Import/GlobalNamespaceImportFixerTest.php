@@ -48,7 +48,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 <?php
                 namespace Test;
                 echo FOO, \Bar\BAZ, namespace\FOO2;
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [1]' => [
@@ -56,7 +56,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 <?php
                 namespace Test;
                 echo \FOO, FOO, \FOO;
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [2]' => [
@@ -65,7 +65,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 use const Bar\FOO;
                 echo \FOO;
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [3]' => [
@@ -74,14 +74,14 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 const FOO = 1;
                 echo \FOO;
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'without namespace / do not import' => [
             <<<'INPUT'
                 <?php
                 echo \FOO, \BAR, \FOO;
-                INPUT
+                INPUT,
         ];
 
         yield 'with namespace' => [
@@ -96,7 +96,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 <?php
                 namespace Test;
                 echo \FOO, \BAR;
-                INPUT
+                INPUT,
         ];
 
         yield 'with namespace with {} syntax' => [
@@ -113,7 +113,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore other imported types' => [
@@ -130,7 +130,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 use BAR;
                 echo \FOO, \BAR;
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [1]' => [
@@ -146,7 +146,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 use const BAR;
                 echo \FOO, \BAR;
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [2]' => [
@@ -162,7 +162,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 use const \BAR;
                 echo \FOO, \BAR, BAR;
-                INPUT
+                INPUT,
         ];
 
         yield 'handle case sensitivity' => [
@@ -181,7 +181,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const fOO;
                 const foO = 1;
                 echo \FOO, \Foo;
-                INPUT
+                INPUT,
         ];
 
         yield 'handle aliased imports' => [
@@ -197,7 +197,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 use const BAR as BAZ;
                 echo \FOO, \BAR;
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore class constants' => [
@@ -217,14 +217,14 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     const FOO = 1;
                 }
                 echo \FOO;
-                INPUT
+                INPUT,
         ];
 
         yield 'global namespace' => [
             <<<'INPUT'
                 <?php
                 echo \FOO, \BAR;
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -233,7 +233,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                INPUT,
         ];
     }
 
@@ -258,7 +258,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 Bar\baz();
                 namespace\foo2();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [1]' => [
@@ -268,7 +268,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 \foo();
                 Foo();
                 \foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [2]' => [
@@ -277,7 +277,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 use function Bar\foo;
                 \Foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [3]' => [
@@ -286,7 +286,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 function foo() {}
                 \Foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'without namespace / do not import' => [
@@ -295,7 +295,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 \foo();
                 \bar();
                 \Foo();
-                INPUT
+                INPUT,
         ];
 
         yield 'with namespace' => [
@@ -312,7 +312,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace Test;
                 \foo();
                 \bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'with namespace with {} syntax' => [
@@ -331,7 +331,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     \foo();
                     \bar();
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore other imported types' => [
@@ -350,7 +350,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use bar;
                 \foo();
                 \bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [1]' => [
@@ -368,7 +368,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function bar;
                 \foo();
                 \Bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [2]' => [
@@ -388,7 +388,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 \foo();
                 \Bar();
                 bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'handle aliased imports' => [
@@ -406,7 +406,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function bar as baz;
                 \foo();
                 \Bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore class methods' => [
@@ -426,7 +426,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     function foo() {}
                 }
                 \foo();
-                INPUT
+                INPUT,
         ];
 
         yield 'name already used' => [
@@ -443,7 +443,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     }
                 }
                 \foo();
-                EXPECTED
+                EXPECTED,
         ];
     }
 
@@ -471,7 +471,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var Foo|Bar\Baz $x */
                 $x = x();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [1]' => [
@@ -483,7 +483,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [2]' => [
@@ -494,7 +494,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [3]' => [
@@ -505,7 +505,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'name already used [4]' => [
@@ -518,7 +518,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \Foo $foo */
                 $foo = new \Foo();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'without namespace / do not import' => [
@@ -528,7 +528,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 $foo = new \foo();
                 new \Bar();
                 \FOO::baz();
-                INPUT
+                INPUT,
         ];
 
         yield 'with namespace' => [
@@ -554,7 +554,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @return \Baz<string, \foo> */
                 function x() {}
-                INPUT
+                INPUT,
         ];
 
         yield 'with namespace with {} syntax' => [
@@ -573,7 +573,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                     new \Foo();
                     \Bar::baz();
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'phpdoc only' => [
@@ -591,7 +591,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @throws \Throwable */
                 function x() {}
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore other imported types' => [
@@ -610,7 +610,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function Bar;
                 new \Foo();
                 \Bar::baz();
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [1]' => [
@@ -628,7 +628,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use Bar;
                 new \Foo();
                 \bar::baz();
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [2]' => [
@@ -648,7 +648,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new \Foo();
                 new \bar();
                 new Bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'respect already imported names [3]' => [
@@ -673,7 +673,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @throws \Throwable */
                 function y() {}
-                INPUT
+                INPUT,
         ];
 
         yield 'handle aliased imports' => [
@@ -697,7 +697,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 /** @var \bar $bar */
                 $bar = new \bar();
-                INPUT
+                INPUT,
         ];
 
         yield 'handle typehints' => [
@@ -717,7 +717,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 class Abc {
                     function bar(\Foo $a, \Bar $b, \foo &$c, \Baz ...$d) {}
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'handle typehints 2' => [
@@ -736,7 +736,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 class Abc {
                     function bar(?\Foo $a): ?\Bar {}
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'try catch' => [
@@ -754,7 +754,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (\Exception $e) {
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'try catch with comments' => [
@@ -772,7 +772,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* ... */ \Exception $e /* ... */) {
                 }
-                INPUT
+                INPUT,
         ];
     }
 
@@ -807,7 +807,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (\Exception) {
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'try catch without variable and comments' => [
@@ -825,7 +825,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* non-capturing catch */ \Exception /* just because! */) {
                 }
-                INPUT
+                INPUT,
         ];
     }
 
@@ -849,7 +849,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const FOO;
                 use const BAR;
                 echo \FOO, Baz\BAR;
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'handle all occurrences' => [
@@ -866,7 +866,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const FOO;
                 use const BAR;
                 echo FOO, BAR, FOO;
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore other imports and non-imported names' => [
@@ -885,7 +885,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use const BAR;
                 use const Baz;
                 echo FOO, BAR, BAZ, QUX;
-                INPUT
+                INPUT,
         ];
     }
 
@@ -910,7 +910,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 use function bar;
                 \foo();
                 Baz\bar();
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'handle all occurrences' => [
@@ -931,7 +931,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 bar();
                 Foo();
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore other imports and non-imported names' => [
@@ -952,7 +952,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 foo();
                 bar();
                 baz();
-                INPUT
+                INPUT,
         ];
     }
 
@@ -984,7 +984,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @param Baz\Bar $bar
                  */
                 function abc(\Foo $foo, Baz\Bar $bar = null) {}
-                EXPECTED
+                EXPECTED,
         ];
 
         yield 'handle all occurrences' => [
@@ -1021,7 +1021,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @return array<string, ?Bar<int, foo>>|null
                  */
                 function abc($foo, Bar $bar = null) {}
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore other imports and non-imported names' => [
@@ -1042,7 +1042,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 new Foo();
                 new Bar();
                 new Baz();
-                INPUT
+                INPUT,
         ];
 
         yield 'try catch' => [
@@ -1061,7 +1061,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (Exception $e) {
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'try catch with comments' => [
@@ -1080,7 +1080,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* ... */ Exception $e /* ... */) {
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'key in PHPDoc\'s array shape matching class name' => [
@@ -1153,7 +1153,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (Exception) {
                 }
-                INPUT
+                INPUT,
         ];
 
         yield 'try catch without variable and comments' => [
@@ -1172,7 +1172,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 try {
                 } catch (/* non-capturing catch */ Exception /* just because! */) {
                 }
-                INPUT
+                INPUT,
         ];
     }
 
@@ -1198,7 +1198,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 
                 namespace OtherTest;
                 echo \FOO, \BAR;
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -1212,7 +1212,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace OtherTest {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -1226,7 +1226,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace OtherTest {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -1240,7 +1240,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \FOO, \BAR;
                 }
-                INPUT
+                INPUT,
         ];
     }
 
@@ -1316,7 +1316,7 @@ class Bar
                     function foo() {}
                 }
                 \foo();
-                INPUT
+                INPUT,
         ];
 
         yield 'ignore enum constants' => [
@@ -1336,7 +1336,7 @@ class Bar
                     const FOO = 1;
                 }
                 echo \FOO;
-                INPUT
+                INPUT,
         ];
     }
 }

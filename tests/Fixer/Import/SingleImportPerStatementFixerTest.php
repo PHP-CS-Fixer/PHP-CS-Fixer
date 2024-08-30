@@ -85,7 +85,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                         FooJ;
                 use FooZ;
 
-                EOF
+                EOF,
         ];
 
         yield [
@@ -148,7 +148,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                     use BarZ;
                 }
 
-                EOF
+                EOF,
         ];
 
         yield [

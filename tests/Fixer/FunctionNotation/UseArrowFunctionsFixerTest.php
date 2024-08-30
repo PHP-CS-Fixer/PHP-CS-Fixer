@@ -78,7 +78,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     foo(1, function (int $a, Foo $b) use ($c, $d) {
                         return bar($a, $c);
                     }, 2);
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -95,7 +95,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
 
                     });
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -110,7 +110,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                             return $a + 1;
                         };
                     });
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -119,7 +119,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     foo(function () {// comment
                         return 1;
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -129,7 +129,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                         // comment
                         return 1;
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -138,7 +138,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     foo(function () {
                         return 1; // comment
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -148,7 +148,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                         return 1;
                         // comment
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -158,7 +158,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                         return
                             1;
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -170,7 +170,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     ) {
                         return 1;
                     };
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -181,7 +181,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                             foo();
                         };
                     };
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
