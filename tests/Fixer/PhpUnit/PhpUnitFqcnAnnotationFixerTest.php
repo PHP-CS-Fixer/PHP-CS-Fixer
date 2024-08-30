@@ -88,7 +88,7 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
                      * @uses static::someOtherFunction
                      */
                 }
-                EOF
+                EOF,
         ];
 
         yield [

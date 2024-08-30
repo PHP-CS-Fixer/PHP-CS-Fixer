@@ -143,10 +143,13 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays']]``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
 
 
 References

@@ -95,7 +95,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { protected static $foo = 1,$bar,$baz=2 ; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -107,7 +107,7 @@ echo Foo::A, Foo::B;
                 class Bar
                 {
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -120,7 +120,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { protected static $foo = 1, $bar,  $baz=2 ; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -133,7 +133,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { const ONE = 1, TWO = 2; protected static $foo = 1, $bar,  $baz=2 ; const THREE = 3; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -154,7 +154,7 @@ echo Foo::A, Foo::B;
                     $bar,
                    $baz=2;
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -181,7 +181,7 @@ echo Foo::A, Foo::B;
                     $bar,
                    $baz=2;
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -212,7 +212,7 @@ echo Foo::A, Foo::B;
                     // this is an inline comment, not a docblock
                     private $var = false;
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -247,7 +247,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'line_breaks_1' => [
@@ -287,7 +287,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'line_breaks_2' => [
@@ -321,7 +321,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'line_breaks_3' => [
@@ -355,7 +355,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'line_breaks_4' => [
@@ -388,7 +388,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'line_breaks_5' => [
@@ -415,7 +415,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'line_breaks_6' => [
@@ -442,7 +442,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'whitespace_1' => [
@@ -465,7 +465,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield 'whitespace_2' => [
@@ -488,7 +488,7 @@ echo Foo::A, Foo::B;
                     {
                     }
                 }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -501,7 +501,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { protected static $foo = 1, $bar, $baz=1; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -514,7 +514,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo {   protected static $foo = 1, $bar, $baz=1; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -527,7 +527,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { protected $foo = 1, $bar, $baz=2; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -540,7 +540,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { var $foo = 1, $bar, $baz=2; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -553,7 +553,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { var $foo = 1, $bar; public function doSomething1() {} var $baz=2; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -566,7 +566,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { var $foo = 1, $bar; public function doSomething2() { global $one, $two, $three; } var $baz=2; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -579,7 +579,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { public function doSomething3() {} protected $foo = 1, $bar, $baz=2; }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -592,7 +592,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { public function doSomethingElse() {} protected $foo = 1, $bar, $baz=2; private $acme =array(); }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -605,7 +605,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { public function doSomewhere() {} protected $foo = 1, $bar, $baz=2; private $acme1 =array(); }
-                EOT
+                EOT,
         ];
 
         yield [
@@ -618,7 +618,7 @@ echo Foo::A, Foo::B;
                 <?php
 
                 class Foo { public function doThis() { global $one1, $two2, $three3; } protected $foo = 1, $bar, $baz=2; private $acme2 =array(); }
-                EOT
+                EOT,
         ];
 
         yield [

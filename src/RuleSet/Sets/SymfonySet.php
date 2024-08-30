@@ -217,6 +217,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'switch_continue_to_break' => true,
             'trailing_comma_in_multiline' => [
+                'after_heredoc' => true,
                 'elements' => [ // explicitly omit 'arguments'
                     'array_destructuring',
                     'arrays',

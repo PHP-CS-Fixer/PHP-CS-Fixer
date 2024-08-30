@@ -76,7 +76,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
                 <?php /*comment*/ echo
                   1
                 ?>
-                EOT
+                EOT,
         ];
 
         yield [
@@ -88,7 +88,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
                 <?php
                   /*comment*/ echo 1
                 ?>
-                EOT
+                EOT,
         ];
 
         yield [
@@ -103,7 +103,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
                   echo
                   1
                 ?>
-                EOT
+                EOT,
         ];
     }
 

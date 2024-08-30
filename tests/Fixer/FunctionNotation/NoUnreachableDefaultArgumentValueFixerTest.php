@@ -79,7 +79,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                                         function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-                EOT
+                EOT,
         ];
 
         yield [
@@ -120,7 +120,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                             $c = null, // abc
                                             $d
                                         ) {}
-                EOT
+                EOT,
         ];
 
         yield [

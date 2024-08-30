@@ -49,7 +49,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
                      * @return void
                      */
 
-                EOF
+                EOF,
         ];
 
         yield [

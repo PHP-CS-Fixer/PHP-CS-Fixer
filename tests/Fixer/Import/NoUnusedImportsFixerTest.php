@@ -1048,7 +1048,7 @@ $b = $a-->ABC::Test;
                     use MyTrait;
                 }
 
-                EOF
+                EOF,
         ];
 
         yield 'imported_name_is_part_of_namespace' => [
@@ -1074,7 +1074,7 @@ $b = $a-->ABC::Test;
                 {
                 }
 
-                EOF
+                EOF,
         ];
 
         yield 'imported_name_is_part_of_namespace with closing tag' => [
@@ -1090,7 +1090,7 @@ $b = $a-->ABC::Test;
                     $y = new Y() ?>
                 <?php
                     var_dump($y);}
-                EOF
+                EOF,
         ];
 
         yield [
@@ -1341,7 +1341,7 @@ Bar3:
 
                 new CLassD();
                 echo fn_a(ConstB);
-                EOF
+                EOF,
         ];
 
         yield 'grouped imports' => [

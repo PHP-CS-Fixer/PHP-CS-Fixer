@@ -408,7 +408,7 @@ TEXT;
 
 
                 $d;
-                EOF
+                EOF,
         ];
 
         yield [

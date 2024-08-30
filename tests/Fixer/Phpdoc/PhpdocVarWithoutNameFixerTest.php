@@ -114,7 +114,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $bar;
                 }
-                EOF
+                EOF,
         ];
 
         yield 'testFixVarWithNestedKeys' => [
@@ -145,7 +145,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                      public $options;
                 }
-                EOF
+                EOF,
         ];
 
         yield 'testSingleLine' => [
@@ -302,7 +302,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 
                 /** @var Foo\Bar $bar */
                 $bar;
-                EOF
+                EOF,
         ];
 
         yield 'testMultiLineNoProperty' => [
@@ -313,7 +313,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                  * @var Foo\Bar $bar
                  */
                 $bar;
-                EOF
+                EOF,
         ];
 
         yield 'testVeryNestedInlineDoc' => [
@@ -362,7 +362,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $nestedFoo;
                 }
-                EOF
+                EOF,
         ];
 
         yield [
