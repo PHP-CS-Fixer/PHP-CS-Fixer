@@ -144,7 +144,10 @@ The rule is part of the following rule sets:
   ``['after_heredoc' => true]``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+
 
 References
 ----------

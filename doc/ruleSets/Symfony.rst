@@ -171,7 +171,10 @@ Rules
   ``['stick_comment_to_next_continuous_control_statement' => true]``
 
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
-- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
+
+  ``['elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_

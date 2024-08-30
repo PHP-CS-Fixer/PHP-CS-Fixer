@@ -216,7 +216,14 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'stick_comment_to_next_continuous_control_statement' => true,
             ],
             'switch_continue_to_break' => true,
-            'trailing_comma_in_multiline' => true,
+            'trailing_comma_in_multiline' => [
+                'elements' => [ // explicitly omit 'arguments'
+                    'array_destructuring',
+                    'arrays',
+                    'match',
+                    'parameters',
+                ],
+            ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
             'types_spaces' => true,
