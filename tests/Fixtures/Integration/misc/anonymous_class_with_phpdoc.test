@@ -8,12 +8,12 @@ Integration of fixers: Anonymous class /w PHPDoc and attributes on separate line
 $a = new
     /** @property string $x */
     class {};
-    
-    $b = new
+
+$b = new
     #[X]
     class {};
-    
-    $c = new
+
+$c = new
     /** @property string $x */
     #[X] #[Y\Z]
     class {};
