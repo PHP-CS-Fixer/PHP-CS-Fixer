@@ -9,7 +9,6 @@ Rules
 
 - `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
-- `array_syntax <./../rules/array_notation/array_syntax.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_ with config:

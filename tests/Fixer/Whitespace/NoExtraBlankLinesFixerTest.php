@@ -370,6 +370,9 @@ TEXT;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithCommentsCases(): iterable
     {
         yield [
@@ -422,6 +425,9 @@ TEXT;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithLineBreaksCases(): iterable
     {
         $input = '<?php //
@@ -481,6 +487,9 @@ $b = 1;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideBetweenUseCases(): iterable
     {
         yield ['<?php use A\B;'];
@@ -573,6 +582,9 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideRemoveLinesBetweenUseStatementsCases(): iterable
     {
         yield [
@@ -644,6 +656,9 @@ use const some\a\{ConstA, ConstB, ConstC};
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideWithoutUsesCases(): iterable
     {
         yield [
@@ -682,6 +697,9 @@ $a = new Qux();',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideRemoveBetweenUseTraitsCases(): iterable
     {
         yield [
@@ -797,6 +815,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideOneOrInLineCases(): iterable
     {
         yield [
@@ -1238,6 +1259,9 @@ function foo(){}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

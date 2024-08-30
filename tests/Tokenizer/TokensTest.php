@@ -370,6 +370,9 @@ final class TokensTest extends TestCase
         self::assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
+    /**
+     * @return iterable<array{bool, string}>
+     */
     public static function provideMonolithicPhpDetectionCases(): iterable
     {
         yield [true, "<?php\n"];
@@ -723,6 +726,9 @@ final class TokensTest extends TestCase
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
+    /**
+     * @return iterable<array{int, string, int, int}>
+     */
     public static function provideFindBlockEndCases(): iterable
     {
         yield [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2];
@@ -764,6 +770,9 @@ final class TokensTest extends TestCase
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
+    /**
+     * @return iterable<array{int, string, int, int}>
+     */
     public static function provideFindBlockEnd80Cases(): iterable
     {
         yield [
@@ -789,6 +798,9 @@ final class TokensTest extends TestCase
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
+    /**
+     * @return iterable<array{int, string, int, int}>
+     */
     public static function provideFindBlockEnd82Cases(): iterable
     {
         yield [
@@ -826,6 +838,9 @@ final class TokensTest extends TestCase
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
+    /**
+     * @return iterable<string, array{int, string, int, int}>
+     */
     public static function provideFindBlockEnd83Cases(): iterable
     {
         yield 'simple dynamic class constant fetch' => [
@@ -968,6 +983,9 @@ final class TokensTest extends TestCase
         self::assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
     }
 
+    /**
+     * @return iterable<array{Token, bool}>
+     */
     public static function provideIsEmptyCases(): iterable
     {
         yield [new Token(''), true];
@@ -1007,6 +1025,9 @@ final class TokensTest extends TestCase
         self::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
+    /**
+     * @return iterable<array{string, string, int, int, string}>
+     */
     public static function provideEnsureWhitespaceAtIndexCases(): iterable
     {
         yield [
@@ -1183,6 +1204,9 @@ echo $a;',
         self::assertSame($expected, $tokens->generateCode());
     }
 
+    /**
+     * @return iterable<array{0: int, 1: null|string, 2: string, 3?: string}>
+     */
     public static function provideRemoveLeadingWhitespaceCases(): iterable
     {
         yield [
@@ -1254,6 +1278,9 @@ echo $a;',
         self::assertSame($expected, $tokens->generateCode());
     }
 
+    /**
+     * @return iterable<array{0: int, 1: null|string, 2: string, 3?: string}>
+     */
     public static function provideRemoveTrailingWhitespaceCases(): iterable
     {
         $leadingCases = self::provideRemoveLeadingWhitespaceCases();
@@ -1523,6 +1550,9 @@ $bar;',
         self::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
     }
 
+    /**
+     * @return iterable<int|string, array{null|int, int, int, string}>
+     */
     public static function provideGetMeaningfulTokenSiblingCases(): iterable
     {
         yield [null, 0, 1, '<?php '];

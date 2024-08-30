@@ -83,6 +83,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame($command, $application->find($name));
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideCommandNameCases(): iterable
     {
         yield ['self-update'];

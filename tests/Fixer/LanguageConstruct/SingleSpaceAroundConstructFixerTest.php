@@ -80,6 +80,9 @@ final class SingleSpaceAroundConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithAbstractCases(): iterable
     {
         yield [
@@ -181,6 +184,9 @@ abstract class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithBreakCases(): iterable
     {
         yield [
@@ -599,6 +605,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithCaseCases(): iterable
     {
         yield [
@@ -670,6 +679,9 @@ switch ($i) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithCatchCases(): iterable
     {
         yield [
@@ -796,6 +808,9 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithContinueCases(): iterable
     {
         yield [
@@ -844,6 +859,9 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithConstCases(): iterable
     {
         yield [
@@ -950,6 +968,9 @@ const     A = 3 ?>
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithConstImportCases(): iterable
     {
         yield [
@@ -989,6 +1010,9 @@ FOO\BAR;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithCloneCases(): iterable
     {
         yield [
@@ -1028,6 +1052,9 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithDoCases(): iterable
     {
         yield [
@@ -1077,6 +1104,9 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithEchoCases(): iterable
     {
         yield [
@@ -1116,6 +1146,9 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithElseCases(): iterable
     {
         yield [
@@ -1129,8 +1162,8 @@ $foo;',
         ];
 
         yield [
-            '<?php if (true) {} else {}',
-            '<?php if (true) {} else
+            '<?php if (true){} else {}',
+            '<?php if (true){} else
 
 {}',
         ];
@@ -1138,6 +1171,35 @@ $foo;',
         yield [
             '<?php if (true) {} else /* foo */{}',
             '<?php if (true) {} else/* foo */{}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithElsePrecededCases
+     */
+    public function testFixWithElsePreceded(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'constructs_preceded_by_a_single_space' => [
+                'else',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixWithElsePrecededCases(): iterable
+    {
+        yield 'A' => [
+            '<?php if ($a222) {} else {}',
+            '<?php if ($a222) {}else{}',
+        ];
+
+        yield 'B' => [
+            "<?php if (\$b333) {}//foo X\nelse {}",
         ];
     }
 
@@ -1155,11 +1217,14 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithElseIfCases(): iterable
     {
         yield [
-            '<?php if (true) {} elseif (false) {}',
-            '<?php if (true) {} elseif(false) {}',
+            '<?php if (true) {}elseif (false) {}',
+            '<?php if (true) {}elseif(false) {}',
         ];
 
         yield [
@@ -1181,6 +1246,40 @@ $foo;',
     }
 
     /**
+     * @dataProvider provideFixWithElseIfPrecededCases
+     */
+    public function testFixWithElseIfPreceded(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'constructs_preceded_by_a_single_space' => [
+                'elseif',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixWithElseIfPrecededCases(): iterable
+    {
+        yield [
+            '<?php if ($y1x) {} elseif (false) {}',
+            '<?php if ($y1x) {}elseif(false) {}',
+        ];
+
+        yield [
+            '<?php if ($y2y) {} elseif (false) {}',
+            '<?php if ($y2y) {}    elseif   (false) {}',
+        ];
+
+        yield [
+            "<?php if (\$y3t) {}//foo Y\nelseif (false) {}",
+        ];
+    }
+
+    /**
      * @dataProvider provideFixWithExtendsCases
      */
     public function testFixWithExtends(string $expected, ?string $input = null): void
@@ -1194,6 +1293,9 @@ $foo;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithExtendsCases(): iterable
     {
         yield [
@@ -1307,6 +1409,9 @@ Bar6, Baz, Qux {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithFinalCases(): iterable
     {
         yield [
@@ -1408,6 +1513,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithFinallyCases(): iterable
     {
         yield [
@@ -1452,6 +1560,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithForCases(): iterable
     {
         yield [
@@ -1496,6 +1607,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithForeachCases(): iterable
     {
         yield [
@@ -1540,6 +1654,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithFunctionCases(): iterable
     {
         yield [
@@ -1641,6 +1758,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithFunctionImportCases(): iterable
     {
         yield [
@@ -1680,6 +1800,9 @@ Foo\bar;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithGlobalCases(): iterable
     {
         yield [
@@ -1724,6 +1847,9 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithGotoCases(): iterable
     {
         yield [
@@ -1758,6 +1884,9 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithIfCases(): iterable
     {
         yield [
@@ -1797,6 +1926,9 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithImplementsCases(): iterable
     {
         yield [
@@ -1866,6 +1998,9 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithIncludeCases(): iterable
     {
         yield [
@@ -1905,6 +2040,9 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithIncludeOnceCases(): iterable
     {
         yield [
@@ -1944,6 +2082,9 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithInstanceofCases(): iterable
     {
         yield [
@@ -1988,6 +2129,9 @@ foo; foo: echo "Bar";',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithInsteadofCases(): iterable
     {
         yield [
@@ -2083,6 +2227,9 @@ class Talker {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithInterfaceCases(): iterable
     {
         yield [
@@ -2122,6 +2269,9 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixWithNewCases(): iterable
     {
         yield [
@@ -2181,6 +2331,9 @@ Bar();',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithOpenTagWithEchoCases(): iterable
     {
         yield [
@@ -2225,6 +2378,9 @@ $foo ?>',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithPrintCases(): iterable
     {
         yield [
@@ -2264,6 +2420,9 @@ $foo ?>',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithPrivateCases(): iterable
     {
         yield [
@@ -2352,6 +2511,9 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithProtectedCases(): iterable
     {
         yield [
@@ -2440,6 +2602,9 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithPublicCases(): iterable
     {
         yield [
@@ -2528,6 +2693,9 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithRequireCases(): iterable
     {
         yield [
@@ -2567,6 +2735,9 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithRequireOnceCases(): iterable
     {
         yield [
@@ -2606,6 +2777,9 @@ CONST BAR = 9000; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithReturnCases(): iterable
     {
         yield [
@@ -2755,6 +2929,9 @@ return
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithStaticCases(): iterable
     {
         yield [
@@ -2860,6 +3037,9 @@ array $c; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithThrowCases(): iterable
     {
         yield [
@@ -2899,6 +3079,9 @@ new Exception();',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithTraitCases(): iterable
     {
         yield [
@@ -2938,6 +3121,9 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithTryCases(): iterable
     {
         yield [
@@ -2982,6 +3168,9 @@ Foo {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithUseCases(): iterable
     {
         yield [
@@ -3135,6 +3324,9 @@ function Foo\bar;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithUseTraitCases(): iterable
     {
         yield [
@@ -3174,6 +3366,9 @@ Bar; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithVarCases(): iterable
     {
         yield [
@@ -3218,6 +3413,9 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithWhileCases(): iterable
     {
         yield [
@@ -3262,6 +3460,9 @@ $bar; }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithYieldCases(): iterable
     {
         yield [
@@ -3427,6 +3628,9 @@ baz(); }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithPhpOpenCases(): iterable
     {
         yield [
@@ -3474,6 +3678,9 @@ baz(); }',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideCommentsCases(): iterable
     {
         yield [
@@ -3527,6 +3734,9 @@ foreach ($fields as [$field/** @var string*/]) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideWithNamespaceCases(): iterable
     {
         yield 'simple' => [
@@ -3593,6 +3803,9 @@ namespace/* comment */ Foo;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'match 1' => [
@@ -3667,6 +3880,9 @@ class Point {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
@@ -3761,6 +3977,9 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithSwitchCases(): iterable
     {
         yield [
@@ -3789,6 +4008,9 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideTypeColonCases(): iterable
     {
         yield [
@@ -3833,6 +4055,9 @@ class    Test {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideEnumTypeColonCases(): iterable
     {
         yield [

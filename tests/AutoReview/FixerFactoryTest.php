@@ -169,6 +169,9 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{\DirectoryIterator}>
+     */
     public static function providePriorityIntegrationTestFilesAreListedInPriorityGraphCases(): iterable
     {
         foreach (new \DirectoryIterator(self::getIntegrationPriorityDirectory()) as $candidate) {

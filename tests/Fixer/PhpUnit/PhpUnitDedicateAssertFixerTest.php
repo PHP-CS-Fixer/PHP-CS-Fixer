@@ -340,6 +340,9 @@ $a#
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<int|string, array{string}>
+     */
     public static function provideNotFixCases(): iterable
     {
         yield 'not a method call' => [
@@ -414,6 +417,9 @@ $a#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideTestAssertCountCases(): iterable
     {
         // positive fixing
@@ -574,6 +580,9 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideTestAssertCountCasingCases(): iterable
     {
         yield [
@@ -596,6 +605,9 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFix73Cases(): iterable
     {
         yield [
@@ -650,6 +662,9 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

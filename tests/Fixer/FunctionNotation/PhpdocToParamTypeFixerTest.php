@@ -525,6 +525,9 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield 'skip mixed type of param' => [
@@ -562,6 +565,9 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'non-root class with mixed type of param for php >= 8' => [

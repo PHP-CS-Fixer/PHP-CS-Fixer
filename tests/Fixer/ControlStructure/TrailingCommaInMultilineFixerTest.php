@@ -617,6 +617,24 @@ $a
 ); }};',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
         ];
+
+        yield [
+            '<?php
+$a = [11,2,3];
+[
+    $c,
+    $d,
+] = $a;
+',
+            '<?php
+$a = [11,2,3];
+[
+    $c,
+    $d
+] = $a;
+',
+            ['elements' => ['array_destructuring']],
+        ];
     }
 
     /**

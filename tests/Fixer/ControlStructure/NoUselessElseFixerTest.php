@@ -35,6 +35,9 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideCloseTagCases(): iterable
     {
         yield [
@@ -140,6 +143,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixIfElseIfElseCases(): iterable
     {
         $expected =
@@ -262,6 +268,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixIfElseCases(): iterable
     {
         $expected = '<?php
@@ -320,6 +329,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixNestedIfCases(): iterable
     {
         yield [
@@ -356,6 +368,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixEmptyElseCases(): iterable
     {
         yield [
@@ -451,6 +466,9 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideNegativeCases(): iterable
     {
         yield [
@@ -637,6 +655,9 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideNegativePhp80Cases(): iterable
     {
         $cases = [
@@ -732,6 +753,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideConditionsWithoutBracesCases(): iterable
     {
         $statements = [
@@ -784,6 +808,9 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideConditionsWithoutBraces80Cases(): iterable
     {
         yield from self::generateConditionsWithoutBracesCase('$b = $a ?? throw new Exception($i);');

@@ -82,6 +82,9 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringStartsWith($startWith, $displayed);
     }
 
+    /**
+     * @return iterable<array{Error, int, int, int, string}>
+     */
     public static function provideErrorOutputCases(): iterable
     {
         $lineNumber = __LINE__;

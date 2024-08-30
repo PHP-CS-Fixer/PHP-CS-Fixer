@@ -74,7 +74,7 @@ final class ProcessFactory
         }
 
         $commandArgs = [
-            $phpBinary,
+            escapeshellarg($phpBinary),
             escapeshellarg($mainScript),
             'worker',
             '--port',

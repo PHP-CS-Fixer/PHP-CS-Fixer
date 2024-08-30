@@ -532,6 +532,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield 'skip mixed type' => [
@@ -557,6 +560,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'fix mixed type' => [
@@ -590,6 +596,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly properties are always typed, make sure the fixer does not crash' => [

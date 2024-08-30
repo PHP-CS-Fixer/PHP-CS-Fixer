@@ -2667,6 +2667,9 @@ static fn ($foo): int => 1;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'static return' => [
@@ -3153,6 +3156,9 @@ enum Foo {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'explicit null with null native type' => [

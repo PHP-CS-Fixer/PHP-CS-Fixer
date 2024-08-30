@@ -35,6 +35,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'It replaces an unset on a property with = null' => [

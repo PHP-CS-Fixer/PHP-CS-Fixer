@@ -290,6 +290,9 @@ final class ProjectCodeTest extends TestCase
         ));
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideDataProviderMethodCases(): iterable
     {
         if (null === self::$dataProviderMethodCases) {
@@ -672,6 +675,9 @@ final class ProjectCodeTest extends TestCase
         yield from self::$srcClassCases;
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
     {
         return array_map(
@@ -716,6 +722,9 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideThatSrcClassHaveTestClassCases(): iterable
     {
         return array_map(
@@ -870,6 +879,9 @@ final class ProjectCodeTest extends TestCase
         yield from self::$testClassCases;
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
     {
         return array_map(
@@ -893,6 +905,9 @@ final class ProjectCodeTest extends TestCase
         self::assertTrue($reflection->isSubclassOf(AbstractPhpUnitFixer::class));
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): iterable
     {
         $factory = new FixerFactory();

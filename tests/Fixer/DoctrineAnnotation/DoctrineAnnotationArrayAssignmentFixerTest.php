@@ -46,6 +46,9 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield from self::createTestCases([
@@ -110,6 +113,9 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string}>
+     */
     public static function provideFixWithColonCases(): iterable
     {
         yield from self::createTestCases([
@@ -176,6 +182,9 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

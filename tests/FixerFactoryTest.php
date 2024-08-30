@@ -315,6 +315,9 @@ final class FixerFactoryTest extends TestCase
         ;
     }
 
+    /**
+     * @return iterable<array{RuleSet}>
+     */
     public static function provideConflictingFixersCases(): iterable
     {
         yield [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])];
@@ -501,6 +504,9 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
+    /**
+     * @return iterable<array{float|int|\stdClass|string}>
+     */
     public static function provideConfigureFixerWithNonArrayCases(): iterable
     {
         yield ['bar'];

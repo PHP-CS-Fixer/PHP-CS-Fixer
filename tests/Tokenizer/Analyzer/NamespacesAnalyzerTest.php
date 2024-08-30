@@ -125,6 +125,9 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{string, int, NamespaceAnalysis}>
+     */
     public static function provideGetNamespaceAtCases(): iterable
     {
         yield [

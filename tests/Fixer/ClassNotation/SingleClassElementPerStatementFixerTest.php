@@ -853,6 +853,9 @@ echo Foo::A, Foo::B;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -882,6 +885,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -973,6 +979,9 @@ var_dump(Foo::A.Foo::B);",
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [

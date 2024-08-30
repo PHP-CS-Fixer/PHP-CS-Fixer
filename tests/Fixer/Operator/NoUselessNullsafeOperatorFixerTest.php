@@ -35,6 +35,9 @@ final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple case + comment' => [

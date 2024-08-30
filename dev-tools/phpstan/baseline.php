@@ -1250,12 +1250,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#2 \\$imports of method PhpCsFixer\\\\Tokenizer\\\\Processor\\\\ImportProcessor\\:\\:insertImports\\(\\) expects array\\{const\\?\\: array\\<int\\|string, class\\-string\\>, class\\?\\: array\\<int\\|string, class\\-string\\>, function\\?\\: array\\<int\\|string, class\\-string\\>\\}, array\\{const\\?\\: array\\<string, string\\>, function\\?\\: array\\<string, string\\>, class\\?\\: array\\<string, string\\>\\}&non\\-empty\\-array given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 0 might not exist on list\\<PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\NamespaceUseAnalysis\\>\\.$#',
 	'count' => 1,
@@ -1479,7 +1473,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'as\'\\|\'use_lambda\' might not exist on array\\<string, int\\|null\\>\\.$#',
+	'message' => '#^Offset \'as\'\\|\'else\'\\|\'elseif\'\\|\'use_lambda\' might not exist on array\\<string, int\\|null\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
 ];
@@ -3056,6 +3050,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixerTest.php',
 ];
 $ignoreErrors[] = [
+	// identifier: generator.valueType
+	'message' => '#^Generator expects value type array\\{0\\: string, 1\\?\\: string\\}, array\\{0\\?\\: string, 1\\: string\\} given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../tests/Fixer/Operator/IncrementStyleFixerTest.php',
+];
+$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'operators\' might not exist on array\\<string, mixed\\>\\.$#',
 	'count' => 1,
@@ -3096,12 +3096,6 @@ $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#2 \\$array of function array_map expects array, iterable given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Whitespace/LineEndingFixerTest.php',
 ];
 $ignoreErrors[] = [
 	// identifier: new.resultUnused

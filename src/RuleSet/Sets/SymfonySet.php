@@ -27,7 +27,6 @@ final class SymfonySet extends AbstractRuleSetDescription
         return [
             '@PER-CS2.0' => true,
             'align_multiline_comment' => true,
-            'array_syntax' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,
             'blank_line_before_statement' => [

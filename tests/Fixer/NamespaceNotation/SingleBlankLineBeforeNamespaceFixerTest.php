@@ -39,6 +39,9 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string, 2?: WhitespacesFixerConfig}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ["<?php\n\nnamespace X;"];

@@ -418,6 +418,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield 'report static as self' => [
@@ -464,6 +467,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'static' => [
@@ -542,6 +548,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFixPre81Cases(): iterable
     {
         yield 'skip never type' => [
@@ -559,6 +568,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'never type' => [

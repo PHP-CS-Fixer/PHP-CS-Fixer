@@ -753,6 +753,9 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'function (multiline + union return)' => [
@@ -818,6 +821,9 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'function (multiline + intersection return)' => [
@@ -840,6 +846,9 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'function (multiline + DNF return)' => [

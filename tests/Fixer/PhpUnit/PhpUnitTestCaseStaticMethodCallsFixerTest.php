@@ -549,6 +549,9 @@ class MyTest extends \PHPUnit_Framework_TestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
