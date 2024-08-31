@@ -65,6 +65,10 @@ interface ConfigInterface
 
     /**
      * Get configured PHP executable, if any.
+     *
+     * @deprecated
+     *
+     * @TODO 4.0 remove me
      */
     public function getPhpExecutable(): ?string;
 
@@ -116,6 +120,10 @@ interface ConfigInterface
 
     /**
      * Set PHP executable.
+     *
+     * @deprecated
+     *
+     * @TODO 4.0 remove me
      */
     public function setPhpExecutable(?string $phpExecutable): self;
 
