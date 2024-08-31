@@ -250,14 +250,11 @@ jobs:
 
     runs-on: 'ubuntu-24.04'
     env:
-      php-version: '8.2'
+      php-version: '8.3'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Remove Infection
-        run: composer remove --dev infection/infection --no-update
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
