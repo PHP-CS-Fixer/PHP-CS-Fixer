@@ -157,9 +157,6 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
-    /**
-     * @return numeric-string
-     */
     private function getPhpVersionUsedByCiForDeployments(): string
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
