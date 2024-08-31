@@ -246,16 +246,11 @@ jobs:
 
   deployment:
     needs: tests
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.2'
-
     name: Deployment checks
 
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: 'ubuntu-24.04'
+    env:
+      php-version: '8.2'
 
     steps:
       - name: Checkout code
@@ -268,7 +263,7 @@ jobs:
         uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
           os: ${{ runner.os }}
-          php: ${{ matrix.php-version }}
+          php: ${{ env.php-version }}
 
       - name: Cache dev-tools
         uses: actions/cache@v4
