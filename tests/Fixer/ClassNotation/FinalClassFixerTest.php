@@ -126,8 +126,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
         yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'];
 
-        yield ['<?php #[Entity] class MyEntity {}'];
-
         yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'];
 
         yield ['<?php #[IgnoredAttribute] #[Entity] class MyEntity {}'];
@@ -145,10 +143,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
 
         yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] /* some comment */ class MyEntity {}'];
 
-        yield ['<?php #[Entity] /* some comment */ class MyEntity {}'];
-
-        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] /* some comment */ class MyEntity {}'];
-
         yield ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute] #[Entity] /* some comment */ class MyEntity {}'];
 
         yield ['<?php use Doctrine\ORM\Mapping as ORM; #[IgnoredAttribute("Some-Value"), Entity] /* some comment */ class MyEntity {}'];
@@ -163,8 +157,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         yield ['<?php /* some comment */ #[Document] class MyDocument {}'];
 
         yield ['<?php /* some comment */ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] class MyEntity {}'];
-
-        yield ['<?php /* some comment */ #[Entity] class MyEntity {}'];
 
         yield ['<?php /* some comment */ use Doctrine\ORM\Mapping as ORM; #[ORM\entity] class MyEntity {}'];
 
@@ -229,12 +221,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         yield ['<?php #[Document] readonly class MyDocument {}'];
 
         yield ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; #[ODM\Document] readonly class MyEntity {}'];
-
-        yield ['<?php #[Entity] readonly class MyEntity {}'];
-
-        yield ['<?php use Doctrine\ORM\Mapping as ORM; #[ORM\entity] readonly class MyEntity {}'];
-
-        yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly class MyEntity {}'];
 
         yield ['<?php use Doctrine\ORM; #[ORM\Mapping\Entity] readonly /* ... */ class MyEntity {}'];
 

@@ -895,6 +895,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'constant in trait' => [

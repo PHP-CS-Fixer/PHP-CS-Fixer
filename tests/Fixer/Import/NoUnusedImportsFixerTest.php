@@ -33,6 +33,9 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
@@ -1045,7 +1048,7 @@ $b = $a-->ABC::Test;
                     use MyTrait;
                 }
 
-                EOF
+                EOF,
         ];
 
         yield 'imported_name_is_part_of_namespace' => [
@@ -1071,7 +1074,7 @@ $b = $a-->ABC::Test;
                 {
                 }
 
-                EOF
+                EOF,
         ];
 
         yield 'imported_name_is_part_of_namespace with closing tag' => [
@@ -1087,7 +1090,7 @@ $b = $a-->ABC::Test;
                     $y = new Y() ?>
                 <?php
                     var_dump($y);}
-                EOF
+                EOF,
         ];
 
         yield [
@@ -1338,7 +1341,7 @@ Bar3:
 
                 new CLassD();
                 echo fn_a(ConstB);
-                EOF
+                EOF,
         ];
 
         yield 'grouped imports' => [
@@ -1501,6 +1504,9 @@ use /**/A\B/**/;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -1573,6 +1579,9 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'final const' => [

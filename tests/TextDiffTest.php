@@ -62,6 +62,9 @@ final class TextDiffTest extends TestCase
         self::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
+    /**
+     * @return iterable<array{string, string, bool}>
+     */
     public static function provideDiffReportingDecoratedCases(): iterable
     {
         $expected = <<<'TEST'

@@ -141,6 +141,9 @@ final class LineTest extends TestCase
         self::assertSame(14 === $pos, $line->isTheEnd());
     }
 
+    /**
+     * @return iterable<array{int, string}>
+     */
     public static function provideLinesCases(): iterable
     {
         foreach (self::$content as $index => $content) {
@@ -159,6 +162,9 @@ final class LineTest extends TestCase
         self::assertSame($useful, $line->containsUsefulContent());
     }
 
+    /**
+     * @return iterable<array{int, bool}>
+     */
     public static function provideUsefulCases(): iterable
     {
         foreach (self::$useful as $index => $useful) {
@@ -177,6 +183,9 @@ final class LineTest extends TestCase
         self::assertSame($tag, $line->containsATag());
     }
 
+    /**
+     * @return iterable<array{int, bool}>
+     */
     public static function provideTagCases(): iterable
     {
         foreach (self::$tag as $index => $tag) {

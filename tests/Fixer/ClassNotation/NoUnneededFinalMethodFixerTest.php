@@ -411,6 +411,9 @@ class Bar
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -494,6 +497,9 @@ var_dump(Foo::Spades);',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'final readonly class - final after visibility method' => [

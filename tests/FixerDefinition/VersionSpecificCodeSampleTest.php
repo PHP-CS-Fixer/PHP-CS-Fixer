@@ -67,6 +67,9 @@ final class VersionSpecificCodeSampleTest extends TestCase
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
     }
 
+    /**
+     * @return iterable<string, array{int, bool}>
+     */
     public static function provideIsSuitableForUsesVersionSpecificationCases(): iterable
     {
         yield 'is-satisfied' => [100, true];

@@ -57,7 +57,7 @@ final class DocumentationCommandTest extends TestCase
 
     private function createFilesystemDouble(): Filesystem
     {
-        return new class() extends Filesystem {
+        return new class extends Filesystem {
             public function dumpFile(string $filename, $content): void {}
 
             /** @phpstan-ignore-next-line */

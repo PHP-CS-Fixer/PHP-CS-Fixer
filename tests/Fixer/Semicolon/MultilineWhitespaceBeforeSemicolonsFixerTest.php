@@ -43,6 +43,9 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixMultiLineWhitespaceCases(): iterable
     {
         yield [
@@ -297,6 +300,9 @@ $seconds = $minutes
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideMessyWhitespacesMultiLineWhitespaceCases(): iterable
     {
         yield [
@@ -314,6 +320,9 @@ $seconds = $minutes
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideSemicolonForChainedCallsFixCases(): iterable
     {
         yield [
@@ -1160,6 +1169,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): iterable
     {
         yield [

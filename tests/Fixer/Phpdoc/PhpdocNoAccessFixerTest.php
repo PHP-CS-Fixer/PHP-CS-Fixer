@@ -53,7 +53,7 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
                      * @access public
                      */
 
-                PHP
+                PHP,
         ];
 
         yield 'many' => [
@@ -74,7 +74,7 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
                  * @access foo
                  */
 
-                PHP
+                PHP,
         ];
 
         yield 'do nothing' => [
@@ -84,7 +84,7 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
                      * @var access
                      */
 
-                PHP
+                PHP,
         ];
     }
 }

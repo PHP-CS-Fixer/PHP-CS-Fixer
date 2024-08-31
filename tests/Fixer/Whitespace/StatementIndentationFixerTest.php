@@ -1476,7 +1476,7 @@ $foo = [
                 {
                     public int $bar = BAZ ? -1 : 1;
                 }
-                PHP
+                PHP,
         ];
     }
 

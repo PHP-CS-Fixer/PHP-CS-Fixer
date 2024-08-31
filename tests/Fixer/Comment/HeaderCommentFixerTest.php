@@ -726,6 +726,9 @@ echo 1;'
         );
     }
 
+    /**
+     * @return iterable<array{string, string, string}>
+     */
     public static function provideHeaderGenerationCases(): iterable
     {
         yield [
@@ -757,6 +760,9 @@ echo 1;'
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideDoNotTouchCases(): iterable
     {
         yield ["<?php\nphpinfo();\n?>\n<?"];

@@ -158,6 +158,9 @@ final class CacheTest extends TestCase
         self::assertSame($hash, $cached->get($file));
     }
 
+    /**
+     * @return iterable<array{Signature}>
+     */
     public static function provideCanConvertToAndFromJsonCases(): iterable
     {
         $toolInfo = new ToolInfo();
@@ -205,7 +208,7 @@ final class CacheTest extends TestCase
 
     private function createSignatureDouble(): SignatureInterface
     {
-        return new class() implements SignatureInterface {
+        return new class implements SignatureInterface {
             public function getPhpVersion(): string
             {
                 return '7.1.0';

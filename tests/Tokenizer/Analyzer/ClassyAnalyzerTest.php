@@ -147,11 +147,6 @@ final class ClassyAnalyzerTest extends TestCase
             [3 => false, 8 => true],
         ];
 
-        yield [
-            '<?php function foo(): \Foo {}',
-            [3 => false, 9 => true],
-        ];
-
         foreach (['bool', 'float', 'int', 'parent', 'self', 'string', 'void'] as $returnType) {
             yield [
                 \sprintf('<?php function foo(): %s {}', $returnType),

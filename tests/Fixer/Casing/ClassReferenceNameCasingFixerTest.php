@@ -33,6 +33,9 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -278,6 +281,9 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

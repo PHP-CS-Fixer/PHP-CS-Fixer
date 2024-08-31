@@ -32,28 +32,77 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
 
     public function getRules(): array
     {
-        $rules = [
+        return [
             '@PER-CS1.0' => true,
             'array_indentation' => true,
+            'array_syntax' => true,
             'cast_spaces' => true,
             'concat_space' => ['spacing' => 'one'],
             'function_declaration' => [
                 'closure_fn_spacing' => 'none',
             ],
             'method_argument_space' => true,
+            'new_with_parentheses' => [
+                'anonymous_class' => false,
+            ],
             'single_line_empty_body' => true,
+            'single_space_around_construct' => [
+                'constructs_followed_by_a_single_space' => [
+                    'abstract',
+                    'as',
+                    'case',
+                    'catch',
+                    'class',
+                    'const',
+                    'const_import',
+                    'do',
+                    'else',
+                    'elseif',
+                    'enum',
+                    'final',
+                    'finally',
+                    'for',
+                    'foreach',
+                    'function',
+                    'function_import',
+                    'if',
+                    'insteadof',
+                    'interface',
+                    'match',
+                    'named_argument',
+                    'namespace',
+                    'new',
+                    'private',
+                    'protected',
+                    'public',
+                    'readonly',
+                    'static',
+                    'switch',
+                    'trait',
+                    'try',
+                    'type_colon',
+                    'use',
+                    'use_lambda',
+                    'while',
+                ],
+                'constructs_preceded_by_a_single_space' => [
+                    'as',
+                    'else',
+                    'elseif',
+                    'use_lambda',
+                ],
+            ],
             'trailing_comma_in_multiline' => [
                 'after_heredoc' => true,
-                'elements' => ['arguments', 'arrays'],
+                'elements' => [
+                    'arguments',
+                    'array_destructuring',
+                    'arrays',
+                    'match',
+                    'parameters',
+                ],
             ],
         ];
-
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            $rules['trailing_comma_in_multiline']['elements'][] = 'match';
-            $rules['trailing_comma_in_multiline']['elements'][] = 'parameters';
-        }
-
-        return $rules;
     }
 
     public function getDescription(): string

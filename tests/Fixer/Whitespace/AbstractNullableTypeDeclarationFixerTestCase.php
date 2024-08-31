@@ -36,6 +36,9 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -175,6 +178,9 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'static return' => [

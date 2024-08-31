@@ -168,6 +168,9 @@ final class DocBlockTest extends TestCase
         self::assertSame($outputDocBlock, $doc->getContent());
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string, 2?: string, 3?: string}>
+     */
     public static function provideMakeMultiLIneCases(): iterable
     {
         yield 'It keeps a multi line doc block as is' => [
@@ -216,6 +219,9 @@ final class DocBlockTest extends TestCase
         self::assertSame($outputDocBlock, $doc->getContent());
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideMakeSingleLineCases(): iterable
     {
         yield 'It keeps a single line doc block as is' => [

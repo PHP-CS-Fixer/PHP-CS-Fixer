@@ -27,7 +27,6 @@ final class SymfonySet extends AbstractRuleSetDescription
         return [
             '@PER-CS2.0' => true,
             'align_multiline_comment' => true,
-            'array_syntax' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,
             'blank_line_before_statement' => [
@@ -217,7 +216,15 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'stick_comment_to_next_continuous_control_statement' => true,
             ],
             'switch_continue_to_break' => true,
-            'trailing_comma_in_multiline' => true,
+            'trailing_comma_in_multiline' => [
+                'after_heredoc' => true,
+                'elements' => [ // explicitly omit 'arguments'
+                    'array_destructuring',
+                    'arrays',
+                    'match',
+                    'parameters',
+                ],
+            ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => true,
             'types_spaces' => true,

@@ -37,6 +37,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixNamedWithDefaultConfigurationCases(): iterable
     {
         yield ['<?php $x = new X(foo(/**/));'];
@@ -328,6 +331,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixNamedWithoutBracesCases(): iterable
     {
         yield ['<?php $x = new X(foo(/**/));'];
@@ -620,6 +626,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixAnonymousWithDefaultConfigurationCases(): iterable
     {
         yield ['<?php $a = new class($a) {use SomeTrait;};'];
@@ -689,6 +698,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixAnonymousWithoutBracesCases(): iterable
     {
         yield ['<?php $a = new class($a) {use SomeTrait;};'];
@@ -750,6 +762,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
@@ -778,6 +793,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -827,6 +845,9 @@ $a = new ($foo."ar");',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

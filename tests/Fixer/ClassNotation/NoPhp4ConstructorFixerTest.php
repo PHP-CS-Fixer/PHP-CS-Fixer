@@ -35,6 +35,9 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -86,7 +89,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'simple class 2' => [
@@ -117,7 +120,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                     )#
                     {}
                 }
-                EOF
+                EOF,
         ];
 
         yield 'namespace' => [<<<'EOF'
@@ -193,7 +196,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'PHP 5 only' => [<<<'EOF'
@@ -251,7 +254,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'both the right way 1' => [
@@ -351,7 +354,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'both the right way 3' => [
@@ -401,7 +404,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'both the other way around 1' => [
@@ -458,7 +461,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'PHP 4 parent' => [
@@ -501,7 +504,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'PHP 4 parent init' => [
@@ -544,7 +547,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'mixed parent' => [
@@ -587,7 +590,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'mixed parent 2' => [
@@ -630,7 +633,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'parent other' => [
@@ -673,7 +676,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'parent other 2' => [
@@ -716,7 +719,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(3);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'class with anonymous' => [
@@ -743,7 +746,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         $this->bar = function () {};
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'class with comments' => [
@@ -766,7 +769,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                 public function /* test */ Foo($param) {
                 }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'alpha beta' => [<<<'EOF'
@@ -887,7 +890,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         $this->foo = 1;
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield 'abstract' => [<<<'EOF'
@@ -959,7 +962,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ?>
-                EOF
+                EOF,
         ];
 
         yield 'infinite recursion' => [
@@ -1002,7 +1005,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         }
                     }
                 ?>
-                EOF
+                EOF,
         ];
     }
 
@@ -1016,6 +1019,9 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -1040,7 +1046,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
                         var_dump(1);
                     }
                 }
-                EOF
+                EOF,
         ];
 
         yield [

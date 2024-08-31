@@ -49,6 +49,9 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -228,28 +231,6 @@ switch ($foo) {
 switch ($foo) {
     case 1;
         for ($i = 0; $i < 1; ++$i) {
-            break;
-        }
-    case 2;
-        bar();
-}',
-        ];
-
-        yield [
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
-            break;
-        }
-        // no break
-    case 2;
-        bar();
-}',
-            '<?php
-switch ($foo) {
-    case 1;
-        foreach ($bar as $baz) {
             break;
         }
     case 2;
@@ -1107,6 +1088,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithDifferentCommentTextCases(): iterable
     {
         $cases = self::provideFixCases();
@@ -1163,6 +1147,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithDifferentLineEndingCases(): iterable
     {
         foreach (self::provideFixCases() as $case) {
@@ -1245,6 +1232,9 @@ switch ($foo) {
         ]);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFixWithCommentTextContainingNewLinesCases(): iterable
     {
         yield ["No\nbreak"];
@@ -1272,6 +1262,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -1369,6 +1362,9 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [

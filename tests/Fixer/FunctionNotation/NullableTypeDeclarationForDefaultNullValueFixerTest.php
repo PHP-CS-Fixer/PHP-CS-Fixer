@@ -437,6 +437,9 @@ class Foo
         ];
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     private static function provideBothWaysCases(): iterable
     {
         yield [
@@ -648,6 +651,9 @@ class Foo
         ];
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     private static function provideBothWays80Cases(): iterable
     {
         yield [
@@ -730,6 +736,9 @@ class Foo
         ];
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     private static function provideBothWays82Cases(): iterable
     {
         yield 'Skip standalone null types' => [

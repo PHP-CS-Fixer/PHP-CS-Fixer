@@ -219,6 +219,9 @@ namespace Foo {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield 'no fixes, offset access syntax with curly braces' => [

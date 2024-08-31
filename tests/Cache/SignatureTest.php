@@ -66,6 +66,9 @@ final class SignatureTest extends TestCase
         self::assertFalse($signature->equals($anotherSignature));
     }
 
+    /**
+     * @return iterable<string, array{Signature, Signature}>
+     */
     public static function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases(): iterable
     {
         $php = PHP_VERSION;

@@ -70,16 +70,6 @@ final class FunctionsAnalyzerTest extends TestCase
         ];
 
         yield [
-            '<?php foo\bar("baz");',
-            [],
-        ];
-
-        yield [
-            '<?php foo::bar("baz");',
-            [],
-        ];
-
-        yield [
             '<?php foo::bar("baz");',
             [],
         ];

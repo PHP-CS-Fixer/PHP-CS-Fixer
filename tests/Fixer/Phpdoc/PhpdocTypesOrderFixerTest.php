@@ -48,6 +48,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixWithNullFirstCases(): iterable
     {
         yield [
@@ -203,10 +206,6 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
-        ];
-
-        yield [
             '<?php /** @return Closure(Iterator<TKey, T>): Generator<int, array<TKey, T>> */',
         ];
 
@@ -242,6 +241,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithNullLastCases(): iterable
     {
         yield [
@@ -385,6 +387,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithAlphaAlgorithmCases(): iterable
     {
         yield [
@@ -586,6 +591,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases(): iterable
     {
         yield [
@@ -724,6 +732,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): iterable
     {
         yield [
@@ -864,6 +875,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithCaseSensitiveCases(): iterable
     {
         return [

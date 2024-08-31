@@ -75,9 +75,9 @@ final class CiConfigurationTest extends TestCase
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingLocalImages());
     }
 
-    public function testDeploymentJobsRunOnLatestStablePhpThatIsSupportedByTool(): void
+    public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
+        $ciVersionsForDeployment = $this->getPhpVersionUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
         $expectedPhp = '8.2'; // @TODO not everything compatible with 8.3 yet, replace with `$this->getMaxPhpVersionFromEntryFile();` afterwards
 
@@ -86,15 +86,12 @@ final class CiConfigurationTest extends TestCase
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
 
-        self::assertGreaterThanOrEqual(1, \count($ciVersionsForDeployments));
         self::assertGreaterThanOrEqual(1, \count($ciVersions));
 
-        foreach ($ciVersionsForDeployments as $ciVersionsForDeployment) {
-            self::assertTrue(
-                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
-            );
-        }
+        self::assertTrue(
+            version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+            \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+        );
     }
 
     /**
@@ -162,12 +159,13 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
-    /**
-     * @return array<int, string>
-     */
-    private function getAllPhpVersionsUsedByCiForDeployments(): array
+    private function getPhpVersionUsedByCiForDeployments(): string
     {
-        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : \sprintf('%.1f', $job['php-version']), $this->getGitHubDeploymentJobs());
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+
+        $version = $yaml['jobs']['deployment']['env']['php-version'];
+
+        return \is_string($version) ? $version : \sprintf('%.1f', $version);
     }
 
     /**
@@ -232,16 +230,6 @@ final class CiConfigurationTest extends TestCase
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
         return $yaml['env'];
-    }
-
-    /**
-     * @return list<array<string, scalar>>
-     */
-    private function getGitHubDeploymentJobs(): array
-    {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
-
-        return $yaml['jobs']['deployment']['strategy']['matrix']['include'];
     }
 
     /**

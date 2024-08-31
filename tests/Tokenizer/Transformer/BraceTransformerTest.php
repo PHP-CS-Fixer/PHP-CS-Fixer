@@ -312,6 +312,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideNotDynamicClassConstantFetchCases(): iterable
     {
         yield 'negatives' => [

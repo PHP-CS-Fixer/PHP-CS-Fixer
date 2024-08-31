@@ -189,6 +189,9 @@ class User
         }
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideNotChangeCases(): iterable
     {
         yield [

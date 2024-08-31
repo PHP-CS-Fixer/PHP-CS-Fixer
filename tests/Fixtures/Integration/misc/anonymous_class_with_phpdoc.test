@@ -7,22 +7,22 @@ Integration of fixers: Anonymous class /w PHPDoc and attributes on separate line
 
 $a = new
 /** @property string $x */
-class() {};
+class {};
 
 $b = new
 #[X]
-class() {};
+class {};
 
 $c = new
 /** @property string $x */
 #[X] #[Y\Z]
-class() {};
+class {};
 
 class Z {}
 
 $d = new
 #[X] // comment
-class() {};
+class {};
 
 --INPUT--
 <?php

@@ -67,7 +67,7 @@ final class AbstractFixerTest extends TestCase
 
     private function createWhitespacesAwareFixerDouble(): WhitespacesAwareFixerInterface
     {
-        return new class() extends AbstractFixer implements WhitespacesAwareFixerInterface {
+        return new class extends AbstractFixer implements WhitespacesAwareFixerInterface {
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \BadMethodCallException('Not implemented.');
@@ -87,7 +87,7 @@ final class AbstractFixerTest extends TestCase
 
     private function createUnconfigurableFixerDouble(): AbstractFixer
     {
-        return new class() extends AbstractFixer {
+        return new class extends AbstractFixer {
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \LogicException('Not implemented.');

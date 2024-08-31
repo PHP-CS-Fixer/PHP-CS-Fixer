@@ -48,6 +48,9 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixVarCases(): iterable
     {
         yield 'testFixVar' => [
@@ -111,7 +114,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $bar;
                 }
-                EOF
+                EOF,
         ];
 
         yield 'testFixVarWithNestedKeys' => [
@@ -142,7 +145,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                      public $options;
                 }
-                EOF
+                EOF,
         ];
 
         yield 'testSingleLine' => [
@@ -299,7 +302,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 
                 /** @var Foo\Bar $bar */
                 $bar;
-                EOF
+                EOF,
         ];
 
         yield 'testMultiLineNoProperty' => [
@@ -310,7 +313,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                  * @var Foo\Bar $bar
                  */
                 $bar;
-                EOF
+                EOF,
         ];
 
         yield 'testVeryNestedInlineDoc' => [
@@ -359,7 +362,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $nestedFoo;
                 }
-                EOF
+                EOF,
         ];
 
         yield [
@@ -605,6 +608,9 @@ class A
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [

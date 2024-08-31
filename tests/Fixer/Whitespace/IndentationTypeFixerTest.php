@@ -36,6 +36,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -231,6 +234,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
@@ -301,6 +307,9 @@ function myFunction() {
         $this->doTest($input, $expected);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideMessyWhitespacesReversedCases(): iterable
     {
         foreach (self::provideMessyWhitespacesCases() as $name => $case) {
@@ -322,6 +331,9 @@ function myFunction() {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideDoubleSpaceIndentCases(): iterable
     {
         yield ['<?php

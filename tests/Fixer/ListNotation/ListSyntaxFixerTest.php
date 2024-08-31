@@ -46,6 +46,9 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixToLongSyntaxCases(): iterable
     {
         // reverse testing
@@ -108,6 +111,9 @@ class Test
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixToShortSyntaxCases(): iterable
     {
         yield [
@@ -211,6 +217,9 @@ $a;#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixToShortSyntaxPhp72Cases(): iterable
     {
         yield [
@@ -219,6 +228,9 @@ $a;#
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixToLongSyntaxPhp72Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFixToShortSyntaxPhp72Cases());
@@ -242,6 +254,9 @@ $a;#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixToShortSyntaxPhp73Cases(): iterable
     {
         yield [
@@ -260,6 +275,9 @@ $a;#
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixToLongSyntaxPhp73Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases(self::provideFixToShortSyntaxPhp73Cases());
@@ -275,6 +293,9 @@ $a;#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [

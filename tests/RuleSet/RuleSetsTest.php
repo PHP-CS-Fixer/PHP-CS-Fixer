@@ -143,6 +143,9 @@ Integration of %s.
         self::assertSame($sortedSetDefinition, $setDefinition);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideSetDefinitionNameCases(): iterable
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();

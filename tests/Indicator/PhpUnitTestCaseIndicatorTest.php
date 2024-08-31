@@ -49,6 +49,9 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
         self::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
 
+    /**
+     * @return iterable<int|string, array{bool, Tokens, int}>
+     */
     public static function provideIsPhpUnitClassCases(): iterable
     {
         yield 'Test class' => [

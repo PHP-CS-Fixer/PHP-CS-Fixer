@@ -120,6 +120,9 @@ final class PharTest extends AbstractSmokeTestCase
         );
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideReportCases(): iterable
     {
         yield ['no'];

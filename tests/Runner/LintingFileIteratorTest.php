@@ -45,7 +45,7 @@ final class LintingFileIteratorTest extends TestCase
     {
         $file = new \SplFileInfo(__FILE__);
 
-        $lintingResult = new class() implements LintingResultInterface {
+        $lintingResult = new class implements LintingResultInterface {
             public function check(): void
             {
                 throw new \LogicException('Not implemented.');

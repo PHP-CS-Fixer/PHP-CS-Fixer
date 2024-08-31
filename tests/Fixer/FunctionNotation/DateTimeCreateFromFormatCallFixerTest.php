@@ -33,6 +33,9 @@ final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         foreach ([\DateTime::class, \DateTimeImmutable::class] as $class) {

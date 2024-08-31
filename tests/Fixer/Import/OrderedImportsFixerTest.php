@@ -37,6 +37,9 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixWithMultipleNamespaceCases(): iterable
     {
         $expected = <<<'EOF'
@@ -887,17 +890,6 @@ use A\A;use Foo3\Bar\{ClassA};use G\G;use H\H;use Ioo2\Bar\{ClassB};use J\J;use 
 ',
             '<?php
 use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;use Loo1\Bar\{ClassC};
-',
-        ];
-
-        yield [
-            '<?php
-use Foo\Bar\Baz;use Foo\Bar\{ClassA, ClassB, ClassC};
-use Foo\Bir;
-',
-            '<?php
-use Foo\Bar\Baz, Foo\Bir;
-use Foo\Bar\{ClassC, ClassB, ClassA};
 ',
         ];
 
@@ -1855,6 +1847,9 @@ use function some\a\{fn_a, fn_b, fn_c,};
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixByLengthCases(): iterable
     {
         yield [
@@ -1999,6 +1994,9 @@ use const ZZZ;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixTypesOrderAndLengthCases(): iterable
     {
         yield [

@@ -2158,6 +2158,9 @@ enum Cards: string
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [
@@ -2193,6 +2196,9 @@ enum Cards: string
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
@@ -2244,6 +2250,9 @@ enum Cards: string
         );
     }
 
+    /**
+     * @return iterable<array{int, string, int}>
+     */
     public static function provideCommentBlockStartDetectionCases(): iterable
     {
         yield [

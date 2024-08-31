@@ -82,7 +82,7 @@ final class FileReaderTest extends TestCase
 
     private function createStdinStreamDouble(): object
     {
-        return new class() {
+        return new class {
             /**
              * @var resource
              */

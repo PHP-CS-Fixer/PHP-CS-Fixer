@@ -36,6 +36,9 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -408,24 +411,6 @@ $foo
         ];
 
         yield [
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-        ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-        ->setEmailConfirmationCode("123456",    );
-',
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-
-     ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-->setEmailConfirmationCode("123456",    );
-',
-        ];
-
-        yield [
             '<?php return $foo
 ->bar;',
         ];
@@ -471,6 +456,9 @@ abc(),
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [

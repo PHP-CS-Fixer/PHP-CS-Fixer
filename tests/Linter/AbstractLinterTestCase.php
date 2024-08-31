@@ -58,6 +58,9 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintFile($file)->check();
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideLintFileCases(): iterable
     {
         yield [
@@ -91,6 +94,9 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintSource($source)->check();
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideLintSourceCases(): iterable
     {
         yield [

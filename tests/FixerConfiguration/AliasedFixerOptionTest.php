@@ -37,6 +37,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($name, $option->getName());
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideGetNameCases(): iterable
     {
         yield ['foo'];
@@ -54,6 +57,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($description, $option->getDescription());
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideGetDescriptionCases(): iterable
     {
         yield ['Foo.'];
@@ -69,6 +75,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($hasDefault, $input->hasDefault());
     }
 
+    /**
+     * @return iterable<array{bool, AliasedFixerOption}>
+     */
     public static function provideHasDefaultCases(): iterable
     {
         yield [
@@ -92,6 +101,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($default, $option->getDefault());
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideGetDefaultCases(): iterable
     {
         yield ['baz'];
@@ -179,6 +191,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($alias, $options->getAlias());
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideGetAliasCases(): iterable
     {
         yield ['bar'];

@@ -335,7 +335,7 @@ Control Structure
   Switch case must not be ended with ``continue`` but with ``break``.
 - `trailing_comma_in_multiline <./control_structure/trailing_comma_in_multiline.rst>`_
 
-  Multi-line arrays, arguments list, parameters list and ``match`` expressions must have a trailing comma.
+  Arguments lists, array destructuring lists, arrays that are multi-line, ``match``-lines and parameters lists must have a trailing comma.
 - `yoda_style <./control_structure/yoda_style.rst>`_
 
   Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.

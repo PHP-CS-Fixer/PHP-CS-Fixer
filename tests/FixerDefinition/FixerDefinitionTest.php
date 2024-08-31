@@ -68,7 +68,7 @@ final class FixerDefinitionTest extends TestCase
 
     private function createCodeSampleDouble(): CodeSampleInterface
     {
-        return new class() implements CodeSampleInterface {
+        return new class implements CodeSampleInterface {
             public function getCode(): string
             {
                 throw new \LogicException('Not implemented.');

@@ -86,7 +86,7 @@ final class Sample
         foreach ($this->tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];
 
-            if (!\array_key_exists($classIndex, $classesCandidate)) {
+            if (!isset($classesCandidate[$classIndex])) {
                 $classesCandidate[$classIndex] = $this->isClassCandidate($tokens, $classIndex);
             }
 
@@ -130,7 +130,7 @@ final class Sample
      *   - an Enum (PHP8.1+)
      *   - a class, which:
      *     - is not anonymous
-     *     - is not final
+     *     - is final
      *     - does not use traits
      *     - does not extend other class.
      */

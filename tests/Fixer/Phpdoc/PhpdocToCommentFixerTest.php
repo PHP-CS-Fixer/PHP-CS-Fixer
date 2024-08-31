@@ -837,6 +837,9 @@ $first = true;// needed because by default first docblock is never fixed.
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -914,6 +917,9 @@ class Foo
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [

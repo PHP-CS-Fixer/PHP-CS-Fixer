@@ -67,10 +67,6 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
         ];
 
         yield [
-            '<?php $a = 1 & 2;',
-        ];
-
-        yield [
             '<?php fn (array & $arr) => null;',
         ];
     }

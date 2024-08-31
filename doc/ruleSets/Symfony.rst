@@ -9,7 +9,6 @@ Rules
 
 - `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
-- `array_syntax <./../rules/array_notation/array_syntax.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_ with config:
@@ -172,7 +171,10 @@ Rules
   ``['stick_comment_to_next_continuous_control_statement' => true]``
 
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
-- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_

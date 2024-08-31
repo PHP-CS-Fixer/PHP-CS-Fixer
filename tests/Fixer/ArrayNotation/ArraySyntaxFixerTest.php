@@ -283,12 +283,6 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php function(array $foo = []) {};',
-            '<?php function(array $foo = array()) {};',
-            ['syntax' => 'short'],
-        ];
-
-        yield [
             '<?php $a  =   [  ];',
             '<?php $a  =  array (  );',
             ['syntax' => 'short'],

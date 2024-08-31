@@ -167,19 +167,6 @@ $a = $b->test(  // do not remove space
 
         yield [
             '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
-        ];
-
-        yield [
-            '<?php
 function hello($value) {
     // code...
 }',
@@ -355,19 +342,6 @@ $a = $b->test(  // do not remove space
     $e          // between `(` and `)`
                 // and this comment
  );',
-        ];
-
-        yield [
-            '<?php
-function foo( $bar, $baz )
-{
-    // function body
-}',
-            '<?php
-function foo($bar, $baz)
-{
-    // function body
-}',
         ];
 
         yield [

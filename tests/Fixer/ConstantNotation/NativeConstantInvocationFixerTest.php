@@ -147,6 +147,9 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
         yield ['<?php var_dump(NULL, FALSE, TRUE, 1);'];
@@ -180,8 +183,6 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         yield ['<?php class Foo { function bar() { $M_PI = M_PI() + self::M_PI(); } }'];
 
         yield ['<?php class Foo { function bar() { $this->M_PI(self::M_PI); } }'];
-
-        yield ['<?php namespace Foo; use M_PI;'];
 
         yield ['<?php namespace Foo; use Bar as M_PI;'];
 
@@ -255,6 +256,9 @@ try {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithConfiguredCustomIncludeCases(): iterable
     {
         yield [
@@ -283,6 +287,9 @@ try {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithConfiguredOnlyIncludeCases(): iterable
     {
         yield [
@@ -310,6 +317,9 @@ try {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
         yield [
@@ -553,6 +563,9 @@ echo M_PI;
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFixPhp80Cases(): iterable
     {
         yield [

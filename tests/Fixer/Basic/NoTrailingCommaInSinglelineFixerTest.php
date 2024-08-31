@@ -496,6 +496,9 @@ $a#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -518,6 +521,9 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

@@ -44,8 +44,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.61.2-DEV';
-    public const VERSION_CODENAME = '7th Gear';
+    public const VERSION = '3.64.1-DEV';
+    public const VERSION_CODENAME = 'Space Sets';
 
     private ToolInfo $toolInfo;
     private ?Command $executedCommand = null;

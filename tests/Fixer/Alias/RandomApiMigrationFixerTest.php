@@ -240,6 +240,9 @@ class srand extends SrandClass{
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [

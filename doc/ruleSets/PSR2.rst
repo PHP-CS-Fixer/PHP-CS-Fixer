@@ -37,6 +37,10 @@ Rules
 
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
 - `single_line_after_imports <./../rules/import/single_line_after_imports.rst>`_
+- `single_space_around_construct <./../rules/language_construct/single_space_around_construct.rst>`_ with config:
+
+  ``['constructs_followed_by_a_single_space' => ['abstract', 'as', 'case', 'catch', 'class', 'do', 'else', 'elseif', 'final', 'for', 'foreach', 'function', 'if', 'interface', 'namespace', 'private', 'protected', 'public', 'static', 'switch', 'trait', 'try', 'use_lambda', 'while'], 'constructs_preceded_by_a_single_space' => ['as', 'else', 'elseif', 'use_lambda']]``
+
 - `spaces_inside_parentheses <./../rules/whitespace/spaces_inside_parentheses.rst>`_
 - `statement_indentation <./../rules/whitespace/statement_indentation.rst>`_
 - `switch_case_semicolon_to_colon <./../rules/control_structure/switch_case_semicolon_to_colon.rst>`_

@@ -38,6 +38,9 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -82,7 +85,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                         FooJ;
                 use FooZ;
 
-                EOF
+                EOF,
         ];
 
         yield [
@@ -145,7 +148,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
                     use BarZ;
                 }
 
-                EOF
+                EOF,
         ];
 
         yield [
@@ -284,6 +287,15 @@ use D\{E,F,};
 use G\{H,I/*1*/,/*2*/};
 ',
         ];
+
+        yield [
+            '<?php
+use A\B;
+',
+            '<?php
+use A\{B};
+',
+        ];
     }
 
     public function testWithConfig(): void
@@ -317,6 +329,9 @@ use Space\Models\ {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideMessyWhitespacesCases(): iterable
     {
         yield [
@@ -335,6 +350,9 @@ use Space\Models\ {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
@@ -349,7 +367,7 @@ use const some\c\ConstA/**/as/**/E; /* group comment */
 use const some\c\ConstB as D;
 use const some\c\// use.,{}
 ConstC;
-use A\{B};
+use A\B;
 use D\E;
 use D\F;
                 ',

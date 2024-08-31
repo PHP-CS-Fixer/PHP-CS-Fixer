@@ -37,6 +37,9 @@ final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
         self::markTestIncomplete('Tests not implemented for this class, run the rule on codebase and check if PHPStan accepts the changes.');
     }
 
+    /**
+     * @return iterable<array{}>
+     */
     public static function provideFixCases(): iterable
     {
         yield []; // no tests implemented

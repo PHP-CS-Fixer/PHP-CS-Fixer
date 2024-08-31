@@ -265,6 +265,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -337,6 +340,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'return type `never`' => [
@@ -364,6 +370,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'disjunctive normal form types in arrow function' => [
@@ -420,6 +429,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix83Cases(): iterable
     {
         yield 'simple case' => [
