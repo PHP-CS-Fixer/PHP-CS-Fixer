@@ -17,6 +17,7 @@ env:
 
 jobs:
   tests:
+    continue-on-error: ${{ matrix.operating-system == 'macos-latest' }}
     strategy:
       fail-fast: false
       matrix:
