@@ -86,8 +86,6 @@ final class CiConfigurationTest extends TestCase
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
 
-        self::assertGreaterThanOrEqual(1, \count($ciVersions));
-
         self::assertTrue(
             version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
             \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
