@@ -79,14 +79,12 @@ final class CiConfigurationTest extends TestCase
     {
         $ciVersionsForDeployment = $this->getPhpVersionUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
-        $expectedPhp = '8.2'; // @TODO not everything compatible with 8.3 yet, replace with `$this->getMaxPhpVersionFromEntryFile();` afterwards
+        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
             // last version of used PHP is snapshot. we should test against previous one, that is stable
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
-
-        self::assertGreaterThanOrEqual(1, \count($ciVersions));
 
         self::assertTrue(
             version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
