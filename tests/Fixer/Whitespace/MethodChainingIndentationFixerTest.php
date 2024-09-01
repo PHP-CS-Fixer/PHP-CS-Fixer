@@ -445,6 +445,57 @@ abc(),
 ];
 ',
         ];
+
+        yield [
+            '<?php
+$obj
+    ->foo()
+    ->bar;
+',
+            '<?php
+$obj
+    ->foo()
+->bar;
+',
+        ];
+
+        yield [
+            '<?php
+return $obj
+    ->foo()
+    ->bar
+    ->baz();
+',
+            '<?php
+return $obj
+ ->foo()
+    ->bar
+  ->baz();
+',
+        ];
+
+        yield [
+            '<?php
+foo()
+    ->bar()
+    ->baz;
+
+        $obj
+            ->foo(\'123\', 456)
+            ->bar(\'789\')
+            ->baz;
+',
+            '<?php
+foo()
+->bar()
+->baz;
+
+        $obj
+    ->foo(\'123\', 456)
+->bar(\'789\')
+->baz;
+',
+        ];
     }
 
     /**
