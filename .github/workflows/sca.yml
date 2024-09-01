@@ -12,18 +12,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tests:
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system:
-          - ubuntu-24.04
-        php-version:
-          - 8.3
-
+  everything:
     name: Static Code Analysis
 
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: 'ubuntu-24.04'
+    env:
+      php-version: '8.3'
 
     steps:
       - name: Checkout code
@@ -40,7 +34,7 @@ jobs:
         uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
           os: ${{ runner.os }}
-          php: ${{ matrix.php-version }}
+          php: ${{ env.php-version }}
 
       ## We want to have a lock-file used on PR level, so contributors are not bothered by SCA complains unrelated to their changes,
       ## and same time we want to be aware that we are complying with bleeding edge of SCA tools as maintainers observing the push hook.
