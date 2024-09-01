@@ -2576,12 +2576,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'php\\-version\' might not exist on array\\<string, bool\\|float\\|int\\|string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
-];
-$ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$code of static method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:fromCode\\(\\) expects string, string\\|false given\\.$#',
 	'count' => 2,
