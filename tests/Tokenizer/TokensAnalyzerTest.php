@@ -1474,6 +1474,14 @@ abstract class Baz
             [3 => false, 8 => false, 10 => false, 14 => false, 17 => false, 20 => false, 22 => false, 25 => false, 28 => false, 30 => false, 32 => false, 36 => false, 39 => false, 41 => false],
             '<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}',
         ];
+
+        yield [
+            [3 => false, 6 => false, 12 => false],
+            '<?php enum someEnum: int
+                {
+                    case E_ERROR = 123;
+                }',
+        ];
     }
 
     /**

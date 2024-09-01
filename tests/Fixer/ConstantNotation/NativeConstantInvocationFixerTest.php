@@ -581,6 +581,30 @@ echo M_PI;
     }
 
     /**
+     * @dataProvider provideFixPhp81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testFixPhp81(string $expected): void
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest($expected);
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideFixPhp81Cases(): iterable
+    {
+        yield [
+            '<?php enum someEnum: int
+                {
+                    case E_ALL = 123;
+                }',
+        ];
+    }
+
+    /**
      * @dataProvider provideFixPhp82Cases
      *
      * @requires PHP 8.2
