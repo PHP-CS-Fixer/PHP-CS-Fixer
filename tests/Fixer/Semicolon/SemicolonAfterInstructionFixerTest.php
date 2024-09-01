@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer>
  */
 final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'comment' => [
@@ -100,6 +105,9 @@ A is equal to 5
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [

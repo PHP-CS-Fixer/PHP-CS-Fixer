@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer>
  */
 final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
@@ -263,6 +265,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -335,6 +340,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'return type `never`' => [
@@ -362,6 +370,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'disjunctive normal form types in arrow function' => [
@@ -375,24 +386,24 @@ function Foo(INTEGER $a) {}
         ];
 
         foreach (['true', 'false', 'null'] as $type) {
-            yield sprintf('standalone type `%s` in class method', $type) => [
-                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
-                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in class method', $type) => [
+                \sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
+                \sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s` in function', $type) => [
-                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
-                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in function', $type) => [
+                \sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
+                \sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s` in closure', $type) => [
-                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
-                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in closure', $type) => [
+                \sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
+                \sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
             ];
 
-            yield sprintf('standalone type `%s` in arrow function', $type) => [
-                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
-                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
+            yield \sprintf('standalone type `%s` in arrow function', $type) => [
+                \sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
+                \sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
             ];
         }
 
@@ -418,6 +429,9 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix83Cases(): iterable
     {
         yield 'simple case' => [

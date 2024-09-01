@@ -78,7 +78,7 @@ final class ProcessFactoryTest extends TestCase
 
         self::assertSame(
             trim(
-                sprintf(
+                \sprintf(
                     'worker --port 1234 --identifier \'%s\' %s',
                     $identifier->toString(),
                     trim($expectedAdditionalArgs)

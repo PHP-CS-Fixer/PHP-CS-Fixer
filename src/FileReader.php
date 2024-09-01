@@ -61,7 +61,7 @@ final class FileReader
         if (false === $content) {
             $error = error_get_last();
 
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Failed to read content from "%s".%s',
                 $realPath,
                 null !== $error ? ' '.$error['message'] : ''

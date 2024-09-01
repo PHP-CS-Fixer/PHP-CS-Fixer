@@ -62,7 +62,7 @@ final class RuleSets
         $definitions = self::getSetDefinitions();
 
         if (!isset($definitions[$name])) {
-            throw new \InvalidArgumentException(sprintf('Set "%s" does not exist.', $name));
+            throw new \InvalidArgumentException(\sprintf('Set "%s" does not exist.', $name));
         }
 
         return $definitions[$name];

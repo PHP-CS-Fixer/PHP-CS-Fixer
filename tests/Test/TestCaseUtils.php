@@ -57,7 +57,7 @@ final class TestCaseUtils
         }
 
         if (!\array_key_exists($name, $fixers)) {
-            throw new \InvalidArgumentException(sprintf('Fixer "%s" does not exist.', $name));
+            throw new \InvalidArgumentException(\sprintf('Fixer "%s" does not exist.', $name));
         }
 
         return $fixers[$name];

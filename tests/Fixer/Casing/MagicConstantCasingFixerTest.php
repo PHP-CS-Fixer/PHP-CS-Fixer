@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer>
  */
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -101,6 +106,9 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [

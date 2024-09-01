@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\EncodingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\EncodingFixer>
  */
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string, 2?: \SplFileInfo}>
+     */
     public static function provideFixCases(): iterable
     {
         yield self::prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php');

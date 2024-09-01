@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer>
  */
 final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

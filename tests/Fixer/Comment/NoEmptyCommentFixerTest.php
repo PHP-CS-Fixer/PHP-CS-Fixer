@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer>
  */
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +34,9 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         // fix cases
@@ -151,21 +156,6 @@ echo 1;
         ];
 
         yield [
-            '<?php
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                ',
-            '<?php
-                    //
-                    //
-                    //
-                    /**///
-                ',
-        ];
-
-        yield [
             "<?php\n                    \n                    \n                    \n                    \n                ",
             "<?php\n                    //\n                    //\n                    //\n                    /**///\n                ",
         ];
@@ -280,7 +270,7 @@ echo 1;
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        self::assertTrue($tokens[$startIndex]->isComment(), sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
+        self::assertTrue($tokens[$startIndex]->isComment(), \sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
         $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);
@@ -292,6 +282,9 @@ echo 1;
         self::assertSame($isEmpty, $foundInfo['isEmpty'], 'Is empty comment block detection failed.');
     }
 
+    /**
+     * @return iterable<array{string, int, int, bool}>
+     */
     public static function provideGetCommentBlockCases(): iterable
     {
         yield [

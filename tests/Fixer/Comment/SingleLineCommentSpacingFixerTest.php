@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer>
  */
 final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'comment list' => [

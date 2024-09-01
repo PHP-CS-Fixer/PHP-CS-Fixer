@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer>
  */
 final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'multiple PHPdocs' => [

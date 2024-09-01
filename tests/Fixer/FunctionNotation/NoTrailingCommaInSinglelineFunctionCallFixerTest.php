@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoTrailingCommaInSinglelineFunctionCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoTrailingCommaInSinglelineFunctionCallFixer>
  */
 final class NoTrailingCommaInSinglelineFunctionCallFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class NoTrailingCommaInSinglelineFunctionCallFixerTest extends AbstractFix
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple var' => [
@@ -208,6 +213,9 @@ $g["e"](1,); // foo',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -230,6 +238,9 @@ $foo1b = function() use ($bar, ) {};
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer>
  */
 final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
 {

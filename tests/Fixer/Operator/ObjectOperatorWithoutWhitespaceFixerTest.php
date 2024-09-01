@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer>
  */
 final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -94,6 +99,9 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

@@ -129,7 +129,7 @@ final class ConfigTest extends TestCase
             ]
         );
         self::assertStringMatchesFormat(
-            sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
+            \sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
             $commandTester->getDisplay(true)
         );
     }

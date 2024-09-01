@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer>
  */
 final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -44,7 +49,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
                      * @return void
                      */
 
-                EOF
+                EOF,
         ];
 
         yield [

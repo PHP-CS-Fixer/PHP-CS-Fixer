@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer>
  */
 final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 {
@@ -1342,8 +1344,8 @@ function foo(&$c) {
         $input = "<?php\n";
 
         for ($i = 0; $i < 10; ++$i) {
-            $expected .= sprintf("\nfunction foo%d() {\n\treturn bar();\n}", $i);
-            $input .= sprintf("\nfunction foo%d() {\n\t\$a = bar();\n\t\$b = \$a;\n\nreturn \$b;\n}", $i);
+            $expected .= \sprintf("\nfunction foo%d() {\n\treturn bar();\n}", $i);
+            $input .= \sprintf("\nfunction foo%d() {\n\t\$a = bar();\n\t\$b = \$a;\n\nreturn \$b;\n}", $i);
         }
 
         yield [$expected, $input];

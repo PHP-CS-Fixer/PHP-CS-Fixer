@@ -31,6 +31,8 @@ final class ProgressOutputFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideValidProcessOutputIsCreatedCases
+     *
+     * @param class-string<\Throwable> $expectedOutputClass
      */
     public function testValidProcessOutputIsCreated(
         string $outputType,
@@ -40,6 +42,9 @@ final class ProgressOutputFactoryTest extends TestCase
         self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }
 
+    /**
+     * @return iterable<string, array{string, OutputContext, string}>
+     */
     public static function provideValidProcessOutputIsCreatedCases(): iterable
     {
         $context = new OutputContext(new SymfonyNullOutput(), 100, 10);

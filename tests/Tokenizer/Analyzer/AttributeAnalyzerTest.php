@@ -64,6 +64,8 @@ final class AttributeAnalyzerTest extends TestCase
 
     /**
      * Test case requires to having "Foo" as it will be searched for to test its index.
+     *
+     * @return iterable<array{bool, string}>
      */
     public static function provideIsAttributeCases(): iterable
     {
@@ -120,8 +122,6 @@ final class AttributeAnalyzerTest extends TestCase
         yield [true, '<?php #[Bar(), Foo(), Baz()] class Qux {}'];
 
         yield [true, '<?php #[Bar(), Foo, Baz()] class Qux {}'];
-
-        yield [true, '<?php #[Bar, Foo, Baz] class Qux {}'];
 
         yield [true, '<?php #[\Foo] class Bar {}'];
 
@@ -350,18 +350,7 @@ final class AttributeAnalyzerTest extends TestCase
      */
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
     {
-        $tokens = Tokens::fromCode($code);
-        $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
-
-        foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
-            self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
-        }
-
-        self::assertSame(
-            serialize($expectedAnalyses),
-            serialize($actualAnalyses),
-        );
+        $this->testGetAttributeDeclarations($code, $startIndex, $expectedAnalyses);
     }
 
     /**

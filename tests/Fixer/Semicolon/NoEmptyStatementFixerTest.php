@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer>
  */
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideNoEmptyStatementsCases(): iterable
     {
         yield [
@@ -416,15 +421,15 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
         foreach (['break', 'continue'] as $ops) {
             yield [
-                sprintf('<?php while(true) {%s ;}', $ops),
-                sprintf('<?php while(true) {%s 1;}', $ops),
+                \sprintf('<?php while(true) {%s ;}', $ops),
+                \sprintf('<?php while(true) {%s 1;}', $ops),
             ];
         }
 
         foreach (['1', '1.0', '"foo"', '$foo'] as $noop) {
             yield [
                 '<?php echo "foo";  ',
-                sprintf('<?php echo "foo"; %s ;', $noop),
+                \sprintf('<?php echo "foo"; %s ;', $noop),
             ];
         }
 
@@ -459,6 +464,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -560,6 +568,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideCasesWithShortOpenTagCases(): iterable
     {
         yield [
@@ -576,6 +587,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixMultipleSemicolonsCases(): iterable
     {
         yield [
@@ -648,6 +662,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer>
  */
 final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
 {
@@ -51,7 +53,7 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
                      * @access public
                      */
 
-                PHP
+                PHP,
         ];
 
         yield 'many' => [
@@ -72,7 +74,7 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
                  * @access foo
                  */
 
-                PHP
+                PHP,
         ];
 
         yield 'do nothing' => [
@@ -82,7 +84,7 @@ final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
                      * @var access
                      */
 
-                PHP
+                PHP,
         ];
     }
 }

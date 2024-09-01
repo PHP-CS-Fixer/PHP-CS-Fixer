@@ -38,10 +38,13 @@ final class DiffConsoleFormatterTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{string, bool, string, string, string}>
+     */
     public static function provideDiffConsoleFormatterCases(): iterable
     {
         yield [
-            sprintf(
+            \sprintf(
                 '<comment>   ---------- begin diff ----------</comment>
    '.'
    <fg=cyan>%s</fg=cyan>
@@ -57,7 +60,7 @@ final class DiffConsoleFormatterTest extends TestCase
                 OutputFormatter::escape('+A')
             ),
             true,
-            sprintf(
+            \sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 PHP_EOL,
                 PHP_EOL
@@ -84,7 +87,7 @@ final class DiffConsoleFormatterTest extends TestCase
 | '.'
 [end]',
             false,
-            sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),
+            \sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),
             '
 @@ -12,51 +12,151 @@
  no change

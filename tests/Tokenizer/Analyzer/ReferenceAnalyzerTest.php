@@ -52,6 +52,9 @@ final class ReferenceAnalyzerTest extends TestCase
         $this->doTestCode(true, $code);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideReferenceCases(): iterable
     {
         yield ['<?php $foo =& $bar;'];
@@ -99,6 +102,9 @@ class Foo {
         $this->doTestCode(false, $code);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideNonReferenceCases(): iterable
     {
         yield ['<?php $foo & $bar;'];
@@ -123,8 +129,6 @@ class Foo {
 
         yield ['<?php foo($bar["mode"] & $baz);'];
 
-        yield ['<?php foo($bar{"mode"} & $baz);'];
-
         yield ['<?php foo(0b11111111 & $bar);'];
 
         yield ['<?php foo(127 & $bar);'];
@@ -146,6 +150,24 @@ class Foo {
         yield ['<?php if ($foo instanceof Bar & 0b01010101) {}'];
 
         yield ['<?php function foo(?int $bar = BAZ & QUX) {};'];
+    }
+
+    /**
+     * @dataProvider provideNonReferencePre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testNonReferencePre84(string $code): void
+    {
+        $this->doTestCode(false, $code);
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideNonReferencePre84Cases(): iterable
+    {
+        yield ['<?php foo($bar{"mode"} & $baz);'];
     }
 
     private function doTestCode(bool $expected, string $code): void

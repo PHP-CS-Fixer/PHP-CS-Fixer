@@ -24,6 +24,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer>
  */
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +37,9 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $manySpaces = [];
@@ -164,6 +169,9 @@ namespace TestComment;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [

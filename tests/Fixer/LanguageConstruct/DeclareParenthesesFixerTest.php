@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer>
  */
 final class DeclareParenthesesFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class DeclareParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'spaces around parentheses' => [

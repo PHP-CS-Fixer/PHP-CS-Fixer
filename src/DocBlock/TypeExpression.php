@@ -271,23 +271,37 @@ final class TypeExpression
      */
     public function walkTypes(\Closure $callback): void
     {
-        foreach (array_reverse($this->innerTypeExpressions) as [
-            'start_index' => $startIndex,
+        $innerValueOrig = $this->value;
+
+        $startIndexOffset = 0;
+
+        foreach ($this->innerTypeExpressions as [
+            'start_index' => $startIndexOrig,
             'expression' => $inner,
         ]) {
-            $initialValueLength = \strlen($inner->toString());
+            $innerLengthOrig = \strlen($inner->toString());
 
             $inner->walkTypes($callback);
 
             $this->value = substr_replace(
                 $this->value,
                 $inner->toString(),
-                $startIndex,
-                $initialValueLength
+                $startIndexOrig + $startIndexOffset,
+                $innerLengthOrig
             );
+
+            $startIndexOffset += \strlen($inner->toString()) - $innerLengthOrig;
         }
 
         $callback($this);
+
+        if ($this->value !== $innerValueOrig) {
+            $this->isUnionType = false;
+            $this->typesGlue = '|';
+            $this->innerTypeExpressions = [];
+
+            $this->parse();
+        }
     }
 
     /**
@@ -393,7 +407,9 @@ final class TypeExpression
             $consumedValueLength = \strlen($matches[0][0]);
             $index += $consumedValueLength;
 
-            if (\strlen($this->value) === $index) {
+            if (\strlen($this->value) <= $index) {
+                \assert(\strlen($this->value) === $index);
+
                 return;
             }
         }

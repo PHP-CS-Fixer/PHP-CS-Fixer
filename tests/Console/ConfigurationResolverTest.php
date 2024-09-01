@@ -26,6 +26,7 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -223,6 +224,8 @@ final class ConfigurationResolverTest extends TestCase
 
     /**
      * @dataProvider provideResolveConfigFileChooseFileCases
+     *
+     * @param class-string<ConfigInterface> $expectedClass
      */
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
@@ -236,6 +239,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
+    /**
+     * @return iterable<array{0: string, 1: string, 2: string, 3?: string}>
+     */
     public static function provideResolveConfigFileChooseFileCases(): iterable
     {
         $dirBase = self::getFixtureDir();
@@ -1201,6 +1207,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
+     * @param class-string     $expected
      * @param null|bool|string $diffConfig
      *
      * @dataProvider provideResolveDifferCases
@@ -1214,6 +1221,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
+    /**
+     * @return iterable<array{string, null|bool}>
+     */
     public static function provideResolveDifferCases(): iterable
     {
         yield [
@@ -1256,6 +1266,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
+    /**
+     * @return iterable<array{bool, bool, null|string}>
+     */
     public static function provideResolveBooleanOptionCases(): iterable
     {
         yield [true, true, 'yes'];
@@ -1318,12 +1331,12 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {
-        $this->expectDeprecation(sprintf(
+        $this->expectDeprecation(\sprintf(
             'Rule set "%s" is deprecated. %s.',
             $ruleSet,
             [] === $successors
                 ? 'No replacement available'
-                : sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
+                : \sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
         ));
 
         $config = new Config();
@@ -1344,6 +1357,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield ['@PER:risky', ['@PER-CS:risky']];
     }
 
+    /**
+     * @return iterable<array{null|string, string, string}>
+     */
     public static function provideGetDirectoryCases(): iterable
     {
         yield [null, '/my/path/my/file', 'my/file'];
@@ -1422,7 +1438,10 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
     {
-        return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+        return new class extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+            /** @use ConfigurableFixerTrait<array<string, mixed>, array<string, mixed>> */
+            use ConfigurableFixerTrait;
+
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \LogicException('Not implemented.');
@@ -1456,7 +1475,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createToolInfoDouble(): ToolInfoInterface
     {
-        return new class() implements ToolInfoInterface {
+        return new class implements ToolInfoInterface {
             public function getComposerInstallationDetails(): array
             {
                 throw new \BadMethodCallException();

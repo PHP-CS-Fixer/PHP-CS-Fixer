@@ -3,6 +3,128 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.64.0
+---------------------
+
+* feat: Symfony - adjust configuration for sets (#8188)
+* feat: Symfony.trailing_comma_in_multiline - adjust configuration (#8161)
+* feat: Update PSR2, PSR12 and PER-CS2 with `single_space_around_construct` config (#8171)
+* CI: Update PHPStan to 1.12.0 and fix the error that appeared (#8184)
+
+Changelog for v3.63.2
+---------------------
+
+* fix: `FullyQualifiedStrictTypesFixer` - reset cache even if there is no `use` (#8183)
+
+Changelog for v3.63.1
+---------------------
+
+* dummy release
+
+Changelog for v3.63.0
+---------------------
+
+* feat: Add `array_destructuring` as option for `trailing_comma_in_multiline` (#8172)
+* feat: remove braces even for single import (#8156)
+* feat: TrailingCommaInMultilineFixer - dynamically evaluate config against PHP version (#8167)
+* fix: Do not shorten FQN for class resolution if imported symbol is not a class (#7705)
+* fix: Ensure PHP binary path is used as a single CLI argument in parallel worker process (#8180)
+* fix: `PhpUnitAttributesFixer` - fix priorities with `PhpUnitDataProvider(.+)Fixer` (#8169)
+* chore: add  tags for data providers that will change PHPStan's baseline (#8178)
+* chore: add `@return` tags for data providers already having PHPDoc (#8176)
+* chore: add `@return` tags for data providers that do not have array in data (#8179)
+* chore: remove duplicates from data providers (#8164)
+* chore: remove duplicates from data providers that are copies in code (#8145)
+* chore: remove `beStrictAboutTodoAnnotatedTests` from PHPUnit's config (#8160)
+* CI: Update PHPStan to 1.11.10 (#8163)
+* CI: Update PHPStan to 1.11.11 and fix error that changed (#8174)
+* docs: fix indent on rule `date_time_create_from_format_call` (#8173)
+
+Changelog for v3.62.0
+---------------------
+
+* feat: set new_with_parentheses for anonymous_class to false in PER-CS2.0 (#8140)
+* chore: NewWithParenthesesFixer - create TODO to change the default configuration to match PER-CS2 (#8148)
+
+Changelog for v3.61.1
+---------------------
+
+* fix: `NoSuperfluousPhpdocTagsFixer` - fix "Undefined array key 0" error (#8150)
+
+Changelog for v3.61.0
+---------------------
+
+* feat: no_superfluous_phpdoc_tags - also cover ?type (#8125)
+* feat: support PHPUnit v9.1 naming for some asserts (#7997)
+* fix: Do not mangle non-whitespace token in `PhpdocIndentFixer` (#8147)
+* DX: add more typehints for `class-string` (#8139)
+* DX: refactor `ProjectCodeTest::provideDataProviderMethodCases` (#8138)
+
+Changelog for v3.60.0
+---------------------
+
+* feat: Add sprintf in the list of compiler optimized functions (#8092)
+* feat: `PhpUnitAttributesFixer` - add option to keep annotations (#8090)
+* chore: cleanup tests that had `@requires PHP 7.4` ages ago (#8122)
+* chore: cleanup `TokensAnalyzerTest` (#8123)
+* chore: fix example issue reported by reportPossiblyNonexistentGeneralArrayOffset from PHPStan (#8089)
+* chore: NoSuperfluousPhpdocTagsFixer - no need to call heavy toComparableNames method to add null type (#8132)
+* chore: PHPStan 11 array rules (#8011)
+* chore: PhpUnitSizeClassFixerTest - solve PHP 8.4 issues (#8105)
+* chore: reduce PHPStan errors in PhpUnitAttributesFixer (#8091)
+* chore: reuse test methods (#8119)
+* CI: check autoload (#8121)
+* CI: Update PHPStan to 1.11.8 (#8133)
+* deps: upgrade dev-tools (#8102)
+* DX: check for duplicated test data (#8131)
+* DX: check for duplicated test methods (#8124)
+* DX: check for duplicated test methods (as AutoReview test) (#8134)
+* DX: do not exclude duplicates that are clearly mistakes (#8135)
+* DX: Dump `offsetAccess.notFound` errors to baseline (#8107)
+* fix: Better way of walking types in `TypeExpression` (#8076)
+* fix: CI for PHP 8.4 (#8114)
+* fix: update `TokensTest` to shrink PHPStan's baseline (#8112)
+* fix: `no_useless_concat_operator` - do not break variable (2) (#7927)
+* fix: `NullableTypeDeclarationFixer` - don't convert standalone `null` into nullable union type (#8098)
+* fix: `NullableTypeDeclarationFixer` - don't convert standalone `NULL` into nullable union type (#8111)
+* fix: `NullableTypeDeclarationFixer` - insert correct token (#8118)
+* fix: `PhpUnitAttributesFixer` - handle multiple annotations of the same name (#8075)
+
+Changelog for v3.59.3
+---------------------
+
+* refactor: refactor to templated trait+interface (#7988)
+
+Changelog for v3.59.2
+---------------------
+
+* fix: "list" is reserved type (#8087)
+* chore: add missing type in method prototype (#8088)
+* CI: bump Ubuntu version (#8086)
+* deps: bump infection to unblock PHPUnit 11, and few more as chore (#8083)
+
+Changelog for v3.59.1
+---------------------
+
+* fix: Bump React's JSON decoder buffer size (#8068)
+* docs: options - handle enums in dicts (#8082)
+
+Changelog for v3.59.0
+---------------------
+
+* feat(Docker): Multi-arch build (support for `arm64`) (#8079)
+* feat: `@PhpCsFixer` ruleset - normalise implicit backslashes in single quoted strings (#7965)
+* feat: `SimpleToComplexStringVariableFixer` - support variable being an array (#8064)
+* fix: Look up for PHPDoc's variable name by only chars allowed in the variables (#8062)
+* fix: Update `PhpUnitTestCaseStaticMethodCallsFixer::STATIC_METHODS` (#8073)
+* fix: `native_constant_invocation` - array constants with native constant names (#8008)
+* chore: update PHPStan (#8060)
+* CI: Update PHPStan to 1.11.4 (#8074)
+* docs: don't expose list as config type for dicts (#8081)
+* docs: Make wording in `final_class` docs less dismissive (#8065)
+* docs: Update 1-bug_report.yml (#8067)
+* DX: Remove version from Docker Compose files (#8061)
+
 Changelog for v3.58.1
 ---------------------
 

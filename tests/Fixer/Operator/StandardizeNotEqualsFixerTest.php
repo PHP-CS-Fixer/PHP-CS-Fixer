@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer>
  */
 final class StandardizeNotEqualsFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class StandardizeNotEqualsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php $a = ($b != $c);'];

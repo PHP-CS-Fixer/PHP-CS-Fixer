@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer>
  */
 final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php echo \'Foo\';', '<? echo \'Foo\';'];

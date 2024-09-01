@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer>
  */
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +34,9 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $fixerReflection = new \ReflectionClass(MagicMethodCasingFixer::class);
@@ -77,16 +82,16 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         foreach ($methodNames as $name) {
             unset($allMethodNames[$name]);
 
-            yield sprintf('method declaration for "%s".', $name) => [
-                sprintf('<?php class Foo {public function %s($a, $b){}}', $name),
-                sprintf('<?php class Foo {public function %s($a, $b){}}', strtoupper($name)),
+            yield \sprintf('method declaration for "%s".', $name) => [
+                \sprintf('<?php class Foo {public function %s($a, $b){}}', $name),
+                \sprintf('<?php class Foo {public function %s($a, $b){}}', strtoupper($name)),
             ];
         }
 
         foreach ($methodNames as $name) {
-            yield sprintf('method call "%s".', $name) => [
-                sprintf('<?php $a->%s($a, $b);', $name),
-                sprintf('<?php $a->%s($a, $b);', strtoupper($name)),
+            yield \sprintf('method call "%s".', $name) => [
+                \sprintf('<?php $a->%s($a, $b);', $name),
+                \sprintf('<?php $a->%s($a, $b);', strtoupper($name)),
             ];
         }
 
@@ -96,32 +101,32 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         foreach ($methodNames as $name) {
             unset($allMethodNames[$name]);
 
-            yield sprintf('method declaration for "%s".', $name) => [
-                sprintf('<?php class Foo {public function %s($a){}}', $name),
-                sprintf('<?php class Foo {public function %s($a){}}', strtoupper($name)),
+            yield \sprintf('method declaration for "%s".', $name) => [
+                \sprintf('<?php class Foo {public function %s($a){}}', $name),
+                \sprintf('<?php class Foo {public function %s($a){}}', strtoupper($name)),
             ];
         }
 
         foreach ($methodNames as $name) {
-            yield sprintf('method call "%s".', $name) => [
-                sprintf('<?php $a->%s($a);', $name),
-                sprintf('<?php $a->%s($a);', strtoupper($name)),
+            yield \sprintf('method call "%s".', $name) => [
+                \sprintf('<?php $a->%s($a);', $name),
+                \sprintf('<?php $a->%s($a);', strtoupper($name)),
             ];
         }
 
         // no argument
 
         foreach ($allMethodNames as $name) {
-            yield sprintf('method declaration for "%s".', $name) => [
-                sprintf('<?php class Foo {public function %s(){}}', $name),
-                sprintf('<?php class Foo {public function %s(){}}', strtoupper($name)),
+            yield \sprintf('method declaration for "%s".', $name) => [
+                \sprintf('<?php class Foo {public function %s(){}}', $name),
+                \sprintf('<?php class Foo {public function %s(){}}', strtoupper($name)),
             ];
         }
 
         foreach ($allMethodNames as $name) {
-            yield sprintf('method call "%s".', $name) => [
-                sprintf('<?php $a->%s();', $name),
-                sprintf('<?php $a->%s();', strtoupper($name)),
+            yield \sprintf('method call "%s".', $name) => [
+                \sprintf('<?php $a->%s();', $name),
+                \sprintf('<?php $a->%s();', strtoupper($name)),
             ];
         }
 
@@ -355,6 +360,9 @@ function __Tostring() {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'static call to "__set_state".' => [

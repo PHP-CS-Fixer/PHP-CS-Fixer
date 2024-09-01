@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideCloseTagCases(): iterable
     {
         yield [
@@ -138,6 +143,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixIfElseIfElseCases(): iterable
     {
         $expected =
@@ -260,6 +268,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixIfElseCases(): iterable
     {
         $expected = '<?php
@@ -318,6 +329,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixNestedIfCases(): iterable
     {
         yield [
@@ -354,6 +368,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixEmptyElseCases(): iterable
     {
         yield [
@@ -449,6 +466,9 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideNegativeCases(): iterable
     {
         yield [
@@ -635,6 +655,9 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideNegativePhp80Cases(): iterable
     {
         $cases = [
@@ -659,7 +682,7 @@ else?><?php echo 5;',
             ';
 
         foreach ($cases as $index => $case) {
-            yield sprintf('PHP8 Negative case %d', $index) => [sprintf($template, $case)];
+            yield \sprintf('PHP8 Negative case %d', $index) => [\sprintf($template, $case)];
         }
     }
 
@@ -697,8 +720,6 @@ else?><?php echo 5;',
 
         yield [[13, 24], $source, 26];
 
-        yield [[13, 24], $source, 26];
-
         yield [[26, 39], $source, 41];
 
         $source = '<?php
@@ -732,6 +753,9 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideConditionsWithoutBracesCases(): iterable
     {
         $statements = [
@@ -784,6 +808,9 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideConditionsWithoutBraces80Cases(): iterable
     {
         yield from self::generateConditionsWithoutBracesCase('$b = $a ?? throw new Exception($i);');
@@ -805,7 +832,7 @@ else?><?php echo 5;',
             self::assertSame(
                 $expected,
                 $method->invoke($this->fixer, $tokens, $index, 0),
-                sprintf('Failed in condition without braces check for index %d', $index)
+                \sprintf('Failed in condition without braces check for index %d', $index)
             );
         }
     }
@@ -1010,11 +1037,11 @@ else?><?php echo 5;',
 
             return $ret;';
 
-        yield [sprintf($ifTemplate, $statement)];
+        yield [\sprintf($ifTemplate, $statement)];
 
-        yield [sprintf($ifElseTemplate, $statement)];
+        yield [\sprintf($ifElseTemplate, $statement)];
 
-        yield [sprintf($ifElseIfTemplate, $statement)];
+        yield [\sprintf($ifElseIfTemplate, $statement)];
     }
 
     /**
@@ -1051,13 +1078,17 @@ else?><?php echo 5;',
             'throw new \Exception((string)12+1);',
         ] as $case) {
             if (null === $input) {
-                $cases[] = [sprintf($expected, $case)];
-                $cases[] = [sprintf($expected, strtoupper($case))];
-                $cases[] = [sprintf($expected, strtolower($case))];
+                $cases[] = [\sprintf($expected, $case)];
+                $cases[] = [\sprintf($expected, strtoupper($case))];
+                if ($case !== strtolower($case)) {
+                    $cases[] = [\sprintf($expected, strtolower($case))];
+                }
             } else {
-                $cases[] = [sprintf($expected, $case), sprintf($input, $case)];
-                $cases[] = [sprintf($expected, strtoupper($case)), sprintf($input, strtoupper($case))];
-                $cases[] = [sprintf($expected, strtolower($case)), sprintf($input, strtolower($case))];
+                $cases[] = [\sprintf($expected, $case), \sprintf($input, $case)];
+                $cases[] = [\sprintf($expected, strtoupper($case)), \sprintf($input, strtoupper($case))];
+                if ($case !== strtolower($case)) {
+                    $cases[] = [\sprintf($expected, strtolower($case)), \sprintf($input, strtolower($case))];
+                }
             }
         }
 

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer>
  */
 final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'handle goto labels 1' => [
@@ -223,6 +228,9 @@ $a = ($b
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'nullable types in constructor property promotion' => [
@@ -251,6 +259,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

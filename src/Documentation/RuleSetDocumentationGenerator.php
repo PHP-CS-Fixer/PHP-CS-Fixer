@@ -58,7 +58,7 @@ final class RuleSetDocumentationGenerator
 
             if (0 !== \count($alternatives)) {
                 $deprecationDescription .= RstUtils::toRst(
-                    sprintf(
+                    \sprintf(
                         "\n\nYou should use %s instead.",
                         Utils::naturalLanguageJoinWithBackticks($alternatives)
                     ),

@@ -44,8 +44,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.58.2-DEV';
-    public const VERSION_CODENAME = '7th Gear';
+    public const VERSION = '3.64.1-DEV';
+    public const VERSION_CODENAME = 'Space Sets';
 
     private ToolInfo $toolInfo;
     private ?Command $executedCommand = null;
@@ -89,7 +89,7 @@ final class Application extends BaseApplication
 
             if (\count($warnings) > 0) {
                 foreach ($warnings as $warning) {
-                    $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+                    $stdErr->writeln(\sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
                 }
                 $stdErr->writeln('');
             }
@@ -107,7 +107,7 @@ final class Application extends BaseApplication
                 $stdErr->writeln('');
                 $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use:</>' : 'Detected deprecations in use:');
                 foreach ($triggeredDeprecations as $deprecation) {
-                    $stdErr->writeln(sprintf('- %s', $deprecation));
+                    $stdErr->writeln(\sprintf('- %s', $deprecation));
                 }
             }
         }
@@ -120,7 +120,7 @@ final class Application extends BaseApplication
      */
     public static function getAbout(bool $decorated = false): string
     {
-        $longVersion = sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
+        $longVersion = \sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
 
         $commit = '@git-commit@';
         $versionCommit = '';
@@ -131,8 +131,8 @@ final class Application extends BaseApplication
 
         $about = implode('', [
             $longVersion,
-            $versionCommit ? sprintf(' <info>(%s)</info>', $versionCommit) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
-            self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
+            $versionCommit ? \sprintf(' <info>(%s)</info>', $versionCommit) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
+            self::VERSION_CODENAME ? \sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             ' by <comment>Fabien Potencier</comment>, <comment>Dariusz Ruminski</comment> and <comment>contributors</comment>.',
         ]);
 

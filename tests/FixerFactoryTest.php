@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -56,9 +57,10 @@ final class FixerFactoryTest extends TestCase
         self::assertSame($factory, $testInstance);
 
         $ruleSet = new class([]) implements RuleSetInterface {
-            /** @var array<string, array<string, mixed>|bool> */
+            /** @var array<string, array<string, mixed>|true> */
             private array $set;
 
+            /** @param array<string, array<string, mixed>|true> $set */
             public function __construct(array $set = [])
             {
                 $this->set = $set;
@@ -100,7 +102,11 @@ final class FixerFactoryTest extends TestCase
             static function (string $className): bool {
                 $class = new \ReflectionClass($className);
 
-                return !$class->isAbstract() && !$class->isAnonymous() && $class->implementsInterface(FixerInterface::class) && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
+                return !$class->isAbstract()
+                    && !$class->isAnonymous()
+                    && $class->implementsInterface(FixerInterface::class)
+                    && !$class->implementsInterface(InternalFixerInterface::class)
+                    && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
             }
         );
 
@@ -220,7 +226,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('Configuration must be an array and may not be empty.');
 
-        $testRuleSet = new class() implements RuleSetInterface {
+        $testRuleSet = new class implements RuleSetInterface {
             public function __construct(array $set = [])
             {
                 if ([] !== $set) {
@@ -231,8 +237,16 @@ final class FixerFactoryTest extends TestCase
             /**
              * @return array<string, mixed>
              */
-            public function getRuleConfiguration(string $rule): array
+            public function getRuleConfiguration(string $rule): ?array
             {
+                if (!$this->hasRule($rule)) {
+                    throw new \InvalidArgumentException(\sprintf('Rule "%s" is not in the set.', $rule));
+                }
+
+                if (true === $this->getRules()[$rule]) {
+                    return null;
+                }
+
                 return $this->getRules()[$rule];
             }
 
@@ -301,6 +315,9 @@ final class FixerFactoryTest extends TestCase
         ;
     }
 
+    /**
+     * @return iterable<array{RuleSet}>
+     */
     public static function provideConflictingFixersCases(): iterable
     {
         yield [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])];
@@ -427,7 +444,7 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = new class() implements ConfigurableFixerInterface {
+        $fixer = new class implements ConfigurableFixerInterface {
             public function configure(array $configuration): void
             {
                 throw new \LogicException('Not implemented.');
@@ -487,6 +504,9 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
+    /**
+     * @return iterable<array{float|int|\stdClass|string}>
+     */
     public static function provideConfigureFixerWithNonArrayCases(): iterable
     {
         yield ['bar'];
@@ -500,7 +520,7 @@ final class FixerFactoryTest extends TestCase
 
     public function testConfigurableFixerIsConfigured(): void
     {
-        $fixer = new class() implements ConfigurableFixerInterface {
+        $fixer = new class implements ConfigurableFixerInterface {
             public function configure(array $configuration): void
             {
                 TestCase::assertSame(['bar' => 'baz'], $configuration);

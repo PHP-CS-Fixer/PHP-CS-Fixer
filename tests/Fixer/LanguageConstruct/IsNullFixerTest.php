@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
@@ -80,8 +85,6 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         yield ['<?php smth_is_null(json_decode($x));'];
 
         yield ['<?php namespace Foo; function &is_null($x) { return null === $x; }'];
-
-        yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 
         yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 
@@ -302,6 +305,9 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'first-class callable' => [

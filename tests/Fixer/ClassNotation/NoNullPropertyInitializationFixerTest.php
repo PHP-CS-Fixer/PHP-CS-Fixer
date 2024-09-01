@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\NoNullPropertyInitializationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoNullPropertyInitializationFixer>
  */
 final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -358,6 +363,9 @@ null;#13
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
@@ -407,6 +415,9 @@ class Point {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly - cannot have default value, fixer should not crash' => [

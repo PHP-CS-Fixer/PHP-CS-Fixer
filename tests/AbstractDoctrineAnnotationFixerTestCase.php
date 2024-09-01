@@ -14,11 +14,16 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AbstractDoctrineAnnotationFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
+ *
+ * @template TFixer of AbstractDoctrineAnnotationFixer
+ *
+ * @extends AbstractFixerTestCase<TFixer>
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
@@ -47,33 +52,33 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     /**
      * @param list<array{0: string, 1?: string}> $commentCases
      *
-     * @return list<array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
-    protected static function createTestCases(array $commentCases): array
+    protected static function createTestCases(array $commentCases): iterable
     {
-        $cases = [];
+        $noFixCases = [];
         foreach ($commentCases as $commentCase) {
-            $cases[] = [
+            yield [
                 self::withClassDocBlock($commentCase[0]),
                 isset($commentCase[1]) ? self::withClassDocBlock($commentCase[1]) : null,
             ];
 
-            $cases[] = [
+            yield [
                 self::withPropertyDocBlock($commentCase[0]),
                 isset($commentCase[1]) ? self::withPropertyDocBlock($commentCase[1]) : null,
             ];
 
-            $cases[] = [
+            yield [
                 self::withMethodDocBlock($commentCase[0]),
                 isset($commentCase[1]) ? self::withMethodDocBlock($commentCase[1]) : null,
             ];
 
-            $cases[] = [
+            $noFixCases[$commentCase[0]] = [
                 self::withWrongElementDocBlock($commentCase[0]),
             ];
         }
 
-        return $cases;
+        yield from array_values($noFixCases);
     }
 
     private static function withClassDocBlock(string $comment): string
@@ -126,6 +131,6 @@ $foo = bar();', $comment, false);
             $comment = str_replace("\n", "\n    ", $comment);
         }
 
-        return sprintf($php, preg_replace('/^\n+/', '', $comment));
+        return \sprintf($php, preg_replace('/^\n+/', '', $comment));
     }
 }

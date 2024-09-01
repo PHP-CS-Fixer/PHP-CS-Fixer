@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer>
  */
 final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [

@@ -96,11 +96,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArguments80(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        self::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
     }
 
     public static function provideArguments80Cases(): iterable
@@ -125,11 +121,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArguments81(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        self::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
     }
 
     public static function provideArguments81Cases(): iterable
@@ -148,6 +140,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     */
     public static function provideArgumentInfoCases(): iterable
     {
         yield ['<?php function($a){};', 3, 3, new ArgumentAnalysis(
@@ -285,12 +280,12 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
     }
 
+    /**
+     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     */
     public static function provideArgumentInfo80Cases(): iterable
     {
         yield [
@@ -311,7 +306,7 @@ final class ArgumentsAnalyzerTest extends TestCase
 
         foreach (['public', 'protected', 'private'] as $visibility) {
             yield [
-                sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
+                \sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
                 13,
                 22,
                 new ArgumentAnalysis(
@@ -335,12 +330,12 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
     }
 
+    /**
+     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     */
     public static function provideArgumentInfo81Cases(): iterable
     {
         yield [

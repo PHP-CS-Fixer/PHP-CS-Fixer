@@ -24,6 +24,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer>
  */
 final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +37,9 @@ final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -117,6 +122,9 @@ $foo = $bar;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [

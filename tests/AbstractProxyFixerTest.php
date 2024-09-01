@@ -197,7 +197,7 @@ final class AbstractProxyFixerTest extends TestCase
 
     private function createWhitespacesAwareFixerDouble(): WhitespacesAwareFixerInterface
     {
-        return new class() implements WhitespacesAwareFixerInterface {
+        return new class implements WhitespacesAwareFixerInterface {
             /** @phpstan-ignore-next-line to not complain that property is never read */
             private WhitespacesFixerConfig $whitespacesConfig;
 

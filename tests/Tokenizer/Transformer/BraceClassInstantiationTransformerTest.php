@@ -106,24 +106,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         ];
 
         yield [
-            '<?php $foo{0}(new Foo())->bar();',
-            [
-                5 => '(',
-                9 => '(',
-                10 => ')',
-                11 => ')',
-                14 => '(',
-                15 => ')',
-            ],
-            [
-                '(',
-                ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-            ],
-        ];
-
-        yield [
             '<?php $foo(new Foo())->bar();',
             [
                 2 => '(',
@@ -502,6 +484,47 @@ const C = new (Foo);
 
 function test2($param = (new Foo)) {}
 ',
+        ];
+    }
+
+    /**
+     * @param array<int, int|string> $expectedTokens
+     * @param list<int>              $observedKinds
+     *
+     * @dataProvider provideProcessPrePhp84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    /**
+     * @return iterable<array{string, array<int, string>, list<int|string>}>
+     */
+    public static function provideProcessPrePhp84Cases(): iterable
+    {
+        yield [
+            '<?php $foo{0}(new Foo())->bar();',
+            [
+                5 => '(',
+                9 => '(',
+                10 => ')',
+                11 => ')',
+                14 => '(',
+                15 => ')',
+            ],
+            [
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
         ];
     }
 }

@@ -43,12 +43,12 @@ final class WorkerException extends \RuntimeException
     public static function fromRaw(array $data): self
     {
         $exception = new self(
-            sprintf('[%s] %s', $data['class'], $data['message']),
+            \sprintf('[%s] %s', $data['class'], $data['message']),
             $data['code']
         );
         $exception->file = $data['file'];
         $exception->line = $data['line'];
-        $exception->originalTraceAsString = sprintf(
+        $exception->originalTraceAsString = \sprintf(
             '## %s(%d)%s%s',
             $data['file'],
             $data['line'],

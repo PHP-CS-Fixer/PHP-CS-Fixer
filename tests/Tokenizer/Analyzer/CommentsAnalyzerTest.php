@@ -173,6 +173,9 @@ $bar;',
         self::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
+    /**
+     * @return iterable<array{string, int}>
+     */
     public static function provideHeaderCommentCases(): iterable
     {
         yield ['<?php /* Comment */ namespace Foo;', 1];
@@ -197,6 +200,9 @@ $bar;',
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
+    /**
+     * @return iterable<array{string, int}>
+     */
     public static function provideNotHeaderCommentCases(): iterable
     {
         yield ['<?php $foo; /* Comment */ $bar;', 4];
@@ -234,6 +240,9 @@ $bar;',
         self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function providePhpdocCandidateCases(): iterable
     {
         yield ['<?php /* @var Foo */ $bar = "baz";'];
@@ -325,6 +334,9 @@ $bar;',
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideNotPhpdocCandidateCases(): iterable
     {
         yield ['<?php class Foo {} /* At the end of file */'];
@@ -351,13 +363,12 @@ $bar;',
      */
     public function testPhpdocCandidatePhp80(string $code): void
     {
-        $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
-        $analyzer = new CommentsAnalyzer();
-
-        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        $this->testPhpdocCandidate($code);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function providePhpdocCandidatePhp80Cases(): iterable
     {
         yield 'attribute between class and phpDoc' => [
@@ -377,13 +388,12 @@ Class MyAnnotation3 {}',
      */
     public function testPhpdocCandidatePhp81(string $code): void
     {
-        $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
-        $analyzer = new CommentsAnalyzer();
-
-        self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        $this->testPhpdocCandidate($code);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function providePhpdocCandidatePhp81Cases(): iterable
     {
         yield 'public readonly' => [
@@ -436,13 +446,12 @@ enum Foo: int {
      */
     public function testNotPhpdocCandidatePhp81(string $code): void
     {
-        $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
-        $analyzer = new CommentsAnalyzer();
-
-        self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
+        $this->testNotPhpdocCandidate($code);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideNotPhpdocCandidatePhp81Cases(): iterable
     {
         yield 'enum and switch' => [
