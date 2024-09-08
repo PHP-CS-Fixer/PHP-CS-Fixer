@@ -193,7 +193,10 @@ abstract class AbstractFixerTestCase extends TestCase
         $dummyFileInfo = new StdinFileInfo();
 
         foreach ($samples as $sampleCounter => $sample) {
+            // @phpstan-ignore-next-line
             self::assertInstanceOf(CodeSampleInterface::class, $sample, \sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+
+            // @phpstan-ignore-next-line
             self::assertIsInt($sampleCounter);
 
             $code = $sample->getCode();
