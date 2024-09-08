@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 /**
  * @internal
  *
- * @phpstan-type _AttributeItems list<array{start: int, end: int, name: string}>
+ * @phpstan-type _AttributeItem array{start: int, end: int, name: string}
  */
 final class AttributeAnalysis
 {
@@ -27,12 +27,12 @@ final class AttributeAnalysis
     private int $closingBracketIndex;
 
     /**
-     * @var _AttributeItems
+     * @var non-empty-list<_AttributeItem>
      */
     private array $attributes;
 
     /**
-     * @param _AttributeItems $attributes
+     * @param non-empty-list<_AttributeItem> $attributes
      */
     public function __construct(int $startIndex, int $endIndex, int $openingBracketIndex, int $closingBracketIndex, array $attributes)
     {
@@ -64,7 +64,7 @@ final class AttributeAnalysis
     }
 
     /**
-     * @return _AttributeItems
+     * @return non-empty-list<_AttributeItem>
      */
     public function getAttributes(): array
     {

@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @phpstan-import-type _AttributeItems from AttributeAnalysis
+ * @phpstan-import-type _AttributeItem from AttributeAnalysis
  */
 final class AttributeAnalyzer
 {
@@ -130,11 +130,10 @@ final class AttributeAnalyzer
     }
 
     /**
-     * @return _AttributeItems
+     * @return non-empty-list<_AttributeItem>
      */
     private static function collectAttributes(Tokens $tokens, int $index, int $closingIndex): array
     {
-        /** @var _AttributeItems $elements */
         $elements = [];
 
         do {
@@ -175,6 +174,8 @@ final class AttributeAnalyzer
             }
             --$index;
         }
+
+        \assert(array_is_list($elements));
 
         return $elements;
     }
