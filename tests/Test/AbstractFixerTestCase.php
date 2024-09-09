@@ -21,7 +21,6 @@ use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
-use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Linter\CachingLinter;
@@ -193,9 +192,6 @@ abstract class AbstractFixerTestCase extends TestCase
         $dummyFileInfo = new StdinFileInfo();
 
         foreach ($samples as $sampleCounter => $sample) {
-            self::assertInstanceOf(CodeSampleInterface::class, $sample, \sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
-            self::assertIsInt($sampleCounter);
-
             $code = $sample->getCode();
 
             self::assertNotEmpty($code, \sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));

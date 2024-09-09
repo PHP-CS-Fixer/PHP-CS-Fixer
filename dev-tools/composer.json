@@ -7,7 +7,7 @@
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpmd/phpmd": "^2.15.0",
         "phpstan/extension-installer": "^1.4.1",
-        "phpstan/phpstan": "^1.12.0",
+        "phpstan/phpstan": "^1.12.2",
         "phpstan/phpstan-phpunit": "^1.4.0",
         "phpstan/phpstan-strict-rules": "^1.6.0"
     },
