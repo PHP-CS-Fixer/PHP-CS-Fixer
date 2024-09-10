@@ -104,7 +104,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             function (string $type): string {
                 $typeExpression = new TypeExpression($type, null, []);
 
-                $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
+                $newTypeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
                     if (!$type->isUnionType()) {
                         $value = $this->normalize($type->toString());
 
@@ -114,7 +114,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
                     return $type;
                 });
 
-                return $typeExpression->toString();
+                return $newTypeExpression->toString();
             },
             $types
         );
