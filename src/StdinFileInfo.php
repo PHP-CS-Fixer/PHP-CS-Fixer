@@ -164,8 +164,4 @@ final class StdinFileInfo extends \SplFileInfo
     {
         throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
     }
-
-    public function setFileClass($className = null): void {}
-
-    public function setInfoClass($className = null): void {}
 }
