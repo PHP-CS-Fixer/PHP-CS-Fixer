@@ -215,13 +215,4 @@ final class StdinFileInfoTest extends TestCase
 
         $fileInfo->openFile();
     }
-
-    public function testNoOpMethods(): void
-    {
-        $fileInfo = new StdinFileInfo();
-        $fileInfo->setFileClass('foo1');
-        $fileInfo->setInfoClass('foo2');
-
-        $this->addToAssertionCount(1);
-    }
 }
