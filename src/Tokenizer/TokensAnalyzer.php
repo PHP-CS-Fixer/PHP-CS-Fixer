@@ -368,9 +368,18 @@ final class TokensAnalyzer
 
         if (
             $this->tokens[$nextIndex]->equalsAny(['(', '{'])
-            || $this->tokens[$nextIndex]->isGivenKind([T_AS, T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, T_VARIABLE])
+            || $this->tokens[$nextIndex]->isGivenKind([T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, T_VARIABLE])
         ) {
             return false;
+        }
+
+        // handle foreach( FOO as $_ ) {}
+        if ($this->tokens[$nextIndex]->isGivenKind(T_AS)) {
+            $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
+
+            if (!$this->tokens[$prevIndex]->equals('(')) {
+                return false;
+            }
         }
 
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
