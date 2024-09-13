@@ -1283,6 +1283,20 @@ abstract class Baz
             [3 => false, 11 => false, 18 => false],
             '<?php interface Foo { public function bar(): ?\Baz; }',
         ];
+
+        yield [
+            [3 => true],
+            '<?php foreach(FOO as $foo) {}',
+        ];
+
+        yield [
+            [
+                3 => false,
+                5 => false,
+                9 => false,
+            ],
+            '<?php use Foo\Bir as FBB;',
+        ];
     }
 
     /**
