@@ -302,7 +302,7 @@ final class TypeExpression
      */
     public function walkTypes(\Closure $callback): void
     {
-        $type = $this->mapTypes(static function (self $type) use ($callback) {
+        $this->mapTypes(static function (self $type) use ($callback) {
             $valueOrig = $type->value;
             $callback($type);
             \assert($type->value === $valueOrig);
