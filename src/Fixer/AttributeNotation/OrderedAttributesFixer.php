@@ -167,7 +167,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
-            /** @var list<array{name: string, start: int, end: int}> $elements */
+            /** @var _AttributeItems $elements */
             $elements = array_map(function (AttributeAnalysis $attributeAnalysis) use ($tokens): array {
                 return [
                     'name' => $this->sortAttributes($tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
@@ -258,9 +258,9 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
     }
 
     /**
-     * @param list<array{name: string, start: int, end: int}> $elements
+     * @param _AttributeItems $elements
      *
-     * @return list<array{name: string, start: int, end: int}>
+     * @return _AttributeItems
      */
     private function sortElements(array $elements): array
     {
@@ -285,7 +285,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
     }
 
     /**
-     * @param list<array{name: string, start: int, end: int}> $elements
+     * @param _AttributeItems $elements
      */
     private function sortTokens(Tokens $tokens, int $startIndex, int $endIndex, array $elements, ?Token $delimiter = null): void
     {

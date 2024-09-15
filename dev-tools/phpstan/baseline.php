@@ -674,24 +674,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: offsetAccess.nonOffsetAccessible
-	'message' => '#^Cannot access offset \'end\' on array\\{name\\: string, start\\: int, end\\: int\\}\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.nonOffsetAccessible
-	'message' => '#^Cannot access offset \'end\' on array\\{start\\: int, end\\: int, name\\: string\\}\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 0 might not exist on list\\<array\\{name\\: string, start\\: int, end\\: int\\}\\>\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$string of function substr expects string, string\\|false given\\.$#',
 	'count' => 1,
@@ -2364,12 +2346,6 @@ $ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on array\\<list\\<string\\>\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\AttributeAnalyzer\\:\\:collectAttributes\\(\\) should return list\\<array\\{start\\: int, end\\: int, name\\: string\\}\\> but returns non\\-empty\\-array\\<int\\<0, max\\>, array\\{start\\: int, end\\: int, name\\: string\\}\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/AttributeAnalyzer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
