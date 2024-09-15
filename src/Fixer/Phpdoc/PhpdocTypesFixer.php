@@ -141,7 +141,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     {
         $typeExpression = new TypeExpression($type, null, []);
 
-        $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
+        $newTypeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
             if ($type->isUnionType()) {
                 return $type;
             }
@@ -155,7 +155,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
             return $type;
         });
 
-        return $typeExpression->toString();
+        return $newTypeExpression->toString();
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
