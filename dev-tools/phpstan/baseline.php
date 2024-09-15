@@ -375,6 +375,12 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'array\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'array_shape_inners\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -382,6 +388,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'array_shape_inner…\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'array_shape_name\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
@@ -406,7 +418,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'callable_name\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
-	'count' => 2,
+	'count' => 3,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
@@ -435,6 +447,18 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'class_constant\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'class_constant_name\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'conditional_cond…\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 4,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -449,6 +473,12 @@ $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'conditional_true…\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 3,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'generic_name\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
@@ -484,7 +514,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'type\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
-	'count' => 1,
+	'count' => 3,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
