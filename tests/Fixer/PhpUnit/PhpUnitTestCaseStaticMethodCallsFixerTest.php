@@ -441,6 +441,152 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             ],
         ];
 
+        yield 'call type inherit for former methods' => [
+            <<<'EOF'
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        self::any();
+                        self::atMost();
+                        self::once();
+                        self::assertSame(1, 23);
+                    }
+
+                    public static function bar()
+                    {
+                        self::any();
+                        self::atMost();
+                        self::once();
+                        self::assertSame(1, 23);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        STATIC::assertSame(1, 23);
+                    }
+
+                    public static function bar()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        STATIC::assertSame(1, 23);
+                    }
+                }
+                EOF,
+            [
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF,
+            ],
+        ];
+
+        yield 'call type this for former methods' => [
+            <<<'EOF'
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        $this->any();
+                        $this->atMost();
+                        $this->once();
+                        self::assertSame(1, 23);
+                    }
+
+                    public static function bar()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        self::assertSame(1, 23);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        STATIC::assertSame(1, 23);
+                    }
+
+                    public static function bar()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        STATIC::assertSame(1, 23);
+                    }
+                }
+                EOF,
+            [
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF,
+                'call_type_for_former' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
+            ],
+        ];
+
+        yield 'do not change when call type is none for former methods' => [
+            <<<'EOF'
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        self::assertSame(1, 23);
+                    }
+
+                    public static function bar()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        self::assertSame(1, 23);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class FooTest extends TestCase
+                {
+                    public function foo()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        STATIC::assertSame(1, 23);
+                    }
+
+                    public static function bar()
+                    {
+                        $this->any();
+                        self::atMost();
+                        static::once();
+                        STATIC::assertSame(1, 23);
+                    }
+                }
+                EOF,
+            [
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF,
+                'call_type_for_former' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_NONE,
+            ],
+        ];
+
         yield 'do not change class property and method signature' => [
             <<<'EOF'
                 <?php
