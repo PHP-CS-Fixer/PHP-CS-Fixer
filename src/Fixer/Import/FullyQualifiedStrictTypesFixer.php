@@ -653,27 +653,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
-            $unsupported = false;
-
-            return $matches[1].$matches[2].$matches[3].implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
-                /** @var class-string $v */
-                if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
-                    $unsupported = true;
-
-                    return $v;
-                }
-
-                $shortTokens = $this->determineShortType($v, 'class', $uses, $namespaceName);
-                if (null === $shortTokens) {
-                    return $v;
-                }
-
-                return implode('', array_map(
-                    static fn (Token $token) => $token->getContent(),
-                    $shortTokens
-                ));
-            }, explode('|', $matches[4])));
+            return $matches[1].$matches[2].$matches[3].$this->fixPhpDocType($matches[4], $uses, $namespaceName);
         }, $phpDocContent);
 
         if ($phpDocContentNew !== $phpDocContent) {
@@ -683,6 +663,33 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
     /**
      * @param _Uses $uses
+     */
+    private function fixPhpDocType(string $type, array $uses, string $namespaceName): string
+    {
+        /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
+        $unsupported = false;
+
+        return implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
+            if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
+                $unsupported = true;
+
+                return $v;
+            }
+
+            $shortTokens = $this->determineShortType($v, $uses, $namespaceName);
+            if (null === $shortTokens) {
+                return $v;
+            }
+
+            return implode('', array_map(
+                static fn (Token $token) => $token->getContent(),
+                $shortTokens
+            ));
+        }, explode('|', $type)));
+    }
+
+    /**
+     * @param array<string, string> $uses
      */
     private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
