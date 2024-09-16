@@ -448,14 +448,21 @@ final class TypeExpression
                     $unionedInnerTypes = [];
                     for ($i = 0; $i < \count($innerTypes); $i += 2) {
                         if (($innerTypes[$i - 1] ?? '|') !== '|') {
-                            $unionedInnerTypesLastKey = array_key_last($unionedInnerTypes);
-                            $unionedInnerTypesLast = $unionedInnerTypes[$unionedInnerTypesLastKey];
-                            $unionedInnerTypes[$unionedInnerTypesLastKey] = [
-                                'start_index' => $unionedInnerTypesLast['start_index'],
-                                'value' => (isset($unionedInnerTypesLast['expression'])
-                                    ? $unionedInnerTypesLast['expression']->toString()
-                                    : $unionedInnerTypesLast['value'])
-                                    .$innerTypes[$i - 1]
+                            $lastKey = array_key_last($unionedInnerTypes);
+                            $last = $unionedInnerTypes[$lastKey];
+                            $lastValue = isset($last['expression'])
+                                ? $last['expression']->toString()
+                                : $last['value'];
+                            $lastValueLen = \strlen($lastValue);
+
+                            $unionedInnerTypes[$lastKey] = [
+                                'start_index' => $last['start_index'],
+                                'value' => $lastValue
+                                    .substr(
+                                        $this->value,
+                                        $last['start_index']+$lastValueLen,
+                                        $innerTypes[$i]['start_index']-($last['start_index']+$lastValueLen)
+                                    )
                                     .$innerTypes[$i]['expression']->toString(),
                             ];
                         } else {

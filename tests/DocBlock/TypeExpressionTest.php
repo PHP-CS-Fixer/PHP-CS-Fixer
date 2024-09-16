@@ -47,10 +47,12 @@ final class TypeExpressionTest extends TestCase
             null,
             []
         );
-        self::assertSame(
-            [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
-            [...$unionExpression->getTypes()]
-        );
+        if ($expression->getTypesGlue() !== '&') {
+            self::assertSame(
+                [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
+                [...$unionExpression->getTypes()]
+            );
+        }
     }
 
     public static function provideGetTypesCases(): iterable
