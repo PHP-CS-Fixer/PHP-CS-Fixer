@@ -434,7 +434,7 @@ final class TypeExpression
 
                 \assert((\count($innerTypes) % 2) === 1);
                 $innerMixedGlue = false;
-                for ($i = count($innerTypes) - 2; $i > 2; $i -= 2) {
+                for ($i = \count($innerTypes) - 2; $i > 2; $i -= 2) {
                     if ($innerTypes[$i] !== $innerTypes[$i - 2]) {
                         $innerMixedGlue = true;
                     }
@@ -444,7 +444,7 @@ final class TypeExpression
                     $this->typesGlue = '|';
 
                     $unionedInnerTypes = [];
-                    for ($i = 0; $i < count($innerTypes); $i += 2) {
+                    for ($i = 0; $i < \count($innerTypes); $i += 2) {
                         if (($innerTypes[$i - 1] ?? '|') !== '|') {
                             $unionedInnerTypesLastKey = array_key_last($unionedInnerTypes);
                             $unionedInnerTypesLast = $unionedInnerTypes[$unionedInnerTypesLastKey];
@@ -474,7 +474,7 @@ final class TypeExpression
                 } else {
                     $this->typesGlue = $innerTypes[1];
 
-                    for ($i = 0; $i < count($innerTypes); $i += 2) {
+                    for ($i = 0; $i < \count($innerTypes); $i += 2) {
                         $this->innerTypeExpressions[] = $innerTypes[$i];
                     }
                 }
