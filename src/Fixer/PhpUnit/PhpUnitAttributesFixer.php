@@ -442,7 +442,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     private static function fixRequires(Tokens $tokens, int $index, Annotation $annotation): array
     {
         $matches = self::getMatches($annotation);
-        \assert(isset($matches[1]));
+        if (!isset($matches[1])) {
+            return [];
+        }
 
         $map = [
             'extension' => 'RequiresPhpExtension',

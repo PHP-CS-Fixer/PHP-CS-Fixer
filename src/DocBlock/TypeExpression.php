@@ -432,8 +432,6 @@ final class TypeExpression
 
                 return;
             }
-
-            \assert($typesGlue === $matches['glue'][0]);
         }
 
         $this->isUnionType = false;
