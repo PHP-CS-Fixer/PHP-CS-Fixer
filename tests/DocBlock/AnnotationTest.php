@@ -592,7 +592,7 @@ final class AnnotationTest extends TestCase
 
         yield [['bar&baz', 'foo'], '* @param Foo|Bar&Baz&$param'];
 
-        yield [['foo', 'bar&baz'], '* @param Bar&Baz|Foo&$param'];
+        yield [['bar&baz', 'foo'], '* @param Bar&Baz|Foo&$param'];
     }
 
     public function testGetTypesOnBadTag(): void
