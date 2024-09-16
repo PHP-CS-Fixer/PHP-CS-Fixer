@@ -460,8 +460,8 @@ final class TypeExpression
                                 'value' => $lastValue
                                     .substr(
                                         $this->value,
-                                        $last['start_index']+$lastValueLen,
-                                        $innerTypes[$i]['start_index']-($last['start_index']+$lastValueLen)
+                                        $last['start_index'] + $lastValueLen,
+                                        $innerTypes[$i]['start_index'] - ($last['start_index'] + $lastValueLen)
                                     )
                                     .$innerTypes[$i]['expression']->toString(),
                             ];
