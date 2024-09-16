@@ -441,6 +441,7 @@ final class TypeExpression
                         break;
                     }
                 }
+                unset($i);
 
                 if ($innerMixedGlue) {
                     $this->typesGlue = '|';
