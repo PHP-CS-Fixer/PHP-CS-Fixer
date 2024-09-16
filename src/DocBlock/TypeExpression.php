@@ -392,7 +392,7 @@ final class TypeExpression
 
     private function parse(): void
     {
-        $typesGlue = null;
+        $innerTypes = null;
 
         $index = 0;
         while (true) {
@@ -408,18 +408,21 @@ final class TypeExpression
                 throw new \Exception('Unable to parse phpdoc type '.var_export($this->value, true));
             }
 
-            if (null === $typesGlue) {
+            if (null === $innerTypes) {
                 if (($matches['glue'][0] ?? '') === '') {
                     break;
                 }
 
-                $typesGlue = $matches['glue'][0];
+                $innerTypes = [];
             }
 
-            $this->innerTypeExpressions[] = [
+            $innerTypes[] = [
                 'start_index' => $index,
                 'expression' => $this->inner($matches['type'][0]),
             ];
+            if (($matches['glue'][0] ?? '') !== '') {
+                $innerTypes[] = $matches['glue'][0];
+            }
 
             $consumedValueLength = \strlen($matches[0][0]);
             $index += $consumedValueLength;
@@ -428,12 +431,56 @@ final class TypeExpression
                 \assert(\strlen($this->value) === $index);
 
                 $this->isUnionType = true;
-                $this->typesGlue = $typesGlue;
+
+                \assert((\count($innerTypes) % 2) === 1);
+                $innerMixedGlue = false;
+                for ($i = count($innerTypes) - 2; $i > 2; $i -= 2) {
+                    if ($innerTypes[$i] !== $innerTypes[$i - 2]) {
+                        $innerMixedGlue = true;
+                    }
+                }
+
+                if ($innerMixedGlue) {
+                    $this->typesGlue = '|';
+
+                    $unionedInnerTypes = [];
+                    for ($i = 0; $i < count($innerTypes); $i += 2) {
+                        if (($innerTypes[$i - 1] ?? '|') !== '|') {
+                            $unionedInnerTypesLastKey = array_key_last($unionedInnerTypes);
+                            $unionedInnerTypesLast = $unionedInnerTypes[$unionedInnerTypesLastKey];
+                            $unionedInnerTypes[$unionedInnerTypesLastKey] = [
+                                'start_index' => $unionedInnerTypesLast['start_index'],
+                                'value' => (isset($unionedInnerTypesLast['expression'])
+                                    ? $unionedInnerTypesLast['expression']->toString()
+                                    : $unionedInnerTypesLast['value'])
+                                    .$innerTypes[$i - 1]
+                                    .$innerTypes[$i]['expression']->toString(),
+                            ];
+                        } else {
+                            $unionedInnerTypes[] = $innerTypes[$i];
+                        }
+                    }
+
+                    foreach ($unionedInnerTypes as $unionedInnerType) {
+                        if (!isset($unionedInnerType['value'])) {
+                            $this->innerTypeExpressions[] = $unionedInnerType;
+                        } else {
+                            $this->innerTypeExpressions[] = [
+                                'start_index' => $unionedInnerType['start_index'],
+                                'expression' => $unionedInnerType['value'],
+                            ];
+                        }
+                    }
+                } else {
+                    $this->typesGlue = $innerTypes[1];
+
+                    for ($i = 0; $i < count($innerTypes); $i += 2) {
+                        $this->innerTypeExpressions[] = $innerTypes[$i];
+                    }
+                }
 
                 return;
             }
-
-            \assert($typesGlue === $matches['glue'][0]);
         }
 
         $this->isUnionType = false;
