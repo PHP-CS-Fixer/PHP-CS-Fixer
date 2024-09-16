@@ -437,6 +437,8 @@ final class TypeExpression
                 for ($i = \count($innerTypes) - 2; $i > 2; $i -= 2) {
                     if ($innerTypes[$i] !== $innerTypes[$i - 2]) {
                         $innerMixedGlue = true;
+
+                        break;
                     }
                 }
 
