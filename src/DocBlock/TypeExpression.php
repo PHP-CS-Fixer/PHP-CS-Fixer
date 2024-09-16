@@ -469,7 +469,7 @@ final class TypeExpression
                         } else {
                             $this->innerTypeExpressions[] = [
                                 'start_index' => $unionedInnerType['start_index'],
-                                'expression' => $unionedInnerType['value'],
+                                'expression' => $this->inner($unionedInnerType['value']),
                             ];
                         }
                     }
