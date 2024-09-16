@@ -675,7 +675,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $type;
             }
 
-            $shortTokens = $this->determineShortType($v, $uses, $namespaceName);
+            $shortTokens = $this->determineShortType($v, 'class', $uses, $namespaceName);
             if (null === $shortTokens) {
                 return $type;
             }
@@ -694,7 +694,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @param array<string, string> $uses
+     * @param _Uses $uses
      */
     private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
