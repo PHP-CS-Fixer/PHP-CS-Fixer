@@ -492,6 +492,10 @@ final class TypeExpression
                     }
                 }
 
+                if ('~' === $this->typesGlue) {
+                    $this->isGluedType = false; // subtraction is not commutative
+                }
+
                 return;
             }
         }

@@ -141,7 +141,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['A & B', ['A', 'B']];
 
-        yield ['A~B', ['A', 'B']];
+        yield ['A~B'];
 
         yield ['array{}'];
 
@@ -503,9 +503,9 @@ final class TypeExpressionTest extends TestCase
 
         yield [true, 'Foo&Bar&?Baz'];
 
-        yield [true, 'Foo~Bar'];
+        yield [false, 'Foo~Bar']; // subtraction is not commutative
 
-        yield [true, 'Foo~?Bar~Baz'];
+        yield [false, 'Foo~?Bar~Baz']; // subtraction is not commutative
 
         yield [true, 'Foo~Bar|Baz'];
     }
@@ -1054,17 +1054,17 @@ final class TypeExpressionTest extends TestCase
 
         yield 'mixed | and ~ glue' => [
             'Foo|Baz~Bar',
-            'Bar~Baz|Foo',
+            'Baz~Bar|Foo',
         ];
 
         yield 'mixed & and ~ glue' => [
             'Foo&Baz~Bar',
-            'Bar~Baz&Foo',
+            'Baz~Bar&Foo',
         ];
 
         yield 'mixed |, & and ~ glue' => [
-            'f~g|b&d~c~e&a',
-            'a&b&c~d~e|f~g',
+            'g~f|b&d~c~e&a',
+            'a&b&d~c~e|g~f',
         ];
     }
 
