@@ -465,12 +465,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'expression\' might not exist on array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'generic_start\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -501,18 +495,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'start_index\' might not exist on array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|array\\{start_index\\: int\\<0, max\\>, value\\: string\\}\\|non\\-empty\\-string\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'start_index\' might not exist on array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'type\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -520,12 +502,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'types\' might not exist on array\\<string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'value\' might not exist on array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|array\\{start_index\\: int\\<0, max\\>, value\\: string\\}\\|non\\-empty\\-string\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
@@ -543,56 +519,8 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 0\\|1\\|\'\'\\|null might not exist on array\\<0\\|1\\|\'\', array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|array\\{start_index\\: int\\<0, max\\>, value\\: string\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 0\\|int\\<2, max\\> might not exist on non\\-empty\\-list\\<array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 4,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 1 might not exist on array\\<string\\>\\.$#',
 	'count' => 2,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 1 might not exist on non\\-empty\\-list\\<array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset int\\<1, max\\> might not exist on non\\-empty\\-list\\<array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset int\\<3, max\\> might not exist on non\\-empty\\-list\\<array\\{start_index\\: int\\<0, max\\>, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\TypeExpression\\:\\:\\$innerTypeExpressions \\(list\\<array\\{start_index\\: int, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\>\\) does not accept non\\-empty\\-list\\<array\\{start_index\\: int, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|array\\{start_index\\: int\\<0, max\\>, value\\: string\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\TypeExpression\\:\\:\\$innerTypeExpressions \\(list\\<array\\{start_index\\: int, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\>\\) does not accept non\\-empty\\-list\\<array\\{start_index\\: int, expression\\: PhpCsFixer\\\\DocBlock\\\\TypeExpression\\}\\|non\\-empty\\-string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\TypeExpression\\:\\:\\$typesGlue \\(string\\) does not accept array\\<string, int\\|PhpCsFixer\\\\DocBlock\\\\TypeExpression\\>\\|string\\.$#',
-	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
