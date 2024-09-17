@@ -141,6 +141,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['A & B', ['A', 'B']];
 
+        yield ['A~B', ['A', 'B']];
+
         yield ['array{}'];
 
         yield ['object{ }'];
@@ -373,6 +375,12 @@ final class TypeExpressionTest extends TestCase
         yield ['unclosed_parenthesis('];
 
         yield ['((unclosed_parenthesis)'];
+
+        yield ['class||double_vertical_bar'];
+
+        yield ['class&&double_ampersand'];
+
+        yield ['class~~double_tilde'];
 
         yield ['array<'];
 
@@ -1025,6 +1033,26 @@ final class TypeExpressionTest extends TestCase
         yield 'large numbers' => [
             '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
+        ];
+
+        yield 'mixed | and & glue' => [
+            'Foo|Baz&Bar',
+            'Bar&Baz|Foo',
+        ];
+
+        yield 'mixed | and ~ glue' => [
+            'Foo|Baz~Bar',
+            'Bar~Baz|Foo',
+        ];
+
+        yield 'mixed & and ~ glue' => [
+            'Foo&Baz~Bar',
+            'Bar~Baz&Foo',
+        ];
+
+        yield 'mixed |, & and ~ glue' => [
+            'f~g|b&d~c~e&a',
+            'a&b&c~d~e|f~g',
         ];
     }
 
