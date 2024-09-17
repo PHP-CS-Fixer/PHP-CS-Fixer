@@ -210,6 +210,7 @@ final class TypeExpression
 
     private bool $isGluedType;
 
+    /** @var '&'|'|'|'~' */
     private string $typesGlue;
 
     /** @var list<array{start_index: int, expression: self}> */
@@ -265,6 +266,9 @@ final class TypeExpression
         return $this->isGluedType();
     }
 
+    /**
+     * @return '&'|'|'|'~'
+     */
     public function getTypesGlue(): string
     {
         return $this->typesGlue;
