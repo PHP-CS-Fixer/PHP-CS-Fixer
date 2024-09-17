@@ -47,7 +47,7 @@ final class TypeExpressionTest extends TestCase
             null,
             []
         );
-        if ('&' !== $expression->getTypesGlue()) {
+        if (!$expression->isGluedType() || '|' === $expression->getTypesGlue()) {
             self::assertSame(
                 [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
                 [...$unionExpression->getTypes()]
