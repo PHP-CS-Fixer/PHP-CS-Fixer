@@ -410,7 +410,7 @@ final class TypeExpression
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&~])\h*|$)}',
+                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&~])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
