@@ -206,8 +206,6 @@ final class TypeExpression
             |)
         )';
 
-    private const POSSIBLE_GLUES = ['|', '&', '~'];
-
     private string $value;
 
     private bool $isGluedType;
@@ -408,7 +406,7 @@ final class TypeExpression
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>['.implode('', self::POSSIBLE_GLUES).'])\h*|$)}',
+                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&~])\h*|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
@@ -457,7 +455,7 @@ final class TypeExpression
                     }
                 } else {
                     $glue = null;
-                    foreach (self::POSSIBLE_GLUES as $possibleGlue) {
+                    foreach (['|', '&', '~'] as $possibleGlue) {
                         if ($seenGlues[$possibleGlue] ?? false) {
                             $glue = $possibleGlue;
 
