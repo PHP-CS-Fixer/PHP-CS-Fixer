@@ -12,6 +12,10 @@ CMD git ls-files --cached -z -- '*.rst' \
 
 FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
 
+LABEL org.opencontainers.image.source="https://github.com/PHP-CS-Fixer/PHP-CS-Fixer" \
+  org.opencontainers.image.url="https://cs.symfony.com" \
+  org.opencontainers.image.licenses="MIT"
+
 RUN curl --location --output /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
     && chmod +x /usr/local/bin/install-php-extensions \
     && install-php-extensions pcntl
