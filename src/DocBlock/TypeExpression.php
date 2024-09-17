@@ -38,10 +38,10 @@ final class TypeExpression
      *
      * @internal
      */
-    public const REGEX_TYPES = '(?<types>(?x) # one or several types separated by `|` or `&`
+    public const REGEX_TYPES = '(?<types>(?x) # one or several types separated by `|` or `&` or `~`
 '.self::REGEX_TYPE.'
         (?:
-            \h*(?<glue>[|&])\h*
+            \h*(?<glue>[|&~])\h*
             (?&type)
         )*+
     )';
@@ -199,12 +199,14 @@ final class TypeExpression
                 (?<types_inner>(?>
                     (?&type)
                     (?:
-                        \h*[|&]\h*
+                        \h*[|&~]\h*
                         (?&type)
                     )*+
                 ))
             |)
         )';
+
+    private const POSSIBLE_GLUES = ['|', '&', '~'];
 
     private string $value;
 
@@ -392,12 +394,13 @@ final class TypeExpression
 
     private function parse(): void
     {
-        $typesGlue = null;
+        $seenGlues = null;
+        $innerValues = [];
 
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}',
+                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>['.implode('', self::POSSIBLE_GLUES).'])\h*|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
@@ -408,17 +411,23 @@ final class TypeExpression
                 throw new \Exception('Unable to parse phpdoc type '.var_export($this->value, true));
             }
 
-            if (null === $typesGlue) {
+            if (null === $seenGlues) {
                 if (($matches['glue'][0] ?? '') === '') {
                     break;
                 }
 
-                $typesGlue = $matches['glue'][0];
+                $seenGlues = [];
             }
 
-            $this->innerTypeExpressions[] = [
+            if (($matches['glue'][0] ?? '') !== '') {
+                $seenGlues[$matches['glue'][0]] = true;
+            }
+
+            $innerValues[] = [
                 'start_index' => $index,
-                'expression' => $this->inner($matches['type'][0]),
+                'value' => $matches['type'][0],
+                'next_glue' => $matches['glue'][0] ?? null,
+                'next_glue_raw' => $matches['glue_raw'][0] ?? null,
             ];
 
             $consumedValueLength = \strlen($matches[0][0]);
@@ -428,7 +437,50 @@ final class TypeExpression
                 \assert(\strlen($this->value) === $index);
 
                 $this->isUnionType = true;
-                $this->typesGlue = $typesGlue;
+
+                if (1 === \count($seenGlues)) {
+                    $this->typesGlue = array_key_first($seenGlues);
+
+                    foreach ($innerValues as $innerValue) {
+                        $this->innerTypeExpressions[] = [
+                            'start_index' => $innerValue['start_index'],
+                            'expression' => $this->inner($innerValue['value']),
+                        ];
+                    }
+                } else {
+                    $glue = null;
+                    foreach (self::POSSIBLE_GLUES as $possibleGlue) {
+                        if ($seenGlues[$possibleGlue] ?? false) {
+                            $glue = $possibleGlue;
+
+                            break;
+                        }
+                    }
+                    \assert(null !== $glue);
+
+                    $this->typesGlue = $glue;
+
+                    for ($i = 0; $i < \count($innerValues); ++$i) {
+                        $innerStartIndex = $innerValues[$i]['start_index'];
+                        $innerValue = '';
+                        while (true) {
+                            $innerValue .= $innerValues[$i]['value'];
+
+                            if (($innerValues[$i]['next_glue'] ?? $glue) === $glue) {
+                                break;
+                            }
+
+                            $innerValue .= $innerValues[$i]['next_glue_raw'];
+
+                            ++$i;
+                        }
+
+                        $this->innerTypeExpressions[] = [
+                            'start_index' => $innerStartIndex,
+                            'expression' => $this->inner($innerValue),
+                        ];
+                    }
+                }
 
                 return;
             }
