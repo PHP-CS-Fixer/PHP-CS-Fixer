@@ -210,7 +210,7 @@ final class TypeExpression
 
     private string $value;
 
-    private bool $isUnionType;
+    private bool $isGluedType;
 
     private string $typesGlue;
 
@@ -244,7 +244,7 @@ final class TypeExpression
      */
     public function getTypes(): array
     {
-        if ($this->isUnionType) {
+        if ($this->isGluedType) {
             return array_map(
                 static fn (array $type) => $type['expression']->toString(),
                 $this->innerTypeExpressions,
@@ -254,9 +254,17 @@ final class TypeExpression
         return [$this->value];
     }
 
+    public function isGluedType(): bool
+    {
+        return $this->isGluedType;
+    }
+
+    /**
+     * @deprecated Use better named self::isGluedType() method instead
+     */
     public function isUnionType(): bool
     {
-        return $this->isUnionType;
+        return $this->isGluedType();
     }
 
     public function getTypesGlue(): string
@@ -319,7 +327,7 @@ final class TypeExpression
     public function sortTypes(\Closure $compareCallback): self
     {
         return $this->mapTypes(function (self $type) use ($compareCallback): self {
-            if ($type->isUnionType) {
+            if ($type->isGluedType) {
                 $innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
                     static fn (array $v): self => $v['expression'],
@@ -436,7 +444,7 @@ final class TypeExpression
             if (\strlen($this->value) <= $index) {
                 \assert(\strlen($this->value) === $index);
 
-                $this->isUnionType = true;
+                $this->isGluedType = true;
 
                 if (1 === \count($seenGlues)) {
                     $this->typesGlue = array_key_first($seenGlues);
@@ -486,7 +494,7 @@ final class TypeExpression
             }
         }
 
-        $this->isUnionType = false;
+        $this->isGluedType = false;
         $this->typesGlue = '|';
 
         $nullableLength = \strlen($matches['nullable'][0]);

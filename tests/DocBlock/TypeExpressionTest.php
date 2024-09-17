@@ -452,18 +452,18 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsUnionTypeCases
+     * @dataProvider provideIsGluedTypeCases
      */
-    public function testIsUnionType(bool $expectedIsUnionType, string $typesExpression): void
+    public function testIsGluedType(bool $expectedIsGluedType, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
-        self::assertSame($expectedIsUnionType, $expression->isUnionType());
+        self::assertSame($expectedIsGluedType, $expression->isGluedType());
     }
 
     /**
      * @return iterable<array{0: bool, 1: string}>
      */
-    public static function provideIsUnionTypeCases(): iterable
+    public static function provideIsGluedTypeCases(): iterable
     {
         yield [false, 'string'];
 
@@ -478,6 +478,16 @@ final class TypeExpressionTest extends TestCase
         yield [false, '?int'];
 
         yield [true, 'Foo|Bar'];
+
+        yield [true, 'Foo&Bar'];
+
+        yield [true, 'Foo&Bar&?Baz'];
+
+        yield [true, 'Foo~Bar'];
+
+        yield [true, 'Foo~?Bar~Baz'];
+
+        yield [true, 'Foo~Bar|Baz'];
     }
 
     /**
