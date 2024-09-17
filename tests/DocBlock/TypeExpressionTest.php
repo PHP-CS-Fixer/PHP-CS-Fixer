@@ -376,6 +376,18 @@ final class TypeExpressionTest extends TestCase
 
         yield ['((unclosed_parenthesis)'];
 
+        yield ['|vertical_bar_start'];
+
+        yield ['&ampersand_start'];
+
+        yield ['~tilde_start'];
+
+        yield ['vertical_bar_end|'];
+
+        yield ['ampersand_end&'];
+
+        yield ['tilde_end~'];
+
         yield ['class||double_vertical_bar'];
 
         yield ['class&&double_ampersand'];
