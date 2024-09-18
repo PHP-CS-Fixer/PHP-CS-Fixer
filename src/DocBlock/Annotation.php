@@ -215,7 +215,13 @@ final class Annotation
     public function setTypes(array $types): void
     {
         $origTypesContent = $this->getTypesContent();
-        $newTypesContent = implode($this->getTypeExpression()->getTypesGlue(), $types);
+        $newTypesContent = implode(
+            // Fallback to union type is provided for backward compatibility (previously glue was set to `|` by default even when type was not composite)
+            // @TODO Better handling for cases where type is fixed (original type is not composite, but was made composite during fix)
+            $this->getTypeExpression()->getTypesGlue() ?? '|',
+            $types
+        );
+
         if ($origTypesContent === $newTypesContent) {
             return;
         }

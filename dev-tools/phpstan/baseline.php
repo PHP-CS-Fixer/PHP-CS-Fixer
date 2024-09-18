@@ -543,7 +543,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\TypeExpression\\:\\:\\$typesGlue \\(\'&\'\\|\'\\|\'\\) does not accept non\\-empty\\-string\\.$#',
+	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\TypeExpression\\:\\:\\$typesGlue \\(\'&\'\\|\'\\|\'\\|null\\) does not accept non\\-empty\\-string\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];

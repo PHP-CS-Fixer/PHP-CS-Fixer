@@ -47,7 +47,7 @@ final class TypeExpressionTest extends TestCase
             null,
             []
         );
-        if (!$expression->isUnionType() || '|' === $expression->getTypesGlue()) {
+        if (!$expression->isCompositeType() || $expression->isUnionType()) {
             self::assertSame(
                 [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
                 [...$unionExpression->getTypes()]
@@ -55,6 +55,9 @@ final class TypeExpressionTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: null|list<string>}>
+     */
     public static function provideGetTypesCases(): iterable
     {
         yield ['int'];
@@ -451,18 +454,18 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideGetTypesGlueCases
      */
-    public function testGetTypesGlue(string $expectedTypesGlue, string $typesExpression): void
+    public function testGetTypesGlue(?string $expectedTypesGlue, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypesGlue, $expression->getTypesGlue());
     }
 
     /**
-     * @return iterable<array{0: '&'|'|', 1: string}>
+     * @return iterable<array{0: null|'&'|'|', 1: string}>
      */
     public static function provideGetTypesGlueCases(): iterable
     {
-        yield ['|', 'string']; // for backward behaviour
+        yield [null, 'string'];
 
         yield ['|', 'bool|string'];
 
@@ -470,11 +473,38 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
+     * @dataProvider provideIsCompositeTypeCases
+     */
+    public function testIsCompositeType(bool $expectedIsCompositeType, string $typeExpression): void
+    {
+        $expression = new TypeExpression($typeExpression, null, []);
+
+        self::assertSame($expectedIsCompositeType, $expression->isCompositeType());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
+    public static function provideIsCompositeTypeCases(): iterable
+    {
+        yield [false, 'string'];
+
+        yield [false, 'iterable<Foo>'];
+
+        yield [true, 'iterable&stringable'];
+
+        yield [true, 'bool|string'];
+
+        yield [true, 'Foo|(Bar&Baz)'];
+    }
+
+    /**
      * @dataProvider provideIsUnionTypeCases
      */
-    public function testIsUnionType(bool $expectedIsUnionType, string $typesExpression): void
+    public function testIsUnionType(bool $expectedIsUnionType, string $typeExpression): void
     {
-        $expression = new TypeExpression($typesExpression, null, []);
+        $expression = new TypeExpression($typeExpression, null, []);
+
         self::assertSame($expectedIsUnionType, $expression->isUnionType());
     }
 
@@ -484,6 +514,8 @@ final class TypeExpressionTest extends TestCase
     public static function provideIsUnionTypeCases(): iterable
     {
         yield [false, 'string'];
+
+        yield [false, 'iterable&stringable'];
 
         yield [true, 'bool|string'];
 
@@ -496,10 +528,32 @@ final class TypeExpressionTest extends TestCase
         yield [false, '?int'];
 
         yield [true, 'Foo|Bar'];
+    }
+
+    /**
+     * @dataProvider provideIsIntersectionTypeCases
+     */
+    public function testIsIntersectionType(bool $expectedIsIntersectionType, string $typeExpression): void
+    {
+        $expression = new TypeExpression($typeExpression, null, []);
+
+        self::assertSame($expectedIsIntersectionType, $expression->isIntersectionType());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
+    public static function provideIsIntersectionTypeCases(): iterable
+    {
+        yield [false, 'string'];
+
+        yield [false, 'string|int'];
 
         yield [true, 'Foo&Bar'];
 
         yield [true, 'Foo&Bar&?Baz'];
+
+        yield [true, '\iterable&\Stringable'];
     }
 
     /**

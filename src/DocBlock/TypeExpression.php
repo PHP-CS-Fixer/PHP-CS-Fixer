@@ -211,10 +211,10 @@ final class TypeExpression
 
     private string $value;
 
-    private bool $isUnionType;
+    private bool $isCompositeType;
 
-    /** @var '&'|'|' */
-    private string $typesGlue;
+    /** @var null|'&'|'|' */
+    private ?string $typesGlue = null;
 
     /** @var list<array{start_index: int, expression: self}> */
     private array $innerTypeExpressions = [];
@@ -246,7 +246,7 @@ final class TypeExpression
      */
     public function getTypes(): array
     {
-        if ($this->isUnionType) {
+        if ($this->isCompositeType) {
             return array_map(
                 static fn (array $type) => $type['expression']->toString(),
                 $this->innerTypeExpressions,
@@ -256,15 +256,28 @@ final class TypeExpression
         return [$this->value];
     }
 
+    /**
+     * Determines if type expression is a composite type (union or intersection).
+     */
+    public function isCompositeType(): bool
+    {
+        return $this->isCompositeType;
+    }
+
     public function isUnionType(): bool
     {
-        return $this->isUnionType;
+        return $this->isCompositeType && '|' === $this->typesGlue;
+    }
+
+    public function isIntersectionType(): bool
+    {
+        return $this->isCompositeType && '&' === $this->typesGlue;
     }
 
     /**
-     * @return '&'|'|'
+     * @return null|'&'|'|'
      */
-    public function getTypesGlue(): string
+    public function getTypesGlue(): ?string
     {
         return $this->typesGlue;
     }
@@ -324,7 +337,7 @@ final class TypeExpression
     public function sortTypes(\Closure $compareCallback): self
     {
         return $this->mapTypes(function (self $type) use ($compareCallback): self {
-            if ($type->isUnionType) {
+            if ($type->isCompositeType) {
                 $innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
                     static fn (array $v): self => $v['expression'],
@@ -445,7 +458,7 @@ final class TypeExpression
                 $seenGlues = array_filter($seenGlues);
                 \assert([] !== $seenGlues);
 
-                $this->isUnionType = true;
+                $this->isCompositeType = true;
                 $this->typesGlue = array_key_first($seenGlues);
 
                 if (1 === \count($seenGlues)) {
@@ -482,8 +495,7 @@ final class TypeExpression
             }
         }
 
-        $this->isUnionType = false;
-        $this->typesGlue = '|';
+        $this->isCompositeType = false;
 
         if ('' !== $matches['nullable'][0]) {
             $this->innerTypeExpressions[] = [
