@@ -230,7 +230,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             return null;
         }
 
-        if (!$typesExpression->isGluedType() || '|' !== $typesExpression->getTypesGlue()) {
+        if (!$typesExpression->isUnionType() || '|' !== $typesExpression->getTypesGlue()) {
             return null;
         }
 

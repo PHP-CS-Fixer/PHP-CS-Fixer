@@ -38,10 +38,10 @@ final class TypeExpression
      *
      * @internal
      */
-    public const REGEX_TYPES = '(?<types>(?x) # one or several types separated by `|` or `&` or `~`
+    public const REGEX_TYPES = '(?<types>(?x) # one or several types separated by `|` or `&`
 '.self::REGEX_TYPE.'
         (?:
-            \h*(?<glue>[|&~])\h*
+            \h*(?<glue>[|&])\h*
             (?&type)
         )*+
     )';
@@ -199,7 +199,7 @@ final class TypeExpression
                 (?<types_inner>(?>
                     (?&type)
                     (?:
-                        \h*[|&~]\h*
+                        \h*[|&]\h*
                         (?&type)
                     )*+
                 ))
@@ -208,9 +208,9 @@ final class TypeExpression
 
     private string $value;
 
-    private bool $isGluedType;
+    private bool $isUnionType;
 
-    /** @var '&'|'|'|'~' */
+    /** @var '&'|'|' */
     private string $typesGlue;
 
     /** @var list<array{start_index: int, expression: self}> */
@@ -243,7 +243,7 @@ final class TypeExpression
      */
     public function getTypes(): array
     {
-        if ($this->isGluedType) {
+        if ($this->isUnionType) {
             return array_map(
                 static fn (array $type) => $type['expression']->toString(),
                 $this->innerTypeExpressions,
@@ -253,21 +253,13 @@ final class TypeExpression
         return [$this->value];
     }
 
-    public function isGluedType(): bool
-    {
-        return $this->isGluedType;
-    }
-
-    /**
-     * @deprecated Use better named self::isGluedType() method instead
-     */
     public function isUnionType(): bool
     {
-        return $this->isGluedType();
+        return $this->isUnionType;
     }
 
     /**
-     * @return '&'|'|'|'~'
+     * @return '&'|'|'
      */
     public function getTypesGlue(): string
     {
@@ -329,7 +321,7 @@ final class TypeExpression
     public function sortTypes(\Closure $compareCallback): self
     {
         return $this->mapTypes(function (self $type) use ($compareCallback): self {
-            if ($type->isGluedType) {
+            if ($type->isUnionType) {
                 $innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
                     static fn (array $v): self => $v['expression'],
@@ -410,7 +402,7 @@ final class TypeExpression
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&~])\h*(?!$)|$)}',
+                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
@@ -446,7 +438,7 @@ final class TypeExpression
             if (\strlen($this->value) <= $index) {
                 \assert(\strlen($this->value) === $index);
 
-                $this->isGluedType = true;
+                $this->isUnionType = true;
 
                 if (1 === \count($seenGlues)) {
                     $this->typesGlue = array_key_first($seenGlues);
@@ -459,7 +451,7 @@ final class TypeExpression
                     }
                 } else {
                     $glue = null;
-                    foreach (['|', '&', '~'] as $possibleGlue) {
+                    foreach (['|', '&'] as $possibleGlue) {
                         if ($seenGlues[$possibleGlue] ?? false) {
                             $glue = $possibleGlue;
 
@@ -492,15 +484,11 @@ final class TypeExpression
                     }
                 }
 
-                if ('~' === $this->typesGlue) {
-                    $this->isGluedType = false; // subtraction is not commutative
-                }
-
                 return;
             }
         }
 
-        $this->isGluedType = false;
+        $this->isUnionType = false;
         $this->typesGlue = '|';
 
         $nullableLength = \strlen($matches['nullable'][0]);

@@ -47,7 +47,7 @@ final class TypeExpressionTest extends TestCase
             null,
             []
         );
-        if (!$expression->isGluedType() || '|' === $expression->getTypesGlue()) {
+        if (!$expression->isUnionType() || '|' === $expression->getTypesGlue()) {
             self::assertSame(
                 [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
                 [...$unionExpression->getTypes()]
@@ -140,8 +140,6 @@ final class TypeExpressionTest extends TestCase
         yield ['A&B', ['A', 'B']];
 
         yield ['A & B', ['A', 'B']];
-
-        yield ['A~B'];
 
         yield ['array{}'];
 
@@ -472,18 +470,18 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsGluedTypeCases
+     * @dataProvider provideIsUnionTypeCases
      */
-    public function testIsGluedType(bool $expectedIsGluedType, string $typesExpression): void
+    public function testIsUnionType(bool $expectedIsUnionType, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
-        self::assertSame($expectedIsGluedType, $expression->isGluedType());
+        self::assertSame($expectedIsUnionType, $expression->isUnionType());
     }
 
     /**
      * @return iterable<array{0: bool, 1: string}>
      */
-    public static function provideIsGluedTypeCases(): iterable
+    public static function provideIsUnionTypeCases(): iterable
     {
         yield [false, 'string'];
 
@@ -502,12 +500,6 @@ final class TypeExpressionTest extends TestCase
         yield [true, 'Foo&Bar'];
 
         yield [true, 'Foo&Bar&?Baz'];
-
-        yield [false, 'Foo~Bar']; // subtraction is not commutative
-
-        yield [false, 'Foo~?Bar~Baz']; // subtraction is not commutative
-
-        yield [true, 'Foo~Bar|Baz'];
     }
 
     /**
@@ -1050,21 +1042,6 @@ final class TypeExpressionTest extends TestCase
         yield 'mixed | and & glue' => [
             'Foo|Baz&Bar',
             'Bar&Baz|Foo',
-        ];
-
-        yield 'mixed | and ~ glue' => [
-            'Foo|Baz~Bar',
-            'Baz~Bar|Foo',
-        ];
-
-        yield 'mixed & and ~ glue' => [
-            'Foo&Baz~Bar',
-            'Baz~Bar&Foo',
-        ];
-
-        yield 'mixed |, & and ~ glue' => [
-            'g~f|b&d~c~e&a',
-            'a&b&d~c~e|g~f',
         ];
     }
 
