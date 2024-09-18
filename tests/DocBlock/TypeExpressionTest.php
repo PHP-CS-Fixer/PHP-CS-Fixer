@@ -1039,9 +1039,14 @@ final class TypeExpressionTest extends TestCase
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
         ];
 
-        yield 'mixed | and & glue' => [
-            'Foo|Baz&Bar',
-            'Bar&Baz|Foo',
+        yield 'mixed 2x | and & glue' => [
+            'Foo|Foo2|Baz&Bar',
+            'Bar&Baz|Foo|Foo2',
+        ];
+
+        yield 'mixed | and 2x & glue' => [
+            'Foo|Baz&Baz2&Bar',
+            'Bar&Baz&Baz2|Foo',
         ];
     }
 
