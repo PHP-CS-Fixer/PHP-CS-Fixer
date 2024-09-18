@@ -422,6 +422,7 @@ final class TypeExpression
             }
 
             if (($matches['glue'][0] ?? '') !== '') {
+                \assert('|' === $matches['glue'][0] || '&' === $matches['glue'][0]);
                 $seenGlues[$matches['glue'][0]] = true;
             }
 
