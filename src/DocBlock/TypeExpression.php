@@ -210,6 +210,7 @@ final class TypeExpression
 
     private bool $isUnionType;
 
+    /** @var '&'|'|' */
     private string $typesGlue;
 
     /** @var list<array{start_index: int, expression: self}> */
@@ -257,6 +258,9 @@ final class TypeExpression
         return $this->isUnionType;
     }
 
+    /**
+     * @return '&'|'|'
+     */
     public function getTypesGlue(): string
     {
         return $this->typesGlue;
@@ -392,12 +396,13 @@ final class TypeExpression
 
     private function parse(): void
     {
-        $typesGlue = null;
+        $seenGlues = null;
+        $innerValues = [];
 
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}',
+                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
@@ -408,17 +413,24 @@ final class TypeExpression
                 throw new \Exception('Unable to parse phpdoc type '.var_export($this->value, true));
             }
 
-            if (null === $typesGlue) {
+            if (null === $seenGlues) {
                 if (($matches['glue'][0] ?? '') === '') {
                     break;
                 }
 
-                $typesGlue = $matches['glue'][0];
+                $seenGlues = ['|' => false, '&' => false];
             }
 
-            $this->innerTypeExpressions[] = [
+            if (($matches['glue'][0] ?? '') !== '') {
+                \assert(isset($seenGlues[$matches['glue'][0]]));
+                $seenGlues[$matches['glue'][0]] = true;
+            }
+
+            $innerValues[] = [
                 'start_index' => $index,
-                'expression' => $this->inner($matches['type'][0]),
+                'value' => $matches['type'][0],
+                'next_glue' => $matches['glue'][0] ?? null,
+                'next_glue_raw' => $matches['glue_raw'][0] ?? null,
             ];
 
             $consumedValueLength = \strlen($matches[0][0]);
@@ -427,8 +439,41 @@ final class TypeExpression
             if (\strlen($this->value) <= $index) {
                 \assert(\strlen($this->value) === $index);
 
+                $seenGlues = array_filter($seenGlues);
+                \assert([] !== $seenGlues);
+
                 $this->isUnionType = true;
-                $this->typesGlue = $typesGlue;
+                $this->typesGlue = array_key_first($seenGlues);
+
+                if (1 === \count($seenGlues)) {
+                    foreach ($innerValues as $innerValue) {
+                        $this->innerTypeExpressions[] = [
+                            'start_index' => $innerValue['start_index'],
+                            'expression' => $this->inner($innerValue['value']),
+                        ];
+                    }
+                } else {
+                    for ($i = 0; $i < \count($innerValues); ++$i) {
+                        $innerStartIndex = $innerValues[$i]['start_index'];
+                        $innerValue = '';
+                        while (true) {
+                            $innerValue .= $innerValues[$i]['value'];
+
+                            if (($innerValues[$i]['next_glue'] ?? $this->typesGlue) === $this->typesGlue) {
+                                break;
+                            }
+
+                            $innerValue .= $innerValues[$i]['next_glue_raw'];
+
+                            ++$i;
+                        }
+
+                        $this->innerTypeExpressions[] = [
+                            'start_index' => $innerStartIndex,
+                            'expression' => $this->inner($innerValue),
+                        ];
+                    }
+                }
 
                 return;
             }

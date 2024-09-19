@@ -576,6 +576,8 @@ final class AnnotationTest extends TestCase
 
         yield [['bool', 'int'], '* @param bool|int $foo'];
 
+        yield [['bool', 'int'], '* @param bool&int $foo'];
+
         yield [['bool', 'int'], '* @param bool|int ...$foo'];
 
         yield [['bool', 'int'], '* @param bool|int &$foo'];
@@ -588,7 +590,9 @@ final class AnnotationTest extends TestCase
 
         yield [['bool', 'int'], '* @param bool|int&...$foo'];
 
-        yield [['bar', 'baz', 'foo'], '* @param Foo|Bar&Baz&$param'];
+        yield [['bar&baz', 'foo'], '* @param Foo|Bar&Baz&$param'];
+
+        yield [['bar&baz', 'foo'], '* @param Baz&Bar|Foo&$param'];
     }
 
     public function testGetTypesOnBadTag(): void

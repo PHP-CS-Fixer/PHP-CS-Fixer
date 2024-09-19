@@ -47,10 +47,12 @@ final class TypeExpressionTest extends TestCase
             null,
             []
         );
-        self::assertSame(
-            [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
-            [...$unionExpression->getTypes()]
-        );
+        if (!$expression->isUnionType() || '|' === $expression->getTypesGlue()) {
+            self::assertSame(
+                [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
+                [...$unionExpression->getTypes()]
+            );
+        }
     }
 
     public static function provideGetTypesCases(): iterable
@@ -372,6 +374,24 @@ final class TypeExpressionTest extends TestCase
 
         yield ['((unclosed_parenthesis)'];
 
+        yield ['|vertical_bar_start'];
+
+        yield ['&ampersand_start'];
+
+        yield ['~tilde_start'];
+
+        yield ['vertical_bar_end|'];
+
+        yield ['ampersand_end&'];
+
+        yield ['tilde_end~'];
+
+        yield ['class||double_vertical_bar'];
+
+        yield ['class&&double_ampersand'];
+
+        yield ['class~~double_tilde'];
+
         yield ['array<'];
 
         yield ['array<<'];
@@ -476,6 +496,10 @@ final class TypeExpressionTest extends TestCase
         yield [false, '?int'];
 
         yield [true, 'Foo|Bar'];
+
+        yield [true, 'Foo&Bar'];
+
+        yield [true, 'Foo&Bar&?Baz'];
     }
 
     /**
@@ -1013,6 +1037,16 @@ final class TypeExpressionTest extends TestCase
         yield 'large numbers' => [
             '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
+        ];
+
+        yield 'mixed 2x | and & glue' => [
+            'Foo|Foo2|Baz&Bar',
+            'Bar&Baz|Foo|Foo2',
+        ];
+
+        yield 'mixed | and 2x & glue' => [
+            'Foo|Baz&Baz2&Bar',
+            'Bar&Baz&Baz2|Foo',
         ];
     }
 
