@@ -73,7 +73,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             ],
             null,
             'This fixer may change the name of your tests, and could cause incompatibility with'.
-            ' abstract classes or interfaces.'
+                ' abstract classes or interfaces.'
         );
     }
 

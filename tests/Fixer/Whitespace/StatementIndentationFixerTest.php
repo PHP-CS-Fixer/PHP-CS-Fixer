@@ -593,8 +593,8 @@ foo(
             '<?php
 if (true) {
     $foo =
-         $a
-             && $b
+        $a
+        && $b
     ;
 }',
             '<?php
@@ -609,7 +609,7 @@ if (true) {
         yield 'multiline control structure conditions' => [
             '<?php
 if ($a
-       && $b) {
+    && $b) {
     foo();
 }',
             '<?php
@@ -1477,6 +1477,212 @@ $foo = [
                     public int $bar = BAZ ? -1 : 1;
                 }
                 PHP,
+        ];
+
+        yield 'multiline if condition' => [
+            '<?php
+if (
+    true
+    || false
+) {
+}',
+            '<?php
+if (
+ true
+      || false
+) {
+}',
+        ];
+
+        yield 'multiline return' => [
+            '<?php
+if (true) {
+    return
+        $a
+        && $b
+    ;
+}',
+            '<?php
+if (true) {
+  return
+          $a
+           && $b
+   ;
+}',
+        ];
+
+        yield 'multiline continue' => [
+            '<?php
+while (true) {
+    continue
+        1
+    ;
+}',
+            '<?php
+while (true) {
+   continue
+           1
+  ;
+}',
+        ];
+
+        yield 'multiline break' => [
+            '<?php
+while (true) {
+    break
+        1
+    ;
+}',
+            '<?php
+while (true) {
+   break
+           1
+  ;
+}',
+        ];
+
+        yield 'multiline throw' => [
+            '<?php
+if (true) {
+    throw
+        new \Exception()
+    ;
+}',
+            '<?php
+if (true) {
+      throw
+     new \Exception()
+   ;
+}',
+        ];
+
+        yield 'multiline yield' => [
+            '<?php
+function foo() {
+    yield
+        1
+    ;
+}',
+            '<?php
+function foo() {
+      yield
+     1
+   ;
+}',
+        ];
+
+        yield 'multiline ternary' => [
+            '<?php
+if (true) {
+    $foo
+        ? bar()
+        : baz()
+    ;
+}',
+            '<?php
+if (true) {
+      $foo
+    ? bar()
+   : baz()
+  ;
+}',
+        ];
+
+        yield 'strict types in file with shebang' => [
+            '#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);',
+            '#!/usr/bin/env php
+<?php
+
+  declare(strict_types=1);',
+        ];
+
+        yield 'expression in parentheses' => [
+            '<?php
+(
+    1
+    + 2
+);',
+            '<?php
+(
+  1
+   + 2
+);',
+        ];
+
+        yield 'multiline array index write access' => [
+            '<?php
+$a[
+    1
+] = 2;',
+            '<?php
+$a[
+  1
+] = 2;',
+        ];
+
+        yield 'multiline array index read access' => [
+            '<?php
+$a[
+    1
+];',
+            '<?php
+$a[
+  1
+];',
+        ];
+
+        yield 'ternary in parentheses with operators at beginning of lines' => [
+            '<?php
+(
+    $foo
+        ? 1
+        : 2
+);',
+            '<?php
+(
+ $foo
+  ? 1
+   : 2
+);',
+        ];
+
+        yield 'ternary in parentheses with operators at end of lines' => [
+            '<?php
+(
+    $foo ?
+        1 :
+        2
+);',
+            '<?php
+(
+ $foo ?
+  1 :
+   2
+);',
+        ];
+
+        yield 'ternary after expression in parentheses' => [
+            '<?php
+$a = (true)
+    ? 1
+    : 2;
+',
+        ];
+
+        yield 'try catch finally with opening braces on their own line' => [
+            '<?php
+try
+{
+}
+catch (Exception $e)
+{
+}
+finally
+{
+}',
         ];
     }
 

@@ -36,10 +36,10 @@ class MyApp {}
                 ),
             ],
             'No exception and no configuration are intentional. Beside Doctrine entities and of course abstract classes, there is no single reason not to declare all classes final. '
-            .'If you want to subclass a class, mark the parent class as abstract and create two child classes, one empty if necessary: you\'ll gain much more fine grained type-hinting. '
-            .'If you need to mock a standalone class, create an interface, or maybe it\'s a value-object that shouldn\'t be mocked at all. '
-            .'If you need to extend a standalone class, create an interface and use the Composite pattern. '
-            .'If these rules are too strict for you, you can use `FinalInternalClassFixer` instead.',
+                .'If you want to subclass a class, mark the parent class as abstract and create two child classes, one empty if necessary: you\'ll gain much more fine grained type-hinting. '
+                .'If you need to mock a standalone class, create an interface, or maybe it\'s a value-object that shouldn\'t be mocked at all. '
+                .'If you need to extend a standalone class, create an interface and use the Composite pattern. '
+                .'If these rules are too strict for you, you can use `FinalInternalClassFixer` instead.',
             'Risky when subclassing non-abstract classes.'
         );
     }

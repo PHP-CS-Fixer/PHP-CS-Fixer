@@ -221,9 +221,9 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             $lastLine->setContent(
                 ''
-                .(!$expectedAnnotationPresent ? ' * @'.$expectedAnnotation."\n" : '')
-                .(!$expectedTypeImportPresent ? ' * @'.$expectedTypeImport."\n" : '')
-                .$lastLine->getContent()
+                    .(!$expectedAnnotationPresent ? ' * @'.$expectedAnnotation."\n" : '')
+                    .(!$expectedTypeImportPresent ? ' * @'.$expectedTypeImport."\n" : '')
+                    .$lastLine->getContent()
             );
         }
 
@@ -411,10 +411,10 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             $lastLine->setContent(
                 ''
-                .(!$templateTypeInputPresent ? ' * @'.$expectedTemplateTypeInputAnnotation."\n" : '')
-                .(!$templateTypeComputedPresent ? ' * @'.$expectedTemplateTypeComputedAnnotation."\n" : '')
-                .(!$implementsWithTypesPresent ? ' * @'.$expectedImplementsWithTypesAnnotation."\n" : '')
-                .$lastLine->getContent()
+                    .(!$templateTypeInputPresent ? ' * @'.$expectedTemplateTypeInputAnnotation."\n" : '')
+                    .(!$templateTypeComputedPresent ? ' * @'.$expectedTemplateTypeComputedAnnotation."\n" : '')
+                    .(!$implementsWithTypesPresent ? ' * @'.$expectedImplementsWithTypesAnnotation."\n" : '')
+                    .$lastLine->getContent()
             );
         }
 
