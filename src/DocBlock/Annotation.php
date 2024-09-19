@@ -233,12 +233,12 @@ final class Annotation
             return [];
         }
 
-        $normalizeTypeExpression = $typeExpression
+        $normalizedTypeExpression = $typeExpression
             ->mapTypes(static fn (TypeExpression $v) => new TypeExpression(strtolower($v->toString()), null, []))
             ->sortTypes(static fn (TypeExpression $a, TypeExpression $b) => $a->toString() <=> $b->toString())
         ;
 
-        return $normalizeTypeExpression->getTypes();
+        return $normalizedTypeExpression->getTypes();
     }
 
     /**
