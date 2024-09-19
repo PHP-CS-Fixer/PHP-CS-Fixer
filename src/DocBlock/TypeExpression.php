@@ -418,11 +418,11 @@ final class TypeExpression
                     break;
                 }
 
-                $seenGlues = [];
+                $seenGlues = ['|' => false, '&' => false];
             }
 
             if (($matches['glue'][0] ?? '') !== '') {
-                \assert('|' === $matches['glue'][0] || '&' === $matches['glue'][0]);
+                \assert(isset($seenGlues[$matches['glue'][0]]));
                 $seenGlues[$matches['glue'][0]] = true;
             }
 
@@ -439,11 +439,13 @@ final class TypeExpression
             if (\strlen($this->value) <= $index) {
                 \assert(\strlen($this->value) === $index);
 
+                $seenGlues = array_filter($seenGlues);
+                \assert([] !== $seenGlues);
+
                 $this->isUnionType = true;
+                $this->typesGlue = array_key_first($seenGlues);
 
                 if (1 === \count($seenGlues)) {
-                    $this->typesGlue = array_key_first($seenGlues);
-
                     foreach ($innerValues as $innerValue) {
                         $this->innerTypeExpressions[] = [
                             'start_index' => $innerValue['start_index'],
@@ -451,25 +453,13 @@ final class TypeExpression
                         ];
                     }
                 } else {
-                    $glue = null;
-                    foreach (['|', '&'] as $possibleGlue) {
-                        if ($seenGlues[$possibleGlue] ?? false) {
-                            $glue = $possibleGlue;
-
-                            break;
-                        }
-                    }
-                    \assert(null !== $glue);
-
-                    $this->typesGlue = $glue;
-
                     for ($i = 0; $i < \count($innerValues); ++$i) {
                         $innerStartIndex = $innerValues[$i]['start_index'];
                         $innerValue = '';
                         while (true) {
                             $innerValue .= $innerValues[$i]['value'];
 
-                            if (($innerValues[$i]['next_glue'] ?? $glue) === $glue) {
+                            if (($innerValues[$i]['next_glue'] ?? $this->typesGlue) === $this->typesGlue) {
                                 break;
                             }
 
