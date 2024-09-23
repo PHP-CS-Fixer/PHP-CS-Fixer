@@ -9,6 +9,7 @@ parameters:
     paths:
         - src
         - tests
+        - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
