@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\PHPStan;
+namespace PhpCsFixer\PHPStan\Extension;
 
 use PhpCsFixer\Preg;
 use PhpParser\Node\Expr\StaticCall;

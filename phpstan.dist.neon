@@ -59,11 +59,11 @@ parameters:
 
 services:
     -
-        class: PhpCsFixer\PHPStan\PregMatchParameterOutExtension
+        class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
         tags:
-        	- phpstan.staticMethodParameterOutTypeExtension
+            - phpstan.staticMethodParameterOutTypeExtension
 
     -
-        class: PhpCsFixer\PHPStan\PregMatchTypeSpecifyingExtension
+        class: PhpCsFixer\PHPStan\Extension\PregMatchTypeSpecifyingExtension
         tags:
-        	- phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
+            - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
