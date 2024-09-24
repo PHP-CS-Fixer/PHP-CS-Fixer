@@ -11,6 +11,7 @@ parameters:
         - tests
         - php-cs-fixer
         - dev-tools/phpstan/src
+        - dev-tools/phpstan/tests
     excludePaths:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
