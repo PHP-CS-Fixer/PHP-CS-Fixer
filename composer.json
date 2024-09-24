@@ -73,6 +73,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "PhpCsFixer\\PHPStan\\": "dev-tools/phpstan/src/",
             "PhpCsFixer\\Tests\\": "tests/"
         },
         "exclude-from-classmap": [

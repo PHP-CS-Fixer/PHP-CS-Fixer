@@ -9,6 +9,7 @@ parameters:
     paths:
         - src
         - tests
+        - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
@@ -56,3 +57,14 @@ parameters:
             count: 266
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
+
+services:
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
+        tags:
+            - phpstan.staticMethodParameterOutTypeExtension
+
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregMatchTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension
