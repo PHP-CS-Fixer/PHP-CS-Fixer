@@ -65,7 +65,7 @@ class FooTest extends TestCase {
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpUnitAttributesFixer, ReturnToYieldFromFixer, ReturnTypeDeclarationFixer.
+     * Must run before ReturnToYieldFromFixer, ReturnTypeDeclarationFixer.
      * Must run after CleanNamespaceFixer.
      */
     public function getPriority(): int
