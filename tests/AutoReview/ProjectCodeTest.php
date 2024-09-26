@@ -455,9 +455,9 @@ final class ProjectCodeTest extends TestCase
                 }
             }
 
-            $expected = array_filter($expected, static fn ($item): bool => false !== $item);
+            $expectedFound = array_filter($expected, static fn ($item): bool => false !== $item);
 
-            if (\count($expected) < 2) {
+            if (\count($expectedFound) < 2) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
 
                 continue;

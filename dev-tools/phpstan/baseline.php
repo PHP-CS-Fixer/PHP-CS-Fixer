@@ -542,12 +542,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Property PhpCsFixer\\\\DocBlock\\\\TypeExpression\\:\\:\\$typesGlue \\(\'&\'\\|\'\\|\'\\|null\\) does not accept non\\-empty\\-string\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset int might not exist on list\\<PhpCsFixer\\\\Doctrine\\\\Annotation\\\\Token\\>\\.$#',
 	'count' => 1,
@@ -2542,18 +2536,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: return.type
 	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\ProjectCodeTest\\:\\:getFileContentForClass\\(\\) should return string but returns string\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'expected\' might not exist on non\\-empty\\-array\\<non\\-empty\\-string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset \'input\' might not exist on non\\-empty\\-array\\<non\\-empty\\-string, int\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
 ];
