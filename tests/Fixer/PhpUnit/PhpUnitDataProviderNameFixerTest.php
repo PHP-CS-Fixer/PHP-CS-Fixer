@@ -422,11 +422,11 @@ class FooTest extends TestCase {
                 <?php
                 class FooTest extends TestCase {
                     /**
-                     * @dataProvider provideCustomAttributeCases
+                     * @dataProvider provideFooCases
                      */
                     #[CustomAttribute]
                     public function testFoo(): void {}
-                    public function provideCustomAttributeCases(): iterable {}
+                    public function provideFooCases(): iterable {}
                 }
                 PHP,
             <<<'PHP'
