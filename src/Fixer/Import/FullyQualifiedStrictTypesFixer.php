@@ -416,7 +416,11 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             foreach ($kindUses as $useLongName => $useShortName) {
                 $this->cacheUseNameByShortNameLower[$kind][strtolower($useShortName)] = $useLongName;
 
-                /** @var class-string $normalisedUseLongName */
+                /**
+                 * @var class-string $normalisedUseLongName
+                 *
+                 * @phpstan-ignore varTag.nativeType
+                 */
                 $normalisedUseLongName = strtolower($useLongName);
                 $this->cacheUseShortNameByNameLower[$kind][$normalisedUseLongName] = $useShortName;
             }
