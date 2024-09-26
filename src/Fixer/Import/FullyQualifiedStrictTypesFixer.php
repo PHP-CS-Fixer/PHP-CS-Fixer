@@ -675,6 +675,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $type;
             }
 
+            /** @var class-string */
+            $v = $v;
+
             $shortTokens = $this->determineShortType($v, 'class', $uses, $namespaceName);
             if (null === $shortTokens) {
                 return $type;
