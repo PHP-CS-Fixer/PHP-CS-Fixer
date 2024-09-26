@@ -116,10 +116,8 @@ final class Foo
     {
         Preg::matchAll('/ \$'.TypeExpression::REGEX_IDENTIFIER.'(?<!\$this)/', $line->getContent(), $matches);
 
-        if (isset($matches[0])) {
-            foreach ($matches[0] as $match) {
-                $line->setContent(str_replace($match, '', $line->getContent()));
-            }
+        foreach ($matches[0] as $match) {
+            $line->setContent(str_replace($match, '', $line->getContent()));
         }
     }
 
