@@ -158,9 +158,7 @@ class FooTest extends TestCase {
                 continue;
             }
 
-            $testNameIndex = $tokens->getNextTokenOfKind($usageIndex, [[T_STRING]]);
-
-            $dataProviderNewName = $this->getProviderNameForTestName($tokens[$testNameIndex]->getContent());
+            $dataProviderNewName = $this->getDataProviderNameForUsageIndex($tokens, $usageIndex);
             if (null !== $tokens->findSequence([[T_FUNCTION], [T_STRING, $dataProviderNewName]], $startIndex, $endIndex)) {
                 continue;
             }
@@ -177,8 +175,17 @@ class FooTest extends TestCase {
         }
     }
 
-    private function getProviderNameForTestName(string $name): string
+    private function getDataProviderNameForUsageIndex(Tokens $tokens, int $index): string
     {
+        do {
+            if (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+            }
+            $index = $tokens->getNextMeaningfulToken($index);
+        } while (!$tokens[$index]->isGivenKind(T_STRING));
+
+        $name = $tokens[$index]->getContent();
+
         $name = Preg::replace('/^test_*/i', '', $name);
 
         if ('' === $this->configuration['prefix']) {

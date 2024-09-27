@@ -401,4 +401,45 @@ class FooTest extends TestCase {
             ];
         }
     }
+
+    /**
+     * @requires PHP ^8.0
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'with an attribute between PHPDoc and test method' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    #[CustomAttribute]
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider f
+                     */
+                    #[CustomAttribute]
+                    public function testFoo(): void {}
+                    public function f(): iterable {}
+                }
+                PHP,
+        ];
+    }
 }
