@@ -669,26 +669,27 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $typeExpression = new TypeExpression($type, null, []);
 
         $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) use ($uses, $namespaceName) {
-            $v = $type->toString();
+            $currentTypeValue = $type->toString();
 
-            if ($type->isUnionType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
+            if ($type->isCompositeType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $currentTypeValue)) {
                 return $type;
             }
 
-            /** @var class-string $v */
-            $shortTokens = $this->determineShortType($v, 'class', $uses, $namespaceName);
+            /** @var class-string $currentTypeValue */
+            $shortTokens = $this->determineShortType($currentTypeValue, 'class', $uses, $namespaceName);
+
             if (null === $shortTokens) {
                 return $type;
             }
 
-            $newV = implode('', array_map(
+            $newTypeValue = implode('', array_map(
                 static fn (Token $token) => $token->getContent(),
                 $shortTokens
             ));
 
-            return $v === $newV
+            return $currentTypeValue === $newTypeValue
                 ? $type
-                : new TypeExpression($newV, null, []);
+                : new TypeExpression($newTypeValue, null, []);
         });
 
         return $typeExpression->toString();
