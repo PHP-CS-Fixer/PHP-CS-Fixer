@@ -2163,14 +2163,40 @@ function foo($v) {}',
             ['import_symbols' => true],
         ];
 
+        yield 'Test complex PHPDoc with imports' => [
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+                use X\A;
+
+                /**
+                 * @param \Closure(A&\X\B, '\Y\A&(\Y\B|\Y\C)', array{A: B}): ($v is string ? Foo : Bar) $v
+                 */
+                function foo($v) {}
+                EOD,
+            <<<'EOD'
+                <?php
+
+                namespace Ns;
+
+                /**
+                 * @param \Closure(\X\A&\X\B, '\Y\A&(\Y\B|\Y\C)', array{A: B}): ($v is string ? \Ns\Foo : \Ns\Bar) $v
+                 */
+                function foo($v) {}
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         yield 'Test PHPDoc string must be kept as is' => [
             '<?php
 
 namespace Ns;
 use Other\Foo;
+use Other\Foo2;
 
 /**
- * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|\Other\Foo2 $v
+ * @param Foo|\'\Other\Bar|\Other\Bar2|\Other\Bar3\'|Foo2 $v
  */
 function foo($v) {}',
             '<?php
@@ -2275,8 +2301,25 @@ namespace Foo\Bar;
 final class SomeClass {}',
         ];
 
-        yield 'PHPDoc with generics must not crash' => [
+        yield 'PHPDoc with generics - without namespace' => [
             '<?php
+
+/**
+ * @param Iterator<mixed, SplFileInfo> $iter
+ */
+function foo($iter) {}',
+            '<?php
+
+/**
+ * @param \Iterator<mixed, \SplFileInfo> $iter
+ */
+function foo($iter) {}',
+        ];
+
+        yield 'PHPDoc with generics - with namespace' => [
+            '<?php
+
+namespace Ns;
 
 /**
  * @param \Iterator<mixed, \SplFileInfo> $iter
@@ -2487,7 +2530,7 @@ function foo($dateTime, $fx) {}',
  * @phpstan-param positive-int $v
  * @param \'GET\'|\'POST\' $method
  * @param \Closure $fx
- * @psalm-param Closure(): (callable(): Closure) $fx
+ * @psalm-param \Closure(): (callable(): \Closure) $fx
  * @return list<int>
  */
 function foo($v, $method, $fx) {}',

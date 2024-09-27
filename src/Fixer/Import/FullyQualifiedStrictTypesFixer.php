@@ -653,32 +653,46 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 return $matches[0];
             }
 
-            /** @TODO parse the complex type using TypeExpression and fix all names inside (like `list<\Foo\Bar|'a|b|c'|string>` or `\Foo\Bar[]`) */
-            $unsupported = false;
-
-            return $matches[1].$matches[2].$matches[3].implode('|', array_map(function ($v) use ($uses, $namespaceName, &$unsupported) {
-                /** @var class-string $v */
-                if ($unsupported || !Preg::match('/^'.self::REGEX_CLASS.'$/', $v)) {
-                    $unsupported = true;
-
-                    return $v;
-                }
-
-                $shortTokens = $this->determineShortType($v, 'class', $uses, $namespaceName);
-                if (null === $shortTokens) {
-                    return $v;
-                }
-
-                return implode('', array_map(
-                    static fn (Token $token) => $token->getContent(),
-                    $shortTokens
-                ));
-            }, explode('|', $matches[4])));
+            return $matches[1].$matches[2].$matches[3].$this->fixPhpDocType($matches[4], $uses, $namespaceName);
         }, $phpDocContent);
 
         if ($phpDocContentNew !== $phpDocContent) {
             $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContentNew]);
         }
+    }
+
+    /**
+     * @param _Uses $uses
+     */
+    private function fixPhpDocType(string $type, array $uses, string $namespaceName): string
+    {
+        $typeExpression = new TypeExpression($type, null, []);
+
+        $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) use ($uses, $namespaceName) {
+            $currentTypeValue = $type->toString();
+
+            if ($type->isCompositeType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $currentTypeValue)) {
+                return $type;
+            }
+
+            /** @var class-string $currentTypeValue */
+            $shortTokens = $this->determineShortType($currentTypeValue, 'class', $uses, $namespaceName);
+
+            if (null === $shortTokens) {
+                return $type;
+            }
+
+            $newTypeValue = implode('', array_map(
+                static fn (Token $token) => $token->getContent(),
+                $shortTokens
+            ));
+
+            return $currentTypeValue === $newTypeValue
+                ? $type
+                : new TypeExpression($newTypeValue, null, []);
+        });
+
+        return $typeExpression->toString();
     }
 
     /**
