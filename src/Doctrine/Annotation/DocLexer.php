@@ -150,14 +150,12 @@ final class DocLexer
 
     private function scan(string $input): void
     {
-        if (!isset($this->regex)) {
-            $this->regex = \sprintf(
-                '/(%s)|%s/%s',
-                implode(')|(', $this->getCatchablePatterns()),
-                implode('|', $this->getNonCatchablePatterns()),
-                'iu'
-            );
-        }
+        $this->regex ??= \sprintf(
+            '/(%s)|%s/%s',
+            implode(')|(', $this->getCatchablePatterns()),
+            implode('|', $this->getNonCatchablePatterns()),
+            'iu'
+        );
 
         $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
         $matches = Preg::split($this->regex, $input, -1, $flags);
