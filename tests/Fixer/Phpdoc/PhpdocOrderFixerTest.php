@@ -231,10 +231,10 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                  * @param mixed $name       A template name
                  * @param array $parameters An array of parameters to pass to the template
                  *
+                 *
                  * @throws \InvalidArgumentException if the template does not exist
                  * @throws \RuntimeException         if the template cannot be rendered
                  * @return string The evaluated template as a string
-                 *
                  */
 
             EOF;
@@ -594,14 +594,14 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * goes here.
                      *
                      * @internal
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @template T of Extension\Extension
                      * @param string $foo
                      * @param bool   $bar Bar
                      * @param class-string<T> $id
                      * @return bool Return false on failure
                      * @return int  Return the number of changes.
-                     * @custom Test!
-                     *         asldnaksdkjasdasd
-                     * @template T of Extension\Extension
                      * @throws Exception|RuntimeException dfsdf
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      **/
@@ -742,12 +742,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * @param string $foo
                      * @param bool   $bar Bar
                      * @param class-string<T> $id
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
                      * @throws Exception|RuntimeException dfsdf
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      * @return bool Return false on failure
                      * @return int  Return the number of changes.
-                     * @custom Test!
-                     *         asldnaksdkjasdasd
                      **/
 
                 EOF,
@@ -790,12 +790,12 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                      * @param string $foo
                      * @param bool   $bar Bar
                      * @param class-string<T> $id
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
                      * @throws Exception|RuntimeException dfsdf
                      *         jkaskdnaksdnkasndansdnansdajsdnkasd
                      * @return bool Return false on failure
                      * @return int  Return the number of changes.
-                     * @custom Test!
-                     *         asldnaksdkjasdasd
                      **/
 
                 EOF,

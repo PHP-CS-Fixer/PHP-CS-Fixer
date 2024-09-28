@@ -47,7 +47,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     use ConfigurableFixerTrait;
 
     /**
-     * @const list<string>
+     * @const string[]
      */
     private const ORDER_DEFAULT = [
         'deprecated',
