@@ -86,9 +86,7 @@ final class Sample
         foreach ($this->tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];
 
-            if (!isset($classesCandidate[$classIndex])) {
-                $classesCandidate[$classIndex] = $this->isClassCandidate($tokens, $classIndex);
-            }
+            $classesCandidate[$classIndex] ??= $this->isClassCandidate($tokens, $classIndex);
 
             if (false === $classesCandidate[$classIndex]) {
                 continue;
