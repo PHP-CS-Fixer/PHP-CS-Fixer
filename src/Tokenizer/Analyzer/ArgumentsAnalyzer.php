@@ -20,10 +20,10 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @internal
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
- * @internal
  */
 final class ArgumentsAnalyzer
 {

@@ -17,14 +17,14 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {

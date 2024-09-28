@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 

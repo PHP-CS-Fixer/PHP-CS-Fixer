@@ -19,10 +19,10 @@ use PhpCsFixer\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
+ * @internal
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
- *
- * @internal
  *
  * @coversNothing
  *

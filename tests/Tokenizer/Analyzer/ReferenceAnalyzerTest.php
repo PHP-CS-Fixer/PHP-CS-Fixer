@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
  *
  * @internal
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class ReferenceAnalyzerTest extends TestCase
 {

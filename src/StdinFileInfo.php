@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 /**
- * @author Davi Koscianski Vidal <davividal@gmail.com>
- *
  * @internal
+ *
+ * @author Davi Koscianski Vidal <davividal@gmail.com>
  */
 final class StdinFileInfo extends \SplFileInfo
 {

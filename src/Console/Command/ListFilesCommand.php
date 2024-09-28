@@ -26,9 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Path;
 
 /**
- * @author Markus Staab <markus.staab@redaxo.org>
- *
  * @internal
+ *
+ * @author Markus Staab <markus.staab@redaxo.org>
  */
 #[AsCommand(name: 'list-files')]
 final class ListFilesCommand extends Command

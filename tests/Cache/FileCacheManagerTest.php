@@ -24,9 +24,9 @@ use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @author Andreas Möller <am@localheinz.com>
  *
  * @covers \PhpCsFixer\Cache\FileCacheManager
  */

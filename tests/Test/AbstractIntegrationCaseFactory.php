@@ -18,9 +18,9 @@ use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryInterface
 {
