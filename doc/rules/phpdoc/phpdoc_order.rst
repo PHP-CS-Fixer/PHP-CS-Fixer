@@ -14,7 +14,7 @@ Sequence in which annotations in PHPDoc should be ordered.
 
 Allowed types: ``list<string>``
 
-Default value: ``['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'throws', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'author', 'see']``
+Default value: ``['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'throws', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'covers', 'author', 'see']``
 
 Examples
 --------
@@ -44,7 +44,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'throws', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'author', 'see']]``.
+With configuration: ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'throws', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'covers', 'author', 'see']]``.
 
 .. code-block:: diff
 
@@ -115,11 +115,11 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'author', 'see']]``
+  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'covers', 'author', 'see']]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'author', 'see']]``
+  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'covers', 'author', 'see']]``
 
 
 References

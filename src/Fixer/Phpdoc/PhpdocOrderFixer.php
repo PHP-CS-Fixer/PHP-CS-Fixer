@@ -70,6 +70,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
         'assert',
         'assert-if-false',
         'assert-if-true',
+        'covers',
         'author',
         'see',
     ];
