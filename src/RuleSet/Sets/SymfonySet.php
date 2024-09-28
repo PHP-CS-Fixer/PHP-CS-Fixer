@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
@@ -164,9 +165,28 @@ final class SymfonySet extends AbstractRuleSetDescription
             'phpdoc_no_useless_inheritdoc' => true,
             'phpdoc_order' => [
                 'order' => [
+                    'deprecated',
+                    'internal',
+                    'final',
+                    'readonly',
+                    'immutable',
+                    'type',
+                    'template',
+                    'template-covariant',
+                    'template-extends',
+                    'extends',
+                    'implements',
+                    'property',
+                    'method',
                     'param',
                     'return',
+                    'var',
+                    'assert',
+                    'assert-if-false',
+                    'assert-if-true',
                     'throws',
+                    'author',
+                    'see',
                 ],
             ],
             'phpdoc_return_self_reference' => true,

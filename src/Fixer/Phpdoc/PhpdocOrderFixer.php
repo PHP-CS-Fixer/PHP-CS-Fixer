@@ -47,11 +47,32 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     use ConfigurableFixerTrait;
 
     /**
-     * @const string[]
-     *
-     * @TODO: 4.0 - change default to ['param', 'return', 'throws']
+     * @const list<string>
      */
-    private const ORDER_DEFAULT = ['param', 'throws', 'return'];
+    private const ORDER_DEFAULT = [
+        'deprecated',
+        'internal',
+        'final',
+        'readonly',
+        'immutable',
+        'type',
+        'template',
+        'template-covariant',
+        'template-extends',
+        'extends',
+        'implements',
+        'property',
+        'method',
+        'param',
+        'throws', // @TODO: 4.0 - move after assert-if-true
+        'return',
+        'var',
+        'assert',
+        'assert-if-false',
+        'assert-if-true',
+        'author',
+        'see',
+    ];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -120,12 +141,18 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
                 continue;
             }
 
+            $configurationOrder = [];
+            foreach ($this->configuration['order'] as $type) {
+                $configurationOrder[] = $type;
+                $configurationOrder[] = 'psalm-' . $type;
+                $configurationOrder[] = 'phpstan-' . $type;
+            }
+
             // assuming annotations are already grouped by tags
             $content = $token->getContent();
 
             // sort annotations
-            /** @var list<string> */
-            $successors = $this->configuration['order'];
+            $successors = $configurationOrder;
             while (\count($successors) >= 3) {
                 $predecessor = array_shift($successors);
                 $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
@@ -133,8 +160,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
             // we're parsing the content last time to make sure the internal
             // state of the docblock is correct after the modifications
-            /** @var list<string> */
-            $predecessors = $this->configuration['order'];
+            $predecessors = $configurationOrder;
             $last = array_pop($predecessors);
             $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
