@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer
  *
  * @author Gregor Harlan <gharlan@web.de>
  *

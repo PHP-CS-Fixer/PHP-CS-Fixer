@@ -21,11 +21,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
- *
- * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
  */
 final class TokensAnalyzerTest extends TestCase
 {

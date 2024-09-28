@@ -21,9 +21,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer
  *
  * @author John Kelly <wablam@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>

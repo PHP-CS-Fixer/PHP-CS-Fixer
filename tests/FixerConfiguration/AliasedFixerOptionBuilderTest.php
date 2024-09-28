@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author ntzm
- *
  * @covers \PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder
+ *
+ * @author ntzm
  */
 final class AliasedFixerOptionBuilderTest extends TestCase
 {

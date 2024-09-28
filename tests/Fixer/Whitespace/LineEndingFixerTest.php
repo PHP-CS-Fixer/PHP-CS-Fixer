@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\LineEndingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\LineEndingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\LineEndingFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

@@ -20,10 +20,10 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Console\Command\FixCommandExitStatusCalculator
+ *
  * @author Andreas Möller <am@localheinz.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @covers \PhpCsFixer\Console\Command\FixCommandExitStatusCalculator
  */
 final class FixCommandExitStatusCalculatorTest extends TestCase
 {

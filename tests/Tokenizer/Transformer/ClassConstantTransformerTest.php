@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\CT;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ClassConstantTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ClassConstantTransformerTest extends AbstractTransformerTestCase
 {

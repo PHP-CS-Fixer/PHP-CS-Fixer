@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer
  *
  * @author Kuba Werłos <werlos@gmail.com>
  */

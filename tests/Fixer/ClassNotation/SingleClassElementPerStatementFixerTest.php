@@ -21,9 +21,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  *

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\ModernizeStrposFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\ModernizeStrposFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\ModernizeStrposFixer
  *
  * @author Alexander M. Turek <me@derrabus.de>
  */

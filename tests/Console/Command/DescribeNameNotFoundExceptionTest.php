@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Console\Command\DescribeNameNotFoundException
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class DescribeNameNotFoundExceptionTest extends TestCase
 {

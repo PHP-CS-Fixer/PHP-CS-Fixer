@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
  *
  * @author Gregor Harlan
  */

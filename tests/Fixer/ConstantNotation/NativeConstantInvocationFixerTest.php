@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

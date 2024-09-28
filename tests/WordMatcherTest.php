@@ -19,9 +19,9 @@ use PhpCsFixer\WordMatcher;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\WordMatcher
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WordMatcherTest extends TestCase
 {

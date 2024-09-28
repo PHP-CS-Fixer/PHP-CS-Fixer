@@ -22,9 +22,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\BracesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\BracesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\BracesFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

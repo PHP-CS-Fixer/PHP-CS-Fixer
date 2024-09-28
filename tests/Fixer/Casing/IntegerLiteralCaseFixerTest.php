@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
  */
 final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
 {

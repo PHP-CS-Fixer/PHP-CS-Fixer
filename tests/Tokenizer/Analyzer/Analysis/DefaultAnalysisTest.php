@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis
  */
 final class DefaultAnalysisTest extends TestCase
 {

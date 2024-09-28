@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer
  *
  * @author Gregor Harlan <gharlan@web.de>
  *

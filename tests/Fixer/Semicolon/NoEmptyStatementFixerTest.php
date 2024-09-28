@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

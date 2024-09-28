@@ -29,11 +29,11 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @group legacy
  *
  * @covers \PhpCsFixer\RuleSet\RuleSet
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RuleSetTest extends TestCase
 {

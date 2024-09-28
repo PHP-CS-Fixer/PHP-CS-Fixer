@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\NewWithParenthesesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NewWithParenthesesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NewWithParenthesesFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoTrailingCommaInListCallFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

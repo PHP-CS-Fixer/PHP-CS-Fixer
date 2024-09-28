@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer
  *
  * @author Fred Cox <mcfedr@gmail.com>
  */

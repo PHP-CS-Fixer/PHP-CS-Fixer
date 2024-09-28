@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

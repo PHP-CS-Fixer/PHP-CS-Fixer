@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Gregor Harlan <gharlan@web.de>

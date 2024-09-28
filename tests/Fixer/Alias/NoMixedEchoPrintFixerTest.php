@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  *

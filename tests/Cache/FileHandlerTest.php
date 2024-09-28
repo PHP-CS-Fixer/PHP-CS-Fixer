@@ -25,9 +25,9 @@ use Symfony\Component\Filesystem\Exception\IOException;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Cache\FileHandler
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class FileHandlerTest extends TestCase
 {

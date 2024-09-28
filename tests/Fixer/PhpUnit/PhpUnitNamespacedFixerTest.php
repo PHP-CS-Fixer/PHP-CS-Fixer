@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

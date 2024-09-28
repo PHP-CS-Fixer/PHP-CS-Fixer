@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\NoUnneededFinalMethodFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoUnneededFinalMethodFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoUnneededFinalMethodFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

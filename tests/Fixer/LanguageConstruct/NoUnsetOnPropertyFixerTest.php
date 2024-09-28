@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
  *
  * @author Gert de Pagter <BackEndTea@gmail.com>
  */

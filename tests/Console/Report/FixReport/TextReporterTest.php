@@ -20,10 +20,10 @@ use PhpCsFixer\Console\Report\FixReport\TextReporter;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Console\Report\FixReport\TextReporter
+ *
  * @author Boris Gorbylev <ekho@ekho.name>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @covers \PhpCsFixer\Console\Report\FixReport\TextReporter
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {

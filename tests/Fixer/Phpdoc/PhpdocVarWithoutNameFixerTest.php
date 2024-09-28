@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  */

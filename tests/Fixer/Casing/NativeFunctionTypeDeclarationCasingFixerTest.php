@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer
  */
 final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {

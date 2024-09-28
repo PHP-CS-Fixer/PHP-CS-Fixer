@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
  */
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {

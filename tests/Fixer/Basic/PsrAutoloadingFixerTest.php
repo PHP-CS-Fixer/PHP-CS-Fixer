@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Kuba Werłos <werlos@gmail.com>

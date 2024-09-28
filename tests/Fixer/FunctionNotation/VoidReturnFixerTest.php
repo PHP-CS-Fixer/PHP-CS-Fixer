@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  *
  * @author Mark Nielsen
  */

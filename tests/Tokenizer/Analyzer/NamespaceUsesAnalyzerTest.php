@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespaceUsesAnalyzerTest extends TestCase
 {

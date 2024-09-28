@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class CommentsAnalyzerTest extends TestCase
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
  *
  * @author Gregor Harlan <gharlan@web.de>
  */

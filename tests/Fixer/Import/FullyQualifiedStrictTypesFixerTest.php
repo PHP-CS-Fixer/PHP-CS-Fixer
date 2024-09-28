@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer
  *
  * @author VeeWee <toonverwerft@gmail.com>
  *

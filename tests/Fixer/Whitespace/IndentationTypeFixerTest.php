@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

@@ -22,9 +22,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReporterFactory
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class ReporterFactoryTest extends TestCase
 {

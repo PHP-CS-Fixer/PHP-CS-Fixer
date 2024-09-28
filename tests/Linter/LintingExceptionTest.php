@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Linter\LintingException
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class LintingExceptionTest extends TestCase
 {

@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>

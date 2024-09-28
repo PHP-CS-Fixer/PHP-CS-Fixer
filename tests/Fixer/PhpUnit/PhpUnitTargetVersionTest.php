@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpUnitTargetVersionTest extends TestCase
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\SimplifiedIfReturnFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SimplifiedIfReturnFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\SimplifiedIfReturnFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */

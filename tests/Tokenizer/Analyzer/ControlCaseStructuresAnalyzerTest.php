@@ -25,9 +25,9 @@ use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer
  */
 final class ControlCaseStructuresAnalyzerTest extends TestCase
 {

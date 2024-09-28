@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
  *
  * @author Matteo Beccati <matteo@beccati.com>
  */

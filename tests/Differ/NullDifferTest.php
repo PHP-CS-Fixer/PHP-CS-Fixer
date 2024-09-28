@@ -19,9 +19,9 @@ use PhpCsFixer\Differ\NullDiffer;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Differ\NullDiffer
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class NullDifferTest extends AbstractDifferTestCase
 {

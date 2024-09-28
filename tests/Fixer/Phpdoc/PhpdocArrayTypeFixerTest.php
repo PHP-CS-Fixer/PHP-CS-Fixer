@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocArrayTypeFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocArrayTypeFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocArrayTypeFixer
  */
 final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
 {

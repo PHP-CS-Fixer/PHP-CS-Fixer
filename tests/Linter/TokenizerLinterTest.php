@@ -20,10 +20,10 @@ use PhpCsFixer\Linter\TokenizerLinter;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {

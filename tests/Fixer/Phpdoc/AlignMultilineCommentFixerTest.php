@@ -21,9 +21,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

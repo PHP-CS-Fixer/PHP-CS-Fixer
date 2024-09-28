@@ -23,11 +23,11 @@ use PhpCsFixer\Utils;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Utils
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
- *
- * @covers \PhpCsFixer\Utils
  */
 final class UtilsTest extends TestCase
 {

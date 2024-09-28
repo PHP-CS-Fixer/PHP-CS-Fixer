@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ElseifFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
  *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */

@@ -30,9 +30,9 @@ use Symfony\Component\Console\Input\InputDefinition;
 /**
  * @internal
  *
- * @author Greg Korba <greg@codito.dev>
- *
  * @covers \PhpCsFixer\Runner\Parallel\ProcessFactory
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ProcessFactoryTest extends TestCase
 {

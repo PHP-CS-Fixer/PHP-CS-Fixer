@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\CT;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {

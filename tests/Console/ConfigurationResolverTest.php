@@ -43,10 +43,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Console\ConfigurationResolver
+ *
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @covers \PhpCsFixer\Console\ConfigurationResolver
  */
 final class ConfigurationResolverTest extends TestCase
 {

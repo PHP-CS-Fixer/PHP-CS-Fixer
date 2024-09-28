@@ -21,9 +21,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

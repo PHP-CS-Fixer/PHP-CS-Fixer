@@ -26,9 +26,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Cache\FileCacheManager
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class FileCacheManagerTest extends TestCase
 {

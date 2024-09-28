@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

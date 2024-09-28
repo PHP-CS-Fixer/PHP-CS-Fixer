@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
  *
  * @author Gregor Harlan <gharlan@web.de>
  *

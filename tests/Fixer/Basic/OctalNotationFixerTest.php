@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
- *
  * @requires PHP 8.1
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *
  * @author SpacePossum
  */

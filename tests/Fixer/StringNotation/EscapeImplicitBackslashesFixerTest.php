@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\EscapeImplicitBackslashesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\EscapeImplicitBackslashesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\EscapeImplicitBackslashesFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

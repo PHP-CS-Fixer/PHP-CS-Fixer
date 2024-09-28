@@ -20,10 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer>
+ *
  * @covers \PhpCsFixer\AbstractPhpdocTypesFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer>
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

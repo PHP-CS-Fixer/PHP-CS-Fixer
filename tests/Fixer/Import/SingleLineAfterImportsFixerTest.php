@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
  *
  * @author Ceeram <ceeram@cakephp.org>
  */

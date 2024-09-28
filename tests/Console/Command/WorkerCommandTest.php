@@ -40,9 +40,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @internal
  *
- * @author Greg Korba <greg@codito.dev>
- *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class WorkerCommandTest extends TestCase
 {

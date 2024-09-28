@@ -21,9 +21,9 @@ use PhpCsFixer\ToolInfoInterface;
 /**
  * @internal
  *
- * @author ntzm
- *
  * @covers \PhpCsFixer\Console\WarningsDetector
+ *
+ * @author ntzm
  */
 final class WarningsDetectorTest extends TestCase
 {

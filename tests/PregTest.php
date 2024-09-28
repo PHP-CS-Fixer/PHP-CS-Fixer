@@ -18,9 +18,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
 
 /**
- * @covers \PhpCsFixer\Preg
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Preg
  *
  * @author Kuba Werłos <werlos@gmail.com>
  */

@@ -21,9 +21,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>

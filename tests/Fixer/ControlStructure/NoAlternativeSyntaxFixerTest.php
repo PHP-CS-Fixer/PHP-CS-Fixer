@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\NoAlternativeSyntaxFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoAlternativeSyntaxFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoAlternativeSyntaxFixer
  *
  * @author Eddilbert Macharia <edd.cowan@gmail.com>
  *

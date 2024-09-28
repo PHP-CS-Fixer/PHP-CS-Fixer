@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer
  *
  * @author Adam Marczuk <adam@marczuk.info>
  *

@@ -19,9 +19,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\WhitespacesFixerConfig
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WhitespacesFixerConfigTest extends TestCase
 {

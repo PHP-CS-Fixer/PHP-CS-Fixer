@@ -22,9 +22,9 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 /**
  * @internal
  *
- * @author Hans-Christian Otto <c.otto@suora.com>
- *
  * @covers \PhpCsFixer\Console\Report\FixReport\GitlabReporter
+ *
+ * @author Hans-Christian Otto <c.otto@suora.com>
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
 {

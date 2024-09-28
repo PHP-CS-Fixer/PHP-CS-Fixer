@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer
  *
  * @author Michele Locati <michele@locati.it>
  *

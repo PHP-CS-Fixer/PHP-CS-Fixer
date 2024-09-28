@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {

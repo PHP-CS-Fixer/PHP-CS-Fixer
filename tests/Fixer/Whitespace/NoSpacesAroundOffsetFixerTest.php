@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  *

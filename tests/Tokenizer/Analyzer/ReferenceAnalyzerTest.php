@@ -19,9 +19,9 @@ use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
  *
  * @author Kuba Werłos <werlos@gmail.com>
  */

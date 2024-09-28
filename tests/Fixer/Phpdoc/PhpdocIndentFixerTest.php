@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
  *
  * @author Ceeram <ceeram@cakephp.org>
  */

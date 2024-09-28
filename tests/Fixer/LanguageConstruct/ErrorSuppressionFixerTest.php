@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\ErrorSuppressionFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ErrorSuppressionFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\ErrorSuppressionFixer
  *
  * @author Jules Pietri <jules@heahprod.com>
  * @author Kuba Werłos <werlos@gmail.com>

@@ -22,9 +22,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer
  *
  * @author Greg Korba <greg@codito.dev>
  *

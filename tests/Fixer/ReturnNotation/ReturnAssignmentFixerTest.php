@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
  */
 final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 {

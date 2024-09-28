@@ -23,9 +23,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author ntzm
- *
  * @covers \PhpCsFixer\Linter\CachingLinter
+ *
+ * @author ntzm
  */
 final class CachingLinterTest extends TestCase
 {

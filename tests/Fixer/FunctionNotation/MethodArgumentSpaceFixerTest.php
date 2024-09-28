@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer
  *
  * @author Kuanhung Chen <ericj.tw@gmail.com>
  *

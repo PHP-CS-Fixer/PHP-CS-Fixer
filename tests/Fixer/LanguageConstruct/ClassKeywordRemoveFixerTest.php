@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */

@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

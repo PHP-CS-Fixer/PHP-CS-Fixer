@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

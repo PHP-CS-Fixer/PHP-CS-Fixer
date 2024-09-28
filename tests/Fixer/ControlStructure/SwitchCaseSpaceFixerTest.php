@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */

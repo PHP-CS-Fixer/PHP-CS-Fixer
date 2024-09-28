@@ -24,10 +24,10 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\DocBlock\Annotation
+ *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @covers \PhpCsFixer\DocBlock\Annotation
  */
 final class AnnotationTest extends TestCase
 {

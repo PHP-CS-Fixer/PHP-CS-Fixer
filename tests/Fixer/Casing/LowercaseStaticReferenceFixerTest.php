@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @covers \PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer
- *
  * @internal
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer
  *
  * @author Kuba Werłos <werlos@gmail.com>
  */

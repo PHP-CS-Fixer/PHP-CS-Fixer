@@ -25,9 +25,9 @@ use PhpCsFixer\ToolInfo;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Cache\Cache
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class CacheTest extends TestCase
 {

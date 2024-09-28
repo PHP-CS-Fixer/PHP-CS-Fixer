@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

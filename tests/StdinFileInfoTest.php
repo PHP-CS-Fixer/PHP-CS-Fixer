@@ -19,9 +19,9 @@ use PhpCsFixer\StdinFileInfo;
 /**
  * @internal
  *
- * @author ntzm
- *
  * @covers \PhpCsFixer\StdinFileInfo
+ *
+ * @author ntzm
  */
 final class StdinFileInfoTest extends TestCase
 {

@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Doctrine\Annotation\Token
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class TokenTest extends TestCase
 {

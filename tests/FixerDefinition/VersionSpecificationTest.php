@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class VersionSpecificationTest extends TestCase
 {

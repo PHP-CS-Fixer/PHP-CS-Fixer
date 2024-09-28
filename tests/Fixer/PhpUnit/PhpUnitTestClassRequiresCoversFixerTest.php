@@ -20,10 +20,10 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer>
+ *
  * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

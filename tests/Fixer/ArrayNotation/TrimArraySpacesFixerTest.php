@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
  *
  * @author Jared Henderson <jared@netrivet.com>
  */

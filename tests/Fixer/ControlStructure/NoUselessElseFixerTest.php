@@ -20,10 +20,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
+ *
  * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {

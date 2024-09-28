@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer
  *
  * @author Gert de Pagter
  *

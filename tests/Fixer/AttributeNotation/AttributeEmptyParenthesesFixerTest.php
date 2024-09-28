@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer
- *
  * @requires PHP 8.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer
  *
  * @author HypeMC <hypemc@gmail.com>
  *

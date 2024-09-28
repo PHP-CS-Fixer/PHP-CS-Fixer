@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
  *
  * @author Kuba Werłos <werlos@gmail.com>
  */

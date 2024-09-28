@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer
  */
 final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
 {

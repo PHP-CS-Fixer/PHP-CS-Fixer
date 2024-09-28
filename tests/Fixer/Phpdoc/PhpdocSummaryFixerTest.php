@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  */

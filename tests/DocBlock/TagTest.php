@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @covers \PhpCsFixer\DocBlock\Tag
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class TagTest extends TestCase
 {

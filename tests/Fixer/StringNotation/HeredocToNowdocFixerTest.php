@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer
  *
  * @author Gregor Harlan <gharlan@web.de>
  */

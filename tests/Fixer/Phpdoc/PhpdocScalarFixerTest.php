@@ -19,10 +19,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer>
+ *
  * @covers \PhpCsFixer\AbstractPhpdocTypesFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer>
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  *

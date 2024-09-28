@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer
  *
  * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  *

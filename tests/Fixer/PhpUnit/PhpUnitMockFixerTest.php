@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMockFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitMockFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMockFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

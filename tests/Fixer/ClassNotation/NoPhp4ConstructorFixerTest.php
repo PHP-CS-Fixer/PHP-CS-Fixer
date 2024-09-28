@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
  *
  * @author Matteo Beccati <matteo@beccati.com>
  */

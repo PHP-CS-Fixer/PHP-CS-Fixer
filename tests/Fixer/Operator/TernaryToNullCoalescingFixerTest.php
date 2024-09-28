@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */

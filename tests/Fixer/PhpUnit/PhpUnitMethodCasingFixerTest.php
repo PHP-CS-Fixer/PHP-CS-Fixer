@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMethodCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitMethodCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMethodCasingFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

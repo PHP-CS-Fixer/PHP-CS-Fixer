@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Import\GlobalNamespaceImportFixer
  *
  * @author Gregor Harlan <gharlan@web.de>
  *

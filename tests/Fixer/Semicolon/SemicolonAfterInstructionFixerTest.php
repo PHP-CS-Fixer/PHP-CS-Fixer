@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
  */
 final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 {

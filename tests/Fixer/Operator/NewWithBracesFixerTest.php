@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\NewWithBracesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NewWithBracesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NewWithBracesFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

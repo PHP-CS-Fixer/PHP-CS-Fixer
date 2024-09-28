@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  */

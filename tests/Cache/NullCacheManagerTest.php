@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Cache\NullCacheManager
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class NullCacheManagerTest extends TestCase
 {

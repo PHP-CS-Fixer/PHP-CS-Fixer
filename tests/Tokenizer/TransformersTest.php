@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author Dave van der Brugge <dmvdbrugge@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Transformers
+ *
+ * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  */
 final class TransformersTest extends TestCase
 {

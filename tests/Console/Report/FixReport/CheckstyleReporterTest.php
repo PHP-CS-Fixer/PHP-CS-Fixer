@@ -23,9 +23,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @internal
  *
- * @author Kévin Gomez <contact@kevingomez.fr>
- *
  * @covers \PhpCsFixer\Console\Report\FixReport\CheckstyleReporter
+ *
+ * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class CheckstyleReporterTest extends AbstractReporterTestCase
 {

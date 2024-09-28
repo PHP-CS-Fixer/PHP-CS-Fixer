@@ -19,10 +19,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer>
+ *
  * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer>
  */
 final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTestCase
 {

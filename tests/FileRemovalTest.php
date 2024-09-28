@@ -21,9 +21,9 @@ use PhpCsFixer\FileRemoval;
 /**
  * @internal
  *
- * @author ntzm
- *
  * @covers \PhpCsFixer\FileRemoval
+ *
+ * @author ntzm
  */
 final class FileRemovalTest extends TestCase
 {

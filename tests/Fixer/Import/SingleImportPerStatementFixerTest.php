@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

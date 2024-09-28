@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @covers \PhpCsFixer\DocBlock\Line
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class LineTest extends TestCase
 {

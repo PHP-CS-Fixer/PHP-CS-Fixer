@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @covers \PhpCsFixer\Cache\Signature
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class SignatureTest extends TestCase
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
  *
  * @author ntzm
  */

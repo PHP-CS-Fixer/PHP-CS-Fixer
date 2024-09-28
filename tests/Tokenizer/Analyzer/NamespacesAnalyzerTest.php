@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespacesAnalyzerTest extends TestCase
 {

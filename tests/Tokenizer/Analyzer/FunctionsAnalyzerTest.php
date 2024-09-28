@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class FunctionsAnalyzerTest extends TestCase
 {

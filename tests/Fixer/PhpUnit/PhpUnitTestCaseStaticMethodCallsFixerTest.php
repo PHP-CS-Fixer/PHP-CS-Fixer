@@ -23,9 +23,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  *

@@ -20,10 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\IncrementStyleFixer>
+ *
  * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\IncrementStyleFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\IncrementStyleFixer>
  *
  * @author Gregor Harlan <gharlan@web.de>
  * @author Kuba Werłos <werlos@gmail.com>

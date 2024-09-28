@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer
  *
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  *

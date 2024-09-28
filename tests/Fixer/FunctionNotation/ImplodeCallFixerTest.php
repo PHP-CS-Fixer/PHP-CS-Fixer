@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
  *
  * @author Kuba Werłos <werlos@gmail.com>
  */

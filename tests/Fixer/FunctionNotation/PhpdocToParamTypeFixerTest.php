@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @group phpdoc
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer
  *
  * @author Jan Gantzert <jan@familie-gantzert.de>
  *

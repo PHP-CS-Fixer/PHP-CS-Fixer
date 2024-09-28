@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer
  *
  * @author Andreas Möller <am@localheinz.com>
  *

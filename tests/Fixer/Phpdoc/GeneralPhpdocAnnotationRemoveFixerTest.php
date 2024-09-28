@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer
  *
  * @author Gert de Pagter
  *

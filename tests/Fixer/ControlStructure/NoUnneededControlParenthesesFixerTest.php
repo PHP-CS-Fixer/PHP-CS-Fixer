@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>

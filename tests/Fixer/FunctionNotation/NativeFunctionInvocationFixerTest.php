@@ -22,9 +22,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer
  *
  * @author Andreas Möller <am@localheinz.com>
  *

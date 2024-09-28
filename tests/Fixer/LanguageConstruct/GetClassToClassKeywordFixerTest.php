@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer
- *
  * @requires PHP 8.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer
  *
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
  */

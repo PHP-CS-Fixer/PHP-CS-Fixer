@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {

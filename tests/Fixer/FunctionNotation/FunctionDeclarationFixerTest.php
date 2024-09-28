@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer
  *
  * @author Denis Sokolov <denis@sokolov.cc>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

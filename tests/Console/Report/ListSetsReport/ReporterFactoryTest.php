@@ -22,10 +22,10 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory
+ *
  * @author Boris Gorbylev <ekho@ekho.name>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory
  */
 final class ReporterFactoryTest extends TestCase
 {

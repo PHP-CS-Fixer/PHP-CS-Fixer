@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

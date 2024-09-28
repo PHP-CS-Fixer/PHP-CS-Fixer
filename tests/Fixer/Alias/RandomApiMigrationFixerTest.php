@@ -20,10 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer>
+ *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer>
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  *

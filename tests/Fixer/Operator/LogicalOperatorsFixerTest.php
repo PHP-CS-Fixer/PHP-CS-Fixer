@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer
  *
  * @author Haralan Dobrev <hkdobrev@gmail.com>
  */

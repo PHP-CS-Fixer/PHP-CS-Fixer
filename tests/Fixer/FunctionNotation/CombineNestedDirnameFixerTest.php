@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer
  *
  * @author Gregor Harlan
  */

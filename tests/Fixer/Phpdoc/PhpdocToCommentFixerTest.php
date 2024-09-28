@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer
  *
  * @author Ceeram <ceeram@cakephp.org>
  *

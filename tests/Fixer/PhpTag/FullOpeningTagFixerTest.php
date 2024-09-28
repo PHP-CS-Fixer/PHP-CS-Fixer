@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer
  */
 final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 {

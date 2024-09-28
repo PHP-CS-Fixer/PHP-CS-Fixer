@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\CT;
 /**
  * @internal
  *
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ImportTransformer
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class ImportTransformerTest extends AbstractTransformerTestCase
 {

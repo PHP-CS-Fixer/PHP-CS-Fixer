@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */

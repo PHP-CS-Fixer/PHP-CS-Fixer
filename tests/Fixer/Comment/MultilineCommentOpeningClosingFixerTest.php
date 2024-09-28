@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */

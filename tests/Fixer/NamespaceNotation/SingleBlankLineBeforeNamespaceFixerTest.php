@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  */

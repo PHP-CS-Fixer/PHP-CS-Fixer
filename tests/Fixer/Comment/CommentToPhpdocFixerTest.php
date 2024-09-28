@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\CommentToPhpdocFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\CommentToPhpdocFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\CommentToPhpdocFixer
  *
  * @author Kuba Werłos <werlos@gmail.com>
  *

@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\SpacesInsideParenthesesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\SpacesInsideParenthesesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\SpacesInsideParenthesesFixer
  *
  * @author Marc Aubé
  *

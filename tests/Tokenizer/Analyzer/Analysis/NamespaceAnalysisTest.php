@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 /**
  * @internal
  *
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespaceAnalysisTest extends TestCase
 {

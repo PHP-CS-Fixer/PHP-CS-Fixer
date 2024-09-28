@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

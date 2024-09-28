@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer
  *
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Kuba Werłos <werlos@gmail.com>

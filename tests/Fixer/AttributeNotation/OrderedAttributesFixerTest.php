@@ -21,11 +21,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer
- *
  * @requires PHP 8.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer
  *
  * @author HypeMC <hypemc@gmail.com>
  *

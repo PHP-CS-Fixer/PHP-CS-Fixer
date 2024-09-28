@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedTypesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\OrderedTypesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\OrderedTypesFixer
  *
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
  *

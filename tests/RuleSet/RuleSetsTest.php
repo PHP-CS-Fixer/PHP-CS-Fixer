@@ -24,9 +24,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\RuleSet\RuleSets
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RuleSetsTest extends TestCase
 {

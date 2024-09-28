@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

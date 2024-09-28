@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer
  */
 final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
 {

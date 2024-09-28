@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @covers \PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer
- *
  * @internal
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer
  *
  * @author  Kuba Werłos <werlos@gmail.com>
  *

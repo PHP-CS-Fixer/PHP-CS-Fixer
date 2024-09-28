@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

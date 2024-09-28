@@ -22,10 +22,10 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\DocBlock\TagComparator
+ *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
- *
- * @covers \PhpCsFixer\DocBlock\TagComparator
  */
 final class TagComparatorTest extends TestCase
 {

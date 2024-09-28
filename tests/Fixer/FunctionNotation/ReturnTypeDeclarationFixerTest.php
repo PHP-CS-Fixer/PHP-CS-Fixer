@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

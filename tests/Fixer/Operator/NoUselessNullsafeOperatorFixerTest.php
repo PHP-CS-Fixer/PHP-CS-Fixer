@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @requires PHP 8.0
  *
- * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
  */
 final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
 {

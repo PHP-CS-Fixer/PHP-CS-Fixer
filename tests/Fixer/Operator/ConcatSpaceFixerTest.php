@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\ConcatSpaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\ConcatSpaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\ConcatSpaceFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

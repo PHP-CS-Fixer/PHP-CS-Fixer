@@ -20,9 +20,9 @@ use PhpCsFixer\Linter\LinterInterface;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Linter\Linter
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class LinterTest extends AbstractLinterTestCase
 {

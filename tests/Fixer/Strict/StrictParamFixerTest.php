@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Strict\StrictParamFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\StrictParamFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Strict\StrictParamFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

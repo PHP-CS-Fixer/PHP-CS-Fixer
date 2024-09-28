@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer
  *
  * @author Gert de Pagter <BackEndTea@gmail.com>
  *

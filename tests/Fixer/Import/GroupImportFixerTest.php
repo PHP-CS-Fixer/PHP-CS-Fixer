@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\GroupImportFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\GroupImportFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Import\GroupImportFixer
  *
  * @author Volodymyr Kupriienko <vldmr.kuprienko@gmail.com>
  * @author Greg Korba <greg@codito.dev>

@@ -20,9 +20,9 @@ use PhpCsFixer\FileReader;
 /**
  * @internal
  *
- * @author ntzm
- *
  * @covers \PhpCsFixer\FileReader
+ *
+ * @author ntzm
  */
 final class FileReaderTest extends TestCase
 {

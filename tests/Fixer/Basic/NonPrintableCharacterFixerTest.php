@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer
  *
  * @author Ivan Boprzenkov <ivan.borzenkov@gmail.com>
  *

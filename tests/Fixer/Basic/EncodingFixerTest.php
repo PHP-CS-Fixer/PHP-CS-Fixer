@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\EncodingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\EncodingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\EncodingFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *

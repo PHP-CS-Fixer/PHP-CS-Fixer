@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\HeredocIndentationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\HeredocIndentationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\HeredocIndentationFixer
  *
  * @author Gregor Harlan
  *

@@ -20,9 +20,9 @@ use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\TextReporter
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {

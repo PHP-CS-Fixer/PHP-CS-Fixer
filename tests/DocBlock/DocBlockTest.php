@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @covers \PhpCsFixer\DocBlock\DocBlock
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class DocBlockTest extends TestCase
 {

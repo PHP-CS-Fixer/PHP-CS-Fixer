@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */

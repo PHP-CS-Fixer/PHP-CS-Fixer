@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 /**
  * @internal
  *
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class TypeAnalysisTest extends TestCase
 {

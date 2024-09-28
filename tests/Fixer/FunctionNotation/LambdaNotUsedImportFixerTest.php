@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer
  */
 final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 {

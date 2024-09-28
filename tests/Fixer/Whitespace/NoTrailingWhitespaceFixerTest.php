@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */

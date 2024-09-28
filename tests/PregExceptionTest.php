@@ -19,9 +19,9 @@ use PhpCsFixer\PregException;
 /**
  * @internal
  *
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @covers \PhpCsFixer\PregException
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregExceptionTest extends TestCase
 {
