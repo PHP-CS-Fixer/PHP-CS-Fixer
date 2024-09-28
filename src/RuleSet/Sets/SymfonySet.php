@@ -184,6 +184,8 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'assert-if-false',
                     'assert-if-true',
                     'throws',
+                    'requires',
+                    'dataProvider',
                     'covers',
                     'author',
                     'see',
