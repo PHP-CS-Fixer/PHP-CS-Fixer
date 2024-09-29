@@ -724,6 +724,7 @@ final class FixerFactoryTest extends TestCase
             'ordered_class_elements' => [
                 'class_attributes_separation',
                 'no_blank_lines_after_class_opening',
+                'php_unit_data_provider_method_order',
                 'space_after_semicolon',
             ],
             'ordered_imports' => [
