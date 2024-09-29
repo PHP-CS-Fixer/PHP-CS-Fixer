@@ -824,6 +824,24 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expected, $resolver->getUsingCache());
     }
 
+    /**
+     * @return iterable<array{bool, bool, null|string}>
+     */
+    public static function provideResolveBooleanOptionCases(): iterable
+    {
+        yield [true, true, 'yes'];
+
+        yield [true, false, 'yes'];
+
+        yield [false, true, 'no'];
+
+        yield [false, false, 'no'];
+
+        yield [true, true, null];
+
+        yield [false, false, null];
+    }
+
     public function testResolveUsingCacheWithPositiveConfigAndNoOption(): void
     {
         $config = new Config();
@@ -1266,24 +1284,6 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
-    /**
-     * @return iterable<array{bool, bool, null|string}>
-     */
-    public static function provideResolveBooleanOptionCases(): iterable
-    {
-        yield [true, true, 'yes'];
-
-        yield [true, false, 'yes'];
-
-        yield [false, true, 'no'];
-
-        yield [false, false, 'no'];
-
-        yield [true, true, null];
-
-        yield [false, false, null];
-    }
-
     public function testWithEmptyRules(): void
     {
         $resolver = $this->createConfigurationResolver(['rules' => '']);
@@ -1358,20 +1358,6 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{null|string, string, string}>
-     */
-    public static function provideGetDirectoryCases(): iterable
-    {
-        yield [null, '/my/path/my/file', 'my/file'];
-
-        yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
-
-        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
-
-        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
-    }
-
-    /**
      * @dataProvider provideGetDirectoryCases
      *
      * @param ?non-empty-string $cacheFile
@@ -1399,6 +1385,20 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $directory = $resolver->getDirectory();
 
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
+    }
+
+    /**
+     * @return iterable<array{null|string, string, string}>
+     */
+    public static function provideGetDirectoryCases(): iterable
+    {
+        yield [null, '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
+
+        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
     }
 
     /**
