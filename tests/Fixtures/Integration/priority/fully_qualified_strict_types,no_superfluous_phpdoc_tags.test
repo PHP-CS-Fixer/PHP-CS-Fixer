@@ -1,20 +1,19 @@
 --TEST--
 Integration of fixers: fully_qualified_strict_types,no_superfluous_phpdoc_tags.
 --RULESET--
-{"fully_qualified_strict_types": true, "no_superfluous_phpdoc_tags": true}
+{"fully_qualified_strict_types": {"import_symbols": true, "phpdoc_tags": []}, "no_superfluous_phpdoc_tags": true}
 --EXPECT--
 <?php
-// No namespace
+namespace N;
+use Foo\Bar;
 /**
- * @param bool $expected
  */
-function testSomething(Foo $foo, $expected) {}
+function f(Bar $x) {}
 
 --INPUT--
 <?php
-// No namespace
+namespace N;
 /**
- * @param Foo  $foo
- * @param bool $expected
+ * @param Bar $x
  */
-function testSomething(\Foo $foo, $expected) {}
+function f(\Foo\Bar $x) {}
