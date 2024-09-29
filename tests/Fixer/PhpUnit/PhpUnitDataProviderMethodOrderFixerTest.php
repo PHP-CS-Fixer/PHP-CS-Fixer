@@ -39,7 +39,7 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string, 2?: array<string, string>}>
+     * @return iterable<array{0: string, 1?: string|null, 2?: array<string, string>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -253,7 +253,8 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
                     public function testA1(): void {}
                 }
                 PHP,
-            2 => ['placement' => 'before'],
+            null,
+            ['placement' => 'before'],
         ];
     }
 
@@ -330,15 +331,7 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
             ['placement' => 'before'],
         ];
 
-        yield 'data provider defined by an attribute' => [
-            <<<'PHP'
-                <?php
-                class FooTest extends TestCase {
-                    #[DataProvider('provideFooCases')]
-                    public function testFoo(): void {}
-                    public function provideFooCases(): iterable {}
-                }
-                PHP,
+        yield 'data provider defined by an attribute' => [ // update expected once https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8197 is merged
             <<<'PHP'
                 <?php
                 class FooTest extends TestCase {
