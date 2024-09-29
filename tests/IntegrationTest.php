@@ -60,10 +60,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                 if (\in_array($case->getFileName(), [
                     'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,escape_implicit_backslashes.test',
                     'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,string_implicit_backslashes.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'fully_qualified_strict_types,no_superfluous_phpdoc_tags.test',
                     'priority'.\DIRECTORY_SEPARATOR.'no_unused_imports,blank_line_after_namespace_2.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'phpdoc_readonly_class_comment_to_keyword,phpdoc_align.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'phpdoc_to_return_type,fully_qualified_strict_types.test',
                     'priority'.\DIRECTORY_SEPARATOR.'single_import_per_statement,no_unused_imports.test',
                     'priority'.\DIRECTORY_SEPARATOR.'single_space_around_construct,nullable_type_declaration.test',
                 ], true)) {
