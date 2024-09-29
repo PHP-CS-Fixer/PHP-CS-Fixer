@@ -329,7 +329,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            self::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
+            static::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
     }
 
