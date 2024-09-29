@@ -115,13 +115,19 @@ class FooTest extends TestCase {
                 }
             }
         } else {
+            $providerNamesAlreadyAfter = [];
             foreach ($origUsageDataProviderOrderPairs as [$usageName, $providerName]) {
                 if (!isset($newMethodsOrder[$usageName])) {
                     $newMethodsOrder[$usageName] = true;
                 }
 
+                $isProviderAlreadyAfter = $origMethodsOrderPairs[$usageName][0] < $origMethodsOrderPairs[$providerName][0];
                 if (isset($newMethodsOrder[$providerName])) {
-                    unset($newMethodsOrder[$providerName]);
+                    if (!($providerNamesAlreadyAfter[$providerName] ?? false) || $isProviderAlreadyAfter) {
+                        unset($newMethodsOrder[$providerName]);
+                    }
+                } else {
+                    $providerNamesAlreadyAfter[$providerName] = $isProviderAlreadyAfter;
                 }
                 $newMethodsOrder[$providerName] = true;
             }
