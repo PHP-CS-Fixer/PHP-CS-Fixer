@@ -253,8 +253,7 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
                     public function testA1(): void {}
                 }
                 PHP,
-            null,
-            ['placement' => 'before'],
+            2 => ['placement' => 'before'],
         ];
     }
 
