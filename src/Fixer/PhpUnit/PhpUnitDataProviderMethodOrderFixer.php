@@ -195,7 +195,6 @@ class FooTest extends TestCase {
         return $origMethodsOrderPairs;
     }
 
-
     /**
      * @param list<array{
      *   array{int, string},
@@ -215,7 +214,7 @@ class FooTest extends TestCase {
         uasort($origUsagesOrderPairs, static function (array $a, array $b): int {
             $cmp = $a[0][0] <=> $b[0][0];
 
-            return $cmp !== 0
+            return 0 !== $cmp
                 ? $cmp
                 : $a[0][2] <=> $b[0][2];
         });
