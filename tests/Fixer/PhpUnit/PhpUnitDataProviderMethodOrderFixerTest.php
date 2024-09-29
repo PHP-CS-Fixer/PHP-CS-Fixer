@@ -210,6 +210,48 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
                 }
                 PHP,
         ];
+
+        yield 'data provider used multiple times II - placement after' => [
+            <<<'PHP'
+                <?php
+                class FooTest {
+                    /** @dataProvider provideACases */
+                    public function testA1(): void {}
+
+                    /** @dataProvider provideBCases */
+                    public function testB(): void {}
+
+                    public static function provideBCases(): iterable {}
+
+                    /** @dataProvider provideACases */
+                    public function testA2(): void {}
+
+                    public static function provideACases(): iterable {}
+                }
+                PHP,
+        ];
+
+        yield 'data provider used multiple times II - placement before' => [
+            <<<'PHP'
+                <?php
+                class FooTest {
+                    public static function provideACases(): iterable {}
+
+                    /** @dataProvider provideACases */
+                    public function testA2(): void {}
+
+                    public static function provideBCases(): iterable {}
+
+                    /** @dataProvider provideBCases */
+                    public function testB(): void {}
+
+                    /** @dataProvider provideACases */
+                    public function testA1(): void {}
+                }
+                PHP,
+            null,
+            ['placement' => 'before'],
+        ];
     }
 
     /**
