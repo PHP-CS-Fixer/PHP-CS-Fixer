@@ -143,7 +143,7 @@ class FooTest extends TestCase {
         }
 
         $methodOrderFixer = new OrderedClassElementsFixer();
-        $methodOrderFixer->configure(['order' => array_map(static fn (string $method): string => 'method:' . $method, $newMethodsOrder)]);
+        $methodOrderFixer->configure(['order' => array_map(static fn (string $method): string => 'method:'.$method, $newMethodsOrder)]);
         $methodOrderFixer->applyFix($file, $tokens);
     }
 
@@ -172,7 +172,7 @@ class FooTest extends TestCase {
 
             $dataProvidersWithUsageMethods[] = [
                 [$dataProviderAnalysis->getNameIndex(), $dataProviderAnalysis->getName()],
-                $usageMethods
+                $usageMethods,
             ];
         }
 
