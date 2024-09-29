@@ -160,6 +160,19 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
                 PHP,
         ];
 
+        yield 'data provider used multiple times - placement after - do not move provider if already after first test where used' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                    /** @dataProvider provideFooCases */
+                    public function testBar(): void {}
+                }
+                PHP,
+        ];
+
         yield 'data provider used multiple times - placement before' => [
             <<<'PHP'
                 <?php
