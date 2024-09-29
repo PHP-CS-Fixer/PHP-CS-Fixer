@@ -104,41 +104,36 @@ class FooTest extends TestCase {
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $dataProvidersWithUsageMethods = $this->getDataProvidersWithUsageMethods($tokens);
-
-        $origMethodsOrder = [];
-        foreach ($dataProvidersWithUsageMethods as [$dataProviderMethod, $usageMethods]) {
-            $origMethodsOrder[$dataProviderMethod[1]] = $dataProviderMethod;
-            foreach ($usageMethods as $usageMethod) {
-                $origMethodsOrder[$usageMethod[1]] = $usageMethod;
-            }
-        }
-        uasort($origMethodsOrder, static fn (array $a, array $b): int => $a[0] <=> $b[0]);
-
-        $placementBefore = 'before' === $this->configuration['placement'];
+        $dataProvidersWithUsagePairs = $this->getDataProvidersWithUsagePairs($tokens);
+        $origMethodsOrderPairs = $this->getOrigMethodsOrderPairs($dataProvidersWithUsagePairs);
+        $origUsageDataProviderOrderPairs = $this->getOrigUsageDataProviderOrderPairs($dataProvidersWithUsagePairs);
 
         $newMethodsOrder = [];
-        foreach ($dataProvidersWithUsageMethods as [$dataProviderMethod, $usageMethods]) {
-            if ($placementBefore) {
-                $newMethodsOrder[] = $dataProviderMethod[1];
-            }
+        if ('before' === $this->configuration['placement']) {
+            foreach ($origUsageDataProviderOrderPairs as [$usageName, $providerName]) {
+                if (!isset($newMethodsOrder[$providerName])) {
+                    $newMethodsOrder[$providerName] = true;
+                }
 
-            foreach ($usageMethods as $usageMethod) {
-                $newMethodsOrder[] = $usageMethod[1];
+                if (!isset($newMethodsOrder[$usageName])) {
+                    $newMethodsOrder[$usageName] = true;
+                }
             }
-
-            if (!$placementBefore) {
-                $newMethodsOrder[] = $dataProviderMethod[1];
-            }
-        }
-
-        if ($placementBefore) {
-            $newMethodsOrder = array_reverse(array_unique(array_reverse($newMethodsOrder)));
         } else {
-            $newMethodsOrder = array_unique($newMethodsOrder);
-        }
+            foreach ($origUsageDataProviderOrderPairs as [$usageName, $providerName]) {
+                if (!isset($newMethodsOrder[$usageName])) {
+                    $newMethodsOrder[$usageName] = true;
+                }
 
-        if ($newMethodsOrder === array_keys($origMethodsOrder)) {
+                if (isset($newMethodsOrder[$providerName])) {
+                    unset($newMethodsOrder[$providerName]);
+                }
+                $newMethodsOrder[$providerName] = true;
+            }
+        }
+        $newMethodsOrder = array_keys($newMethodsOrder);
+
+        if ($newMethodsOrder === array_keys($origMethodsOrderPairs)) {
             return;
         }
 
@@ -150,32 +145,91 @@ class FooTest extends TestCase {
     /**
      * @return list<array{
      *   array{int, string},
-     *   non-empty-list<array{int, string}>
+     *   non-empty-list<array{int, string, int}>
      * }>
      */
-    private function getDataProvidersWithUsageMethods(Tokens $tokens): array
+    private function getDataProvidersWithUsagePairs(Tokens $tokens): array
     {
-        $dataProvidersWithUsageMethods = [];
+        $dataProvidersWithUsagePairs = [];
 
         $dataProviderAnalyzer = new DataProviderAnalyzer();
         $endIndex = \count($tokens);
         foreach ($dataProviderAnalyzer->getDataProviders($tokens, 0, $endIndex) as $dataProviderAnalysis) {
-            $usageMethods = [];
+            $usages = [];
             foreach ($dataProviderAnalysis->getUsageIndices() as $usageIndex) {
                 $methodNameTokens = $tokens->findSequence([[T_FUNCTION], [T_STRING]], $usageIndex[0], $endIndex);
                 if (null === $methodNameTokens) {
                     continue;
                 }
 
-                $usageMethods[] = [array_key_last($methodNameTokens), end($methodNameTokens)->getContent()];
+                $usages[] = [
+                    array_key_last($methodNameTokens),
+                    end($methodNameTokens)->getContent(),
+                    $usageIndex[1],
+                ];
             }
 
-            $dataProvidersWithUsageMethods[] = [
+            $dataProvidersWithUsagePairs[] = [
                 [$dataProviderAnalysis->getNameIndex(), $dataProviderAnalysis->getName()],
-                $usageMethods,
+                $usages,
             ];
         }
 
-        return $dataProvidersWithUsageMethods;
+        return $dataProvidersWithUsagePairs;
+    }
+
+    /**
+     * @param list<array{
+     *   array{int, string},
+     *   non-empty-list<array{int, string, int}>
+     * }> $dataProvidersWithUsagePairs
+     *
+     * @return array<string, array{int, string}>
+     */
+    private function getOrigMethodsOrderPairs(array $dataProvidersWithUsagePairs): array
+    {
+        $origMethodsOrderPairs = [];
+        foreach ($dataProvidersWithUsagePairs as [$dataProviderPair, $usagePairs]) {
+            $origMethodsOrderPairs[$dataProviderPair[1]] = $dataProviderPair;
+            foreach ($usagePairs as $usagePair) {
+                $origMethodsOrderPairs[$usagePair[1]] = $usagePair;
+            }
+        }
+        uasort($origMethodsOrderPairs, static fn (array $a, array $b): int => $a[0] <=> $b[0]);
+
+        return $origMethodsOrderPairs;
+    }
+
+
+    /**
+     * @param list<array{
+     *   array{int, string},
+     *   non-empty-list<array{int, string, int}>
+     * }> $dataProvidersWithUsagePairs
+     *
+     * @return list<array{string, string}>
+     */
+    private function getOrigUsageDataProviderOrderPairs(array $dataProvidersWithUsagePairs): array
+    {
+        $origUsagesOrderPairs = [];
+        foreach ($dataProvidersWithUsagePairs as [$dataProviderPair, $usagePairs]) {
+            foreach ($usagePairs as $usagePair) {
+                $origUsagesOrderPairs[] = [$usagePair, $dataProviderPair[1]];
+            }
+        }
+        uasort($origUsagesOrderPairs, static function (array $a, array $b): int {
+            $cmp = $a[0][0] <=> $b[0][0];
+
+            return $cmp !== 0
+                ? $cmp
+                : $a[0][2] <=> $b[0][2];
+        });
+
+        $origUsageDataProviderOrderPairs = [];
+        foreach (array_map(static fn (array $v): array => [$v[0][1], $v[1]], $origUsagesOrderPairs) as [$usageName, $providerName]) {
+            $origUsageDataProviderOrderPairs[] = [$usageName, $providerName];
+        }
+
+        return $origUsageDataProviderOrderPairs;
     }
 }
