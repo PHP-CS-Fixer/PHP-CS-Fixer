@@ -84,7 +84,7 @@ class FooTest extends TestCase {
      */
     public function getPriority(): int
     {
-        return 66;
+        return 64;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
