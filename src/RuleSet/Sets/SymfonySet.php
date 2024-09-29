@@ -169,6 +169,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'final',
                     'readonly',
                     'immutable',
+                    'import-type',
                     'type',
                     'template',
                     'template-covariant',

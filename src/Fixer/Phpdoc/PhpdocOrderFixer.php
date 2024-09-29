@@ -55,6 +55,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
         'final',
         'readonly',
         'immutable',
+        'import-type',
         'type',
         'template',
         'template-covariant',
