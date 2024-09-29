@@ -264,9 +264,9 @@ A();
     /**
      * @param list<int> $indices
      *
-     * @dataProvider provideIsGlobalFunctionCallPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideIsGlobalFunctionCallPre80Cases
      */
     public function testIsGlobalFunctionCallPre80(string $code, array $indices): void
     {
@@ -290,9 +290,9 @@ A();
     /**
      * @param list<int> $indices
      *
-     * @dataProvider provideIsGlobalFunctionCallPhp80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      */
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
@@ -336,9 +336,9 @@ class Foo {}
     /**
      * @param list<int> $indices
      *
-     * @dataProvider provideIsGlobalFunctionCallPhp81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp81Cases
      */
     public function testIsGlobalFunctionCallPhp81(array $indices, string $code): void
     {
@@ -570,9 +570,9 @@ class(){};
     /**
      * @param array<string, ArgumentAnalysis> $expected
      *
-     * @dataProvider provideFunctionArgumentInfoPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFunctionArgumentInfoPre80Cases
      */
     public function testFunctionArgumentInfoPre80(string $code, int $methodIndex, array $expected): void
     {
@@ -648,9 +648,9 @@ class(){};
     }
 
     /**
-     * @dataProvider provideFunctionReturnTypeInfoPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFunctionReturnTypeInfoPre80Cases
      */
     public function testFunctionReturnTypeInfoPre80(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
@@ -679,9 +679,9 @@ class(){};
     }
 
     /**
-     * @dataProvider provideIsTheSameClassCallCases
-     *
      * @param list<int> $sameClassCallIndices
+     *
+     * @dataProvider provideIsTheSameClassCallCases
      */
     public function testIsTheSameClassCall(string $code, array $sameClassCallIndices): void
     {
@@ -760,11 +760,11 @@ class(){};
     }
 
     /**
-     * @dataProvider provideIsTheSameClassCall80Cases
-     *
      * @param list<int> $sameClassCallIndices
      *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsTheSameClassCall80Cases
      */
     public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
@@ -791,9 +791,9 @@ class(){};
     /**
      * @param array<string, ArgumentAnalysis> $expected
      *
-     * @dataProvider provideFunctionArgumentInfoPhp80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFunctionArgumentInfoPhp80Cases
      */
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {

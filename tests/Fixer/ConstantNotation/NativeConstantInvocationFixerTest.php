@@ -43,9 +43,9 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideInvalidConfigurationElementCases
-     *
      * @param mixed $element
+     *
+     * @dataProvider provideInvalidConfigurationElementCases
      */
     public function testConfigureRejectsInvalidExcludeConfigurationElement($element, string $expectedExceptionMessage): void
     {
@@ -60,9 +60,9 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideInvalidConfigurationElementCases
-     *
      * @param mixed $element
+     *
+     * @dataProvider provideInvalidConfigurationElementCases
      */
     public function testConfigureRejectsInvalidIncludeConfigurationElement($element, string $expectedExceptionMessage): void
     {
@@ -553,9 +553,9 @@ echo M_PI;
     }
 
     /**
-     * @dataProvider provideFixPhp80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFixPhp80Cases
      */
     public function testFixPhp80(string $expected): void
     {
@@ -581,9 +581,9 @@ echo M_PI;
     }
 
     /**
-     * @dataProvider provideFixPhp81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFixPhp81Cases
      */
     public function testFixPhp81(string $expected): void
     {
@@ -605,9 +605,9 @@ echo M_PI;
     }
 
     /**
-     * @dataProvider provideFixPhp82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideFixPhp82Cases
      */
     public function testFixPhp82(string $expected): void
     {
@@ -626,9 +626,9 @@ echo M_PI;
     }
 
     /**
-     * @dataProvider provideFixPhp83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideFixPhp83Cases
      */
     public function testFixPhp83(string $expected, string $input): void
     {

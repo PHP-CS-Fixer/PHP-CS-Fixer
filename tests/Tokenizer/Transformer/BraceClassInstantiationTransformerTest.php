@@ -384,9 +384,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      * @param array<int, int|string> $expectedTokens
      * @param list<int>              $observedKinds
      *
-     * @dataProvider provideProcessPhp80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideProcessPhp80Cases
      */
     public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
     {
@@ -435,9 +435,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      * @param array<int, int|string> $expectedTokens
      * @param list<int>              $observedKinds
      *
-     * @dataProvider provideProcessPhp81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideProcessPhp81Cases
      */
     public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
     {
@@ -491,9 +491,9 @@ function test2($param = (new Foo)) {}
      * @param array<int, int|string> $expectedTokens
      * @param list<int>              $observedKinds
      *
-     * @dataProvider provideProcessPrePhp84Cases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider provideProcessPrePhp84Cases
      */
     public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
     {

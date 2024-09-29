@@ -22,9 +22,9 @@ use PhpCsFixer\Console\Application;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @requires OS Linux|Darwin
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @coversNothing
  *

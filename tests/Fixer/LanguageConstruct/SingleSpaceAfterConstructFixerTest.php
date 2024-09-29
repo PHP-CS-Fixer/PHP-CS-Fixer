@@ -31,9 +31,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
-     *
      * @param mixed $construct
+     *
+     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
      */
     public function testConfigureRejectsInvalidControlStatement($construct): void
     {
@@ -3366,9 +3366,9 @@ namespace/* comment */ Foo;',
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, string $input): void
     {
@@ -3443,9 +3443,9 @@ class Point {
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, string $input): void
     {
@@ -3612,9 +3612,9 @@ class    Test {
     }
 
     /**
-     * @dataProvider provideEnumTypeColonCases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideEnumTypeColonCases
      */
     public function testEnumTypeColon(string $expected, string $input): void
     {

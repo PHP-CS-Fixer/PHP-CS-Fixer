@@ -223,9 +223,9 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provideResolveConfigFileChooseFileCases
-     *
      * @param class-string<ConfigInterface> $expectedClass
+     *
+     * @dataProvider provideResolveConfigFileChooseFileCases
      */
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
@@ -1323,11 +1323,11 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @dataProvider provideDeprecatedRuleSetConfiguredCases
-     *
      * @group legacy
      *
      * @param list<string> $successors
+     *
+     * @dataProvider provideDeprecatedRuleSetConfiguredCases
      */
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {

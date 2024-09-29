@@ -523,9 +523,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -551,9 +551,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -587,9 +587,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected): void
     {

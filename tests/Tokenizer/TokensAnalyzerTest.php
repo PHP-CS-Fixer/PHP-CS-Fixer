@@ -484,9 +484,9 @@ final class TokensAnalyzerTest extends TestCase
     /**
      * @param array<int, array{classIndex: int, type: string}> $expected
      *
-     * @dataProvider provideGetClassyElements81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideGetClassyElements81Cases
      */
     public function testGetClassyElements81(array $expected, string $source): void
     {
@@ -670,9 +670,9 @@ enum Foo: string
     /**
      * @param array<int, array{classIndex: int, type: string}> $expected
      *
-     * @dataProvider provideGetClassyElements82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideGetClassyElements82Cases
      */
     public function testGetClassyElements82(array $expected, string $source): void
     {
@@ -768,9 +768,9 @@ enum Foo: string
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsAnonymousClass80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsAnonymousClass80Cases
      */
     public function testIsAnonymousClass80(array $expected, string $source): void
     {
@@ -796,9 +796,9 @@ enum Foo: string
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsAnonymousClass81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsAnonymousClass81Cases
      */
     public function testIsAnonymousClass81(array $expected, string $source): void
     {
@@ -819,9 +819,9 @@ enum Foo: string
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsAnonymousClass83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideIsAnonymousClass83Cases
      */
     public function testIsAnonymousClass83(array $expected, string $source): void
     {
@@ -972,9 +972,9 @@ preg_replace_callback(
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsLambda80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsLambda80Cases
      */
     public function testIsLambda80(array $expected, string $source): void
     {
@@ -1302,9 +1302,9 @@ abstract class Baz
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsConstantInvocationPhp80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsConstantInvocationPhp80Cases
      */
     public function testIsConstantInvocationPhp80(array $expected, string $source): void
     {
@@ -1412,9 +1412,9 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsConstantInvocationPhp81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsConstantInvocationPhp81Cases
      */
     public function testIsConstantInvocationPhp81(array $expected, string $source): void
     {
@@ -1465,9 +1465,9 @@ abstract class Baz
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsConstantInvocationPhp82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideIsConstantInvocationPhp82Cases
      */
     public function testIsConstantInvocationPhp82(array $expected, string $source): void
     {
@@ -1501,9 +1501,9 @@ abstract class Baz
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsConstantInvocationPhp83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideIsConstantInvocationPhp83Cases
      */
     public function testIsConstantInvocationPhp83(array $expected, string $source): void
     {
@@ -1657,9 +1657,9 @@ abstract class Baz
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
      */
     public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
     {
@@ -2126,9 +2126,9 @@ $b;',
     /**
      * @param list<int> $expected
      *
-     * @dataProvider provideIsBinaryOperator80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsBinaryOperator80Cases
      */
     public function testIsBinaryOperator80(array $expected, string $source): void
     {
@@ -2166,9 +2166,9 @@ $b;',
     /**
      * @param list<int> $expected
      *
-     * @dataProvider provideIsBinaryOperator81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsBinaryOperator81Cases
      */
     public function testIsBinaryOperator81(array $expected, string $source): void
     {
@@ -2186,9 +2186,9 @@ $b;',
     /**
      * @param list<int> $expected
      *
-     * @dataProvider provideIsBinaryOperator82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideIsBinaryOperator82Cases
      */
     public function testIsBinaryOperator82(array $expected, string $source): void
     {
@@ -2223,9 +2223,9 @@ $b;',
     /**
      * @param list<int> $expected
      *
-     * @dataProvider provideIsBinaryOperatorPre84Cases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider provideIsBinaryOperatorPre84Cases
      */
     public function testIsBinaryOperatorPre84(array $expected, string $source): void
     {
@@ -2488,11 +2488,11 @@ class TestClass {
     }
 
     /**
-     * @dataProvider provideIsEnumCaseCases
-     *
      * @param array<int, bool> $expected
      *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsEnumCaseCases
      */
     public function testIsEnumCase(string $source, array $expected): void
     {
@@ -2877,9 +2877,9 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @dataProvider provideGetClassyModifiersCases
-     *
      * @param array<string, null|int> $expectedModifiers
+     *
+     * @dataProvider provideGetClassyModifiersCases
      */
     public function testGetClassyModifiers(array $expectedModifiers, int $index, string $source): void
     {
@@ -2905,11 +2905,11 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
+     * @param array<string, null|int> $expectedModifiers
+     *
      * @requires PHP 8.2
      *
      * @dataProvider provideGetClassyModifiersOnPhp82Cases
-     *
-     * @param array<string, null|int> $expectedModifiers
      */
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {
@@ -2972,9 +2972,9 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @dataProvider provideGetLastTokenIndexOfArrowFunctionCases
-     *
      * @param array<int, int> $expectations
+     *
+     * @dataProvider provideGetLastTokenIndexOfArrowFunctionCases
      */
     public function testGetLastTokenIndexOfArrowFunction(array $expectations, string $source): void
     {

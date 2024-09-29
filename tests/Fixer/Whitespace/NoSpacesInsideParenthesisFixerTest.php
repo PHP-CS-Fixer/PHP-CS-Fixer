@@ -141,9 +141,9 @@ $a = $b->test(  // do not remove space
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, string $input): void
     {
@@ -162,9 +162,9 @@ $a = $b->test(  // do not remove space
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, string $input): void
     {

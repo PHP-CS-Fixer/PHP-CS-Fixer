@@ -85,9 +85,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideThatSrcClassesNotAbuseInterfacesCases
-     *
      * @param class-string $className
+     *
+     * @dataProvider provideThatSrcClassesNotAbuseInterfacesCases
      */
     public function testThatSrcClassesNotAbuseInterfaces(string $className): void
     {
@@ -135,9 +135,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideSrcClassCases
-     *
      * @param class-string $className
+     *
+     * @dataProvider provideSrcClassCases
      */
     public function testThatSrcClassesNotExposeProperties(string $className): void
     {
@@ -199,9 +199,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreTraitOrAbstractOrFinal(string $testClassName): void
     {
@@ -214,9 +214,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
@@ -230,9 +230,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassesPublicMethodsAreCorrectlyNamed(string $testClassName): void
     {
@@ -259,9 +259,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDataProviderMethodCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideDataProviderMethodCases
      */
     public function testThatTestDataProvidersAreUsed(string $testClassName, string $dataProviderName): void
     {
@@ -316,9 +316,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestClassCoversAreCorrect(string $testClassName): void
     {
@@ -357,10 +357,10 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string $className
+     *
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
-     *
-     * @param class-string $className
      */
     public function testThereIsNoUsageOfExtract(string $className): void
     {
@@ -371,9 +371,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
-     *
      * @param class-string $className
+     *
+     * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
@@ -390,9 +390,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string<TestCase> $className
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testNoPHPUnitMockUsed(string $className): void
     {
@@ -413,9 +413,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testExpectedInputOrder(string $testClassName): void
     {
@@ -472,9 +472,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDataProviderMethodCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideDataProviderMethodCases
      */
     public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, string $dataProviderName): void
     {
@@ -548,10 +548,10 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string $className
+     *
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
-     *
-     * @param class-string $className
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
@@ -610,9 +610,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideSrcClassCases
-     *
      * @param class-string $className
+     *
+     * @dataProvider provideSrcClassCases
      */
     public function testInheritdocIsNotAbused(string $className): void
     {
@@ -760,9 +760,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
      * @param class-string $className
+     *
+     * @dataProvider provideTestClassCases
      */
     public function testThatTestMethodsAreNotDuplicated(string $className): void
     {
@@ -813,9 +813,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDataProviderMethodCases
-     *
      * @param class-string<TestCase> $testClassName
+     *
+     * @dataProvider provideDataProviderMethodCases
      */
     public function testThatDataFromDataProvidersIsNotDuplicated(string $testClassName, string $dataProviderName): void
     {
@@ -894,9 +894,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
-     *
      * @param class-string $className
+     *
+     * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
      */
     public function testPhpUnitFixerExtendsAbstractPhpUnitFixer(string $className): void
     {
@@ -932,10 +932,10 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string $className
+     *
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
-     *
-     * @param class-string $className
      */
     public function testConstantsAreInUpperCase(string $className): void
     {

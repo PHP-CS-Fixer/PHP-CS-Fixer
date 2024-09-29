@@ -55,9 +55,9 @@ final class ProcessFactoryTest extends TestCase
      * on this particular OS. The cause of this lays in `react/child-process` component, but it's related only to tests,
      * as parallel runner works properly on Windows too. Feel free to fiddle with it and add testing support for Windows.
      *
-     * @requires OS Linux|Darwin
-     *
      * @param array<string, string> $input
+     *
+     * @requires OS Linux|Darwin
      *
      * @dataProvider provideCreateCases
      */

@@ -28,9 +28,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixCases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
     {

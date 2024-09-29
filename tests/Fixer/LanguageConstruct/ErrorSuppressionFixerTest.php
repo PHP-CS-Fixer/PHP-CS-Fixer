@@ -143,9 +143,9 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -163,9 +163,9 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

@@ -777,9 +777,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixImportClasses80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFixImportClasses80Cases
      */
     public function testFixImportClasses80(string $expected, string $input): void
     {
@@ -1122,9 +1122,9 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixFullyQualifyClasses80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFixFullyQualifyClasses80Cases
      */
     public function testFixFullyQualifyClasses80(string $expected, string $input): void
     {
@@ -1280,9 +1280,9 @@ class Bar
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

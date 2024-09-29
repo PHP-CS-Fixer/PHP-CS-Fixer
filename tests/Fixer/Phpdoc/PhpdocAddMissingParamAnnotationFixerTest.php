@@ -47,9 +47,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @dataProvider provideConfigureRejectsInvalidConfigurationValueCases
-     *
      * @param mixed $value
+     *
+     * @dataProvider provideConfigureRejectsInvalidConfigurationValueCases
      */
     public function testConfigureRejectsInvalidConfigurationValue($value, string $expectedMessage): void
     {
@@ -523,9 +523,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -564,9 +564,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

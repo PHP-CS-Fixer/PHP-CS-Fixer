@@ -186,11 +186,11 @@ final class RunnerTest extends TestCase
      *
      * @TODO v4 do not switch on parallel execution by default while this test is not passing on Linux.
      *
+     * @dataProvider provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases
+     *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      * @covers \PhpCsFixer\Runner\Runner::fixParallel
-     *
-     * @dataProvider provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases
      */
     public function testParallelFixStopsOnFirstViolationIfSuchOptionIsEnabled(bool $stopOnViolation, int $expectedChanges): void
     {

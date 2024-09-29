@@ -261,9 +261,9 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNaturalLanguageJoinCases
-     *
      * @param list<string> $names
+     *
+     * @dataProvider provideNaturalLanguageJoinCases
      */
     public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
     {

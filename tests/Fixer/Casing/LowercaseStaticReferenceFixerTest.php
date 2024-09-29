@@ -255,9 +255,9 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -316,9 +316,9 @@ class Foo
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
@@ -340,9 +340,9 @@ class Foo
     }
 
     /**
-     * @dataProvider provideFix83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideFix83Cases
      */
     public function testFix83(string $expected, ?string $input = null): void
     {

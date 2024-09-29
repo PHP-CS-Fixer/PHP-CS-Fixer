@@ -218,9 +218,9 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {

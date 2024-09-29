@@ -153,9 +153,9 @@ class Foo {
     }
 
     /**
-     * @dataProvider provideNonReferencePre84Cases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider provideNonReferencePre84Cases
      */
     public function testNonReferencePre84(string $code): void
     {

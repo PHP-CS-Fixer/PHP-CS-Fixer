@@ -20,9 +20,9 @@ use PhpCsFixer\Preg;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @requires OS Linux|Darwin
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @coversNothing
  *

@@ -276,9 +276,9 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected): void
     {

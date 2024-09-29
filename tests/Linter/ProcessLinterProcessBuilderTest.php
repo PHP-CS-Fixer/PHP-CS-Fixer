@@ -27,9 +27,9 @@ use PhpCsFixer\Tests\TestCase;
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
-     * @dataProvider providePrepareCommandOnPhpOnLinuxOrMacCases
-     *
      * @requires OS Linux|Darwin
+     *
+     * @dataProvider providePrepareCommandOnPhpOnLinuxOrMacCases
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac(string $executable, string $file, string $expected): void
     {
@@ -47,9 +47,9 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider providePrepareCommandOnPhpOnWindowsCases
-     *
      * @requires OS ^Win
+     *
+     * @dataProvider providePrepareCommandOnPhpOnWindowsCases
      */
     public function testPrepareCommandOnPhpOnWindows(string $executable, string $file, string $expected): void
     {

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @requires PHP <8.0
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer>
+ *
+ * @requires PHP <8.0
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
  *

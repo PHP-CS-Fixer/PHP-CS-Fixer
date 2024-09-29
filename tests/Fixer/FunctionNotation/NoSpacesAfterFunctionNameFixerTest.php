@@ -224,9 +224,9 @@ $$e(2);
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -250,9 +250,9 @@ $$e(2);
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

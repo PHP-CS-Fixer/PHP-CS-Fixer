@@ -32,9 +32,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
-     *
      * @param mixed $annotation
+     *
+     * @dataProvider provideConfigureRejectsInvalidControlStatementCases
      */
     public function testConfigureRejectsInvalidControlStatement($annotation): void
     {

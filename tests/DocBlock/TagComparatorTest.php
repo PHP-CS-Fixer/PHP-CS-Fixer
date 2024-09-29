@@ -69,9 +69,9 @@ final class TagComparatorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
-     *
      * @param list<list<string>> $groups
+     *
+     * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
      *
      * @group legacy
      */

@@ -56,9 +56,9 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -80,11 +80,11 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix74DeprecatedCases
-     *
      * @group legacy
      *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFix74DeprecatedCases
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void
     {

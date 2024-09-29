@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\CT;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\DisjunctiveNormalFormTypeParenthesisTransformer
- *
  * @requires PHP 8.2
+ *
+ * @covers \PhpCsFixer\Tokenizer\Transformer\DisjunctiveNormalFormTypeParenthesisTransformer
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {
@@ -328,9 +328,9 @@ return new static();
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideProcess83Cases
      */
     public function testProcess83(string $source, array $expectedTokens): void
     {

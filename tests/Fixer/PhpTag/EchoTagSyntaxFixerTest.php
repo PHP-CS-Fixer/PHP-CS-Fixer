@@ -108,9 +108,9 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideShortToLongFormatCases
-     *
      * @param EchoTagSyntaxFixer::LONG_FUNCTION_* $function
+     *
+     * @dataProvider provideShortToLongFormatCases
      */
     public function testShortToLongFormat(string $expected, ?string $input, string $function): void
     {

@@ -125,9 +125,9 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideProcess80Cases
      */
     public function testProcess80(string $source, array $expectedTokens): void
     {
@@ -416,9 +416,9 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(array $expectedTokens, string $source): void
     {
@@ -482,9 +482,9 @@ class Foo
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideProcess81Cases
      */
     public function testProcess81(string $source, array $expectedTokens): void
     {
@@ -504,9 +504,9 @@ class Foo
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideProcess82Cases
      */
     public function testProcess82(string $source, array $expectedTokens): void
     {
@@ -591,9 +591,9 @@ class Dnf
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideProcess83Cases
      */
     public function testProcess83(string $source, array $expectedTokens): void
     {

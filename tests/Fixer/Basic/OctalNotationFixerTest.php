@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @requires PHP 8.1
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
+ *
+ * @requires PHP 8.1
  *
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *

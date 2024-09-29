@@ -35,9 +35,9 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      * @param list<Token>      $expected
      * @param null|list<Token> $input
      *
-     * @dataProvider provideProcessCases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideProcessCases
      */
     public function testProcess(array $expected, ?array $input = null): void
     {

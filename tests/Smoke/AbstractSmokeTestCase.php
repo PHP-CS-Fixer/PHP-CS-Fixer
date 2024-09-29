@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @requires OS Linux|Darwin
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @coversNothing
  *

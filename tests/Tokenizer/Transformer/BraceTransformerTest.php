@@ -161,9 +161,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideProcess80Cases
      */
     public function testProcess80(string $source, array $expectedTokens = []): void
     {
@@ -201,9 +201,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider providePre84ProcessCases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider providePre84ProcessCases
      */
     public function testPre84Process(string $source, array $expectedTokens = []): void
     {
@@ -341,9 +341,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideDynamicClassConstantFetchCases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideDynamicClassConstantFetchCases
      */
     public function testDynamicClassConstantFetch(array $expectedTokens, string $source): void
     {
@@ -439,9 +439,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideDynamicClassConstantFetchPhp83Cases
-     *
      * @requires PHP ~8.3.0
+     *
+     * @dataProvider provideDynamicClassConstantFetchPhp83Cases
      */
     public function testDynamicClassConstantFetchPhp83(array $expectedTokens, string $source): void
     {

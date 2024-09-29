@@ -27,9 +27,9 @@ use PhpCsFixer\Tests\TestCase;
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
-     * @dataProvider provideFulfillsCases
-     *
      * @param null|class-string<\Throwable> $exception
+     *
+     * @dataProvider provideFulfillsCases
      */
     public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {

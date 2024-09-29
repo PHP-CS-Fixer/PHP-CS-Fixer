@@ -419,9 +419,9 @@ multiply((2 + 3) * 4);
     }
 
     /**
-     * @dataProvider provideDefaultFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideDefaultFix80Cases
      */
     public function testDefaultFix80(string $expected, string $input): void
     {
@@ -440,9 +440,9 @@ multiply((2 + 3) * 4);
     }
 
     /**
-     * @dataProvider provideSpacesFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideSpacesFix80Cases
      */
     public function testSpacesFix80(string $expected, string $input): void
     {

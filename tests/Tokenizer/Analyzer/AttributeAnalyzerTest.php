@@ -133,11 +133,11 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
+     * @param list<AttributeAnalysis> $expectedAnalyses
+     *
      * @requires PHP 8.0
      *
      * @dataProvider provideGetAttributeDeclarationsCases
-     *
-     * @param list<AttributeAnalysis> $expectedAnalyses
      */
     public function testGetAttributeDeclarations(string $code, int $startIndex, array $expectedAnalyses): void
     {
@@ -342,11 +342,11 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
+     * @param list<AttributeAnalysis> $expectedAnalyses
+     *
      * @requires PHP 8.1
      *
      * @dataProvider provideGetAttributeDeclarations81Cases
-     *
-     * @param list<AttributeAnalysis> $expectedAnalyses
      */
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
     {
