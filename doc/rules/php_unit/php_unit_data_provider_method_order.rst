@@ -12,7 +12,7 @@ Configuration
 
 Prefix that replaces "test".
 
-Allowed types: ``string``
+Allowed values: ``'after'`` and ``'before'``
 
 Default value: ``'after'``
 
@@ -26,7 +26,17 @@ Example #1
 
 .. code-block:: diff
 
-   
+   --- Original
+   +++ New
+    <?php
+    class FooTest extends TestCase {
+   -    public function dataProvider() {}
+        /**
+         * @dataProvider dataProvider
+         */
+        public function testSomething($expected, $actual) {}
+   +    public function dataProvider() {}
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -35,7 +45,17 @@ With configuration: ``['placement' => 'before']``.
 
 .. code-block:: diff
 
-   
+   --- Original
+   +++ New
+    <?php
+    class FooTest extends TestCase {
+   +    public function dataProvider() {}
+        /**
+         * @dataProvider dataProvider
+         */
+        public function testSomething($expected, $actual) {}
+   -    public function dataProvider() {}
+    }
 
 Rule sets
 ---------
