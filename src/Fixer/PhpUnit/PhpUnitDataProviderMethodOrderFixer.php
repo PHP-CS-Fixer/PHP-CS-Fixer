@@ -162,6 +162,7 @@ class FooTest extends TestCase {
                     $usageIndex[1],
                 ];
             }
+            \assert([] !== $usages);
 
             $dataProvidersWithUsagePairs[] = [
                 [$dataProviderAnalysis->getNameIndex(), $dataProviderAnalysis->getName()],
