@@ -121,16 +121,6 @@ final class PharTest extends AbstractSmokeTestCase
     }
 
     /**
-     * @return iterable<array{string}>
-     */
-    public static function provideReportCases(): iterable
-    {
-        yield ['no'];
-
-        yield ['yes'];
-    }
-
-    /**
      * @dataProvider provideReportCases
      */
     public function testReport(string $usingCache): void
@@ -163,6 +153,16 @@ final class PharTest extends AbstractSmokeTestCase
                 unlink($cacheFile);
             }
         }
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideReportCases(): iterable
+    {
+        yield ['no'];
+
+        yield ['yes'];
     }
 
     private static function executePharCommand(string $params): CliResult
