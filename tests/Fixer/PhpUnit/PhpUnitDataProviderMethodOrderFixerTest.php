@@ -190,10 +190,12 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
                 class FooTest extends TestCase {
                     /**
                      * @dataProvider provideFooCases
+                     * @dataProvider provideFooCases3
                      * @dataProvider provideFooCases2
                      */
                     public function testFoo(): void {}
                     public function provideFooCases(): iterable {}
+                    public function provideFooCases3(): iterable {}
                     public function provideFooCases2(): iterable {}
                 }
                 PHP,
@@ -203,10 +205,12 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
                     public function provideFooCases(): iterable {}
                     /**
                      * @dataProvider provideFooCases
+                     * @dataProvider provideFooCases3
                      * @dataProvider provideFooCases2
                      */
                     public function testFoo(): void {}
                     public function provideFooCases2(): iterable {}
+                    public function provideFooCases3(): iterable {}
                 }
                 PHP,
         ];
