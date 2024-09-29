@@ -153,7 +153,7 @@ class FooTest extends TestCase {
                 continue;
             }
 
-            $usageIndex = $dataProviderAnalysis->getUsageIndices()[0];
+            $usageIndex = $dataProviderAnalysis->getUsageIndices()[0][0];
             if (substr_count($tokens[$usageIndex]->getContent(), '@dataProvider') > 1) {
                 continue;
             }
