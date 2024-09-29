@@ -25,7 +25,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\DataProviderAnalyzer;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -80,6 +79,7 @@ class FooTest extends TestCase {
     /**
      * {@inheritdoc}
      *
+     * Must run before ClassAttributesSeparationFixer, NoBlankLinesAfterClassOpeningFixer.
      * Must run after OrderedClassElementsFixer.
      */
     public function getPriority(): int
