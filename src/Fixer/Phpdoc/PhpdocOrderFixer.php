@@ -114,7 +114,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer, PhpdocSeparationFixer, PhpdocTrimFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocNoEmptyReturnFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
