@@ -121,7 +121,7 @@ class FooTest extends TestCase {
                     $newMethodsOrder[$usageName] = true;
                 }
 
-                \assert(isset($origMethodsOrderPairs[$usageName]) && isset($origMethodsOrderPairs[$providerName]));
+                \assert(isset($origMethodsOrderPairs[$usageName], $origMethodsOrderPairs[$providerName]));
                 $isProviderAlreadyAfter = $origMethodsOrderPairs[$usageName][0] < $origMethodsOrderPairs[$providerName][0];
 
                 if (isset($newMethodsOrder[$providerName])) {
