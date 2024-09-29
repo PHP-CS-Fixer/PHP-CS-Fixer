@@ -62,7 +62,6 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                     'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,string_implicit_backslashes.test',
                     'priority'.\DIRECTORY_SEPARATOR.'no_unused_imports,blank_line_after_namespace_2.test',
                     'priority'.\DIRECTORY_SEPARATOR.'single_import_per_statement,no_unused_imports.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'single_space_around_construct,nullable_type_declaration.test',
                 ], true)) {
                     self::markTestIncomplete(\sprintf(
                         'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'

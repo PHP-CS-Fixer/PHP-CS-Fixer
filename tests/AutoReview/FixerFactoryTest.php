@@ -919,7 +919,6 @@ final class FixerFactoryTest extends TestCase
             'single_space_around_construct' => [
                 'braces',
                 'function_declaration',
-                'nullable_type_declaration',
             ],
             'single_trait_insert_per_statement' => [
                 'braces',
