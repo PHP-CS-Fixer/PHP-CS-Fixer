@@ -1157,6 +1157,20 @@ switch ($foo) {
 }
 ',
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                $x->foo()
+                    ->bar()
+                ;$y = 42;
+                PHP,
+            <<<'PHP'
+                <?php
+                $x->foo()
+                    ->bar();$y = 42;
+                PHP,
+        ];
     }
 
     /**
