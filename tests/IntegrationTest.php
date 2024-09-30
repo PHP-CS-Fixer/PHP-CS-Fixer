@@ -60,7 +60,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                 $fixedInputCode,
                 $fixedInputCodeWithReversedFixers,
                 \sprintf(
-                    'Test "%s" in "%s" is expected to be priority check, but fixers applied in revered order made the same changes.',
+                    'Test "%s" in "%s" is expected to be priority check, but fixers applied in reversed order made the same changes.',
                     $case->getTitle(),
                     $case->getFileName(),
                 )

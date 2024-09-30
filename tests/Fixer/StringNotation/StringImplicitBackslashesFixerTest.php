@@ -938,7 +938,7 @@ final class StringImplicitBackslashesFixerTest extends AbstractFixerTestCase
             ['heredoc' => 'ignore'],
         ];
 
-        yield [
+        yield 'execution operator' => [
             '<?php $var = `ls a\\\b`;',
             '<?php $var = `ls a\b`;',
         ];
