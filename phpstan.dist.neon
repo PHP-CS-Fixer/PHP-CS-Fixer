@@ -9,6 +9,7 @@ parameters:
     paths:
         - src
         - tests
+        - php-cs-fixer
         - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures

@@ -18,10 +18,13 @@ use PhpCsFixer\Console\Application;
 
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
-set_error_handler(static function ($severity, $message, $file, $line): void {
+set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
+    // @phpstan-ignore if.condNotBoolean
     if ($severity & error_reporting()) {
         throw new ErrorException($message, 0, $severity, $file, $line);
     }
+
+    return true;
 });
 
 // check environment requirements
@@ -37,7 +40,7 @@ set_error_handler(static function ($severity, $message, $file, $line): void {
         fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.3.*.\n");
         fwrite(STDERR, 'Current PHP version: '.PHP_VERSION.".\n");
 
-        if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+        if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOLEAN)) {
             fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
         } else {
             fwrite(STDERR, "To ignore this requirement please set `PHP_CS_FIXER_IGNORE_ENV`.\n");
@@ -52,7 +55,7 @@ set_error_handler(static function ($severity, $message, $file, $line): void {
         if (!extension_loaded($extension)) {
             fwrite(STDERR, sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
 
-            if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOLEAN)) {
                 fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
             } else {
                 exit(1);
