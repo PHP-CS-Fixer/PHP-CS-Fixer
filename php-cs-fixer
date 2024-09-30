@@ -57,7 +57,7 @@ set_error_handler(static function ($severity, $message, $file, $line): void {
 })();
 
 // load dependencies
-(function (): void {
+(static function (): void {
     $require = true;
     if (class_exists('Phar')) {
         // Maybe this file is used as phar-stub? Let's try!
