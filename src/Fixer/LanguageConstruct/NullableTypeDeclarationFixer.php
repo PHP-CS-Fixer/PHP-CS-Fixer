@@ -94,7 +94,7 @@ class ValueObject
      * {@inheritdoc}
      *
      * Must run before OrderedTypesFixer, TypesSpacesFixer.
-     * Must run after NullableTypeDeclarationForDefaultNullValueFixer, SingleSpaceAroundConstructFixer.
+     * Must run after NullableTypeDeclarationForDefaultNullValueFixer.
      */
     public function getPriority(): int
     {
@@ -273,6 +273,10 @@ class ValueObject
             $typeAnalysis->getEndIndex(),
             $this->createTypeDeclarationTokens($normalizedType, $isQuestionMarkSyntax)
         );
+
+        if (!$tokens[$typeAnalysis->getStartIndex() - 1]->equals('(')) {
+            $tokens->ensureWhitespaceAtIndex($typeAnalysis->getStartIndex() - 1, 1, ' ');
+        }
     }
 
     /**
