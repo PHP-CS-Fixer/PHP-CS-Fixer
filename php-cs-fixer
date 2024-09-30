@@ -71,7 +71,8 @@ set_error_handler(static function (int $severity, string $message, string $file,
         try {
             Phar::mapPhar('php-cs-fixer.phar');
 
-            require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
+            require_once 'phar://php-cs-fixer.phar/vendor/autoload.php'; // @phpstan-ignore requireOnce.fileNotFound
+
             $require = false;
         } catch (PharException $e) {
         }
