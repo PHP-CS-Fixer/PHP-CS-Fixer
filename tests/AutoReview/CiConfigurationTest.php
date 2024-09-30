@@ -176,7 +176,7 @@ final class CiConfigurationTest extends TestCase
 
     private function convertPhpVerIdToNiceVer(string $verId): string
     {
-        $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
+        $matchResult = Preg::match('/^(?<major>\d{1,2})_?(?<minor>\d{2})_?(?<patch>\d{2})$/', $verId, $capture);
         if (!$matchResult) {
             throw new \LogicException(\sprintf('Can\'t parse version "%s" id.', $verId));
         }
@@ -197,7 +197,7 @@ final class CiConfigurationTest extends TestCase
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = (int) end($sequence)->getContent();
+        $phpVerId = (int) str_replace('_', '', end($sequence)->getContent());
 
         return $this->convertPhpVerIdToNiceVer((string) ($phpVerId - 100));
     }
