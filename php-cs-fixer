@@ -11,6 +11,9 @@
  * with this source code in the file LICENSE.
  */
 
+use Composer\XdebugHandler\XdebugHandler;
+use PhpCsFixer\Console\Application;
+
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 set_error_handler(static function ($severity, $message, $file, $line): void {
@@ -89,9 +92,6 @@ set_error_handler(static function ($severity, $message, $file, $line): void {
         require_once $file;
     }
 })();
-
-use Composer\XdebugHandler\XdebugHandler;
-use PhpCsFixer\Console\Application;
 
 // Restart if xdebug is loaded, unless the environment variable PHP_CS_FIXER_ALLOW_XDEBUG is set.
 $xdebug = new XdebugHandler('PHP_CS_FIXER');
