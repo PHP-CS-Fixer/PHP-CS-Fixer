@@ -353,11 +353,9 @@ final class FixerFactoryTest extends TestCase
                 'no_whitespace_in_blank_line',
             ],
             'backtick_to_shell_exec' => [
-                'escape_implicit_backslashes',
                 'explicit_string_variable',
                 'native_function_invocation',
                 'single_quote',
-                'string_implicit_backslashes',
             ],
             'blank_line_after_opening_tag' => [
                 'blank_lines_before_namespace',
@@ -902,7 +900,6 @@ final class FixerFactoryTest extends TestCase
                 'multiline_whitespace_before_semicolons',
                 'no_leading_import_slash',
                 'no_singleline_whitespace_before_semicolons',
-                'no_unused_imports',
                 'space_after_semicolon',
             ],
             'single_line_throw' => [

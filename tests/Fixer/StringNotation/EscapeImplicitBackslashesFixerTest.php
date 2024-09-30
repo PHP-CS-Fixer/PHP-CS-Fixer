@@ -660,5 +660,10 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
 
                 EOF,
         ];
+
+        yield [
+            '<?php $var = `ls a\\\b`;',
+            '<?php $var = `ls a\b`;',
+        ];
     }
 }
