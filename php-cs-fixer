@@ -19,8 +19,7 @@ use PhpCsFixer\Console\Application;
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
-    // @phpstan-ignore if.condNotBoolean
-    if ($severity & error_reporting()) {
+    if (0 !== ($severity & error_reporting())) {
         throw new ErrorException($message, 0, $severity, $file, $line);
     }
 
