@@ -190,16 +190,17 @@ final class CiConfigurationTest extends TestCase
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             [T_IS_GREATER_OR_EQUAL],
-            [T_LNUMBER],
+            [T_INT_CAST],
+            [T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = (int) str_replace('_', '', end($sequence)->getContent());
+        $phpVerId = trim(end($sequence)->getContent(), '\'');
 
-        return $this->convertPhpVerIdToNiceVer((string) ($phpVerId - 100));
+        return $this->convertPhpVerIdToNiceVer((string) ((int) $phpVerId - 100));
     }
 
     private function getMinPhpVersionFromEntryFile(): string
@@ -208,14 +209,15 @@ final class CiConfigurationTest extends TestCase
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             '<',
-            [T_LNUMBER],
+            [T_INT_CAST],
+            [T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = end($sequence)->getContent();
+        $phpVerId = trim(end($sequence)->getContent(), '\'');
 
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
