@@ -50,5 +50,6 @@ return (new Config())
             ->ignoreVCSIgnored(true)
             ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
             ->in(__DIR__)
+            ->append([__DIR__.'/php-cs-fixer'])
     )
 ;

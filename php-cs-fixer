@@ -13,22 +13,22 @@
 
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
-set_error_handler(static function ($severity, $message, $file, $line) {
+set_error_handler(static function ($severity, $message, $file, $line): void {
     if ($severity & error_reporting()) {
         throw new ErrorException($message, 0, $severity, $file, $line);
     }
 });
 
 // check environment requirements
-(function () {
-    if (\PHP_VERSION_ID === 80000) {
+(static function (): void {
+    if (\PHP_VERSION_ID === 80_000) {
         fwrite(STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
         fwrite(STDERR, "Update PHP version to unblock execution.\n");
 
         exit(1);
     }
 
-    if (\PHP_VERSION_ID < 70400 || \PHP_VERSION_ID >= 80400) {
+    if (\PHP_VERSION_ID < 70_400 || \PHP_VERSION_ID >= 80_400) {
         fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.3.*.\n");
         fwrite(STDERR, 'Current PHP version: '.PHP_VERSION.".\n");
 
@@ -57,7 +57,7 @@ set_error_handler(static function ($severity, $message, $file, $line) {
 })();
 
 // load dependencies
-(function () {
+(function (): void {
     $require = true;
     if (class_exists('Phar')) {
         // Maybe this file is used as phar-stub? Let's try!
