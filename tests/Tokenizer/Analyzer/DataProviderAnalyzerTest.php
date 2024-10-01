@@ -48,7 +48,7 @@ final class DataProviderAnalyzerTest extends TestCase
     public static function provideGettingDataProvidersCases(): iterable
     {
         yield 'single data provider' => [
-            [new DataProviderAnalysis('provider', 28, [11])],
+            [new DataProviderAnalysis('provider', 28, [[11, 23]])],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider provider
@@ -59,7 +59,7 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         yield 'single data provider with different casing' => [
-            [new DataProviderAnalysis('dataProvider', 28, [11])],
+            [new DataProviderAnalysis('dataProvider', 28, [[11, 23]])],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider dataPROVIDER
@@ -70,7 +70,7 @@ final class DataProviderAnalyzerTest extends TestCase
         ];
 
         yield 'single static data provider' => [
-            [new DataProviderAnalysis('provider', 30, [11])],
+            [new DataProviderAnalysis('provider', 30, [[11, 23]])],
             '<?php class FooTest extends TestCase {
                 /**
                  * @dataProvider provider
@@ -82,9 +82,9 @@ final class DataProviderAnalyzerTest extends TestCase
 
         yield 'multiple data provider' => [
             [
-                new DataProviderAnalysis('provider1', 28, [11]),
-                new DataProviderAnalysis('provider2', 39, [11]),
-                new DataProviderAnalysis('provider3', 50, [11]),
+                new DataProviderAnalysis('provider1', 28, [[11, 23]]),
+                new DataProviderAnalysis('provider2', 39, [[11, 66]]),
+                new DataProviderAnalysis('provider3', 50, [[11, 109]]),
             ],
             '<?php class FooTest extends TestCase {
                 /**
@@ -99,12 +99,29 @@ final class DataProviderAnalyzerTest extends TestCase
             }',
         ];
 
+        yield 'single data provider with multiple usage' => [
+            [
+                new DataProviderAnalysis('provider', 28, [[11, 23], [35, 23]]),
+            ],
+            '<?php class FooTest extends TestCase {
+                /**
+                 * @dataProvider provider
+                 */
+                public function testFoo() {}
+                public function provider() {}
+                /**
+                 * @dataProvider provider
+                 */
+                public function testFoo2() {}
+            }',
+        ];
+
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
             yield \sprintf('test function with %s modifier', $modifier) => [
                 [
-                    new DataProviderAnalysis('provider1', 54, [37]),
-                    new DataProviderAnalysis('provider2', 65, [11]),
-                    new DataProviderAnalysis('provider3', 76, [24]),
+                    new DataProviderAnalysis('provider1', 54, [[37, 4]]),
+                    new DataProviderAnalysis('provider2', 65, [[11, 4]]),
+                    new DataProviderAnalysis('provider3', 76, [[24, 4]]),
                 ],
                 \sprintf('<?php class FooTest extends TestCase {
                     /** @dataProvider provider2 */
@@ -143,7 +160,7 @@ final class DataProviderAnalyzerTest extends TestCase
 
         yield 'ignore anonymous function' => [
             [
-                new DataProviderAnalysis('provider2', 93, [65]),
+                new DataProviderAnalysis('provider2', 93, [[65, 27]]),
             ],
             '<?php class FooTest extends TestCase {
                 public function testFoo0() {}
@@ -185,7 +202,7 @@ final class DataProviderAnalyzerTest extends TestCase
     public static function provideGettingDataProviders80Cases(): iterable
     {
         yield 'with an attribute between PHPDoc and test method' => [
-            [new DataProviderAnalysis('provideFooCases', 35, [11])],
+            [new DataProviderAnalysis('provideFooCases', 35, [[11, 11]])],
             <<<'PHP'
                 <?php
                 class FooTest extends TestCase {

@@ -41,10 +41,17 @@ final class DataProviderAnalyzer
             $docCommentIndex = $this->getDocCommentIndex($tokens, $methodIndex);
 
             if (null !== $docCommentIndex) {
-                Preg::matchAll('/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/', $tokens[$docCommentIndex]->getContent(), $matches);
+                Preg::matchAll(
+                    '/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/',
+                    $tokens[$docCommentIndex]->getContent(),
+                    $matches,
+                    PREG_OFFSET_CAPTURE
+                );
 
-                foreach ($matches[1] as $dataProviderName) {
-                    $dataProviders[$dataProviderName][] = $docCommentIndex;
+                foreach ($matches[1] as $k => [$matchName]) {
+                    \assert(isset($matches[0][$k]));
+
+                    $dataProviders[$matchName][] = [$docCommentIndex, $matches[0][$k][1]];
                 }
             }
         }
