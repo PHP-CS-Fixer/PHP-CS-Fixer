@@ -319,13 +319,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (isset($this[$index])) {
-            if (isset($this->blockStartCache[$index])) {
-                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
-            }
-            if (isset($this->blockEndCache[$index])) {
-                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
-            }
-
+            $this->removeBlockStartEndCache($index);
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
@@ -353,12 +347,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (isset($this[$index])) {
-            if (isset($this->blockStartCache[$index])) {
-                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
-            }
-            if (isset($this->blockEndCache[$index])) {
-                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
-            }
+            $this->removeBlockStartEndCache($index);
         }
 
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
@@ -1417,6 +1406,23 @@ class Tokens extends \SplFixedArray
 
         $this->codeHash = $codeHash;
         self::setCache($this->codeHash, $this);
+    }
+
+    private function removeBlockStartEndCache(int $index): void
+    {
+        if (isset($this->blockStartCache[$index])) {
+            unset(
+                $this->blockEndCache[$this->blockStartCache[$index]],
+                $this->blockStartCache[$index]
+            );
+        }
+
+        if (isset($this->blockEndCache[$index])) {
+            unset(
+                $this->blockStartCache[$this->blockEndCache[$index]],
+                $this->blockEndCache[$index]
+            );
+        }
     }
 
     /**
