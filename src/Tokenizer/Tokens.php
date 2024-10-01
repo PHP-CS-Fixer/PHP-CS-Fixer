@@ -394,6 +394,11 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens(): void
     {
+        // no empty token found, therefore there is no need to override collection
+        if (!$this->isTokenKindFound('')) {
+            return;
+        }
+
         $limit = \count($this);
 
         for ($index = 0; $index < $limit; ++$index) {
@@ -402,10 +407,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // no empty token found, therefore there is no need to override collection
-        if ($limit === $index) {
-            return;
-        }
+        \assert($limit !== $index);
 
         for ($count = $index; $index < $limit; ++$index) {
             if (!$this->isEmptyAt($index)) {
@@ -418,6 +420,8 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+        \assert(isset($this->foundTokenKinds['']));
+        $this->foundTokenKinds[''] -= $limit - $count;
 
         $this->updateSize($count);
     }
