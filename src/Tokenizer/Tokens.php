@@ -1062,12 +1062,6 @@ class Tokens extends \SplFixedArray
 
         $this->applyTransformers();
 
-        $this->foundTokenKinds = [];
-
-        foreach ($this as $token) {
-            $this->registerFoundToken($token);
-        }
-
         if (\PHP_VERSION_ID < 8_00_00) {
             $this->rewind();
         }
