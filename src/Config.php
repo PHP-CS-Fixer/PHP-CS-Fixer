@@ -154,7 +154,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this->usingCache;
     }
 
-    public function registerCustomFixers(iterable $fixers): ConfigInterface
+    public function registerCustomFixers(iterable $fixers): self
     {
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
@@ -163,77 +163,77 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this;
     }
 
-    public function setCacheFile(string $cacheFile): ConfigInterface
+    public function setCacheFile(string $cacheFile): self
     {
         $this->cacheFile = $cacheFile;
 
         return $this;
     }
 
-    public function setFinder(iterable $finder): ConfigInterface
+    public function setFinder(iterable $finder): self
     {
         $this->finder = $finder;
 
         return $this;
     }
 
-    public function setFormat(string $format): ConfigInterface
+    public function setFormat(string $format): self
     {
         $this->format = $format;
 
         return $this;
     }
 
-    public function setHideProgress(bool $hideProgress): ConfigInterface
+    public function setHideProgress(bool $hideProgress): self
     {
         $this->hideProgress = $hideProgress;
 
         return $this;
     }
 
-    public function setIndent(string $indent): ConfigInterface
+    public function setIndent(string $indent): self
     {
         $this->indent = $indent;
 
         return $this;
     }
 
-    public function setLineEnding(string $lineEnding): ConfigInterface
+    public function setLineEnding(string $lineEnding): self
     {
         $this->lineEnding = $lineEnding;
 
         return $this;
     }
 
-    public function setParallelConfig(ParallelConfig $config): ConfigInterface
+    public function setParallelConfig(ParallelConfig $config): self
     {
         $this->parallelConfig = $config;
 
         return $this;
     }
 
-    public function setPhpExecutable(?string $phpExecutable): ConfigInterface
+    public function setPhpExecutable(?string $phpExecutable): self
     {
         $this->phpExecutable = $phpExecutable;
 
         return $this;
     }
 
-    public function setRiskyAllowed(bool $isRiskyAllowed): ConfigInterface
+    public function setRiskyAllowed(bool $isRiskyAllowed): self
     {
         $this->isRiskyAllowed = $isRiskyAllowed;
 
         return $this;
     }
 
-    public function setRules(array $rules): ConfigInterface
+    public function setRules(array $rules): self
     {
         $this->rules = $rules;
 
         return $this;
     }
 
-    public function setUsingCache(bool $usingCache): ConfigInterface
+    public function setUsingCache(bool $usingCache): self
     {
         $this->usingCache = $usingCache;
 
