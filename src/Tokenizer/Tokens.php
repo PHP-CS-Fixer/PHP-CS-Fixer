@@ -379,6 +379,11 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens(): void
     {
+        // no empty token found, therefore there is no need to override collection
+        if (!$this->isTokenKindFound('')) {
+            return;
+        }
+
         $limit = \count($this);
 
         for ($index = 0; $index < $limit; ++$index) {
@@ -387,9 +392,12 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // no empty token found, therefore there is no need to override collection
-        if ($limit === $index) {
-            return;
+        \assert($limit !== $index);
+
+        // should already be true
+        if (!$this->changed) {
+            // must never happen
+            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
         }
 
         for ($count = $index; $index < $limit; ++$index) {
@@ -399,18 +407,14 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // should already be true
-        if (!$this->changed) {
-            // must never happen
-            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
-        }
-
         // we are moving the tokens, we need to clear the index-based Cache
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+        \assert(isset($this->foundTokenKinds['']));
+        $this->foundTokenKinds[''] -= $limit - $count;
 
-        $this->updateSize($count);
+        parent::setSize($count);
     }
 
     /**
@@ -1236,6 +1240,11 @@ class Tokens extends \SplFixedArray
         if (\count($this) !== $size) {
             $this->changed = true;
             $this->namespaceDeclarations = null;
+
+            for ($index = \count($this) - 1; $index >= $size; --$index) {
+                $this->removeBlockStartEndCache($index);
+                $this->unregisterFoundToken($index);
+            }
 
             parent::setSize($size);
         }
