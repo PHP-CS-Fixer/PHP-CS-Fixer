@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\CT
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class CTTest extends TestCase
 {

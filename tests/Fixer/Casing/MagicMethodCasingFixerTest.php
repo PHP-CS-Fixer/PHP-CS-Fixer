@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
  */
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {
@@ -351,9 +351,9 @@ function __Tostring() {}',
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

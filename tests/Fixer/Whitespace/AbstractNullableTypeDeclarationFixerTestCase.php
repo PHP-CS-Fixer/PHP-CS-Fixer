@@ -18,13 +18,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Jack Cherng <jfcherng@gmail.com>
+ * @internal
  *
  * @template TFixer of AbstractFixer
  *
- * @internal
- *
  * @extends AbstractFixerTestCase<TFixer>
+ *
+ * @author Jack Cherng <jfcherng@gmail.com>
  */
 abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixerTestCase
 {
@@ -169,9 +169,9 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {

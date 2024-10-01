@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
  */
 final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 {
@@ -1263,9 +1263,9 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
     }
 
     /**
-     * @dataProvider provideDoNotFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideDoNotFix80Cases
      */
     public function testDoNotFix80(string $expected): void
     {

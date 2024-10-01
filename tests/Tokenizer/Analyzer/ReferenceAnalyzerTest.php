@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
  *
- * @internal
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class ReferenceAnalyzerTest extends TestCase
 {
@@ -153,9 +153,9 @@ class Foo {
     }
 
     /**
-     * @dataProvider provideNonReferencePre84Cases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider provideNonReferencePre84Cases
      */
     public function testNonReferencePre84(string $code): void
     {

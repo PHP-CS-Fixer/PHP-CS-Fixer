@@ -18,11 +18,11 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\DocBlock
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class DocBlockTest extends TestCase
 {

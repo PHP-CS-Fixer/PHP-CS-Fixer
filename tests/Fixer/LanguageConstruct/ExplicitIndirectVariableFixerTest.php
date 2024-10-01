@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ExplicitIndirectVariableFixer>
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\ExplicitIndirectVariableFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ExplicitIndirectVariableFixer>
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 {
@@ -87,9 +87,9 @@ $foo
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input): void
     {
@@ -113,9 +113,9 @@ $foo
     }
 
     /**
-     * @dataProvider provideFix83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideFix83Cases
      */
     public function testFix83(string $expected, ?string $input): void
     {

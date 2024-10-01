@@ -18,11 +18,11 @@ use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\FileReader;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\FileReader
+ *
+ * @author ntzm
  */
 final class FileReaderTest extends TestCase
 {

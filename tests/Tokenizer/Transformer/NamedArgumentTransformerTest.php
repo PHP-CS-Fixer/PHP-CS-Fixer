@@ -28,9 +28,9 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcessCases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideProcessCases
      */
     public function testProcess(string $source, array $expectedTokens): void
     {

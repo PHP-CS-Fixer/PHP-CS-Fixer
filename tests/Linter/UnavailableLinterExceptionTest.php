@@ -18,11 +18,11 @@ use PhpCsFixer\Linter\UnavailableLinterException;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\UnavailableLinterException
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class UnavailableLinterExceptionTest extends TestCase
 {

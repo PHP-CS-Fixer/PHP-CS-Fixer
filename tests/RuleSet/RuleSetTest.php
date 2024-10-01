@@ -27,13 +27,13 @@ use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @group legacy
  *
  * @covers \PhpCsFixer\RuleSet\RuleSet
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RuleSetTest extends TestCase
 {

@@ -18,11 +18,11 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\Linter
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class LinterTest extends AbstractLinterTestCase
 {

@@ -19,11 +19,11 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Line
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class LineTest extends TestCase
 {

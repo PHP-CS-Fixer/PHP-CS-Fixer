@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer
  */
 final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
 {
@@ -112,9 +112,9 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {

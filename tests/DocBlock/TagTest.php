@@ -19,11 +19,11 @@ use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Tag
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class TagTest extends TestCase
 {

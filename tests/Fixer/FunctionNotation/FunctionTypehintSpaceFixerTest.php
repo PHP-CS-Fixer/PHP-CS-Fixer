@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer>
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -282,9 +282,9 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, string $input): void
     {

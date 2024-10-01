@@ -17,15 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Internal;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
- *
- * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer>
  *
  * @requires OS Linux|Darwin
+ *
+ * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
 {

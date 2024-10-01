@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {

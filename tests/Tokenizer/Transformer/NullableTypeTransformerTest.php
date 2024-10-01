@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
@@ -124,9 +124,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideProcess80Cases
      */
     public function testProcess80(array $expectedTokens, string $source): void
     {
@@ -173,9 +173,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideProcess81Cases
      */
     public function testProcess81(array $expectedTokens, string $source): void
     {
@@ -213,9 +213,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideProcess83Cases
      */
     public function testProcess83(array $expectedTokens, string $source): void
     {

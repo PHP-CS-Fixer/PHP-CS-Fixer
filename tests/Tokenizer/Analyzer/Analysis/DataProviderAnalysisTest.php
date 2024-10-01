@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis
  */
 final class DataProviderAnalysisTest extends TestCase
 {

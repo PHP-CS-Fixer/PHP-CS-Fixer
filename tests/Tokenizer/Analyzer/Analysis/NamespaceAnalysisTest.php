@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespaceAnalysisTest extends TestCase
 {

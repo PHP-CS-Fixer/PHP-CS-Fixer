@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Import;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer>
  *
  * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer>
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {
@@ -218,9 +218,9 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {

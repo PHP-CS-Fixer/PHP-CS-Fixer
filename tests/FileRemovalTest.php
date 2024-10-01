@@ -19,11 +19,11 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use PhpCsFixer\FileRemoval;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\FileRemoval
+ *
+ * @author ntzm
  */
 final class FileRemovalTest extends TestCase
 {

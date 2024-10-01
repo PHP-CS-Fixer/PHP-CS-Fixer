@@ -19,11 +19,11 @@ use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\AliasedFixerOption
+ *
+ * @author ntzm
  */
 final class AliasedFixerOptionTest extends TestCase
 {

@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\PregException;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\PregException
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregExceptionTest extends TestCase
 {

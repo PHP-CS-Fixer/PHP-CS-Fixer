@@ -20,10 +20,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
+ *
  * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
@@ -646,9 +646,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @dataProvider provideNegativePhp80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideNegativePhp80Cases
      */
     public function testNegativePhp80(string $expected): void
     {
@@ -799,9 +799,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @dataProvider provideConditionsWithoutBraces80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideConditionsWithoutBraces80Cases
      */
     public function testConditionsWithoutBraces80(string $expected): void
     {

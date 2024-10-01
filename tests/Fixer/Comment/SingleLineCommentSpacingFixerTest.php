@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer
  */
 final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
 {

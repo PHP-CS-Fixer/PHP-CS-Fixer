@@ -18,11 +18,11 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
+ * @internal
  *
  * @covers \PhpCsFixer\Preg
  *
- * @internal
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregTest extends TestCase
 {
@@ -73,9 +73,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @dataProvider providePatternValidationCases
-     *
      * @param null|class-string<\Throwable> $expectedException
+     *
+     * @dataProvider providePatternValidationCases
      */
     public function testPatternValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
@@ -115,9 +115,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @dataProvider providePatternValidationCases
-     *
      * @param null|class-string<\Throwable> $expectedException
+     *
+     * @dataProvider providePatternValidationCases
      */
     public function testPatternsValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {

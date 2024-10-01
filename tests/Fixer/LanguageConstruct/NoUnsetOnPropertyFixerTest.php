@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gert de Pagter <BackEndTea@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer>
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer>
+ * @author Gert de Pagter <BackEndTea@gmail.com>
  */
 final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 {
@@ -233,9 +233,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {

@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer>
+ *
  * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer>
  */
 final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
 {

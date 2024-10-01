@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer
  */
 final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
 {

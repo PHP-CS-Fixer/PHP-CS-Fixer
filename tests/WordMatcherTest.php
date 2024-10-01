@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\WordMatcher;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\WordMatcher
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WordMatcherTest extends TestCase
 {

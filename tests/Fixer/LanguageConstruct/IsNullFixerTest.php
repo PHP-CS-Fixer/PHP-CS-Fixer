@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
@@ -296,9 +296,9 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

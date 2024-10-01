@@ -23,11 +23,11 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Cache\FileHandler
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class FileHandlerTest extends TestCase
 {

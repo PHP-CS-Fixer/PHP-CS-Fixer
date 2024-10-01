@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer
  */
 final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 {
@@ -199,9 +199,9 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected): void
     {

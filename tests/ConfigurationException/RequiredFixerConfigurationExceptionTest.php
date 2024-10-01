@@ -19,11 +19,11 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class RequiredFixerConfigurationExceptionTest extends TestCase
 {

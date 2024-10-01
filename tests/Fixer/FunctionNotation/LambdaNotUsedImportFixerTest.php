@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer
  */
 final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 {
@@ -199,9 +199,9 @@ $foo();
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, string $input): void
     {

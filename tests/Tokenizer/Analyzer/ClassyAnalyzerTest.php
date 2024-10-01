@@ -178,9 +178,9 @@ final class ClassyAnalyzerTest extends TestCase
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsClassyInvocation80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsClassyInvocation80Cases
      */
     public function testIsClassyInvocation80(string $source, array $expected): void
     {
@@ -238,9 +238,9 @@ final class ClassyAnalyzerTest extends TestCase
     /**
      * @param array<int, bool> $expected
      *
-     * @dataProvider provideIsClassyInvocation81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsClassyInvocation81Cases
      */
     public function testIsClassyInvocation81(string $source, array $expected): void
     {

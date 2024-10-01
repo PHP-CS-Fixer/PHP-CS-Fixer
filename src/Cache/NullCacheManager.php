@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Cache;
 
 /**
+ * @internal
+ *
  * @author Andreas Möller <am@localheinz.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 final class NullCacheManager implements CacheManagerInterface
 {

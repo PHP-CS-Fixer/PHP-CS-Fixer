@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer>
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 {
@@ -236,9 +236,9 @@ class Foo {
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -261,9 +261,9 @@ class Foo {
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

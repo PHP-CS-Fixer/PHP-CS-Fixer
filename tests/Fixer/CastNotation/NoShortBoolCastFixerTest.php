@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
  */
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {

@@ -20,11 +20,11 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReporterFactory
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class ReporterFactoryTest extends TestCase
 {

@@ -22,11 +22,11 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Tokens
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokensTest extends TestCase
 {
@@ -717,9 +717,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFindBlockEndCases
-     *
      * @param Tokens::BLOCK_TYPE_* $type
+     *
+     * @dataProvider provideFindBlockEndCases
      */
     public function testFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -759,11 +759,11 @@ final class TokensTest extends TestCase
     }
 
     /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     *
      * @requires PHP 8.0
      *
      * @dataProvider provideFindBlockEnd80Cases
-     *
-     * @param Tokens::BLOCK_TYPE_* $type
      */
     public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -787,11 +787,11 @@ final class TokensTest extends TestCase
     }
 
     /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     *
      * @requires PHP 8.2
      *
      * @dataProvider provideFindBlockEnd82Cases
-     *
-     * @param Tokens::BLOCK_TYPE_* $type
      */
     public function testFindBlockEnd82(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -827,11 +827,11 @@ final class TokensTest extends TestCase
     }
 
     /**
+     * @param Tokens::BLOCK_TYPE_* $type
+     *
      * @requires PHP 8.3
      *
      * @dataProvider provideFindBlockEnd83Cases
-     *
-     * @param Tokens::BLOCK_TYPE_* $type
      */
     public function testFindBlockEnd83(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -863,9 +863,9 @@ final class TokensTest extends TestCase
     /**
      * @param Tokens::BLOCK_TYPE_* $type
      *
-     * @dataProvider provideFindBlockEndPre84Cases
-     *
      * @requires PHP <8.4
+     *
+     * @dataProvider provideFindBlockEndPre84Cases
      */
     public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -1579,9 +1579,9 @@ $bar;',
     }
 
     /**
-     * @dataProvider provideInsertSlicesAtMultiplePlacesCases
-     *
      * @param array<int, Token> $slices
+     *
+     * @dataProvider provideInsertSlicesAtMultiplePlacesCases
      */
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {

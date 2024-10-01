@@ -21,13 +21,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- * @author Odín del Río <odin.drp@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Utils
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Odín del Río <odin.drp@gmail.com>
  */
 final class UtilsTest extends TestCase
 {
@@ -261,9 +261,9 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideNaturalLanguageJoinCases
-     *
      * @param list<string> $names
+     *
+     * @dataProvider provideNaturalLanguageJoinCases
      */
     public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
     {

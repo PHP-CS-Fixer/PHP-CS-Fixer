@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\MultilineStringToHeredocFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\MultilineStringToHeredocFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\StringNotation\MultilineStringToHeredocFixer
  */
 final class MultilineStringToHeredocFixerTest extends AbstractFixerTestCase
 {

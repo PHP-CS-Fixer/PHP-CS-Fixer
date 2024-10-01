@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\Analyzer\BlocksAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\BlocksAnalyzer
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class BlocksAnalyzerTest extends TestCase
 {

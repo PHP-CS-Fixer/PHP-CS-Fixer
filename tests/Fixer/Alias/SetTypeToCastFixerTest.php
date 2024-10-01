@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\SetTypeToCastFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\SetTypeToCastFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Alias\SetTypeToCastFixer
  */
 final class SetTypeToCastFixerTest extends AbstractFixerTestCase
 {

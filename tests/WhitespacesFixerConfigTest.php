@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\WhitespacesFixerConfig
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WhitespacesFixerConfigTest extends TestCase
 {

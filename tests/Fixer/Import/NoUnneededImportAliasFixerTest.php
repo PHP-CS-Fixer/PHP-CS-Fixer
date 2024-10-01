@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer
  */
 final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
 {

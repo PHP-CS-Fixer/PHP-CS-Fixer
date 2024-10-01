@@ -20,11 +20,11 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
  *
- * @internal
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class SwitchAnalysisTest extends TestCase
 {

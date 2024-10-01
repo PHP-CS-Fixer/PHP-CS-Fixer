@@ -19,11 +19,11 @@ use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReportSummary
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ReportSummaryTest extends TestCase
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer
  */
 final class SingleLineThrowFixerTest extends AbstractFixerTestCase
 {
@@ -305,9 +305,9 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {

@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer
  */
 final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
 {
@@ -316,9 +316,9 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

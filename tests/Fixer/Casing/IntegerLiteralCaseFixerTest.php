@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
  */
 final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
 {
@@ -89,9 +89,9 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

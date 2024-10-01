@@ -19,11 +19,11 @@ use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Cache\Signature
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class SignatureTest extends TestCase
 {

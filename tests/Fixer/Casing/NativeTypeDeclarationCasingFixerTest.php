@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer
  */
 final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
@@ -256,9 +256,9 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, string $input): void
     {
@@ -331,9 +331,9 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, string $input): void
     {
@@ -361,9 +361,9 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @dataProvider provideFix82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideFix82Cases
      */
     public function testFix82(string $expected, string $input): void
     {
@@ -420,9 +420,9 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @dataProvider provideFix83Cases
-     *
      * @requires PHP 8.3
+     *
+     * @dataProvider provideFix83Cases
      */
     public function testFix83(string $expected, ?string $input = null): void
     {

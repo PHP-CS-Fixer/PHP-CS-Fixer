@@ -20,12 +20,12 @@ use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- * @author Jakub Kwaśniewski <jakub@zero-85.pl>
- *
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\TagComparator
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  */
 final class TagComparatorTest extends TestCase
 {
@@ -69,9 +69,9 @@ final class TagComparatorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
-     *
      * @param list<list<string>> $groups
+     *
+     * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
      *
      * @group legacy
      */

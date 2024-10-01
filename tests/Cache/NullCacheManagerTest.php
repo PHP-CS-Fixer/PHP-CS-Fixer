@@ -19,11 +19,11 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Cache\NullCacheManager
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class NullCacheManagerTest extends TestCase
 {

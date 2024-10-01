@@ -19,11 +19,11 @@ use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\JsonReporter
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {

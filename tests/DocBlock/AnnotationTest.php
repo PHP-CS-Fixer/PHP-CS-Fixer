@@ -22,12 +22,12 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Annotation
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class AnnotationTest extends TestCase
 {

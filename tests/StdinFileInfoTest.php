@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\StdinFileInfo;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\StdinFileInfo
+ *
+ * @author ntzm
  */
 final class StdinFileInfoTest extends TestCase
 {

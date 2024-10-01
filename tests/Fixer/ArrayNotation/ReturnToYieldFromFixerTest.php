@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer
  */
 final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
 {
@@ -123,9 +123,9 @@ final class ReturnToYieldFromFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {

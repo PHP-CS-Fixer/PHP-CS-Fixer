@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Dave van der Brugge <dmvdbrugge@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformers
+ *
+ * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  */
 final class TransformersTest extends TestCase
 {

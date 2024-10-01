@@ -15,12 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 /**
- * @author Jack Cherng <jfcherng@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractNullableTypeDeclarationFixerTestCase<\PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer>
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer
  *
- * @extends AbstractNullableTypeDeclarationFixerTestCase<\PhpCsFixer\Fixer\Whitespace\CompactNullableTypeDeclarationFixer>
+ * @author Jack Cherng <jfcherng@gmail.com>
  */
 final class CompactNullableTypeDeclarationFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}

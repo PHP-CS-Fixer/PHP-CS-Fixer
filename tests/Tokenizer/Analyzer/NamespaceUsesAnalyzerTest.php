@@ -21,11 +21,11 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespaceUsesAnalyzerTest extends TestCase
 {

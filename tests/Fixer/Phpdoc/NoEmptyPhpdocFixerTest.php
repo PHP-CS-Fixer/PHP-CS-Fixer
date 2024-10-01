@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer
  */
 final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
 {

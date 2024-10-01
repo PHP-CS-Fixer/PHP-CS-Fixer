@@ -18,14 +18,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer>
  *
  * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCase
 {
@@ -292,9 +292,9 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -397,9 +397,9 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
-     * @dataProvider provideFix82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideFix82Cases
      */
     public function testFix82(string $expected, ?string $input = null): void
     {

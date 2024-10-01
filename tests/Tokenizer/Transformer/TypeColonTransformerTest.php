@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
@@ -112,9 +112,9 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     /**
      * @param array<int, int> $expectedTokens
      *
-     * @dataProvider provideProcess81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideProcess81Cases
      */
     public function testProcess81(string $source, array $expectedTokens = []): void
     {

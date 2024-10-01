@@ -18,18 +18,18 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
-     * @dataProvider provideFulfillsCases
-     *
      * @param null|class-string<\Throwable> $exception
+     *
+     * @dataProvider provideFulfillsCases
      */
     public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {

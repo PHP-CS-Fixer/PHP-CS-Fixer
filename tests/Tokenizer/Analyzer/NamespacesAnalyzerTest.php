@@ -20,11 +20,11 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespacesAnalyzerTest extends TestCase
 {

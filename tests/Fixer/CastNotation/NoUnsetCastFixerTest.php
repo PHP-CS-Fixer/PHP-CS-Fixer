@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
  *
  * @requires PHP <8.0
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
+ * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  */
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {

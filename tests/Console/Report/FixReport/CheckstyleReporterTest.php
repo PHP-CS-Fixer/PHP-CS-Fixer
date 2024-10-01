@@ -21,11 +21,11 @@ use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Kévin Gomez <contact@kevingomez.fr>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\CheckstyleReporter
+ *
+ * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class CheckstyleReporterTest extends AbstractReporterTestCase
 {

@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
  */
 final class AttributeAnalysisTest extends TestCase
 {

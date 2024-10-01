@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer
  */
 final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
 {
@@ -533,9 +533,9 @@ use const C\D; // bar
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {

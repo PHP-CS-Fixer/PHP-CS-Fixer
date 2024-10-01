@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer>
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer>
+ * @author ntzm
  */
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {

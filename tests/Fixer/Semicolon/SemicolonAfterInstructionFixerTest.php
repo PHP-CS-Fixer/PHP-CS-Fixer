@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
  */
 final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 {
@@ -96,9 +96,9 @@ A is equal to 5
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {

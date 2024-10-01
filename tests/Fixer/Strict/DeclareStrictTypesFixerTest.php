@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
  */
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {

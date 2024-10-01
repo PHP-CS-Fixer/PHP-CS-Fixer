@@ -19,11 +19,11 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecificCodeSample
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class VersionSpecificCodeSampleTest extends TestCase
 {

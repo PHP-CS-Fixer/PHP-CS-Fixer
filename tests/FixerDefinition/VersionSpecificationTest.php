@@ -18,11 +18,11 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class VersionSpecificationTest extends TestCase
 {

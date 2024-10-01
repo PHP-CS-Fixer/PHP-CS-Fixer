@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer
  */
 final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
 {

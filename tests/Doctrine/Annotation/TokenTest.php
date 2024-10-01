@@ -19,11 +19,11 @@ use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\Token
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class TokenTest extends TestCase
 {
@@ -65,9 +65,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsTypeReturnsTrueCases
-     *
      * @param int|list<int> $types
+     *
+     * @dataProvider provideIsTypeReturnsTrueCases
      */
     public function testIsTypeReturnsTrue(int $type, $types): void
     {
@@ -95,9 +95,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsTypeReturnsFalseCases
-     *
      * @param int|list<int> $types
+     *
+     * @dataProvider provideIsTypeReturnsFalseCases
      */
     public function testIsTypeReturnsFalse(int $type, $types): void
     {

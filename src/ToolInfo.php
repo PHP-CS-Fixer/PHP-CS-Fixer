@@ -19,9 +19,9 @@ use PhpCsFixer\Console\Application;
 /**
  * Obtain information about using version of tool.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ToolInfo implements ToolInfoInterface
 {
@@ -104,7 +104,7 @@ final class ToolInfo implements ToolInfoInterface
      */
     public function isRunInsideDocker(): bool
     {
-        return is_file('/.dockerenv') && str_starts_with(__FILE__, '/fixer/');
+        return str_starts_with(__FILE__, '/fixer/') && is_file('/.dockerenv');
     }
 
     public function getPharDownloadUri(string $version): string

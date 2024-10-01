@@ -18,12 +18,12 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\FixCommandExitStatusCalculator
+ *
+ * @author Andreas Möller <am@localheinz.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FixCommandExitStatusCalculatorTest extends TestCase
 {

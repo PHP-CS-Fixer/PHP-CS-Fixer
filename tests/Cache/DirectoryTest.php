@@ -19,11 +19,11 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Cache\Directory
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class DirectoryTest extends TestCase
 {

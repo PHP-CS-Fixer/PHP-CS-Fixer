@@ -38,11 +38,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class WorkerCommandTest extends TestCase
 {

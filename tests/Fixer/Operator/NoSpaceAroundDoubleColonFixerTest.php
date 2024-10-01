@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @covers \PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer
- *
  * @internal
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer
  */
 final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
 {

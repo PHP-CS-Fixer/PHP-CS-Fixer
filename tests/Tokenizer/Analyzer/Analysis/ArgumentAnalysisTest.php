@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class ArgumentAnalysisTest extends TestCase
 {

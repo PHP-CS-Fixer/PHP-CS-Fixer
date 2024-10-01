@@ -18,12 +18,12 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\TokenizerLinter;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {

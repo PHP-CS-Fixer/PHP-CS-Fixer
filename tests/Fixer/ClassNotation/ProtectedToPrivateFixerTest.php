@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer>
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer>
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 {
@@ -155,9 +155,9 @@ final class Foo
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -184,9 +184,9 @@ final class Foo2 {
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
@@ -308,9 +308,9 @@ echo DocumentStats::DRAFT->getStatusName();
     }
 
     /**
-     * @dataProvider provideFix82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideFix82Cases
      */
     public function testFix82(string $expected, string $input): void
     {

@@ -20,12 +20,12 @@ use PhpCsFixer\Console\Report\ListSetsReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ReporterFactoryTest extends TestCase
 {

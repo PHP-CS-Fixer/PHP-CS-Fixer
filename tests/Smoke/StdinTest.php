@@ -18,11 +18,11 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Preg;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @requires OS Linux|Darwin
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @coversNothing
  *

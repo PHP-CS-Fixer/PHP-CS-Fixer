@@ -35,9 +35,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class DescribeCommandTest extends TestCase
 {
     /**
-     * @dataProvider provideDescribeCommandCases
-     *
      * @param list<string> $successorsNames
+     *
+     * @dataProvider provideDescribeCommandCases
      */
     public function testDescribeCommand(string $fixerName, ?array $successorsNames): void
     {

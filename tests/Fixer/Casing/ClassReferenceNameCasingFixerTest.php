@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer
  */
 final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
 {
@@ -252,9 +252,9 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -272,9 +272,9 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
     }
 
     /**
-     * @dataProvider provideFix81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

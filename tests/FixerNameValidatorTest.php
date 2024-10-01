@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\FixerNameValidator;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerNameValidator
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FixerNameValidatorTest extends TestCase
 {

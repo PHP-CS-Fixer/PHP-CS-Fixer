@@ -18,11 +18,11 @@ use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\FileSpecificCodeSample
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class FileSpecificCodeSampleTest extends TestCase
 {

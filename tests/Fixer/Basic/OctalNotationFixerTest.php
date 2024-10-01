@@ -17,15 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  *
  * @requires PHP 8.1
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
+ * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
+ *
+ * @author SpacePossum
  */
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {

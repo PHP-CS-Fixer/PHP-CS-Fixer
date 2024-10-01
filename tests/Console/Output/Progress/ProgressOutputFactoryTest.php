@@ -30,9 +30,9 @@ use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
 final class ProgressOutputFactoryTest extends TestCase
 {
     /**
-     * @dataProvider provideValidProcessOutputIsCreatedCases
-     *
      * @param class-string<\Throwable> $expectedOutputClass
+     *
+     * @dataProvider provideValidProcessOutputIsCreatedCases
      */
     public function testValidProcessOutputIsCreated(
         string $outputType,

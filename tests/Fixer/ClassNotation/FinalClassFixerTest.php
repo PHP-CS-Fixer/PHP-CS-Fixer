@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalClassFixer>
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\FinalClassFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalClassFixer>
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class FinalClassFixerTest extends AbstractFixerTestCase
 {
@@ -100,9 +100,9 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -198,9 +198,9 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideFix82Cases
      */
     public function testFix82(string $expected, ?string $input = null): void
     {

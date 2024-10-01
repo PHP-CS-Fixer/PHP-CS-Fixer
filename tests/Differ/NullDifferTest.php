@@ -17,11 +17,11 @@ namespace PhpCsFixer\Tests\Differ;
 use PhpCsFixer\Differ\NullDiffer;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\NullDiffer
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class NullDifferTest extends AbstractDifferTestCase
 {

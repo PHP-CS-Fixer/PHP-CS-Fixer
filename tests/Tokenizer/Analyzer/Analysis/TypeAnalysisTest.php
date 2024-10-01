@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class TypeAnalysisTest extends TestCase
 {
@@ -134,9 +134,9 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsNullable80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideIsNullable80Cases
      */
     public function testIsNullable80(bool $expected, string $input): void
     {
@@ -196,9 +196,9 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsNullable81Cases
-     *
      * @requires PHP 8.1
+     *
+     * @dataProvider provideIsNullable81Cases
      */
     public function testIsNullable81(bool $expected, string $input): void
     {
@@ -218,9 +218,9 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsNullable82Cases
-     *
      * @requires PHP 8.2
+     *
+     * @dataProvider provideIsNullable82Cases
      */
     public function testIsNullable82(bool $expected, string $input): void
     {

@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\WarningsDetector
+ *
+ * @author ntzm
  */
 final class WarningsDetectorTest extends TestCase
 {

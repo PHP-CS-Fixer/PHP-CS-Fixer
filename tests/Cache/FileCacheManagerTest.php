@@ -24,11 +24,11 @@ use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Cache\FileCacheManager
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class FileCacheManagerTest extends TestCase
 {

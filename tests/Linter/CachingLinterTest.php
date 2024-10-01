@@ -21,11 +21,11 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\CachingLinter
+ *
+ * @author ntzm
  */
 final class CachingLinterTest extends TestCase
 {

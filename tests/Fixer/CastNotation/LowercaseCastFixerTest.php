@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
@@ -46,9 +46,9 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
-     *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre80Cases
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -64,11 +64,11 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix74DeprecatedCases
-     *
      * @group legacy
      *
      * @requires PHP <8.0
+     *
+     * @dataProvider provideFix74DeprecatedCases
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void
     {

@@ -20,9 +20,9 @@ use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @covers \PhpCsFixer\Error\SourceExceptionFactory
- *
  * @internal
+ *
+ * @covers \PhpCsFixer\Error\SourceExceptionFactory
  */
 final class SourceExceptionFactoryTest extends TestCase
 {

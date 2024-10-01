@@ -18,11 +18,11 @@ use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\LintingException
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class LintingExceptionTest extends TestCase
 {

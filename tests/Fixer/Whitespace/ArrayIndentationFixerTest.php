@@ -20,9 +20,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer
  */
 final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 {
@@ -926,9 +926,9 @@ $foo = [
     }
 
     /**
-     * @dataProvider provideFix80Cases
-     *
      * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
