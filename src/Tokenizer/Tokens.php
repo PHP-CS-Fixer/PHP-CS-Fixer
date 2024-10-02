@@ -1084,7 +1084,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!isset($this->foundTokenKinds[$tokenKind])) {
+            if (0 === ($this->foundTokenKinds[$tokenKind] ?? 0)) {
                 return false;
             }
         }
@@ -1100,7 +1100,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (isset($this->foundTokenKinds[$tokenKind])) {
+            if (0 !== ($this->foundTokenKinds[$tokenKind] ?? 0)) {
                 return true;
             }
         }
@@ -1115,7 +1115,7 @@ class Tokens extends \SplFixedArray
      */
     public function isTokenKindFound($tokenKind): bool
     {
-        return isset($this->foundTokenKinds[$tokenKind]);
+        return 0 !== ($this->foundTokenKinds[$tokenKind] ?? 0);
     }
 
     /**
@@ -1450,11 +1450,7 @@ class Tokens extends \SplFixedArray
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
 
-        if (1 === $this->foundTokenKinds[$tokenKind]) {
-            unset($this->foundTokenKinds[$tokenKind]);
-        } else {
-            --$this->foundTokenKinds[$tokenKind];
-        }
+        --$this->foundTokenKinds[$tokenKind];
     }
 
     /**
