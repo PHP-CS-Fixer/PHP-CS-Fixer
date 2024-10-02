@@ -479,7 +479,12 @@ class Foo {
                 }
             }
 
-            $argumentsInfo[$token->getContent()] = $info;
+            // TODO revert https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/commit/da4e58efb585e5f67ce96fcb4db47d15f3ae73ab
+            // once https://github.com/phpstan/phpstan/issues/11785 is fixed
+            $content = $token->getContent();
+            \assert('' !== $content);
+
+            $argumentsInfo[$content] = $info;
         }
 
         // virtualise "hidden params" as if they would be regular ones

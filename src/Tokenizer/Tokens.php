@@ -94,7 +94,7 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is always true.
      *
-     * @var array<int|non-empty-string, int>
+     * @var array<int|string, int>
      */
     private array $foundTokenKinds = [];
 
@@ -151,7 +151,6 @@ class Tokens extends \SplFixedArray
         }
 
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         return $blockEdgeKinds[$tokenKind] ?? null;
@@ -1422,7 +1421,6 @@ class Tokens extends \SplFixedArray
     private function registerFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1439,7 +1437,6 @@ class Tokens extends \SplFixedArray
     private function unregisterFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1454,7 +1451,7 @@ class Tokens extends \SplFixedArray
     /**
      * @param array{int}|string|Token $token token prototype
      *
-     * @return int|non-empty-string
+     * @return int|string
      */
     private function extractTokenKind($token)
     {
