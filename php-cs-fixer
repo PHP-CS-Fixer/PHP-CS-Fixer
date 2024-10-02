@@ -19,8 +19,7 @@ set_error_handler(static function ($severity, $message, $file, $line) {
     }
 });
 
-// check environment requirements
-(function () {
+function checkRuntimeReqs() {
     if (\PHP_VERSION_ID === 80000) {
         fwrite(STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
         fwrite(STDERR, "Update PHP version to unblock execution.\n");
@@ -54,10 +53,9 @@ set_error_handler(static function ($severity, $message, $file, $line) {
             }
         }
     }
-})();
+}
 
-// load dependencies
-(function () {
+function loadDependencies() {
     $require = true;
     if (class_exists('Phar')) {
         // Maybe this file is used as phar-stub? Let's try!
@@ -88,7 +86,11 @@ set_error_handler(static function ($severity, $message, $file, $line) {
 
         require_once $file;
     }
-})();
+}
+
+// Ensure proper runtime before running actual script
+checkRuntimeReqs();
+loadDependencies();
 
 use Composer\XdebugHandler\XdebugHandler;
 use PhpCsFixer\Console\Application;
