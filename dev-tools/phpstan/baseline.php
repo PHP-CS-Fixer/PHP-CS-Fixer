@@ -2259,18 +2259,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: return.type
-	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:getContent\\(\\) should return non\\-empty\\-string but returns string\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Token.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:toJson\\(\\) should return string but returns string\\|false\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Token.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
 	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:extractTokenKind\\(\\) should return int\\|non\\-empty\\-string but returns int\\|string\\|null\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
