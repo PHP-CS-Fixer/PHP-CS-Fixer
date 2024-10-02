@@ -2981,6 +2981,22 @@ class Foo {
                 function foo(#[AnAttribute] array $data) {}
                 PHP,
         ];
+
+        yield 'an attribute before useless parameter type' => [
+            <<<'PHP'
+                <?php
+                /**
+                 */
+                function foo(#[AnAttribute] array $data) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array $data
+                 */
+                function foo(#[AnAttribute] array $data) {}
+                PHP,
+        ];
     }
 
     /**
