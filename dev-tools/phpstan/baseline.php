@@ -2277,6 +2277,12 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
+	'message' => '#^Offset \'\'\\|int might not exist on array\\<int\\|string, int\\>\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
+];
+$ignoreErrors[] = [
+	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 1 might not exist on list\\<string\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
@@ -2290,12 +2296,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset int might not exist on non\\-empty\\-array\\<\'\'\\|int, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset int\\|string might not exist on array\\<int\\|string, int\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
