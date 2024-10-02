@@ -2258,12 +2258,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/SwitchAnalyzer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset int might not exist on array\\<10001\\|10002\\|10003\\|10004\\|10005\\|10006\\|10007\\|10008\\|10009\\|10010\\|10011\\|10012\\|10013\\|10014\\|10015\\|10016\\|10017\\|10018\\|10019\\|10020\\|10021\\|10022\\|10023\\|10024\\|10025\\|10026\\|10027\\|10028\\|10029\\|10030\\|10031\\|10032\\|10033\\|10034\\|10035\\|10036\\|10037\\|10038\\|10039, string\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/CT.php',
-];
-$ignoreErrors[] = [
 	// identifier: return.type
 	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:getContent\\(\\) should return non\\-empty\\-string but returns string\\.$#',
 	'count' => 1,
