@@ -2019,7 +2019,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset string might not exist on non\\-empty\\-array\\<string, callable\\(int\\)\\: void\\>\\.$#',
+	'message' => '#^Offset string might not exist on array\\<string, callable\\(int\\)\\: void\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
 ];
