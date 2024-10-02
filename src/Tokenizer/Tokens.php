@@ -1040,8 +1040,6 @@ class Tokens extends \SplFixedArray
 
         // clear memory
         $this->updateSize(0);
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 
@@ -1241,9 +1239,15 @@ class Tokens extends \SplFixedArray
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
-            for ($index = \count($this) - 1; $index >= $size; --$index) {
-                $this->removeBlockStartEndCache($index);
-                $this->unregisterFoundToken($index);
+            if (0 === $size) {
+                $this->foundTokenKinds = [];
+                $this->blockStartCache = [];
+                $this->blockEndCache = [];
+            } else {
+                for ($index = \count($this) - 1; $index >= $size; --$index) {
+                    $this->removeBlockStartEndCache($index);
+                    $this->unregisterFoundToken($index);
+                }
             }
 
             parent::setSize($size);
