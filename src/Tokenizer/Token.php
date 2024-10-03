@@ -365,8 +365,8 @@ final class Token
      *
      * @return bool is array
      *
-     * @phpstan-assert-if-true !null $this->getId()
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !=null $this->getId()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isArray(): bool
     {
@@ -376,7 +376,7 @@ final class Token
     /**
      * Check if token is one of type cast tokens.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isCast(): bool
     {
@@ -386,7 +386,7 @@ final class Token
     /**
      * Check if token is one of classy tokens: T_CLASS, T_INTERFACE, T_TRAIT or T_ENUM.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isClassy(): bool
     {
@@ -396,7 +396,7 @@ final class Token
     /**
      * Check if token is one of comment tokens: T_COMMENT or T_DOC_COMMENT.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isComment(): bool
     {
@@ -408,7 +408,7 @@ final class Token
     /**
      * Check if token is one of object operator tokens: T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isObjectOperator(): bool
     {
@@ -420,7 +420,7 @@ final class Token
      *
      * @param int|list<int> $possibleKind kind or array of kinds
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isGivenKind($possibleKind): bool
     {
@@ -430,7 +430,7 @@ final class Token
     /**
      * Check if token is a keyword.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isKeyword(): bool
     {
@@ -442,7 +442,7 @@ final class Token
     /**
      * Check if token is a native PHP constant: true, false or null.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isNativeConstant(): bool
     {
@@ -454,7 +454,7 @@ final class Token
     /**
      * Returns if the token is of a Magic constants type.
      *
-     * @phpstan-assert-if-true !'' $this->getContent()
+     * @phpstan-assert-if-true !='' $this->getContent()
      *
      * @see https://php.net/manual/en/language.constants.predefined.php
      */
