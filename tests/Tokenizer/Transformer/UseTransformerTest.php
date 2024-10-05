@@ -23,11 +23,14 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\UseTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKindsOrPrototypes from AbstractTransformerTestCase
  */
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -45,7 +48,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, int>}>
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -149,7 +152,7 @@ use C\{D,E,};
     }
 
     /**
-     * @param array<int, int> $expectedTokens index => kind
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @requires PHP 8.1
      *
@@ -161,7 +164,7 @@ use C\{D,E,};
     }
 
     /**
-     * @return iterable<array{string, array<int, int>}>
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessPhp81Cases(): iterable
     {

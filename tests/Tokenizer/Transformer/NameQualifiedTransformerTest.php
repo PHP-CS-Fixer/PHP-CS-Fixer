@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 {
