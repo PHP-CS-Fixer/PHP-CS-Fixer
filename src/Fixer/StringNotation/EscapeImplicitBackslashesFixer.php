@@ -100,7 +100,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractProxyFixer implements
      * {@inheritdoc}
      *
      * Must run before HeredocToNowdocFixer, SingleQuoteFixer.
-     * Must run after BacktickToShellExecFixer, MultilineStringToHeredocFixer.
+     * Must run after MultilineStringToHeredocFixer.
      */
     public function getPriority(): int
     {

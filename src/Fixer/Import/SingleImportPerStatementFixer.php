@@ -76,7 +76,7 @@ use Space\Models\ {
     /**
      * {@inheritdoc}
      *
-     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoUnusedImportsFixer, SpaceAfterSemicolonFixer.
+     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer.
      */
     public function getPriority(): int
     {
