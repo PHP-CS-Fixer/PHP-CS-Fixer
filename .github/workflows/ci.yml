@@ -26,7 +26,7 @@ jobs:
       - name: Setup PHP
         uses: ./.github/composite-actions/setup-php
         with:
-          version: 5.6
+          version: 7.0
 
       - name: Verify `php-cs-fixer` can be run on unsupported runtimes
         run: php -l php-cs-fixer
