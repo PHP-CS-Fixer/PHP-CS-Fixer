@@ -29,7 +29,7 @@ jobs:
           version: 7.0
 
       - name: Verify `php-cs-fixer` can be run on unsupported runtimes
-        run: php -l php-cs-fixer
+        run: php -l $(cat composer.json | jq -r '.bin[]')
 
   tests:
     continue-on-error: ${{ matrix.operating-system == 'macos-latest' }}
