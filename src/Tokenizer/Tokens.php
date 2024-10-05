@@ -364,9 +364,12 @@ class Tokens extends \SplFixedArray
             )));
         }
 
+        if (isset($this[$index])) {
+            $this->removeBlockStartEndCache($index);
+        }
+
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             if (isset($this[$index])) {
-                $this->removeBlockStartEndCache($index);
                 $this->unregisterFoundToken($index);
             }
 
