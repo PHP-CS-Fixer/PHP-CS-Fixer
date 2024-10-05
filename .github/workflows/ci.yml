@@ -28,7 +28,7 @@ jobs:
         with:
           version: 7.0
 
-      - name: Verify `php-cs-fixer` can be run on unsupported runtimes
+      - name: Verify entrypoint file(s) can be run on low-end unsupported runtime
         run: php -l $(cat composer.json | jq -r '.bin[]')
 
   tests:
