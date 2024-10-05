@@ -16,6 +16,21 @@ env:
   PHP_MIN: '7.4'
 
 jobs:
+  entrypoint-bc-promise:
+    name: Entrypoint BC promise
+    runs-on: 'ubuntu-24.04'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: ./.github/composite-actions/setup-php
+        with:
+          version: 7.0
+
+      - name: Verify `php-cs-fixer` can be run on unsupported runtimes
+        run: php -l php-cs-fixer
+
   tests:
     continue-on-error: ${{ matrix.operating-system == 'macos-latest' }}
     strategy:
