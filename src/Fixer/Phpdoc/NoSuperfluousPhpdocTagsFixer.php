@@ -460,7 +460,7 @@ class Foo {
                 continue;
             }
 
-            $beforeArgumentIndex = $tokens->getPrevTokenOfKind($index, ['(', ',']);
+            $beforeArgumentIndex = $tokens->getPrevTokenOfKind($index, ['(', ',', [CT::T_ATTRIBUTE_CLOSE]]);
             $typeIndex = $tokens->getNextMeaningfulToken($beforeArgumentIndex);
 
             if ($typeIndex !== $index) {

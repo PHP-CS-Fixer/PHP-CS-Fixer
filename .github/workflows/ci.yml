@@ -16,6 +16,21 @@ env:
   PHP_MIN: '7.4'
 
 jobs:
+  entrypoint-low-php-compat:
+    name: Entrypoint low-PHP compat
+    runs-on: 'ubuntu-24.04'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: ./.github/composite-actions/setup-php
+        with:
+          version: 7.0
+
+      - name: Verify entrypoint file(s) can be run on low-end unsupported runtime
+        run: php -l $(cat composer.json | jq -r '.bin[]')
+
   tests:
     continue-on-error: ${{ matrix.operating-system == 'macos-latest' }}
     strategy:
