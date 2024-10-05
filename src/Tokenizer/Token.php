@@ -233,13 +233,15 @@ final class Token
     }
 
     /**
-     * @return array{int, string}|string
+     * @return array{int, non-empty-string}|string
      */
     public function getPrototype()
     {
         if (!$this->isArray) {
             return $this->content;
         }
+
+        \assert('' !== $this->content);
 
         return [
             $this->id,
@@ -251,8 +253,6 @@ final class Token
      * Get token's content.
      *
      * It shall be used only for getting the content of token, not for checking it against excepted value.
-     *
-     * @return non-empty-string
      */
     public function getContent(): string
     {
@@ -274,7 +274,7 @@ final class Token
      *
      * It shall be used only for getting the name of token, not for checking it against excepted value.
      *
-     * @return null|string token name
+     * @return null|non-empty-string token name
      */
     public function getName(): ?string
     {
@@ -290,7 +290,7 @@ final class Token
      *
      * It shall be used only for getting the name of token, not for checking it against excepted value.
      *
-     * @return null|string token name
+     * @return null|non-empty-string token name
      */
     public static function getNameForId(int $id): ?string
     {
@@ -299,6 +299,8 @@ final class Token
         }
 
         $name = token_name($id);
+
+        \assert('' !== $name);
 
         return 'UNKNOWN' === $name ? null : $name;
     }
@@ -362,6 +364,9 @@ final class Token
      * Check if token prototype is an array.
      *
      * @return bool is array
+     *
+     * @phpstan-assert-if-true !null $this->getId()
+     * @phpstan-assert-if-true !'' $this->getContent()
      */
     public function isArray(): bool
     {
@@ -465,7 +470,7 @@ final class Token
     /**
      * @return array{
      *     id: int|null,
-     *     name: string|null,
+     *     name: non-empty-string|null,
      *     content: string,
      *     isArray: bool,
      *     changed: bool,
@@ -482,6 +487,9 @@ final class Token
         ];
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function toJson(): string
     {
         $jsonResult = json_encode($this->toArray(), JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
@@ -495,6 +503,8 @@ final class Token
                 JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK
             );
         }
+
+        \assert(false !== $jsonResult);
 
         return $jsonResult;
     }
