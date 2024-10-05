@@ -25,7 +25,6 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
- * @phpstan-import-type _TransformerTestObservedKindsOrPrototypes from AbstractTransformerTestCase
  */
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
