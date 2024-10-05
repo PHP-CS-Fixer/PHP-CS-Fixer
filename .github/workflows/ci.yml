@@ -16,8 +16,8 @@ env:
   PHP_MIN: '7.4'
 
 jobs:
-  entrypoint-bc-promise:
-    name: Entrypoint BC promise
+  entrypoint-low-php-compat:
+    name: Entrypoint low-PHP compat
     runs-on: 'ubuntu-24.04'
     steps:
       - name: Checkout code
