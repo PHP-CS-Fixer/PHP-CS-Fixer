@@ -108,7 +108,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param array<int, int> $expectedTokens
      * @param list<int>              $observedKindsOrPrototypes
      */
     protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
@@ -192,7 +192,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}> $prototypes
+     * @param list<_PhpTokenArrayPartial> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {

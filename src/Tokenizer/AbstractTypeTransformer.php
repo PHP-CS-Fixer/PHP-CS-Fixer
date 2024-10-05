@@ -33,7 +33,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     abstract protected function replaceToken(Tokens $tokens, int $index): void;
 
     /**
-     * @param array{0: int, 1: string}|string $originalToken
+     * @param _PhpTokenPrototype $originalToken
      */
     protected function doProcess(Tokens $tokens, int $index, $originalToken): void
     {

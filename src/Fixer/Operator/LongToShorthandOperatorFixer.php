@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 {
     /**
-     * @var array<string, array{int, string}>
+     * @var array<string, _PhpTokenArray>
      */
     private static array $operators = [
         '+' => [T_PLUS_EQUAL, '+='],

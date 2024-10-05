@@ -219,7 +219,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @return array<self::BLOCK_TYPE_*, array{start: array{int, string}|string, end: array{int, string}|string}>
+     * @return array<self::BLOCK_TYPE_*, array{start: _PhpTokenPrototype, end: _PhpTokenPrototype}>
      */
     public static function getBlockEdgeDefinitions(): array
     {
@@ -771,7 +771,7 @@ class Tokens extends \SplFixedArray
     /**
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
-     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence      an array of token (kinds)
+     * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence      an array of token (kinds)
      * @param int                                                    $start         start index, defaulting to the start of the file
      * @param null|int                                               $end           end index, defaulting to the end of the file
      * @param array<int, bool>|bool                                  $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
