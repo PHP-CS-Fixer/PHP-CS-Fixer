@@ -19,8 +19,10 @@ namespace PhpCsFixer;
  */
 final class WhitespacesFixerConfig
 {
+    /** @var non-empty-string */
     private string $indent;
 
+    /** @var non-empty-string */
     private string $lineEnding;
 
     /**
