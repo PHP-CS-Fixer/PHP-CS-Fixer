@@ -2265,13 +2265,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
-	'message' => '#^Offset int\\|string might not exist on array\\<int\\|string, int\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, int\\>\\.$#',
+	'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, int\\<0, max\\>\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
@@ -2296,6 +2290,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$value of function count expects array\\|Countable, iterable\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Tokens given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
+];
+$ignoreErrors[] = [
+	// identifier: assign.propertyType
+	'message' => '#^Property PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:\\$foundTokenKinds \\(array\\<int\\|string, int\\<0, max\\>\\>\\) does not accept non\\-empty\\-array\\<int\\|string, int\\>\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
