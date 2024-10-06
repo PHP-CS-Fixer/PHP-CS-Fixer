@@ -300,8 +300,6 @@ final class Token
 
         $name = token_name($id);
 
-        \assert('' !== $name);
-
         return 'UNKNOWN' === $name ? null : $name;
     }
 
