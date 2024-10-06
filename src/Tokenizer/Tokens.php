@@ -772,11 +772,11 @@ class Tokens extends \SplFixedArray
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
      * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence      an array of token (kinds)
-     * @param int                                                    $start         start index, defaulting to the start of the file
-     * @param null|int                                               $end           end index, defaulting to the end of the file
-     * @param array<int, bool>|bool                                  $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
-     *                                                                              the ones used in $sequence. If any is missing, the default case-sensitive
-     *                                                                              comparison is used
+     * @param int                                             $start         start index, defaulting to the start of the file
+     * @param null|int                                        $end           end index, defaulting to the end of the file
+     * @param array<int, bool>|bool                           $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
+     *                                                                       the ones used in $sequence. If any is missing, the default case-sensitive
+     *                                                                       comparison is used
      *
      * @return null|non-empty-array<int<0, max>, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */

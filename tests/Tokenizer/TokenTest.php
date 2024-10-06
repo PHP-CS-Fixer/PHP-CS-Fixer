@@ -221,6 +221,7 @@ final class TokenTest extends TestCase
 
     /**
      * @param non-empty-string $content
+     *
      * @dataProvider provideIsMagicConstantCases
      */
     public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void

@@ -50,12 +50,12 @@ interface ConfigInterface
      */
     public function getHideProgress(): bool;
 
-        /**
+    /**
      * @return non-empty-string
      */
     public function getIndent(): string;
 
-        /**
+    /**
      * @return non-empty-string
      */
     public function getLineEnding(): string;
@@ -120,12 +120,12 @@ interface ConfigInterface
 
     public function setHideProgress(bool $hideProgress): self;
 
-        /**
+    /**
      * @param non-empty-string $indent
      */
     public function setIndent(string $indent): self;
 
-        /**
+    /**
      * @param non-empty-string $lineEnding
      */
     public function setLineEnding(string $lineEnding): self;

@@ -109,7 +109,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     /**
      * @param array<int, int> $expectedTokens
-     * @param list<int>              $observedKindsOrPrototypes
+     * @param list<int>       $observedKindsOrPrototypes
      */
     protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
     {

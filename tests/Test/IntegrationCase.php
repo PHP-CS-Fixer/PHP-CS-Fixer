@@ -53,7 +53,7 @@ final class IntegrationCase
     /**
      * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
      * @param array{php: int, "php<": int, os: list<string>}                                         $requirements
-     * @param array{indent: non-empty-string, lineEnding: non-empty-string}                                              $config
+     * @param array{indent: non-empty-string, lineEnding: non-empty-string}                          $config
      */
     public function __construct(
         string $fileName,

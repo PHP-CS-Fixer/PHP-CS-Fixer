@@ -475,7 +475,7 @@ final class ProjectCodeTest extends TestCase
      * @dataProvider provideDataProviderMethodCases
      *
      * @param class-string<TestCase> $testClassName
-     * @param non-empty-string $dataProviderName
+     * @param non-empty-string       $dataProviderName
      */
     public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, string $dataProviderName): void
     {
