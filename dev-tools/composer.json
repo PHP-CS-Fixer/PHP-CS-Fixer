@@ -1,4 +1,5 @@
 {
+    "type": "project",
     "require": {
         "php": "^8.3",
         "ergebnis/composer-normalize": "^2.44.0",
@@ -23,6 +24,5 @@
         },
         "prefer-stable": true,
         "sort-packages": true
-    },
-    "type": "project"
+    }
 }
