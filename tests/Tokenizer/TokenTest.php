@@ -220,6 +220,8 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $content
+     *
      * @dataProvider provideIsMagicConstantCases
      */
     public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void
@@ -369,7 +371,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param array{0: int, 1?: string}|string|Token $other
+     * @param _PhpTokenPrototypePartial|Token $other
      *
      * @dataProvider provideEqualsCases
      */
@@ -455,7 +457,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}|string|Token> $other
+     * @param list<_PhpTokenArrayPartial|Token> $other
      *
      * @dataProvider provideEqualsAnyCases
      */
@@ -657,7 +659,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return array{int, string}
+     * @return _PhpTokenArray
      */
     private static function getForeachTokenPrototype(): array
     {
