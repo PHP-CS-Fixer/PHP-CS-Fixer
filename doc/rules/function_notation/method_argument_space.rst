@@ -52,6 +52,16 @@ Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ig
 
 Default value: ``'ensure_fully_multiline'``
 
+``on_nested_multiline``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+When using ensure_fully_multiline, defines how to handle nested function
+arguments that contain newlines such as anonymous functions and arrays.
+
+Allowed values: ``'always'``, ``'ignore'`` and ``'ignore_single'``
+
+Default value: ``'ignore'``
+
 Examples
 --------
 
@@ -264,6 +274,100 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_pl
    +sample(1, 2);
 
 Example #11
+~~~~~~~~~~~
+
+With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'on_nested_multiline' => 'always']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   -sample([
+   -    'foo' => true
+   -]);
+   -sample(function () {
+   -    return 10;
+   -});
+   -sample(1, [
+   -    'foo' => true
+   -]);
+   -sample(1, function () {
+   -    return 10;
+   -});
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+   +sample(
+   +    [
+   +        'foo' => true
+   +    ]
+   +);
+   +sample(
+   +    function () {
+   +        return 10;
+   +    }
+   +);
+   +sample(
+   +    1,
+   +    [
+   +        'foo' => true
+   +    ]
+   +);
+   +sample(
+   +    1,
+   +    function () {
+   +        return 10;
+   +    }
+   +);
+
+Example #12
+~~~~~~~~~~~
+
+With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'on_nested_multiline' => 'ignore_single']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample($a=10,
+   -    $b=20,$c=30) {}
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
+    sample([
+        'foo' => true
+    ]);
+    sample(function () {
+        return 10;
+    });
+   -sample(1, [
+   -    'foo' => true
+   -]);
+   -sample(1, function () {
+   -    return 10;
+   -});
+   +sample(
+   +    1,
+   +    [
+   +        'foo' => true
+   +    ]
+   +);
+   +sample(
+   +    1,
+   +    function () {
+   +        return 10;
+   +    }
+   +);
+
+Example #13
 ~~~~~~~~~~~
 
 With configuration: ``['after_heredoc' => true]``.
