@@ -1233,7 +1233,7 @@ class Tokens extends \SplFixedArray
             $this->changed = true;
             $this->namespaceDeclarations = null;
 
-            if (0 === $size) {
+            if (0 === $size) { // optimization only
                 $this->foundTokenKinds = [];
                 $this->blockStartCache = [];
                 $this->blockEndCache = [];
