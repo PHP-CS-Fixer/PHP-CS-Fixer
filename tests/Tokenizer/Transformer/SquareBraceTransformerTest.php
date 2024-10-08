@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
@@ -85,7 +87,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -405,7 +407,7 @@ class Test
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess72Cases
      */

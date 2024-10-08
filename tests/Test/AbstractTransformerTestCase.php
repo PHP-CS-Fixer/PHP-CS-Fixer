@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @phpstan-type _TransformerTestExpectedTokens array<int, int|string>
+ * @phpstan-type _TransformerTestObservedKindsOrPrototypes list<int|string>
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
@@ -108,8 +111,8 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKindsOrPrototypes
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKindsOrPrototypes
      */
     protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
     {

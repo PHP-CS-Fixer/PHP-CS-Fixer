@@ -24,11 +24,13 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\AbstractTypeTransformer
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -123,7 +125,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
@@ -414,7 +416,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideFix81Cases
      *
@@ -480,7 +482,7 @@ class Foo
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
@@ -502,7 +504,7 @@ class Foo
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
@@ -589,7 +591,7 @@ class Dnf
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
