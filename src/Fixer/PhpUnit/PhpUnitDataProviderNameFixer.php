@@ -165,13 +165,15 @@ class FooTest extends TestCase {
 
             $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([T_STRING, $dataProviderNewName]);
 
-            $newCommentContent = Preg::replace(
-                \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
-                \sprintf('$1%s', $dataProviderNewName),
-                $tokens[$usageIndex]->getContent(),
-            );
+            $newCommentContent = $tokens[$usageIndex]->isGivenKind(T_DOC_COMMENT)
+                ? Preg::replace(
+                    \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
+                    \sprintf('$1%s', $dataProviderNewName),
+                    $tokens[$usageIndex]->getContent(),
+                )
+                : \sprintf('%1$s%2$s%1$s', $tokens[$usageIndex]->getContent()[0], $dataProviderNewName);
 
-            $tokens[$usageIndex] = new Token([T_DOC_COMMENT, $newCommentContent]);
+            $tokens[$usageIndex] = new Token([$tokens[$usageIndex]->getId(), $newCommentContent]);
         }
     }
 
