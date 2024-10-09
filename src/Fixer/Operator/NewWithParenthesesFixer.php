@@ -67,7 +67,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassDefinitionFixer and NewExpressionParenthesesFixer.
+     * Must run before ClassDefinitionFixer, NewExpressionParenthesesFixer.
      */
     public function getPriority(): int
     {

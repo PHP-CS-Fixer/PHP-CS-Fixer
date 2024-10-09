@@ -15,9 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,8 +32,14 @@ final class NewExpressionParenthesesFixer extends AbstractFixer
         return new FixerDefinition(
             'All `new` expressions must (not) be wrapped in parentheses upon access.',
             [
-                new CodeSample("<?php\n\n(new Foo())->bar;\n"),
-                new CodeSample("<?php\n\n(new class {})->bar;\n"),
+                new VersionSpecificCodeSample(
+                    "<?php\n\n(new Foo())->bar;\n",
+                    new VersionSpecification(8_04_00)
+                ),
+                new VersionSpecificCodeSample(
+                    "<?php\n\n(new class {})->bar;\n",
+                    new VersionSpecification(8_04_00)
+                ),
             ]
         );
     }
@@ -40,7 +47,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NewWithParenthesesFixer.
+     * Must run after NewWithParenthesesFixer.
      */
     public function getPriority(): int
     {
