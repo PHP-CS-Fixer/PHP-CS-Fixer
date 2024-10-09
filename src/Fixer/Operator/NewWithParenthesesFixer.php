@@ -71,7 +71,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
      */
     public function getPriority(): int
     {
-        return 37;
+        return 38;
     }
 
     public function isCandidate(Tokens $tokens): bool
