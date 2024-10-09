@@ -561,6 +561,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'new_with_parentheses' => [
                 'class_definition',
+                'new_expression_parentheses',
             ],
             'no_alias_functions' => [
                 'implode_call',
