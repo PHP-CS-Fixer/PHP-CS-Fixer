@@ -65,6 +65,8 @@ final class CT
      * Get name for custom token.
      *
      * @param int $value custom token value
+     *
+     * @return non-empty-string
      */
     public static function getName(int $value): string
     {
@@ -73,6 +75,8 @@ final class CT
         }
 
         $tokens = self::getMapById();
+
+        \assert(isset($tokens[$value]));
 
         return 'CT::'.$tokens[$value];
     }
@@ -90,7 +94,7 @@ final class CT
     }
 
     /**
-     * @return array<self::T_*, string>
+     * @return array<self::T_*, non-empty-string>
      */
     private static function getMapById(): array
     {

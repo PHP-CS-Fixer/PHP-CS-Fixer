@@ -24,7 +24,7 @@ use PhpCsFixer\RuleSet\RuleSet;
 final class IntegrationCase
 {
     /**
-     * @var array{indent: string, lineEnding: string}
+     * @var array{indent: non-empty-string, lineEnding: non-empty-string}
      */
     private array $config;
 
@@ -53,7 +53,7 @@ final class IntegrationCase
     /**
      * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
      * @param array{php: int, "php<": int, os: list<string>}                                         $requirements
-     * @param array{indent: string, lineEnding: string}                                              $config
+     * @param array{indent: non-empty-string, lineEnding: non-empty-string}                          $config
      */
     public function __construct(
         string $fileName,
@@ -81,7 +81,7 @@ final class IntegrationCase
     }
 
     /**
-     * @return array{indent: string, lineEnding: string}
+     * @return array{indent: non-empty-string, lineEnding: non-empty-string}
      */
     public function getConfig(): array
     {
