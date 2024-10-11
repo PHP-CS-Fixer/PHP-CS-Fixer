@@ -26,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  * @group auto-review
  * @group covers-nothing
  */
-final class ReadmeTest extends TestCase
+final class BinEntryFileTest extends TestCase
 {
     public function testSupportedPhpVersions(): void
     {
