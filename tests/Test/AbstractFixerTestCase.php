@@ -616,7 +616,7 @@ abstract class AbstractFixerTestCase extends TestCase
             self::assertThat(
                 $tokens->generateCode(),
                 new IsIdenticalString($expected),
-                'Code build on input code must match expected code.'
+                'Code built on input code must match expected code.'
             );
             self::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
@@ -645,7 +645,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertThat(
             $tokens->generateCode(),
             new IsIdenticalString($expected),
-            'Code build on expected code must not change.'
+            'Code built on expected code must not change.'
         );
         self::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
