@@ -211,8 +211,8 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
         yield ['<?php (new $class)->bar;', null, ['named_class' => true]];
 
         yield [
-            '<?php (new $class)->bar;',
-            '<?php new $class->bar;',
+            '<?php (new $class())->bar;',
+            '<?php new $class()->bar;',
             ['named_class' => true],
         ];
 
