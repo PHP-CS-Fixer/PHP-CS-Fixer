@@ -698,36 +698,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 1 might not exist on array\\<list\\<string\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 3 might not exist on array\\<list\\<string\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 4 might not exist on array\\<list\\<string\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 6 might not exist on array\\<list\\<string\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset 7 might not exist on array\\<list\\<string\\>\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$string of function strlen expects string, string\\|false given\\.$#',
 	'count' => 3,

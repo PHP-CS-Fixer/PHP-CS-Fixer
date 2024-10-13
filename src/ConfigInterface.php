@@ -25,7 +25,7 @@ interface ConfigInterface
     /**
      * Returns the path to the cache file.
      *
-     * @return null|string Returns null if not using cache
+     * @return null|non-empty-string Returns null if not using cache
      */
     public function getCacheFile(): ?string;
 
@@ -50,8 +50,14 @@ interface ConfigInterface
      */
     public function getHideProgress(): bool;
 
+    /**
+     * @return non-empty-string
+     */
     public function getIndent(): string;
 
+    /**
+     * @return non-empty-string
+     */
     public function getLineEnding(): string;
 
     /**
@@ -102,6 +108,8 @@ interface ConfigInterface
 
     /**
      * Sets the path to the cache file.
+     *
+     * @param non-empty-string $cacheFile
      */
     public function setCacheFile(string $cacheFile): self;
 
@@ -114,8 +122,14 @@ interface ConfigInterface
 
     public function setHideProgress(bool $hideProgress): self;
 
+    /**
+     * @param non-empty-string $indent
+     */
     public function setIndent(string $indent): self;
 
+    /**
+     * @param non-empty-string $lineEnding
+     */
     public function setLineEnding(string $lineEnding): self;
 
     /**

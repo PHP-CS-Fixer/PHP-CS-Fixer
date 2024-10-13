@@ -76,7 +76,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--CONFIG--' block of a '.test' file.
      *
-     * @return array{indent: string, lineEnding: string}
+     * @return array{indent: non-empty-string, lineEnding: non-empty-string}
      */
     protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
@@ -85,14 +85,14 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             'lineEnding' => "\n",
         ]);
 
-        if (!\is_string($parsed['indent'])) {
+        if (!\is_string($parsed['indent']) || '' === $parsed['indent']) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected string value for "indent", got "%s".',
                 \is_object($parsed['indent']) ? \get_class($parsed['indent']) : \gettype($parsed['indent']).'#'.$parsed['indent']
             ));
         }
 
-        if (!\is_string($parsed['lineEnding'])) {
+        if (!\is_string($parsed['lineEnding']) || '' === $parsed['lineEnding']) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected string value for "lineEnding", got "%s".',
                 \is_object($parsed['lineEnding']) ? \get_class($parsed['lineEnding']) : \gettype($parsed['lineEnding']).'#'.$parsed['lineEnding']

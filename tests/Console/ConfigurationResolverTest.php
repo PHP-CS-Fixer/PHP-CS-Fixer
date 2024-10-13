@@ -1373,6 +1373,10 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     /**
      * @dataProvider provideGetDirectoryCases
+     *
+     * @param ?non-empty-string $cacheFile
+     * @param non-empty-string  $file
+     * @param non-empty-string  $expectedPathRelativeToFile
      */
     public function testGetDirectory(?string $cacheFile, string $file, string $expectedPathRelativeToFile): void
     {
@@ -1397,6 +1401,11 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
     }
 
+    /**
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
     private function normalizePath(string $path): string
     {
         return str_replace('/', \DIRECTORY_SEPARATOR, $path);
