@@ -23,12 +23,15 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKindsOrPrototypes from AbstractTransformerTestCase
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessCases
      */
@@ -381,8 +384,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
@@ -432,8 +435,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *
@@ -488,8 +491,8 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessPrePhp84Cases
      *
@@ -505,7 +508,7 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @return iterable<array{string, array<int, string>, list<int|string>}>
+     * @return iterable<array{string, _TransformerTestExpectedTokens, _TransformerTestObservedKindsOrPrototypes}>
      */
     public static function provideProcessPrePhp84Cases(): iterable
     {
