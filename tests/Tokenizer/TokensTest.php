@@ -49,9 +49,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param null|array<int, Token>                       $expected
-     * @param list<array{0: int, 1?: string}|string|Token> $sequence
-     * @param bool|list<bool>                              $caseSensitive
+     * @param null|array<int, Token>                $expected
+     * @param list<_PhpTokenPrototypePartial|Token> $sequence
+     * @param bool|list<bool>                       $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -294,7 +294,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param list<mixed> $sequence sequence of token prototypes
+     * @param non-empty-list<mixed> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
