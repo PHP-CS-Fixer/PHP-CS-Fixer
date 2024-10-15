@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerDefinition;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface FileSpecificCodeSampleInterface extends CodeSampleInterface
 {

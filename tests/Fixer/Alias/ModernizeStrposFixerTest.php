@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Alexander M. Turek <me@derrabus.de>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\ModernizeStrposFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\ModernizeStrposFixer>
+ *
+ * @author Alexander M. Turek <me@derrabus.de>
  */
 final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 {

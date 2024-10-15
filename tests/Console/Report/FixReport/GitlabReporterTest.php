@@ -20,9 +20,9 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
- * @author Hans-Christian Otto <c.otto@suora.com>
- *
  * @internal
+ *
+ * @author Hans-Christian Otto <c.otto@suora.com>
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\GitlabReporter
  */

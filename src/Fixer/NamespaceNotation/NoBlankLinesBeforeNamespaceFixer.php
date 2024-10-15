@@ -23,9 +23,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @deprecated Use `blank_lines_before_namespace` with config: ['min_line_breaks' => 0, 'max_line_breaks' => 1]
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class NoBlankLinesBeforeNamespaceFixer extends AbstractProxyFixer implements WhitespacesAwareFixerInterface, DeprecatedFixerInterface
 {

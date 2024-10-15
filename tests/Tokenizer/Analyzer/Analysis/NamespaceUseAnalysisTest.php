@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis
  */

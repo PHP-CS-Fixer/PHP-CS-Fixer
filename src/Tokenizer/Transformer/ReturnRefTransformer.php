@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `&` operator into CT::T_RETURN_REF in `function & foo() {}`.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ReturnRefTransformer extends AbstractTransformer
 {

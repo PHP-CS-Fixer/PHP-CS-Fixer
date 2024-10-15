@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `namespace` operator from T_NAMESPACE into CT::T_NAMESPACE_OPERATOR.
  *
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class NamespaceOperatorTransformer extends AbstractTransformer
 {

@@ -20,10 +20,10 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
+ * @internal
+ *
  * @author Boris Gorbylev <ekho@ekho.name>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\JsonReporter
  */

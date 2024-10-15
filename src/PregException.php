@@ -17,8 +17,8 @@ namespace PhpCsFixer;
 /**
  * Exception that is thrown when PCRE function encounters an error.
  *
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregException extends \RuntimeException {}

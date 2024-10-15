@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\StdinFileInfo;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @author ntzm
  *
  * @covers \PhpCsFixer\StdinFileInfo
  */

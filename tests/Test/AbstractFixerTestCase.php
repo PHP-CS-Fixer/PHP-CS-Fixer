@@ -98,11 +98,11 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  *
  * @template TFixer of AbstractFixer
  *
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractFixerTestCase extends TestCase
 {
