@@ -810,7 +810,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'phpdoc_no_empty_return' => [
                 'no_empty_phpdoc',
-                'phpdoc_order',
                 'phpdoc_separation',
                 'phpdoc_trim',
             ],

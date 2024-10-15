@@ -58,6 +58,10 @@ Rules
 - `php_unit_test_class_requires_covers <./../rules/php_unit/php_unit_test_class_requires_covers.rst>`_
 - `phpdoc_add_missing_param_annotation <./../rules/phpdoc/phpdoc_add_missing_param_annotation.rst>`_
 - `phpdoc_no_empty_return <./../rules/phpdoc/phpdoc_no_empty_return.rst>`_
+- `phpdoc_order <./../rules/phpdoc/phpdoc_order.rst>`_ with config:
+
+  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'author', 'see']]``
+
 - `phpdoc_order_by_value <./../rules/phpdoc/phpdoc_order_by_value.rst>`_
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
 - `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
