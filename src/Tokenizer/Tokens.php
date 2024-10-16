@@ -1447,6 +1447,7 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken(int $index): void
     {
+        \assert(isset($this[$index]));
         $token = $this[$index];
 
         // inlined extractTokenKind() call on the hot path
