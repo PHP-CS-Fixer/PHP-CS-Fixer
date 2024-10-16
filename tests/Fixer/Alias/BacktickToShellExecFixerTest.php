@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
 {

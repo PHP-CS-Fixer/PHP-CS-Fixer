@@ -21,10 +21,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @internal
+ *
  * @author VeeWee <toonverwerft@gmail.com>
  * @author Greg Korba <greg@codito.dev>
- *
- * @internal
  *
  * @TODO Drop `allowMultiUses` opt-in flag when all fixers are updated and can handle multi-use statements.
  */

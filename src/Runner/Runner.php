@@ -50,10 +50,10 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
- *
- * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
  */
 final class Runner
 {

@@ -20,9 +20,9 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReporterFactory
  */

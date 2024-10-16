@@ -20,9 +20,9 @@ use PhpCsFixer\Utils;
 /**
  * Set of rules to be used by fixer.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RuleSet implements RuleSetInterface
 {
