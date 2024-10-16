@@ -10,6 +10,7 @@ parameters:
         - src
         - tests
         - dev-tools/phpstan/src
+        - dev-tools/phpstan/tests
     excludePaths:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
