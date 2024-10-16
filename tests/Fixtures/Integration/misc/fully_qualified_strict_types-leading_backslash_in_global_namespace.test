@@ -14,9 +14,9 @@ Integration of fixers: fully_qualified_strict_types /w leading_backslash_in_glob
  * @param \'GET\'|\'POST\' $method
  * @param \Closure $fx
  *
- * @psalm-param \Closure(): (callable(): \Closure) $fx
- *
  * @phpstan-param positive-int $v
+ *
+ * @psalm-param \Closure(): (callable(): \Closure) $fx
  *
  * @return list<int>
  */
