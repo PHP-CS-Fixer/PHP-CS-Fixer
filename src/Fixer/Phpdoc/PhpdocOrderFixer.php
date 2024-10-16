@@ -49,7 +49,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * @const string[]
      *
-     * @TODO: 4.0 - change default to PhpCsFixer's default
+     * @TODO: 4.0 - change default to `PhpCsFixer` ruleset's default
      */
     private const ORDER_DEFAULT = ['param', 'throws', 'return'];
 
@@ -123,8 +123,8 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
             $configurationOrder = [];
             foreach ($this->configuration['order'] as $type) {
                 $configurationOrder[] = $type;
-                $configurationOrder[] = 'psalm-'.$type;
                 $configurationOrder[] = 'phpstan-'.$type;
+                $configurationOrder[] = 'psalm-'.$type;
             }
 
             // assuming annotations are already grouped by tags
