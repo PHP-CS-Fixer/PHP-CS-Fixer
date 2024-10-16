@@ -17,7 +17,6 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -28,7 +27,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -117,6 +118,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
         if ($tokens[$docBlockIndex]->isGivenKind(T_DOC_COMMENT)) {
@@ -151,7 +154,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 /** @phpstan-ignore-next-line */
                 $tokensToInsert = self::{$this->fixingMap[$annotationName]}($tokens, $index, $annotation);
 
-                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert);
+                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($fullyQualifiedNameAnalyzer, $tokens, $index, $tokensToInsert);
 
                 if ($presentAttributes[$annotationName]) {
                     continue;
@@ -239,8 +242,12 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     /**
      * @param list<Token> $tokensToInsert
      */
-    private static function isAttributeAlreadyPresent(Tokens $tokens, int $index, array $tokensToInsert): bool
-    {
+    private static function isAttributeAlreadyPresent(
+        FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer,
+        Tokens $tokens,
+        int $index,
+        array $tokensToInsert
+    ): bool {
         $attributeIndex = $tokens->getNextMeaningfulToken($index);
         if (!$tokens[$attributeIndex]->isGivenKind(T_ATTRIBUTE)) {
             return false;
@@ -254,24 +261,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
             $insertedClassName .= $token->getContent();
         }
 
-        // @TODO: refactor OrderedAttributesFixer::determineAttributeFullyQualifiedName to shared analyzer
-        static $determineAttributeFullyQualifiedName = null;
-        static $orderedAttributesFixer = null;
-        if (null === $determineAttributeFullyQualifiedName) {
-            $orderedAttributesFixer = new OrderedAttributesFixer();
-            $reflection = new \ReflectionObject($orderedAttributesFixer);
-            $determineAttributeFullyQualifiedName = $reflection->getMethod('determineAttributeFullyQualifiedName');
-            $determineAttributeFullyQualifiedName->setAccessible(true);
-        }
-
         foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                $className = ltrim($determineAttributeFullyQualifiedName->invokeArgs(
-                    $orderedAttributesFixer,
-                    [$tokens,
-                        $attribute['name'],
-                        $attribute['start']],
-                ), '\\');
+                $className = $fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS);
 
                 if ($insertedClassName === $className) {
                     return true;
