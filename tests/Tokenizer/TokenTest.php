@@ -605,7 +605,6 @@ final class TokenTest extends TestCase
                 'name' => 'T_FUNCTION',
                 'content' => 'function',
                 'isArray' => true,
-                'changed' => false,
             ],
         ];
 
@@ -616,7 +615,6 @@ final class TokenTest extends TestCase
                 'name' => null,
                 'content' => ')',
                 'isArray' => false,
-                'changed' => false,
             ],
         ];
 
@@ -627,7 +625,6 @@ final class TokenTest extends TestCase
                 'name' => null,
                 'content' => '',
                 'isArray' => false,
-                'changed' => false,
             ],
         ];
     }
