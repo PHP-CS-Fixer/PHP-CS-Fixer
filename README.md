@@ -103,7 +103,7 @@ Bug reports and ideas about new features are welcome there.
 You can reach us in the [GitHub Discussions](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/) regarding the
 project, configuration, possible improvements, ideas and questions. Please visit us there!
 
-## Contributing
+## Contribute
 
 The tool comes with quite a few built-in fixers, but everyone is more than
 welcome to [contribute](CONTRIBUTING.md) more of them.
