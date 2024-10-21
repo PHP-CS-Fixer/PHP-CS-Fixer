@@ -2792,12 +2792,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixerTest.php',
 ];
 $ignoreErrors[] = [
-	// identifier: generator.valueType
-	'message' => '#^Generator expects value type array\\{0\\: string, 1\\?\\: string\\}, array\\{0\\?\\: string, 1\\: string\\} given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Operator/IncrementStyleFixerTest.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'operators\' might not exist on array\\<string, mixed\\>\\.$#',
 	'count' => 1,
