@@ -163,6 +163,22 @@ $foo = $bar;
                 echo 1;
                 EOD,
         ];
+
+        yield 'file starting with multi-line comment' => [
+            <<<'PHP'
+                <?php
+
+                /**
+                 * @author yes
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @author yes
+                 */
+                PHP,
+        ];
     }
 
     /**
