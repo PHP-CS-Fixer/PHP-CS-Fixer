@@ -1856,6 +1856,30 @@ $bar;',
         self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
     }
 
+    public function testSettingSizeThrowsException(): void
+    {
+        $tokens = new Tokens();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Changing tokens collection size explicitly is not allowed.');
+
+        $tokens->setSize(3);
+    }
+
+    public function testSettingSizeInTryCatchBlockDoesNotChangeSize(): void
+    {
+        $tokens = Tokens::fromCode('<?php $x = true;');
+        $size = $tokens->getSize();
+
+        try {
+            $tokens->setSize(5);
+        } catch (\RuntimeException $exception) {
+            self::assertSame('Changing tokens collection size explicitly is not allowed.', $exception->getMessage());
+        }
+
+        self::assertSame($size, $tokens->getSize());
+    }
+
     private function getBlockEdgeCachingTestTokens(): Tokens
     {
         Tokens::clearCache();
