@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests\Test;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface IntegrationCaseFactoryInterface
 {

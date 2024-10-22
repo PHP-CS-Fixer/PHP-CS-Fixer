@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  *

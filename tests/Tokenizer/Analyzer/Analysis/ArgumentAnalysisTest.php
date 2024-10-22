@@ -19,9 +19,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis
  */

@@ -17,9 +17,9 @@ namespace PhpCsFixer\Runner\Parallel;
 /**
  * Common exception for all the errors related to parallelisation.
  *
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ParallelisationException extends \RuntimeException
 {

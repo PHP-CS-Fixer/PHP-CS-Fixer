@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
  */
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {

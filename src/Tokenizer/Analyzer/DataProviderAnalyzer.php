@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class DataProviderAnalyzer
 {
