@@ -300,7 +300,7 @@ class Tokens extends \SplFixedArray
     #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
-        throw new \RuntimeException(\sprintf('Do not change tokens collection size using %s.', __METHOD__));
+        throw new \RuntimeException('Changing tokens collection size explicitly is not allowed.');
     }
 
     /**
