@@ -300,14 +300,7 @@ class Tokens extends \SplFixedArray
     #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
-        if (\count($this) !== $size) {
-            $this->changed = true;
-            $this->namespaceDeclarations = null;
-
-            return parent::setSize($size);
-        }
-
-        return true;
+        throw new \RuntimeException('Changing tokens collection size explicitly is not allowed.');
     }
 
     /**
@@ -425,7 +418,7 @@ class Tokens extends \SplFixedArray
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
-        $this->setSize($count);
+        $this->updateSize($count);
     }
 
     /**
@@ -922,7 +915,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
-        $this->setSize($oldSize + $itemsCount);
+        $this->updateSize($oldSize + $itemsCount);
 
         krsort($slices);
         $farthestSliceIndex = array_key_first($slices);
@@ -1050,13 +1043,13 @@ class Tokens extends \SplFixedArray
         }
 
         // clear memory
-        $this->setSize(0);
+        $this->updateSize(0);
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 
-        $this->setSize(\count($tokens));
+        $this->updateSize(\count($tokens));
 
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
@@ -1244,6 +1237,16 @@ class Tokens extends \SplFixedArray
     {
         $transformers = Transformers::createSingleton();
         $transformers->transform($this);
+    }
+
+    private function updateSize(int $size): void
+    {
+        if (\count($this) !== $size) {
+            $this->changed = true;
+            $this->namespaceDeclarations = null;
+
+            parent::setSize($size);
+        }
     }
 
     /**
