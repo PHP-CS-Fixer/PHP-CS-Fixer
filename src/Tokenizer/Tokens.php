@@ -351,15 +351,17 @@ class Tokens extends \SplFixedArray
             )));
         }
 
+        if (isset($this[$index])) {
+            if (isset($this->blockStartCache[$index])) {
+                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+            }
+            if (isset($this->blockEndCache[$index])) {
+                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+            }
+        }
+
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             if (isset($this[$index])) {
-                if (isset($this->blockStartCache[$index])) {
-                    unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
-                }
-                if (isset($this->blockEndCache[$index])) {
-                    unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
-                }
-
                 $this->unregisterFoundToken($this[$index]);
             }
 
