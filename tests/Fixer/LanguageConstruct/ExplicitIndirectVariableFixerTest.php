@@ -40,23 +40,28 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'variable variable property fetch' => [
+            '<?php echo ${$foo->bar};',
+            '<?php echo $$foo->bar;',
+        ];
+
         yield 'variable variable function call' => [
-            '<?php echo ${$foo}($bar);',
+            '<?php echo ${$foo($bar)};',
             '<?php echo $$foo($bar);',
         ];
 
         yield 'variable variable array fetch' => [
-            '<?php echo ${$foo}[\'bar\'][\'baz\'];',
+            '<?php echo ${$foo[\'bar\'][\'baz\']};',
             '<?php echo $$foo[\'bar\'][\'baz\'];',
         ];
 
         yield 'dynamic property access' => [
-            '<?php echo $foo->{$bar}[\'baz\'];',
+            '<?php echo $foo->{$bar[\'baz\']};',
             '<?php echo $foo->$bar[\'baz\'];',
         ];
 
         yield 'dynamic property access with method call' => [
-            '<?php echo $foo->{$bar}[\'baz\']();',
+            '<?php echo $foo->{$bar[\'baz\']}();',
             '<?php echo $foo->$bar[\'baz\']();',
         ];
 
@@ -81,7 +86,7 @@ $foo
         ];
 
         yield 'dynamic static property access using variable variable with method call' => [
-            '<?php echo Foo::${$bar}->baz();',
+            '<?php echo Foo::${$bar->baz}();',
             '<?php echo Foo::$$bar->baz();',
         ];
     }
@@ -102,12 +107,12 @@ $foo
     public static function provideFix80Cases(): iterable
     {
         yield 'dynamic property fetch with nullsafe operator' => [
-            '<?php echo $foo?->{$bar}["baz"];',
+            '<?php echo $foo?->{$bar["baz"]};',
             '<?php echo $foo?->$bar["baz"];',
         ];
 
         yield 'dynamic property fetch with nullsafe operator and method call' => [
-            '<?php echo $foo?->{$bar}["baz"]();',
+            '<?php echo $foo?->{$bar["baz"]}();',
             '<?php echo $foo?->$bar["baz"]();',
         ];
     }
