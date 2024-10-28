@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "044e11ba0e3c318b0e694a73b84eee98",
+    "content-hash": "e00560b690f49289d02c431de984344b",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -424,6 +424,38 @@
                 "MIT"
             ],
             "description": "A library to validate a json schema."
+        },
+        {
+            "name": "kubawerlos/composer-smaller-lock",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kubawerlos/composer-smaller-lock.git",
+                "reference": "3b0a8695de0595d471d3383118972f10e31ab41e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kubawerlos/composer-smaller-lock/zipball/3b0a8695de0595d471d3383118972f10e31ab41e",
+                "reference": "3b0a8695de0595d471d3383118972f10e31ab41e"
+            },
+            "require": {
+                "composer-plugin-api": "^2.0.12",
+                "ext-json": "*",
+                "php": "^7.4 || ^8.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "ComposerSmallerLock\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "ComposerSmallerLock\\": "./src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Plugin to keep composer.lock smaller and readable"
         },
         {
             "name": "localheinz/diff",
