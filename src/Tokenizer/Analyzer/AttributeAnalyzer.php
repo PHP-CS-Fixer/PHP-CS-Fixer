@@ -134,7 +134,6 @@ final class AttributeAnalyzer
      */
     private static function collectAttributes(Tokens $tokens, int $index, int $closingIndex): array
     {
-        /** @var _AttributeItems $elements */
         $elements = [];
 
         do {
@@ -175,6 +174,8 @@ final class AttributeAnalyzer
             }
             --$index;
         }
+
+        \assert(array_is_list($elements));
 
         return $elements;
     }

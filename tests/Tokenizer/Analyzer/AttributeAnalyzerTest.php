@@ -64,6 +64,8 @@ final class AttributeAnalyzerTest extends TestCase
 
     /**
      * Test case requires to having "Foo" as it will be searched for to test its index.
+     *
+     * @return iterable<array{bool, string}>
      */
     public static function provideIsAttributeCases(): iterable
     {
@@ -120,8 +122,6 @@ final class AttributeAnalyzerTest extends TestCase
         yield [true, '<?php #[Bar(), Foo(), Baz()] class Qux {}'];
 
         yield [true, '<?php #[Bar(), Foo, Baz()] class Qux {}'];
-
-        yield [true, '<?php #[Bar, Foo, Baz] class Qux {}'];
 
         yield [true, '<?php #[\Foo] class Bar {}'];
 

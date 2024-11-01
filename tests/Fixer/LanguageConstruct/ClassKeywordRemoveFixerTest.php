@@ -35,6 +35,9 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string, 2?: string, 3?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

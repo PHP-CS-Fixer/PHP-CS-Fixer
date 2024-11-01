@@ -43,6 +43,9 @@ final class PhpUnitTargetVersionTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: bool, 1: string, 2: string, 3?: string}>
+     */
     public static function provideFulfillsCases(): iterable
     {
         yield [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6];
@@ -54,8 +57,6 @@ final class PhpUnitTargetVersionTest extends TestCase
         yield [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_2];
 
         yield [true, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_2];
-
-        yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6];
 
         yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6];
 

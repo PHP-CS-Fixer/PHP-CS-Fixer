@@ -41,6 +41,9 @@ final class CachingLinterTest extends TestCase
         self::assertSame($isAsync, $linter->isAsync());
     }
 
+    /**
+     * @return iterable<array{bool}>
+     */
     public static function provideIsAsyncCases(): iterable
     {
         yield [true];
@@ -156,7 +159,7 @@ final class CachingLinterTest extends TestCase
 
     private function createLintingResultDouble(): LintingResultInterface
     {
-        return new class() implements LintingResultInterface {
+        return new class implements LintingResultInterface {
             public function check(): void
             {
                 throw new \LogicException('Not implemented.');

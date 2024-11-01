@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -24,7 +25,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -139,18 +139,23 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
 
     protected function normalize(string $type): string
     {
-        $typeLower = strtolower($type);
-        if (isset($this->typesSetToFix[$typeLower])) {
-            $type = $typeLower;
-        }
+        $typeExpression = new TypeExpression($type, null, []);
 
-        // normalize shape/callable/generic identifiers too
-        // TODO parse them as inner types and this will be not needed then
-        return Preg::replaceCallback(
-            '/^(\??\s*)([^()[\]{}<>\'"]+)(?<!\s)(\s*[\s()[\]{}<>])/',
-            fn ($matches) => $matches[1].$this->normalize($matches[2]).$matches[3],
-            $type
-        );
+        $newTypeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
+            if ($type->isUnionType()) {
+                return $type;
+            }
+
+            $value = $type->toString();
+            $valueLower = strtolower($value);
+            if (isset($this->typesSetToFix[$valueLower])) {
+                return new TypeExpression($valueLower, null, []);
+            }
+
+            return $type;
+        });
+
+        return $newTypeExpression->toString();
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

@@ -75,26 +75,21 @@ final class CiConfigurationTest extends TestCase
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingLocalImages());
     }
 
-    public function testDeploymentJobsRunOnLatestStablePhpThatIsSupportedByTool(): void
+    public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
+        $ciVersionsForDeployment = $this->getPhpVersionUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
-        $expectedPhp = '8.2'; // @TODO not everything compatible with 8.3 yet, replace with `$this->getMaxPhpVersionFromEntryFile();` afterwards
+        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
             // last version of used PHP is snapshot. we should test against previous one, that is stable
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
 
-        self::assertGreaterThanOrEqual(1, \count($ciVersionsForDeployments));
-        self::assertGreaterThanOrEqual(1, \count($ciVersions));
-
-        foreach ($ciVersionsForDeployments as $ciVersionsForDeployment) {
-            self::assertTrue(
-                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
-            );
-        }
+        self::assertTrue(
+            version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+            \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+        );
     }
 
     /**
@@ -162,12 +157,13 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
-    /**
-     * @return array<int, string>
-     */
-    private function getAllPhpVersionsUsedByCiForDeployments(): array
+    private function getPhpVersionUsedByCiForDeployments(): string
     {
-        return array_map(static fn ($job): string => \is_string($job['php-version']) ? $job['php-version'] : \sprintf('%.1f', $job['php-version']), $this->getGitHubDeploymentJobs());
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+
+        $version = $yaml['jobs']['deployment']['env']['php-version'];
+
+        return \is_string($version) ? $version : \sprintf('%.1f', $version);
     }
 
     /**
@@ -180,7 +176,7 @@ final class CiConfigurationTest extends TestCase
 
     private function convertPhpVerIdToNiceVer(string $verId): string
     {
-        $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
+        $matchResult = Preg::match('/^(?<major>\d{1,2})_?(?<minor>\d{2})_?(?<patch>\d{2})$/', $verId, $capture);
         if (!$matchResult) {
             throw new \LogicException(\sprintf('Can\'t parse version "%s" id.', $verId));
         }
@@ -194,16 +190,17 @@ final class CiConfigurationTest extends TestCase
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             [T_IS_GREATER_OR_EQUAL],
-            [T_LNUMBER],
+            [T_INT_CAST],
+            [T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = (int) end($sequence)->getContent();
+        $phpVerId = trim(end($sequence)->getContent(), '\'');
 
-        return $this->convertPhpVerIdToNiceVer((string) ($phpVerId - 100));
+        return $this->convertPhpVerIdToNiceVer((string) ((int) $phpVerId - 100));
     }
 
     private function getMinPhpVersionFromEntryFile(): string
@@ -212,14 +209,15 @@ final class CiConfigurationTest extends TestCase
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             '<',
-            [T_LNUMBER],
+            [T_INT_CAST],
+            [T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = end($sequence)->getContent();
+        $phpVerId = trim(end($sequence)->getContent(), '\'');
 
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
@@ -232,16 +230,6 @@ final class CiConfigurationTest extends TestCase
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
         return $yaml['env'];
-    }
-
-    /**
-     * @return list<array<string, scalar>>
-     */
-    private function getGitHubDeploymentJobs(): array
-    {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
-
-        return $yaml['jobs']['deployment']['strategy']['matrix']['include'];
     }
 
     /**

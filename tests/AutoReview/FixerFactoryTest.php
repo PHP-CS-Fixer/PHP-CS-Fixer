@@ -169,6 +169,9 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{\DirectoryIterator}>
+     */
     public static function providePriorityIntegrationTestFilesAreListedInPriorityGraphCases(): iterable
     {
         foreach (new \DirectoryIterator(self::getIntegrationPriorityDirectory()) as $candidate) {
@@ -350,11 +353,9 @@ final class FixerFactoryTest extends TestCase
                 'no_whitespace_in_blank_line',
             ],
             'backtick_to_shell_exec' => [
-                'escape_implicit_backslashes',
                 'explicit_string_variable',
                 'native_function_invocation',
                 'single_quote',
-                'string_implicit_backslashes',
             ],
             'blank_line_after_opening_tag' => [
                 'blank_lines_before_namespace',
@@ -740,9 +741,16 @@ final class FixerFactoryTest extends TestCase
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
             ],
+            'php_unit_data_provider_name' => [
+                'php_unit_attributes',
+            ],
             'php_unit_data_provider_return_type' => [
+                'php_unit_attributes',
                 'return_to_yield_from',
                 'return_type_declaration',
+            ],
+            'php_unit_data_provider_static' => [
+                'php_unit_attributes',
             ],
             'php_unit_dedicate_assert' => [
                 'no_unused_imports',
@@ -892,7 +900,6 @@ final class FixerFactoryTest extends TestCase
                 'multiline_whitespace_before_semicolons',
                 'no_leading_import_slash',
                 'no_singleline_whitespace_before_semicolons',
-                'no_unused_imports',
                 'space_after_semicolon',
             ],
             'single_line_throw' => [
@@ -909,7 +916,6 @@ final class FixerFactoryTest extends TestCase
             'single_space_around_construct' => [
                 'braces',
                 'function_declaration',
-                'nullable_type_declaration',
             ],
             'single_trait_insert_per_statement' => [
                 'braces',

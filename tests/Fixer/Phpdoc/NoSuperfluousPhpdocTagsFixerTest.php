@@ -2667,6 +2667,9 @@ static fn ($foo): int => 1;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'static return' => [
@@ -2978,6 +2981,22 @@ class Foo {
                 function foo(#[AnAttribute] array $data) {}
                 PHP,
         ];
+
+        yield 'an attribute before useless parameter type' => [
+            <<<'PHP'
+                <?php
+                /**
+                 */
+                function foo(#[AnAttribute] array $data) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array $data
+                 */
+                function foo(#[AnAttribute] array $data) {}
+                PHP,
+        ];
     }
 
     /**
@@ -3153,6 +3172,9 @@ enum Foo {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield 'explicit null with null native type' => [

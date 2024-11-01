@@ -41,6 +41,12 @@ $a = new Foo;
 $b = (  boolean  )   1;
 $c = true  ? (INT) '1'  :  2;
 
+$anonymousClass = new class () {
+  public function test() {
+  // method body
+  }
+};
+
 $fn = fn ($a) => $a;
 
 $arrayNotMultiline = ['foo' => 'bar', 'foo2' => 'bar'];

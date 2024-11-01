@@ -56,26 +56,14 @@ final class IntegrationTest extends AbstractIntegrationTestCase
         }
 
         if ($settings['isExplicitPriorityCheck']) {
-            if ($fixedInputCode === $fixedInputCodeWithReversedFixers) {
-                if (\in_array($case->getFileName(), [
-                    'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,escape_implicit_backslashes.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,string_implicit_backslashes.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'braces,indentation_type,no_break_comment.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'standardize_not_equals,binary_operator_spaces.test',
-                ], true)) {
-                    self::markTestIncomplete(\sprintf(
-                        'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'
-                        ."\n".'Either integration test needs to be extended or moved from `priority` to `misc`.'
-                        ."\n".'But don\'t do it blindly - it deserves investigation!',
-                        $case->getFileName()
-                    ));
-                }
-            }
-
             self::assertNotSame(
                 $fixedInputCode,
                 $fixedInputCodeWithReversedFixers,
-                \sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
+                \sprintf(
+                    'Test "%s" in "%s" is expected to be priority check, but fixers applied in reversed order made the same changes.',
+                    $case->getTitle(),
+                    $case->getFileName(),
+                )
             );
         }
     }

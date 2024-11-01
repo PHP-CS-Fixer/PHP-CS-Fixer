@@ -96,6 +96,9 @@ final class DocumentationTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
+    /**
+     * @return iterable<string, array{FixerInterface}>
+     */
     public static function provideFixerDocumentationFileIsUpToDateCases(): iterable
     {
         foreach (self::getFixers() as $fixer) {

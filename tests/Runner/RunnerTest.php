@@ -260,7 +260,7 @@ final class RunnerTest extends TestCase
 
     private function createDifferDouble(): DifferInterface
     {
-        return new class() implements DifferInterface {
+        return new class implements DifferInterface {
             public ?\SplFileInfo $passedFile = null;
 
             public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
@@ -274,7 +274,7 @@ final class RunnerTest extends TestCase
 
     private function createLinterDouble(): LinterInterface
     {
-        return new class() implements LinterInterface {
+        return new class implements LinterInterface {
             public function isAsync(): bool
             {
                 return false;
@@ -282,14 +282,14 @@ final class RunnerTest extends TestCase
 
             public function lintFile(string $path): LintingResultInterface
             {
-                return new class() implements LintingResultInterface {
+                return new class implements LintingResultInterface {
                     public function check(): void {}
                 };
             }
 
             public function lintSource(string $source): LintingResultInterface
             {
-                return new class() implements LintingResultInterface {
+                return new class implements LintingResultInterface {
                     public function check(): void {}
                 };
             }

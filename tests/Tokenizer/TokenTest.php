@@ -82,6 +82,9 @@ final class TokenTest extends TestCase
         self::assertSame($isCast, $token->isCast());
     }
 
+    /**
+     * @return iterable<array{Token, bool}>
+     */
     public static function provideIsCastCases(): iterable
     {
         yield [self::getBraceToken(), false];
@@ -111,6 +114,9 @@ final class TokenTest extends TestCase
         self::assertSame($isClassy, $token->isClassy());
     }
 
+    /**
+     * @return iterable<array{Token, bool}>
+     */
     public static function provideIsClassyCases(): iterable
     {
         yield [self::getBraceToken(), false];
@@ -142,6 +148,9 @@ final class TokenTest extends TestCase
         self::assertSame($isComment, $token->isComment());
     }
 
+    /**
+     * @return iterable<array{Token, bool}>
+     */
     public static function provideIsCommentCases(): iterable
     {
         yield [self::getBraceToken(), false];
@@ -166,6 +175,9 @@ final class TokenTest extends TestCase
         self::assertSame($isObjectOperator, $token->isObjectOperator());
     }
 
+    /**
+     * @return iterable<array{Token, bool}>
+     */
     public static function provideIsObjectOperatorCases(): iterable
     {
         yield [self::getBraceToken(), false];
@@ -219,6 +231,9 @@ final class TokenTest extends TestCase
         self::assertSame($isConstant, $token->isMagicConstant());
     }
 
+    /**
+     * @return iterable<array{0: null|int, 1: string, 2?: bool}>
+     */
     public static function provideIsMagicConstantCases(): iterable
     {
         $cases = [
@@ -236,11 +251,15 @@ final class TokenTest extends TestCase
             yield [$case[0], strtolower($case[1])];
         }
 
-        foreach ([self::getForeachToken(), self::getBraceToken()] as $token) {
-            yield [$token->getId(), $token->getContent(), false];
+        $foreachToken = self::getForeachToken();
 
-            yield [$token->getId(), strtolower($token->getContent()), false];
-        }
+        yield [$foreachToken->getId(), $foreachToken->getContent(), false];
+
+        yield [$foreachToken->getId(), strtoupper($foreachToken->getContent()), false];
+
+        $braceToken = self::getBraceToken();
+
+        yield [$braceToken->getId(), $braceToken->getContent(), false];
     }
 
     /**
@@ -251,6 +270,9 @@ final class TokenTest extends TestCase
         self::assertSame($isNativeConstant, $token->isNativeConstant());
     }
 
+    /**
+     * @return iterable<array{Token, bool}>
+     */
     public static function provideIsNativeConstantCases(): iterable
     {
         yield [self::getBraceToken(), false];
@@ -281,6 +303,9 @@ final class TokenTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<array{0: Token, 1: bool, 2?: string}>
+     */
     public static function provideIsWhitespaceCases(): iterable
     {
         yield [self::getBraceToken(), false];
@@ -511,6 +536,9 @@ final class TokenTest extends TestCase
         self::assertSame($expected, Token::getNameForId($id));
     }
 
+    /**
+     * @return iterable<array{null|string, int}>
+     */
     public static function provideTokenGetNameForIdCases(): iterable
     {
         yield [
@@ -537,6 +565,9 @@ final class TokenTest extends TestCase
         self::assertSame($expected, $token->getName());
     }
 
+    /**
+     * @return iterable<array{Token, null|string}>
+     */
     public static function provideGetNameCases(): iterable
     {
         yield [

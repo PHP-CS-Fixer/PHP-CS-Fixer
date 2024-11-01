@@ -64,6 +64,9 @@ abstract class AbstractReporterTestCase extends TestCase
         $this->assertFormat($expectedReport, $actualReport);
     }
 
+    /**
+     * @return iterable<string, array{string, ReportSummary}>
+     */
     final public static function provideGenerateCases(): iterable
     {
         yield 'example' => [

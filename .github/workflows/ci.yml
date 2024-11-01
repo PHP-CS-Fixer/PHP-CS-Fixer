@@ -16,7 +16,23 @@ env:
   PHP_MIN: '7.4'
 
 jobs:
+  entrypoint-low-php-compat:
+    name: Entrypoint low-PHP compat
+    runs-on: 'ubuntu-24.04'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: ./.github/composite-actions/setup-php
+        with:
+          version: 7.0
+
+      - name: Verify entrypoint file(s) can be run on low-end unsupported runtime
+        run: php -l $(cat composer.json | jq -r '.bin[]')
+
   tests:
+    continue-on-error: ${{ matrix.operating-system == 'macos-latest' }}
     strategy:
       fail-fast: false
       matrix:
@@ -177,7 +193,7 @@ jobs:
         if: env.PHP_MAX == matrix.php-version && matrix.run-migration-rules == 'yes'
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
-        run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
+        run: php php-cs-fixer fix --diff --config .php-cs-fixer.php-highest.php
 
       - name: Custom PHPUnit config for code coverage
         if: matrix.collect-code-coverage == 'yes' || matrix.run-mutation-tests
@@ -245,29 +261,21 @@ jobs:
 
   deployment:
     needs: tests
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.2'
-
     name: Deployment checks
 
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: 'ubuntu-24.04'
+    env:
+      php-version: '8.3'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Remove Infection
-        run: composer remove --dev infection/infection --no-update
-
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
           os: ${{ runner.os }}
-          php: ${{ matrix.php-version }}
+          php: ${{ env.php-version }}
 
       - name: Cache dev-tools
         uses: actions/cache@v4

@@ -194,6 +194,29 @@ class Foo
         yield 'skips already fixed' => [
             "<?php\n\$bar = function (null | string \$input): int {};\n",
         ];
+
+        yield 'no space before ?' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public null|int $a;
+                    protected null|array $b;
+                    private null|string $c;
+                    private static null|bool $d;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public?int $a;
+                    protected?array $b;
+                    private?string $c;
+                    private static?bool $d;
+                }
+                PHP,
+        ];
     }
 
     /**

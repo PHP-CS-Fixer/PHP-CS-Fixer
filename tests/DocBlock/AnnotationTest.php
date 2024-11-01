@@ -99,6 +99,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($content, (string) $annotation);
     }
 
+    /**
+     * @return iterable<array{int, string}>
+     */
     public static function provideGetContentCases(): iterable
     {
         foreach (self::$content as $index => $content) {
@@ -117,6 +120,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($start, $annotation->getStart());
     }
 
+    /**
+     * @return iterable<array{int, int}>
+     */
     public static function provideStartCases(): iterable
     {
         foreach (self::$start as $index => $start) {
@@ -135,6 +141,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($end, $annotation->getEnd());
     }
 
+    /**
+     * @return iterable<array{int, int}>
+     */
     public static function provideEndCases(): iterable
     {
         foreach (self::$end as $index => $end) {
@@ -153,6 +162,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($tag, $annotation->getTag()->getName());
     }
 
+    /**
+     * @return iterable<array{int, string}>
+     */
     public static function provideGetTagCases(): iterable
     {
         foreach (self::$tags as $index => $tag) {
@@ -174,6 +186,9 @@ final class AnnotationTest extends TestCase
         self::assertSame('', $doc->getLine($end)->getContent());
     }
 
+    /**
+     * @return iterable<array{int, int, int}>
+     */
     public static function provideRemoveCases(): iterable
     {
         foreach (self::$start as $index => $start) {
@@ -193,6 +208,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $doc->getContent());
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideRemoveEdgeCasesCases(): iterable
     {
         // Single line
@@ -558,6 +576,8 @@ final class AnnotationTest extends TestCase
 
         yield [['bool', 'int'], '* @param bool|int $foo'];
 
+        yield [['bool', 'int'], '* @param bool&int $foo'];
+
         yield [['bool', 'int'], '* @param bool|int ...$foo'];
 
         yield [['bool', 'int'], '* @param bool|int &$foo'];
@@ -570,7 +590,9 @@ final class AnnotationTest extends TestCase
 
         yield [['bool', 'int'], '* @param bool|int&...$foo'];
 
-        yield [['bar', 'baz', 'foo'], '* @param Foo|Bar&Baz&$param'];
+        yield [['bar&baz', 'foo'], '* @param Foo|Bar&Baz&$param'];
+
+        yield [['bar&baz', 'foo'], '* @param Baz&Bar|Foo&$param'];
     }
 
     public function testGetTypesOnBadTag(): void

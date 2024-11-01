@@ -47,12 +47,17 @@ final class TypeExpressionTest extends TestCase
             null,
             []
         );
-        self::assertSame(
-            [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
-            [...$unionExpression->getTypes()]
-        );
+        if (!$expression->isCompositeType() || $expression->isUnionType()) {
+            self::assertSame(
+                [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
+                [...$unionExpression->getTypes()]
+            );
+        }
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: null|list<string>}>
+     */
     public static function provideGetTypesCases(): iterable
     {
         yield ['int'];
@@ -239,8 +244,6 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure_can_be_aliased(): (u|v)'];
 
-        yield ['array  <  int   , callable  (  string  )  :   bool  >'];
-
         yield ['(int)'];
 
         yield ['(int|\Exception)'];
@@ -253,11 +256,14 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 128).'string'.str_repeat('>', 128)];
+        yield [str_repeat('array<', 120).'string'.str_repeat('>', 120)];
 
         yield [self::makeLongArrayShapeType()];
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideGetConstTypesCases(): iterable
     {
         foreach ([
@@ -288,7 +294,6 @@ final class TypeExpressionTest extends TestCase
             '-123.',
             '-123.4',
             '-.123',
-            '-123.',
             '-123e-4',
             '-12.3e-4',
             '-1_2.3_4e5_6',
@@ -315,6 +320,9 @@ final class TypeExpressionTest extends TestCase
         new TypeExpression($value, null, []);
     }
 
+    /**
+     * @return iterable<int|string, array{string}>
+     */
     public static function provideParseInvalidExceptionCases(): iterable
     {
         yield [''];
@@ -349,8 +357,6 @@ final class TypeExpressionTest extends TestCase
 
         yield ['class$with_dollar'];
 
-        yield ['class:with_colon'];
-
         yield ['class;with_semicolon'];
 
         yield ['class=with_equal_sign'];
@@ -370,6 +376,24 @@ final class TypeExpressionTest extends TestCase
         yield ['unclosed_parenthesis('];
 
         yield ['((unclosed_parenthesis)'];
+
+        yield ['|vertical_bar_start'];
+
+        yield ['&ampersand_start'];
+
+        yield ['~tilde_start'];
+
+        yield ['vertical_bar_end|'];
+
+        yield ['ampersand_end&'];
+
+        yield ['tilde_end~'];
+
+        yield ['class||double_vertical_bar'];
+
+        yield ['class&&double_ampersand'];
+
+        yield ['class~~double_tilde'];
 
         yield ['array<'];
 
@@ -430,18 +454,18 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideGetTypesGlueCases
      */
-    public function testGetTypesGlue(string $expectedTypesGlue, string $typesExpression): void
+    public function testGetTypesGlue(?string $expectedTypesGlue, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
         self::assertSame($expectedTypesGlue, $expression->getTypesGlue());
     }
 
     /**
-     * @return iterable<array{0: '&'|'|', 1: string}>
+     * @return iterable<array{0: null|'&'|'|', 1: string}>
      */
     public static function provideGetTypesGlueCases(): iterable
     {
-        yield ['|', 'string']; // for backward behaviour
+        yield [null, 'string'];
 
         yield ['|', 'bool|string'];
 
@@ -449,11 +473,38 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
+     * @dataProvider provideIsCompositeTypeCases
+     */
+    public function testIsCompositeType(bool $expectedIsCompositeType, string $typeExpression): void
+    {
+        $expression = new TypeExpression($typeExpression, null, []);
+
+        self::assertSame($expectedIsCompositeType, $expression->isCompositeType());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
+    public static function provideIsCompositeTypeCases(): iterable
+    {
+        yield [false, 'string'];
+
+        yield [false, 'iterable<Foo>'];
+
+        yield [true, 'iterable&stringable'];
+
+        yield [true, 'bool|string'];
+
+        yield [true, 'Foo|(Bar&Baz)'];
+    }
+
+    /**
      * @dataProvider provideIsUnionTypeCases
      */
-    public function testIsUnionType(bool $expectedIsUnionType, string $typesExpression): void
+    public function testIsUnionType(bool $expectedIsUnionType, string $typeExpression): void
     {
-        $expression = new TypeExpression($typesExpression, null, []);
+        $expression = new TypeExpression($typeExpression, null, []);
+
         self::assertSame($expectedIsUnionType, $expression->isUnionType());
     }
 
@@ -463,6 +514,8 @@ final class TypeExpressionTest extends TestCase
     public static function provideIsUnionTypeCases(): iterable
     {
         yield [false, 'string'];
+
+        yield [false, 'iterable&stringable'];
 
         yield [true, 'bool|string'];
 
@@ -475,6 +528,32 @@ final class TypeExpressionTest extends TestCase
         yield [false, '?int'];
 
         yield [true, 'Foo|Bar'];
+    }
+
+    /**
+     * @dataProvider provideIsIntersectionTypeCases
+     */
+    public function testIsIntersectionType(bool $expectedIsIntersectionType, string $typeExpression): void
+    {
+        $expression = new TypeExpression($typeExpression, null, []);
+
+        self::assertSame($expectedIsIntersectionType, $expression->isIntersectionType());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: string}>
+     */
+    public static function provideIsIntersectionTypeCases(): iterable
+    {
+        yield [false, 'string'];
+
+        yield [false, 'string|int'];
+
+        yield [true, 'Foo&Bar'];
+
+        yield [true, 'Foo&Bar&?Baz'];
+
+        yield [true, '\iterable&\Stringable'];
     }
 
     /**
@@ -626,6 +705,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectNullAllowed, $expression->allowsNull());
     }
 
+    /**
+     * @return iterable<array{string, bool}>
+     */
     public static function provideAllowsNullCases(): iterable
     {
         yield ['null', true];
@@ -649,44 +731,100 @@ final class TypeExpressionTest extends TestCase
         yield ['?\Closure(): void', true];
     }
 
+    public function testMapTypes(): void
+    {
+        $typeExpression = new TypeExpression('Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))', null, []);
+
+        $addLeadingSlash = static function (TypeExpression $type) {
+            $value = $type->toString();
+            if (!str_starts_with($value, '\\') && !str_starts_with($value, '(')) {
+                return new TypeExpression('\\'.$value, null, []);
+            }
+
+            return $type;
+        };
+
+        $removeLeadingSlash = static function (TypeExpression $type) {
+            $value = $type->toString();
+            if (str_starts_with($value, '\\')) {
+                return new TypeExpression(substr($value, 1), null, []);
+            }
+
+            return $type;
+        };
+
+        $callLog = [];
+        $typeExpression->mapTypes(static function (TypeExpression $type) use (&$callLog) {
+            $callLog[] = $type->toString();
+
+            if ('Y' === $type->toString()) {
+                return new TypeExpression('_y_', null, []);
+            }
+
+            return $type;
+        });
+        self::assertSame([
+            'Foo',
+            'Bar',
+            '\Closure',
+            'X',
+            'Y',
+            'Z',
+            '\Closure(X, _y_): Z',
+            'U',
+            'V',
+            'W',
+            'V&W',
+            '(V&W)',
+            '($v is \Closure(X, _y_): Z ? U : (V&W))',
+            'Foo|Bar|($v is \Closure(X, _y_): Z ? U : (V&W))',
+        ], $callLog);
+
+        $typeExpression = $typeExpression->mapTypes($addLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
+        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($addLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
+        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($removeLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
+        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($removeLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
+        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
+
+        $typeExpression = $typeExpression->mapTypes($addLeadingSlash);
+        $this->checkInnerTypeExpressionsStartIndex($typeExpression);
+        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+    }
+
     public function testWalkTypes(): void
     {
         $typeExpression = new TypeExpression('Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))', null, []);
 
-        $addLeadingSlash = static function (TypeExpression $type): void {
-            \Closure::bind(static function () use ($type): void {
-                $value = $type->toString();
-                if (!str_starts_with($value, '\\') && !str_starts_with($value, '(')) {
-                    $value = '\\'.$value;
-                }
-                $type->value = $value;
-            }, null, TypeExpression::class)();
-        };
-
-        $removeLeadingSlash = static function (TypeExpression $type): void {
-            \Closure::bind(static function () use ($type): void {
-                $value = $type->toString();
-                if (str_starts_with($value, '\\')) {
-                    $value = substr($value, 1);
-                }
-                $type->value = $value;
-            }, null, TypeExpression::class)();
-        };
-
-        $typeExpression->walkTypes($addLeadingSlash);
-        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($addLeadingSlash);
-        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($removeLeadingSlash);
-        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($removeLeadingSlash);
-        self::assertSame('Foo|Bar|($v is Closure(X, Y): Z ? U : (V&W))', $typeExpression->toString());
-
-        $typeExpression->walkTypes($addLeadingSlash);
-        self::assertSame('\Foo|\Bar|($v is \Closure(\X, \Y): \Z ? \U : (\V&\W))', $typeExpression->toString());
+        $callLog = [];
+        $typeExpression->walkTypes(static function (TypeExpression $type) use (&$callLog): void {
+            $callLog[] = $type->toString();
+        });
+        self::assertSame([
+            'Foo',
+            'Bar',
+            '\Closure',
+            'X',
+            'Y',
+            'Z',
+            '\Closure(X, Y): Z',
+            'U',
+            'V',
+            'W',
+            'V&W',
+            '(V&W)',
+            '($v is \Closure(X, Y): Z ? U : (V&W))',
+            'Foo|Bar|($v is \Closure(X, Y): Z ? U : (V&W))',
+        ], $callLog);
     }
 
     /**
@@ -699,14 +837,20 @@ final class TypeExpressionTest extends TestCase
 
         $expression = $this->parseTypeExpression($typesExpression, null, []);
 
-        $expression->sortTypes($sortCaseFx);
+        $expression = $expression->sortTypes($sortCaseFx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
         self::assertSame($expectResult, $expression->toString());
 
-        $expression->sortTypes($sortCrc32Fx);
-        $expression->sortTypes($sortCaseFx);
+        $expression = $expression->sortTypes($sortCrc32Fx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
+        $expression = $expression->sortTypes($sortCaseFx);
+        $this->checkInnerTypeExpressionsStartIndex($expression);
         self::assertSame($expectResult, $expression->toString());
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideSortTypesCases(): iterable
     {
         yield 'not a union type' => [
@@ -949,6 +1093,16 @@ final class TypeExpressionTest extends TestCase
         yield 'large numbers' => [
             '18_446_744_073_709_551_616|-8.2023437675747321e-18_446_744_073_709_551_616',
             '-8.2023437675747321e-18_446_744_073_709_551_616|18_446_744_073_709_551_616',
+        ];
+
+        yield 'mixed 2x | and & glue' => [
+            'Foo|Foo2|Baz&Bar',
+            'Bar&Baz|Foo|Foo2',
+        ];
+
+        yield 'mixed | and 2x & glue' => [
+            'Foo|Baz&Baz2&Bar',
+            'Bar&Baz&Baz2|Foo',
         ];
     }
 

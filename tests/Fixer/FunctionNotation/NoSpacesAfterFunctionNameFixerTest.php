@@ -35,6 +35,9 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'test function call' => [
@@ -230,6 +233,9 @@ $$e(2);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield 'test dynamic by array, curly mix' => [
@@ -253,6 +259,9 @@ $$e(2);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

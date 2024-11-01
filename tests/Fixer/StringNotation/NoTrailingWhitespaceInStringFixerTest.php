@@ -35,6 +35,9 @@ final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

@@ -9,6 +9,8 @@ parameters:
     paths:
         - src
         - tests
+        - php-cs-fixer
+        - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
     polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
@@ -46,13 +48,24 @@ parameters:
         - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
         - '/^Parameter .* of method PhpCsFixer\\Tests\\Test\\TokensWithObservedTransformers::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
 
-        # This one is tricky, because adding @param to PHPDoc causes failures on PHP7.4 with lowest deps (phpdoc_to_param_type), using @phpstan-param causes failures on all PHP versions (phpdoc_add_missing_param_annotation)
-        - '/^Parameter #1 \$class \(string\) of method PhpCsFixer\\StdinFileInfo::get(File|Path)+Info+\(\) should be contravariant with parameter \$class \(string\|null\) of method SplFileInfo::get(File|Path)+Info\(\)$/'
+        # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
+        - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
 
         # PHPUnit data providers return type were not maintained originally, this exception should shrink over time (eg with help of custom, re-usable type)
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 1009
+            count: 265
     tipsOfTheDay: false
     tmpDir: dev-tools/phpstan/cache
+
+services:
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
+        tags:
+            - phpstan.staticMethodParameterOutTypeExtension
+
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregMatchTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension

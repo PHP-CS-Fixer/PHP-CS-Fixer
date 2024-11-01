@@ -33,6 +33,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -252,6 +255,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
@@ -280,6 +286,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'Simple match' => [
@@ -330,6 +339,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [

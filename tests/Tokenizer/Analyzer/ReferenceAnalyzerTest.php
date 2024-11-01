@@ -52,6 +52,9 @@ final class ReferenceAnalyzerTest extends TestCase
         $this->doTestCode(true, $code);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideReferenceCases(): iterable
     {
         yield ['<?php $foo =& $bar;'];
@@ -99,6 +102,9 @@ class Foo {
         $this->doTestCode(false, $code);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideNonReferenceCases(): iterable
     {
         yield ['<?php $foo & $bar;'];

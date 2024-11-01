@@ -76,7 +76,7 @@ use Space\Models\ {
     /**
      * {@inheritdoc}
      *
-     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoUnusedImportsFixer, SpaceAfterSemicolonFixer.
+     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoLeadingImportSlashFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, SpaceAfterSemicolonFixer.
      */
     public function getPriority(): int
     {
@@ -213,10 +213,6 @@ use Space\Models\ {
     {
         [$groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment] = $this->getGroupDeclaration($tokens, $index);
         $statements = $this->getGroupStatements($tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment);
-
-        if (\count($statements) < 2) {
-            return;
-        }
 
         $tokens->clearRange($index, $groupCloseIndex);
         if ($tokens[$endIndex]->equals(';')) {

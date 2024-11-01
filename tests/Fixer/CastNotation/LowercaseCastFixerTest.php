@@ -38,7 +38,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
-        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
+        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'string', 'array', 'object', 'binary'];
 
         foreach ($types as $from) {
             yield from self::createCasesFor($from);

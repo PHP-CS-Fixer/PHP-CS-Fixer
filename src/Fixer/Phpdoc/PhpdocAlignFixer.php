@@ -438,9 +438,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                 $matches['hint'] = trim($matches['hint']);
             }
 
-            if (!isset($matches['static'])) {
-                $matches['static'] = '';
-            }
+            $matches['static'] ??= '';
 
             return $matches;
         }

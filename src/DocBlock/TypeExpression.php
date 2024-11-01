@@ -55,7 +55,8 @@ final class TypeExpression
             (?<nullable>\??\h*)
             (?:
                 (?<array_shape>
-                    (?<array_shape_start>(?i)(?:array|list|object)(?-i)\h*\{\h*)
+                    (?<array_shape_name>(?i)(?:array|list|object)(?-i))
+                    (?<array_shape_start>\h*\{\h*)
                     (?<array_shape_inners>
                         (?<array_shape_inner>
                             (?<array_shape_inner_key>(?:(?&constant)|(?&identifier)|(?&name))\h*\??\h*:\h*|)
@@ -119,7 +120,8 @@ final class TypeExpression
                 )
                 |
                 (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
-                    (?<generic_start>(?&name)\h*<\h*)
+                    (?<generic_name>(?&name))
+                    (?<generic_start>\h*<\h*)
                     (?<generic_types>
                         (?&types_inner)
                         (?:
@@ -132,7 +134,8 @@ final class TypeExpression
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
-                    (?&name)::\*?(?:(?&identifier)\*?)*
+                    (?<class_constant_name>(?&name))
+                    ::\*?(?:(?&identifier)\*?)*
                 )
                 |
                 (?<constant> # single constant value (case insensitive), e.g.: 1, -1.8E+6, `\'a\'`
@@ -208,20 +211,17 @@ final class TypeExpression
 
     private string $value;
 
-    private bool $isUnionType = false;
+    private bool $isCompositeType;
 
-    private string $typesGlue = '|';
+    /** @var null|'&'|'|' */
+    private ?string $typesGlue = null;
 
-    /**
-     * @var list<array{start_index: int, expression: self}>
-     */
+    /** @var list<array{start_index: int, expression: self}> */
     private array $innerTypeExpressions = [];
 
     private ?NamespaceAnalysis $namespace;
 
-    /**
-     * @var list<NamespaceUseAnalysis>
-     */
+    /** @var list<NamespaceUseAnalysis> */
     private array $namespaceUses;
 
     /**
@@ -246,7 +246,7 @@ final class TypeExpression
      */
     public function getTypes(): array
     {
-        if ($this->isUnionType) {
+        if ($this->isCompositeType) {
             return array_map(
                 static fn (array $type) => $type['expression']->toString(),
                 $this->innerTypeExpressions,
@@ -256,14 +256,65 @@ final class TypeExpression
         return [$this->value];
     }
 
-    public function isUnionType(): bool
+    /**
+     * Determines if type expression is a composite type (union or intersection).
+     */
+    public function isCompositeType(): bool
     {
-        return $this->isUnionType;
+        return $this->isCompositeType;
     }
 
-    public function getTypesGlue(): string
+    public function isUnionType(): bool
+    {
+        return $this->isCompositeType && '|' === $this->typesGlue;
+    }
+
+    public function isIntersectionType(): bool
+    {
+        return $this->isCompositeType && '&' === $this->typesGlue;
+    }
+
+    /**
+     * @return null|'&'|'|'
+     */
+    public function getTypesGlue(): ?string
     {
         return $this->typesGlue;
+    }
+
+    /**
+     * @param \Closure(self): self $callback
+     */
+    public function mapTypes(\Closure $callback): self
+    {
+        $value = $this->value;
+        $startIndexOffset = 0;
+
+        foreach ($this->innerTypeExpressions as [
+            'start_index' => $startIndexOrig,
+            'expression' => $inner,
+        ]) {
+            $innerValueOrig = $inner->value;
+
+            $inner = $inner->mapTypes($callback);
+
+            if ($inner->value !== $innerValueOrig) {
+                $value = substr_replace(
+                    $value,
+                    $inner->value,
+                    $startIndexOrig + $startIndexOffset,
+                    \strlen($innerValueOrig)
+                );
+
+                $startIndexOffset += \strlen($inner->value) - \strlen($innerValueOrig);
+            }
+        }
+
+        $type = $value === $this->value
+            ? $this
+            : $this->inner($value);
+
+        return $callback($type);
     }
 
     /**
@@ -271,54 +322,39 @@ final class TypeExpression
      */
     public function walkTypes(\Closure $callback): void
     {
-        $innerValueOrig = $this->value;
+        $this->mapTypes(static function (self $type) use ($callback) {
+            $valueOrig = $type->value;
+            $callback($type);
+            \assert($type->value === $valueOrig);
 
-        $startIndexOffset = 0;
-
-        foreach ($this->innerTypeExpressions as [
-            'start_index' => $startIndexOrig,
-            'expression' => $inner,
-        ]) {
-            $innerLengthOrig = \strlen($inner->toString());
-
-            $inner->walkTypes($callback);
-
-            $this->value = substr_replace(
-                $this->value,
-                $inner->toString(),
-                $startIndexOrig + $startIndexOffset,
-                $innerLengthOrig
-            );
-
-            $startIndexOffset += \strlen($inner->toString()) - $innerLengthOrig;
-        }
-
-        $callback($this);
-
-        if ($this->value !== $innerValueOrig) {
-            $this->isUnionType = false;
-            $this->typesGlue = '|';
-            $this->innerTypeExpressions = [];
-
-            $this->parse();
-        }
+            return $type;
+        });
     }
 
     /**
      * @param \Closure(self, self): (-1|0|1) $compareCallback
      */
-    public function sortTypes(\Closure $compareCallback): void
+    public function sortTypes(\Closure $compareCallback): self
     {
-        $this->walkTypes(static function (self $type) use ($compareCallback): void {
-            if ($type->isUnionType) {
-                $type->innerTypeExpressions = Utils::stableSort(
+        return $this->mapTypes(function (self $type) use ($compareCallback): self {
+            if ($type->isCompositeType) {
+                $innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
-                    static fn (array $type): self => $type['expression'],
+                    static fn (array $v): self => $v['expression'],
                     $compareCallback,
                 );
 
-                $type->value = implode($type->getTypesGlue(), $type->getTypes());
+                if ($innerTypeExpressions !== $type->innerTypeExpressions) {
+                    $value = implode(
+                        $type->getTypesGlue(),
+                        array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions)
+                    );
+
+                    return $this->inner($value);
+                }
             }
+
+            return $type;
         });
     }
 
@@ -376,10 +412,13 @@ final class TypeExpression
 
     private function parse(): void
     {
+        $seenGlues = null;
+        $innerValues = [];
+
         $index = 0;
         while (true) {
             Preg::match(
-                '{\G'.self::REGEX_TYPE.'(?:\h*(?<glue>[|&])\h*|$)}',
+                '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
                 PREG_OFFSET_CAPTURE,
@@ -390,18 +429,24 @@ final class TypeExpression
                 throw new \Exception('Unable to parse phpdoc type '.var_export($this->value, true));
             }
 
-            if (!$this->isUnionType) {
+            if (null === $seenGlues) {
                 if (($matches['glue'][0] ?? '') === '') {
                     break;
                 }
 
-                $this->isUnionType = true;
-                $this->typesGlue = $matches['glue'][0];
+                $seenGlues = ['|' => false, '&' => false];
             }
 
-            $this->innerTypeExpressions[] = [
+            if (($matches['glue'][0] ?? '') !== '') {
+                \assert(isset($seenGlues[$matches['glue'][0]]));
+                $seenGlues[$matches['glue'][0]] = true;
+            }
+
+            $innerValues[] = [
                 'start_index' => $index,
-                'expression' => $this->inner($matches['type'][0]),
+                'value' => $matches['type'][0],
+                'next_glue' => $matches['glue'][0] ?? null,
+                'next_glue_raw' => $matches['glue_raw'][0] ?? null,
             ];
 
             $consumedValueLength = \strlen($matches[0][0]);
@@ -410,27 +455,82 @@ final class TypeExpression
             if (\strlen($this->value) <= $index) {
                 \assert(\strlen($this->value) === $index);
 
+                $seenGlues = array_filter($seenGlues);
+                \assert([] !== $seenGlues);
+
+                $this->isCompositeType = true;
+                $this->typesGlue = array_key_first($seenGlues);
+
+                if (1 === \count($seenGlues)) {
+                    foreach ($innerValues as $innerValue) {
+                        $this->innerTypeExpressions[] = [
+                            'start_index' => $innerValue['start_index'],
+                            'expression' => $this->inner($innerValue['value']),
+                        ];
+                    }
+                } else {
+                    for ($i = 0; $i < \count($innerValues); ++$i) {
+                        $innerStartIndex = $innerValues[$i]['start_index'];
+                        $innerValue = '';
+                        while (true) {
+                            $innerValue .= $innerValues[$i]['value'];
+
+                            if (($innerValues[$i]['next_glue'] ?? $this->typesGlue) === $this->typesGlue) {
+                                break;
+                            }
+
+                            $innerValue .= $innerValues[$i]['next_glue_raw'];
+
+                            ++$i;
+                        }
+
+                        $this->innerTypeExpressions[] = [
+                            'start_index' => $innerStartIndex,
+                            'expression' => $this->inner($innerValue),
+                        ];
+                    }
+                }
+
                 return;
             }
         }
 
-        $nullableLength = \strlen($matches['nullable'][0]);
-        $index = $nullableLength;
+        $this->isCompositeType = false;
 
-        if ('' !== ($matches['generic'][0] ?? '') && $matches['generic'][1] === $nullableLength) {
+        if ('' !== $matches['nullable'][0]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => \strlen($matches['nullable'][0]),
+                'expression' => $this->inner(substr($matches['type'][0], \strlen($matches['nullable'][0]))),
+            ];
+        } elseif ('' !== $matches['array'][0]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner(substr($matches['type'][0], 0, -\strlen($matches['array'][0]))),
+            ];
+        } elseif ('' !== ($matches['generic'][0] ?? '') && 0 === $matches['generic'][1]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['generic_name'][0]),
+            ];
+
             $this->parseCommaSeparatedInnerTypes(
-                $index + \strlen($matches['generic_start'][0]),
+                \strlen($matches['generic_name'][0]) + \strlen($matches['generic_start'][0]),
                 $matches['generic_types'][0]
             );
-        } elseif ('' !== ($matches['callable'][0] ?? '') && $matches['callable'][1] === $nullableLength) {
+        } elseif ('' !== ($matches['callable'][0] ?? '') && 0 === $matches['callable'][1]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['callable_name'][0]),
+            ];
+
             $this->parseCallableTemplateInnerTypes(
-                $index + \strlen($matches['callable_name'][0])
+                \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template_start'][0]),
                 $matches['callable_template_inners'][0]
             );
 
             $this->parseCallableArgumentTypes(
-                $index + \strlen($matches['callable_name'][0])
+                \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template'][0])
                     + \strlen($matches['callable_start'][0]),
                 $matches['callable_arguments'][0]
@@ -442,13 +542,18 @@ final class TypeExpression
                     'expression' => $this->inner($matches['callable_return'][0]),
                 ];
             }
-        } elseif ('' !== ($matches['array_shape'][0] ?? '') && $matches['array_shape'][1] === $nullableLength) {
+        } elseif ('' !== ($matches['array_shape'][0] ?? '') && 0 === $matches['array_shape'][1]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['array_shape_name'][0]),
+            ];
+
             $this->parseArrayShapeInnerTypes(
-                $index + \strlen($matches['array_shape_start'][0]),
+                \strlen($matches['array_shape_name'][0]) + \strlen($matches['array_shape_start'][0]),
                 $matches['array_shape_inners'][0]
             );
-        } elseif ('' !== ($matches['parenthesized'][0] ?? '') && $matches['parenthesized'][1] === $nullableLength) {
-            $index += \strlen($matches['parenthesized_start'][0]);
+        } elseif ('' !== ($matches['parenthesized'][0] ?? '') && 0 === $matches['parenthesized'][1]) {
+            $index = \strlen($matches['parenthesized_start'][0]);
 
             if ('' !== ($matches['conditional'][0] ?? '')) {
                 if ('' !== ($matches['conditional_cond_left_types'][0] ?? '')) {
@@ -484,6 +589,11 @@ final class TypeExpression
                     'expression' => $this->inner($matches['parenthesized_types'][0]),
                 ];
             }
+        } elseif ('' !== $matches['class_constant'][0]) {
+            $this->innerTypeExpressions[] = [
+                'start_index' => 0,
+                'expression' => $this->inner($matches['class_constant_name'][0]),
+            ];
         }
     }
 

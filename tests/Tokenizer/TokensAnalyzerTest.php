@@ -1283,6 +1283,20 @@ abstract class Baz
             [3 => false, 11 => false, 18 => false],
             '<?php interface Foo { public function bar(): ?\Baz; }',
         ];
+
+        yield [
+            [3 => true],
+            '<?php foreach(FOO as $foo) {}',
+        ];
+
+        yield [
+            [
+                3 => false,
+                5 => false,
+                9 => false,
+            ],
+            '<?php use Foo\Bir as FBB;',
+        ];
     }
 
     /**
@@ -1473,6 +1487,14 @@ abstract class Baz
         yield [
             [3 => false, 8 => false, 10 => false, 14 => false, 17 => false, 20 => false, 22 => false, 25 => false, 28 => false, 30 => false, 32 => false, 36 => false, 39 => false, 41 => false],
             '<?php function foo ((\A&B)|(C&\D)|E\F|\G|(A&H\I)|(A&\J\K) $var) {}',
+        ];
+
+        yield [
+            [3 => false, 6 => false, 12 => false],
+            '<?php enum someEnum: int
+                {
+                    case E_ERROR = 123;
+                }',
         ];
     }
 
@@ -1835,23 +1857,8 @@ abstract class Baz
         ];
 
         yield [
-            [3],
-            '<?php $a && $b;',
-        ];
-
-        yield [
-            [3],
-            '<?php $a & $b;',
-        ];
-
-        yield [
             [4],
             '<?php [] + [];',
-        ];
-
-        yield [
-            [3],
-            '<?php $a + $b;',
         ];
 
         yield [
@@ -1968,7 +1975,7 @@ $b;',
 
         $operators = [
             '+', '-', '*', '/', '%', '<', '>', '|', '^', '&=', '&&', '||', '.=', '/=', '==', '>=', '===', '!=',
-            '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=', '^',
+            '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=',
         ];
 
         foreach ($operators as $operator) {
@@ -1994,11 +2001,6 @@ $b;',
         ];
 
         yield [
-            [3],
-            '<?php $a ??= $b;',
-        ];
-
-        yield [
             [5, 11],
             '<?php fn() => $object->property & A_CONSTANT;',
         ];
@@ -2016,6 +2018,9 @@ $b;',
         self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), \sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
+    /**
+     * @return iterable<array{0: string, 1: int, 2?: bool}>
+     */
     public static function provideIsArrayCases(): iterable
     {
         yield [
@@ -2261,6 +2266,9 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
+    /**
+     * @return iterable<array{string, int}>
+     */
     public static function provideArrayExceptionsCases(): iterable
     {
         yield ['<?php $a;', 1];
@@ -2292,6 +2300,9 @@ $b;',
         self::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
     }
 
+    /**
+     * @return iterable<array{bool, string, int}>
+     */
     public static function provideIsBlockMultilineCases(): iterable
     {
         yield [
@@ -2818,6 +2829,9 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
+    /**
+     * @return iterable<array{bool, string, int}>
+     */
     public static function provideIsSuperGlobalCases(): iterable
     {
         $superNames = [

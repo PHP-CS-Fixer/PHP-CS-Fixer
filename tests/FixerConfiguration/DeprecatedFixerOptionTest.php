@@ -59,6 +59,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         self::assertSame(!$isRequired, $option->hasDefault());
     }
 
+    /**
+     * @return iterable<array{bool}>
+     */
     public static function provideHasDefaultCases(): iterable
     {
         yield [true];
@@ -81,6 +84,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         self::assertSame($default, $option->getDefault());
     }
 
+    /**
+     * @return iterable<array{bool|string}>
+     */
     public static function provideGetDefaultCases(): iterable
     {
         yield ['foo'];

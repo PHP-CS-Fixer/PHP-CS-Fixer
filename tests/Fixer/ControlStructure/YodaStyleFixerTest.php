@@ -203,11 +203,6 @@ if ($a = $obj instanceof A === true) {
         ];
 
         yield [
-            '<?php 1 === new $a ? 1 : 2;',
-            '<?php new $a === 1 ? 1 : 2;',
-        ];
-
-        yield [
             '<?php $a = 1 === new b ? 1 : 2;',
             '<?php $a = new b === 1 ? 1 : 2;',
         ];
@@ -537,12 +532,6 @@ $a#4
         ];
 
         yield [
-            '<?php $e = count($this->array[$var]) === $a;',
-            '<?php $e = $a === count($this->array[$var]);',
-            ['always_move_variable' => true],
-        ];
-
-        yield [
             '<?php $g = ($a789 & self::MY_BITMASK) === $a;',
             null,
             ['always_move_variable' => true],
@@ -731,11 +720,6 @@ $a#4
         ];
 
         yield [
-            '<?php $a %= 4 === $b ? 2 : 3;',
-            '<?php $a %= $b === 4 ? 2 : 3;',
-        ];
-
-        yield [
             '<?php return array() === $array;',
             '<?php return $array === array();',
         ];
@@ -890,11 +874,6 @@ switch ($a) {
                 'less_and_greater' => false,
             ],
         ];
-
-        yield [
-            '<?php $a ??= 4 === $b ? 2 : 3;',
-            '<?php $a ??= $b === 4 ? 2 : 3;',
-        ];
     }
 
     /**
@@ -917,6 +896,9 @@ switch ($a) {
         $this->doTest($input, $expected);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideLessGreaterCases(): iterable
     {
         yield [
@@ -1007,6 +989,9 @@ switch ($a) {
         }
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function providePHP71Cases(): iterable
     {
         // no fix cases
@@ -1020,15 +1005,9 @@ switch ($a) {
 
         yield ['<?php ["a" => $a, "b" => $b, "c" => $c] = $a[0];'];
 
-        yield ['<?php list("a" => $a, "b" => $b, "c" => $c) = $c === array(1) ? $b : $d;'];
-
         yield ['<?php $b = 7 === [$a] = [7];']; // makes no sense, but valid PHP syntax
 
-        yield ['<?php $b = 7 === [$a] = [7];'];
-
         yield ['<?php [$a] = $c === array(1) ? $b : $d;'];
-
-        yield ['<?php $b = 7 === [$a] = [7];'];
 
         yield ['<?php $z = $n == [$a] = $b;'];
 
@@ -1117,6 +1096,9 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixPrePHP80Cases(): iterable
     {
         yield [
@@ -1202,6 +1184,9 @@ if ($a = $obj instanceof (foo()) === true) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'does not make a lot of sense but is valid syntax, do not break 1' => [

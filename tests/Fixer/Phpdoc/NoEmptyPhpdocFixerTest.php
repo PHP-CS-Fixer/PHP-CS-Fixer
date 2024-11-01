@@ -33,6 +33,9 @@ final class NoEmptyPhpdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'multiple PHPdocs' => [

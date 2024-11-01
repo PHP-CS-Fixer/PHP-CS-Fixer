@@ -214,9 +214,21 @@ final class Annotation
      */
     public function setTypes(array $types): void
     {
-        $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
+        $origTypesContent = $this->getTypesContent();
+        $newTypesContent = implode(
+            // Fallback to union type is provided for backward compatibility (previously glue was set to `|` by default even when type was not composite)
+            // @TODO Better handling for cases where type is fixed (original type is not composite, but was made composite during fix)
+            $this->getTypeExpression()->getTypesGlue() ?? '|',
+            $types
+        );
 
-        $this->lines[0]->setContent(Preg::replace($pattern, implode($this->getTypeExpression()->getTypesGlue(), $types), $this->lines[0]->getContent(), 1));
+        if ($origTypesContent === $newTypesContent) {
+            return;
+        }
+
+        $pattern = '/'.preg_quote($origTypesContent, '/').'/';
+
+        $this->lines[0]->setContent(Preg::replace($pattern, $newTypesContent, $this->lines[0]->getContent(), 1));
 
         $this->clearCache();
     }
@@ -228,11 +240,17 @@ final class Annotation
      */
     public function getNormalizedTypes(): array
     {
-        $normalized = array_map(static fn (string $type): string => strtolower($type), $this->getTypes());
+        $typeExpression = $this->getTypeExpression();
+        if (null === $typeExpression) {
+            return [];
+        }
 
-        sort($normalized);
+        $normalizedTypeExpression = $typeExpression
+            ->mapTypes(static fn (TypeExpression $v) => new TypeExpression(strtolower($v->toString()), null, []))
+            ->sortTypes(static fn (TypeExpression $a, TypeExpression $b) => $a->toString() <=> $b->toString())
+        ;
 
-        return $normalized;
+        return $normalizedTypeExpression->getTypes();
     }
 
     /**

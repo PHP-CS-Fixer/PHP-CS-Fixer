@@ -3009,26 +3009,6 @@ function foo()
     trait TFoo {public $a;}',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE,
         ];
-
-        yield [
-            '<?php
-    trait TFoo
-    {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
-        ];
-
-        yield [
-            '<?php
-    trait TFoo {
-        public $a;
-    }',
-            '<?php
-    trait TFoo {public $a;}',
-            self::CONFIGURATION_OOP_POSITION_SAME_LINE,
-        ];
     }
 
     /**
@@ -3981,21 +3961,6 @@ class Foo
 
         yield [
             '<?php
-    if (true === true
-        && true === true
-    ) {
-    }',
-            '<?php
-    if(true === true
-        && true === true
-    )
-    {
-    }',
-            self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-        ];
-
-        yield [
-            '<?php
     if ($foo)
     {
     }
@@ -4368,13 +4333,6 @@ declare   (   ticks   =   1   )   {
     if (true) {
     }',
             self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
-        ];
-
-        yield [
-            '<?php
-    use function Foo\bar;
-    if (true) {
-    }',
         ];
     }
 
@@ -5253,6 +5211,9 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixWithAllowSingleLineClosureCases(): iterable
     {
         yield [
@@ -5296,6 +5257,9 @@ if (true) {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideDoWhileLoopInsideAnIfWithoutBracketsCases(): iterable
     {
         yield [
@@ -5390,6 +5354,9 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideNowdocInTemplatesCases(): iterable
     {
         yield [
@@ -5448,6 +5415,9 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
         $this->doTest(str_replace('//', '#', $expected), null === $input ? null : str_replace('//', '#', $input));
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCommentsCases(): iterable
     {
         yield [
@@ -5667,6 +5637,9 @@ function example()
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1: string, 2?: WhitespacesFixerConfig}>
+     */
     public static function provideIndentCommentCases(): iterable
     {
         yield [
@@ -5753,6 +5726,9 @@ return foo($i);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixAlternativeSyntaxCases(): iterable
     {
         yield [
@@ -5958,6 +5934,9 @@ break;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'match' => [
@@ -5981,6 +5960,9 @@ break;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'enum' => [

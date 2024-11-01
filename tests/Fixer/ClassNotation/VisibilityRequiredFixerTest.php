@@ -641,6 +641,9 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -675,6 +678,9 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -771,6 +777,9 @@ var_dump(Foo::CAT->test());',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [

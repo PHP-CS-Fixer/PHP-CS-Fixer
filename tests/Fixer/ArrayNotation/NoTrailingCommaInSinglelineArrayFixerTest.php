@@ -35,6 +35,9 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php $x = array();'];

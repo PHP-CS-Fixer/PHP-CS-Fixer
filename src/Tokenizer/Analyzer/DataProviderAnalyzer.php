@@ -38,20 +38,21 @@ final class DataProviderAnalyzer
 
         $dataProviders = [];
         foreach ($methods as $methodIndex) {
-            $docCommentIndex = $tokens->getTokenNotOfKindSibling(
-                $methodIndex,
-                -1,
-                [[T_ABSTRACT], [T_COMMENT], [T_FINAL], [T_FUNCTION], [T_PRIVATE], [T_PROTECTED], [T_PUBLIC], [T_STATIC], [T_WHITESPACE]]
-            );
+            $docCommentIndex = $this->getDocCommentIndex($tokens, $methodIndex);
 
-            if (!$tokens[$docCommentIndex]->isGivenKind(T_DOC_COMMENT)) {
-                continue;
-            }
+            if (null !== $docCommentIndex) {
+                Preg::matchAll(
+                    '/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/',
+                    $tokens[$docCommentIndex]->getContent(),
+                    $matches,
+                    PREG_OFFSET_CAPTURE
+                );
 
-            Preg::matchAll('/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/', $tokens[$docCommentIndex]->getContent(), $matches);
+                foreach ($matches[1] as $k => [$matchName]) {
+                    \assert(isset($matches[0][$k]));
 
-            foreach ($matches[1] as $dataProviderName) {
-                $dataProviders[$dataProviderName][] = $docCommentIndex;
+                    $dataProviders[$matchName][] = [$docCommentIndex, $matches[0][$k][1]];
+                }
             }
         }
 
@@ -94,5 +95,21 @@ final class DataProviderAnalyzer
         }
 
         return $functions;
+    }
+
+    private function getDocCommentIndex(Tokens $tokens, int $index): ?int
+    {
+        $docCommentIndex = null;
+        while (!$tokens[$index]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+            --$index;
+
+            if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                $docCommentIndex = $index;
+
+                break;
+            }
+        }
+
+        return $docCommentIndex;
     }
 }

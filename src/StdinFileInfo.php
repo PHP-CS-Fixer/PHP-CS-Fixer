@@ -58,6 +58,9 @@ final class StdinFileInfo extends \SplFileInfo
         return '.php';
     }
 
+    /**
+     * @param null|class-string<\SplFileInfo> $class
+     */
     public function getFileInfo($class = null): \SplFileInfo
     {
         throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
@@ -105,6 +108,9 @@ final class StdinFileInfo extends \SplFileInfo
         return '';
     }
 
+    /**
+     * @param null|class-string<\SplFileInfo> $class
+     */
     public function getPathInfo($class = null): \SplFileInfo
     {
         throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
@@ -164,8 +170,4 @@ final class StdinFileInfo extends \SplFileInfo
     {
         throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
     }
-
-    public function setFileClass($className = null): void {}
-
-    public function setInfoClass($className = null): void {}
 }

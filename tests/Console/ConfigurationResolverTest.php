@@ -239,6 +239,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
+    /**
+     * @return iterable<array{0: string, 1: string, 2: string, 3?: string}>
+     */
     public static function provideResolveConfigFileChooseFileCases(): iterable
     {
         $dirBase = self::getFixtureDir();
@@ -1218,6 +1221,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
+    /**
+     * @return iterable<array{string, null|bool}>
+     */
     public static function provideResolveDifferCases(): iterable
     {
         yield [
@@ -1260,6 +1266,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
+    /**
+     * @return iterable<array{bool, bool, null|string}>
+     */
     public static function provideResolveBooleanOptionCases(): iterable
     {
         yield [true, true, 'yes'];
@@ -1348,6 +1357,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield ['@PER:risky', ['@PER-CS:risky']];
     }
 
+    /**
+     * @return iterable<array{null|string, string, string}>
+     */
     public static function provideGetDirectoryCases(): iterable
     {
         yield [null, '/my/path/my/file', 'my/file'];
@@ -1361,6 +1373,10 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     /**
      * @dataProvider provideGetDirectoryCases
+     *
+     * @param ?non-empty-string $cacheFile
+     * @param non-empty-string  $file
+     * @param non-empty-string  $expectedPathRelativeToFile
      */
     public function testGetDirectory(?string $cacheFile, string $file, string $expectedPathRelativeToFile): void
     {
@@ -1385,6 +1401,11 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
     }
 
+    /**
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
     private function normalizePath(string $path): string
     {
         return str_replace('/', \DIRECTORY_SEPARATOR, $path);
@@ -1426,7 +1447,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
     {
-        return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+        return new class extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
             /** @use ConfigurableFixerTrait<array<string, mixed>, array<string, mixed>> */
             use ConfigurableFixerTrait;
 
@@ -1463,7 +1484,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createToolInfoDouble(): ToolInfoInterface
     {
-        return new class() implements ToolInfoInterface {
+        return new class implements ToolInfoInterface {
             public function getComposerInstallationDetails(): array
             {
                 throw new \BadMethodCallException();
