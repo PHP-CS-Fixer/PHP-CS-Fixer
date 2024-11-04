@@ -31,7 +31,7 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
     public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[no_unused_imports\] Invalid configuration: The option "a" does not exist\. Defined options are: "comments_match_case"\.$#');
+        $this->expectExceptionMessageMatches('#^\[no_unused_imports\] Invalid configuration: The option "a" does not exist\. Defined options are: "comments_match_case", "comments_search_annotations_only"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
@@ -112,6 +112,69 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                     }
                 }
                 EOF,
+        ];
+
+        yield 'simple with comments_search_annotations_only configuration' => [
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+                use Foo\Bar\FooBar as FooBaz;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new SomeClass();
+
+                use Symfony\Annotation\Template;
+                use Symfony\Doctrine\Entities\Entity;
+                use Symfony\Array123\ArrayInterface;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar;
+                use Foo\Bar\Baz;
+                use Foo\Bar\FooBar as FooBaz;
+                use Foo\Bar\Foo as Fooo;
+                use Foo\Bar\Baar\Baar;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new SomeClass();
+
+                use Symfony\Annotation\Template;
+                use Symfony\Doctrine\Entities\Entity;
+                use Symfony\Array123\ArrayInterface;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+                    }
+                }
+                EOF,
+            ['comments_search_annotations_only' => true],
         ];
 
         yield 'with_indents' => [
@@ -1107,7 +1170,7 @@ $b = $a-->ABC::Test;
                 EOF,
         ];
 
-        yield [
+        yield 'invoke' => [
             '<?php
 use App\Http\Requests\StoreRequest;
 
@@ -1131,6 +1194,33 @@ class StoreController
     public function __invoke(StoreRequest $request)
     {}
 }',
+        ];
+
+        yield 'invoke with comments_search_annotations_only configuration' => [
+            '<?php
+use App\Http\Requests\StoreRequest;
+
+class StoreController
+{
+    /**
+     * @param \App\Http\Requests\StoreRequest $request
+     */
+    public function __invoke(StoreRequest $request)
+    {}
+}',
+            '<?php
+use App\Http\Requests\StoreRequest;
+use Illuminate\Http\Request;
+
+class StoreController
+{
+    /**
+     * @param \App\Http\Requests\StoreRequest $request
+     */
+    public function __invoke(StoreRequest $request)
+    {}
+}',
+            ['comments_search_annotations_only' => true],
         ];
 
         yield 'unused import matching function call' => [
@@ -1489,6 +1579,24 @@ Bar3:
                 new DateTime();
             ',
             ['comments_match_case' => true],
+        ];
+
+        yield 'with comments_search_annotations_only configuration' => [
+            '<?php
+                use \DateTime;
+
+                // Throwable is the exception to the rule
+                new DateTime();
+            ',
+            '<?php
+                use \DateTime;
+                use \Exception;
+                use \Throwable;
+
+                // Throwable is the exception to the rule
+                new DateTime();
+            ',
+            ['comments_search_annotations_only' => true],
         ];
     }
 
