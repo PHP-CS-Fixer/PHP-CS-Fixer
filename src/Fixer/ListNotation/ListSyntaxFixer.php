@@ -51,7 +51,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.',
+            'List (`array` destructuring) assignment should be declared using the configured syntax.',
             [
                 new CodeSample(
                     "<?php\nlist(\$sample) = \$array;\n"

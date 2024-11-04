@@ -3,7 +3,7 @@ Rule ``combine_nested_dirname``
 ===============================
 
 Replace multiple nested calls of ``dirname`` by only one call with second
-``$level`` parameter. Requires PHP >= 7.0.
+``$level`` parameter.
 
 Warning
 -------

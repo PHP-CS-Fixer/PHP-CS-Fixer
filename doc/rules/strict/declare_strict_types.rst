@@ -2,7 +2,7 @@
 Rule ``declare_strict_types``
 =============================
 
-Force strict types declaration in all files. Requires PHP >= 7.0.
+Force strict types declaration in all files.
 
 Warning
 -------
