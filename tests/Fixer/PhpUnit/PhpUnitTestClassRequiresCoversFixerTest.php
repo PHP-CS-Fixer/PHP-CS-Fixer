@@ -448,4 +448,62 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
     }
+
+    /**
+     * @dataProvider provideFixUnit11Cases
+     *
+     * @requires PHP Unit >=11.1
+     */
+    public function testFixUnit11(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFixUnit11Cases(): iterable
+    {
+        yield 'already with attribute CoversMethod' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversMethod(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with imported attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\TestCase;
+                use PHPUnit\Framework\Attributes\CoversMethod;
+                #[CoversMethod(Foo::class)]
+                class FooTest extends TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially imported attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes;
+                #[Attributes\CoversMethod(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with aliased attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversMethod as PHPUnitCoversMethod;
+                #[PHPUnitCoversMethod(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially aliased attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+                #[PHPUnitAttributes\CoversMethod(Foo::class)]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+    }
 }
