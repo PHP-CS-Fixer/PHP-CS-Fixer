@@ -452,7 +452,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     /**
      * @dataProvider provideFixUnit11Cases
      *
-     * @requires PHP Unit >=11.1
+     * @requires PHP 8.3
      */
     public function testFixUnit11(string $expected, ?string $input = null): void
     {
