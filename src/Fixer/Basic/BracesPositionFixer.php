@@ -387,9 +387,13 @@ $bar = function () { $result = true;
                 continue;
             }
 
-            for ($prevIndex = $closeBraceIndex - 1; $tokens->isEmptyAt($prevIndex); --$prevIndex);
+            $prevIndex = $closeBraceIndex - 1;
+            while ($tokens->isEmptyAt($prevIndex)) {
+                --$prevIndex;
+            }
 
             $prevToken = $tokens[$prevIndex];
+
             if ($prevToken->isWhitespace() && Preg::match('/\R/', $prevToken->getContent())) {
                 continue;
             }
