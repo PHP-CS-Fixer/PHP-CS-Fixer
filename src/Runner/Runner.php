@@ -31,6 +31,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
@@ -182,6 +183,8 @@ final class Runner
      */
     private function fixParallel(): array
     {
+        $this->dispatchEvent(AnalysisStarted::NAME, new AnalysisStarted(AnalysisStarted::MODE_PARALLEL, $this->isDryRun));
+
         $changed = [];
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
@@ -376,6 +379,8 @@ final class Runner
      */
     private function fixSequential(): array
     {
+        $this->dispatchEvent(AnalysisStarted::NAME, new AnalysisStarted(AnalysisStarted::MODE_SEQUENTIAL, $this->isDryRun));
+
         $changed = [];
         $collection = $this->getLintingFileIterator();
 
