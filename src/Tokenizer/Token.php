@@ -32,7 +32,7 @@ final class Token
     /**
      * ID of token prototype, if available.
      */
-    private ?int $id = null;
+    private ?int $id;
 
     /**
      * If token prototype is an array.
@@ -73,6 +73,7 @@ final class Token
             $this->content = $token[1];
         } elseif (\is_string($token)) {
             $this->isArray = false;
+            $this->id = null;
             $this->content = $token;
         } else {
             throw new \InvalidArgumentException(\sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
