@@ -40,11 +40,6 @@ final class Token
     private bool $isArray;
 
     /**
-     * Flag is token was changed.
-     */
-    private bool $changed = false;
-
-    /**
      * @param array{int, string}|string $token token prototype
      */
     public function __construct($token)
@@ -498,7 +493,7 @@ final class Token
             'name' => $this->getName(),
             'content' => $this->content,
             'isArray' => $this->isArray,
-            'changed' => $this->changed,
+            'changed' => false, // @TODO v4: remove index
         ];
     }
 
