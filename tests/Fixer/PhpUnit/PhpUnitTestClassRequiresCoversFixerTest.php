@@ -394,6 +394,51 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 final class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
+
+        yield 'already with attribute CoversMethod' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversMethod(Foo::class, 'bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with imported CoversMethod attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\TestCase;
+                use PHPUnit\Framework\Attributes\CoversMethod;
+                #[CoversMethod(Foo::class, 'bar')]
+                class FooTest extends TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially imported CoversMethod attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes;
+                #[Attributes\CoversMethod(Foo::class, 'bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with aliased CoversMethod attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversMethod as PHPUnitCoversMethod;
+                #[PHPUnitCoversMethod(Foo::class, 'bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially aliased CoversMethod attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+                #[PHPUnitAttributes\CoversMethod(Foo::class, 'bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
     }
 
     /**
@@ -445,64 +490,6 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 <?php
                 #[PHPUnit\Framework\Attributes\CoversNothing]
                 final readonly class FooTest extends \PHPUnit_Framework_TestCase {}
-                PHP,
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixUnit11Cases
-     *
-     * @requires PHP 8.3
-     */
-    public function testFixUnit11(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixUnit11Cases(): iterable
-    {
-        yield 'already with attribute CoversMethod' => [
-            <<<'PHP'
-                <?php
-                #[PHPUnit\Framework\Attributes\CoversMethod(Foo::class)]
-                class FooTest extends \PHPUnit_Framework_TestCase {}
-                PHP,
-        ];
-
-        yield 'already with imported attribute' => [
-            <<<'PHP'
-                <?php
-                use PHPUnit\Framework\TestCase;
-                use PHPUnit\Framework\Attributes\CoversMethod;
-                #[CoversMethod(Foo::class)]
-                class FooTest extends TestCase {}
-                PHP,
-        ];
-
-        yield 'already with partially imported attribute' => [
-            <<<'PHP'
-                <?php
-                use PHPUnit\Framework\Attributes;
-                #[Attributes\CoversMethod(Foo::class)]
-                class FooTest extends \PHPUnit_Framework_TestCase {}
-                PHP,
-        ];
-
-        yield 'already with aliased attribute' => [
-            <<<'PHP'
-                <?php
-                use PHPUnit\Framework\Attributes\CoversMethod as PHPUnitCoversMethod;
-                #[PHPUnitCoversMethod(Foo::class)]
-                class FooTest extends \PHPUnit_Framework_TestCase {}
-                PHP,
-        ];
-
-        yield 'already with partially aliased attribute' => [
-            <<<'PHP'
-                <?php
-                use PHPUnit\Framework\Attributes as PHPUnitAttributes;
-                #[PHPUnitAttributes\CoversMethod(Foo::class)]
-                class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
     }
