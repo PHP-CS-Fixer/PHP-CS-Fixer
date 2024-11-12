@@ -168,7 +168,7 @@ final class Runner
 
         if (
             1 === $this->parallelConfig->getMaxProcesses()
-            // @TODO 4.0: || $this->fileCount <= $this->parallelConfig->getFilesPerProcess()
+            || $this->fileCount <= $this->parallelConfig->getFilesPerProcess()
         ) {
             return $this->fixSequential();
         }
