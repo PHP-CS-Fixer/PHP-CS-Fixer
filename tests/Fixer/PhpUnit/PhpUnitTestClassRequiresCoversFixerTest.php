@@ -439,6 +439,51 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
+
+        yield 'already with attribute CoversFunction' => [
+            <<<'PHP'
+                <?php
+                #[PHPUnit\Framework\Attributes\CoversFunction('bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with imported CoversFunction attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\TestCase;
+                use PHPUnit\Framework\Attributes\CoversFunction;
+                #[CoversFunction('bar')]
+                class FooTest extends TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially imported CoversFunction attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes;
+                #[Attributes\CoversFunction('bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with aliased CoversFunction attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversFunction as PHPUnitCoversFunction;
+                #[PHPUnitCoversFunction('bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with partially aliased CoversFunction attribute' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes as PHPUnitAttributes;
+                #[PHPUnitAttributes\CoversFunction('bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
     }
 
     /**
