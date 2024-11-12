@@ -14,21 +14,21 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner\Event;
 
-use PhpCsFixer\Runner\Event\FileProcessed;
+use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
+ * @covers \PhpCsFixer\Runner\Event\AnalysisStarted
  *
- * @covers \PhpCsFixer\Runner\Event\FileProcessed
+ * @internal
  */
-final class FileProcessedTest extends TestCase
+final class AnalysisStartedTest extends TestCase
 {
-    public function testFileProcessedEvent(): void
+    public function testAnalysisStartedEvent(): void
     {
-        $status = FileProcessed::STATUS_NO_CHANGES;
-        $event = new FileProcessed($status);
+        $event = new AnalysisStarted(AnalysisStarted::MODE_SEQUENTIAL, true);
 
-        self::assertSame($status, $event->getStatus());
+        self::assertSame('sequential', $event->getMode());
+        self::assertTrue($event->isDryRun());
     }
 }
