@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\FileFilterIterator;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -38,8 +38,8 @@ final class FileFilterIteratorTest extends TestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
-            FixerFileProcessedEvent::NAME,
-            static function (FixerFileProcessedEvent $event) use (&$events): void {
+            FileProcessed::NAME,
+            static function (FileProcessed $event) use (&$events): void {
                 $events[] = $event;
             }
         );
@@ -80,8 +80,8 @@ final class FileFilterIteratorTest extends TestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
-            FixerFileProcessedEvent::NAME,
-            static function (FixerFileProcessedEvent $event) use (&$events): void {
+            FileProcessed::NAME,
+            static function (FileProcessed $event) use (&$events): void {
                 $events[] = $event;
             }
         );
@@ -95,11 +95,11 @@ final class FileFilterIteratorTest extends TestCase
         self::assertCount(0, $filter);
         self::assertCount(1, $events);
 
-        /** @var FixerFileProcessedEvent $event */
+        /** @var FileProcessed $event */
         $event = reset($events);
 
-        self::assertInstanceOf(FixerFileProcessedEvent::class, $event);
-        self::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
+        self::assertInstanceOf(FileProcessed::class, $event);
+        self::assertSame(FileProcessed::STATUS_SKIPPED, $event->getStatus());
     }
 
     public function testIgnoreEmptyFile(): void
@@ -110,8 +110,8 @@ final class FileFilterIteratorTest extends TestCase
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
-            FixerFileProcessedEvent::NAME,
-            static function (FixerFileProcessedEvent $event) use (&$events): void {
+            FileProcessed::NAME,
+            static function (FileProcessed $event) use (&$events): void {
                 $events[] = $event;
             }
         );
@@ -125,18 +125,18 @@ final class FileFilterIteratorTest extends TestCase
         self::assertCount(0, $filter);
         self::assertCount(1, $events);
 
-        /** @var FixerFileProcessedEvent $event */
+        /** @var FileProcessed $event */
         $event = reset($events);
 
-        self::assertInstanceOf(FixerFileProcessedEvent::class, $event);
-        self::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
+        self::assertInstanceOf(FileProcessed::class, $event);
+        self::assertSame(FileProcessed::STATUS_SKIPPED, $event->getStatus());
     }
 
     public function testIgnore(): void
     {
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
-            FixerFileProcessedEvent::NAME,
+            FileProcessed::NAME,
             static function (): void {
                 throw new \Exception('No event expected.');
             }
