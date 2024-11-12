@@ -493,7 +493,7 @@ final class Token
             'name' => $this->getName(),
             'content' => $this->content,
             'isArray' => $this->isArray,
-            'changed' => false, // @TODO v3: remove index
+            'changed' => false, // @TODO v4: remove index
         ];
     }
 
