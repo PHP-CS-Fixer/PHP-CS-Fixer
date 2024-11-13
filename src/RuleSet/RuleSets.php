@@ -67,7 +67,7 @@ final class RuleSets
                 $set = new $class();
 
                 if (!RuleSetNameValidator::isValid($set->getName(), false)) {
-                    throw new \InvalidArgumentException(sprintf('Rule set name invalid: %s', $set->getName()));
+                    throw new \InvalidArgumentException(\sprintf('Rule set name invalid: %s', $set->getName()));
                 }
 
                 self::$builtInSetDefinitions[$set->getName()] = $set;
@@ -107,7 +107,7 @@ final class RuleSets
             || !\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)
         ) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Class "%s" must be an instance of "%s".',
                     $class,
                     RuleSetDescriptionInterface::class
@@ -123,11 +123,11 @@ final class RuleSets
         }
 
         if (!class_exists($class, true)) {
-            throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+            throw new \InvalidArgumentException(\sprintf('Class "%s" does not exist.', $class));
         }
 
         if (\array_key_exists($name, self::getSetDefinitions())) {
-            throw new \InvalidArgumentException(sprintf('Set "%s" is already defined.', $name));
+            throw new \InvalidArgumentException(\sprintf('Set "%s" is already defined.', $name));
         }
 
         self::$customRuleSetDefinitions[$name] = $ruleset;
