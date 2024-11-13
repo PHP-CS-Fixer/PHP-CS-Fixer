@@ -586,7 +586,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \\(int\\|string\\) might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
-	'count' => 1,
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/Documentation/RuleSetDocumentationGenerator.php',
 ];
 $ignoreErrors[] = [
@@ -2874,12 +2874,6 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$subject of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, array\\<int, string\\>\\|string given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/PregTest.php',
-];
-$ignoreErrors[] = [
-	// identifier: offsetAccess.notFound
-	'message' => '#^Offset string might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/RuleSet/RuleSetTest.php',
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
