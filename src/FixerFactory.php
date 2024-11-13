@@ -79,14 +79,14 @@ final class FixerFactory
     }
 
     /**
-     * @return array<string>
+     * @return list<string>
      */
     public function getRegisteredFixerNames(): array
     {
         $ruleNames = array_keys($this->fixersByName);
         ksort($ruleNames);
 
-        return $ruleNames;
+        return array_values($ruleNames);
     }
 
     /**
