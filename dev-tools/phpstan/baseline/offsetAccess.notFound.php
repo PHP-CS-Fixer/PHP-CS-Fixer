@@ -313,7 +313,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset (int|string) might not exist on array<string, PhpCsFixer\\Fixer\\FixerInterface>.',
-    'count' => 1,
+    'count' => 2,
     'path' => __DIR__ . '/../../../src/Documentation/RuleSetDocumentationGenerator.php',
 ];
 $ignoreErrors[] = [
