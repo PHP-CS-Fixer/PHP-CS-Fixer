@@ -206,11 +206,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     {
         foreach ($ruleSets as $class) {
             if (!class_exists($class)) {
-                throw new \UnexpectedValueException(sprintf('Rule set "%s" does not exist.', $class));
+                throw new \UnexpectedValueException(\sprintf('Rule set "%s" does not exist.', $class));
             }
 
             if (!\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)) {
-                throw new \UnexpectedValueException(sprintf('Rule set "%s" does not implement "%s".', $class, RuleSetDescriptionInterface::class));
+                throw new \UnexpectedValueException(\sprintf('Rule set "%s" does not implement "%s".', $class, RuleSetDescriptionInterface::class));
             }
         }
 
