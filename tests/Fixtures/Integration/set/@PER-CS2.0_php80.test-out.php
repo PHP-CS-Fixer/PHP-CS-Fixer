@@ -5,7 +5,7 @@ function parametersMultilineWithoutComma(
     $y,
 ) {}
 
-parametersMultilineWithoutComma(x:   3, y: 4);
+parametersMultilineWithoutComma(x: 3, y: 4);
 
 $matchMultilineWithoutComma = match ($a) {
     1 => 0,
