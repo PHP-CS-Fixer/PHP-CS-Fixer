@@ -96,6 +96,7 @@ final class RuleSet implements RuleSetInterface
         if (class_exists($name)
             && \in_array(FixerInterface::class, class_implements($name), true)
         ) {
+            // @phpstan-ignore method.notFound (we're sure it's a `FixerInterface` instance)
             return (new $name())->getName();
         }
 
