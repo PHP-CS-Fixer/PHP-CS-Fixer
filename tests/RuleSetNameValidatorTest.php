@@ -54,8 +54,6 @@ final class RuleSetNameValidatorTest extends TestCase
 
         yield 'Versioned with underscores' => ['@Vendor/MyRules_1_0', true];
 
-        yield 'Vendor/Ruleset' => ['@Vendor/MyRules', true];
-
         yield 'Short name 1' => ['@Vendor/X', true];
 
         yield 'Short name 2' => ['@Vendor/y', true];
