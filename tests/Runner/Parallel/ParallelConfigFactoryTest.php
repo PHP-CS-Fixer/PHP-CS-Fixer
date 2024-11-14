@@ -27,6 +27,16 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ParallelConfigFactoryTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
+        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
+        $cpuDetector->setAccessible(true);
+        $cpuDetector->setValue($parallelConfigFactoryReflection, null);
+
+        parent::tearDown();
+    }
+
     public function testSequentialConfigHasExactlyOneProcess(): void
     {
         $config = ParallelConfigFactory::sequential();
@@ -39,28 +49,28 @@ final class ParallelConfigFactoryTest extends TestCase
      */
     public function testDetectConfigurationWithoutParams(): void
     {
-        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
-        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
-        $cpuDetector->setAccessible(true);
-        $cpuDetector->setValue($parallelConfigFactoryReflection, new CpuCoreCounter([
-            new DummyCpuCoreFinder(7),
-        ]));
+        $this->mockCpuCount(7);
 
         $config = ParallelConfigFactory::detect();
 
         self::assertSame(7, $config->getMaxProcesses());
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config->getProcessTimeout());
-
-        $cpuDetector->setValue($parallelConfigFactoryReflection, null);
     }
 
     public function testDetectConfigurationWithParams(): void
     {
-        $config = ParallelConfigFactory::detect(22, 2_200);
+        $this->mockCpuCount(7);
 
-        self::assertSame(22, $config->getFilesPerProcess());
-        self::assertSame(2_200, $config->getProcessTimeout());
+        $config1 = ParallelConfigFactory::detect(22, 2_200, 5);
+
+        self::assertSame(5, $config1->getMaxProcesses());
+        self::assertSame(22, $config1->getFilesPerProcess());
+        self::assertSame(2_200, $config1->getProcessTimeout());
+
+        $config2 = ParallelConfigFactory::detect(22, 2_200, 10);
+
+        self::assertSame(7, $config2->getMaxProcesses());
     }
 
     public function testDetectConfigurationWithDefaultValue(): void
@@ -76,6 +86,8 @@ final class ParallelConfigFactoryTest extends TestCase
      */
     public function testDetectConfigurationWithNamedArgs(): void
     {
+        $this->mockCpuCount(7);
+
         // First argument omitted, second one provided via named argument
         $config1 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['processTimeout' => 300]);
 
@@ -84,10 +96,12 @@ final class ParallelConfigFactoryTest extends TestCase
 
         // Flipped order of arguments using named arguments syntax
         $config2 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], [
+            'maxProcesses' => 1,
             'processTimeout' => 300,
             'filesPerProcess' => 5,
         ]);
 
+        self::assertSame(1, $config2->getMaxProcesses());
         self::assertSame(5, $config2->getFilesPerProcess());
         self::assertSame(300, $config2->getProcessTimeout());
 
@@ -96,5 +110,22 @@ final class ParallelConfigFactoryTest extends TestCase
 
         self::assertSame(7, $config3->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config3->getProcessTimeout());
+
+        // Only third argument provided, but via named argument
+        $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['maxProcesses' => 1]);
+
+        self::assertSame(1, $config3->getMaxProcesses());
+        self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config3->getFilesPerProcess());
+        self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config3->getProcessTimeout());
+    }
+
+    private function mockCpuCount(int $count): void
+    {
+        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
+        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
+        $cpuDetector->setAccessible(true);
+        $cpuDetector->setValue($parallelConfigFactoryReflection, new CpuCoreCounter([
+            new DummyCpuCoreFinder($count),
+        ]));
     }
 }
