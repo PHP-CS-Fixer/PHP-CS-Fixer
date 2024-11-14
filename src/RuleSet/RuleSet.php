@@ -36,6 +36,9 @@ final class RuleSet implements RuleSetInterface
      */
     private array $rules;
 
+    /** @var array<string, string> */
+    private array $rulesSource;
+
     public function __construct(array $set = [])
     {
         foreach ($set as $name => $value) {
@@ -84,6 +87,11 @@ final class RuleSet implements RuleSetInterface
         return $this->rules;
     }
 
+    public function getRulesSource(): array
+    {
+        return $this->rulesSource;
+    }
+
     /**
      * Resolve input set into group of rules.
      *
@@ -103,6 +111,7 @@ final class RuleSet implements RuleSetInterface
                 $set = $this->resolveSubset($name, $value);
                 $resolvedRules = array_merge($resolvedRules, $set);
             } else {
+                $this->rulesSource[$name] = 'config';
                 $resolvedRules[$name] = $value;
             }
         }
@@ -113,6 +122,7 @@ final class RuleSet implements RuleSetInterface
             static fn ($value): bool => false !== $value
         );
 
+        ksort($this->rulesSource);
         $this->rules = $resolvedRules;
     }
 
@@ -143,7 +153,13 @@ final class RuleSet implements RuleSetInterface
                 $set = $this->resolveSubset($name, $setValue);
                 unset($rules[$name]);
                 $rules = array_merge($rules, $set);
-            } elseif (!$setValue) {
+
+                continue;
+            }
+
+            $this->rulesSource[$name] = $setName;
+
+            if (!$setValue) {
                 $rules[$name] = false;
             } else {
                 $rules[$name] = $value;
