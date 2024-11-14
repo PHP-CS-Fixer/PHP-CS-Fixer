@@ -12,21 +12,22 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Runner\Event;
 
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\FixerFileProcessedEvent
+ * @covers \PhpCsFixer\Runner\Event\FileProcessed
  */
-final class FixerFileProcessedEventTest extends TestCase
+final class FileProcessedTest extends TestCase
 {
-    public function testFixerFileProcessedEvent(): void
+    public function testFileProcessedEvent(): void
     {
-        $status = FixerFileProcessedEvent::STATUS_NO_CHANGES;
-        $event = new FixerFileProcessedEvent($status);
+        $status = FileProcessed::STATUS_NO_CHANGES;
+        $event = new FileProcessed($status);
 
         self::assertSame($status, $event->getStatus());
     }

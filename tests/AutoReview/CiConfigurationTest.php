@@ -176,7 +176,7 @@ final class CiConfigurationTest extends TestCase
 
     private function convertPhpVerIdToNiceVer(string $verId): string
     {
-        $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
+        $matchResult = Preg::match('/^(?<major>\d{1,2})_?(?<minor>\d{2})_?(?<patch>\d{2})$/', $verId, $capture);
         if (!$matchResult) {
             throw new \LogicException(\sprintf('Can\'t parse version "%s" id.', $verId));
         }
@@ -190,16 +190,17 @@ final class CiConfigurationTest extends TestCase
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             [T_IS_GREATER_OR_EQUAL],
-            [T_LNUMBER],
+            [T_INT_CAST],
+            [T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = (int) end($sequence)->getContent();
+        $phpVerId = trim(end($sequence)->getContent(), '\'');
 
-        return $this->convertPhpVerIdToNiceVer((string) ($phpVerId - 100));
+        return $this->convertPhpVerIdToNiceVer((string) ((int) $phpVerId - 100));
     }
 
     private function getMinPhpVersionFromEntryFile(): string
@@ -208,14 +209,15 @@ final class CiConfigurationTest extends TestCase
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             '<',
-            [T_LNUMBER],
+            [T_INT_CAST],
+            [T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = end($sequence)->getContent();
+        $phpVerId = trim(end($sequence)->getContent(), '\'');
 
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }

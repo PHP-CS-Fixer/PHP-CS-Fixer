@@ -169,7 +169,7 @@ final class ProjectCodeTest extends TestCase
             AbstractPhpdocTypesFixer::class => ['tags'],
             AbstractProxyFixer::class => ['proxyFixers'],
             ConfigurableFixerTrait::class => ['configuration'],
-            FixCommand::class => ['defaultDescription', 'defaultName'],
+            FixCommand::class => ['defaultDescription', 'defaultName'], // TODO: PHP 8.0+, remove properties and test when PHP 8+ is required
         ];
 
         $extraProps = array_diff(

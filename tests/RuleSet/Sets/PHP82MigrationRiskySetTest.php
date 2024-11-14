@@ -12,16 +12,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Output\Progress;
-
-use PhpCsFixer\Runner\Event\FileProcessed;
+namespace PhpCsFixer\Tests\RuleSet\Sets;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\RuleSet\Sets\PHP82MigrationRiskySet
  */
-final class NullOutput implements ProgressOutputInterface
-{
-    public function printLegend(): void {}
-
-    public function onFixerFileProcessed(FileProcessed $event): void {}
-}
+final class PHP82MigrationRiskySetTest extends AbstractSetTestCase {}

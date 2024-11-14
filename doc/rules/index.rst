@@ -361,7 +361,7 @@ Function Notation
 
 - `combine_nested_dirname <./function_notation/combine_nested_dirname.rst>`_ *(risky)*
 
-  Replace multiple nested calls of ``dirname`` by only one call with second ``$level`` parameter. Requires PHP >= 7.0.
+  Replace multiple nested calls of ``dirname`` by only one call with second ``$level`` parameter.
 - `date_time_create_from_format_call <./function_notation/date_time_create_from_format_call.rst>`_ *(risky)*
 
   The first argument of ``DateTime::createFromFormat`` method must start with ``!``.
@@ -406,10 +406,10 @@ Function Notation
   Adds or removes ``?`` before single type declarations or ``|null`` at the end of union types when parameters have a default ``null`` value.
 - `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(experimental, risky)*
 
-  Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+  Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature.
 - `phpdoc_to_property_type <./function_notation/phpdoc_to_property_type.rst>`_ *(experimental, risky)*
 
-  Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
+  Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature..
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(experimental, risky)*
 
   Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
@@ -430,7 +430,7 @@ Function Notation
   Anonymous functions with one-liner return statement must use arrow functions.
 - `void_return <./function_notation/void_return.rst>`_ *(risky)*
 
-  Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations. Requires PHP >= 7.1.
+  Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
 
 Import
 ------
@@ -492,7 +492,7 @@ Language Construct
   Error control operator should be added to deprecation notices and/or removed from other cases.
 - `explicit_indirect_variable <./language_construct/explicit_indirect_variable.rst>`_
 
-  Add curly braces to indirect variables to make them clear to understand. Requires PHP >= 7.0.
+  Add curly braces to indirect variables to make them clear to understand.
 - `function_to_constant <./language_construct/function_to_constant.rst>`_ *(risky)*
 
   Replace core functions calls returning constants with the constants.
@@ -520,7 +520,7 @@ List Notation
 
 - `list_syntax <./list_notation/list_syntax.rst>`_
 
-  List (``array`` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.
+  List (``array`` destructuring) assignment should be declared using the configured syntax.
 
 Namespace Notation
 ------------------
@@ -613,7 +613,7 @@ Operator
   Use the Elvis operator ``?:`` where possible.
 - `ternary_to_null_coalescing <./operator/ternary_to_null_coalescing.rst>`_
 
-  Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
+  Use ``null`` coalescing operator ``??`` where possible.
 - `unary_operator_spaces <./operator/unary_operator_spaces.rst>`_
 
   Unary operators should be placed adjacent to their operands.
@@ -856,7 +856,7 @@ Strict
 
 - `declare_strict_types <./strict/declare_strict_types.rst>`_ *(risky)*
 
-  Force strict types declaration in all files. Requires PHP >= 7.0.
+  Force strict types declaration in all files.
 - `strict_comparison <./strict/strict_comparison.rst>`_ *(risky)*
 
   Comparisons should be strict.

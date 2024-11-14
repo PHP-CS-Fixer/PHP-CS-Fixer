@@ -3,7 +3,7 @@ Rule ``phpdoc_to_property_type``
 ================================
 
 Takes ``@var`` annotation of non-mixed types and adjusts accordingly the
-property signature. Requires PHP >= 7.4.
+property signature..
 
 Warning
 -------

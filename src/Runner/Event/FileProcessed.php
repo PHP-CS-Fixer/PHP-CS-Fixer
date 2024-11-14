@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\Runner\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -23,7 +23,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @internal
  */
-final class FixerFileProcessedEvent extends Event
+final class FileProcessed extends Event
 {
     /**
      * Event name.
