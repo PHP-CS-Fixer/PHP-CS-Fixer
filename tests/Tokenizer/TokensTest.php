@@ -1910,6 +1910,34 @@ $bar;',
         self::assertSame($size, $tokens->getSize());
     }
 
+    public function testSettingSizeCachePruning(): void
+    {
+        $tokens = Tokens::fromCode('<?php $a = function () {};');
+
+        self::assertSame(11, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, 10));
+        self::assertSame(10, $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, 11));
+        self::assertTrue($tokens->isTokenKindFound(T_FUNCTION));
+        self::assertTrue($tokens->isTokenKindFound('{'));
+        self::assertTrue($tokens->isTokenKindFound('}'));
+        self::assertTrue($tokens->isTokenKindFound(';'));
+        self::assertFalse($tokens->isTokenKindFound(T_CLASS));
+
+        \Closure::bind(static function () use ($tokens): void {
+            $tokens->updateSize(\count($tokens) - 2);
+        }, null, Tokens::class)();
+
+        self::assertTrue($tokens->isTokenKindFound(T_FUNCTION));
+        self::assertTrue($tokens->isTokenKindFound('{'));
+        self::assertFalse($tokens->isTokenKindFound('}'));
+        self::assertFalse($tokens->isTokenKindFound(';'));
+        self::assertFalse($tokens->isTokenKindFound(T_CLASS));
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Missing block "end".');
+
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, 10);
+    }
+
     private function getBlockEdgeCachingTestTokens(): Tokens
     {
         Tokens::clearCache();
