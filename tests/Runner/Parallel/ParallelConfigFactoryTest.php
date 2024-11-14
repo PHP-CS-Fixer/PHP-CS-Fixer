@@ -119,6 +119,9 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config3->getProcessTimeout());
     }
 
+    /**
+     * @param positive-int $count
+     */
     private function mockCpuCount(int $count): void
     {
         $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
