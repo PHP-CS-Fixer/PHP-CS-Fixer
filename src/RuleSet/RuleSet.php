@@ -22,6 +22,8 @@ use PhpCsFixer\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class RuleSet implements RuleSetInterface
@@ -58,7 +60,7 @@ final class RuleSet implements RuleSetInterface
             }
         }
 
-        $this->resolveSet($set);
+        $this->rules = $this->resolveSet($set);
     }
 
     public function hasRule(string $rule): bool
@@ -88,8 +90,10 @@ final class RuleSet implements RuleSetInterface
      * Resolve input set into group of rules.
      *
      * @param array<string, array<string, mixed>|bool> $rules
+     *
+     * @return array<string, array<string, mixed>|true>
      */
-    private function resolveSet(array $rules): void
+    private function resolveSet(array $rules): array
     {
         $resolvedRules = [];
 
@@ -113,7 +117,7 @@ final class RuleSet implements RuleSetInterface
             static fn ($value): bool => false !== $value
         );
 
-        $this->rules = $resolvedRules;
+        return $resolvedRules;
     }
 
     /**
