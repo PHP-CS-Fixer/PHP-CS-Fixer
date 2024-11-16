@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -376,12 +376,12 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    private static function assertCandidateTokenType(int $expected, AbstractFixer $fixer): void
+    private static function assertCandidateTokenType(int $expected, NoMixedEchoPrintFixer $fixer): void
     {
-        $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
-        $reflectionProperty->setAccessible(true);
-
-        self::assertSame($expected, $reflectionProperty->getValue($fixer));
+        self::assertSame(
+            $expected,
+            \Closure::bind(static fn (NoMixedEchoPrintFixer $fixer): int => $fixer->candidateTokenType, null, NoMixedEchoPrintFixer::class)($fixer),
+        );
     }
 
     /**

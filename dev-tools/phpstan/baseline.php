@@ -2768,12 +2768,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$objectOrMethod of class ReflectionMethod constructor expects object\\|string, class\\-string\\|false given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/ControlStructure/NoUselessElseFixerTest.php',
-];
-$ignoreErrors[] = [
 	// identifier: elseif.condNotBoolean
 	'message' => '#^Only booleans are allowed in an elseif condition, int\\|false given\\.$#',
 	'count' => 1,

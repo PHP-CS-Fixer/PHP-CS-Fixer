@@ -39,12 +39,11 @@ final class ParallelConfigFactoryTest extends TestCase
      */
     public function testDetectConfigurationWithoutParams(): void
     {
-        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
-        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
-        $cpuDetector->setAccessible(true);
-        $cpuDetector->setValue($parallelConfigFactoryReflection, new CpuCoreCounter([
-            new DummyCpuCoreFinder(7),
-        ]));
+        \Closure::bind(static function (): void {
+            ParallelConfigFactory::$cpuDetector = new CpuCoreCounter([
+                new DummyCpuCoreFinder(7),
+            ]);
+        }, null, ParallelConfigFactory::class)();
 
         $config = ParallelConfigFactory::detect();
 
@@ -52,7 +51,9 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config->getProcessTimeout());
 
-        $cpuDetector->setValue($parallelConfigFactoryReflection, null);
+        \Closure::bind(static function (): void {
+            ParallelConfigFactory::$cpuDetector = null;
+        }, null, ParallelConfigFactory::class)();
     }
 
     public function testDetectConfigurationWithParams(): void
