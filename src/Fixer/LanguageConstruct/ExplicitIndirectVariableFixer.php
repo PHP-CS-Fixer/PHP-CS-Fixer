@@ -30,7 +30,7 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Add curly braces to indirect variables to make them clear to understand. Requires PHP >= 7.0.',
+            'Add curly braces to indirect variables to make them clear to understand.',
             [
                 new CodeSample(
                     <<<'EOT'

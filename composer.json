@@ -113,6 +113,10 @@
             "@composer normalize --working-dir=dev-tools --dry-run ../composer.json",
             "@composer normalize --working-dir=dev-tools --dry-run composer.json"
         ],
+        "normalize:fix": [
+            "@composer normalize --working-dir=dev-tools ../composer.json",
+            "@composer normalize --working-dir=dev-tools composer.json"
+        ],
         "phpstan": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse",
         "phpstan:baseline": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
         "qa": "@quality-assurance",
@@ -179,7 +183,8 @@
         "infection": "Alias for 'test:mutation'",
         "install-tools": "Install DEV tools",
         "mess-detector": "Analyse code with Mess Detector",
-        "normalize": "Run normalization for composer.json files",
+        "normalize": "Check normalization for composer.json files",
+        "normalize:fix": "Run normalization for composer.json files",
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",

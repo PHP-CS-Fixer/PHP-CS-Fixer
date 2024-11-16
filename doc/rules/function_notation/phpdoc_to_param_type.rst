@@ -3,7 +3,7 @@ Rule ``phpdoc_to_param_type``
 =============================
 
 Takes ``@param`` annotations of non-mixed types and adjusts accordingly the
-function signature. Requires PHP >= 7.0.
+function signature.
 
 Warning
 -------

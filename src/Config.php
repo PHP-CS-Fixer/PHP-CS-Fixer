@@ -25,6 +25,9 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  */
 class Config implements ConfigInterface, ParallelAwareConfigInterface
 {
+    /**
+     * @var non-empty-string
+     */
     private string $cacheFile = '.php-cs-fixer.cache';
 
     /**
@@ -41,10 +44,16 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private bool $hideProgress = false;
 
+    /**
+     * @var non-empty-string
+     */
     private string $indent = '    ';
 
     private bool $isRiskyAllowed = false;
 
+    /**
+     * @var non-empty-string
+     */
     private string $lineEnding = "\n";
 
     private string $name;
@@ -84,6 +93,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         }
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getCacheFile(): string
     {
         return $this->cacheFile;
@@ -163,6 +175,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $cacheFile
+     */
     public function setCacheFile(string $cacheFile): ConfigInterface
     {
         $this->cacheFile = $cacheFile;
@@ -191,6 +206,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $indent
+     */
     public function setIndent(string $indent): ConfigInterface
     {
         $this->indent = $indent;
@@ -198,6 +216,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $lineEnding
+     */
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
         $this->lineEnding = $lineEnding;

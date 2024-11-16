@@ -124,12 +124,8 @@ final class TransformerTest extends TestCase
         static $transformersArray = null;
 
         if (null === $transformersArray) {
-            $transformers = Transformers::createSingleton();
-            $reflection = new \ReflectionObject($transformers);
-            $builtInTransformers = $reflection->getMethod('findBuiltInTransformers');
-            $builtInTransformers->setAccessible(true);
             $transformersArray = [];
-            foreach ($builtInTransformers->invoke($transformers) as $transformer) {
+            foreach (\Closure::bind(static fn (Transformers $transformers): iterable => $transformers->findBuiltInTransformers(), null, Transformers::class)(Transformers::createSingleton()) as $transformer) {
                 $transformersArray[] = [$transformer];
             }
         }

@@ -53,7 +53,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Takes `@var` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.',
+            'Takes `@var` annotation of non-mixed types and adjusts accordingly the property signature..',
             [
                 new CodeSample(
                     '<?php

@@ -94,7 +94,7 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is always true.
      *
-     * @var array<int|non-empty-string, int>
+     * @var array<int|string, int>
      */
     private array $foundTokenKinds = [];
 
@@ -151,7 +151,6 @@ class Tokens extends \SplFixedArray
         }
 
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         return $blockEdgeKinds[$tokenKind] ?? null;
@@ -301,14 +300,7 @@ class Tokens extends \SplFixedArray
     #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
-        if (\count($this) !== $size) {
-            $this->changed = true;
-            $this->namespaceDeclarations = null;
-
-            return parent::setSize($size);
-        }
-
-        return true;
+        throw new \RuntimeException('Changing tokens collection size explicitly is not allowed.');
     }
 
     /**
@@ -359,15 +351,17 @@ class Tokens extends \SplFixedArray
             )));
         }
 
+        if (isset($this[$index])) {
+            if (isset($this->blockStartCache[$index])) {
+                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+            }
+            if (isset($this->blockEndCache[$index])) {
+                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+            }
+        }
+
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             if (isset($this[$index])) {
-                if (isset($this->blockStartCache[$index])) {
-                    unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
-                }
-                if (isset($this->blockEndCache[$index])) {
-                    unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
-                }
-
                 $this->unregisterFoundToken($this[$index]);
             }
 
@@ -426,7 +420,7 @@ class Tokens extends \SplFixedArray
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
-        $this->setSize($count);
+        $this->updateSize($count);
     }
 
     /**
@@ -923,7 +917,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
-        $this->setSize($oldSize + $itemsCount);
+        $this->updateSize($oldSize + $itemsCount);
 
         krsort($slices);
         $farthestSliceIndex = array_key_first($slices);
@@ -1051,13 +1045,13 @@ class Tokens extends \SplFixedArray
         }
 
         // clear memory
-        $this->setSize(0);
+        $this->updateSize(0);
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 
-        $this->setSize(\count($tokens));
+        $this->updateSize(\count($tokens));
 
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
@@ -1247,6 +1241,16 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
     }
 
+    private function updateSize(int $size): void
+    {
+        if (\count($this) !== $size) {
+            $this->changed = true;
+            $this->namespaceDeclarations = null;
+
+            parent::setSize($size);
+        }
+    }
+
     /**
      * @param -1|1 $direction
      */
@@ -1422,7 +1426,6 @@ class Tokens extends \SplFixedArray
     private function registerFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1439,7 +1442,6 @@ class Tokens extends \SplFixedArray
     private function unregisterFoundToken($token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token);
@@ -1454,7 +1456,7 @@ class Tokens extends \SplFixedArray
     /**
      * @param array{int}|string|Token $token token prototype
      *
-     * @return int|non-empty-string
+     * @return int|string
      */
     private function extractTokenKind($token)
     {

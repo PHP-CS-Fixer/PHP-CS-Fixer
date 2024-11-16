@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+use PhpCsFixer\Runner\Parallel\Process;
 use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\RunnerConfig;
@@ -68,10 +69,7 @@ final class ProcessFactoryTest extends TestCase
 
         $process = $factory->create(new StreamSelectLoop(), $config, $identifier, 1_234);
 
-        $processReflection = new \ReflectionClass($process);
-        $commandReflection = $processReflection->getProperty('command');
-        $commandReflection->setAccessible(true);
-        $command = $commandReflection->getValue($process);
+        $command = \Closure::bind(static fn (Process $process): string => $process->command, null, Process::class)($process);
 
         // PHP binary and Fixer executable are not fixed, so we need to remove them from the command
         $command = Preg::replace('/^(.*php-cs-fixer[\'"]? )+(.+)/', '$2', $command);
@@ -87,9 +85,7 @@ final class ProcessFactoryTest extends TestCase
             $command
         );
 
-        $timeoutReflection = $processReflection->getProperty('timeoutSeconds');
-        $timeoutReflection->setAccessible(true);
-        $timeoutSeconds = $timeoutReflection->getValue($process);
+        $timeoutSeconds = \Closure::bind(static fn (Process $process): int => $process->timeoutSeconds, null, Process::class)($process);
 
         self::assertSame($config->getParallelConfig()->getProcessTimeout(), $timeoutSeconds);
     }

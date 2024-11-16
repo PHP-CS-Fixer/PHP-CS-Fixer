@@ -1776,6 +1776,36 @@ $bar;',
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
     }
 
+    public function testBlockEdgeCachingOffsetSetPruneEvenIfTokenEquals(): void
+    {
+        $tokens = Tokens::fromArray([
+            new Token([T_OPEN_TAG, '<?php ']),
+            new Token([T_VARIABLE, '$a']),
+            new Token('='),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token(';'),
+        ]);
+
+        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 4));
+        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 6));
+
+        $tokens->overrideRange(3, 6, [
+            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            $tokens[4],
+            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            $tokens[6],
+        ]);
+
+        self::assertSame(5, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 4));
+        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5));
+
+        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 3));
+        self::assertSame(3, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 6));
+    }
+
     public function testBlockEdgeCachingClearAt(): void
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
@@ -1854,6 +1884,30 @@ $bar;',
 
         $tokens[1] = new Token([T_VARIABLE, '$x']);
         self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
+    }
+
+    public function testSettingSizeThrowsException(): void
+    {
+        $tokens = new Tokens();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Changing tokens collection size explicitly is not allowed.');
+
+        $tokens->setSize(3);
+    }
+
+    public function testSettingSizeInTryCatchBlockDoesNotChangeSize(): void
+    {
+        $tokens = Tokens::fromCode('<?php $x = true;');
+        $size = $tokens->getSize();
+
+        try {
+            $tokens->setSize(5);
+        } catch (\RuntimeException $exception) {
+            self::assertSame('Changing tokens collection size explicitly is not allowed.', $exception->getMessage());
+        }
+
+        self::assertSame($size, $tokens->getSize());
     }
 
     private function getBlockEdgeCachingTestTokens(): Tokens

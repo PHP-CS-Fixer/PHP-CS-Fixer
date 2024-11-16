@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
@@ -63,7 +63,7 @@ final class PercentageBarOutput implements ProgressOutputInterface
         throw new \BadMethodCallException('Cannot unserialize '.self::class);
     }
 
-    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
+    public function onFixerFileProcessed(FileProcessed $event): void
     {
         $this->progressBar->advance(1);
 

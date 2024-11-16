@@ -27,11 +27,13 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -179,6 +181,71 @@ final class RunnerTest extends TestCase
 
         self::assertSame(Error::TYPE_INVALID, $error->getType());
         self::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @param list<string> $paths
+     *
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
+     *
+     * @dataProvider provideRunnerUsesProperAnalysisModeCases
+     */
+    public function testRunnerUsesProperAnalysisMode(
+        ParallelConfig $parallelConfig,
+        array $paths,
+        string $expectedMode
+    ): void {
+        $runner = new Runner(
+            Finder::create()->in($paths),
+            [
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ],
+            new NullDiffer(),
+            $eventDispatcher = new EventDispatcher(),
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            null,
+            false,
+            $parallelConfig,
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+        );
+
+        $eventDispatcher->addListener(AnalysisStarted::NAME, static function (AnalysisStarted $event) use ($expectedMode): void {
+            self::assertSame($expectedMode, $event->getMode());
+        });
+
+        $runner->fix();
+    }
+
+    /**
+     * @return iterable<string, array{0: ParallelConfig, 1: list<string>}>
+     */
+    public static function provideRunnerUsesProperAnalysisModeCases(): iterable
+    {
+        $fixturesBasePath = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR;
+
+        yield 'single CPU = sequential even though file chunk is lower than actual files count' => [
+            new ParallelConfig(1, 1),
+            [$fixturesBasePath.'fix'],
+            'sequential',
+        ];
+
+        yield 'less files to fix than configured file chunk = sequential even though multiple CPUs enabled' => [
+            new ParallelConfig(5, 10),
+            [$fixturesBasePath.'fix'],
+            'sequential',
+        ];
+
+        yield 'multiple CPUs, more files to fix than file chunk size = parallel' => [
+            new ParallelConfig(2, 1),
+            [$fixturesBasePath.'fix'],
+            'parallel',
+        ];
     }
 
     /**

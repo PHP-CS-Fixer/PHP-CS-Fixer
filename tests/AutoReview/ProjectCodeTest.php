@@ -169,7 +169,7 @@ final class ProjectCodeTest extends TestCase
             AbstractPhpdocTypesFixer::class => ['tags'],
             AbstractProxyFixer::class => ['proxyFixers'],
             ConfigurableFixerTrait::class => ['configuration'],
-            FixCommand::class => ['defaultDescription', 'defaultName'],
+            FixCommand::class => ['defaultDescription', 'defaultName'], // TODO: PHP 8.0+, remove properties and test when PHP 8+ is required
         ];
 
         $extraProps = array_diff(
@@ -392,6 +392,19 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfSetAccessible(string $className): void
+    {
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
+
+        $message = \sprintf('Class %s must not use "setAccessible()", use "Closure::bind()" instead.', $className);
+        self::assertNotContains('setAccessible', $calledFunctions, $message);
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     *
      * @param class-string<TestCase> $className
      */
     public function testNoPHPUnitMockUsed(string $className): void
@@ -475,6 +488,7 @@ final class ProjectCodeTest extends TestCase
      * @dataProvider provideDataProviderMethodCases
      *
      * @param class-string<TestCase> $testClassName
+     * @param non-empty-string       $dataProviderName
      */
     public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, string $dataProviderName): void
     {

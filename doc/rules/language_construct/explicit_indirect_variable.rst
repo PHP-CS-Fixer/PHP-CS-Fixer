@@ -3,7 +3,6 @@ Rule ``explicit_indirect_variable``
 ===================================
 
 Add curly braces to indirect variables to make them clear to understand.
-Requires PHP >= 7.0.
 
 Examples
 --------

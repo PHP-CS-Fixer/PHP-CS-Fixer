@@ -62,7 +62,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Takes `@param` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.',
+            'Takes `@param` annotations of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
                     '<?php

@@ -312,10 +312,6 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
     {
         $insertedTokens = 0;
 
-        if (\count($tokens) === $insertIndex) {
-            $tokens->setSize($insertIndex + 1);
-        }
-
         $newTokens = [
             new Token([T_USE, 'use']),
             new Token([T_WHITESPACE, ' ']),
