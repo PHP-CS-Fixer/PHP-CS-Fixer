@@ -23,8 +23,6 @@ use Fidry\CpuCoreCounter\Finder\FinderRegistry;
  */
 final class ParallelConfigFactory
 {
-    private static ?CpuCoreCounter $cpuDetector = null;
-
     private function __construct() {}
 
     public static function sequential(): ParallelConfig
@@ -40,15 +38,18 @@ final class ParallelConfigFactory
         ?int $filesPerProcess = null,
         ?int $processTimeout = null
     ): ParallelConfig {
-        if (null === self::$cpuDetector) {
-            self::$cpuDetector = new CpuCoreCounter([
+        /** @var ?CpuCoreCounter */
+        static $cpuDetector = null;
+
+        if (null === $cpuDetector) {
+            $cpuDetector = new CpuCoreCounter([
                 ...FinderRegistry::getDefaultLogicalFinders(),
                 new DummyCpuCoreFinder(1),
             ]);
         }
 
         return new ParallelConfig(
-            self::$cpuDetector->getCount(),
+            $cpuDetector->getCount(),
             $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
             $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
         );
