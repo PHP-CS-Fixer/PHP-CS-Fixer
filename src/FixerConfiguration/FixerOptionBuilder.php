@@ -21,7 +21,7 @@ final class FixerOptionBuilder
     private string $description;
 
     /**
-     * @var mixed
+     * @var null|mixed
      */
     private $default;
 
