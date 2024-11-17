@@ -24,7 +24,7 @@ use Symfony\Component\Finder\Finder;
 final class RuleSets
 {
     /**
-     * @var ?array<string, RuleSetDescriptionInterface>
+     * @var null|array<string, RuleSetDescriptionInterface>
      */
     private static $setDefinitions;
 
