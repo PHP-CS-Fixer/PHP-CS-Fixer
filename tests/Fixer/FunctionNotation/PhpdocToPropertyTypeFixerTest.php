@@ -173,23 +173,43 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'nullable type' => [
-            '<?php class Foo { /** @var null|Bar */ private ?Bar $foo; }',
+            '<?php class Foo { /** @var null|Bar */ private ?Bar $foo = null; }',
             '<?php class Foo { /** @var null|Bar */ private $foo; }',
         ];
 
         yield 'nullable type with ? notation in phpDoc' => [
-            '<?php class Foo { /** @var ?Bar */ private ?Bar $foo; }',
+            '<?php class Foo { /** @var ?Bar */ private ?Bar $foo = null; }',
             '<?php class Foo { /** @var ?Bar */ private $foo; }',
         ];
 
         yield 'nullable type reverse order' => [
-            '<?php class Foo { /** @var Bar|null */ private ?Bar $foo; }',
+            '<?php class Foo { /** @var Bar|null */ private ?Bar $foo = null; }',
             '<?php class Foo { /** @var Bar|null */ private $foo; }',
         ];
 
         yield 'nullable native type' => [
-            '<?php class Foo { /** @var null|array */ private ?array $foo; }',
+            '<?php class Foo { /** @var null|array */ private ?array $foo = null; }',
             '<?php class Foo { /** @var null|array */ private $foo; }',
+        ];
+
+        yield 'nullable type with default case 1' => [
+            '<?php class Foo { /** @var null|array */ private ?array $foo = null; }',
+            '<?php class Foo { /** @var null|array */ private $foo; }',
+        ];
+
+        yield 'nullable type with default case 2' => [
+            '<?php class Foo { /** @var ?array */ private ?array $foo = null; }',
+            '<?php class Foo { /** @var ?array */ private $foo; }',
+        ];
+
+        yield 'nullable type with default case 3' => [
+            '<?php class Foo { /** @var ?array */ private ?array $foo = []; }',
+            '<?php class Foo { /** @var ?array */ private $foo = []; }',
+        ];
+
+        yield 'nullable type with default case 4' => [
+            '<?php class Foo { /** @var ?Bar */ private ?Bar $foo = null; }',
+            '<?php class Foo { /** @var ?Bar */ private $foo; }',
         ];
 
         yield 'generics' => [
@@ -208,7 +228,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'nullable array of types' => [
-            '<?php class Foo { /** @var null|Foo[] */ private ?array $foo; }',
+            '<?php class Foo { /** @var null|Foo[] */ private ?array $foo = null; }',
             '<?php class Foo { /** @var null|Foo[] */ private $foo; }',
         ];
 
@@ -469,7 +489,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                     private string $foo9;
 
                     /** @var int|null */
-                    private ?int $foo10;
+                    private ?int $foo10 = null;
                 }',
             '<?php class Foo {
                     /** @var string */
@@ -566,7 +586,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
     public static function provideFix80Cases(): iterable
     {
         yield 'fix mixed type' => [
-            '<?php class Foo { /** @var mixed */ private mixed $foo; }',
+            '<?php class Foo { /** @var mixed */ private mixed $foo = null; }',
             '<?php class Foo { /** @var mixed */ private $foo; }',
         ];
 
