@@ -95,9 +95,9 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
             $matchesArg->value,
             $matchedType,
             $context,
-            $overwrite,
+            // $overwrite,
             $scope,
-            $node,
+            // $node,
         );
     }
 }

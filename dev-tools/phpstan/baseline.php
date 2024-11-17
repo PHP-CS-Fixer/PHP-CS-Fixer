@@ -2,6 +2,12 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
+	'message' => '#^Comparison operation "\\<" between int\\<70400, 79999\\>\\|int\\<80001, 80499\\> and 70400 is always false\\.$#',
+	'identifier' => 'smaller.alwaysFalse',
+	'count' => 1,
+	'path' => __DIR__ . '/../../php-cs-fixer',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on list\\<int\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -128,7 +134,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/ListFilesCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'argv\' might not exist on array\\.$#',
+	'message' => '#^Offset \'argv\' might not exist on array\\<mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
@@ -184,7 +190,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset \'path\\-mode\' might not exist on array\\<string, mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
@@ -242,7 +248,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'line\' might not exist on array\\{function\\?\\: string, line\\?\\: int, file\\: string, class\\?\\: class\\-string, type\\?\\: \'\\-\\>\'\\|\'\\:\\:\', args\\?\\: array, object\\?\\: object\\}\\.$#',
+	'message' => '#^Offset \'line\' might not exist on array\\{function\\?\\: string, line\\?\\: int, file\\: string, class\\?\\: class\\-string, type\\?\\: \'\\-\\>\'\\|\'\\:\\:\', args\\?\\: array\\<mixed\\>, object\\?\\: object\\}\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Output/ErrorOutput.php',
@@ -368,7 +374,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'_callable_template…\' might not exist on array\\<string\\>\\.$#',
+	'message' => '#^Offset \'_callable_template_inner\' might not exist on array\\<string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -380,15 +386,15 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'array_shape_inners\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'array_shape_inner_value\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'array_shape_inner…\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'array_shape_inners\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
@@ -404,13 +410,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'callable_arguments\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'callable_argument_type\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'callable_argument…\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'callable_arguments\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
@@ -434,15 +440,39 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'callable_template…\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'callable_template_inner_b\' might not exist on array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 6,
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'callable_template…\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'callable_template_inner_b_types\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 2,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'callable_template_inner_d\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'callable_template_inner_d_types\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'callable_template_inners\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'callable_template_start\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
@@ -458,21 +488,45 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'conditional_cond…\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'conditional_cond_left\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 4,
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'conditional_false…\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'conditional_cond_middle\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'conditional_cond_right_types\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'conditional_true…\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'message' => '#^Offset \'conditional_false_start\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 3,
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'conditional_false_types\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'conditional_true_start\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'conditional_true_types\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
@@ -578,7 +632,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\|string, string\\|false given\\.$#',
+	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\<string\\>\\|string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Documentation/FixerDocumentGenerator.php',
@@ -884,7 +938,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'method_is…\' might not exist on array\\{classIndex\\: int, token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: string, class_is_final\\: false, method_final_index\\: int\\|null, method_is_constructor\\?\\: bool, method_is_private\\: true, method_of_enum\\: false\\}\\.$#',
+	'message' => '#^Offset \'method_is_constructor\' might not exist on array\\{classIndex\\: int, token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: string, class_is_final\\: false, method_final_index\\: int\\|null, method_is_constructor\\?\\: bool, method_is_private\\: true, method_of_enum\\: false\\}\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
@@ -908,7 +962,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'end\' might not exist on array\\{abstract\\: bool, end\\?\\: int, name\\?\\: string, readonly\\: bool, start\\: int, static\\: bool, type\\?\\: string, visibility\\: non\\-empty\\-string\\}\\.$#',
+	'message' => '#^Offset \'end\' might not exist on array\\{start\\: int, visibility\\: non\\-empty\\-string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\?\\: string, name\\?\\: string, end\\?\\: int\\}\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
@@ -920,13 +974,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'readonly\' might not exist on array\\.$#',
+	'message' => '#^Offset \'readonly\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'static\' might not exist on array\\.$#',
+	'message' => '#^Offset \'static\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
@@ -980,43 +1034,43 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'normalized\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
+	'message' => '#^Offset \'normalized\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 6,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'originalIndex\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
+	'message' => '#^Offset \'originalIndex\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'tokens\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
+	'message' => '#^Offset \'tokens\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only iterables can be unpacked, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given in argument \\#3\\.$#',
+	'message' => '#^Only iterables can be unpacked, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given in argument \\#3\\.$#',
 	'identifier' => 'argument.unpackNonIterable',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function strlen expects string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given\\.$#',
+	'message' => '#^Parameter \\#1 \\$string of function strlen expects string, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string1 of function strcasecmp expects string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given\\.$#',
+	'message' => '#^Parameter \\#1 \\$string1 of function strcasecmp expects string, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$string2 of function strcasecmp expects string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given\\.$#',
+	'message' => '#^Parameter \\#2 \\$string2 of function strcasecmp expects string, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
@@ -1082,7 +1136,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, list\\<int\\|string\\> given\\.$#',
+	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects int\\|list\\<int\\>, list\\<int\\|string\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
@@ -1262,6 +1316,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Import/SingleImportPerStatementFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Call to static method PhpCsFixer\\\\Preg\\:\\:match\\(\\) with arguments \'\\#\\^\\.\\*\\?\\(\\?P\\<annotation…\', mixed and array\\{\\} will always evaluate to false\\.$#',
+	'identifier' => 'staticMethod.impossibleType',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Internal/ConfigurableFixerTemplateFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset 0 might not exist on list\\<mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -1312,23 +1372,41 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset \'endIndex\' might not exist on array\\<string, bool\\|int\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 4,
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'endIndex\' might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 3,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset \'isFirst\' might not exist on array\\<string, bool\\|int\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'isFirst\' might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset \'isToTransform\' might not exist on array\\<string, bool\\|int\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 6,
+	'count' => 5,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'startIndex\' might not exist on array\\<string, bool\\|int\\>\\.$#',
+	'message' => '#^Offset \'isToTransform\' might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'startIndex\' might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php',
@@ -1398,6 +1476,12 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configurePostNormalisation\\(\\) has PhpCsFixer\\\\ConfigurationException\\\\InvalidFixerConfigurationException in PHPDoc @throws tag but it\'s not thrown\\.$#',
+	'identifier' => 'throws.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ListNotation/ListSyntaxFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
@@ -1532,7 +1616,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'expectExceptionMess…\' might not exist on array\\<string, string\\>\\.$#',
+	'message' => '#^Offset \'expectExceptionMessageRegExp\' might not exist on array\\<string, string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
@@ -1598,7 +1682,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'assertAttributeEqua…\'\\|\'assertAttributeNotE…\'\\|\'assertEquals\'\\|\'assertNotEquals\' might not exist on array\\<string, string\\>\\.$#',
+	'message' => '#^Offset \'assertAttributeEquals\'\\|\'assertAttributeNotEquals\'\\|\'assertEquals\'\\|\'assertNotEquals\' might not exist on array\\<string, string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitStrictFixer.php',
@@ -1796,7 +1880,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'general_phpdoc_tag…\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
+	'message' => '#^Offset \'general_phpdoc_tag_rename\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php',
@@ -1838,7 +1922,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'general_phpdoc_tag…\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
+	'message' => '#^Offset \'general_phpdoc_tag_rename\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php',
@@ -1880,7 +1964,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Strict/StrictParamFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'string_implicit…\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
+	'message' => '#^Offset \'string_implicit_backslashes\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php',
@@ -2030,6 +2114,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Call to static method PhpCsFixer\\\\Preg\\:\\:match\\(\\) with arguments \'/array\\<\\\\\\\\w\\+,\\\\\\\\s\\*\\(\\\\\\\\\\?\\?\\[…\', string and array\\{\\} will always evaluate to false\\.$#',
+	'identifier' => 'staticMethod.impossibleType',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/FixerConfiguration/FixerConfigurationResolver.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on non\\-empty\\-array\\<string, array\\<int\\<0, max\\>, string\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -2072,7 +2162,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) should return string but returns array\\<int, string\\>\\|string\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) should return string but returns list\\<string\\>\\|string\\.$#',
 	'identifier' => 'return.type',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Preg.php',
@@ -2088,6 +2178,12 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Preg.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Call to static method PhpCsFixer\\\\Preg\\:\\:match\\(\\) with arguments \'\\#\\^@PHP\\(\\[\\\\\\\\d\\]\\{2\\}…\', string and array\\{\\} will always evaluate to false\\.$#',
+	'identifier' => 'staticMethod.impossibleType',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/RuleSet/AbstractMigrationSetDescription.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the right side\\.$#',
@@ -2138,19 +2234,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'file\' might not exist on array\\.$#',
+	'message' => '#^Offset \'file\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'identifier\' might not exist on array\\.$#',
+	'message' => '#^Offset \'identifier\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'status\' might not exist on array\\.$#',
+	'message' => '#^Offset \'status\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
@@ -2282,7 +2378,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects list\\<int\\>\\|int, non\\-empty\\-array\\<int\\<0, max\\>, int\\> given\\.$#',
+	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects int\\|list\\<int\\>, non\\-empty\\-array\\<int\\<0, max\\>, int\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
@@ -2312,19 +2408,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/ToolInfo.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 0 might not exist on array\\.$#',
+	'message' => '#^Offset 0 does not exist on array&T of mixed\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Utils.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\CiConfigurationTest\\:\\:getPhpVersionsUsedForBuildingLocalImages\\(\\) should return list\\<numeric\\-string\\> but returns array\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\CiConfigurationTest\\:\\:getPhpVersionsUsedForBuildingLocalImages\\(\\) should return list\\<numeric\\-string\\> but returns array\\<mixed\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\CiConfigurationTest\\:\\:getPhpVersionsUsedForBuildingOfficialImages\\(\\) should return list\\<numeric\\-string\\> but returns array\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\CiConfigurationTest\\:\\:getPhpVersionsUsedForBuildingOfficialImages\\(\\) should return list\\<numeric\\-string\\> but returns array\\<mixed\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
@@ -2540,13 +2636,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/TransformerTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'brace_class…\' might not exist on array\\<string, PhpCsFixer\\\\Tokenizer\\\\TransformerInterface\\>\\.$#',
+	'message' => '#^Offset \'brace_class_instantiation\' might not exist on array\\<string, PhpCsFixer\\\\Tokenizer\\\\TransformerInterface\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 2,
 	'path' => __DIR__ . '/../../tests/AutoReview/TransformerTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'disjunctive_normal…\' might not exist on array\\<string, PhpCsFixer\\\\Tokenizer\\\\TransformerInterface\\>\\.$#',
+	'message' => '#^Offset \'disjunctive_normal_form_type_parenthesis\' might not exist on array\\<string, PhpCsFixer\\\\Tokenizer\\\\TransformerInterface\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/TransformerTest.php',
@@ -2654,7 +2750,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Console/Command/ListFilesCommandTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'argv\' might not exist on array\\.$#',
+	'message' => '#^Offset \'argv\' might not exist on array\\<mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Console/Command/SelfUpdateCommandTest.php',
@@ -2672,7 +2768,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Console/Command/WorkerCommandTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'status\' might not exist on array\\.$#',
+	'message' => '#^Offset \'status\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Console/Command/WorkerCommandTest.php',
@@ -2684,7 +2780,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Console/ConfigurationResolverTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$array of function sort expects TArray of array\\<string\\>, array\\<int, string\\>\\|Exception given\\.$#',
+	'message' => '#^Parameter \\#1 \\$array of function sort expects TArray of array\\<string\\>, Exception\\|list\\<string\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Console/ConfigurationResolverTest.php',
@@ -2696,7 +2792,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Console/Output/ErrorOutputTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\|string, string\\|false given\\.$#',
+	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\<string\\>\\|string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Console/Output/ErrorOutputTest.php',
@@ -2852,19 +2948,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/FixerFactoryTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of static method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) expects string, array\\<int, string\\>\\|string given\\.$#',
+	'message' => '#^Parameter \\#1 \\$pattern of static method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) expects string, list\\<string\\>\\|string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/PregTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, array\\<int, string\\>\\|string given\\.$#',
+	'message' => '#^Parameter \\#1 \\$pattern of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, list\\<string\\>\\|string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/PregTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, array\\<int, string\\>\\|string given\\.$#',
+	'message' => '#^Parameter \\#3 \\$subject of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, list\\<string\\>\\|string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/PregTest.php',
@@ -2936,7 +3032,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Smoke/CiIntegrationTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\|string, string\\|false given\\.$#',
+	'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\<string\\>\\|string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Smoke/CiIntegrationTest.php',
@@ -2972,13 +3068,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Test/AbstractFixerTestCase.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractIntegrationCaseFactory\\:\\:determineRequirements\\(\\) should return array\\{php\\: int, php\\<\\: int, os\\: list\\<string\\>\\} but returns array\\<string, mixed\\>\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractIntegrationCaseFactory\\:\\:determineRequirements\\(\\) should return array\\{php\\: int, php\\<\\: int, os\\: list\\<string\\>\\} but returns non\\-empty\\-array\\<string, mixed\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractIntegrationCaseFactory\\:\\:determineSettings\\(\\) should return array\\{checkPriority\\: bool, deprecations\\: list\\<string\\>\\} but returns array\\<string, mixed\\>\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractIntegrationCaseFactory\\:\\:determineSettings\\(\\) should return array\\{checkPriority\\: bool, deprecations\\: list\\<string\\>\\} but returns non\\-empty\\-array\\<string, mixed\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
@@ -2990,7 +3086,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'deprecations\' might not exist on array\\<string, mixed\\>\\.$#',
+	'message' => '#^Offset \'deprecations\' might not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
@@ -3002,13 +3098,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'lineEnding\' might not exist on array\\<string, mixed\\>\\.$#',
+	'message' => '#^Offset \'lineEnding\' might not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'os\' might not exist on array\\<string, mixed\\>\\.$#',
+	'message' => '#^Offset \'os\' might not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
@@ -3020,7 +3116,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'php\\<\' might not exist on array\\<string, mixed\\>\\.$#',
+	'message' => '#^Offset \'php\\<\' might not exist on non\\-empty\\-array\\<string, mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
