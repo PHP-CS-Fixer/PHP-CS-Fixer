@@ -2108,30 +2108,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/RuleSet/RuleSet.php',
 ];
 $ignoreErrors[] = [
-	// identifier: method.notFound
-	'message' => '#^Call to an undefined method object\\:\\:getName\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
-	// identifier: return.type
-	'message' => '#^Method PhpCsFixer\\\\RuleSet\\\\RuleSets\\:\\:getSetDefinitions\\(\\) should return array\\<string, PhpCsFixer\\\\RuleSet\\\\RuleSetDescriptionInterface\\> but returns array\\<int\\|string, object\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#2 \\$callback of function uksort expects callable\\(int\\|string, int\\|string\\)\\: int, Closure\\(string, string\\)\\: int\\<\\-1, 1\\> given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
-	// identifier: assign.propertyType
-	'message' => '#^Static property PhpCsFixer\\\\RuleSet\\\\RuleSets\\:\\:\\$setDefinitions \\(array\\<string, PhpCsFixer\\\\RuleSet\\\\RuleSetDescriptionInterface\\>\\) does not accept array\\<int\\|string, object\\>\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'action\' might not exist on array\\.$#',
 	'count' => 2,
