@@ -555,7 +555,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
                 public function configure(array $configuration): void
                 {
-                    throw new \LogicException('Not implemented.');
+                    // void
                 }
 
                 protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens): void
@@ -565,7 +565,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
                 public function getConfigurationDefinition(): FixerConfigurationResolverInterface
                 {
-                    throw new \LogicException('Not implemented.');
+                    return $this->createConfigurationDefinition();
                 }
             };
         }
