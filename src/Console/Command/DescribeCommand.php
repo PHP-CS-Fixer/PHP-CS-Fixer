@@ -67,7 +67,7 @@ final class DescribeCommand extends Command
     private FixerFactory $fixerFactory;
 
     /**
-     * @var array<string, FixerInterface>
+     * @var null|array<string, FixerInterface>
      */
     private $fixers;
 
