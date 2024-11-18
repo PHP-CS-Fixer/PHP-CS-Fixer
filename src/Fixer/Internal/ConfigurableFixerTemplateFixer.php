@@ -19,6 +19,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
 use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\Casing\ConstantCaseFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalInternalClassFixer;
@@ -36,6 +37,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -525,7 +527,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 }
             };
         } elseif (AbstractDoctrineAnnotationFixer::class === $className) {
-            return new class extends AbstractPhpdocToTypeDeclarationFixer {
+            return new class extends AbstractDoctrineAnnotationFixer {
                 protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');
@@ -549,6 +551,21 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 public function isCandidate(Tokens $tokens): bool
                 {
                     throw new \LogicException('Not implemented.');
+                }
+
+                public function configure(array $configuration): void
+                {
+                    // void
+                }
+
+                protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens): void
+                {
+                    throw new \LogicException('Not implemented.');
+                }
+
+                public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+                {
+                    return $this->createConfigurationDefinition();
                 }
             };
         }
