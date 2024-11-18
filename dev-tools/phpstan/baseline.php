@@ -62,6 +62,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
+];
+$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset 1 might not exist on array\\.$#',
 	'count' => 2,
@@ -104,6 +116,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\DescribeCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/DescribeCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\DocumentationCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/DocumentationCommand.php',
+];
+$ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
 	'count' => 1,
@@ -114,6 +138,24 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$time of class PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\ReportSummary constructor expects int, float\\|int given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\HelpCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/HelpCommand.php',
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
@@ -128,6 +170,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/ListFilesCommand.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\ListFilesCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/ListFilesCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\ListSetsCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/ListSetsCommand.php',
+];
+$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'argv\' might not exist on array\\.$#',
 	'count' => 1,
@@ -140,8 +194,26 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\SelfUpdateCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
+];
+$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'files\' might not exist on array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\WorkerCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.property
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\WorkerCommand\\:\\:\\$defaultName has no type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
 ];
@@ -1598,6 +1670,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#5 \\$preventingAttributes of method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:ensureIsDocBlockWithAnnotation\\(\\) expects list\\<class\\-string\\>, array\\{\'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\'\\} given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php',
+];
+$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'assertAttributeEqua…\'\\|\'assertAttributeNotE…\'\\|\'assertEquals\'\\|\'assertNotEquals\' might not exist on array\\<string, string\\>\\.$#',
 	'count' => 1,
@@ -1656,6 +1734,12 @@ $ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<string, list\\<array\\{int, string\\}\\>\\>\\.$#',
 	'count' => 3,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#5 \\$preventingAttributes of method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:ensureIsDocBlockWithAnnotation\\(\\) expects list\\<class\\-string\\>, array\\{\'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\'\\} given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
