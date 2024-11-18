@@ -49,10 +49,8 @@ final class WorkerCommand extends Command
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
 
-    /** @var string */
     protected static $defaultName = 'worker';
 
-    /** @var string */
     protected static $defaultDescription = 'Internal command for running fixers in parallel';
 
     private ToolInfoInterface $toolInfo;

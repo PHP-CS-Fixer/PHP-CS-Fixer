@@ -585,6 +585,10 @@ final class ProjectCodeTest extends TestCase
             T_WHITESPACE,
         ];
 
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            $headerTypes[] = T_READONLY;
+        }
+
         $tokens = $this->createTokensForClass($className);
         $classyIndex = null;
 
