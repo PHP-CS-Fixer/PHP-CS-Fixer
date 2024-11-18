@@ -56,7 +56,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'describe')]
 final class DescribeCommand extends Command
 {
-    /** @var string */
     protected static $defaultName = 'describe';
 
     /**
