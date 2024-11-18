@@ -30,9 +30,9 @@ Configuration
 ``map_types``
 ~~~~~~~~~~~~~
 
-Map of custom types, eg template types from PHPStan, ``[string => ?string]``.
+Map of custom types, eg template types from PHPStan.
 
-Allowed types: ``array<string, ?string>``
+Allowed types: ``array<string, string>``
 
 Default value: ``[]``
 

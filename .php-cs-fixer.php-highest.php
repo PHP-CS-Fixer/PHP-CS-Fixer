@@ -28,7 +28,7 @@ $config->setRules(array_merge($config->getRules(), [
         'map_types' => [
             'TFixerInputConfig' => 'array',
             'TFixerComputedConfig' => 'array',
-            'TFixer' => null,
+            'TFixer' => '\PhpCsFixer\AbstractFixer',
         ],
     ],
     'fully_qualified_strict_types' => ['import_symbols' => true],
