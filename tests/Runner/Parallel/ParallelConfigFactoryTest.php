@@ -29,10 +29,9 @@ final class ParallelConfigFactoryTest extends TestCase
 {
     protected function tearDown(): void
     {
-        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
-        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
-        $cpuDetector->setAccessible(true);
-        $cpuDetector->setValue($parallelConfigFactoryReflection, null);
+        \Closure::bind(static function (): void {
+            ParallelConfigFactory::$cpuDetector = null;
+        }, null, ParallelConfigFactory::class)();
 
         parent::tearDown();
     }
@@ -124,11 +123,10 @@ final class ParallelConfigFactoryTest extends TestCase
      */
     private function mockCpuCount(int $count): void
     {
-        $parallelConfigFactoryReflection = new \ReflectionClass(ParallelConfigFactory::class);
-        $cpuDetector = $parallelConfigFactoryReflection->getProperty('cpuDetector');
-        $cpuDetector->setAccessible(true);
-        $cpuDetector->setValue($parallelConfigFactoryReflection, new CpuCoreCounter([
-            new DummyCpuCoreFinder($count),
-        ]));
+        \Closure::bind(static function () use ($count): void {
+            ParallelConfigFactory::$cpuDetector = new CpuCoreCounter([
+                new DummyCpuCoreFinder($count),
+            ]);
+        }, null, ParallelConfigFactory::class)();
     }
 }

@@ -328,24 +328,21 @@ final class FixerFactoryTest extends TestCase
     public function testNoDoubleConflictReporting(): void
     {
         $factory = new FixerFactory();
-        $method = new \ReflectionMethod($factory, 'generateConflictMessage');
-        $method->setAccessible(true);
         self::assertSame(
             'Rule contains conflicting fixers:
 - "a" with "b"
 - "c" with "d", "e" and "f"
 - "d" with "g" and "h"
 - "e" with "a"',
-            $method->invoke(
-                $factory,
-                [
+            \Closure::bind(static function (FixerFactory $factory): string {
+                return $factory->generateConflictMessage([
                     'a' => ['b'],
                     'b' => ['a'],
                     'c' => ['d', 'e', 'f'],
                     'd' => ['c', 'g', 'h'],
                     'e' => ['a'],
-                ]
-            )
+                ]);
+            }, null, FixerFactory::class)($factory),
         );
     }
 

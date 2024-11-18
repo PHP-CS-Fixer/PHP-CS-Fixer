@@ -392,6 +392,19 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfSetAccessible(string $className): void
+    {
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
+
+        $message = \sprintf('Class %s must not use "setAccessible()", use "Closure::bind()" instead.', $className);
+        self::assertNotContains('setAccessible', $calledFunctions, $message);
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     *
      * @param class-string<TestCase> $className
      */
     public function testNoPHPUnitMockUsed(string $className): void
@@ -571,6 +584,10 @@ final class ProjectCodeTest extends TestCase
             T_USE,
             T_WHITESPACE,
         ];
+
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            $headerTypes[] = T_READONLY;
+        }
 
         $tokens = $this->createTokensForClass($className);
         $classyIndex = null;

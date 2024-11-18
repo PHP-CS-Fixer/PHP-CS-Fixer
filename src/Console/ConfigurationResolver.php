@@ -181,7 +181,7 @@ final class ConfigurationResolver
     private $usingCache;
 
     /**
-     * @var FixerFactory
+     * @var null|FixerFactory
      */
     private $fixerFactory;
 

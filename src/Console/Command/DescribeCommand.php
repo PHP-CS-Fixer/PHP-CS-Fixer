@@ -56,7 +56,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'describe')]
 final class DescribeCommand extends Command
 {
-    /** @var string */
     protected static $defaultName = 'describe';
 
     /**
@@ -67,7 +66,7 @@ final class DescribeCommand extends Command
     private FixerFactory $fixerFactory;
 
     /**
-     * @var array<string, FixerInterface>
+     * @var null|array<string, FixerInterface>
      */
     private $fixers;
 
