@@ -193,7 +193,7 @@ class Foo {
             // handling of adding `= null` currently supports only _single_ declaration
             if ($isNullable && 1 === \count($propertyIndices)) {
                 $nextTokenIndex = $tokens->getNextTokenOfKind($firstPropertyIndex, ['=', ';']);
-                if ($tokens[$nextTokenIndex]->equals(';')) {
+                if (null !== $nextTokenIndex && $tokens[$nextTokenIndex]->equals(';')) {
                     $slices[$nextTokenIndex] = [
                         new Token([T_WHITESPACE, ' ']),
                         new Token('='),
