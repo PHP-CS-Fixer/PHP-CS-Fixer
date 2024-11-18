@@ -103,12 +103,12 @@ class Foo {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer.
+     * Must run before FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
-        return 7;
+        return 8;
     }
 
     protected function isSkippedType(string $type): bool
