@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8373eca2afcc6c66153b9974587a08fa",
+    "content-hash": "ddfe04f2abfc2101cd5c26816df8eae7",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -849,6 +849,43 @@
                 "MIT"
             ],
             "description": "Extra strict and opinionated rules for PHPStan"
+        },
+        {
+            "name": "phpstan/phpstan-symfony",
+            "version": "1.4.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-symfony.git",
+                "reference": "c7b7e7f520893621558bfbfdb2694d4364565c1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/c7b7e7f520893621558bfbfdb2694d4364565c1d",
+                "reference": "c7b7e7f520893621558bfbfdb2694d4364565c1d"
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^1.12"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon",
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Symfony Framework extensions and rules for PHPStan"
         },
         {
             "name": "psr/container",

@@ -38,6 +38,7 @@ final class RuleSets
 
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
+
                 /** @var RuleSetDescriptionInterface */
                 $set = new $class();
 
