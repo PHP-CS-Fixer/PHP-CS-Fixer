@@ -1670,12 +1670,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#5 \\$preventingAttributes of method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:ensureIsDocBlockWithAnnotation\\(\\) expects list\\<class\\-string\\>, array\\{\'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\'\\} given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php',
-];
-$ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
 	'message' => '#^Offset \'assertAttributeEqua…\'\\|\'assertAttributeNotE…\'\\|\'assertEquals\'\\|\'assertNotEquals\' might not exist on array\\<string, string\\>\\.$#',
 	'count' => 1,
@@ -1734,12 +1728,6 @@ $ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<string, list\\<array\\{int, string\\}\\>\\>\\.$#',
 	'count' => 3,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
-];
-$ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#5 \\$preventingAttributes of method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:ensureIsDocBlockWithAnnotation\\(\\) expects list\\<class\\-string\\>, array\\{\'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\', \'phpunit\\\\\\\\framework…\'\\} given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixer.php',
 ];
 $ignoreErrors[] = [
 	// identifier: offsetAccess.notFound
