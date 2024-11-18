@@ -68,6 +68,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 2,
@@ -110,6 +122,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\DescribeCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/DescribeCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\DocumentationCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/DocumentationCommand.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -120,6 +144,24 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/FixCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\HelpCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/HelpCommand.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$basePath of static method Symfony\\\\Component\\\\Filesystem\\\\Path\\:\\:makeRelative\\(\\) expects string, string\\|false given\\.$#',
@@ -134,6 +176,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/ListFilesCommand.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\ListFilesCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/ListFilesCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\ListSetsCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/ListSetsCommand.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset \'argv\' might not exist on array\\<mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -146,8 +200,26 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\SelfUpdateCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/SelfUpdateCommand.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset \'files\' might not exist on array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\WorkerCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
+	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\WorkerCommand\\:\\:\\$defaultName has no type specified\\.$#',
+	'identifier' => 'missingType.property',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
 ];
@@ -2202,30 +2274,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/RuleSet/RuleSet.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method object\\:\\:getName\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\RuleSet\\\\RuleSets\\:\\:getSetDefinitions\\(\\) should return array\\<string, PhpCsFixer\\\\RuleSet\\\\RuleSetDescriptionInterface\\> but returns array\\<int\\|string, object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$callback of function uksort expects callable\\(int\\|string, int\\|string\\)\\: int, Closure\\(string, string\\)\\: int\\<\\-1, 1\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Static property PhpCsFixer\\\\RuleSet\\\\RuleSets\\:\\:\\$setDefinitions \\(array\\<string, PhpCsFixer\\\\RuleSet\\\\RuleSetDescriptionInterface\\>\\) does not accept array\\<int\\|string, object\\>\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/RuleSet/RuleSets.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset \'action\' might not exist on array\\.$#',

@@ -848,6 +848,7 @@ final class FixerFactoryTest extends TestCase
                 'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_to_property_type' => [
+                'fully_qualified_strict_types',
                 'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_to_return_type' => [
