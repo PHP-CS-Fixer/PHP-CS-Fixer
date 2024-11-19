@@ -29,9 +29,7 @@ final class ParallelConfigFactoryTest extends TestCase
 {
     protected function tearDown(): void
     {
-        \Closure::bind(static function (): void {
-            ParallelConfigFactory::$cpuDetector = null;
-        }, null, ParallelConfigFactory::class)();
+        $this->mockCpuCount(null);
 
         parent::tearDown();
     }
@@ -52,7 +50,7 @@ final class ParallelConfigFactoryTest extends TestCase
 
         $config = ParallelConfigFactory::detect();
 
-        self::assertSame(7, $config->getMaxProcesses());
+        self::assertSame(6, $config->getMaxProcesses());
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config->getProcessTimeout());
     }
@@ -67,9 +65,13 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(22, $config1->getFilesPerProcess());
         self::assertSame(2_200, $config1->getProcessTimeout());
 
-        $config2 = ParallelConfigFactory::detect(22, 2_200, 10);
+        $config2 = ParallelConfigFactory::detect(22, 2_200, 6);
 
-        self::assertSame(7, $config2->getMaxProcesses());
+        self::assertSame(6, $config2->getMaxProcesses());
+
+        $config3 = ParallelConfigFactory::detect(22, 2_200, 10);
+
+        self::assertSame(6, $config3->getMaxProcesses());
     }
 
     public function testDetectConfigurationWithDefaultValue(): void
@@ -119,14 +121,15 @@ final class ParallelConfigFactoryTest extends TestCase
     }
 
     /**
-     * @param positive-int $count
+     * @param null|positive-int $count
      */
-    private function mockCpuCount(int $count): void
+    private function mockCpuCount(?int $count): void
     {
         \Closure::bind(static function () use ($count): void {
-            ParallelConfigFactory::$cpuDetector = new CpuCoreCounter([
-                new DummyCpuCoreFinder($count),
-            ]);
+            ParallelConfigFactory::$cpuDetector = null !== $count ?
+                new CpuCoreCounter([
+                    new DummyCpuCoreFinder($count),
+                ]) : null;
         }, null, ParallelConfigFactory::class)();
     }
 }

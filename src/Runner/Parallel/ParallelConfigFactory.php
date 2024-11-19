@@ -49,8 +49,11 @@ final class ParallelConfigFactory
             ]);
         }
 
+        // Reserve 1 core for the main orchestrating process
+        $available = self::$cpuDetector->getAvailableForParallelisation(1, $maxProcesses);
+
         return new ParallelConfig(
-            min(self::$cpuDetector->getCount(), $maxProcesses ?? PHP_INT_MAX),
+            $available->availableCpus,
             $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
             $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
         );
