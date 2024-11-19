@@ -27,7 +27,7 @@
         "clue/ndjson-react": "^1.0",
         "composer/semver": "^3.4",
         "composer/xdebug-handler": "^3.0.3",
-        "fidry/cpu-core-counter": "^1.0",
+        "fidry/cpu-core-counter": "^1.2",
         "react/child-process": "^0.6.5",
         "react/event-loop": "^1.0",
         "react/promise": "^2.0 || ^3.0",
