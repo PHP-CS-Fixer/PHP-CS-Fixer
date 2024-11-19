@@ -25,7 +25,7 @@ $config->setRules(array_merge($config->getRules(), [
     '@PHP83Migration' => true,
     '@PHP82Migration:risky' => true,
     'phpdoc_to_property_type' => [ // experimental
-        'map_types' => [
+        'types_map' => [
             'TFixerInputConfig' => 'array',
             'TFixerComputedConfig' => 'array',
             'TFixer' => '\PhpCsFixer\AbstractFixer',
