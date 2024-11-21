@@ -42,6 +42,10 @@ Rules
 - `static_lambda <./../rules/function_notation/static_lambda.rst>`_
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
+- `use_arrow_functions <./../rules/function_notation/use_arrow_functions.rst>`_ with config:
+
+  ``['one_liners_only' => false]``
+
 - `yield_from_array_to_yields <./../rules/array_notation/yield_from_array_to_yields.rst>`_
 
 Disabled rules
