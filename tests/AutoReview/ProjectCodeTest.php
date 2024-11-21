@@ -509,15 +509,13 @@ final class ProjectCodeTest extends TestCase
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
 
-        $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static function (Token $v): bool {
-            return $v->equalsAny([
-                [T_STRING, 'PHP_VERSION_ID'],
-                [T_STRING, 'PHP_MAJOR_VERSION'],
-                [T_STRING, 'PHP_MINOR_VERSION'],
-                [T_STRING, 'PHP_RELEASE_VERSION'],
-                [T_STRING, 'phpversion'],
-            ], false);
-        });
+        $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
+            [T_STRING, 'PHP_VERSION_ID'],
+            [T_STRING, 'PHP_MAJOR_VERSION'],
+            [T_STRING, 'PHP_MINOR_VERSION'],
+            [T_STRING, 'PHP_RELEASE_VERSION'],
+            [T_STRING, 'phpversion'],
+        ], false));
 
         self::assertCount(
             0,

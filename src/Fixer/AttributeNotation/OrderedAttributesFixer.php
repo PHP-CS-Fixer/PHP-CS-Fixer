@@ -168,13 +168,11 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
             /** @var _AttributeItems $elements */
-            $elements = array_map(function (AttributeAnalysis $attributeAnalysis) use ($tokens): array {
-                return [
-                    'name' => $this->sortAttributes($tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
-                    'start' => $attributeAnalysis->getStartIndex(),
-                    'end' => $attributeAnalysis->getEndIndex(),
-                ];
-            }, AttributeAnalyzer::collect($tokens, $index));
+            $elements = array_map(fn (AttributeAnalysis $attributeAnalysis): array => [
+                'name' => $this->sortAttributes($tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
+                'start' => $attributeAnalysis->getStartIndex(),
+                'end' => $attributeAnalysis->getEndIndex(),
+            ], AttributeAnalyzer::collect($tokens, $index));
 
             $endIndex = end($elements)['end'];
 
