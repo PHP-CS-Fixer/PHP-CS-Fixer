@@ -221,6 +221,22 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{a: int, b: int, with-dash: int}'];
 
+        yield ['array{...}'];
+
+        yield ['array{...<string>}'];
+
+        yield ['array{bool, ...<int, string>}'];
+
+        yield ['array{bool, ...}'];
+
+        yield ['array{bool, ...<string>}'];
+
+        yield ['array{a: bool,... }'];
+
+        yield ['array{a: bool,...<string> }'];
+
+        yield ['list{int, ...<string>}'];
+
         yield ['callable'];
 
         yield ['callable(string)'];
@@ -268,6 +284,8 @@ final class TypeExpressionTest extends TestCase
         yield ['Closure<T>(): T'];
 
         yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty}'];
+
+        yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty, ...<Closure(): void>}'];
 
         yield ['array  <  int   , callable  (  string  )  :   bool  >'];
 
@@ -395,6 +413,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['class~~double_tilde'];
 
+        yield ['array<>'];
+
         yield ['array<'];
 
         yield ['array<<'];
@@ -408,6 +428,22 @@ final class TypeExpressionTest extends TestCase
         yield ['array{'];
 
         yield ['array{ $this: 5 }'];
+
+        yield ['array{...<>}'];
+
+        yield ['array{bool, ...<>}'];
+
+        yield ['array{bool, ...<int,>}'];
+
+        yield ['array{bool, ...<,int>}'];
+
+        yield ['array{bool, ...<int, int, int>}'];
+
+        yield ['array{bool...<int>}'];
+
+        yield ['array{,...<int>}'];
+
+        yield ['array{...<int>,}'];
 
         yield ['g<,>'];
 
@@ -931,6 +967,11 @@ final class TypeExpressionTest extends TestCase
         yield 'array shape with multiple colons - callable' => [
             'array{array{x:int|bool}, int|bool, callable(): void}',
             'array{array{x:bool|int}, bool|int, callable(): void}',
+        ];
+
+        yield 'unsealed array shape' => [
+            'array{bool, ...<B|A>}',
+            'array{bool, ...<A|B>}',
         ];
 
         yield 'simple in callable argument' => [
