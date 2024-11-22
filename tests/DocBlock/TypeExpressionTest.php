@@ -974,6 +974,11 @@ final class TypeExpressionTest extends TestCase
             'array{bool, ...<A|B>}',
         ];
 
+        yield 'unsealed array shape with key and value type' => [
+            'array{bool, ...<B|A, D&C>}',
+            'array{bool, ...<A|B, C&D>}',
+        ];
+
         yield 'simple in callable argument' => [
             'callable(int|bool)',
             'callable(bool|int)',
