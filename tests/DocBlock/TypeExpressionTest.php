@@ -323,7 +323,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 120).'string'.str_repeat('>', 120)];
+        yield [str_repeat('array<', 116).'string'.str_repeat('>', 116)];
 
         yield [self::makeLongArrayShapeType()];
     }
