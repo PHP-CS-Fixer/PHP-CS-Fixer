@@ -25,6 +25,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 * PHP 8.1
 * PHP 8.2
 * PHP 8.3
+* PHP 8.4
 
 > **Note**
 > Each new PHP version requires a huge effort to support the new syntax.
