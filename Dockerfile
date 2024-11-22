@@ -1,7 +1,7 @@
-ARG PHP_VERSION=8.3
+ARG PHP_VERSION=8.4
 ARG ALPINE_VERSION=3.18
 
-FROM alpine:3.18.4 as sphinx-lint
+FROM alpine:3.18.4 AS sphinx-lint
 
 RUN apk add python3 py3-pip git \
     && pip install sphinx-lint
@@ -10,25 +10,25 @@ RUN apk add python3 py3-pip git \
 CMD git ls-files --cached -z -- '*.rst' \
     | xargs -0 -- python3 -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000
 
-FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
+FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} AS base
 
 RUN curl --location --output /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
     && chmod +x /usr/local/bin/install-php-extensions \
     && install-php-extensions pcntl
 
-FROM base as base-dev
+FROM base AS base-dev
 
 # https://blog.codito.dev/2022/11/composer-binary-only-docker-images/
 # https://github.com/composer/docker/pull/250
 COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 
-FROM base-dev as vendor
+FROM base-dev AS vendor
 COPY composer.json /fixer/composer.json
 WORKDIR /fixer
 RUN composer remove --dev infection/infection --no-update \
     && composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
-FROM base as dist
+FROM base AS dist
 
 RUN mkdir /code
 WORKDIR /code
@@ -39,7 +39,7 @@ COPY --from=vendor /fixer/vendor /fixer/vendor
 RUN ln -s /fixer/php-cs-fixer /usr/local/bin/php-cs-fixer
 ENTRYPOINT ["/usr/local/bin/php-cs-fixer"]
 
-FROM base-dev as dev
+FROM base-dev AS dev
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
 ARG PHP_XDEBUG_VERSION
@@ -52,8 +52,10 @@ RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /d
     fi \
     && apk add git \
     && sync \
-    && install-php-extensions pcov xdebug-${PHP_XDEBUG_VERSION} \
+    && install-php-extensions xdebug-${PHP_XDEBUG_VERSION} \
+    # @see: https://github.com/krakjoe/pcov/pull/111
+    && if [ "${PHP_VERSION:0:3}" != "8.4" ]; then install-php-extensions pcov; fi \
     && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
     && chmod +x /usr/local/bin/xdebug
 
-COPY docker/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY docker/php/* /usr/local/etc/php/conf.d/
