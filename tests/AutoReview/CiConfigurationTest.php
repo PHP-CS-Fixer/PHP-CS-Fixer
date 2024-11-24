@@ -119,10 +119,6 @@ final class CiConfigurationTest extends TestCase
      */
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
-        if ('8.2' === $lastSupportedVersion) {
-            return; // no further releases available yet
-        }
-
         self::ensureTraversableContainsIdenticalIsAvailable();
 
         self::assertThat($ciVersions, self::logicalOr(
