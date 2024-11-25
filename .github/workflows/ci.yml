@@ -105,11 +105,6 @@ jobs:
 
           - operating-system: 'ubuntu-24.04'
             php-version: '8.4'
-            job-description: 'integration test'
-            run-84-integration-test: 'yes'
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.4'
             job-description: 'Fixer with migration rules'
             run-fixer: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
@@ -166,6 +161,17 @@ jobs:
             job-description: 'tests on macOS'
             run-tests: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+
+          # TEMPORARY: Only for quick 8.4 feedback
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'integration test'
+            run-84-integration-tests: 'yes'
+
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'unit test'
+            run-84-unit-tests: 'yes'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
@@ -254,10 +260,6 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -v
 
-      - name: Run PHP 8.4 integration test
-        if: matrix.run-84-integration-test == 'yes'
-        run: php vendor/bin/phpunit tests/IntegrationTest.php --filter=PHP8_4.test --color=always
-
       # Should be checked on the lowest supported PHP version.
       # If any type can be converted from PHPDoc to native type on lowest supported PHP, we should commit such change.
       - name: Run PHP CS Fixer with PHPDoc to type rules
@@ -265,6 +267,19 @@ jobs:
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
+
+      # TEMPORARY: Only for quick 8.4 feedback
+      - name: Run `@group php8.4` unit tests
+        if: matrix.run-84-unit-tests == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        # We use PHPUnit here instead of ParaUnit because it displays diff and since we limit tests to group `php8.4` we don't need parallelisation.
+        run: vendor/bin/phpunit --group=php8.4 --colors=always
+
+      - name: Run PHP 8.4 integration test
+        if: matrix.run-84-integration-tests == 'yes'
+        run: php vendor/bin/phpunit tests/IntegrationTest.php --filter=PHP8_4.test --color=always
 
   deployment:
     needs: tests
