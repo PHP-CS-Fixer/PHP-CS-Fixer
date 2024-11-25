@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
+/**
+ * @internal
+ */
 interface StartEndTokenAwareAnalysis
 {
     /**
