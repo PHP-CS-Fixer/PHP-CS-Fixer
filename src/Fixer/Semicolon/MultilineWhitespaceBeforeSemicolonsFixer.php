@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -220,35 +221,39 @@ $object->method1()
     private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
     {
         $isMultilineCall = false;
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        while (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]])) {
-            $index = $prevIndex;
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        // Don't count as multiline if current semicolon is on new line
+        $index = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(T_CASE)) {
-                $index = $tokens->getNextTokenOfKind($index, [':']);
-                $index = $tokens->getNextMeaningfulToken($index);
-            }
+        $statementBreakTokens = [';', '{', '}', [CT::T_ATTRIBUTE_CLOSE], [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE], [T_ATTRIBUTE]];
 
+        while (true) {
             $blockType = Tokens::detectBlockType($tokens[$index]);
             if (null !== $blockType && !$blockType['isStart']) {
-                $prevIndex = $tokens->findBlockStart($blockType['type'], $index);
+                $index = $tokens->findBlockStart($blockType['type'], $index);
 
                 continue;
             }
 
-            if (
-                $tokens[$index]->isObjectOperator()
-                || $tokens[$index]->isGivenKind([T_DOUBLE_COLON])
-                || $tokens[$index]->equalsAny([[T_BOOLEAN_AND], [T_BOOLEAN_OR], [T_LOGICAL_AND], [T_LOGICAL_OR], [T_LOGICAL_XOR]])
-                || $tokens[$index]->equalsAny(['+', '-', '*', '/', '%', '**']) // Arithmetic
-                || $tokens[$prevIndex]->equalsAny([',', '.', [T_RETURN], [T_ECHO]])
-                || $tokens[$index]->equalsAny(['?', ':', '.'])
-            ) {
-                $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index, [T_WHITESPACE]);
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevIndex]->equalsAny($statementBreakTokens)) {
+                break;
             }
+
+            if ($tokens[$prevIndex]->equals(':')) {
+                $caseIndex = $tokens->getPrevTokenOfKind($prevIndex, array_merge($statementBreakTokens, [[T_CASE], [T_DEFAULT]]));
+
+                if (
+                    $tokens[$caseIndex]->isGivenKind(T_CASE)
+                    || $tokens[$caseIndex]->isGivenKind(T_DEFAULT)
+                ) {
+                    break;
+                }
+            }
+
+            $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index, [T_WHITESPACE]);
+
+            $index = $prevIndex;
         }
 
         return $isMultilineCall ? WhitespacesAnalyzer::detectIndent($tokens, $index) : null;

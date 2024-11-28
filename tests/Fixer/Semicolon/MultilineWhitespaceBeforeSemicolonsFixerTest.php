@@ -1187,6 +1187,22 @@ switch ($foo) {
         ];
 
         yield [
+            '<?php
+switch ($foo) {
+    default:
+        $bar->baz();
+}
+',
+            '<?php
+switch ($foo) {
+    default:
+        $bar->baz()
+              ;
+}
+',
+        ];
+
+        yield [
             <<<'PHP'
                 <?php
                 $x->foo()
@@ -1415,6 +1431,43 @@ switch ($foo) {
                     / 6
                 ;
             ',
+        ];
+
+        yield [
+            '<?php
+                return $this->isFoo() ||
+                    $this->isBar()
+                ;
+            '
+        ];
+
+        yield [
+            '<?php
+                return $this->
+                    doThing()->
+                    doAnother()
+                ;
+            '
+        ];
+
+        yield [
+            '<?php
+                return static::
+                    doThing()::
+                    doAnother()
+                ;
+            '
+        ];
+
+        yield [
+            '<?php
+                class FooBar {
+                    protected $foo;
+
+                    #[Deprecated]
+                    protected $bar;
+                }
+            '
         ];
 
         yield [
