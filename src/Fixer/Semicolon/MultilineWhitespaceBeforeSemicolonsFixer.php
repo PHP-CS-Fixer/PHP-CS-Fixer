@@ -222,10 +222,15 @@ $object->method1()
     {
         $isMultilineCall = false;
 
-        // Don't count as multiline if current semicolon is on new line
+        // Ignore the current positioning of the semicolon
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        $statementBreakTokens = [';', '{', '}', [CT::T_ATTRIBUTE_CLOSE], [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE], [T_ATTRIBUTE]];
+        $statementBreakTokens = [';', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]];
+
+        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
+            $statementBreakTokens[] = [T_ATTRIBUTE];
+            $statementBreakTokens[] = [CT::T_ATTRIBUTE_CLOSE];
+        }
 
         while (true) {
             $blockType = Tokens::detectBlockType($tokens[$index]);
