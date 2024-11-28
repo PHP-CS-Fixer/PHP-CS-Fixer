@@ -1464,7 +1464,7 @@ switch ($foo) {
                 class FooBar {
                     protected $foo;
 
-                    #[Deprecated]
+                    #[FooBar]
                     protected $bar;
                 }
             ',
