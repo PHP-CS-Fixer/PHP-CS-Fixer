@@ -1467,7 +1467,48 @@ switch ($foo) {
                     #[Deprecated]
                     protected $bar;
                 }
-            '
+            ',
+        ];
+
+        yield [
+            '<?php
+                [new FooBar]
+                    [0]
+                    ->foo()
+                    ->bar()
+                ;
+            ',
+            '<?php
+                [new FooBar]
+                    [0]
+                    ->foo()
+                    ->bar()
+                    ;
+            ',
+        ];
+
+        yield [
+            '<?php
+
+$a = new
+/** @property string $x */
+class {};
+
+$b = new
+#[X]
+class {};',
+        ];
+
+        yield [
+            '<?php
+            for(
+                $i = 1;
+                $i < $max;
+                $i++
+             ) {
+
+             }
+            ',
         ];
 
         yield [

@@ -233,6 +233,10 @@ $object->method1()
         }
 
         while (true) {
+            if ($tokens[$index]->equalsAny($statementBreakTokens)) {
+                break;
+            }
+
             $blockType = Tokens::detectBlockType($tokens[$index]);
             if (null !== $blockType && !$blockType['isStart']) {
                 $index = $tokens->findBlockStart($blockType['type'], $index);
@@ -241,7 +245,7 @@ $object->method1()
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->equalsAny($statementBreakTokens)) {
+            if (null === $prevIndex || $tokens[$prevIndex]->equalsAny($statementBreakTokens)) {
                 break;
             }
 
@@ -254,6 +258,13 @@ $object->method1()
                 ) {
                     break;
                 }
+            }
+
+            if (
+                $tokens[$prevIndex]->equals('(')
+                && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_FOR)
+            ) {
+                break;
             }
 
             $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index, [T_WHITESPACE]);
