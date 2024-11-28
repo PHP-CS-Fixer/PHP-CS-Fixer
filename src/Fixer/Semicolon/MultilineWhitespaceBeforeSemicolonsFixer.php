@@ -222,9 +222,14 @@ $object->method1()
         $isMultilineCall = false;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        while (!$tokens[$prevIndex]->equalsAny([';', ':', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]])) {
+        while (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]])) {
             $index = $prevIndex;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if ($tokens[$index]->isGivenKind(T_CASE)) {
+                $index = $tokens->getNextTokenOfKind($index, [':']);
+                $index = $tokens->getNextMeaningfulToken($index);
+            }
 
             $blockType = Tokens::detectBlockType($tokens[$index]);
             if (null !== $blockType && !$blockType['isStart']) {
@@ -233,9 +238,16 @@ $object->method1()
                 continue;
             }
 
-            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+            if (
+                $tokens[$index]->isObjectOperator()
+                || $tokens[$index]->isGivenKind([T_DOUBLE_COLON])
+                || $tokens[$index]->equalsAny([[T_BOOLEAN_AND], [T_BOOLEAN_OR], [T_LOGICAL_AND], [T_LOGICAL_OR], [T_LOGICAL_XOR]])
+                || $tokens[$index]->equalsAny(['+', '-', '*', '/', '%', '**']) // Arithmetic
+                || $tokens[$prevIndex]->equalsAny([',', '.', [T_RETURN], [T_ECHO]])
+                || $tokens[$index]->equalsAny(['?', ':', '.'])
+            ) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index);
+                $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index, [T_WHITESPACE]);
             }
         }
 

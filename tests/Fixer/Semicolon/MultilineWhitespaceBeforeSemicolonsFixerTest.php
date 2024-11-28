@@ -1202,6 +1202,222 @@ switch ($foo) {
         ];
 
         yield [
+            '<?php
+                return is_empty($_GET)
+                    ? "foo"
+                    : "bar"
+                ;
+            ',
+            '<?php
+                return is_empty($_GET)
+                    ? "foo"
+                    : "bar";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET) ? "foo" : "bar";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET)
+                    ? "foo" : "bar"
+                ;
+            ',
+            '<?php
+                return is_empty($_GET)
+                    ? "foo" : "bar";
+            ',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    const
+                        FOO = "foo",
+                        BAR = "bar"
+                    ;
+                }
+            ',
+            '<?php
+                class Foo {
+                    const
+                        FOO = "foo",
+                        BAR = "bar";
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    const BAR = "bar";
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    const BAR = "bar", FOO = "foo";
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                return
+                    is_empty($_GET)
+                    || is_empty($_POST)
+                ;
+            ',
+            '<?php
+                return
+                    is_empty($_GET)
+                    || is_empty($_POST);
+            ',
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET) || is_empty($_POST) ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return
+                    "this is a"
+                    . "split line"
+                    . "string"
+                ;
+            ',
+            '<?php
+                return
+                    "this is a"
+                    . "split line"
+                    . "string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return "this is not a" . "split line" . "string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return
+                    "this is not a" . "split line" . "string"
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                $foo->foo($bar->something()
+                    ->else()
+                );
+            '
+        ];
+
+        yield [
+            '<?php
+                $foo->foo(
+                    $bar
+                        ->something()
+                        ->else()
+                );
+            '
+        ];
+
+        yield [
+            '<?php
+                echo "this is a
+                    split line
+                    string";
+            '
+        ];
+
+        yield [
+            '<?php
+                return "this is a
+                    split line
+                    string";
+            '
+        ];
+
+        yield [
+            '<?php
+                return "this is a" . $nice . "
+                    split line
+                    string";
+            '
+        ];
+
+        yield [
+            '<?php
+                return "this is a" .
+                    $nice . "
+                    split line
+                    string"
+                ;
+            ',
+            '<?php
+                return "this is a" .
+                    $nice . "
+                    split line
+                    string";
+            '
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                    - 4
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                    - 4
+                    * 5
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                    - 4
+                    * 5
+                    / 6
+                ;
+            ',
+        ];
+
+        yield [
             "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2()\r\n   ;",
             "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2();",
             ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
