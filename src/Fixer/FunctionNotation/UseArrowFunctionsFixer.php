@@ -78,8 +78,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            // Find parameters end
-            // Abort if they are multilined
+            // Find parameters
 
             $parametersStart = $tokens->getNextMeaningfulToken($index);
 
@@ -153,8 +152,6 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             if (!$tokens[$braceClose]->equals('}')) {
                 continue;
             }
-
-            // Abort if the `return` statement is multilined
 
             // Transform the function to an arrow function
 
