@@ -52,6 +52,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 CT::T_GROUP_IMPORT_BRACE_OPEN,
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ]
         );
     }
@@ -185,6 +187,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 CT::T_GROUP_IMPORT_BRACE_OPEN,
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ]
         );
     }
@@ -225,6 +229,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 CT::T_GROUP_IMPORT_BRACE_OPEN,
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ]
         );
     }
@@ -292,6 +298,61 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 9 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 18 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
                 20 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            ],
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provide84ProcessCases
+     *
+     * @requires PHP 8.4
+     */
+    public function test84Process(string $source, array $expectedTokens = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_CURLY_OPEN,
+                CT::T_CURLY_CLOSE,
+                T_DOLLAR_OPEN_CURLY_BRACES,
+                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
+                CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                CT::T_DYNAMIC_VAR_BRACE_OPEN,
+                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                CT::T_GROUP_IMPORT_BRACE_OPEN,
+                CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ]
+        );
+    }
+
+    /**
+     * @return iterable<array{string, array<int, int>}>
+     */
+    public static function provide84ProcessCases(): iterable
+    {
+        yield 'property hooks: property without default value' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // <this one
+                        set(string $value) {
+                            $this -> foo = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                42 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ],
         ];
     }

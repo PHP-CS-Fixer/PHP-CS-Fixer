@@ -28,7 +28,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - in `$foo->{$bar}` into CT::T_DYNAMIC_PROP_BRACE_OPEN and CT::T_DYNAMIC_PROP_BRACE_CLOSE,
  * - in `${$foo}` into CT::T_DYNAMIC_VAR_BRACE_OPEN and CT::T_DYNAMIC_VAR_BRACE_CLOSE,
  * - in `$array{$index}` into CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN and CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
- * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE.
+ * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE,
+ * - in `class PropertyHooks { public string $bar _{_ set(string $value) { } _}_` into CT::T_PROPERTY_HOOK_BRACE_OPEN, CT::T_PROPERTY_HOOK_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -47,6 +48,7 @@ final class BraceTransformer extends AbstractTransformer
         $this->transformIntoDollarCloseBrace($tokens, $token, $index);
         $this->transformIntoDynamicPropBraces($tokens, $token, $index);
         $this->transformIntoDynamicVarBraces($tokens, $token, $index);
+        $this->transformIntoPropertyHookBraces($tokens, $token, $index);
         $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
         $this->transformIntoGroupUseBraces($tokens, $token, $index);
         $this->transformIntoDynamicClassConstantFetchBraces($tokens, $token, $index);
@@ -67,6 +69,8 @@ final class BraceTransformer extends AbstractTransformer
             CT::T_GROUP_IMPORT_BRACE_CLOSE,
             CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
             CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            CT::T_PROPERTY_HOOK_BRACE_OPEN,
+            CT::T_PROPERTY_HOOK_BRACE_CLOSE,
         ];
     }
 
@@ -145,8 +149,37 @@ final class BraceTransformer extends AbstractTransformer
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}']);
     }
 
+    private function transformIntoPropertyHookBraces(Tokens $tokens, Token $token, int $index): void
+    {
+        if (\PHP_VERSION_ID < 8_04_00) {
+            return; // @TODO: drop condition when PHP 8.4+ is required or majority of the users are using 8.4+
+        }
+
+        if (!$token->equals('{')) {
+            return;
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+        // @TODO PHP8.4 - while attributes at @nextIndex, skip them (plus tests)
+        // ...
+
+        if (!$tokens[$nextIndex]->equalsAny([
+            [T_STRING, 'get'],
+            [T_STRING, 'set'],
+        ])) {
+            return;
+        }
+
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
+
+        $tokens[$index] = new Token([CT::T_PROPERTY_HOOK_BRACE_OPEN, '{']);
+        $tokens[$closeIndex] = new Token([CT::T_PROPERTY_HOOK_BRACE_CLOSE, '}']);
+    }
+
     private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, int $index): void
     {
+        $token = $tokens[$index]; // hack
         if (!$token->equals('{')) {
             return;
         }
