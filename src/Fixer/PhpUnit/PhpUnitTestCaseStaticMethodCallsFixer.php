@@ -493,7 +493,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         return $functionsAnalyzer->isTheSameClassCall($tokens, $index)
-            && !$tokens[$referenceIndex]->equals($this->conversionMap[$callType][1], false);
+            && !$tokens[$referenceIndex]->equals($this->conversionMap[$callType][1], false)
+        ;
     }
 
     private function findEndOfNextBlock(Tokens $tokens, int $index): int
@@ -502,6 +503,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         return $tokens[$nextIndex]->equals('{')
             ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex)
-            : $nextIndex;
+            : $nextIndex
+        ;
     }
 }

@@ -107,7 +107,8 @@ final class Tokens extends \SplFixedArray
                             '"'.str_replace('"', '""', $scannedToken->getContent()).'"',
                             $scannedToken->getPosition()
                         )
-                        : $scannedToken;
+                        : $scannedToken
+                    ;
 
                     $missingTextLength = $token->getPosition() - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {

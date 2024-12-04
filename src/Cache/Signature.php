@@ -77,7 +77,8 @@ final class Signature implements SignatureInterface
             && $this->fixerVersion === $signature->getFixerVersion()
             && $this->indent === $signature->getIndent()
             && $this->lineEnding === $signature->getLineEnding()
-            && $this->rules === $signature->getRules();
+            && $this->rules === $signature->getRules()
+        ;
     }
 
     /**

@@ -200,7 +200,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 .(isset($annotations['expectedExceptionMessageRegExp']) ? 'setExpectedExceptionRegExp' : 'setExpectedException')
                 .'('
                 .implode(', ', $paramList)
-                .');';
+                .');'
+            ;
             $newMethods = Tokens::fromCode($newMethodsCode);
             $newMethods[0] = new Token([
                 T_WHITESPACE,

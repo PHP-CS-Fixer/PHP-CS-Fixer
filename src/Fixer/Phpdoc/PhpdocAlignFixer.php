@@ -345,7 +345,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                             $tagMax + $hintMax + $extraIndent,
                             $this->getLeftAlignedDescriptionIndent($items, $j)
                         )
-                        .$item['desc'];
+                        .$item['desc']
+                    ;
 
                     $docBlock->getLine($current + $j)->setContent($line.$lineEnding);
 
@@ -361,7 +362,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                 $line =
                     $item['indent']
                     .' * @'
-                    .$item['tag'];
+                    .$item['tag']
+                ;
 
                 if ($hasStatic) {
                     $line .=
@@ -369,7 +371,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                             $tagMax - \strlen($item['tag']) + $spacingForTag,
                             '' !== $item['static'] ? $spacingForTag : 0
                         )
-                        .('' !== $item['static'] ? $item['static'] : $this->getIndent(6 /* \strlen('static') */, 0));
+                        .('' !== $item['static'] ? $item['static'] : $this->getIndent(6 /* \strlen('static') */, 0))
+                    ;
                     $hintVerticalAlignIndent = $spacingForTag;
                 } else {
                     $hintVerticalAlignIndent = $tagMax - \strlen($item['tag']) + $spacingForTag;
@@ -380,7 +383,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                         $hintVerticalAlignIndent,
                         '' !== $item['hint'] ? $spacingForTag : 0
                     )
-                    .$item['hint'];
+                    .$item['hint']
+                ;
 
                 if ('' !== $item['var']) {
                     $line .=
@@ -390,7 +394,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                             '' !== $item['desc']
                             ? $this->getIndent($varMax - \strlen($item['var']) + $spacingForTag, $spacingForTag).$item['desc']
                             : ''
-                        );
+                        )
+                    ;
                 } elseif ('' !== $item['desc']) {
                     $line .= $this->getIndent($hintMax - \strlen($item['hint']) + $spacingForTag, $spacingForTag).$item['desc'];
                 }
@@ -404,7 +409,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     {
         return (\is_int($this->spacing))
             ? $this->spacing
-            : ($this->spacing[$tag] ?? $this->spacing[self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING);
+            : ($this->spacing[$tag] ?? $this->spacing[self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING)
+        ;
     }
 
     /**
@@ -492,7 +498,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             $this->getSentenceIndent($item['static'], $spacingForTag) +
             $this->getSentenceIndent($item['tag'], $spacingForTag) +
             $this->getSentenceIndent($item['hint'], $spacingForTag) +
-            $this->getSentenceIndent($item['var'], $spacingForTag);
+            $this->getSentenceIndent($item['var'], $spacingForTag)
+        ;
     }
 
     /**

@@ -69,6 +69,7 @@ class TokensWithObservedTransformers extends Tokens
     {
         return $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
-            : (\is_array($token) ? $token[0] : $token);
+            : (\is_array($token) ? $token[0] : $token)
+        ;
     }
 }

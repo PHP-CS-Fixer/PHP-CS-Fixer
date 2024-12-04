@@ -440,7 +440,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $this->expectExceptionCode(/*C*/123);
             zzz();
         }
-';
+'
+        ;
         $inputTemplate =
 '
         function testFnc%d()
@@ -449,7 +450,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $this->setExpectedException(\'RuntimeException\', \'msg\'/*B*/, /*C*/123);
             zzz();
         }
-';
+'
+        ;
         $input = $expected = '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {

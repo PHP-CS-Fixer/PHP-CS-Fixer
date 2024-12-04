@@ -167,7 +167,8 @@ final class Annotation
 
         return null === $typesContent
             ? null
-            : new TypeExpression($typesContent, $this->namespace, $this->namespaceUses);
+            : new TypeExpression($typesContent, $this->namespace, $this->namespaceUses)
+        ;
     }
 
     /**
@@ -201,7 +202,8 @@ final class Annotation
             $typeExpression = $this->getTypeExpression();
             $this->types = null === $typeExpression
                 ? []
-                : $typeExpression->getTypes();
+                : $typeExpression->getTypes()
+            ;
         }
 
         return $this->types;
@@ -316,7 +318,8 @@ final class Annotation
 
             $this->typesContent = $matchingResult
                 ? $matches['types']
-                : null;
+                : null
+            ;
         }
 
         return $this->typesContent;

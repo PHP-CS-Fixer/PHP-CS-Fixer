@@ -105,7 +105,8 @@ class ValueObject
     {
         $this->candidateTokenKind = self::OPTION_SYNTAX_QUESTION_MARK === $this->configuration['syntax']
             ? CT::T_TYPE_ALTERNATION // `|` -> `?`
-            : CT::T_NULLABLE_TYPE; // `?` -> `|`
+            : CT::T_NULLABLE_TYPE // `?` -> `|`
+        ;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
