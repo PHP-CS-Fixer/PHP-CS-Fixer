@@ -39,164 +39,6 @@ final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixSpaceOutsideOffsetCases
-     */
-    public function testFixSpaceOutsideOffset(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function testLeaveNewLinesAlone(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            class Foo
-            {
-                private function bar()
-                {
-                    if ([1, 2, 3] && [
-                        'foo',
-                        'bar' ,
-                        'baz'// a comment just to mix things up
-                    ]) {
-                        return 1;
-                    };
-                }
-            }
-            EOF;
-        $this->doTest($expected);
-    }
-
-    /**
-     * @dataProvider provideCommentsCases
-     */
-    public function testComments(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideCommentsCases(): iterable
-    {
-        yield [
-            '<?php
-
-$withComments[0] // here is a comment
-    [1] // and here is another
-    [2] = 3;',
-        ];
-
-        yield [
-            '<?php
-$a = $b[# z
- 1#z
- ];',
-            '<?php
-$a = $b[ # z
- 1#z
- ];',
-        ];
-    }
-
-    public function testLeaveComplexString(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
-            EOF;
-        $this->doTest($expected);
-    }
-
-    public function testLeaveFunctions(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            function someFunc()    {   $someVar = [];   }
-            EOF;
-        $this->doTest($expected);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideFixSpaceOutsideOffsetCases(): iterable
-    {
-        yield [
-            '<?php
-$a = $b[0]    ;',
-            '<?php
-$a = $b   [0]    ;',
-        ];
-
-        yield [
-            '<?php
-$a = array($b[0]     ,   $b[0]  );',
-            '<?php
-$a = array($b      [0]     ,   $b [0]  );',
-        ];
-
-        yield [
-            '<?php
-$withComments[0] // here is a comment
-    [1] // and here is another
-    [2][3] = 4;',
-            '<?php
-$withComments [0] // here is a comment
-    [1] // and here is another
-    [2] [3] = 4;',
-        ];
-
-        yield [
-            '<?php
-$c = SOME_CONST[0][1][2];',
-            '<?php
-$c = SOME_CONST [0] [1]   [2];',
-        ];
-
-        yield [
-            '<?php
-$f = someFunc()[0][1][2];',
-            '<?php
-$f = someFunc() [0] [1]   [2];',
-        ];
-
-        yield [
-            '<?php
-$foo[][0][1][2] = 3;',
-            '<?php
-$foo [] [0] [1]   [2] = 3;',
-        ];
-
-        yield [
-            '<?php
-$foo[0][1][2] = 3;',
-            '<?php
-$foo [0] [1]   [2] = 3;',
-        ];
-
-        yield [
-            '<?php
-$bar = $foo[0][1][2];',
-            '<?php
-$bar = $foo [0] [1]   [2];',
-        ];
-
-        yield [
-            '<?php
-$baz[0][1][2] = 3;',
-            '<?php
-$baz [0]
-     [1]
-     [2] = 3;',
-        ];
-    }
-
-    /**
      * @return iterable<array{string, string}>
      */
     public static function provideFixSpaceInsideOffsetCases(): iterable
@@ -295,6 +137,164 @@ $var = $arr[0][     0
     }
 
     /**
+     * @dataProvider provideFixSpaceOutsideOffsetCases
+     */
+    public function testFixSpaceOutsideOffset(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFixSpaceOutsideOffsetCases(): iterable
+    {
+        yield [
+            '<?php
+$a = $b[0]    ;',
+            '<?php
+$a = $b   [0]    ;',
+        ];
+
+        yield [
+            '<?php
+$a = array($b[0]     ,   $b[0]  );',
+            '<?php
+$a = array($b      [0]     ,   $b [0]  );',
+        ];
+
+        yield [
+            '<?php
+$withComments[0] // here is a comment
+    [1] // and here is another
+    [2][3] = 4;',
+            '<?php
+$withComments [0] // here is a comment
+    [1] // and here is another
+    [2] [3] = 4;',
+        ];
+
+        yield [
+            '<?php
+$c = SOME_CONST[0][1][2];',
+            '<?php
+$c = SOME_CONST [0] [1]   [2];',
+        ];
+
+        yield [
+            '<?php
+$f = someFunc()[0][1][2];',
+            '<?php
+$f = someFunc() [0] [1]   [2];',
+        ];
+
+        yield [
+            '<?php
+$foo[][0][1][2] = 3;',
+            '<?php
+$foo [] [0] [1]   [2] = 3;',
+        ];
+
+        yield [
+            '<?php
+$foo[0][1][2] = 3;',
+            '<?php
+$foo [0] [1]   [2] = 3;',
+        ];
+
+        yield [
+            '<?php
+$bar = $foo[0][1][2];',
+            '<?php
+$bar = $foo [0] [1]   [2];',
+        ];
+
+        yield [
+            '<?php
+$baz[0][1][2] = 3;',
+            '<?php
+$baz [0]
+     [1]
+     [2] = 3;',
+        ];
+    }
+
+    public function testLeaveNewLinesAlone(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            class Foo
+            {
+                private function bar()
+                {
+                    if ([1, 2, 3] && [
+                        'foo',
+                        'bar' ,
+                        'baz'// a comment just to mix things up
+                    ]) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
+        $this->doTest($expected);
+    }
+
+    /**
+     * @dataProvider provideCommentsCases
+     */
+    public function testComments(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideCommentsCases(): iterable
+    {
+        yield [
+            '<?php
+
+$withComments[0] // here is a comment
+    [1] // and here is another
+    [2] = 3;',
+        ];
+
+        yield [
+            '<?php
+$a = $b[# z
+ 1#z
+ ];',
+            '<?php
+$a = $b[ # z
+ 1#z
+ ];',
+        ];
+    }
+
+    public function testLeaveComplexString(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            echo "I am printing some spaces here    {$foo->bar[1]}     {$foo->bar[1]}.";
+            EOF;
+        $this->doTest($expected);
+    }
+
+    public function testLeaveFunctions(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            function someFunc()    {   $someVar = [];   }
+            EOF;
+        $this->doTest($expected);
+    }
+
+    /**
      * @param _AutogeneratedInputConfiguration $configuration
      *
      * @dataProvider provideFixWithConfigurationCases
@@ -327,6 +327,14 @@ $a = $b   [0];
 ',
             ['positions' => ['inside', 'outside']],
         ];
+    }
+
+    public function testWrongConfig(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
+
+        $this->fixer->configure(['positions' => ['foo']]); // @phpstan-ignore-line
     }
 
     /**
@@ -396,14 +404,6 @@ $var = $arr[0]{     0
 
             yield $index => $test;
         }
-    }
-
-    public function testWrongConfig(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
-
-        $this->fixer->configure(['positions' => ['foo']]); // @phpstan-ignore-line
     }
 
     /**
