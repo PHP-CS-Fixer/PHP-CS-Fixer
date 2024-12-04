@@ -17,9 +17,9 @@ namespace PhpCsFixer\Linter;
 /**
  * Handle PHP code linting process.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class Linter implements LinterInterface
 {

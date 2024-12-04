@@ -28,9 +28,9 @@ use PhpCsFixer\Tokenizer\CodeHasher;
  *  - file is new
  *  - file changed
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FileCacheManager implements CacheManagerInterface
 {

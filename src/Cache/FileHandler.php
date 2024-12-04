@@ -17,10 +17,10 @@ namespace PhpCsFixer\Cache;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
+ * @internal
+ *
  * @author Andreas Möller <am@localheinz.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 final class FileHandler implements FileHandlerInterface
 {

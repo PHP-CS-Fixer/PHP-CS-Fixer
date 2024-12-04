@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {

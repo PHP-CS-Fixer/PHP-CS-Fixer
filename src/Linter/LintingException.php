@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Linter;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @final
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @TODO 4.0 make class "final"
  */

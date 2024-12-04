@@ -18,9 +18,9 @@ use PhpCsFixer\ToolInfo;
 use PhpCsFixer\ToolInfoInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WarningsDetector
 {
