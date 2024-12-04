@@ -1,0 +1,43 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_method_order,class_attributes_separation.
+--RULESET--
+{"php_unit_data_provider_method_order": true, "class_attributes_separation": true}
+--EXPECT--
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+
+    public static function getData(): iterable
+    {
+        yield from range(1, 10);
+    }
+}
+
+--INPUT--
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    public static function getData(): iterable
+    {
+        yield from range(1, 10);
+    }
+
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+}
