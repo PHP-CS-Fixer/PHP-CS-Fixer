@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+/**
+ * @readonly
+ */
 final class FixerOption implements FixerOptionInterface
 {
     private string $name;

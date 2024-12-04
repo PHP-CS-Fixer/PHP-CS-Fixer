@@ -18,6 +18,8 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class SymfonySet extends AbstractRuleSetDescription

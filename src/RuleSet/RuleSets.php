@@ -19,6 +19,8 @@ use Symfony\Component\Finder\Finder;
 /**
  * Set of rule sets to be used by fixer.
  *
+ * @readonly
+ *
  * @internal
  */
 final class RuleSets

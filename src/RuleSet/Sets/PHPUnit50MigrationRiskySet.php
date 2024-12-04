@@ -18,6 +18,8 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class PHPUnit50MigrationRiskySet extends AbstractMigrationSetDescription

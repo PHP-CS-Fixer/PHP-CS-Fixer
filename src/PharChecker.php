@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class PharChecker implements PharCheckerInterface

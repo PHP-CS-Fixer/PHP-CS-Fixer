@@ -16,6 +16,8 @@ namespace PhpCsFixer\Linter;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 interface LintingResultInterface
 {

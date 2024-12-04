@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tokenizer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 final class CT
 {

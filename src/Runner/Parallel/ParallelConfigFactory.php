@@ -20,11 +20,11 @@ use Fidry\CpuCoreCounter\Finder\FinderRegistry;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 final class ParallelConfigFactory
 {
-    private static ?CpuCoreCounter $cpuDetector = null;
-
     private function __construct() {}
 
     public static function sequential(): ParallelConfig
@@ -42,8 +42,11 @@ final class ParallelConfigFactory
         ?int $processTimeout = null,
         ?int $maxProcesses = null
     ): ParallelConfig {
-        if (null === self::$cpuDetector) {
-            self::$cpuDetector = new CpuCoreCounter([
+        /** @var ?CpuCoreCounter */
+        static $cpuDetector = null;
+
+        if (null === $cpuDetector) {
+            $cpuDetector = new CpuCoreCounter([
                 ...FinderRegistry::getDefaultLogicalFinders(),
                 new DummyCpuCoreFinder(1),
             ]);

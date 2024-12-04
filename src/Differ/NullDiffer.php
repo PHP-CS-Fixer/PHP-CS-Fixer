@@ -16,6 +16,8 @@ namespace PhpCsFixer\Differ;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 final class NullDiffer implements DifferInterface
 {

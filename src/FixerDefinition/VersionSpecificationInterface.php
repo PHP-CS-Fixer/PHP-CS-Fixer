@@ -16,6 +16,8 @@ namespace PhpCsFixer\FixerDefinition;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @readonly
  */
 interface VersionSpecificationInterface
 {

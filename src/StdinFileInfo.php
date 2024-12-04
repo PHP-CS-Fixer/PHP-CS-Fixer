@@ -17,6 +17,8 @@ namespace PhpCsFixer;
 /**
  * @author Davi Koscianski Vidal <davividal@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class StdinFileInfo extends \SplFileInfo

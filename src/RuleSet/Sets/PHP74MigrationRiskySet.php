@@ -17,6 +17,8 @@ namespace PhpCsFixer\RuleSet\Sets;
 use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class PHP74MigrationRiskySet extends AbstractMigrationSetDescription
