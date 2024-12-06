@@ -150,7 +150,7 @@ function foo(\$bar, \$baz)
 
                 if ($afterParenthesisToken->isGivenKind(CT::T_USE_LAMBDA)) {
                     $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
-                    $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+                    $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $useStartParenthesisIndex);
 
                     // add single-line edge whitespaces inside use parentheses
                     $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);

@@ -69,7 +69,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
 
             // check for ternary operator
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
             if (
                 null !== $nextNonWhiteSpace
@@ -92,8 +92,8 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                 if (
                     Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE === $block['type']
-                    || Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE === $block['type']
-                    || Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $block['type']
+                    || Tokens::BLOCK_TYPE_INDEX_BRACKET === $block['type']
+                    || Tokens::BLOCK_TYPE_PARENTHESIS === $block['type']
                 ) {
                     $this->fixFunctionCall($tokens, $index);
                 }

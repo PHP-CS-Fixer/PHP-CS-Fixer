@@ -47,7 +47,7 @@ final class ConstructorPromotionTransformer extends AbstractTransformer
 
         /** @var int $openParenthesisIndex */
         $openParenthesisIndex = $tokens->getNextMeaningfulToken($functionNameIndex); // we are @ '(' now
-        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
 
         for ($argsIndex = $openParenthesisIndex; $argsIndex < $closeParenthesisIndex; ++$argsIndex) {
             if ($tokens[$argsIndex]->isGivenKind(T_PUBLIC)) {

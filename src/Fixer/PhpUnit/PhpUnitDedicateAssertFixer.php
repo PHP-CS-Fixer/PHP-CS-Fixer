@@ -305,7 +305,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $testCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $testOpenIndex);
+        $testCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $testOpenIndex);
         $assertCallCloseIndex = $tokens->getNextMeaningfulToken($testCloseIndex);
 
         if (!$tokens[$assertCallCloseIndex]->equalsAny([')', ','])) {
@@ -502,7 +502,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex);
+        $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $countCallOpenBraceIndex);
         $afterCountCallCloseBraceIndex = $tokens->getNextMeaningfulToken($countCallCloseBraceIndex);
 
         if (!$tokens[$afterCountCallCloseBraceIndex]->equalsAny([')', ','])) {

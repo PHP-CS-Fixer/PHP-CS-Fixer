@@ -71,7 +71,7 @@ final class ElseifFixer extends AbstractFixer
             }
 
             // if next meaningful token is T_IF, but uses an alternative syntax - this is not the case for fixing neither
-            $conditionEndBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($ifTokenIndex));
+            $conditionEndBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $tokens->getNextMeaningfulToken($ifTokenIndex));
             $afterConditionIndex = $tokens->getNextMeaningfulToken($conditionEndBraceIndex);
             if ($tokens[$afterConditionIndex]->equals(':')) {
                 continue;
