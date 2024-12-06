@@ -356,6 +356,60 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             ],
         ];
 
+        yield 'property hooks: property with default value (string)' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar = "example" { // << this one
+                        set(string $value) {
+                            $this->bar = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                17 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                44 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with default value (array)' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public $bar = [1,2,3] { // << this one
+                        set($value) {
+                            $this->bar = $value;
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                21 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                43 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with default value (namespaced)' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public $bar = DateTimeInterface::ISO8601 { // << this one
+                        set($value) {
+                            $this->bar = $value;
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                17 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                39 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
         yield 'property hooks: property with setter attributes' => [
             <<<'PHP'
                 <?php
@@ -373,6 +427,40 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             [
                 13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 48 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with short setter' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        set {
+                            $this->bar = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                35 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with short getter' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        get => ucwords(mb_strtolower($this->bar));
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                32 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ],
         ];
     }
