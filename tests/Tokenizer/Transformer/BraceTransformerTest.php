@@ -305,11 +305,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @param _TransformerTestExpectedTokens $expectedTokens
      *
-     * @dataProvider provide84ProcessCases
+     * @dataProvider provideStarting84ProcessCases
      *
      * @requires PHP 8.4
      */
-    public function test84Process(string $source, array $expectedTokens = []): void
+    public function testStarting84Process(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -336,7 +336,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @return iterable<array{string, array<int, int>}>
      */
-    public static function provide84ProcessCases(): iterable
+    public static function provideStarting84ProcessCases(): iterable
     {
         yield 'property hooks: property without default value' => [
             <<<'PHP'
