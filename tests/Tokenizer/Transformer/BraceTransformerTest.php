@@ -343,16 +343,16 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 <?php
                 class PropertyHooks
                 {
-                    public string $bar { // <this one
+                    public string $bar { // << this one
                         set(string $value) {
-                            $this -> foo = strtolower($value);
+                            $this->bar = strtolower($value);
                         }
                     } // << this one
                 }
                 PHP,
             [
                 13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
-                42 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+                40 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ],
         ];
     }
