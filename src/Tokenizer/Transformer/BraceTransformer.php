@@ -147,6 +147,11 @@ final class BraceTransformer extends AbstractTransformer
 
     private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, int $index): void
     {
+        // as $arr{index} is illegal since 8.0
+        if (\PHP_VERSION_ID >= 8_00_00) {
+            return;
+        }
+
         if (!$token->equals('{')) {
             return;
         }
