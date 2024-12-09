@@ -463,6 +463,38 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 32 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ],
         ];
+
+        yield 'property hooks: some more curly braces within hook' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public $callable { // << this one
+                        set($value) {
+                            if (is_callable($value)) {
+                                $this->callable = $value;
+                            } else {
+                                $this->callable = static function (): void {
+                                    $foo = new class implements \Stringable {
+                                        public function __toString(): string {
+                                            echo 'Na';
+                                        }
+                                    };
+
+                                    for ($i = 0; $i < 8; $i++) {
+                                        echo (string) $foo;
+                                    }
+                                };
+                            }
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                11 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                143 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
     }
 
     /**
