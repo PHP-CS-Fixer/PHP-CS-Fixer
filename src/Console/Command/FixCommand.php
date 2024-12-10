@@ -42,12 +42,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  *
  * @final
  *
- * @internal
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command

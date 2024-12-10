@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\EncodingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\EncodingFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class EncodingFixerTest extends AbstractFixerTestCase
 {

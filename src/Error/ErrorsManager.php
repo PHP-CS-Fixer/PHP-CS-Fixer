@@ -17,9 +17,9 @@ namespace PhpCsFixer\Error;
 /**
  * Manager of errors that occur during fixing.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ErrorsManager
 {

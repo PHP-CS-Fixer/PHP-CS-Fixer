@@ -17,9 +17,9 @@ namespace PhpCsFixer\Linter;
 use Symfony\Component\Process\Process;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ProcessLintingResult implements LintingResultInterface
 {

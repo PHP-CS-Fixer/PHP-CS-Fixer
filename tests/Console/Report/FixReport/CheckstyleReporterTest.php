@@ -21,9 +21,9 @@ use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Kévin Gomez <contact@kevingomez.fr>
- *
  * @internal
+ *
+ * @author Kévin Gomez <contact@kevingomez.fr>
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\CheckstyleReporter
  */

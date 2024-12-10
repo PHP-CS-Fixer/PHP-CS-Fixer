@@ -18,9 +18,9 @@ use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class XmlReporter implements ReporterInterface
 {

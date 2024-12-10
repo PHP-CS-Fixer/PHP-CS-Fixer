@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Handle PHP code linting.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokenizerLinter implements LinterInterface
 {

@@ -17,9 +17,9 @@ namespace PhpCsFixer\Runner;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class RunnerConfig
 {

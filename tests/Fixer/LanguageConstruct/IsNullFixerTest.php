@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {

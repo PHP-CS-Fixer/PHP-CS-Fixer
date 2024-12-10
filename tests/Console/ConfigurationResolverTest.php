@@ -41,10 +41,10 @@ use PhpCsFixer\Utils;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @internal
+ *
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
  */
