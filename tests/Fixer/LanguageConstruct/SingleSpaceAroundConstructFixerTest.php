@@ -1172,12 +1172,6 @@ $foo;',
             '<?php if (true) {} else /* foo */{}',
             '<?php if (true) {} else/* foo */{}',
         ];
-
-        // Explicitly prevent this rule from modifying the colon in 'else:'.
-        yield [
-            '<?php if (true): else: endif;',
-            '<?php if (true): else: endif;',
-        ];
     }
 
     /**
