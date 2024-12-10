@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class TypeAnalysis implements StartEndTokenAwareAnalysis
@@ -29,7 +31,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      *
      * @var list<string>
      */
-    private static array $reservedTypes = [
+    private const RESERVED_TYPES = [
         'array',
         'bool',
         'callable',
@@ -53,30 +55,30 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
 
     private string $name;
 
-    private int $startIndex;
+    private ?int $startIndex;
 
-    private int $endIndex;
+    private ?int $endIndex;
 
-    private bool $nullable = false;
+    private bool $nullable;
 
     /**
      * @param ($startIndex is null ? null : int) $endIndex
      */
     public function __construct(string $name, ?int $startIndex = null, ?int $endIndex = null)
     {
-        $this->name = $name;
-
         if (str_starts_with($name, '?')) {
             $this->name = substr($name, 1);
             $this->nullable = true;
         } elseif (\PHP_VERSION_ID >= 8_00_00) {
+            $this->name = $name;
             $this->nullable = \in_array('null', array_map('trim', explode('|', strtolower($name))), true);
+        } else {
+            $this->name = $name;
+            $this->nullable = false;
         }
 
-        if (null !== $startIndex) {
-            $this->startIndex = $startIndex;
-            $this->endIndex = $endIndex;
-        }
+        $this->startIndex = $startIndex;
+        $this->endIndex = $endIndex;
     }
 
     public function getName(): string
@@ -86,17 +88,25 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
 
     public function getStartIndex(): int
     {
+        if (null === $this->startIndex) {
+            throw new \RuntimeException('TypeAnalysis: no start index.');
+        }
+
         return $this->startIndex;
     }
 
     public function getEndIndex(): int
     {
+        if (null === $this->endIndex) {
+            throw new \RuntimeException('TypeAnalysis: no end index.');
+        }
+
         return $this->endIndex;
     }
 
     public function isReservedType(): bool
     {
-        return \in_array(strtolower($this->name), self::$reservedTypes, true);
+        return \in_array(strtolower($this->name), self::RESERVED_TYPES, true);
     }
 
     public function isNullable(): bool

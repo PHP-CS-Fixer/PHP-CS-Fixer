@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @see https://wiki.php.net/rfc/dnf_types
  *
+ * @readonly
+ *
  * @internal
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformer extends AbstractTransformer

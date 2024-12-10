@@ -17,6 +17,8 @@ namespace PhpCsFixer\RuleSet\Sets;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class PhpCsFixerRiskySet extends AbstractRuleSetDescription

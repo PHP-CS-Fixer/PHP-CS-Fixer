@@ -17,6 +17,8 @@ namespace PhpCsFixer\Console\Command;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class FixCommandExitStatusCalculator

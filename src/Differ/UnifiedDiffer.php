@@ -18,6 +18,9 @@ use PhpCsFixer\Preg;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
+/**
+ * @readonly
+ */
 final class UnifiedDiffer implements DifferInterface
 {
     public function diff(string $old, string $new, ?\SplFileInfo $file = null): string

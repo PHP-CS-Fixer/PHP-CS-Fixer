@@ -20,6 +20,8 @@ namespace PhpCsFixer;
  *
  * @author Kuba Werłos <werlos@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class Preg

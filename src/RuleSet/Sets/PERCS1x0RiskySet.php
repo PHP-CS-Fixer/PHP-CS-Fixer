@@ -17,6 +17,8 @@ namespace PhpCsFixer\RuleSet\Sets;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
+ * @readonly
+ *
  * @internal
  *
  * PER Coding Style v1.0.

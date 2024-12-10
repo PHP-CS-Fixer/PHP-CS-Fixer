@@ -17,6 +17,8 @@ namespace PhpCsFixer\FixerDefinition;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 interface FileSpecificCodeSampleInterface extends CodeSampleInterface

@@ -19,6 +19,8 @@ namespace PhpCsFixer\Linter;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @final
  *
  * @TODO 4.0 make class "final"

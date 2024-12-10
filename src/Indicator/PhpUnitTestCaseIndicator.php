@@ -18,6 +18,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class PhpUnitTestCaseIndicator

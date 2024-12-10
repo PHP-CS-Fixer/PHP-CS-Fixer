@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  *
+ * @readonly
+ *
  * @internal
  */
 final class BraceClassInstantiationTransformer extends AbstractTransformer

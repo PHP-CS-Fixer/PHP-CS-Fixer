@@ -19,6 +19,8 @@ use PhpCsFixer\Linter\LintingResultInterface;
 /**
  * @author Greg Korba <greg@codito.dev>
  *
+ * @readonly
+ *
  * @internal
  *
  * @extends \Iterator<mixed, \SplFileInfo>

@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+/**
+ * @readonly
+ */
 interface DeprecatedFixerOptionInterface extends FixerOptionInterface
 {
     public function getDeprecationMessage(): string;

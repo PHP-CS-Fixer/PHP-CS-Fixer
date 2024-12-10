@@ -21,6 +21,8 @@ namespace PhpCsFixer\DocBlock;
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
+ * @readonly
+ *
  * @deprecated
  */
 final class TagComparator

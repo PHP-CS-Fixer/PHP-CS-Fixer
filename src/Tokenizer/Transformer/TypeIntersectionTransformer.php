@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform `&` operator into CT::T_TYPE_INTERSECTION in `function foo(Type1 & Type2 $x) {`
  * or `} catch (ExceptionType1 & ExceptionType2 $e) {`.
  *
+ * @readonly
+ *
  * @internal
  */
 final class TypeIntersectionTransformer extends AbstractTypeTransformer
