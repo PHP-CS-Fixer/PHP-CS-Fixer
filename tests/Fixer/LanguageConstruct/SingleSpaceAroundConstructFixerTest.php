@@ -1172,6 +1172,12 @@ $foo;',
             '<?php if (true) {} else /* foo */{}',
             '<?php if (true) {} else/* foo */{}',
         ];
+
+        // Explicitly prevent this rule from modifying the colon in 'else:'.
+        yield [
+            '<?php if (true): else: endif;',
+            '<?php if (true): else: endif;',
+        ];
     }
 
     /**
@@ -1242,6 +1248,28 @@ $foo;',
         yield [
             '<?php if (true) {} elseif /* foo */(false) {}',
             '<?php if (true) {} elseif/* foo */(false) {}',
+        ];
+
+        yield [
+            '<?php if (true): elseif (false): endif;',
+            '<?php if (true): elseif(false): endif;',
+        ];
+
+        yield [
+            '<?php if (true): elseif (false): endif;',
+            '<?php if (true): elseif  (false): endif;',
+        ];
+
+        yield [
+            '<?php if (true): elseif (false): endif;',
+            '<?php if (true): elseif
+
+(false): endif;',
+        ];
+
+        yield [
+            '<?php if (true): elseif /* foo */(false): endif;',
+            '<?php if (true): elseif/* foo */(false): endif;',
         ];
     }
 
@@ -1909,6 +1937,28 @@ foo; foo: echo "Bar";',
         yield [
             '<?php if /* foo */($foo === $bar) {}',
             '<?php if/* foo */($foo === $bar) {}',
+        ];
+
+        yield [
+            '<?php if ($foo === $bar): endif;',
+            '<?php if($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if ($foo === $bar): endif;',
+            '<?php if  ($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if ($foo === $bar): endif;',
+            '<?php if
+
+($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if /* foo */($foo === $bar): endif;',
+            '<?php if/* foo */($foo === $bar): endif;',
         ];
     }
 
