@@ -47,6 +47,9 @@ final class Application extends BaseApplication
     public const VERSION = '3.65.1-DEV';
     public const VERSION_CODENAME = 'Persian Successor';
 
+    /**
+     * @readonly
+     */
     private ToolInfo $toolInfo;
     private ?Command $executedCommand = null;
 
