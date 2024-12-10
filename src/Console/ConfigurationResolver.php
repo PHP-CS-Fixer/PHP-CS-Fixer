@@ -284,7 +284,8 @@ final class ConfigurationResolver
 
         return true !== $this->options['sequential'] && $config instanceof ParallelAwareConfigInterface
             ? $config->getParallelConfig()
-            : ParallelConfigFactory::sequential();
+            : ParallelConfigFactory::sequential()
+        ;
     }
 
     public function getConfigFile(): ?string
@@ -316,7 +317,8 @@ final class ConfigurationResolver
 
                 $absolutePath = $filesystem->isAbsolutePath($path)
                     ? $path
-                    : $this->cwd.\DIRECTORY_SEPARATOR.$path;
+                    : $this->cwd.\DIRECTORY_SEPARATOR.$path
+                ;
                 $absolutePath = \dirname($absolutePath);
             }
 
@@ -389,7 +391,8 @@ final class ConfigurationResolver
 
                         $absolutePath = $filesystem->isAbsolutePath($path)
                             ? $path
-                            : $cwd.\DIRECTORY_SEPARATOR.$path;
+                            : $cwd.\DIRECTORY_SEPARATOR.$path
+                        ;
 
                         if (!file_exists($absolutePath)) {
                             throw new InvalidConfigurationException(\sprintf(
@@ -420,7 +423,8 @@ final class ConfigurationResolver
                 if (null === $progressType) {
                     $progressType = $this->getConfig()->getHideProgress()
                         ? ProgressOutputType::NONE
-                        : ProgressOutputType::BAR;
+                        : ProgressOutputType::BAR
+                    ;
                 } elseif (!\in_array($progressType, ProgressOutputType::all(), true)) {
                     throw new InvalidConfigurationException(\sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
@@ -809,7 +813,8 @@ final class ConfigurationResolver
                 $successors = $fixer->getSuccessorsNames();
                 $messageEnd = [] === $successors
                     ? \sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
-                    : \sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
+                    : \sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)))
+                ;
 
                 Utils::triggerDeprecation(new \RuntimeException("Rule \"{$fixerName}\" is deprecated{$messageEnd}"));
             }
@@ -968,6 +973,7 @@ final class ConfigurationResolver
         return $this->toolInfo->isInstalledAsPhar()
             || $this->toolInfo->isInstalledByComposer()
             || $this->toolInfo->isRunInsideDocker()
-            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), FILTER_VALIDATE_BOOL);
+            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), FILTER_VALIDATE_BOOL)
+        ;
     }
 }

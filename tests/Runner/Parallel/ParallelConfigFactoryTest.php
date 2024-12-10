@@ -129,7 +129,8 @@ final class ParallelConfigFactoryTest extends TestCase
             ParallelConfigFactory::$cpuDetector = null !== $count ?
                 new CpuCoreCounter([
                     new DummyCpuCoreFinder($count),
-                ]) : null;
+                ]) : null
+            ;
         }, null, ParallelConfigFactory::class)();
     }
 }

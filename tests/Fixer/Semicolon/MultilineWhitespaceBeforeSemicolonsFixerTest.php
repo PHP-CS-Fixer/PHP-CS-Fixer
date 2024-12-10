@@ -1159,6 +1159,22 @@ switch ($foo) {
         ];
 
         yield [
+            '<?php
+switch ($foo) {
+    default:
+        $bar->baz();
+}
+',
+            '<?php
+switch ($foo) {
+    default:
+        $bar->baz()
+              ;
+}
+',
+        ];
+
+        yield [
             <<<'PHP'
                 <?php
                 $x->foo()
@@ -1170,6 +1186,300 @@ switch ($foo) {
                 $x->foo()
                     ->bar();$y = 42;
                 PHP,
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET)
+                    ? "foo"
+                    : "bar"
+                ;
+            ',
+            '<?php
+                return is_empty($_GET)
+                    ? "foo"
+                    : "bar";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET) ? "foo" : "bar";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET)
+                    ? "foo" : "bar"
+                ;
+            ',
+            '<?php
+                return is_empty($_GET)
+                    ? "foo" : "bar";
+            ',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    const
+                        FOO = "foo",
+                        BAR = "bar"
+                    ;
+                }
+            ',
+            '<?php
+                class Foo {
+                    const
+                        FOO = "foo",
+                        BAR = "bar";
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    const BAR = "bar";
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                class Foo {
+                    const BAR = "bar", FOO = "foo";
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                return
+                    is_empty($_GET)
+                    || is_empty($_POST)
+                ;
+            ',
+            '<?php
+                return
+                    is_empty($_GET)
+                    || is_empty($_POST);
+            ',
+        ];
+
+        yield [
+            '<?php
+                return is_empty($_GET) || is_empty($_POST) ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return
+                    "this is a"
+                    . "split line"
+                    . "string"
+                ;
+            ',
+            '<?php
+                return
+                    "this is a"
+                    . "split line"
+                    . "string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return "this is not a" . "split line" . "string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return
+                    "this is not a" . "split line" . "string"
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                $foo->foo($bar->something()
+                    ->else()
+                );
+            ',
+        ];
+
+        yield [
+            '<?php
+                $foo->foo(
+                    $bar
+                        ->something()
+                        ->else()
+                );
+            ',
+        ];
+
+        yield [
+            '<?php
+                echo "this is a
+                    split line
+                    string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return "this is a
+                    split line
+                    string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return "this is a" . $nice . "
+                    split line
+                    string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return "this is a" .
+                    $nice . "
+                    split line
+                    string"
+                ;
+            ',
+            '<?php
+                return "this is a" .
+                    $nice . "
+                    split line
+                    string";
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                    - 4
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                    - 4
+                    * 5
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return 1
+                    + 2
+                    + 3
+                    - 4
+                    * 5
+                    / 6
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return $this->isFoo() ||
+                    $this->isBar()
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return $this->
+                    doThing()->
+                    doAnother()
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                return static::
+                    doThing()::
+                    doAnother()
+                ;
+            ',
+        ];
+
+        yield [
+            '<?php
+                class FooBar {
+                    protected $foo;
+
+                    #[FooBar]
+                    protected $bar;
+                }
+            ',
+        ];
+
+        yield [
+            '<?php
+                [new FooBar]
+                    [0]
+                    ->foo()
+                    ->bar()
+                ;
+            ',
+            '<?php
+                [new FooBar]
+                    [0]
+                    ->foo()
+                    ->bar()
+                    ;
+            ',
+        ];
+
+        yield [
+            '<?php
+
+$a = new
+/** @property string $x */
+class {};
+
+$b = new
+#[X]
+class {};',
+        ];
+
+        yield [
+            '<?php
+            for(
+                $i = 1;
+                $i < $max;
+                $i++
+             ) {
+
+             }
+            ',
         ];
     }
 

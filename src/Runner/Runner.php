@@ -569,7 +569,8 @@ final class Runner
 
         return $this->linter->isAsync()
             ? new FileCachingLintingFileIterator($fileFilterIterator, $this->linter)
-            : new LintingFileIterator($fileFilterIterator, $this->linter);
+            : new LintingFileIterator($fileFilterIterator, $this->linter)
+        ;
     }
 
     private function getFilteringFileIterator(): FileFilterIterator

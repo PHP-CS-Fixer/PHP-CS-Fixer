@@ -129,7 +129,8 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
         $possibleVoidIndex = $tokens->getPrevMeaningfulToken($openingCurlyBraceIndex);
         $isStrictReturnType = $tokens[$possibleVoidIndex]->isGivenKind([T_STRING, CT::T_ARRAY_TYPEHINT])
-            && 'void' !== $tokens[$possibleVoidIndex]->getContent();
+            && 'void' !== $tokens[$possibleVoidIndex]->getContent()
+        ;
 
         $nullableTypeIndex = $tokens->getNextTokenOfKind($functionIndex, [[CT::T_NULLABLE_TYPE]]);
         $isNullableReturnType = null !== $nullableTypeIndex && $nullableTypeIndex < $openingCurlyBraceIndex;

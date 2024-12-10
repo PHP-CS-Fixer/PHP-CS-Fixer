@@ -161,7 +161,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $originalClass = $tokens[$currIndex]->getContent();
             $allowedReplacementScenarios = (new ClassyAnalyzer())->isClassyInvocation($tokens, $currIndex)
-                || $this->isImport($tokens, $currIndex);
+                || $this->isImport($tokens, $currIndex)
+            ;
 
             if (!$allowedReplacementScenarios || !Preg::match($this->originalClassRegEx, $originalClass)) {
                 ++$currIndex;
