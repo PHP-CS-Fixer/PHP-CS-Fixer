@@ -17,6 +17,8 @@ namespace PhpCsFixer\Console\Output\Progress;
 use PhpCsFixer\Console\Output\OutputContext;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class ProgressOutputFactory
