@@ -166,7 +166,7 @@ final class ConfigurationResolver
     private ?array $path = null;
 
     /**
-     * @var null|string
+     * @var null|ProgressOutputType::*
      */
     private $progress;
 
@@ -409,6 +409,8 @@ final class ConfigurationResolver
     }
 
     /**
+     * @return ProgressOutputType::*
+     *
      * @throws InvalidConfigurationException
      */
     public function getProgressType(): string

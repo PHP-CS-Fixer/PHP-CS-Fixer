@@ -326,12 +326,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Output/ErrorOutput.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on array\\<string, class\\-string\\<PhpCsFixer\\\\Console\\\\Output\\\\Progress\\\\ProgressOutputInterface\\>\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Output/Progress/ProgressOutputFactory.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\CheckstyleReporter\\:\\:generate\\(\\) should return string but returns string\\|false\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -740,24 +734,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/AbstractPhpUnitFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 0 might not exist on array\\<int, string\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/EregToPregFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset 1 might not exist on array\\<int, string\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/EregToPregFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset 2 might not exist on array\\<int, string\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/EregToPregFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset 2 might not exist on non\\-empty\\-list\\<int\\<0, max\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 4,
@@ -768,12 +744,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Alias/PowToExponentiationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on array\\<string, array\\<int, int\\>\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Alias/RandomApiMigrationFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset 0 might not exist on list\\<int\\>\\.$#',
@@ -828,12 +798,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Casing/MagicConstantCasingFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on array\\<string, string\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Casing/MagicMethodCasingFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'elements\' on array\\{index\\: int, open\\: int\\|null, close\\: int\\<0, max\\>, elements\\: list\\<array\\{token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: \'case\'\\|\'const\'\\|\'method\'\\|\'property\'\\|\'trait_import\', index\\: int, start\\: int, end\\: int\\}\\>\\}\\|false\\.$#',
@@ -1592,12 +1556,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on array\\<string, array\\{int, string\\}\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/LongToShorthandOperatorFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\Operator\\\\TernaryToElvisOperatorFixer\\:\\:getAfterOperator\\(\\) should return array\\{start\\: int, end\\: int\\} but returns array\\{start\\: int\\|null, end\\?\\: int\\|null\\}\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -1676,12 +1634,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on array\\<string, array\\{positive\\: string, negative\\: string\\|false, argument_count\\?\\: int, swap_arguments\\?\\: true\\}\\|true\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset \'expectExceptionMessageRegExp\' might not exist on array\\<string, string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -1746,12 +1698,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'assertAttributeEquals\'\\|\'assertAttributeNotEquals\'\\|\'assertEquals\'\\|\'assertNotEquals\' might not exist on array\\<string, string\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitStrictFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:updateLines\\(\\) should return list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> but returns array\\<int\\<0, max\\>, PhpCsFixer\\\\DocBlock\\\\Line\\>\\.$#',
@@ -2082,12 +2028,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'break\'\\|\'case\'\\|\'continue\'\\|\'declare\'\\|\'default\'\\|\'do\'\\|\'exit\'\\|\'for\'\\|\'foreach\'\\|\'goto\'\\|\'if\'\\|\'include\'\\|\'include_once\'\\|\'phpdoc\'\\|\'require\'\\|\'require_once\'\\|\'return\'\\|\'switch\'\\|\'throw\'\\|\'try\'\\|\'while\'\\|\'yield\'\\|\'yield_from\' might not exist on array\\<string, int\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset int\\<0, max\\> might not exist on list\\<int\\>\\.$#',
@@ -2916,12 +2856,6 @@ $ignoreErrors[] = [
 	'identifier' => 'generator.valueType',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'operators\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Operator/LongToShorthandOperatorFixerTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
