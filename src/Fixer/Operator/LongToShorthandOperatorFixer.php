@@ -133,6 +133,8 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 
     protected function getReplacementToken(Token $token): Token
     {
+        \assert(isset(self::OPERATORS[$token->getContent()])); // for PHPStan
+
         return new Token(self::OPERATORS[$token->getContent()]);
     }
 }

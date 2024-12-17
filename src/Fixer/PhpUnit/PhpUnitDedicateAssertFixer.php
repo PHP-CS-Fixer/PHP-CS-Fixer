@@ -321,8 +321,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $arguments = $argumentsAnalyzer->getArguments($tokens, $testOpenIndex, $testCloseIndex);
         $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
-        if (\is_array(self::FIX_MAP[$content])) {
-            $expectedCount = self::FIX_MAP[$content]['argument_count'] ?? 1;
+        if (isset(self::FIX_MAP[$content]) && \is_array(self::FIX_MAP[$content])) {
+            $fixDetails = self::FIX_MAP[$content];
+            $expectedCount = $fixDetails['argument_count'] ?? 1;
 
             if ($expectedCount !== \count($arguments)) {
                 return;
@@ -330,14 +331,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $isPositive = $isPositive ? 'positive' : 'negative';
 
-            if (false === self::FIX_MAP[$content][$isPositive]) {
+            if (false === $fixDetails[$isPositive]) {
                 return;
             }
 
-            $tokens[$assertCall['index']] = new Token([T_STRING, self::FIX_MAP[$content][$isPositive]]);
+            $tokens[$assertCall['index']] = new Token([T_STRING, $fixDetails[$isPositive]]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
-            if (self::FIX_MAP[$content]['swap_arguments'] ?? false) {
+            if ($fixDetails['swap_arguments'] ?? false) {
                 if (2 !== $expectedCount) {
                     throw new \RuntimeException('Can only swap two arguments, please update map or logic.');
                 }

@@ -177,13 +177,18 @@ $foo->__INVOKE(1);
         return $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(');
     }
 
+    /**
+     * @phpstan-assert-if-true key-of<self::MAGIC_NAMES> $name
+     */
     private function isMagicMethodName(string $name): bool
     {
         return isset(self::MAGIC_NAMES[$name]);
     }
 
     /**
-     * @param string $name name of a magic method
+     * @param key-of<self::MAGIC_NAMES> $name name of a magic method
+     *
+     * @return value-of<self::MAGIC_NAMES>
      */
     private function getMagicMethodNameInCorrectCasing(string $name): string
     {

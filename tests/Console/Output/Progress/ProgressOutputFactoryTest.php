@@ -39,6 +39,7 @@ final class ProgressOutputFactoryTest extends TestCase
         OutputContext $context,
         string $expectedOutputClass
     ): void {
+        // @phpstan-ignore-next-line argument.type as we explicitly test non-valid $outputType
         self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }
 
@@ -63,9 +64,9 @@ final class ProgressOutputFactoryTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        (new ProgressOutputFactory())->create(
-            'boom',
-            new OutputContext(new SymfonyNullOutput(), 100, 10)
-        );
+        $outputContext = new OutputContext(new SymfonyNullOutput(), 100, 10);
+
+        // @phpstan-ignore-next-line argument.type as we explicitly test non-valid $outputType
+        (new ProgressOutputFactory())->create('boom', $outputContext);
     }
 }

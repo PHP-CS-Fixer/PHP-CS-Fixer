@@ -99,6 +99,8 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 [$functionName, $openParenthesis, $closeParenthesis] = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
 
+                \assert(isset(self::ARGUMENT_COUNTS[$functionIdentity])); // for PHPStan
+
                 if (!\in_array($count, self::ARGUMENT_COUNTS[$functionIdentity], true)) {
                     continue 2;
                 }

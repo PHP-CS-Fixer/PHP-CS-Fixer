@@ -48,7 +48,10 @@ final class ProgressOutputFactory
             );
         }
 
-        return new (self::OUTPUT_TYPE_MAP[$outputType])($context);
+        $outputClass = self::OUTPUT_TYPE_MAP[$outputType];
+
+        // @phpstan-ignore-next-line new.noConstructor
+        return new $outputClass($context);
     }
 
     private function isBuiltInType(string $outputType): bool

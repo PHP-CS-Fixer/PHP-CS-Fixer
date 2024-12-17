@@ -326,12 +326,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Output/ErrorOutput.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset int might not exist on array\\<1\\|2\\|3\\|4\\|5\\|6, array\\{symbol\\: string, format\\: string, description\\: string\\}\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Output/Progress/DotsOutput.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\CheckstyleReporter\\:\\:generate\\(\\) should return string but returns string\\|false\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -2862,12 +2856,6 @@ $ignoreErrors[] = [
 	'identifier' => 'generator.valueType',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'operators\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Operator/LongToShorthandOperatorFixerTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
