@@ -48,7 +48,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
      */
-    private static array $fixMap = [
+    private const FIX_MAP = [
         'array_key_exists' => [
             'positive' => 'assertArrayHasKey',
             'negative' => 'assertArrayNotHasKey',
@@ -321,8 +321,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $arguments = $argumentsAnalyzer->getArguments($tokens, $testOpenIndex, $testCloseIndex);
         $isPositive = 'asserttrue' === $assertCall['loweredName'];
 
-        if (\is_array(self::$fixMap[$content])) {
-            $expectedCount = self::$fixMap[$content]['argument_count'] ?? 1;
+        if (\is_array(self::FIX_MAP[$content])) {
+            $expectedCount = self::FIX_MAP[$content]['argument_count'] ?? 1;
 
             if ($expectedCount !== \count($arguments)) {
                 return;
@@ -330,14 +330,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $isPositive = $isPositive ? 'positive' : 'negative';
 
-            if (false === self::$fixMap[$content][$isPositive]) {
+            if (false === self::FIX_MAP[$content][$isPositive]) {
                 return;
             }
 
-            $tokens[$assertCall['index']] = new Token([T_STRING, self::$fixMap[$content][$isPositive]]);
+            $tokens[$assertCall['index']] = new Token([T_STRING, self::FIX_MAP[$content][$isPositive]]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
-            if (self::$fixMap[$content]['swap_arguments'] ?? false) {
+            if (self::FIX_MAP[$content]['swap_arguments'] ?? false) {
                 if (2 !== $expectedCount) {
                     throw new \RuntimeException('Can only swap two arguments, please update map or logic.');
                 }

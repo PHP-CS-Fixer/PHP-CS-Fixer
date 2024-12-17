@@ -31,7 +31,7 @@ final class Annotation
      *
      * @var list<string>
      */
-    private static array $tags = [
+    private const TAGS = [
         'method',
         'param',
         'property',
@@ -127,7 +127,7 @@ final class Annotation
      */
     public static function getTagsWithTypes(): array
     {
-        return self::$tags;
+        return self::TAGS;
     }
 
     /**
@@ -291,7 +291,7 @@ final class Annotation
 
     public function supportTypes(): bool
     {
-        return \in_array($this->getTag()->getName(), self::$tags, true);
+        return \in_array($this->getTag()->getName(), self::TAGS, true);
     }
 
     /**

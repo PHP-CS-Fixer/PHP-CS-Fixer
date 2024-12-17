@@ -47,14 +47,9 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
     use ConfigurableFixerTrait;
 
     /**
-     * @var array<string, array{string, string}>
-     */
-    private array $symbolsReplace;
-
-    /**
      * @var list<int>
      */
-    private static array $tokens = [
+    private const TOKENS = [
         T_STRING_VARNAME,
         T_INLINE_HTML,
         T_VARIABLE,
@@ -63,6 +58,11 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
         T_CONSTANT_ENCAPSED_STRING,
         T_DOC_COMMENT,
     ];
+
+    /**
+     * @var array<string, array{string, string}>
+     */
+    private array $symbolsReplace;
 
     public function __construct()
     {
@@ -102,7 +102,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(self::$tokens);
+        return $tokens->isAnyTokenKindsFound(self::TOKENS);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -171,7 +171,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if ($token->isGivenKind(self::$tokens)) {
+            if ($token->isGivenKind(self::TOKENS)) {
                 $newContent = strtr($content, $replacements);
 
                 // variable name cannot contain space

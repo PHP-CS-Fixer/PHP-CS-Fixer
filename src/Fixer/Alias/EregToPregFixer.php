@@ -33,7 +33,7 @@ final class EregToPregFixer extends AbstractFixer
      * @var list<array<int, string>> the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
      *                               all condensed in an array of arrays
      */
-    private static array $functions = [
+    private const FUNCTIONS = [
         ['ereg', 'preg_match', ''],
         ['eregi', 'preg_match', 'i'],
         ['ereg_replace', 'preg_replace', ''],
@@ -82,7 +82,7 @@ final class EregToPregFixer extends AbstractFixer
         $end = $tokens->count() - 1;
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach (self::$functions as $map) {
+        foreach (self::FUNCTIONS as $map) {
             // the sequence is the function name, followed by "(" and a quoted string
             $seq = [[T_STRING, $map[0]], '(', [T_CONSTANT_ENCAPSED_STRING]];
             $currIndex = 0;

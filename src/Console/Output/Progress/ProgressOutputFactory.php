@@ -22,14 +22,17 @@ use PhpCsFixer\Console\Output\OutputContext;
 final class ProgressOutputFactory
 {
     /**
-     * @var array<string, class-string<ProgressOutputInterface>>
+     * @var array<ProgressOutputType::*, class-string<ProgressOutputInterface>>
      */
-    private static array $outputTypeMap = [
+    private const OUTPUT_TYPE_MAP = [
         ProgressOutputType::NONE => NullOutput::class,
         ProgressOutputType::DOTS => DotsOutput::class,
         ProgressOutputType::BAR => PercentageBarOutput::class,
     ];
 
+    /**
+     * @param ProgressOutputType::* $outputType
+     */
     public function create(string $outputType, OutputContext $context): ProgressOutputInterface
     {
         if (null === $context->getOutput()) {
@@ -45,7 +48,7 @@ final class ProgressOutputFactory
             );
         }
 
-        return new self::$outputTypeMap[$outputType]($context);
+        return new (self::OUTPUT_TYPE_MAP[$outputType])($context);
     }
 
     private function isBuiltInType(string $outputType): bool

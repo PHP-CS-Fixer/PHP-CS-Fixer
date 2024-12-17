@@ -26,7 +26,7 @@ final class MagicMethodCasingFixer extends AbstractFixer
     /**
      * @var array<string, string>
      */
-    private static array $magicNames = [
+    private const MAGIC_NAMES = [
         '__call' => '__call',
         '__callstatic' => '__callStatic',
         '__clone' => '__clone',
@@ -179,7 +179,7 @@ $foo->__INVOKE(1);
 
     private function isMagicMethodName(string $name): bool
     {
-        return isset(self::$magicNames[$name]);
+        return isset(self::MAGIC_NAMES[$name]);
     }
 
     /**
@@ -187,7 +187,7 @@ $foo->__INVOKE(1);
      */
     private function getMagicMethodNameInCorrectCasing(string $name): string
     {
-        return self::$magicNames[$name];
+        return self::MAGIC_NAMES[$name];
     }
 
     private function setTokenToCorrectCasing(Tokens $tokens, int $index, string $nameInCorrectCasing): void
