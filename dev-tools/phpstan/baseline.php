@@ -326,12 +326,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Output/ErrorOutput.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset int might not exist on array\\<1\\|2\\|3\\|4\\|5\\|6, array\\{symbol\\: string, format\\: string, description\\: string\\}\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Output/Progress/DotsOutput.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<string, class\\-string\\<PhpCsFixer\\\\Console\\\\Output\\\\Progress\\\\ProgressOutputInterface\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
