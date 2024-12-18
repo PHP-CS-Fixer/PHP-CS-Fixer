@@ -34,7 +34,7 @@ final class UtilsTest extends TestCase
     /**
      * @var null|false|string
      */
-    private $originalValueOfFutureMode;
+    private null|bool|string $originalValueOfFutureMode;
 
     protected function setUp(): void
     {

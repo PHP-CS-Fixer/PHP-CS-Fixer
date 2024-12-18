@@ -35,12 +35,12 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @var array<string, string>
      */
-    private static $configurationClosureSpacingNone = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE];
+    private static array $configurationClosureSpacingNone = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE];
 
     /**
      * @var array<string, string>
      */
-    private static $configurationArrowSpacingNone = ['closure_fn_spacing' => FunctionDeclarationFixer::SPACING_NONE];
+    private static array $configurationArrowSpacingNone = ['closure_fn_spacing' => FunctionDeclarationFixer::SPACING_NONE];
 
     public function testInvalidConfigurationClosureFunctionSpacing(): void
     {

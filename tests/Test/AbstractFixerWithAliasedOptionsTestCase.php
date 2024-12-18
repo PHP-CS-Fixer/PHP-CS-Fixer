@@ -32,7 +32,7 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
     /**
      * @var null|TFixer
      */
-    private $fixerWithAliasedConfig;
+    private ?AbstractFixer $fixerWithAliasedConfig = null;
 
     protected function tearDown(): void
     {
