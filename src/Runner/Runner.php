@@ -82,7 +82,7 @@ final class Runner
     /**
      * @var null|\Traversable<array-key, \SplFileInfo>
      */
-    private $fileIterator;
+    private ?\Traversable $fileIterator = null;
 
     private int $fileCount;
 

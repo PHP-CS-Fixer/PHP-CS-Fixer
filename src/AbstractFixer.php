@@ -27,10 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractFixer implements FixerInterface
 {
-    /**
-     * @var WhitespacesFixerConfig
-     */
-    protected $whitespacesConfig;
+    protected WhitespacesFixerConfig $whitespacesConfig;
 
     public function __construct()
     {

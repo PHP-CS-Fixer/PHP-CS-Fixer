@@ -108,15 +108,12 @@ abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
 
-    /**
-     * @var null|LinterInterface
-     */
-    protected $linter;
+    protected ?LinterInterface $linter = null;
 
     /**
      * @var null|TFixer
      */
-    protected $fixer;
+    protected ?AbstractFixer $fixer = null;
 
     /**
      * do not modify this structure without prior discussion.

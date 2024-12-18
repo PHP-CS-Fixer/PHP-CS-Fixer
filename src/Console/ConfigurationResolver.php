@@ -62,49 +62,28 @@ final class ConfigurationResolver
     public const PATH_MODE_OVERRIDE = 'override';
     public const PATH_MODE_INTERSECTION = 'intersection';
 
-    /**
-     * @var null|bool
-     */
-    private $allowRisky;
+    private ?bool $allowRisky = null;
 
-    /**
-     * @var null|ConfigInterface
-     */
-    private $config;
+    private ?ConfigInterface $config = null;
 
-    /**
-     * @var null|string
-     */
-    private $configFile;
+    private ?string $configFile = null;
 
     private string $cwd;
 
     private ConfigInterface $defaultConfig;
 
-    /**
-     * @var null|ReporterInterface
-     */
-    private $reporter;
+    private ?ReporterInterface $reporter = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isStdIn;
+    private ?bool $isStdIn = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isDryRun;
+    private ?bool $isDryRun = null;
 
     /**
      * @var null|list<FixerInterface>
      */
-    private $fixers;
+    private ?array $fixers = null;
 
-    /**
-     * @var null|bool
-     */
-    private $configFinderIsOverridden;
+    private ?bool $configFinderIsOverridden = null;
 
     private ToolInfoInterface $toolInfo;
 
@@ -128,25 +107,13 @@ final class ConfigurationResolver
         'verbosity' => null,
     ];
 
-    /**
-     * @var null|string
-     */
-    private $cacheFile;
+    private ?string $cacheFile = null;
 
-    /**
-     * @var null|CacheManagerInterface
-     */
-    private $cacheManager;
+    private ?CacheManagerInterface $cacheManager = null;
 
-    /**
-     * @var null|DifferInterface
-     */
-    private $differ;
+    private ?DifferInterface $differ = null;
 
-    /**
-     * @var null|Directory
-     */
-    private $directory;
+    private ?Directory $directory = null;
 
     /**
      * @var null|iterable<\SplFileInfo>
@@ -155,10 +122,7 @@ final class ConfigurationResolver
 
     private ?string $format = null;
 
-    /**
-     * @var null|Linter
-     */
-    private $linter;
+    private ?Linter $linter = null;
 
     /**
      * @var null|list<string>
@@ -170,20 +134,11 @@ final class ConfigurationResolver
      */
     private $progress;
 
-    /**
-     * @var null|RuleSet
-     */
-    private $ruleSet;
+    private ?RuleSet $ruleSet = null;
 
-    /**
-     * @var null|bool
-     */
-    private $usingCache;
+    private ?bool $usingCache = null;
 
-    /**
-     * @var null|FixerFactory
-     */
-    private $fixerFactory;
+    private ?FixerFactory $fixerFactory = null;
 
     /**
      * @param array<string, mixed> $options

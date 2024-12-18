@@ -44,10 +44,7 @@ final class DotsOutput implements ProgressOutputInterface
 
     private int $processedFiles = 0;
 
-    /**
-     * @var int
-     */
-    private $symbolsPerLine;
+    private int $symbolsPerLine;
 
     public function __construct(OutputContext $context)
     {
