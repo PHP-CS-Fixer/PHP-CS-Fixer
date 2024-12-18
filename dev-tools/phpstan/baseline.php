@@ -3158,12 +3158,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Test/TestCaseUtils.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Tests\\\\Test\\\\TokensWithObservedTransformers\\:\\:\\$observedModificationsPerTransformer \\(array\\<string, list\\<int\\|string\\>\\>\\) does not accept non\\-empty\\-array\\<int\\|string, list\\<int\\|string\\>\\>\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Test/TokensWithObservedTransformers.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property PhpCsFixer\\\\Tests\\\\TestCase\\:\\:\\$actualDeprecations \\(list\\<string\\>\\) does not accept array\\<int\\<0, max\\>, string\\>\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
