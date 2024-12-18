@@ -120,7 +120,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
      *
      * @var array<string, int>|int
      */
-    private array|int $spacing = 1;
+    private $spacing = 1;
 
     public function getDefinition(): FixerDefinitionInterface
     {

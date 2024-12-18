@@ -22,7 +22,10 @@ final class FixerOption implements FixerOptionInterface
 
     private bool $isRequired;
 
-    private mixed $default = null;
+    /**
+     * @var mixed
+     */
+    private $default;
 
     /**
      * @var null|list<string>

@@ -23,7 +23,7 @@ final class FixerOptionBuilder
     /**
      * @var null|mixed
      */
-    private mixed $default = null;
+    private $default;
 
     private bool $isRequired = true;
 
