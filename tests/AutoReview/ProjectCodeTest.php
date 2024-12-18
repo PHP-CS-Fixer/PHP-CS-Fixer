@@ -113,7 +113,8 @@ final class ProjectCodeTest extends TestCase
         }
 
         $rc = new \ReflectionClass($className);
-        $doc = new DocBlock($rc->getDocComment() ?: '/** */');
+        $docComment = $rc->getDocComment();
+        $doc = new DocBlock(false !== $docComment ? $docComment : '/** */');
         $readonly = \count($doc->getAnnotationsOfType('readonly')) > 0;
 
         $exceptions = [
@@ -141,7 +142,7 @@ final class ProjectCodeTest extends TestCase
             [T_STRING, '__construct'],
             '(',
         ]);
-        if ($constructorSequence) {
+        if (null !== $constructorSequence) {
             $tokens = clone $tokens;
             $openIndex = $tokens->getNextTokenOfKind(array_key_last($constructorSequence), ['{']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
@@ -152,7 +153,7 @@ final class ProjectCodeTest extends TestCase
         $propertyNames = array_map(static fn (\ReflectionProperty $item) => $item->getName(), $rcProperties);
 
         $overrideFound = Preg::match(
-            '/(?:self::\$|static::\$|\$this->)(?:'.implode('|', $propertyNames).')(?:\[[^=]*\])?\s*=/',
+            '/(?:self::\$|static::\$|\$this->)(?:'.implode('|', $propertyNames).')(?:\[[^=]*\])?\s*(?:=|(?:\?\?=))/',
             $tokensContent
         );
 
