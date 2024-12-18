@@ -23,29 +23,23 @@ final class FixerOptionBuilder
     /**
      * @var null|mixed
      */
-    private $default;
+    private mixed $default = null;
 
     private bool $isRequired = true;
 
     /**
      * @var null|list<string>
      */
-    private $allowedTypes;
+    private ?array $allowedTypes = null;
 
     /**
      * @var null|list<null|(callable(mixed): bool)|scalar>
      */
-    private $allowedValues;
+    private ?array $allowedValues = null;
 
-    /**
-     * @var null|\Closure
-     */
-    private $normalizer;
+    private ?\Closure $normalizer = null;
 
-    /**
-     * @var null|string
-     */
-    private $deprecationMessage;
+    private ?string $deprecationMessage = null;
 
     public function __construct(string $name, string $description)
     {
