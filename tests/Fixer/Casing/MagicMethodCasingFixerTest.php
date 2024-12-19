@@ -39,7 +39,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
-        $allMethodNames = \Closure::bind(static fn (): array => MagicMethodCasingFixer::$magicNames, null, MagicMethodCasingFixer::class)();
+        $allMethodNames = \Closure::bind(static fn (): array => MagicMethodCasingFixer::MAGIC_NAMES, null, MagicMethodCasingFixer::class)();
 
         // '__callStatic'
         yield 'method declaration for "__callstatic".' => [

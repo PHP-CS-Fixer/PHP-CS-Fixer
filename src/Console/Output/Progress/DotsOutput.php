@@ -30,7 +30,7 @@ final class DotsOutput implements ProgressOutputInterface
      *
      * @var array<FileProcessed::STATUS_*, array{symbol: string, format: string, description: string}>
      */
-    private static array $eventStatusMap = [
+    private const EVENT_STATUS_MAP = [
         FileProcessed::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],
         FileProcessed::STATUS_FIXED => ['symbol' => 'F', 'format' => '<fg=green>%s</fg=green>', 'description' => 'fixed'],
         FileProcessed::STATUS_SKIPPED => ['symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'skipped (cached or empty file)'],
@@ -44,10 +44,7 @@ final class DotsOutput implements ProgressOutputInterface
 
     private int $processedFiles = 0;
 
-    /**
-     * @var int
-     */
-    private $symbolsPerLine;
+    private int $symbolsPerLine;
 
     public function __construct(OutputContext $context)
     {
@@ -81,7 +78,7 @@ final class DotsOutput implements ProgressOutputInterface
 
     public function onFixerFileProcessed(FileProcessed $event): void
     {
-        $status = self::$eventStatusMap[$event->getStatus()];
+        $status = self::EVENT_STATUS_MAP[$event->getStatus()];
         $this->getOutput()->write($this->getOutput()->isDecorated() ? \sprintf($status['format'], $status['symbol']) : $status['symbol']);
 
         ++$this->processedFiles;
@@ -108,9 +105,9 @@ final class DotsOutput implements ProgressOutputInterface
     {
         $symbols = [];
 
-        foreach (self::$eventStatusMap as $status) {
+        foreach (self::EVENT_STATUS_MAP as $status) {
             $symbol = $status['symbol'];
-            if ('' === $symbol || isset($symbols[$symbol])) {
+            if (isset($symbols[$symbol])) {
                 continue;
             }
 

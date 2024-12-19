@@ -29,7 +29,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      *
      * @var list<string>
      */
-    private static array $reservedTypes = [
+    private const RESERVED_TYPES = [
         'array',
         'bool',
         'callable',
@@ -96,7 +96,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
 
     public function isReservedType(): bool
     {
-        return \in_array(strtolower($this->name), self::$reservedTypes, true);
+        return \in_array(strtolower($this->name), self::RESERVED_TYPES, true);
     }
 
     public function isNullable(): bool

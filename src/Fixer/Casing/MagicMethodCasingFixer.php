@@ -26,7 +26,7 @@ final class MagicMethodCasingFixer extends AbstractFixer
     /**
      * @var array<string, string>
      */
-    private static array $magicNames = [
+    private const MAGIC_NAMES = [
         '__call' => '__call',
         '__callstatic' => '__callStatic',
         '__clone' => '__clone',
@@ -177,17 +177,22 @@ $foo->__INVOKE(1);
         return $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(');
     }
 
+    /**
+     * @phpstan-assert-if-true key-of<self::MAGIC_NAMES> $name
+     */
     private function isMagicMethodName(string $name): bool
     {
-        return isset(self::$magicNames[$name]);
+        return isset(self::MAGIC_NAMES[$name]);
     }
 
     /**
-     * @param string $name name of a magic method
+     * @param key-of<self::MAGIC_NAMES> $name name of a magic method
+     *
+     * @return value-of<self::MAGIC_NAMES>
      */
     private function getMagicMethodNameInCorrectCasing(string $name): string
     {
-        return self::$magicNames[$name];
+        return self::MAGIC_NAMES[$name];
     }
 
     private function setTokenToCorrectCasing(Tokens $tokens, int $index, string $nameInCorrectCasing): void

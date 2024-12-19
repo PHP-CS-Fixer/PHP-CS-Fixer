@@ -33,10 +33,8 @@ final class AnnotationTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
-     *
-     * @var string
      */
-    private static $sample = '/**
+    private static string $sample = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -58,7 +56,7 @@ final class AnnotationTest extends TestCase
      *
      * @var list<string>
      */
-    private static $content = [
+    private static array $content = [
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
@@ -71,21 +69,21 @@ final class AnnotationTest extends TestCase
      *
      * @var list<int>
      */
-    private static $start = [3, 4, 7, 9, 14];
+    private static array $start = [3, 4, 7, 9, 14];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var list<int>
      */
-    private static $end = [3, 5, 7, 12, 14];
+    private static array $end = [3, 5, 7, 12, 14];
 
     /**
      * This represents the tag type of each annotation.
      *
      * @var list<string>
      */
-    private static $tags = ['param', 'param', 'param', 'throws', 'return'];
+    private static array $tags = ['param', 'param', 'param', 'throws', 'return'];
 
     /**
      * @dataProvider provideGetContentCases

@@ -42,7 +42,7 @@
         "symfony/polyfill-mbstring": "^1.28",
         "symfony/polyfill-php80": "^1.28",
         "symfony/polyfill-php81": "^1.28",
-        "symfony/process": "^5.4 || ^6.0 || ^7.0",
+        "symfony/process": "^5.4 || ^6.0 || ^7.0 <7.2",
         "symfony/stopwatch": "^5.4 || ^6.0 || ^7.0"
     },
     "require-dev": {

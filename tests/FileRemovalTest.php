@@ -33,10 +33,8 @@ final class FileRemovalTest extends TestCase
      * This is necessary for testShutdownRemovesObserved files, as the setup
      * runs in a separate process to trigger the shutdown function, and
      * tearDownAfterClass is called for every separate process
-     *
-     * @var bool
      */
-    private static $removeFilesOnTearDown = true;
+    private static bool $removeFilesOnTearDown = true;
 
     public static function tearDownAfterClass(): void
     {

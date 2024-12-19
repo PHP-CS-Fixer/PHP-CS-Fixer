@@ -53,7 +53,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     /**
      * @var list<string>
      */
-    private static array $availableTokens = [
+    private const AVAILABLE_TOKENS = [
         'attribute',
         'break',
         'case',
@@ -301,7 +301,7 @@ switch($a) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([new AllowedValueSubset(self::$availableTokens)])
+                ->setAllowedValues([new AllowedValueSubset(self::AVAILABLE_TOKENS)])
                 ->setDefault(['extra'])
                 ->getOption(),
         ]);

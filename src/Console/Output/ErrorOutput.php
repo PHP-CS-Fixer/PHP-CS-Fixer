@@ -28,10 +28,7 @@ final class ErrorOutput
 {
     private OutputInterface $output;
 
-    /**
-     * @var bool
-     */
-    private $isDecorated;
+    private bool $isDecorated;
 
     public function __construct(OutputInterface $output)
     {
