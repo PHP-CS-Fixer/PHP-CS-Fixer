@@ -36,7 +36,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     public function testFixerContainsAllPhpunitStaticMethodsInItsList(): void
     {
         $assertionRefClass = new \ReflectionClass(TestCase::class);
-        $updatedStaticMethodsList = $assertionRefClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $updatedStaticMethodsList = $assertionRefClass->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED);
 
         $staticMethods = (new \ReflectionClass(PhpUnitTestCaseStaticMethodCallsFixer::class))->getConstant('STATIC_METHODS');
 
