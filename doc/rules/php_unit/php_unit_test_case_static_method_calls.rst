@@ -26,6 +26,15 @@ Allowed values: ``'self'``, ``'static'`` and ``'this'``
 
 Default value: ``'static'``
 
+``call_type_for_former``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The call type to use for referring to formerly static PHPUnit methods.
+
+Allowed values: ``'inherit'``, ``'none'`` and ``'this'``
+
+Default value: ``'inherit'``
+
 ``methods``
 ~~~~~~~~~~~
 
