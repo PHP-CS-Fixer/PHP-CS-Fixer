@@ -195,6 +195,12 @@ final class BraceTransformer extends AbstractTransformer
 
     private function transformIntoCurlyIndexBraces(Tokens $tokens, int $index): void
     {
+        // as $arr{index} is illegal since 8.4 - ParseError
+        // (and produces FatalError on 8.0-8.3)
+        if (\PHP_VERSION_ID >= 8_04_00) {
+            return;
+        }
+
         $token = $tokens[$index];
 
         if (!$token->equals('{')) {
