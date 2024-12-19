@@ -33,14 +33,14 @@ final class FixerOption implements FixerOptionInterface
     /**
      * @var null|list<string>
      */
-    private ?array $allowedTypes = null;
+    private ?array $allowedTypes;
 
     /**
      * @var null|list<null|(callable(mixed): bool)|scalar>
      */
-    private ?array $allowedValues = null;
+    private ?array $allowedValues;
 
-    private ?\Closure $normalizer = null;
+    private ?\Closure $normalizer;
 
     /**
      * @param mixed                                          $default
