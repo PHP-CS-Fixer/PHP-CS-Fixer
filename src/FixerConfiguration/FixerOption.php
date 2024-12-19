@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+/**
+ * @readonly
+ */
 final class FixerOption implements FixerOptionInterface
 {
     private string $name;
@@ -30,14 +33,14 @@ final class FixerOption implements FixerOptionInterface
     /**
      * @var null|list<string>
      */
-    private ?array $allowedTypes = null;
+    private ?array $allowedTypes;
 
     /**
      * @var null|list<null|(callable(mixed): bool)|scalar>
      */
-    private ?array $allowedValues = null;
+    private ?array $allowedValues;
 
-    private ?\Closure $normalizer = null;
+    private ?\Closure $normalizer;
 
     /**
      * @param mixed                                          $default
@@ -74,6 +77,8 @@ final class FixerOption implements FixerOptionInterface
 
         if (null !== $normalizer) {
             $this->normalizer = $this->unbind($normalizer);
+        } else {
+            $this->normalizer = null;
         }
     }
 
@@ -92,6 +97,9 @@ final class FixerOption implements FixerOptionInterface
         return !$this->isRequired;
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefault()
     {
         if (!$this->hasDefault()) {
