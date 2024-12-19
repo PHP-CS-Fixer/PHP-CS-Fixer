@@ -359,6 +359,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'atLeast' => true,
         'atLeastOnce' => true,
         'atMost' => true,
+        'createStub' => true,
         'exactly' => true,
         'never' => true,
         'once' => true,
