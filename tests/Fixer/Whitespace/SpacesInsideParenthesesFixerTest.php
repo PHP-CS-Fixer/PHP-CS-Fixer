@@ -55,15 +55,6 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideSpacesFixCases
-     */
-    public function testSpacesFix(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['space' => 'single']);
-        $this->doTest($expected, $input);
-    }
-
-    /**
      * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideDefaultFixCases(): iterable
@@ -242,6 +233,15 @@ multiply( (    2 + 3  ) * 4    );
             '<?php $x = (new Foo)->bar;',
             '<?php $x = ( new Foo )->bar;',
         ];
+    }
+
+    /**
+     * @dataProvider provideSpacesFixCases
+     */
+    public function testSpacesFix(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['space' => 'single']);
+        $this->doTest($expected, $input);
     }
 
     /**
