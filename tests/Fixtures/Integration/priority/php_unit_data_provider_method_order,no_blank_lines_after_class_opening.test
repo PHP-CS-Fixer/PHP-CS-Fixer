@@ -1,0 +1,42 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_method_order,no_blank_lines_after_class_opening.
+--RULESET--
+{"php_unit_data_provider_method_order": true, "no_blank_lines_after_class_opening": true}
+--EXPECT--
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+    public static function getData(): iterable
+    {
+        yield from range(1, 10);
+    }
+}
+
+--INPUT--
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class BarTest extends TestCase
+{
+    public static function getData(): iterable
+    {
+        yield from range(1, 10);
+    }
+
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+}
