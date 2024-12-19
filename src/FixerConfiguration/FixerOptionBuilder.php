@@ -45,6 +45,7 @@ final class FixerOptionBuilder
     {
         $this->name = $name;
         $this->description = $description;
+        $this->default = null;
     }
 
     /**
