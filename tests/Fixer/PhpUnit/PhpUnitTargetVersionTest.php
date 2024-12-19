@@ -18,9 +18,9 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion
  */

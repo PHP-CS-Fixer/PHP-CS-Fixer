@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Test;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class IntegrationCaseFactory extends AbstractIntegrationCaseFactory {}

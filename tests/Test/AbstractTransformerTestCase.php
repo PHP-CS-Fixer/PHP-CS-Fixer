@@ -21,12 +21,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @phpstan-type _TransformerTestExpectedTokens array<int, int|string>
  * @phpstan-type _TransformerTestObservedKindsOrPrototypes list<int|string>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {

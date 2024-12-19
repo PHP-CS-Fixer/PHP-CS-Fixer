@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Cache;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class Signature implements SignatureInterface
 {

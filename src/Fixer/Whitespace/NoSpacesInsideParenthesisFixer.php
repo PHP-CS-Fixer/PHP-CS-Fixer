@@ -24,10 +24,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.6, ¶5.
  *
+ * @deprecated in favor of SpacesInsideParenthesisFixer
+ *
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @deprecated in favor of SpacesInsideParenthesisFixer
  */
 final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @author ntzm
  *
  * @covers \PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder
  */

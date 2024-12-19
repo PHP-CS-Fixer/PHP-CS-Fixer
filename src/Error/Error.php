@@ -17,9 +17,9 @@ namespace PhpCsFixer\Error;
 /**
  * An abstraction for errors that can occur before and during fixing.
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class Error implements \JsonSerializable
 {

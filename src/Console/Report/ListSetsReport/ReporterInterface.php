@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\ListSetsReport;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface ReporterInterface
 {

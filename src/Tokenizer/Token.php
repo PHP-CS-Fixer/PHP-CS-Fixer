@@ -207,12 +207,12 @@ final class Token
     /**
      * A helper method used to find out whether a certain input token has to be case-sensitively matched.
      *
+     * @deprecated
+     *
      * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                             the ones used in $sequence. If any is missing, the default case-sensitive
      *                                             comparison is used
      * @param int                   $key           the key of the token that has to be looked up
-     *
-     * @deprecated
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
@@ -339,9 +339,9 @@ final class Token
     /**
      * Generate array containing all predefined constants that exists in PHP version in use.
      *
-     * @see https://php.net/manual/en/language.constants.predefined.php
-     *
      * @return array<int, int>
+     *
+     * @see https://php.net/manual/en/language.constants.predefined.php
      */
     public static function getMagicConstants(): array
     {
