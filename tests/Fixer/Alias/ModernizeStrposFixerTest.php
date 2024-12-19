@@ -125,6 +125,46 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php $a = $input &&   strpos($input, $method) !== FALSE ? $input : null;',
         ];
 
+        yield 'yoda substr third argument is positive ===' => [
+            '<?php if (  str_starts_with($haystack, $needle)) {}',
+            '<?php if ($needle === substr($haystack, 0, 5)) {}',
+        ];
+
+        yield 'substr third argument is positive ===' => [
+            '<?php if (str_starts_with($haystack, $needle)  ) {}',
+            '<?php if (substr($haystack, 0, 5) === $needle) {}',
+        ];
+
+        yield 'yoda substr third argument is positive !==' => [
+            '<?php if (  !str_starts_with($haystack, $needle)) {}',
+            '<?php if ($needle !== substr($haystack, 0, 5)) {}',
+        ];
+
+        yield 'substr third argument is positive !==' => [
+            '<?php if (!str_starts_with($haystack, $needle)  ) {}',
+            '<?php if (substr($haystack, 0, 5) !== $needle) {}',
+        ];
+
+        yield 'yoda substr third argument is negative ===' => [
+            '<?php if (  str_ends_with($haystack, $needle)) {}',
+            '<?php if ($needle === substr($haystack, 0, -5)) {}',
+        ];
+
+        yield 'substr third argument is negative ===' => [
+            '<?php if (str_ends_with($haystack, $needle)  ) {}',
+            '<?php if (substr($haystack, 0, -5) === $needle) {}',
+        ];
+
+        yield 'yoda substr third argument is negative !==' => [
+            '<?php if (  !str_ends_with($haystack, $needle)) {}',
+            '<?php if ($needle !== substr($haystack, 0, -5)) {}',
+        ];
+
+        yield 'substr third argument is negative !==' => [
+            '<?php if (!str_ends_with($haystack, $needle)  ) {}',
+            '<?php if (substr($haystack, 0, -5) !== $needle) {}',
+        ];
+
         // do not fix
 
         yield [
@@ -190,6 +230,10 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'higher precedence 4' => [
             '<?php $a = strpos($haystack, $needle) === 0 > $b;',
+        ];
+
+        yield 'substr third argument is not 0' => [
+            '<?php if (substr($haystack, 1, -5) === $needle) {}',
         ];
     }
 }

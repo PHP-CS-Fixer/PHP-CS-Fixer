@@ -309,7 +309,7 @@ Custom values:
                                 return true;
                             }
 
-                            if ('method:' === substr($value, 0, 7)) {
+                            if (str_starts_with($value, 'method:')) {
                                 return true;
                             }
                         }
