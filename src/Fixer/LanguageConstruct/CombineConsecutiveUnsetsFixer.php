@@ -67,7 +67,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             $tokensAddCount = $this->moveTokens(
                 $tokens,
                 $nextUnsetContentStart = $tokens->getNextTokenOfKind($index, ['(']),
-                $nextUnsetContentEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextUnsetContentStart),
+                $nextUnsetContentEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextUnsetContentStart),
                 $previousUnsetBraceEnd - 1
             );
 
@@ -134,7 +134,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             return $previousUnsetBraceEnd;
         }
 
-        $previousUnsetBraceStart = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $previousUnsetBraceEnd);
+        $previousUnsetBraceStart = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $previousUnsetBraceEnd);
         $previousUnset = $tokens->getPrevMeaningfulToken($previousUnsetBraceStart);
         if (null === $previousUnset) {
             return $index;

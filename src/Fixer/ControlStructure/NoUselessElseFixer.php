@@ -83,7 +83,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
         $next = $tokens->getNextMeaningfulToken($index);
 
         if ($tokens[$next]->equals('{')) {
-            $close = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $next);
+            $close = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $next);
             if (1 === $close - $next) { // '{}'
                 $this->clearElse($tokens, $index);
             } elseif ($tokens->getNextMeaningfulToken($next) === $close) { // '{/**/}'
@@ -114,7 +114,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
             return;
         }
 
-        $tokens->clearTokenAndMergeSurroundingWhitespace($tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $next));
+        $tokens->clearTokenAndMergeSurroundingWhitespace($tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $next));
         $tokens->clearTokenAndMergeSurroundingWhitespace($next);
     }
 }
