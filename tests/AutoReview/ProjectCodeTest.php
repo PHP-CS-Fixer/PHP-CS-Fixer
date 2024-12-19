@@ -24,6 +24,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
@@ -82,6 +83,89 @@ final class ProjectCodeTest extends TestCase
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         self::assertTrue(class_exists($testClassName), \sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
+    }
+
+    /**
+     * This test requires 8.2+, so it can properly detect readonly parent class.
+     *
+     * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $className
+     *
+     * @requires PHP 8.2
+     */
+    public function testThatSrcClassesAreReadonlyWhenPossible(string $className): void
+    {
+        $rc = new \ReflectionClass($className);
+        $rcProperties = $rc->getProperties();
+
+        if (0 === \count($rcProperties)) {
+            $this->addToAssertionCount(1);
+
+            return; // public properties present, no need for class to be readonly
+        }
+
+        $parentClass = $rc->getParentClass();
+        if (\PHP_VERSION_ID >= 8_02_00 && false !== $parentClass && !$parentClass->isReadOnly()) {
+            $this->addToAssertionCount(1);
+
+            return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+        }
+
+        $rc = new \ReflectionClass($className);
+        $docComment = $rc->getDocComment();
+        $doc = new DocBlock(false !== $docComment ? $docComment : '/** */');
+        $readonly = \count($doc->getAnnotationsOfType('readonly')) > 0;
+
+        $exceptions = [
+            AliasedFixerOptionBuilder::class,
+        ];
+
+        // we allow exceptions to _not_ follow the rule,
+        // but when they are ready to start following it - we shall remove them from exceptions list
+        if (\in_array($className, $exceptions, true)) {
+            self::assertFalse($readonly);
+
+            return;
+        }
+
+        if ($readonly) {
+            $this->addToAssertionCount(1);
+
+            return; // already readonly
+        }
+
+        $tokens = $this->createTokensForClass($className);
+
+        $constructorSequence = $tokens->findSequence([
+            [T_FUNCTION],
+            [T_STRING, '__construct'],
+            '(',
+        ]);
+        if (null !== $constructorSequence) {
+            $tokens = clone $tokens;
+            $openIndex = $tokens->getNextTokenOfKind(array_key_last($constructorSequence), ['{']);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+            $tokens->overrideRange($openIndex + 1, $closeIndex - 1, []);
+        }
+
+        $tokensContent = $tokens->generateCode();
+        $propertyNames = array_map(static fn (\ReflectionProperty $item) => $item->getName(), $rcProperties);
+
+        $overrideFound = Preg::match(
+            '/(?:self::\$|static::\$|\$this->)(?:'.implode('|', $propertyNames).')(?:\[[^=]*\])?\s*(?:=|(?:\?\?=))/',
+            $tokensContent
+        );
+
+        if ($overrideFound) {
+            $this->addToAssertionCount(1);
+
+            return; // properties are mutable during lifecycle of instance, class is not readonly
+        }
+
+        self::fail(
+            \sprintf('The class "%s" should have readonly annotation.', $className)
+        );
     }
 
     /**

@@ -19,6 +19,9 @@ use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @readonly
+ */
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
 {
     /**

@@ -17,6 +17,8 @@ namespace PhpCsFixer\Console\Output\Progress;
 use PhpCsFixer\Runner\Event\FileProcessed;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class NullOutput implements ProgressOutputInterface
