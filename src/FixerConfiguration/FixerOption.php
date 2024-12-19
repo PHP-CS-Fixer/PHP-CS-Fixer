@@ -97,6 +97,9 @@ final class FixerOption implements FixerOptionInterface
         return !$this->isRequired;
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefault()
     {
         if (!$this->hasDefault()) {
