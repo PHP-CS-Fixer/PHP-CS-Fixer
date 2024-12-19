@@ -255,7 +255,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
-            : ('txt' === $reporter->getFormat() ? $output : null);
+            : ('txt' === $reporter->getFormat() ? $output : null)
+        ;
 
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
@@ -353,7 +354,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         $output->isDecorated()
             ? $output->write($reporter->generate($reportSummary))
-            : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW);
+            : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW)
+        ;
 
         $invalidErrors = $this->errorsManager->getInvalidErrors();
         $exceptionErrors = $this->errorsManager->getExceptionErrors();

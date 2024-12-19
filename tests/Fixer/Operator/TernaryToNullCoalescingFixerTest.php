@@ -41,7 +41,8 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         yield // Do not fix cases.
-        ['<?php $x = isset($a) ? $a[1] : null;'];
+        ['<?php $x = isset($a) ? $a[1] : null;']
+        ;
 
         yield ['<?php $x = isset($a) and $a ? $a : "";'];
 

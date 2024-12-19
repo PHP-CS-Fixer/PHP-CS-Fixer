@@ -555,7 +555,8 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
         return 'backupStaticAttributes' === $annotationName
             ? 'BackupStaticProperties'
-            : ucfirst($annotationName);
+            : ucfirst($annotationName)
+        ;
     }
 
     /**

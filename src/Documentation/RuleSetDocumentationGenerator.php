@@ -162,7 +162,8 @@ final class RuleSetDocumentationGenerator
 
             $attributes = 0 === \count($attributes)
                 ? ''
-                : ' *('.implode(', ', $attributes).')*';
+                : ' *('.implode(', ', $attributes).')*'
+            ;
 
             $documentation .= "\n- `{$definition->getName()} <.{$path}>`_{$attributes}";
         }

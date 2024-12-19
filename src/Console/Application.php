@@ -79,7 +79,8 @@ final class Application extends BaseApplication
     {
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
-            : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output);
+            : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
+        ;
 
         if (null !== $stdErr) {
             $warningsDetector = new WarningsDetector($this->toolInfo);

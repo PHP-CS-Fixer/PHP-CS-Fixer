@@ -273,7 +273,8 @@ final class CommentsAnalyzer
 
         $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
             ? [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]
-            : ')';
+            : ')'
+        ;
 
         $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, [$endKind]);
 

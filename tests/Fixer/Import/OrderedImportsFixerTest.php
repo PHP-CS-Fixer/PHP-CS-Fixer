@@ -206,7 +206,8 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                 use C;
                 $foo = new C();
                 use A;
-            ';
+            '
+        ;
 
         $input =
             '<?php
@@ -214,7 +215,8 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
                 use B;
                 $foo = new C();
                 use A;
-            ';
+            '
+        ;
 
         yield [$expected, $input];
 
@@ -1085,7 +1087,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 use const some\Z\{ConstAA,ConstBB,ConstCC,};
 use const some\X\{ConstA,ConstB,ConstC,ConstF};
 use C\{D,E,};
-';
+'
+        ;
 
         yield [
             '<?php use A\{B,};

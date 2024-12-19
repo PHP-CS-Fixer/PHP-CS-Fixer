@@ -313,7 +313,8 @@ use Bar;
 
         return true === $this->configuration['case_sensitive']
             ? $firstNamespace <=> $secondNamespace
-            : strcasecmp($firstNamespace, $secondNamespace);
+            : strcasecmp($firstNamespace, $secondNamespace)
+        ;
     }
 
     /**
@@ -333,7 +334,8 @@ use Bar;
         if ($firstNamespaceLength === $secondNamespaceLength) {
             $sortResult = true === $this->configuration['case_sensitive']
                 ? $firstNamespace <=> $secondNamespace
-                : strcasecmp($firstNamespace, $secondNamespace);
+                : strcasecmp($firstNamespace, $secondNamespace)
+            ;
         } else {
             $sortResult = $firstNamespaceLength > $secondNamespaceLength ? 1 : -1;
         }

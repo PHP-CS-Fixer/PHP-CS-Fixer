@@ -2450,7 +2450,8 @@ class TestClass {
 
     // `not do`, `do`
     if(false){}while(false){}do{}while(false);
-    SRC;
+    SRC
+        ;
 
         $expected = [
             3 => false,

@@ -166,7 +166,8 @@ final class DescribeCommand extends Command
             $successors = $fixer->getSuccessorsNames();
             $message = [] === $successors
                 ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
-                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors))
+            ;
 
             $endMessage = '. '.ucfirst($message);
             Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
@@ -308,7 +309,8 @@ final class DescribeCommand extends Command
 
                 $file = $codeSample instanceof FileSpecificCodeSampleInterface
                     ? $codeSample->getSplFileInfo()
-                    : new StdinFileInfo();
+                    : new StdinFileInfo()
+                ;
 
                 $fixer->fix($file, $tokens);
 
