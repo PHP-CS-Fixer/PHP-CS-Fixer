@@ -44,6 +44,9 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
         return $this->option->hasDefault();
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefault()
     {
         return $this->option->getDefault();
