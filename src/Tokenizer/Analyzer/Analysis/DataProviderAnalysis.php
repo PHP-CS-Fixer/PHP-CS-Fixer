@@ -19,6 +19,8 @@ use PhpCsFixer\Utils;
 
 /**
  * @internal
+ *
+ * @readonly
  */
 final class DataProviderAnalysis
 {

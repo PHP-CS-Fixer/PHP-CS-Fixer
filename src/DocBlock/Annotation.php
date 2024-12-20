@@ -52,43 +52,32 @@ final class Annotation
 
     /**
      * The position of the first line of the annotation in the docblock.
-     *
-     * @var int
      */
-    private $start;
+    private int $start;
 
     /**
      * The position of the last line of the annotation in the docblock.
-     *
-     * @var int
      */
-    private $end;
+    private int $end;
 
     /**
      * The associated tag.
-     *
-     * @var null|Tag
      */
-    private $tag;
+    private ?Tag $tag = null;
 
     /**
      * Lazy loaded, cached types content.
-     *
-     * @var null|string
      */
-    private $typesContent;
+    private ?string $typesContent = null;
 
     /**
      * The cached types.
      *
      * @var null|list<string>
      */
-    private $types;
+    private ?array $types = null;
 
-    /**
-     * @var null|NamespaceAnalysis
-     */
-    private $namespace;
+    private ?NamespaceAnalysis $namespace = null;
 
     /**
      * @var list<NamespaceUseAnalysis>
