@@ -98,7 +98,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 continue;
             }
 
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endParenthesisIndex);
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endParenthesisIndex);
 
             for ($searchIndex = $index + 1; $searchIndex < $endParenthesisIndex; ++$searchIndex) {
                 $searchToken = $tokens[$searchIndex];
@@ -134,7 +134,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
         for ($i = $index; $i >= 0; --$i) {
             if ($tokens[$i]->equals(')')) {
-                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $i);
             }
 
             $currentIndent = $this->getIndentAt($tokens, $i);
@@ -219,11 +219,11 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
             return
                 $tokens[$thirdMeaningful]->equals('(')
-                && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $thirdMeaningful) > $end;
+                && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $thirdMeaningful) > $end;
         }
 
         return
             !$tokens[$end]->equals(')')
-            || $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end) >= $start;
+            || $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $end) >= $start;
     }
 }

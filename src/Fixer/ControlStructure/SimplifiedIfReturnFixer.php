@@ -96,7 +96,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             }
 
             $startParenthesisIndex = $tokens->getNextTokenOfKind($ifIndex, ['(']);
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startParenthesisIndex);
             $firstCandidateIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
 
             foreach ($this->sequences as $sequenceSpec) {
