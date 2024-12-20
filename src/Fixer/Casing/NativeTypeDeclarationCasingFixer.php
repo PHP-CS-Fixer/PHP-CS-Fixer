@@ -189,7 +189,8 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
                 \PHP_VERSION_ID >= 8_03_00
                 && $tokens->isTokenKindFound(T_CONST)
                 && $classyFound
-            );
+            )
+        ;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

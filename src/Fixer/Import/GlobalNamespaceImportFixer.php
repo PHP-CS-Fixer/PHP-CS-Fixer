@@ -130,7 +130,8 @@ if (count($x)) {
         return $tokens->isAnyTokenKindsFound([T_DOC_COMMENT, T_NS_SEPARATOR, T_USE])
             && $tokens->isTokenKindFound(T_NAMESPACE)
             && 1 === $tokens->countTokenKind(T_NAMESPACE)
-            && $tokens->isMonolithicPhp();
+            && $tokens->isMonolithicPhp()
+        ;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

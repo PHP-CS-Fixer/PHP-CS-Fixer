@@ -8,6 +8,7 @@ class Foo
     {
         return 'a\b'
             .$a
-            ."\n\\a\\b";
+            ."\n\\a\\b"
+        ;
     }
 }

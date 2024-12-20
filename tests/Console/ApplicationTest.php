@@ -31,7 +31,8 @@ final class ApplicationTest extends TestCase
     {
         $regex = '/^PHP CS Fixer <info>\d+.\d+.\d+(-DEV)?<\/info> <info>.+<\/info>'
             .' by <comment>Fabien Potencier<\/comment>, <comment>Dariusz Ruminski<\/comment> and <comment>contributors<\/comment>\.'
-            ."\nPHP runtime: <info>\\d+.\\d+.\\d+(-dev)?<\\/info>$/";
+            ."\nPHP runtime: <info>\\d+.\\d+.\\d+(-dev)?<\\/info>$/"
+        ;
 
         self::assertMatchesRegularExpression($regex, (new Application())->getLongVersion());
     }

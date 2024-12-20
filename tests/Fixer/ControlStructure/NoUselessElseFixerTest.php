@@ -165,7 +165,8 @@ else?><?php echo 5;',
                         '.'
                     }
                 }
-            ';
+            '
+        ;
 
         $input =
             '<?php
@@ -183,7 +184,8 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            ';
+            '
+        ;
 
         yield from self::generateCases($expected, $input);
 
@@ -200,7 +202,8 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            ';
+            '
+        ;
 
         yield from self::generateCases($expected);
 
@@ -221,7 +224,8 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            ';
+            '
+        ;
 
         yield from self::generateCases($expected);
 
