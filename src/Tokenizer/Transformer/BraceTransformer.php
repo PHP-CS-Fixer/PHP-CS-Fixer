@@ -195,6 +195,15 @@ final class BraceTransformer extends AbstractTransformer
 
     private function transformIntoCurlyIndexBraces(Tokens $tokens, int $index): void
     {
+        // Support for fetching array index with braces syntax (`$arr{$index}`)
+        // was deprecated in 7.4 and removed in 8.0. However, the PHP's behaviour
+        // differs between 8.0-8.3 (fatal error in runtime) and 8.4 (parse error).
+        //
+        // @TODO Do not replace `CT::T_ARRAY_INDEX_CURLY_BRACE_*` for 8.0-8.3, as further optimization
+        if (\PHP_VERSION_ID >= 8_04_00) {
+            return;
+        }
+
         $token = $tokens[$index];
 
         if (!$token->equals('{')) {
