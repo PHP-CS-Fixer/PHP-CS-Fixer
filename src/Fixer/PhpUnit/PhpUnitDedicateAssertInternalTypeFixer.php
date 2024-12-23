@@ -139,7 +139,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             }
 
             $openingBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
-            $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingBraceIndex);
+            $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openingBraceIndex);
 
             $anonymousClassIndices[$closingBraceIndex] = $openingBraceIndex;
         }
