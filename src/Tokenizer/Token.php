@@ -42,6 +42,13 @@ final class Token
     private bool $isArray;
 
     /**
+     * @var int|string
+     *
+     * @todo Replace the name with outcome of https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues/8333
+     */
+    private $family;
+
+    /**
      * @param array{int, string}|string $token token prototype
      */
     public function __construct($token)
@@ -66,10 +73,12 @@ final class Token
             }
 
             $this->isArray = true;
+            $this->family = $token[0];
             $this->id = $token[0];
             $this->content = $token[1];
         } elseif (\is_string($token)) {
             $this->isArray = false;
+            $this->family = $token;
             $this->id = null;
             $this->content = $token;
         } else {
@@ -265,6 +274,18 @@ final class Token
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int|string
+     *
+     * @internal
+     *
+     * @private
+     */
+    public function getFamily()
+    {
+        return $this->family;
     }
 
     /**
