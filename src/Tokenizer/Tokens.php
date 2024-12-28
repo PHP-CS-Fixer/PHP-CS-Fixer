@@ -92,7 +92,7 @@ class Tokens extends \SplFixedArray
      *
      * When the token kind is present in this set it means that given token kind
      * was ever seen inside the collection (but may not be part of it any longer).
-     * The key is token kind and the value is always true.
+     * The key is token kind and the value is the number of occurrences.
      *
      * @var array<int|string, int>
      */
