@@ -3,6 +3,28 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.66.0
+---------------------
+
+* feat: `Tokenizer` - initial support for PHP 8.4 property hooks (#8312)
+* feat: `PhpUnitTestCaseStaticMethodCallsFixer` - cover PHPUnit v11.5 methods (#8314)
+* feat: `PhpUnitTestCaseStaticMethodCallsFixer` - make sure all static protected methods are handled (#8327)
+* feat: `PhpUnitTestCaseStaticMethodCallsFixer` - support createStub (#8319)
+* feat: `UseArrowFunctionsFixer` - support multiline statements (#8311)
+* fix: `NullableTypeDeclarationFixer` - do not break multi-line declaration (#8331)
+* test: `CiConfigurationTest` - drop not needed condition, logic is checked in upcoming assertion (#8303)
+* chore: add more typehints (#8325)
+* chore: `DotsOutput` - more const, better typing (#8318)
+* chore: mark classes as readonly (#8275)
+* chore: more const, better typing (#8320)
+* chore: temporarily prevent symfony/process 7.2+ (#8322)
+* chore: `Tokens` - simplify (un)registerFoundToken types (#8328)
+* chore: upgrade PHPStan (#8321)
+* chore: `BraceTransformer` - don't touch curly index braces since 8.4, as it's not a valid syntax anymore (#8313)
+* CI: enable phpdoc_to_property_type on php-lowest (#8324)
+* Create SECURITY.md
+* docs: `Tokens` - fix docs (#8332)
+
 Changelog for v3.65.0
 ---------------------
 
