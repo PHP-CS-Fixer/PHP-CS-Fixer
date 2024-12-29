@@ -150,8 +150,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getFamily();
 
         return $blockEdgeKinds[$tokenKind] ?? null;
     }
@@ -1423,8 +1422,7 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getFamily();
 
         $this->foundTokenKinds[$tokenKind] ??= 0;
         ++$this->foundTokenKinds[$tokenKind];
@@ -1435,8 +1433,7 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getFamily();
 
         if (1 === $this->foundTokenKinds[$tokenKind]) {
             unset($this->foundTokenKinds[$tokenKind]);
@@ -1453,7 +1450,7 @@ class Tokens extends \SplFixedArray
     private function extractTokenKind($token)
     {
         return $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            ? $token->getFamily()
             : (\is_array($token) ? $token[0] : $token);
     }
 
