@@ -40,8 +40,8 @@
         "symfony/finder": "^5.4 || ^6.4 || ^7.0",
         "symfony/options-resolver": "^5.4 || ^6.4 || ^7.0",
         "symfony/polyfill-mbstring": "^1.31",
-        "symfony/polyfill-php80": "^1.21",
-        "symfony/polyfill-php81": "^1.21",
+        "symfony/polyfill-php80": "^1.31",
+        "symfony/polyfill-php81": "^1.31",
         "symfony/process": "^5.4 || ^6.4 || ^7.0 <7.2",
         "symfony/stopwatch": "^5.4 || ^6.4 || ^7.0"
     },
