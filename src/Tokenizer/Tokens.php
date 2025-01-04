@@ -51,6 +51,7 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
     public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
     public const BLOCK_TYPE_COMPLEX_STRING_VARIABLE = 14;
+    public const BLOCK_TYPE_PROPERTY_HOOK = 15;
 
     /**
      * Static class cache.
@@ -92,7 +93,7 @@ class Tokens extends \SplFixedArray
      *
      * When the token kind is present in this set it means that given token kind
      * was ever seen inside the collection (but may not be part of it any longer).
-     * The key is token kind and the value is always true.
+     * The key is token kind and the value is the number of occurrences.
      *
      * @var array<int|string, int>
      */
@@ -277,6 +278,10 @@ class Tokens extends \SplFixedArray
                 self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
                     'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
                     'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
+                ],
+                self::BLOCK_TYPE_PROPERTY_HOOK => [
+                    'start' => [CT::T_PROPERTY_HOOK_BRACE_OPEN, '{'],
+                    'end' => [CT::T_PROPERTY_HOOK_BRACE_CLOSE, '}'],
                 ],
             ];
 
@@ -1420,15 +1425,11 @@ class Tokens extends \SplFixedArray
 
     /**
      * Register token as found.
-     *
-     * @param array{int}|string|Token $token token prototype
      */
-    private function registerFoundToken($token): void
+    private function registerFoundToken(Token $token): void
     {
         // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
-            : (\is_array($token) ? $token[0] : $token);
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         $this->foundTokenKinds[$tokenKind] ??= 0;
         ++$this->foundTokenKinds[$tokenKind];
@@ -1436,15 +1437,11 @@ class Tokens extends \SplFixedArray
 
     /**
      * Unregister token as not found.
-     *
-     * @param array{int}|string|Token $token token prototype
      */
-    private function unregisterFoundToken($token): void
+    private function unregisterFoundToken(Token $token): void
     {
         // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
-            : (\is_array($token) ? $token[0] : $token);
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         if (1 === $this->foundTokenKinds[$tokenKind]) {
             unset($this->foundTokenKinds[$tokenKind]);
