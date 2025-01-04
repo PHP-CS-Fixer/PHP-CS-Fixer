@@ -189,7 +189,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         $index = $tokens->getNextMeaningfulToken($index);
         $after = ['start' => $index];
 
-        while (!$tokens[$index]->equals(':')) {
+        do {
             $blockType = Tokens::detectBlockType($tokens[$index]);
 
             if (null !== $blockType) {
@@ -198,7 +198,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
 
             $after['end'] = $index;
             $index = $tokens->getNextMeaningfulToken($index);
-        }
+        } while (!$tokens[$index]->equals(':'));
 
         return $after;
     }
