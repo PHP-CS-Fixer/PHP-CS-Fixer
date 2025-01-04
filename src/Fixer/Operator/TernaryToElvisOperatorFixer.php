@@ -140,16 +140,16 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
                 return null;
             }
 
-            $blockType = Tokens::detectBlockType($tokens[$index]);
+            $detectedBlockType = Tokens::detectBlockType($tokens[$index]);
 
-            if (null === $blockType || $blockType['isStart']) {
+            if (null === $detectedBlockType || $detectedBlockType['isStart']) {
                 $before['start'] = $index;
                 $index = $tokens->getPrevMeaningfulToken($index);
 
                 continue;
             }
 
-            $blockType = $blockEdgeDefinitions[$blockType['type']];
+            $blockType = $blockEdgeDefinitions[$detectedBlockType['type']];
             $openCount = 1;
 
             do {
