@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -61,6 +62,15 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
                 $index = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                     $tokens->getNextTokenOfKind($index, ['('])
+                );
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_PROPERTY_HOOK,
+                    $index
                 );
 
                 continue;
