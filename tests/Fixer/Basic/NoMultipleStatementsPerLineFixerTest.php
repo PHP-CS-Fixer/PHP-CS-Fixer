@@ -99,7 +99,7 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
     public static function provideFix84Cases(): iterable
     {
