@@ -149,7 +149,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
                 continue;
             }
 
-            /** @phpstan-ignore-next-line offsetAccess.notFound (we just detected block type, we know it's definition exist under given PHP runtime) */
+            /** @phpstan-ignore-next-line offsetAccess.notFound (we just detected block type, we know it's definition exists under given PHP runtime) */
             $blockType = $blockEdgeDefinitions[$detectedBlockType['type']];
             $openCount = 1;
 
