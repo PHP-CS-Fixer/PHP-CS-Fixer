@@ -95,7 +95,7 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is the number of occurrences.
      *
-     * @var array<int|string, int>
+     * @var array<int|string, int<0, max>>
      */
     private array $foundTokenKinds = [];
 
@@ -1435,6 +1435,7 @@ class Tokens extends \SplFixedArray
         // inlined extractTokenKind() call on the hot path
         $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
+        \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
         --$this->foundTokenKinds[$tokenKind];
     }
 
