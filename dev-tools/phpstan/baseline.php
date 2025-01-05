@@ -2354,12 +2354,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:\\$foundTokenKinds \\(array\\<int\\|string, int\\<0, max\\>\\>\\) does not accept non\\-empty\\-array\\<int\\|string, int\\>\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$name of static method PhpCsFixer\\\\Tokenizer\\\\Processor\\\\ImportProcessor\\:\\:tokenizeName\\(\\) expects class\\-string, string given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
