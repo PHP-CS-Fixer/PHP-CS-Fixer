@@ -95,7 +95,7 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is the number of occurrences.
      *
-     * @var array<int|string, int>
+     * @var array<int|string, int<0, max>>
      */
     private array $foundTokenKinds = [];
 
@@ -394,17 +394,17 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens(): void
     {
+        // no empty token found, therefore there is no need to override collection
+        if (!$this->isTokenKindFound('')) {
+            return;
+        }
+
         $limit = \count($this);
 
         for ($index = 0; $index < $limit; ++$index) {
             if ($this->isEmptyAt($index)) {
                 break;
             }
-        }
-
-        // no empty token found, therefore there is no need to override collection
-        if ($limit === $index) {
-            return;
         }
 
         for ($count = $index; $index < $limit; ++$index) {
@@ -414,16 +414,11 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // should already be true
-        if (!$this->changed) {
-            // must never happen
-            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
-        }
-
         // we are moving the tokens, we need to clear the index-based Cache
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+        $this->foundTokenKinds[''] = 0;
 
         $this->updateSize($count);
     }
@@ -1064,12 +1059,6 @@ class Tokens extends \SplFixedArray
 
         $this->applyTransformers();
 
-        $this->foundTokenKinds = [];
-
-        foreach ($this as $token) {
-            $this->registerFoundToken($token);
-        }
-
         if (\PHP_VERSION_ID < 8_00_00) {
             $this->rewind();
         }
@@ -1102,7 +1091,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!isset($this->foundTokenKinds[$tokenKind])) {
+            if (0 === ($this->foundTokenKinds[$tokenKind] ?? 0)) {
                 return false;
             }
         }
@@ -1118,7 +1107,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (isset($this->foundTokenKinds[$tokenKind])) {
+            if (0 !== ($this->foundTokenKinds[$tokenKind] ?? 0)) {
                 return true;
             }
         }
@@ -1133,7 +1122,7 @@ class Tokens extends \SplFixedArray
      */
     public function isTokenKindFound($tokenKind): bool
     {
-        return isset($this->foundTokenKinds[$tokenKind]);
+        return 0 !== ($this->foundTokenKinds[$tokenKind] ?? 0);
     }
 
     /**
@@ -1443,11 +1432,8 @@ class Tokens extends \SplFixedArray
         // inlined extractTokenKind() call on the hot path
         $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
-        if (1 === $this->foundTokenKinds[$tokenKind]) {
-            unset($this->foundTokenKinds[$tokenKind]);
-        } else {
-            --$this->foundTokenKinds[$tokenKind];
-        }
+        \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
+        --$this->foundTokenKinds[$tokenKind];
     }
 
     /**

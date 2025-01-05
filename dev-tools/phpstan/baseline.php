@@ -2312,13 +2312,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset int\\|string might not exist on array\\<int\\|string, int\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, int\\>\\.$#',
+	'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, int\\<0, max\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
