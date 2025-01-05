@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.66.1
+---------------------
+
+* chore: fix CI for Windows (#8326)
+* chore: `NoMultipleStatementsPerLineFixer` - be aware of PHP 8.4 property hooks (#8344)
+* chore: `TernaryToElvisOperatorFixer` - improvements based on PHPStan detections (#8345)
+* chore: `PhpUnitTestCaseStaticMethodCallsFixer` - fix type of `methods` option in documemtation and add example with it (#8338)
+* chore: update legacy deps (#8342)
+* deps: update box (#8336)
+
 Changelog for v3.66.0
 ---------------------
 
