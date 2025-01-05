@@ -1832,12 +1832,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, int\\|false given\\.$#',
-	'identifier' => 'if.condNotBoolean',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -1950,12 +1944,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a ternary operator condition, int\\|false given\\.$#',
-	'identifier' => 'ternary.condNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset int\\<0, max\\> might not exist on non\\-empty\\-list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\>\\.$#',
