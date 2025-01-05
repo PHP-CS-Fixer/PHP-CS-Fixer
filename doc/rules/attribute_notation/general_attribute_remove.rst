@@ -12,7 +12,7 @@ Configuration
 
 List of attributes to remove FQ, e.g. ``Foo\Bar``.
 
-Allowed types: ``list<string>``
+Allowed types: ``list<class-string>``
 
 Default value: ``[]``
 

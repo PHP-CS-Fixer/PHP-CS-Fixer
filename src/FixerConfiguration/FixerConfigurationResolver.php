@@ -96,9 +96,9 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
             $allowedTypes = $option->getAllowedTypes();
             if (null !== $allowedTypes) {
-                // Symfony OptionsResolver doesn't support `array<foo, bar>` natively, let's simplify the type
                 $allowedTypesNormalised = array_map(
                     static function (string $type): string {
+                        // Symfony OptionsResolver doesn't support `array<foo, bar>` natively, let's simplify the type
                         $matches = [];
                         if (true === Preg::match('/array<\w+,\s*(\??[\w\'|]+)>/', $type, $matches)) {
                             if ('?' === $matches[1][0]) {
@@ -112,7 +112,8 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
                             return $matches[1].'[]';
                         }
 
-                        return $type;
+                        // Symfony OptionsResolver doesn't support 'class-string' natively, let's simplify the type
+                        return str_replace('class-string', 'string', $type);
                     },
                     $allowedTypes,
                 );
