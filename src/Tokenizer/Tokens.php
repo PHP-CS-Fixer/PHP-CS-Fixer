@@ -407,8 +407,6 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        \assert($limit !== $index);
-
         for ($count = $index; $index < $limit; ++$index) {
             if (!$this->isEmptyAt($index)) {
                 // use directly for speed, skip the register of token kinds found etc.
@@ -420,8 +418,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
-        \assert(isset($this->foundTokenKinds['']));
-        $this->foundTokenKinds[''] -= $limit - $count;
+        $this->foundTokenKinds[''] = 0;
 
         $this->updateSize($count);
     }
