@@ -212,18 +212,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\WorkerCommand\\:\\:\\$defaultDescription has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\WorkerCommand\\:\\:\\$defaultName has no type specified\\.$#',
-	'identifier' => 'missingType.property',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset \'allow\\-risky\' might not exist on array\\<string, mixed\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
