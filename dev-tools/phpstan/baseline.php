@@ -1508,12 +1508,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ListNotation\\\\ListSyntaxFixer\\:\\:configurePostNormalisation\\(\\) has PhpCsFixer\\\\ConfigurationException\\\\InvalidFixerConfigurationException in PHPDoc @throws tag but it\'s not thrown\\.$#',
-	'identifier' => 'throws.unusedType',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ListNotation/ListSyntaxFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
 	'identifier' => 'plus.leftNonNumeric',
 	'count' => 1,
