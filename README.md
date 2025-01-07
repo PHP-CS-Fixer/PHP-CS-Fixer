@@ -42,17 +42,12 @@ The recommended way to install PHP CS Fixer is to use [Composer](https://getcomp
 
 ```console
 composer require --dev friendsofphp/php-cs-fixer
-```
-
-or using shim version when facing conflict with dependencies:
-
-```console
+## or when facing conflicts in dependencies:
 composer require --dev php-cs-fixer/shim
 ```
 
 For more details and other installation methods (also with Docker or behind CI), see
 [installation instructions](./doc/installation.rst).
-
 
 ### Usage
 

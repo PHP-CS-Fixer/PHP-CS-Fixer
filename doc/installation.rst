@@ -2,8 +2,8 @@
 Installation
 ============
 
-When developing on multiple projects or with team of developers, it is highly recommended to use install PHP CS Fixer as direct dependency per project and not globally on your machine.
-This will ensure each team member is using version of the tool expected by given codebase.
+When developing on multiple projects or with team of developers, it is highly recommended to install PHP CS Fixer as direct dependency per project and not globally on your machine.
+This will ensure each team member is using version of the tool expected by given project.
 
 PHP needs to be a minimum version of PHP 7.4.
 
@@ -18,7 +18,7 @@ To install PHP CS Fixer, `install Composer <https://getcomposer.org/download/>`_
 .. code-block:: console
 
     composer require --dev friendsofphp/php-cs-fixer
-    # or when facing conflicts in dependencies
+    ## or when facing conflicts in dependencies:
     composer require --dev php-cs-fixer/shim
 
 Upgrade
@@ -27,6 +27,8 @@ Upgrade
 .. code-block:: console
 
     composer upgrade friendsofphp/php-cs-fixer
+    ## or
+    composer upgrade php-cs-fixer/shim
 
 Docker
 ------
@@ -37,11 +39,11 @@ You can use pre-built Docker images to run ``php-cs-fixer``.
 
     docker run -it --rm -v $(pwd):/code ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3} fix src
 
-`$FIXER_VERSION` used in example above is an identifier of a release you want to use, which is based on Fixer and PHP versions combined. There are different tags for each Fixer's SemVer level and PHP version with syntax `<php-cs-fixer-version>-php<php-version>`. For example:
+``$FIXER_VERSION`` used in example above is an identifier of a release you want to use, which is based on Fixer and PHP versions combined. There are different tags for each Fixer's SemVer level and PHP version with syntax ``<php-cs-fixer-version>-php<php-version>``. For example:
 
-* `3.66.1-php7.4`
-* `3.66-php8.0`
-* `3-php8.3`
+* ``3.66.1-php7.4``
+* ``3.66-php8.0``
+* ``3-php8.3``
 
 PHIVE
 -----
