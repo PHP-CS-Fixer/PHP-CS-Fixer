@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ListNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -76,9 +75,6 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
         return $tokens->isTokenKindFound($this->candidateTokenKind);
     }
 
-    /**
-     * @throws InvalidFixerConfigurationException
-     */
     protected function configurePostNormalisation(): void
     {
         $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN : T_LIST;
