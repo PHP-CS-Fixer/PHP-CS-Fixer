@@ -54,7 +54,7 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Configured attributes should be omitted (FQNs strings).',
+            'Removes configured attributes by their respective FQN.',
             [
                 new CodeSample(
                     '<?php
@@ -98,26 +98,10 @@ function foo() {}
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
             $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
 
-            if (1 === \count($attributeAnalysis->getAttributes())) {
-                $elements = [
-                    [
-                        'name' => $attributeAnalysis->getAttributes()[0]['name'],
-                        'start' => $attributeAnalysis->getStartIndex(),
-                        'end' => $attributeAnalysis->getEndIndex(),
-                    ],
-                ];
-            } else {
-                $elements = array_map(static fn (array $attribute): array => [
-                    'name' => $attribute['name'],
-                    'start' => $attribute['start'],
-                    'end' => $attribute['end'],
-                ], $attributeAnalysis->getAttributes());
-            }
-
             $endIndex = $attributeAnalysis->getEndIndex();
 
             $removedCount = 0;
-            foreach ($elements as $element) {
+            foreach ($attributeAnalysis->getAttributes() as $element) {
                 $fullname = $this->determineAttributeFullyQualifiedName($tokens, $element['name'], $element['start']);
 
                 if (!\in_array($fullname, $this->configuration['attributes'], true)) {
@@ -153,7 +137,7 @@ function foo() {}
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('attributes', 'List of attributes to remove FQ, e.g. `Foo\Bar`.'))
+            (new FixerOptionBuilder('attributes', 'List of FQNs of attributes for removal.'))
                 ->setAllowedTypes(['string[]'])
                 ->setDefault([])
                 ->getOption(),
