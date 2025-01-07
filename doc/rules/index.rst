@@ -78,7 +78,7 @@ Attribute Notation
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
 - `general_attribute_remove <./attribute_notation/general_attribute_remove.rst>`_
 
-  Configured attributes should be omitted (FQNs strings).
+  Removes configured attributes by their respective FQN.
 - `ordered_attributes <./attribute_notation/ordered_attributes.rst>`_
 
   Sorts attributes using the configured sort algorithm.

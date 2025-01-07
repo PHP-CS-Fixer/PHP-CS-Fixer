@@ -2,7 +2,7 @@
 Rule ``general_attribute_remove``
 =================================
 
-Configured attributes should be omitted (FQNs strings).
+Removes configured attributes by their respective FQN.
 
 Configuration
 -------------
@@ -10,7 +10,7 @@ Configuration
 ``attributes``
 ~~~~~~~~~~~~~~
 
-List of attributes to remove FQ, e.g. ``Foo\Bar``.
+List of FQNs of attributes for removal.
 
 Allowed types: ``list<string>``
 
