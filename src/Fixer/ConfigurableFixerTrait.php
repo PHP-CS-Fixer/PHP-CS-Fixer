@@ -38,12 +38,9 @@ trait ConfigurableFixerTrait
     /**
      * @var null|TFixerComputedConfig
      */
-    protected $configuration;
+    protected ?array $configuration = null;
 
-    /**
-     * @var null|FixerConfigurationResolverInterface
-     */
-    private $configurationDefinition;
+    private ?FixerConfigurationResolverInterface $configurationDefinition = null;
 
     /**
      * @param TFixerInputConfig $configuration

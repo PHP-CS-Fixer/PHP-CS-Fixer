@@ -74,7 +74,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var array<string, null|list<string>> Array containing all class element base types (keys) and their parent types (values)
      */
-    private static array $typeHierarchy = [
+    private const TYPE_HIERARCHY = [
         'use_trait' => null,
         'public' => null,
         'protected' => null,
@@ -115,7 +115,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var array<string, null> Array containing special method types
      */
-    private static array $specialTypes = [
+    private const SPECIAL_TYPES = [
         'construct' => null,
         'destruct' => null,
         'magic' => null,
@@ -207,9 +207,9 @@ class Example
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
 
-Element types: `[\''.implode('\', \'', array_keys(self::$typeHierarchy)).'\']`
+Element types: `[\''.implode('\', \'', array_keys(self::TYPE_HIERARCHY)).'\']`
 
-Special element types: `[\''.implode('\', \'', array_keys(self::$specialTypes)).'\']`
+Special element types: `[\''.implode('\', \'', array_keys(self::SPECIAL_TYPES)).'\']`
 
 Custom values:
 
@@ -237,7 +237,7 @@ Custom values:
             $this->typePosition[$type] = $position++;
         }
 
-        foreach (self::$typeHierarchy as $type => $parents) {
+        foreach (self::TYPE_HIERARCHY as $type => $parents) {
             if (isset($this->typePosition[$type])) {
                 continue;
             }
@@ -297,7 +297,7 @@ Custom values:
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $builtIns = array_keys(array_merge(self::$typeHierarchy, self::$specialTypes));
+        $builtIns = array_keys(array_merge(self::TYPE_HIERARCHY, self::SPECIAL_TYPES));
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
@@ -519,7 +519,7 @@ Custom values:
                 return $this->typePosition["method:{$element['name']}"];
             }
 
-            if (\array_key_exists($type, self::$specialTypes)) {
+            if (\array_key_exists($type, self::SPECIAL_TYPES)) {
                 if (isset($this->typePosition[$type])) {
                     $position = $this->typePosition[$type];
 

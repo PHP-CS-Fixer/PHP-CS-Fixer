@@ -151,6 +151,22 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     ];
 
     /**
+     * @var list<null|string>
+     */
+    private const ALLOWED_VALUES = [
+        self::ALIGN,
+        self::ALIGN_BY_SCOPE,
+        self::ALIGN_SINGLE_SPACE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL,
+        self::ALIGN_SINGLE_SPACE_BY_SCOPE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE,
+        self::SINGLE_SPACE,
+        self::NO_SPACE,
+        self::AT_LEAST_SINGLE_SPACE,
+        null,
+    ];
+
+    /**
      * Keep track of the deepest level ever achieved while
      * parsing the code. Used later to replace alignment
      * placeholders with spaces.
@@ -163,22 +179,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      * other level ones.
      */
     private int $currentLevel;
-
-    /**
-     * @var list<null|string>
-     */
-    private static array $allowedValues = [
-        self::ALIGN,
-        self::ALIGN_BY_SCOPE,
-        self::ALIGN_SINGLE_SPACE,
-        self::ALIGN_SINGLE_SPACE_MINIMAL,
-        self::ALIGN_SINGLE_SPACE_BY_SCOPE,
-        self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE,
-        self::SINGLE_SPACE,
-        self::NO_SPACE,
-        self::AT_LEAST_SINGLE_SPACE,
-        null,
-    ];
 
     private TokensAnalyzer $tokensAnalyzer;
 
@@ -368,7 +368,7 @@ $array = [
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('default', 'Default fix strategy.'))
                 ->setDefault(self::SINGLE_SPACE)
-                ->setAllowedValues(self::$allowedValues)
+                ->setAllowedValues(self::ALLOWED_VALUES)
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: '.Utils::naturalLanguageJoinWithBackticks(self::SUPPORTED_OPERATORS).'.'))
                 ->setAllowedTypes(['array<string, ?string>'])
@@ -384,14 +384,14 @@ $array = [
                             );
                         }
 
-                        if (!\in_array($value, self::$allowedValues, true)) {
+                        if (!\in_array($value, self::ALLOWED_VALUES, true)) {
                             throw new InvalidOptionsException(
                                 \sprintf(
                                     'Unexpected value for operator "%s", expected any of %s, got "%s".',
                                     $operator,
                                     Utils::naturalLanguageJoin(array_map(
                                         static fn ($value): string => Utils::toString($value),
-                                        self::$allowedValues
+                                        self::ALLOWED_VALUES
                                     )),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )

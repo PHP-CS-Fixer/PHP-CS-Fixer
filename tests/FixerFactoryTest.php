@@ -334,15 +334,13 @@ final class FixerFactoryTest extends TestCase
 - "c" with "d", "e" and "f"
 - "d" with "g" and "h"
 - "e" with "a"',
-            \Closure::bind(static function (FixerFactory $factory): string {
-                return $factory->generateConflictMessage([
-                    'a' => ['b'],
-                    'b' => ['a'],
-                    'c' => ['d', 'e', 'f'],
-                    'd' => ['c', 'g', 'h'],
-                    'e' => ['a'],
-                ]);
-            }, null, FixerFactory::class)($factory),
+            \Closure::bind(static fn (FixerFactory $factory): string => $factory->generateConflictMessage([
+                'a' => ['b'],
+                'b' => ['a'],
+                'c' => ['d', 'e', 'f'],
+                'd' => ['c', 'g', 'h'],
+                'e' => ['a'],
+            ]), null, FixerFactory::class)($factory),
         );
     }
 
