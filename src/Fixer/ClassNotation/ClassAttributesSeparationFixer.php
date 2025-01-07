@@ -476,16 +476,8 @@ class Sample
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = $classIndex = false;
-        $elements = $tokensAnalyzer->getClassyElements();
 
-        for (end($elements);; prev($elements)) {
-            $index = key($elements);
-
-            if (null === $index) {
-                break;
-            }
-
-            $element = current($elements);
+        foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             $element['index'] = $index;
 
             if ($element['classIndex'] !== $classIndex) {
