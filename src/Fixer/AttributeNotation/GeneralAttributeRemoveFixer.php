@@ -24,11 +24,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -102,7 +98,7 @@ function foo() {}
 
             $removedCount = 0;
             foreach ($attributeAnalysis->getAttributes() as $element) {
-                $fullname = $this->determineAttributeFullyQualifiedName($tokens, $element['name'], $element['start']);
+                $fullname = AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $element['name'], $element['start']);
 
                 if (!\in_array($fullname, $this->configuration['attributes'], true)) {
                     continue;
@@ -142,53 +138,5 @@ function foo() {}
                 ->setDefault([])
                 ->getOption(),
         ]);
-    }
-
-    private function determineAttributeFullyQualifiedName(Tokens $tokens, string $name, int $index): string
-    {
-        if ('\\' === $name[0]) {
-            return $name;
-        }
-
-        if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-            $index = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
-        }
-
-        [$namespaceAnalysis, $namespaceUseAnalyses] = $this->collectNamespaceAnalysis($tokens, $index);
-        $namespace = $namespaceAnalysis->getFullName();
-        $firstTokenOfName = $tokens[$index]->getContent();
-        $namespaceUseAnalysis = $namespaceUseAnalyses[$firstTokenOfName] ?? false;
-
-        if ($namespaceUseAnalysis instanceof NamespaceUseAnalysis) {
-            $namespace = $namespaceUseAnalysis->getFullName();
-
-            if ($name === $firstTokenOfName) {
-                return $namespace;
-            }
-
-            $name = substr((string) strstr($name, '\\'), 1);
-        }
-
-        return $namespace.'\\'.$name;
-    }
-
-    /**
-     * @return array{NamespaceAnalysis, array<string, NamespaceUseAnalysis>}
-     */
-    private function collectNamespaceAnalysis(Tokens $tokens, int $startIndex): array
-    {
-        $namespaceAnalysis = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $startIndex);
-        $namespaceUseAnalyses = (new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($tokens, $namespaceAnalysis);
-
-        $uses = [];
-        foreach ($namespaceUseAnalyses as $use) {
-            if (!$use->isClass()) {
-                continue;
-            }
-
-            $uses[$use->getShortName()] = $use;
-        }
-
-        return [$namespaceAnalysis, $uses];
     }
 }
