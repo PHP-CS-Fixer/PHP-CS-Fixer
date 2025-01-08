@@ -17,7 +17,6 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -254,24 +253,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
             $insertedClassName .= $token->getContent();
         }
 
-        // @TODO: refactor OrderedAttributesFixer::determineAttributeFullyQualifiedName to shared analyzer
-        static $determineAttributeFullyQualifiedName = null;
-        static $orderedAttributesFixer = null;
-        if (null === $determineAttributeFullyQualifiedName) {
-            $orderedAttributesFixer = new OrderedAttributesFixer();
-            $reflection = new \ReflectionObject($orderedAttributesFixer);
-            $determineAttributeFullyQualifiedName = $reflection->getMethod('determineAttributeFullyQualifiedName');
-            $determineAttributeFullyQualifiedName->setAccessible(true);
-        }
-
         foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                $className = ltrim($determineAttributeFullyQualifiedName->invokeArgs(
-                    $orderedAttributesFixer,
-                    [$tokens,
-                        $attribute['name'],
-                        $attribute['start']],
-                ), '\\');
+                $className = ltrim(AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $attribute['name'], $attribute['start']), '\\');
 
                 if ($insertedClassName === $className) {
                     return true;
