@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Runner;
 use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
@@ -24,9 +25,15 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\Runner\Event\AnalysisStarted;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfo;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -97,8 +104,9 @@ final class RunnerTest extends TestCase
     /**
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
      */
-    public function testThatFixInvalidFileReportsToErrorManager(): void
+    public function testThatSequentialFixOfInvalidFileReportsToErrorManager(): void
     {
         $errorsManager = new ErrorsManager();
 
@@ -127,10 +135,164 @@ final class RunnerTest extends TestCase
 
         $error = $errors[0];
 
-        self::assertInstanceOf(Error::class, $error);
+        self::assertSame(Error::TYPE_INVALID, $error->getType());
+        self::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     */
+    public function testThatParallelFixOfInvalidFileReportsToErrorManager(): void
+    {
+        $errorsManager = new ErrorsManager();
+
+        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'invalid';
+        $runner = new Runner(
+            Finder::create()->in($path),
+            [
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ],
+            new NullDiffer(),
+            null,
+            $errorsManager,
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            null,
+            false,
+            new ParallelConfig(2, 1, 50),
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+        );
+        $changed = $runner->fix();
+        $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
+
+        self::assertCount(0, $changed);
+
+        $errors = $errorsManager->getInvalidErrors();
+
+        self::assertCount(1, $errors);
+
+        $error = $errors[0];
+
+        self::assertInstanceOf(LintingException::class, $error->getSource());
 
         self::assertSame(Error::TYPE_INVALID, $error->getType());
         self::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @param list<string> $paths
+     *
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
+     *
+     * @dataProvider provideRunnerUsesProperAnalysisModeCases
+     */
+    public function testRunnerUsesProperAnalysisMode(
+        ParallelConfig $parallelConfig,
+        array $paths,
+        string $expectedMode
+    ): void {
+        $runner = new Runner(
+            Finder::create()->in($paths),
+            [
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ],
+            new NullDiffer(),
+            $eventDispatcher = new EventDispatcher(),
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            null,
+            false,
+            $parallelConfig,
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+        );
+
+        $eventDispatcher->addListener(AnalysisStarted::NAME, static function (AnalysisStarted $event) use ($expectedMode): void {
+            self::assertSame($expectedMode, $event->getMode());
+        });
+
+        $runner->fix();
+    }
+
+    /**
+     * @return iterable<string, array{0: ParallelConfig, 1: list<string>}>
+     */
+    public static function provideRunnerUsesProperAnalysisModeCases(): iterable
+    {
+        $fixturesBasePath = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR;
+
+        yield 'single CPU = sequential even though file chunk is lower than actual files count' => [
+            new ParallelConfig(1, 1),
+            [$fixturesBasePath.'fix'],
+            'sequential',
+        ];
+
+        yield 'less files to fix than configured file chunk = sequential even though multiple CPUs enabled' => [
+            new ParallelConfig(5, 10),
+            [$fixturesBasePath.'fix'],
+            'sequential',
+        ];
+
+        yield 'multiple CPUs, more files to fix than file chunk size = parallel' => [
+            new ParallelConfig(2, 1),
+            [$fixturesBasePath.'fix'],
+            'parallel',
+        ];
+    }
+
+    /**
+     * @requires OS Darwin|Windows
+     *
+     * @TODO v4 do not switch on parallel execution by default while this test is not passing on Linux.
+     *
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     *
+     * @dataProvider provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases
+     */
+    public function testParallelFixStopsOnFirstViolationIfSuchOptionIsEnabled(bool $stopOnViolation, int $expectedChanges): void
+    {
+        $errorsManager = new ErrorsManager();
+
+        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
+        $runner = new Runner(
+            Finder::create()->in($path),
+            [
+                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
+            ],
+            new NullDiffer(),
+            null,
+            $errorsManager,
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            null,
+            $stopOnViolation,
+            new ParallelConfig(2, 1, 3),
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+        );
+
+        self::assertCount($expectedChanges, $runner->fix());
+    }
+
+    /**
+     * @return iterable<array{0: bool, 1: int}>
+     */
+    public static function provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases(): iterable
+    {
+        yield 'do NOT stop on violation' => [false, 2];
+
+        yield 'stop on violation' => [true, 1];
     }
 
     /**
@@ -165,10 +327,10 @@ final class RunnerTest extends TestCase
 
     private function createDifferDouble(): DifferInterface
     {
-        return new class() implements DifferInterface {
+        return new class implements DifferInterface {
             public ?\SplFileInfo $passedFile = null;
 
-            public function diff(string $old, string $new, \SplFileInfo $file = null): string
+            public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
             {
                 $this->passedFile = $file;
 
@@ -179,7 +341,7 @@ final class RunnerTest extends TestCase
 
     private function createLinterDouble(): LinterInterface
     {
-        return new class() implements LinterInterface {
+        return new class implements LinterInterface {
             public function isAsync(): bool
             {
                 return false;
@@ -187,14 +349,14 @@ final class RunnerTest extends TestCase
 
             public function lintFile(string $path): LintingResultInterface
             {
-                return new class() implements LintingResultInterface {
+                return new class implements LintingResultInterface {
                     public function check(): void {}
                 };
             }
 
             public function lintSource(string $source): LintingResultInterface
             {
-                return new class() implements LintingResultInterface {
+                return new class implements LintingResultInterface {
                     public function check(): void {}
                 };
             }

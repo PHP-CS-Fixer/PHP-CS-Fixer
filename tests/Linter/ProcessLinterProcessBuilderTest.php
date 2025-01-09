@@ -33,12 +33,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac(string $executable, string $file, string $expected): void
     {
-        $builder = new ProcessLinterProcessBuilder($executable);
-
-        self::assertSame(
-            $expected,
-            $builder->build($file)->getCommandLine()
-        );
+        $this->testPrepareCommand($executable, $file, $expected);
     }
 
     /**
@@ -48,7 +43,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     {
         yield 'Linux-like' => ['php', 'foo.php', "'php' '-l' 'foo.php'"];
 
-        yield 'Windows-like' => ['C:\\Program Files\\php\\php.exe', 'foo bar\\baz.php', "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"];
+        yield 'Windows-like' => ['C:\Program Files\php\php.exe', 'foo bar\baz.php', "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"];
     }
 
     /**
@@ -58,12 +53,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public function testPrepareCommandOnPhpOnWindows(string $executable, string $file, string $expected): void
     {
-        $builder = new ProcessLinterProcessBuilder($executable);
-
-        self::assertSame(
-            $expected,
-            $builder->build($file)->getCommandLine()
-        );
+        $this->testPrepareCommand($executable, $file, $expected);
     }
 
     /**
@@ -71,8 +61,18 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public static function providePrepareCommandOnPhpOnWindowsCases(): iterable
     {
-        yield 'Linux-like' => ['php', 'foo.php', 'php -l foo.php'];
+        yield 'Linux-like' => ['php', 'foo.php', 'c:\tools\php\php.EXE -l foo.php'];
 
-        yield 'Windows-like' => ['C:\\Program Files\\php\\php.exe', 'foo bar\\baz.php', '"C:\\Program Files\\php\\php.exe" -l "foo bar\\baz.php"'];
+        yield 'Windows-like' => ['C:\Program Files\php\php.exe', 'foo bar\baz.php', '"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'];
+    }
+
+    private function testPrepareCommand(string $executable, string $file, string $expected): void
+    {
+        $builder = new ProcessLinterProcessBuilder($executable);
+
+        self::assertSame(
+            $expected,
+            $builder->build($file)->getCommandLine()
+        );
     }
 }

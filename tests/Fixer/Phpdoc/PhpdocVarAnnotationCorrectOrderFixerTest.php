@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer>
  */
 final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [ // It's @param, we care only about @var

@@ -17,7 +17,7 @@ Integration of fixers: fully_qualified_strict_types /w leading_backslash_in_glob
  * @param \'GET\'|\'POST\' $method
  * @param \Closure $fx
  *
- * @psalm-param Closure(): (callable(): Closure) $fx
+ * @psalm-param \Closure(): (callable(): \Closure) $fx
  *
  * @return list<int>
  */

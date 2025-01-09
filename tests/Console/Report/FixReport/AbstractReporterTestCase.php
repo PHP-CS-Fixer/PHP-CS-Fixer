@@ -25,10 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractReporterTestCase extends TestCase
 {
-    /**
-     * @var null|ReporterInterface
-     */
-    protected $reporter;
+    protected ?ReporterInterface $reporter = null;
 
     protected function setUp(): void
     {
@@ -62,6 +59,9 @@ abstract class AbstractReporterTestCase extends TestCase
         $this->assertFormat($expectedReport, $actualReport);
     }
 
+    /**
+     * @return iterable<string, array{string, ReportSummary}>
+     */
     final public static function provideGenerateCases(): iterable
     {
         yield 'no errors' => [

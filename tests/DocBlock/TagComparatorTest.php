@@ -44,6 +44,9 @@ final class TagComparatorTest extends TestCase
         self::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
+    /**
+     * @return iterable<array{string, string, bool}>
+     */
     public static function provideComparatorTogetherCases(): iterable
     {
         yield ['return', 'return', true];
@@ -68,7 +71,7 @@ final class TagComparatorTest extends TestCase
     /**
      * @dataProvider provideComparatorTogetherWithDefinedGroupsCases
      *
-     * @param string[][] $groups
+     * @param list<list<string>> $groups
      *
      * @group legacy
      */

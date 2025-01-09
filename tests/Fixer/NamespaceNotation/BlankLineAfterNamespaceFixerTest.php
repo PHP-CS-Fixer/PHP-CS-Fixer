@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer>
  */
 final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +36,9 @@ final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -243,11 +248,14 @@ class X extends Y {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php namespace A\\B;\r\n\r\nclass C {}",
-            '<?php namespace A\\B;  class C {}',
+            '<?php namespace A\B;  class C {}',
         ];
 
         yield [

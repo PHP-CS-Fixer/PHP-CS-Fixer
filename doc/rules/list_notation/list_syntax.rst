@@ -3,7 +3,7 @@ Rule ``list_syntax``
 ====================
 
 List (``array`` destructuring) assignment should be declared using the
-configured syntax. Requires PHP >= 7.1.
+configured syntax.
 
 Configuration
 -------------
@@ -58,6 +58,7 @@ The rule is part of the following rule sets:
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
 
 References
 ----------

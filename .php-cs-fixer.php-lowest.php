@@ -26,11 +26,20 @@ $config->getFinder()->notPath([
     'src/DocBlock/Annotation.php',
     'src/Doctrine/Annotation/Tokens.php',
     'src/Tokenizer/Tokens.php',
+    // @TODO add `mixed` return type to `ExecutorWithoutErrorHandler::execute` when PHP 8.0+ is required and remove the exception from this list
+    'src/ExecutorWithoutErrorHandler.php',
 ]);
 
 $config->setRules([
     'phpdoc_to_param_type' => true,
     'phpdoc_to_return_type' => true,
+    'phpdoc_to_property_type' => [
+        'types_map' => [
+            'TFixerInputConfig' => 'array',
+            'TFixerComputedConfig' => 'array',
+            'TFixer' => '\PhpCsFixer\AbstractFixer',
+        ],
+    ],
 ]);
 
 return $config;

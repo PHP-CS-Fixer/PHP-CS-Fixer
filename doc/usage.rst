@@ -21,11 +21,25 @@ If you do not have config file, you can run following command to fix non-hidden,
 
     php php-cs-fixer.phar fix .
 
-With some magic of tools provided by your OS, you can also fix files in parallel:
+You can also fix files in parallel, utilising more CPU cores. You can do this by using config class that implements ``PhpCsFixer\Runner\Parallel\ParallelConfig\ParallelAwareConfigInterface``, and use ``setParallelConfig()`` method. Recommended way is to utilise auto-detecting parallel configuration:
 
-.. code-block:: console
+.. code-block:: php
 
-    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 50 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
+    <?php
+
+    return (new PhpCsFixer\Config())
+        ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
+    ;
+
+However, in some case you may want to fine-tune parallelisation with explicit values (e.g. in environments where auto-detection does not work properly and suggests more cores than it should):
+
+.. code-block:: php
+
+    <?php
+
+    return (new PhpCsFixer\Config())
+        ->setParallelConfig(new PhpCsFixer\Runner\Parallel\ParallelConfig(4, 20))
+    ;
 
 You can limit process to given file or files in a given directory and its subdirectories:
 
@@ -97,6 +111,8 @@ Complete configuration for rules can be supplied using a ``json`` formatted stri
     php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
 
 The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use ``check`` command).
+
+The ``--sequential`` flag will enforce sequential analysis even if parallel config is provided.
 
 The ``--diff`` flag can be used to let the fixer output all the changes it makes in ``udiff`` format.
 
@@ -237,7 +253,7 @@ Then, add the following command to your CI:
     if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
     vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
-Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
+Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``${{github.event.before}}...${{github.event.after}}`` or ``HEAD~..HEAD``.
 
 GitLab Code Quality Integration
 ###############################

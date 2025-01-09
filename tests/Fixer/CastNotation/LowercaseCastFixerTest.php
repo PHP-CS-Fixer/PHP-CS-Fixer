@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer>
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +38,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
-        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
+        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'string', 'array', 'object', 'binary'];
 
         foreach ($types as $from) {
             yield from self::createCasesFor($from);
@@ -48,7 +50,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -89,23 +91,23 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     private static function createCasesFor(string $type): iterable
     {
         yield [
-            sprintf('<?php $b= (%s)$d;', $type),
-            sprintf('<?php $b= (%s)$d;', strtoupper($type)),
+            \sprintf('<?php $b= (%s)$d;', $type),
+            \sprintf('<?php $b= (%s)$d;', strtoupper($type)),
         ];
 
         yield [
-            sprintf('<?php $b=( %s) $d;', $type),
-            sprintf('<?php $b=( %s) $d;', ucfirst($type)),
+            \sprintf('<?php $b=( %s) $d;', $type),
+            \sprintf('<?php $b=( %s) $d;', ucfirst($type)),
         ];
 
         yield [
-            sprintf('<?php $b=(%s ) $d;', $type),
-            sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
+            \sprintf('<?php $b=(%s ) $d;', $type),
+            \sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
         ];
 
         yield [
-            sprintf('<?php $b=(  %s  ) $d;', $type),
-            sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
+            \sprintf('<?php $b=(  %s  ) $d;', $type),
+            \sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
         ];
     }
 }

@@ -17,19 +17,24 @@ namespace PhpCsFixer\Console\Output\Progress;
 use PhpCsFixer\Console\Output\OutputContext;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class ProgressOutputFactory
 {
     /**
-     * @var array<string, class-string<ProgressOutputInterface>>
+     * @var array<ProgressOutputType::*, class-string<ProgressOutputInterface>>
      */
-    private static array $outputTypeMap = [
+    private const OUTPUT_TYPE_MAP = [
         ProgressOutputType::NONE => NullOutput::class,
         ProgressOutputType::DOTS => DotsOutput::class,
         ProgressOutputType::BAR => PercentageBarOutput::class,
     ];
 
+    /**
+     * @param ProgressOutputType::* $outputType
+     */
     public function create(string $outputType, OutputContext $context): ProgressOutputInterface
     {
         if (null === $context->getOutput()) {
@@ -38,14 +43,17 @@ final class ProgressOutputFactory
 
         if (!$this->isBuiltInType($outputType)) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Something went wrong, "%s" output type is not supported',
                     $outputType
                 )
             );
         }
 
-        return new self::$outputTypeMap[$outputType]($context);
+        $outputClass = self::OUTPUT_TYPE_MAP[$outputType];
+
+        // @phpstan-ignore-next-line new.noConstructor
+        return new $outputClass($context);
     }
 
     private function isBuiltInType(string $outputType): bool

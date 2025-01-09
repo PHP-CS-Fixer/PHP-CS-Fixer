@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
@@ -56,6 +58,9 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -145,6 +150,9 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -163,6 +171,9 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'first callable class' => [

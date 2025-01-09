@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer>
  */
 final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +36,9 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -393,10 +398,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $i + 1;',
-        ];
-
-        yield [
             '<?php $i += 1.0;',
         ];
 
@@ -734,11 +735,14 @@ $i#3
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [

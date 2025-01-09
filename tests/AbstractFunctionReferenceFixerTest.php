@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     /**
-     * @param null|int[] $expected
+     * @param null|list<int> $expected
      *
      * @dataProvider provideAbstractFunctionReferenceFixerCases
      */
@@ -126,7 +126,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
     private function createAbstractFunctionReferenceFixerDouble(): AbstractFunctionReferenceFixer
     {
-        return new class() extends AbstractFunctionReferenceFixer {
+        return new class extends AbstractFunctionReferenceFixer {
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \BadMethodCallException('Not implemented.');

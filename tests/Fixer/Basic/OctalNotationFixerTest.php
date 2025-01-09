@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *
  * @requires PHP 8.1
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  */
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +37,9 @@ final class OctalNotationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

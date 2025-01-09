@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class SwitchAnalyzerTest extends TestCase
 {
     /**
-     * @param array<int> $indices
+     * @param list<int> $indices
      *
      * @dataProvider provideColonCases
      */
@@ -38,13 +38,13 @@ final class SwitchAnalyzerTest extends TestCase
             self::assertSame(
                 \in_array($index, $indices, true),
                 SwitchAnalyzer::belongsToSwitch($tokens, $index),
-                sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index)
             );
         }
     }
 
     /**
-     * @return iterable<array{string, array<int>}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideColonCases(): iterable
     {

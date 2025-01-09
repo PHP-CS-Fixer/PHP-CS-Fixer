@@ -36,38 +36,6 @@ final class AbstractFixerTest extends TestCase
         self::assertTrue($fixer->supports(new \SplFileInfo(__FILE__)));
     }
 
-    public function testConfigureUnconfigurable(): void
-    {
-        $fixer = $this->createUnconfigurableFixerDouble();
-
-        self::assertSame(0, $fixer->getPriority());
-
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
-
-        $fixer->configure(['foo' => 'bar']);
-    }
-
-    public function testGetConfigurationDefinitionUnconfigurable(): void
-    {
-        $fixer = $this->createUnconfigurableFixerDouble();
-
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf('Cannot get configuration definition using Abstract parent, child "%s" not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".', \get_class($fixer)));
-
-        $fixer->getConfigurationDefinition();
-    }
-
-    public function testCreateConfigurationDefinitionUnconfigurable(): void
-    {
-        $fixer = $this->createUnconfigurableFixerDouble();
-
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
-
-        AccessibleObject::create($fixer)->createConfigurationDefinition();
-    }
-
     public function testSetWhitespacesConfigUnconfigurable(): void
     {
         $fixer = $this->createUnconfigurableFixerDouble();
@@ -99,7 +67,7 @@ final class AbstractFixerTest extends TestCase
 
     private function createWhitespacesAwareFixerDouble(): WhitespacesAwareFixerInterface
     {
-        return new class() extends AbstractFixer implements WhitespacesAwareFixerInterface {
+        return new class extends AbstractFixer implements WhitespacesAwareFixerInterface {
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \BadMethodCallException('Not implemented.');
@@ -119,7 +87,7 @@ final class AbstractFixerTest extends TestCase
 
     private function createUnconfigurableFixerDouble(): AbstractFixer
     {
-        return new class() extends AbstractFixer {
+        return new class extends AbstractFixer {
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \LogicException('Not implemented.');

@@ -46,7 +46,7 @@ final class TokenizerLintingResultTest extends TestCase
         );
 
         $this->expectExceptionMessage(
-            sprintf('Parse error: syntax error, unexpected end of file, expecting \'{\' on line %d.', $line)
+            \sprintf('Parse error: syntax error, unexpected end of file, expecting \'{\' on line %d.', $line)
         );
 
         $this->expectExceptionCode(
@@ -68,7 +68,7 @@ final class TokenizerLintingResultTest extends TestCase
         );
 
         $this->expectExceptionMessage(
-            sprintf('Fatal error: Multiple access type modifiers are not allowed on line %d.', $line)
+            \sprintf('Fatal error: Multiple access type modifiers are not allowed on line %d.', $line)
         );
 
         $result->check();

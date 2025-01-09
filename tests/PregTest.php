@@ -46,6 +46,9 @@ final class PregTest extends TestCase
         self::assertSame($expectedMatches, $actualMatches);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1: null|bool, 2?: string, 3?: string}>
+     */
     public static function providePatternValidationCases(): iterable
     {
         yield 'invalid_blank' => ['', null, PregException::class];
@@ -64,13 +67,15 @@ final class PregTest extends TestCase
 
         yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
 
-        yield 'php_version_dependent' => ['([\\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
+        yield 'php_version_dependent' => ['([\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
 
         yield 'null_byte_injection' => ['()'."\0", null, PregException::class, '/NUL( byte)? is not a valid modifier|Null byte in regex/'];
     }
 
     /**
      * @dataProvider providePatternValidationCases
+     *
+     * @param null|class-string<\Throwable> $expectedException
      */
     public function testPatternValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
@@ -111,6 +116,8 @@ final class PregTest extends TestCase
 
     /**
      * @dataProvider providePatternValidationCases
+     *
+     * @param null|class-string<\Throwable> $expectedException
      */
     public function testPatternsValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
@@ -179,8 +186,8 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|string[] $pattern
-     * @param string|string[] $subject
+     * @param list<string>|string $pattern
+     * @param list<string>|string $subject
      *
      * @dataProvider provideCommonCases
      */
@@ -201,8 +208,8 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|string[] $pattern
-     * @param string|string[] $subject
+     * @param list<string>|string $pattern
+     * @param list<string>|string $subject
      *
      * @dataProvider provideCommonCases
      */
@@ -216,6 +223,9 @@ final class PregTest extends TestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideCommonCases(): iterable
     {
         yield ['/u/u', 'u'];

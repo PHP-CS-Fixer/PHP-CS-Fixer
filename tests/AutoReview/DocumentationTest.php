@@ -42,6 +42,9 @@ final class DocumentationTest extends TestCase
         // @TODO 4.0 Remove this expectations
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        if ('nullable_type_declaration_for_default_null_value' === $fixer->getName()) {
+            $this->expectDeprecation('Option "use_nullable_type_declaration" for rule "nullable_type_declaration_for_default_null_value" is deprecated and will be removed in version 4.0. Behaviour will follow default one.');
+        }
 
         $locator = new DocumentationLocator();
         $generator = new FixerDocumentGenerator($locator);
@@ -93,6 +96,9 @@ final class DocumentationTest extends TestCase
         self::assertSame($expected, $actual);
     }
 
+    /**
+     * @return iterable<string, array{FixerInterface}>
+     */
     public static function provideFixerDocumentationFileIsUpToDateCases(): iterable
     {
         foreach (self::getFixers() as $fixer) {
@@ -136,7 +142,7 @@ final class DocumentationTest extends TestCase
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
                 $path,
-                sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
+                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
             );
         }
 
@@ -145,7 +151,7 @@ final class DocumentationTest extends TestCase
         self::assertFileEqualsString(
             $generator->generateRuleSetsDocumentationIndex($paths),
             $indexFilePath,
-            sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
+            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
         );
     }
 
@@ -166,13 +172,13 @@ final class DocumentationTest extends TestCase
         $phpVersion = $composerJson['require']['php'];
         $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
 
-        $minimumVersionInformation = sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
+        $minimumVersionInformation = \sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
 
         self::assertStringContainsString(
             $minimumVersionInformation,
             file_get_contents($installationDocPath),
-            sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
+            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
         );
     }
 
@@ -194,7 +200,7 @@ final class DocumentationTest extends TestCase
         );
 
         foreach ($formats as $format) {
-            self::assertStringContainsString(sprintf('* ``%s``', $format), $usage);
+            self::assertStringContainsString(\sprintf('* ``%s``', $format), $usage);
         }
 
         $lastFormat = array_pop($formats);
@@ -221,9 +227,9 @@ final class DocumentationTest extends TestCase
      */
     private static function getFixers(): array
     {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerBuiltInFixers();
 
-        return $factory->getFixers();
+        return $fixerFactory->getFixers();
     }
 }

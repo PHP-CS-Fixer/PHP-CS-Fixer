@@ -24,10 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 {
-    /**
-     * @var null|FunctionsAnalyzer
-     */
-    private $functionsAnalyzer;
+    private ?FunctionsAnalyzer $functionsAnalyzer = null;
 
     public function isCandidate(Tokens $tokens): bool
     {

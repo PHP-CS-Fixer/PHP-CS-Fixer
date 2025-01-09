@@ -44,7 +44,7 @@ final class ErrorOutputTest extends TestCase
 
         $displayed = $this->readFullStreamOutput($output);
 
-        $startWith = sprintf(
+        $startWith = \sprintf(
             '
 Files that were not fixed due to errors reported during %s:
    1) %s',
@@ -53,7 +53,7 @@ Files that were not fixed due to errors reported during %s:
         );
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $startWith .= sprintf(
+            $startWith .= \sprintf(
                 '
 
                             '.'
@@ -68,7 +68,7 @@ Files that were not fixed due to errors reported during %s:
         }
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
-            $startWith .= sprintf(
+            $startWith .= \sprintf(
                 '
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
         in %s at line %d
@@ -82,6 +82,9 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringStartsWith($startWith, $displayed);
     }
 
+    /**
+     * @return iterable<array{Error, int, int, int, string}>
+     */
     public static function provideErrorOutputCases(): iterable
     {
         $lineNumber = __LINE__;

@@ -20,6 +20,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class DiffConsoleFormatter
@@ -42,7 +44,7 @@ final class DiffConsoleFormatter
             ? $this->template
             : Preg::replace('/<[^<>]+>/', '', $this->template);
 
-        return sprintf(
+        return \sprintf(
             $template,
             implode(
                 PHP_EOL,
@@ -61,7 +63,7 @@ final class DiffConsoleFormatter
                                         $colour = 'cyan';
                                     }
 
-                                    return sprintf('<fg=%s>%s</fg=%s>', $colour, OutputFormatter::escape($matches[0]), $colour);
+                                    return \sprintf('<fg=%s>%s</fg=%s>', $colour, OutputFormatter::escape($matches[0]), $colour);
                                 },
                                 $line,
                                 1,
@@ -73,7 +75,7 @@ final class DiffConsoleFormatter
                             }
                         }
 
-                        return sprintf($lineTemplate, $line);
+                        return \sprintf($lineTemplate, $line);
                     },
                     Preg::split('#\R#u', $diff)
                 )

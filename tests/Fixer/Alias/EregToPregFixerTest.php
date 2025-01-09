@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php $x = 1;'];
@@ -125,8 +130,8 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'binary uppercase' => [
-            '<?php $x = preg_split(b"/[A-Z]/Di", $m);',
-            '<?php $x = spliti(b"[A-Z]", $m);',
+            '<?php $x = preg_split(B"/[A-Z]/Di", $m);',
+            '<?php $x = spliti(B"[A-Z]", $m);',
         ];
     }
 
@@ -140,6 +145,9 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

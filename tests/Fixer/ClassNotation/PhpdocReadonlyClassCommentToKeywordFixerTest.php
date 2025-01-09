@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer>
  */
 final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +37,9 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

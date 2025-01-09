@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer>
  */
 final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +37,9 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

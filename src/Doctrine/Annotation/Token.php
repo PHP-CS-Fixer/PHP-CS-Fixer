@@ -66,7 +66,7 @@ final class Token
     /**
      * Returns whether the token type is one of the given types.
      *
-     * @param int|int[] $types
+     * @param int|list<int> $types
      */
     public function isType($types): bool
     {

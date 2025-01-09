@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocArrayTypeFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocArrayTypeFixer>
  */
 final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
 {
@@ -144,6 +146,17 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
         yield [
             '<?php /** @var (Foo&Bar)|array<Baz> */',
             '<?php /** @var (Foo&Bar)|Baz[] */',
+        ];
+
+        $expected = $input = 'string';
+        for ($i = 0; $i < 120; ++$i) {
+            $expected = 'array<'.$expected.'>';
+            $input .= '[]';
+        }
+
+        yield [
+            \sprintf('<?php /** @var %s */', $expected),
+            \sprintf('<?php /** @var %s */', $input),
         ];
     }
 }

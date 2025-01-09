@@ -54,7 +54,7 @@ final class DescribeCommandTest extends TestCase
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
         if ($fixer instanceof DeprecatedFixerInterface) {
-            $this->expectDeprecation(sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
+            $this->expectDeprecation(\sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
         }
 
         // @TODO 4.0 Remove these expectations:
@@ -70,6 +70,9 @@ final class DescribeCommandTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{string, bool, bool, FixerInterface}>
+     */
     public static function provideExecuteOutputCases(): iterable
     {
         yield 'rule is configurable, risky and deprecated' => [
@@ -358,7 +361,7 @@ $/s',
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
-        $fixer = new class() implements FixerInterface {
+        $fixer = new class implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
                 throw new \LogicException('Not implemented.');
@@ -466,7 +469,7 @@ Fixing examples:
             /**
              * @var list<CodeSampleInterface>
              */
-            private $samples;
+            private array $samples;
 
             /**
              * @param list<CodeSampleInterface> $samples
@@ -510,7 +513,7 @@ Fixing examples:
 
     private static function createConfigurableDeprecatedFixerDouble(): FixerInterface
     {
-        return new class() implements ConfigurableFixerInterface, DeprecatedFixerInterface {
+        return new class implements ConfigurableFixerInterface, DeprecatedFixerInterface {
             /** @var array<string, mixed> */
             private array $configuration;
 
@@ -525,7 +528,7 @@ Fixing examples:
 
                 return new FixerConfigurationResolver([
                     (new AliasedFixerOptionBuilder(new FixerOptionBuilder('functions', 'List of `function` names to fix.'), 'funcs'))
-                        ->setAllowedTypes(['array'])
+                        ->setAllowedTypes(['string[]'])
                         ->setAllowedValues([new AllowedValueSubset($functionNames)])
                         ->setDefault($functionNames)
                         ->getOption(),

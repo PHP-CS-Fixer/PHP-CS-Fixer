@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
-use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
@@ -27,17 +26,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class DeprecatedFixerOptionTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $option = new DeprecatedFixerOption(
-            new FixerOption('foo', 'Foo.'),
-            'deprecated'
-        );
-
-        self::assertInstanceOf(FixerOptionInterface::class, $option);
-        self::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
-    }
-
     public function testGetName(): void
     {
         $option = new DeprecatedFixerOption(
@@ -71,6 +59,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         self::assertSame(!$isRequired, $option->hasDefault());
     }
 
+    /**
+     * @return iterable<array{bool}>
+     */
     public static function provideHasDefaultCases(): iterable
     {
         yield [true];
@@ -93,6 +84,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         self::assertSame($default, $option->getDefault());
     }
 
+    /**
+     * @return iterable<array{bool|string}>
+     */
     public static function provideGetDefaultCases(): iterable
     {
         yield ['foo'];

@@ -23,11 +23,13 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class ReturnRefTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -64,10 +66,6 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
             [
                 3 => CT::T_RETURN_REF,
             ],
-        ];
-
-        yield [
-            '<?php $a = 1 & 2;',
         ];
 
         yield [

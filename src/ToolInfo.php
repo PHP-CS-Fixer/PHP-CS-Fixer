@@ -32,12 +32,9 @@ final class ToolInfo implements ToolInfoInterface
     /**
      * @var null|array{name: string, version: string, dist: array{reference?: string}}
      */
-    private $composerInstallationDetails;
+    private ?array $composerInstallationDetails = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isInstalledByComposer;
+    private ?bool $isInstalledByComposer = null;
 
     public function getComposerInstallationDetails(): array
     {
@@ -104,12 +101,12 @@ final class ToolInfo implements ToolInfoInterface
      */
     public function isRunInsideDocker(): bool
     {
-        return is_file('/.dockerenv') && str_starts_with(__FILE__, '/fixer/');
+        return str_starts_with(__FILE__, '/fixer/') && is_file('/.dockerenv');
     }
 
     public function getPharDownloadUri(string $version): string
     {
-        return sprintf(
+        return \sprintf(
             'https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
             $version
         );

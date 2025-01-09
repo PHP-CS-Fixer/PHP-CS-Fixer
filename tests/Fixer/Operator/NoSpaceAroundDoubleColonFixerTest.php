@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer
  *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer>
  */
 final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

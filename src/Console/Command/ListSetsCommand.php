@@ -36,7 +36,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'list-sets')]
 final class ListSetsCommand extends Command
 {
-    /** @var string */
     protected static $defaultName = 'list-sets';
 
     protected function configure(): void
@@ -80,7 +79,7 @@ final class ListSetsCommand extends Command
             $formats = $factory->getFormats();
             sort($formats);
 
-            throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are %s.', $format, Utils::naturalLanguageJoin($formats)));
+            throw new InvalidConfigurationException(\sprintf('The format "%s" is not defined, supported are %s.', $format, Utils::naturalLanguageJoin($formats)));
         }
 
         return $reporter;

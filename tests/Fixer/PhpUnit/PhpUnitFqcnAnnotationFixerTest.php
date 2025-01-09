@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer>
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -83,7 +88,7 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
                      * @uses static::someOtherFunction
                      */
                 }
-                EOF
+                EOF,
         ];
 
         yield [

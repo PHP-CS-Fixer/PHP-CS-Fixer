@@ -29,6 +29,10 @@ Rules
 - `lowercase_static_reference <./../rules/casing/lowercase_static_reference.rst>`_
 - `new_with_parentheses <./../rules/operator/new_with_parentheses.rst>`_
 - `no_blank_lines_after_class_opening <./../rules/class_notation/no_blank_lines_after_class_opening.rst>`_
+- `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
 - `no_leading_import_slash <./../rules/import/no_leading_import_slash.rst>`_
 - `no_whitespace_in_blank_line <./../rules/whitespace/no_whitespace_in_blank_line.rst>`_
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_ with config:
@@ -44,6 +48,10 @@ Rules
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_ with config:
 
   ``['group_to_single_imports' => false]``
+
+- `single_space_around_construct <./../rules/language_construct/single_space_around_construct.rst>`_ with config:
+
+  ``['constructs_followed_by_a_single_space' => ['abstract', 'as', 'case', 'catch', 'class', 'const_import', 'do', 'else', 'elseif', 'final', 'finally', 'for', 'foreach', 'function', 'function_import', 'if', 'insteadof', 'interface', 'namespace', 'new', 'private', 'protected', 'public', 'static', 'switch', 'trait', 'try', 'use', 'use_lambda', 'while'], 'constructs_preceded_by_a_single_space' => ['as', 'else', 'elseif', 'use_lambda']]``
 
 - `single_trait_insert_per_statement <./../rules/class_notation/single_trait_insert_per_statement.rst>`_
 - `ternary_operator_spaces <./../rules/operator/ternary_operator_spaces.rst>`_

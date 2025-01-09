@@ -2,7 +2,7 @@
 Rule ``ternary_to_null_coalescing``
 ===================================
 
-Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
+Use ``null`` coalescing operator ``??`` where possible.
 
 Examples
 --------
@@ -31,6 +31,7 @@ The rule is part of the following rule sets:
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
 
 References
 ----------

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer>
  */
 final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -129,6 +134,9 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield ['<?php $a = dirname(dirname(...));'];

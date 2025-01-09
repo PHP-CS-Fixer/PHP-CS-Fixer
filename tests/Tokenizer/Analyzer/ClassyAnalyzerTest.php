@@ -147,14 +147,9 @@ final class ClassyAnalyzerTest extends TestCase
             [3 => false, 8 => true],
         ];
 
-        yield [
-            '<?php function foo(): \Foo {}',
-            [3 => false, 9 => true],
-        ];
-
         foreach (['bool', 'float', 'int', 'parent', 'self', 'string', 'void'] as $returnType) {
             yield [
-                sprintf('<?php function foo(): %s {}', $returnType),
+                \sprintf('<?php function foo(): %s {}', $returnType),
                 [3 => false, 8 => false],
             ];
         }
@@ -274,7 +269,7 @@ final class ClassyAnalyzerTest extends TestCase
         $analyzer = new ClassyAnalyzer();
 
         foreach ($expected as $index => $isClassy) {
-            self::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
+            self::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), \sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
         }
     }
 }

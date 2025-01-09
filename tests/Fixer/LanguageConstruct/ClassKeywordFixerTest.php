@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordFixer>
  */
 final class ClassKeywordFixerTest extends AbstractFixerTestCase
 {
@@ -38,13 +40,13 @@ final class ClassKeywordFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
-                echo \PhpCsFixer\\FixerDefinition\\CodeSample::class;
+                echo \PhpCsFixer\FixerDefinition\CodeSample::class;
                 echo \'Foo\Bar\Baz\';
-                echo \PhpCsFixer\\FixerDefinition\\CodeSample::class;
-                echo \PhpCsFixer\\FixerDefinition\\CodeSample::class;
+                echo \PhpCsFixer\FixerDefinition\CodeSample::class;
+                echo \PhpCsFixer\FixerDefinition\CodeSample::class;
                 ',
             '<?php
-                echo "PhpCsFixer\\FixerDefinition\\CodeSample";
+                echo "PhpCsFixer\FixerDefinition\CodeSample";
                 echo \'Foo\Bar\Baz\';
                 echo \'PhpCsFixer\FixerDefinition\CodeSample\';
                 echo \'\PhpCsFixer\FixerDefinition\CodeSample\';

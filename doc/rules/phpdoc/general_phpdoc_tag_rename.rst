@@ -39,7 +39,7 @@ Default value: ``true``
 
 A map of tags to replace.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``[]``
 

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer>
  */
 final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'call by name - list' => [
@@ -181,17 +186,17 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 
         yield 'function name with escaped slash' => [
             '<?php \pack(...$args);',
-            '<?php call_user_func_array("\\\\pack", $args);',
+            '<?php call_user_func_array("\\\pack", $args);',
         ];
 
         yield 'function call_user_func_array with leading slash' => [
             '<?php \pack(...$args);',
-            '<?php \call_user_func_array("\\\\pack", $args);',
+            '<?php \call_user_func_array("\\\pack", $args);',
         ];
 
         yield 'function call_user_func_array caps' => [
             '<?php \pack(...$args);',
-            '<?php \CALL_USER_FUNC_ARRAY("\\\\pack", $args);',
+            '<?php \CALL_USER_FUNC_ARRAY("\\\pack", $args);',
         ];
 
         yield [
@@ -265,6 +270,9 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

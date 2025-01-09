@@ -27,6 +27,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @author Hans-Christian Otto <c.otto@suora.com>
  *
+ * @readonly
+ *
  * @internal
  */
 final class GitlabReporter implements ReporterInterface
@@ -73,7 +75,7 @@ final class GitlabReporter implements ReporterInterface
     }
 
     /**
-     * @param array<Diff> $diffs
+     * @param list<Diff> $diffs
      *
      * @return array{begin: int, end: int}
      */

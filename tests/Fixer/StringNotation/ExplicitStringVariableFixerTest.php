@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer>
  */
 final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $input = $expected = '<?php';

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoTrailingWhitespaceFixer>
  */
 final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -161,11 +166,14 @@ EOT;
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

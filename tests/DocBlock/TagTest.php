@@ -46,6 +46,9 @@ final class TagTest extends TestCase
         self::assertSame($new, $tag->getName());
     }
 
+    /**
+     * @return iterable<array{string, string, string}>
+     */
     public static function provideNameCases(): iterable
     {
         yield ['param', 'var', '     * @param Foo $foo'];
@@ -79,6 +82,9 @@ final class TagTest extends TestCase
         self::assertSame($expected, $tag->valid());
     }
 
+    /**
+     * @return iterable<array{bool, string}>
+     */
     public static function provideValidCases(): iterable
     {
         yield [true, '     * @param Foo $foo'];

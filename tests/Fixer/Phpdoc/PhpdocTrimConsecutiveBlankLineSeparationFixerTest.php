@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer>
  */
 final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +36,9 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'no changes' => ['<?php /** Summary. */'];

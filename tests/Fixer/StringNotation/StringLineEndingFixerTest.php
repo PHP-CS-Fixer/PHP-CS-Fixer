@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer>
  */
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +36,9 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";
@@ -63,43 +68,43 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            sprintf($heredocTemplate, $input),
-            sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
+            \sprintf($heredocTemplate, $input),
+            \sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
         ];
 
         yield [
-            sprintf($heredocTemplate, $input),
-            sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
+            \sprintf($heredocTemplate, $input),
+            \sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf($nowdocTemplate, $input),
-            sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
+            \sprintf($nowdocTemplate, $input),
+            \sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
         ];
 
         yield [
-            sprintf($nowdocTemplate, $input),
-            sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
+            \sprintf($nowdocTemplate, $input),
+            \sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
-            sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
+            \sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
-            sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
+            \sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
-            sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
+            \sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
-            sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
+            \sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield 'not T_CLOSE_TAG, do T_INLINE_HTML' => [

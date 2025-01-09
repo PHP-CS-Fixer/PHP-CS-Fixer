@@ -24,9 +24,9 @@ use Symfony\Component\Finder\Finder;
 final class RuleSets
 {
     /**
-     * @var array<string, RuleSetDescriptionInterface>
+     * @var null|array<string, RuleSetDescriptionInterface>
      */
-    private static $setDefinitions;
+    private static ?array $setDefinitions = null;
 
     /**
      * @return array<string, RuleSetDescriptionInterface>
@@ -38,6 +38,8 @@ final class RuleSets
 
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
+
+                /** @var RuleSetDescriptionInterface */
                 $set = new $class();
 
                 self::$setDefinitions[$set->getName()] = $set;
@@ -62,7 +64,7 @@ final class RuleSets
         $definitions = self::getSetDefinitions();
 
         if (!isset($definitions[$name])) {
-            throw new \InvalidArgumentException(sprintf('Set "%s" does not exist.', $name));
+            throw new \InvalidArgumentException(\sprintf('Set "%s" does not exist.', $name));
         }
 
         return $definitions[$name];

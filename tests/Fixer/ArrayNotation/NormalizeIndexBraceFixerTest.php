@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
  *
  * @requires PHP <8.0
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer>
  */
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +37,9 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

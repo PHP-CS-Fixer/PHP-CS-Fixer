@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer>
  */
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php /** @var Foo $foo */ ?>'];
@@ -408,6 +413,17 @@ class Application
 class Dispatcher
 {
 }
+',
+        ];
+
+        yield [
+            '<?php
+$foo->bar()    /** comment */
+    ->baz();
+',
+            '<?php
+$foo->bar()/** comment */
+    ->baz();
 ',
         ];
     }

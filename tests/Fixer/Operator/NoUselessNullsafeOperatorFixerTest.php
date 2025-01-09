@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer>
  */
 final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple case + comment' => [

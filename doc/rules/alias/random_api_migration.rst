@@ -22,7 +22,7 @@ Configuration
 
 Mapping between replaced functions with the new ones.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' => 'mt_srand']``
 
@@ -91,6 +91,10 @@ The rule is part of the following rule sets:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 

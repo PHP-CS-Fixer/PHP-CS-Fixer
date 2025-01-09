@@ -22,7 +22,7 @@ Configuration
 
 List of constants to ignore.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['null', 'false', 'true']``
 
@@ -41,7 +41,7 @@ Default value: ``true``
 
 List of additional constants to fix.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 

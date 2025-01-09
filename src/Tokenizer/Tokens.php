@@ -14,9 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.
@@ -48,6 +50,8 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_ATTRIBUTE = 11;
     public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
     public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
+    public const BLOCK_TYPE_COMPLEX_STRING_VARIABLE = 14;
+    public const BLOCK_TYPE_PROPERTY_HOOK = 15;
 
     /**
      * Static class cache.
@@ -89,9 +93,9 @@ class Tokens extends \SplFixedArray
      *
      * When the token kind is present in this set it means that given token kind
      * was ever seen inside the collection (but may not be part of it any longer).
-     * The key is token kind and the value is always true.
+     * The key is token kind and the value is the number of occurrences.
      *
-     * @var array<int|non-empty-string, int>
+     * @var array<int|string, int<0, max>>
      */
     private array $foundTokenKinds = [];
 
@@ -148,7 +152,6 @@ class Tokens extends \SplFixedArray
         }
 
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
         $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         return $blockEdgeKinds[$tokenKind] ?? null;
@@ -164,13 +167,17 @@ class Tokens extends \SplFixedArray
     {
         $tokens = new self(\count($array));
 
-        if ($saveIndices ?? true) {
+        if (false !== $saveIndices && !array_is_list($array)) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                'Parameter "array" should be a list. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+
             foreach ($array as $key => $val) {
                 $tokens[$key] = $val;
             }
         } else {
             $index = 0;
-
             foreach ($array as $val) {
                 $tokens[$index++] = $val;
             }
@@ -268,6 +275,14 @@ class Tokens extends \SplFixedArray
                     'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
                     'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
                 ],
+                self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
+                    'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
+                    'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
+                ],
+                self::BLOCK_TYPE_PROPERTY_HOOK => [
+                    'start' => [CT::T_PROPERTY_HOOK_BRACE_OPEN, '{'],
+                    'end' => [CT::T_PROPERTY_HOOK_BRACE_CLOSE, '}'],
+                ],
             ];
 
             // @TODO: drop condition when PHP 8.0+ is required
@@ -287,16 +302,10 @@ class Tokens extends \SplFixedArray
      *
      * @param int $size
      */
+    #[\ReturnTypeWillChange]
     public function setSize($size): bool
     {
-        if ($this->getSize() !== $size) {
-            $this->changed = true;
-            $this->namespaceDeclarations = null;
-
-            return parent::setSize($size);
-        }
-
-        return true;
+        throw new \RuntimeException('Changing tokens collection size explicitly is not allowed.');
     }
 
     /**
@@ -306,6 +315,13 @@ class Tokens extends \SplFixedArray
      */
     public function offsetUnset($index): void
     {
+        if (\count($this) - 1 !== $index) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                'Tokens should be a list - only the last index can be unset. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
         if (isset($this[$index])) {
             if (isset($this->blockStartCache[$index])) {
                 unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
@@ -333,15 +349,24 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
+        if (0 > $index || \count($this) <= $index) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                'Tokens should be a list - index must be within the existing range. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
+        if (isset($this[$index])) {
+            if (isset($this->blockStartCache[$index])) {
+                unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
+            }
+            if (isset($this->blockEndCache[$index])) {
+                unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
+            }
+        }
+
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             if (isset($this[$index])) {
-                if (isset($this->blockStartCache[$index])) {
-                    unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
-                }
-                if (isset($this->blockEndCache[$index])) {
-                    unset($this->blockStartCache[$this->blockEndCache[$index]], $this->blockEndCache[$index]);
-                }
-
                 $this->unregisterFoundToken($this[$index]);
             }
 
@@ -369,17 +394,17 @@ class Tokens extends \SplFixedArray
      */
     public function clearEmptyTokens(): void
     {
-        $limit = $this->count();
+        // no empty token found, therefore there is no need to override collection
+        if (!$this->isTokenKindFound('')) {
+            return;
+        }
+
+        $limit = \count($this);
 
         for ($index = 0; $index < $limit; ++$index) {
             if ($this->isEmptyAt($index)) {
                 break;
             }
-        }
-
-        // no empty token found, therefore there is no need to override collection
-        if ($limit === $index) {
-            return;
         }
 
         for ($count = $index; $index < $limit; ++$index) {
@@ -389,18 +414,13 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // should already be true
-        if (!$this->changed) {
-            // must never happen
-            throw new \LogicException('Unexpected non-changed collection with _EMPTY_ Tokens. Fix the code!');
-        }
-
         // we are moving the tokens, we need to clear the index-based Cache
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+        $this->foundTokenKinds[''] = 0;
 
-        $this->setSize($count);
+        $this->updateSize($count);
     }
 
     /**
@@ -469,7 +489,7 @@ class Tokens extends \SplFixedArray
      * @param self::BLOCK_TYPE_* $type        type of block
      * @param int                $searchIndex index of opening brace
      *
-     * @return int index of closing brace
+     * @return int<0, max> index of closing brace
      */
     public function findBlockEnd(int $type, int $searchIndex): int
     {
@@ -480,7 +500,7 @@ class Tokens extends \SplFixedArray
      * @param self::BLOCK_TYPE_* $type        type of block
      * @param int                $searchIndex index of closing brace
      *
-     * @return int index of opening brace
+     * @return int<0, max> index of opening brace
      */
     public function findBlockStart(int $type, int $searchIndex): int
     {
@@ -492,12 +512,12 @@ class Tokens extends \SplFixedArray
      * @param int                     $start        optional offset
      * @param null|int                $end          optional limit
      *
-     * @return ($possibleKind is int ? array<int, Token> : array<int, array<int, Token>>)
+     * @return ($possibleKind is int ? array<int<0, max>, Token> : array<int, array<int<0, max>, Token>>)
      */
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
         if (null === $end) {
-            $end = $this->count();
+            $end = \count($this);
         }
 
         $elements = [];
@@ -592,7 +612,6 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
@@ -647,7 +666,6 @@ class Tokens extends \SplFixedArray
 
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
@@ -715,7 +733,6 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }
@@ -756,7 +773,7 @@ class Tokens extends \SplFixedArray
      *                                                                              the ones used in $sequence. If any is missing, the default case-sensitive
      *                                                                              comparison is used
      *
-     * @return null|non-empty-array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
+     * @return null|non-empty-array<int<0, max>, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
     public function findSequence(array $sequence, int $start = 0, ?int $end = null, $caseSensitive = true): ?array
     {
@@ -788,11 +805,11 @@ class Tokens extends \SplFixedArray
             }
 
             if ($token->isGivenKind($nonMeaningFullKind)) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: "%s".', $key));
+                throw new \InvalidArgumentException(\sprintf('Non-meaningful token at position: "%s".', $key));
             }
 
             if ('' === $token->getContent()) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful (empty) token at position: "%s".', $key));
+                throw new \InvalidArgumentException(\sprintf('Non-meaningful (empty) token at position: "%s".', $key));
             }
         }
 
@@ -804,10 +821,10 @@ class Tokens extends \SplFixedArray
 
         // remove the first token from the sequence, so we can freely iterate through the sequence after a match to
         // the first one is found
-        $key = array_key_first($sequence);
-        $firstCs = self::isKeyCaseSensitive($caseSensitive, $key);
-        $firstToken = $sequence[$key];
-        unset($sequence[$key]);
+        $firstKey = array_key_first($sequence);
+        $firstCs = self::isKeyCaseSensitive($caseSensitive, $firstKey);
+        $firstToken = $sequence[$firstKey];
+        unset($sequence[$firstKey]);
 
         // begin searching for the first token in the sequence (start included)
         $index = $start - 1;
@@ -900,14 +917,14 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
-        $this->setSize($oldSize + $itemsCount);
+        $this->updateSize($oldSize + $itemsCount);
 
         krsort($slices);
         $farthestSliceIndex = array_key_first($slices);
 
         // We check only the farthest index, if it's within the size of collection, other indices will be valid too.
         if (!\is_int($farthestSliceIndex) || $farthestSliceIndex > $oldSize) {
-            throw new \OutOfBoundsException(sprintf('Cannot insert index "%s" outside of collection.', $farthestSliceIndex));
+            throw new \OutOfBoundsException(\sprintf('Cannot insert index "%s" outside of collection.', $farthestSliceIndex));
         }
 
         $previousSliceIndex = $oldSize;
@@ -916,14 +933,14 @@ class Tokens extends \SplFixedArray
         // that way we get around additional overhead this class adds with overridden offset* methods.
         foreach ($slices as $index => $slice) {
             if (!\is_int($index) || $index < 0) {
-                throw new \OutOfBoundsException(sprintf('Invalid index "%s".', $index));
+                throw new \OutOfBoundsException(\sprintf('Invalid index "%s".', $index));
             }
 
             $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
             $sliceCount = \count($slice);
 
             for ($i = $previousSliceIndex - 1; $i >= $index; --$i) {
-                parent::offsetSet($i + $itemsCount, parent::offsetGet($i));
+                parent::offsetSet($i + $itemsCount, $this[$i]);
             }
 
             $previousSliceIndex = $index;
@@ -1028,23 +1045,19 @@ class Tokens extends \SplFixedArray
         }
 
         // clear memory
-        $this->setSize(0);
+        $this->updateSize(0);
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
 
         $tokens = token_get_all($code, TOKEN_PARSE);
 
-        $this->setSize(\count($tokens));
+        $this->updateSize(\count($tokens));
 
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
         }
 
         $this->applyTransformers();
-
-        $this->foundTokenKinds = [];
-
-        foreach ($this as $token) {
-            $this->registerFoundToken($token);
-        }
 
         if (\PHP_VERSION_ID < 8_00_00) {
             $this->rewind();
@@ -1078,7 +1091,7 @@ class Tokens extends \SplFixedArray
     public function isAllTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (!isset($this->foundTokenKinds[$tokenKind])) {
+            if (0 === ($this->foundTokenKinds[$tokenKind] ?? 0)) {
                 return false;
             }
         }
@@ -1094,7 +1107,7 @@ class Tokens extends \SplFixedArray
     public function isAnyTokenKindsFound(array $tokenKinds): bool
     {
         foreach ($tokenKinds as $tokenKind) {
-            if (isset($this->foundTokenKinds[$tokenKind])) {
+            if (0 !== ($this->foundTokenKinds[$tokenKind] ?? 0)) {
                 return true;
             }
         }
@@ -1109,7 +1122,7 @@ class Tokens extends \SplFixedArray
      */
     public function isTokenKindFound($tokenKind): bool
     {
-        return isset($this->foundTokenKinds[$tokenKind]);
+        return 0 !== ($this->foundTokenKinds[$tokenKind] ?? 0);
     }
 
     /**
@@ -1222,6 +1235,16 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
     }
 
+    private function updateSize(int $size): void
+    {
+        if (\count($this) !== $size) {
+            $this->changed = true;
+            $this->namespaceDeclarations = null;
+
+            parent::setSize($size);
+        }
+    }
+
     /**
      * @param -1|1 $direction
      */
@@ -1260,14 +1283,14 @@ class Tokens extends \SplFixedArray
      * @param int                $searchIndex index of starting brace
      * @param bool               $findEnd     if method should find block's end or start
      *
-     * @return int index of opposite brace
+     * @return int<0, max> index of opposite brace
      */
     private function findOppositeBlockEdge(int $type, int $searchIndex, bool $findEnd): int
     {
         $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
 
         if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: "%s".', $type));
+            throw new \InvalidArgumentException(\sprintf('Invalid param type: "%s".', $type));
         }
 
         if ($findEnd && isset($this->blockStartCache[$searchIndex])) {
@@ -1281,7 +1304,7 @@ class Tokens extends \SplFixedArray
         $startEdge = $blockEdgeDefinitions[$type]['start'];
         $endEdge = $blockEdgeDefinitions[$type]['end'];
         $startIndex = $searchIndex;
-        $endIndex = $this->count() - 1;
+        $endIndex = \count($this) - 1;
         $indexOffset = 1;
 
         if (!$findEnd) {
@@ -1291,7 +1314,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block "%s".', $findEnd ? 'start' : 'end'));
+            throw new \InvalidArgumentException(\sprintf('Invalid param $startIndex - not a proper block "%s".', $findEnd ? 'start' : 'end'));
         }
 
         $blockLevel = 0;
@@ -1315,7 +1338,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException(sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
+            throw new \UnexpectedValueException(\sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
         }
 
         if ($startIndex < $index) {
@@ -1347,7 +1370,7 @@ class Tokens extends \SplFixedArray
     private static function getCache(string $key): self
     {
         if (!self::hasCache($key)) {
-            throw new \OutOfBoundsException(sprintf('Unknown cache key: "%s".', $key));
+            throw new \OutOfBoundsException(\sprintf('Unknown cache key: "%s".', $key));
         }
 
         return self::$cache[$key];
@@ -1391,16 +1414,11 @@ class Tokens extends \SplFixedArray
 
     /**
      * Register token as found.
-     *
-     * @param array{int}|string|Token $token token prototype
      */
-    private function registerFoundToken($token): void
+    private function registerFoundToken(Token $token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
-        $tokenKind = $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
-            : (\is_array($token) ? $token[0] : $token);
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
         $this->foundTokenKinds[$tokenKind] ??= 0;
         ++$this->foundTokenKinds[$tokenKind];
@@ -1408,28 +1426,20 @@ class Tokens extends \SplFixedArray
 
     /**
      * Unregister token as not found.
-     *
-     * @param array{int}|string|Token $token token prototype
      */
-    private function unregisterFoundToken($token): void
+    private function unregisterFoundToken(Token $token): void
     {
         // inlined extractTokenKind() call on the hot path
-        /** @var int|non-empty-string */
-        $tokenKind = $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
-            : (\is_array($token) ? $token[0] : $token);
+        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
 
-        if (1 === $this->foundTokenKinds[$tokenKind]) {
-            unset($this->foundTokenKinds[$tokenKind]);
-        } else {
-            --$this->foundTokenKinds[$tokenKind];
-        }
+        \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
+        --$this->foundTokenKinds[$tokenKind];
     }
 
     /**
      * @param array{int}|string|Token $token token prototype
      *
-     * @return int|non-empty-string
+     * @return int|string
      */
     private function extractTokenKind($token)
     {
@@ -1447,7 +1457,6 @@ class Tokens extends \SplFixedArray
     {
         while (true) {
             $index += $direction;
-
             if (!$this->offsetExists($index)) {
                 return null;
             }

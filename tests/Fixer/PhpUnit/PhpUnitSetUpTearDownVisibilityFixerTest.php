@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer>
  */
 final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'setUp and tearDown are made protected if they are public' => [

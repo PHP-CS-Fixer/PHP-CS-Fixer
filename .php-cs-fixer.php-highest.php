@@ -23,7 +23,16 @@ $config = require __DIR__.'/.php-cs-fixer.dist.php';
 
 $config->setRules(array_merge($config->getRules(), [
     '@PHP83Migration' => true,
-    '@PHP80Migration:risky' => true,
+    '@PHP82Migration:risky' => true,
+    'phpdoc_to_property_type' => [ // experimental
+        'types_map' => [
+            'TFixerInputConfig' => 'array',
+            'TFixerComputedConfig' => 'array',
+            'TFixer' => '\PhpCsFixer\AbstractFixer',
+        ],
+    ],
+    'fully_qualified_strict_types' => ['import_symbols' => true],
+    'php_unit_attributes' => false, // as is not yet supported by PhpCsFixerInternal/configurable_fixer_template
 ]));
 
 return $config;

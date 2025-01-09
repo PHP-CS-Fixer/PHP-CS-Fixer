@@ -26,12 +26,14 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -48,6 +50,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ConfigurationResolverTest extends TestCase
 {
+    public function testResolveParallelConfig(): void
+    {
+        $parallelConfig = new ParallelConfig();
+        $config = (new Config())->setParallelConfig($parallelConfig);
+        $resolver = $this->createConfigurationResolver([], $config);
+
+        self::assertSame($parallelConfig, $resolver->getParallelConfig());
+    }
+
+    public function testDefaultParallelConfigFallbacksToSequential(): void
+    {
+        $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
+        $defaultParallelConfig = ParallelConfigFactory::sequential();
+
+        self::assertSame($defaultParallelConfig->getMaxProcesses(), $parallelConfig->getMaxProcesses());
+        self::assertSame($defaultParallelConfig->getFilesPerProcess(), $parallelConfig->getFilesPerProcess());
+        self::assertSame($defaultParallelConfig->getProcessTimeout(), $parallelConfig->getProcessTimeout());
+    }
+
+    public function testCliSequentialOptionOverridesParallelConfig(): void
+    {
+        $config = (new Config())->setParallelConfig(new ParallelConfig(10));
+        $resolver = $this->createConfigurationResolver(['sequential' => true], $config);
+
+        self::assertSame(1, $resolver->getParallelConfig()->getMaxProcesses());
+    }
+
     public function testSetOptionWithUndefinedOption(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -171,7 +200,6 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver([]);
 
         self::assertNull($resolver->getConfigFile());
-        self::assertInstanceOf(ConfigInterface::class, $resolver->getConfig());
     }
 
     public function testResolveConfigFileByPathOfFile(): void
@@ -196,6 +224,8 @@ final class ConfigurationResolverTest extends TestCase
 
     /**
      * @dataProvider provideResolveConfigFileChooseFileCases
+     *
+     * @param class-string<ConfigInterface> $expectedClass
      */
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
@@ -209,6 +239,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
+    /**
+     * @return iterable<array{0: string, 1: string, 2: string, 3?: string}>
+     */
     public static function provideResolveConfigFileChooseFileCases(): iterable
     {
         $dirBase = self::getFixtureDir();
@@ -342,7 +375,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param array<string> $paths
+     * @param list<string> $paths
      *
      * @dataProvider provideRejectInvalidPathCases
      */
@@ -929,9 +962,7 @@ final class ConfigurationResolverTest extends TestCase
 
         self::assertInstanceOf(NullCacheManager::class, $cacheManager);
 
-        $linter = $resolver->getLinter();
-
-        self::assertInstanceOf(LinterInterface::class, $linter);
+        self::assertFalse($resolver->getLinter()->isAsync());
     }
 
     public function testResolveCacheFileWithOption(): void
@@ -1067,7 +1098,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param string[] $rules
+     * @param list<string> $rules
      *
      * @dataProvider provideResolveRenamedRulesWithUnknownRulesCases
      */
@@ -1147,7 +1178,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -1176,6 +1207,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
+     * @param class-string     $expected
      * @param null|bool|string $diffConfig
      *
      * @dataProvider provideResolveDifferCases
@@ -1189,6 +1221,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
+    /**
+     * @return iterable<array{string, null|bool}>
+     */
     public static function provideResolveDifferCases(): iterable
     {
         yield [
@@ -1231,6 +1266,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
+    /**
+     * @return iterable<array{bool, bool, null|string}>
+     */
     public static function provideResolveBooleanOptionCases(): iterable
     {
         yield [true, true, 'yes'];
@@ -1289,16 +1327,16 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      *
      * @group legacy
      *
-     * @param array<string> $successors
+     * @param list<string> $successors
      */
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {
-        $this->expectDeprecation(sprintf(
+        $this->expectDeprecation(\sprintf(
             'Rule set "%s" is deprecated. %s.',
             $ruleSet,
             [] === $successors
                 ? 'No replacement available'
-                : sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
+                : \sprintf('Use %s instead', Utils::naturalLanguageJoin($successors))
         ));
 
         $config = new Config();
@@ -1319,6 +1357,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield ['@PER:risky', ['@PER-CS:risky']];
     }
 
+    /**
+     * @return iterable<array{null|string, string, string}>
+     */
     public static function provideGetDirectoryCases(): iterable
     {
         yield [null, '/my/path/my/file', 'my/file'];
@@ -1332,6 +1373,10 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     /**
      * @dataProvider provideGetDirectoryCases
+     *
+     * @param ?non-empty-string $cacheFile
+     * @param non-empty-string  $file
+     * @param non-empty-string  $expectedPathRelativeToFile
      */
     public function testGetDirectory(?string $cacheFile, string $file, string $expectedPathRelativeToFile): void
     {
@@ -1356,6 +1401,11 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
     }
 
+    /**
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
     private function normalizePath(string $path): string
     {
         return str_replace('/', \DIRECTORY_SEPARATOR, $path);
@@ -1383,9 +1433,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     private function createConfigurationResolver(
         array $options,
-        Config $config = null,
+        ?ConfigInterface $config = null,
         string $cwdPath = '',
-        ToolInfoInterface $toolInfo = null
+        ?ToolInfoInterface $toolInfo = null
     ): ConfigurationResolver {
         return new ConfigurationResolver(
             $config ?? new Config(),
@@ -1397,7 +1447,10 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createDeprecatedFixerDouble(): DeprecatedFixerInterface
     {
-        return new class() extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+        return new class extends AbstractFixer implements DeprecatedFixerInterface, ConfigurableFixerInterface {
+            /** @use ConfigurableFixerTrait<array<string, mixed>, array<string, mixed>> */
+            use ConfigurableFixerTrait;
+
             public function getDefinition(): FixerDefinitionInterface
             {
                 throw new \LogicException('Not implemented.');
@@ -1431,7 +1484,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     private function createToolInfoDouble(): ToolInfoInterface
     {
-        return new class() implements ToolInfoInterface {
+        return new class implements ToolInfoInterface {
             public function getComposerInstallationDetails(): array
             {
                 throw new \BadMethodCallException();

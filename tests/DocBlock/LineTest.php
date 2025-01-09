@@ -29,10 +29,8 @@ final class LineTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
-     *
-     * @var string
      */
-    private static $sample = '/**
+    private static string $sample = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -51,9 +49,9 @@ final class LineTest extends TestCase
     /**
      * This represents the content of each line.
      *
-     * @var string[]
+     * @var list<string>
      */
-    private static $content = [
+    private static array $content = [
         "/**\n",
         "     * Test docblock.\n",
         "     *\n",
@@ -74,9 +72,9 @@ final class LineTest extends TestCase
     /**
      * This represents the if each line is "useful".
      *
-     * @var bool[]
+     * @var list<bool>
      */
-    private static $useful = [
+    private static array $useful = [
         false,
         true,
         false,
@@ -97,9 +95,9 @@ final class LineTest extends TestCase
     /**
      * This represents the if each line "contains a tag".
      *
-     * @var bool[]
+     * @var list<bool>
      */
-    private static $tag = [
+    private static array $tag = [
         false,
         false,
         false,
@@ -141,6 +139,9 @@ final class LineTest extends TestCase
         self::assertSame(14 === $pos, $line->isTheEnd());
     }
 
+    /**
+     * @return iterable<array{int, string}>
+     */
     public static function provideLinesCases(): iterable
     {
         foreach (self::$content as $index => $content) {
@@ -159,6 +160,9 @@ final class LineTest extends TestCase
         self::assertSame($useful, $line->containsUsefulContent());
     }
 
+    /**
+     * @return iterable<array{int, bool}>
+     */
     public static function provideUsefulCases(): iterable
     {
         foreach (self::$useful as $index => $useful) {
@@ -177,6 +181,9 @@ final class LineTest extends TestCase
         self::assertSame($tag, $line->containsATag());
     }
 
+    /**
+     * @return iterable<array{int, bool}>
+     */
     public static function provideTagCases(): iterable
     {
         foreach (self::$tag as $index => $tag) {

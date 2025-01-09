@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer>
  */
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
@@ -43,6 +45,9 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{0: string, 1?: string}>
+     */
     public static function provideWithFullOpenTagCases(): iterable
     {
         yield [
@@ -153,6 +158,9 @@ if (true) {
         ];
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideWithShortOpenTagCases(): iterable
     {
         yield [

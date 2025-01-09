@@ -30,8 +30,8 @@ abstract class AbstractDifferTestCase extends TestCase
             '/Test$/',
             '',
             str_replace(
-                'PhpCsFixer\\Tests\\Differ\\',
-                'PhpCsFixer\\Differ\\',
+                'PhpCsFixer\Tests\Differ\\',
+                'PhpCsFixer\Differ\\',
                 static::class
             )
         );

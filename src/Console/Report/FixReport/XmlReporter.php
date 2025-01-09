@@ -20,6 +20,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
+ * @readonly
+ *
  * @internal
  */
 final class XmlReporter implements ReporterInterface
@@ -126,9 +128,9 @@ final class XmlReporter implements ReporterInterface
 
     private function createAboutElement(\DOMDocument $dom, string $about): \DOMElement
     {
-        $XML = $dom->createElement('about');
-        $XML->setAttribute('value', $about);
+        $xml = $dom->createElement('about');
+        $xml->setAttribute('value', $about);
 
-        return $XML;
+        return $xml;
     }
 }

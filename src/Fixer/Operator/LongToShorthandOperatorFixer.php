@@ -27,7 +27,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
     /**
      * @var array<string, array{int, string}>
      */
-    private static array $operators = [
+    private const OPERATORS = [
         '+' => [T_PLUS_EQUAL, '+='],
         '-' => [T_MINUS_EQUAL, '-='],
         '*' => [T_MUL_EQUAL, '*='],
@@ -40,7 +40,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
     ];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $operatorTypes;
 
@@ -75,7 +75,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if ($tokens->isAnyTokenKindsFound(array_keys(self::$operators))) {
+        if ($tokens->isAnyTokenKindsFound(array_keys(self::OPERATORS))) {
             return true;
         }
 
@@ -85,7 +85,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $this->operatorTypes = array_keys(self::$operators);
+        $this->operatorTypes = array_keys(self::OPERATORS);
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         parent::applyFix($file, $tokens);
@@ -133,6 +133,8 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 
     protected function getReplacementToken(Token $token): Token
     {
-        return new Token(self::$operators[$token->getContent()]);
+        \assert(isset(self::OPERATORS[$token->getContent()])); // for PHPStan
+
+        return new Token(self::OPERATORS[$token->getContent()]);
     }
 }

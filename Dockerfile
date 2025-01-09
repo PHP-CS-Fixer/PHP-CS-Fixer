@@ -25,7 +25,8 @@ COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 FROM base-dev as vendor
 COPY composer.json /fixer/composer.json
 WORKDIR /fixer
-RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
+RUN composer remove --dev infection/infection --no-update \
+    && composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
 FROM base as dist
 
@@ -51,7 +52,7 @@ RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /d
     fi \
     && apk add git \
     && sync \
-    && install-php-extensions xdebug-${PHP_XDEBUG_VERSION} \
+    && install-php-extensions pcov xdebug-${PHP_XDEBUG_VERSION} \
     && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
     && chmod +x /usr/local/bin/xdebug
 

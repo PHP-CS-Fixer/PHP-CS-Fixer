@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer>
  */
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -73,7 +78,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     foo(1, function (int $a, Foo $b) use ($c, $d) {
                         return bar($a, $c);
                     }, 2);
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -90,7 +95,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 
 
                     });
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -105,7 +110,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                             return $a + 1;
                         };
                     });
-                INPUT
+                INPUT,
         ];
 
         yield [
@@ -114,7 +119,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     foo(function () {// comment
                         return 1;
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -124,7 +129,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                         // comment
                         return 1;
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -133,7 +138,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     foo(function () {
                         return 1; // comment
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -143,21 +148,33 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                         return 1;
                         // comment
                     });
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'PHP'
+                <?php
+                    foo(fn () =>
+                            1);
+                PHP,
+            <<<'PHP'
                 <?php
                     foo(function () {
                         return
                             1;
                     });
-                EXPECTED
+                PHP,
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'PHP'
+                <?php
+                    $func = fn (
+                        $a,
+                        $b
+                    ) => 1;
+                PHP,
+            <<<'PHP'
                 <?php
                     $func = function (
                         $a,
@@ -165,7 +182,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     ) {
                         return 1;
                     };
-                EXPECTED
+                PHP,
         ];
 
         yield [
@@ -176,7 +193,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                             foo();
                         };
                     };
-                EXPECTED
+                EXPECTED,
         ];
 
         yield [
@@ -192,6 +209,23 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $testDummy = fn () => null/* foo */;',
             '<?php $testDummy = function () { return/* foo */; };',
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php return fn () => [
+                        CONST_A,
+                        CONST_B,
+                    ];
+                PHP,
+            <<<'PHP'
+                <?php return function () {
+                    return [
+                        CONST_A,
+                        CONST_B,
+                    ];
+                };
+                PHP,
         ];
     }
 }

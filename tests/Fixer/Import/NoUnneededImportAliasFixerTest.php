@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer>
  */
 final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

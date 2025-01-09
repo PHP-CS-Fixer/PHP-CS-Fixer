@@ -30,16 +30,31 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
     /**
      * @dataProvider provideCalculateCases
      */
-    public function testCalculate(int $expected, bool $isDryRun, bool $hasChangedFiles, bool $hasInvalidErrors, bool $hasExceptionErrors, bool $hasLintErrorsAfterFixing): void
-    {
+    public function testCalculate(
+        int $expected,
+        bool $isDryRun,
+        bool $hasChangedFiles,
+        bool $hasInvalidErrors,
+        bool $hasExceptionErrors,
+        bool $hasLintErrorsAfterFixing
+    ): void {
         $calculator = new FixCommandExitStatusCalculator();
 
         self::assertSame(
             $expected,
-            $calculator->calculate($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors, $hasLintErrorsAfterFixing)
+            $calculator->calculate(
+                $isDryRun,
+                $hasChangedFiles,
+                $hasInvalidErrors,
+                $hasExceptionErrors,
+                $hasLintErrorsAfterFixing
+            )
         );
     }
 
+    /**
+     * @return iterable<array{int, bool, bool, bool, bool, bool}>
+     */
     public static function provideCalculateCases(): iterable
     {
         yield [0, true, false, false, false, false];

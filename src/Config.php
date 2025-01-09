@@ -15,18 +15,23 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface
 {
+    /**
+     * @var non-empty-string
+     */
     private string $cacheFile = '.php-cs-fixer.cache';
 
     /**
-     * @var FixerInterface[]
+     * @var list<FixerInterface>
      */
     private array $customFixers = [];
 
@@ -39,18 +44,23 @@ class Config implements ConfigInterface
 
     private bool $hideProgress = false;
 
+    /**
+     * @var non-empty-string
+     */
     private string $indent = '    ';
 
     private bool $isRiskyAllowed = false;
 
+    /**
+     * @var non-empty-string
+     */
     private string $lineEnding = "\n";
 
     private string $name;
 
-    /**
-     * @var null|string
-     */
-    private $phpExecutable;
+    private ParallelConfig $parallelConfig;
+
+    private ?string $phpExecutable = null;
 
     /**
      * @TODO: 4.0 - update to @PER
@@ -71,8 +81,18 @@ class Config implements ConfigInterface
             $this->name = $name;
             $this->rules = ['@PSR12' => true];
         }
+
+        // @TODO 4.0 cleanup
+        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), FILTER_VALIDATE_BOOL)) {
+            $this->parallelConfig = ParallelConfigFactory::detect();
+        } else {
+            $this->parallelConfig = ParallelConfigFactory::sequential();
+        }
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getCacheFile(): string
     {
         return $this->cacheFile;
@@ -88,9 +108,7 @@ class Config implements ConfigInterface
      */
     public function getFinder(): iterable
     {
-        if (null === $this->finder) {
-            $this->finder = new Finder();
-        }
+        $this->finder ??= new Finder();
 
         return $this->finder;
     }
@@ -118,6 +136,11 @@ class Config implements ConfigInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getParallelConfig(): ParallelConfig
+    {
+        return $this->parallelConfig;
     }
 
     public function getPhpExecutable(): ?string
@@ -149,6 +172,9 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $cacheFile
+     */
     public function setCacheFile(string $cacheFile): ConfigInterface
     {
         $this->cacheFile = $cacheFile;
@@ -177,6 +203,9 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $indent
+     */
     public function setIndent(string $indent): ConfigInterface
     {
         $this->indent = $indent;
@@ -184,9 +213,19 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $lineEnding
+     */
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
         $this->lineEnding = $lineEnding;
+
+        return $this;
+    }
+
+    public function setParallelConfig(ParallelConfig $config): ConfigInterface
+    {
+        $this->parallelConfig = $config;
 
         return $this;
     }

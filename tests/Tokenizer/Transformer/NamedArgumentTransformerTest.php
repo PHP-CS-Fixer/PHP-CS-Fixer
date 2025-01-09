@@ -22,11 +22,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamedArgumentTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -95,6 +97,9 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         self::assertNotChange($source);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideDoNotChangeCases(): iterable
     {
         yield 'switch/case/constants' => [

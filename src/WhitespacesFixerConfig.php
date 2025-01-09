@@ -16,13 +16,21 @@ namespace PhpCsFixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 final class WhitespacesFixerConfig
 {
+    /** @var non-empty-string */
     private string $indent;
 
+    /** @var non-empty-string */
     private string $lineEnding;
 
+    /**
+     * @param non-empty-string $indent
+     * @param non-empty-string $lineEnding
+     */
     public function __construct(string $indent = '    ', string $lineEnding = "\n")
     {
         if (!\in_array($indent, ['  ', '    ', "\t"], true)) {
@@ -37,11 +45,17 @@ final class WhitespacesFixerConfig
         $this->lineEnding = $lineEnding;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getIndent(): string
     {
         return $this->indent;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getLineEnding(): string
     {
         return $this->lineEnding;

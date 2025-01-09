@@ -23,12 +23,15 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKindsOrPrototypes from AbstractTransformerTestCase
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessCases
      */
@@ -89,24 +92,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
 
         yield [
             '<?php $foo[0](new Foo())->bar();',
-            [
-                5 => '(',
-                9 => '(',
-                10 => ')',
-                11 => ')',
-                14 => '(',
-                15 => ')',
-            ],
-            [
-                '(',
-                ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-            ],
-        ];
-
-        yield [
-            '<?php $foo{0}(new Foo())->bar();',
             [
                 5 => '(',
                 9 => '(',
@@ -399,8 +384,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
@@ -450,8 +435,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *
@@ -502,6 +487,47 @@ const C = new (Foo);
 
 function test2($param = (new Foo)) {}
 ',
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedTokens            $expectedTokens
+     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     *
+     * @dataProvider provideProcessPrePhp84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedTokens, _TransformerTestObservedKindsOrPrototypes}>
+     */
+    public static function provideProcessPrePhp84Cases(): iterable
+    {
+        yield [
+            '<?php $foo{0}(new Foo())->bar();',
+            [
+                5 => '(',
+                9 => '(',
+                10 => ')',
+                11 => ')',
+                14 => '(',
+                15 => ')',
+            ],
+            [
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
         ];
     }
 }

@@ -41,7 +41,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @group medium
+     * @medium
      *
      * @dataProvider provideLintFileCases
      */
@@ -58,6 +58,9 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintFile($file)->check();
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideLintFileCases(): iterable
     {
         yield [
@@ -66,7 +69,7 @@ abstract class AbstractLinterTestCase extends TestCase
 
         yield [
             __DIR__.'/../Fixtures/Linter/invalid.php',
-            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+            \sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
 
         yield [
@@ -91,6 +94,9 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintSource($source)->check();
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideLintSourceCases(): iterable
     {
         yield [
@@ -104,7 +110,7 @@ abstract class AbstractLinterTestCase extends TestCase
                     print "line 4";
                     echo echo;
                 ',
-            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+            \sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
     }
 

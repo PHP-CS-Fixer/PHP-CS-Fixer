@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer>
  */
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
@@ -40,13 +45,13 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $types = ['string', 'array', 'object'];
 
         foreach ($types as $cast) {
-            yield [sprintf('<?php $b=(%s) $d;', $cast)];
+            yield [\sprintf('<?php $b=(%s) $d;', $cast)];
 
-            yield [sprintf('<?php $b=( %s ) $d;', $cast)];
+            yield [\sprintf('<?php $b=( %s ) $d;', $cast)];
 
-            yield [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
+            yield [\sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
 
-            yield [sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
+            yield [\sprintf('<?php $b=(%s ) $d;', strtoupper($cast))];
         }
     }
 
@@ -55,7 +60,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -102,28 +107,28 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     private static function createCasesFor(string $from, string $to): iterable
     {
         yield [
-            sprintf('<?php echo ( %s  )$a;', $to),
-            sprintf('<?php echo ( %s  )$a;', $from),
+            \sprintf('<?php echo ( %s  )$a;', $to),
+            \sprintf('<?php echo ( %s  )$a;', $from),
         ];
 
         yield [
-            sprintf('<?php $b=(%s) $d;', $to),
-            sprintf('<?php $b=(%s) $d;', $from),
+            \sprintf('<?php $b=(%s) $d;', $to),
+            \sprintf('<?php $b=(%s) $d;', $from),
         ];
 
         yield [
-            sprintf('<?php $b= (%s)$d;', $to),
-            sprintf('<?php $b= (%s)$d;', strtoupper($from)),
+            \sprintf('<?php $b= (%s)$d;', $to),
+            \sprintf('<?php $b= (%s)$d;', strtoupper($from)),
         ];
 
         yield [
-            sprintf('<?php $b=( %s) $d;', $to),
-            sprintf('<?php $b=( %s) $d;', ucfirst($from)),
+            \sprintf('<?php $b=( %s) $d;', $to),
+            \sprintf('<?php $b=( %s) $d;', ucfirst($from)),
         ];
 
         yield [
-            sprintf('<?php $b=(%s ) $d;', $to),
-            sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
+            \sprintf('<?php $b=(%s ) $d;', $to),
+            \sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
         ];
     }
 }

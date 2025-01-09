@@ -38,7 +38,7 @@ final class TransformerTest extends TestCase
         self::assertLessThan(
             $first->getPriority(),
             $second->getPriority(),
-            sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
+            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
         );
     }
 
@@ -67,9 +67,12 @@ final class TransformerTest extends TestCase
             }
         }
 
-        self::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
+        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
     }
 
+    /**
+     * @return iterable<array{TransformerInterface, TransformerInterface}>
+     */
     public static function provideTransformerPriorityCases(): iterable
     {
         $transformers = [];
@@ -121,12 +124,8 @@ final class TransformerTest extends TestCase
         static $transformersArray = null;
 
         if (null === $transformersArray) {
-            $transformers = Transformers::createSingleton();
-            $reflection = new \ReflectionObject($transformers);
-            $builtInTransformers = $reflection->getMethod('findBuiltInTransformers');
-            $builtInTransformers->setAccessible(true);
             $transformersArray = [];
-            foreach ($builtInTransformers->invoke($transformers) as $transformer) {
+            foreach (\Closure::bind(static fn (Transformers $transformers): iterable => $transformers->findBuiltInTransformers(), null, Transformers::class)(Transformers::createSingleton()) as $transformer) {
                 $transformersArray[] = [$transformer];
             }
         }

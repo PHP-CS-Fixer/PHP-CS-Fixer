@@ -38,6 +38,9 @@ final class CommandTest extends TestCase
         self::assertNotNull($command::getDefaultName());
     }
 
+    /**
+     * @return iterable<array{Command}>
+     */
     public static function provideCommandHasNameConstCases(): iterable
     {
         $application = new Application();

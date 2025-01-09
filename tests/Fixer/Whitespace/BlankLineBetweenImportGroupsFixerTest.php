@@ -20,6 +20,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer>
  */
 final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +33,9 @@ final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int|string, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -532,11 +537,14 @@ use const C\D; // bar
      *
      * @requires PHP <8.0
      */
-    public function testFix80(string $expected, string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

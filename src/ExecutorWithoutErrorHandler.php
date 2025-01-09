@@ -32,7 +32,7 @@ final class ExecutorWithoutErrorHandler
      *
      * @throws ExecutorWithoutErrorHandlerException
      */
-    public static function execute(callable $callback): mixed
+    public static function execute(callable $callback)
     {
         /** @var ?string */
         $error = null;

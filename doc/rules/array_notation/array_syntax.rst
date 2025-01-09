@@ -50,6 +50,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
 - `@PHP54Migration <./../../ruleSets/PHP54Migration.rst>`_
 - `@PHP70Migration <./../../ruleSets/PHP70Migration.rst>`_
 - `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_
@@ -59,6 +62,7 @@ The rule is part of the following rule sets:
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 

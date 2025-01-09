@@ -26,7 +26,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
         return [
             '@PER-CS' => true,
             '@Symfony' => true,
-            'array_indentation' => true,
             'blank_line_before_statement' => [
                 'statements' => [
                     'break',
@@ -105,7 +104,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'no_useless_else' => true,
             'no_useless_return' => true,
             'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],
-            'nullable_type_declaration_for_default_null_value' => false,
             'ordered_class_elements' => true,
             'ordered_types' => true,
             'php_unit_internal_class' => true,
@@ -121,7 +119,8 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'single_line_comment_style' => true,
             'single_line_empty_body' => true,
             'single_line_throw' => false,
-            'string_implicit_backslashes' => ['single_quoted' => 'ignore'],
+            'string_implicit_backslashes' => true,
+            'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays']],
             'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
         ];
     }

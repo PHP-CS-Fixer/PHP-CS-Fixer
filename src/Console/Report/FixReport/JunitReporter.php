@@ -21,6 +21,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
+ * @readonly
+ *
  * @internal
  */
 final class JunitReporter implements ReporterInterface
@@ -59,7 +61,7 @@ final class JunitReporter implements ReporterInterface
         if ($reportSummary->getTime() > 0) {
             $testsuite->setAttribute(
                 'time',
-                sprintf(
+                \sprintf(
                     '%.3f',
                     $reportSummary->getTime() / 1_000
                 )

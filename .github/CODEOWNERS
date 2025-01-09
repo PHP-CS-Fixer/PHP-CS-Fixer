@@ -1,0 +1,2 @@
+.github/CODEOWNERS @keradus
+.github/workflows/self-approval.yml @keradus

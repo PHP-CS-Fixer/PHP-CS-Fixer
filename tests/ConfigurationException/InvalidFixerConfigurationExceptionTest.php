@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\ConfigurationException;
 
-use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
@@ -28,13 +27,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidFixerConfigurationExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException(): void
-    {
-        $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
-
-        self::assertInstanceOf(InvalidConfigurationException::class, $exception);
-    }
-
     public function testDefaults(): void
     {
         $fixerName = 'hal';
@@ -45,7 +37,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         self::assertSame($fixerName, $exception->getFixerName());
         self::assertNull($exception->getPrevious());
@@ -63,7 +55,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         self::assertSame($fixerName, $exception->getFixerName());
         self::assertSame($previous, $exception->getPrevious());

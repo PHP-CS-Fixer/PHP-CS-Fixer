@@ -73,7 +73,75 @@ final class FixCommandTest extends TestCase
     }
 
     /**
-     * @param array<string, bool|string> $arguments
+     * @covers \PhpCsFixer\Console\Command\WorkerCommand
+     * @covers \PhpCsFixer\Runner\Runner::fixSequential
+     */
+    public function testSequentialRun(): void
+    {
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+            \$config->setRules(['header_comment' => ['header' => 'SEQUENTIAL!']]);
+            \$config->setParallelConfig(\\PhpCsFixer\\Runner\\Parallel\\ParallelConfigFactory::sequential());
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('Running analysis on 1 core sequentially.', $cmdTester->getDisplay());
+        self::assertStringContainsString('You can enable parallel runner and speed up the analysis!', $cmdTester->getDisplay());
+        self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
+        self::assertSame(8, $cmdTester->getStatusCode());
+    }
+
+    /**
+     * There's no simple way to cover parallelisation with tests, because it involves a lot of hardcoded logic under the hood,
+     * like opening server, communicating through sockets, etc. That's why we only test `fix` command with proper
+     * parallel config, so runner utilises multi-processing internally. Expected outcome is information about utilising multiple CPUs.
+     *
+     * @covers \PhpCsFixer\Console\Command\WorkerCommand
+     * @covers \PhpCsFixer\Runner\Runner::fixParallel
+     */
+    public function testParallelRun(): void
+    {
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+            \$config->setRules(['header_comment' => ['header' => 'PARALLEL!']]);
+            \$config->setParallelConfig(new \\PhpCsFixer\\Runner\\Parallel\\ParallelConfig(2, 1, 300));
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('Running analysis on 2 cores with 1 file per process.', $cmdTester->getDisplay());
+        self::assertStringContainsString('Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!', $cmdTester->getDisplay());
+        self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
+        self::assertSame(8, $cmdTester->getStatusCode());
+    }
+
+    /**
+     * @param array<string, mixed> $arguments
      */
     private function doTestExecute(array $arguments): CommandTester
     {

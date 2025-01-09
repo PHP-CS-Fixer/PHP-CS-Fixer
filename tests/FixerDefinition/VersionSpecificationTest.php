@@ -46,6 +46,9 @@ final class VersionSpecificationTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{null|int, null|int}>
+     */
     public static function provideConstructorRejectsInvalidValuesCases(): iterable
     {
         yield 'minimum is negative' => [-1, null];
@@ -72,6 +75,9 @@ final class VersionSpecificationTest extends TestCase
         self::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
+    /**
+     * @return iterable<string, array{null|int, null|int, int}>
+     */
     public static function provideIsSatisfiedByReturnsTrueCases(): iterable
     {
         yield 'version-same-as-maximum' => [null, 100, 100];
@@ -96,6 +102,9 @@ final class VersionSpecificationTest extends TestCase
         self::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
+    /**
+     * @return iterable<string, array{null|int, null|int, int}>
+     */
     public static function provideIsSatisfiedByReturnsFalseCases(): iterable
     {
         yield 'version-greater-than-maximum' => [null, 1_000, 1_001];

@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\FileHandler;
-use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
@@ -41,15 +40,6 @@ final class FileHandlerTest extends TestCase
         if (file_exists($file)) {
             unlink($file);
         }
-    }
-
-    public function testImplementsHandlerInterface(): void
-    {
-        $file = $this->getFile();
-
-        $handler = new FileHandler($file);
-
-        self::assertInstanceOf(FileHandlerInterface::class, $handler);
     }
 
     public function testConstructorSetsFile(): void
@@ -104,7 +94,7 @@ final class FileHandlerTest extends TestCase
         $file = '/../"/out/of/range/cache.json'; // impossible path
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches(sprintf(
+        $this->expectExceptionMessageMatches(\sprintf(
             '#^Directory of cache file "%s" does not exists and couldn\'t be created\.#',
             preg_quote($file, '#')
         ));
@@ -140,7 +130,7 @@ final class FileHandlerTest extends TestCase
         $handler = new FileHandler($dir);
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches(sprintf(
+        $this->expectExceptionMessageMatches(\sprintf(
             '#^%s$#',
             preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
         ));
@@ -152,13 +142,13 @@ final class FileHandlerTest extends TestCase
     {
         $file = __DIR__.'/../Fixtures/cache-file-handler/cache-file';
         if (is_writable($file)) {
-            self::markTestSkipped(sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
+            self::markTestSkipped(\sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
         }
 
         $handler = new FileHandler($file);
 
         $this->expectException(IOException::class);
-        $this->expectExceptionMessageMatches(sprintf(
+        $this->expectExceptionMessageMatches(\sprintf(
             '#^%s$#',
             preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
         ));
@@ -177,9 +167,9 @@ final class FileHandlerTest extends TestCase
         $handler->write(new Cache($this->createSignature()));
 
         self::assertFileExists($file);
-        self::assertTrue(@is_file($file), sprintf('Failed cache "%s" `is_file`.', $file));
-        self::assertTrue(@is_writable($file), sprintf('Failed cache "%s" `is_writable`.', $file));
-        self::assertTrue(@is_readable($file), sprintf('Failed cache "%s" `is_readable`.', $file));
+        self::assertTrue(@is_file($file), \sprintf('Failed cache "%s" `is_file`.', $file));
+        self::assertTrue(@is_writable($file), \sprintf('Failed cache "%s" `is_writable`.', $file));
+        self::assertTrue(@is_readable($file), \sprintf('Failed cache "%s" `is_readable`.', $file));
 
         @unlink($file);
     }

@@ -27,10 +27,8 @@ use Symfony\Component\Console\Input\InputOption;
 #[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand
 {
-    /** @var string */
     protected static $defaultName = 'check';
 
-    /** @var string */
     protected static $defaultDescription = 'Checks if configured files/directories comply with configured rules.';
 
     public function __construct(ToolInfoInterface $toolInfo)

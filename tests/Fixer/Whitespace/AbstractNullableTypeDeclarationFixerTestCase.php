@@ -14,12 +14,17 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Jack Cherng <jfcherng@gmail.com>
  *
+ * @template TFixer of AbstractFixer
+ *
  * @internal
+ *
+ * @extends AbstractFixerTestCase<TFixer>
  */
 abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixerTestCase
 {
@@ -31,6 +36,9 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -170,6 +178,9 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'static return' => [

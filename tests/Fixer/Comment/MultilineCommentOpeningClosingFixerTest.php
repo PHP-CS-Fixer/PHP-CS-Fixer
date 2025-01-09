@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer>
  */
 final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +35,9 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php /** Opening DocBlock */'];

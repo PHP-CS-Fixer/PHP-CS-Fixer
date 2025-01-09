@@ -12,7 +12,7 @@ Configuration
 
 Sequence in which annotations in PHPDoc should be ordered.
 
-Allowed types: ``string[]``
+Allowed types: ``list<string>``
 
 Default value: ``['param', 'throws', 'return']``
 
