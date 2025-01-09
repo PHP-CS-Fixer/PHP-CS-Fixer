@@ -90,7 +90,7 @@ final class CiConfigurationTest extends TestCase
         $version = $from;
 
         while ($version <= $to) {
-            $range[] = sprintf('%.1f', $version);
+            $range[] = \sprintf('%.1f', $version);
 
             if (\in_array($version, $lastMinorVersions, true)) {
                 $version = ceil($version);
