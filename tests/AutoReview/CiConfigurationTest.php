@@ -153,6 +153,7 @@ final class CiConfigurationTest extends TestCase
     {
         $matchResult = Preg::match(
             '/<config name="testVersion" value="(?<min>\d+\.\d+)-(?<max>\d+\.\d+)"\/>/',
+            // @phpstan-ignore argument.type (This is file that is always present in the project, it won't return `false`)
             file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
             $capture
         );
@@ -253,7 +254,7 @@ final class CiConfigurationTest extends TestCase
             $phpVersions[] = $job['php-version'];
         }
 
-        return array_unique($phpVersions);
+        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
     /**
