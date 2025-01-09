@@ -18,9 +18,9 @@
     },
     "config": {
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": false,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
             "kubawerlos/composer-smaller-lock": true,
             "phpstan/extension-installer": true
         },
