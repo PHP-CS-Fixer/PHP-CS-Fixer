@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.67.0
+---------------------
+
+* chore: simplify loops using `end`/`prev` functions (#8352)
+* feat: Introduce `general_attribute_remove` fixer (#8339)
+
 Changelog for v3.66.2
 ---------------------
 

@@ -776,12 +776,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function substr expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/AttributeNotation/OrderedAttributesFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset 0 might not exist on list\\<string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 5,

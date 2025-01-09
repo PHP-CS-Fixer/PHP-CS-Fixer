@@ -9,10 +9,10 @@
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpmd/phpmd": "^2.15.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.0.4",
-        "phpstan/phpstan-phpunit": "^2.0.2",
+        "phpstan/phpstan": "^2.1.1",
+        "phpstan/phpstan-phpunit": "^2.0.3",
         "phpstan/phpstan-strict-rules": "^2.0.1",
-        "phpstan/phpstan-symfony": "^2.0.0"
+        "phpstan/phpstan-symfony": "^2.0.1"
     },
     "config": {
         "allow-plugins": {

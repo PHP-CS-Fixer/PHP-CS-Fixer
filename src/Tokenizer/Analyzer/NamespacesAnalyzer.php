@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -91,5 +92,25 @@ final class NamespacesAnalyzer
         }
 
         throw new \LogicException(\sprintf('Unable to get the namespace at index %d.', $index));
+    }
+
+    /**
+     * @return array{NamespaceAnalysis, array<string, NamespaceUseAnalysis>}
+     */
+    public static function collectNamespaceAnalysis(Tokens $tokens, int $startIndex): array
+    {
+        $namespaceAnalysis = (new self())->getNamespaceAt($tokens, $startIndex);
+        $namespaceUseAnalyses = (new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($tokens, $namespaceAnalysis);
+
+        $uses = [];
+        foreach ($namespaceUseAnalyses as $use) {
+            if (!$use->isClass()) {
+                continue;
+            }
+
+            $uses[$use->getShortName()] = $use;
+        }
+
+        return [$namespaceAnalysis, $uses];
     }
 }
