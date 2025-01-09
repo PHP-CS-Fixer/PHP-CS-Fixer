@@ -7,6 +7,8 @@
         "kubawerlos/composer-smaller-lock": "^1.0.1",
         "maglnet/composer-require-checker": "^4.14.0",
         "mi-schi/phpmd-extension": "^4.3.0",
+        "phpcompatibility/php-compatibility": "10.x-dev as 9.99.0",
+        "phpcompatibility/phpcompatibility-symfony": "^1.2",
         "phpmd/phpmd": "^2.15.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.1",
@@ -16,6 +18,7 @@
     },
     "config": {
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": false,
             "kubawerlos/composer-smaller-lock": true,
