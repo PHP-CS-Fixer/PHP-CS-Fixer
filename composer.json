@@ -117,6 +117,7 @@
             "@composer normalize --working-dir=dev-tools ../composer.json",
             "@composer normalize --working-dir=dev-tools composer.json"
         ],
+        "php-compatibility": "@php dev-tools/vendor/bin/phpcs -p --standard=dev-tools/php-compatibility/phpcs-php-compatibility.xml",
         "phpstan": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse",
         "phpstan:baseline": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline.php",
         "qa": "@quality-assurance",
@@ -185,6 +186,7 @@
         "mess-detector": "Analyse code with Mess Detector",
         "normalize": "Check normalization for composer.json files",
         "normalize:fix": "Run normalization for composer.json files",
+        "php-compatibility": "Check compatibility with all supported PHP versions",
         "phpstan": "Run PHPStan analysis",
         "phpstan:baseline": "Dump PHPStan baseline file - use only for updating, do not add new errors when possible",
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",

@@ -74,6 +74,9 @@ jobs:
       - name: Check - phpstan
         run: ./dev-tools/vendor/bin/phpstan analyse --ansi
 
+      - name: Check - PHP compatibility
+        run: composer php-compatibility
+
       - name: Check - composer-unused
         run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
 
