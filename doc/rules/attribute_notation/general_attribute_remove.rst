@@ -12,7 +12,7 @@ Configuration
 
 List of FQNs of attributes for removal.
 
-Allowed types: ``list<string>``
+Allowed types: ``list<class-string>``
 
 Default value: ``[]``
 
