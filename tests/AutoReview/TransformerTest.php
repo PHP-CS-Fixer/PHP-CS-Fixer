@@ -43,34 +43,6 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTransformerPriorityIsListedCases
-     */
-    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
-    {
-        $priority = $transformer->getPriority();
-
-        if (0 === $priority) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
-        $name = $transformer->getName();
-
-        foreach (self::provideTransformerPriorityCases() as $pair) {
-            [$first, $second] = $pair;
-
-            if ($name === $first->getName() || $name === $second->getName()) {
-                $this->addToAssertionCount(1);
-
-                return;
-            }
-        }
-
-        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
-    }
-
-    /**
      * @return iterable<array{TransformerInterface, TransformerInterface}>
      */
     public static function provideTransformerPriorityCases(): iterable
@@ -114,6 +86,34 @@ final class TransformerTest extends TestCase
         yield [$transformers['type_alternation'], $transformers['disjunctive_normal_form_type_parenthesis']];
 
         yield [$transformers['use'], $transformers['type_colon']];
+    }
+
+    /**
+     * @dataProvider provideTransformerPriorityIsListedCases
+     */
+    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
+    {
+        $priority = $transformer->getPriority();
+
+        if (0 === $priority) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        $name = $transformer->getName();
+
+        foreach (self::provideTransformerPriorityCases() as $pair) {
+            [$first, $second] = $pair;
+
+            if ($name === $first->getName() || $name === $second->getName()) {
+                $this->addToAssertionCount(1);
+
+                return;
+            }
+        }
+
+        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
     }
 
     /**
