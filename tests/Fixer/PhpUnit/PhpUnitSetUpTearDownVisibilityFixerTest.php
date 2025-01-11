@@ -270,5 +270,34 @@ class OtherTest extends \PhpUnit\FrameWork\TestCase
 }
 ',
         ];
+
+        yield 'skip nested anonymous classes' => [
+            '<?php
+abstract class ApplicationWebTestCase extends WebTestCase
+{
+    protected function setUp(): void // this is part of TestCase, should be fixed
+    {
+        $this-> x = new readonly class($fn) implements EventSubscriberInterface {
+            public function setup(): void // this is NOT part of TestCase, should NOT be fixed
+            {
+                ($this->fn)();
+            }
+        };
+    }
+}',
+            '<?php
+abstract class ApplicationWebTestCase extends WebTestCase
+{
+    public function setUp(): void // this is part of TestCase, should be fixed
+    {
+        $this-> x = new readonly class($fn) implements EventSubscriberInterface {
+            public function setup(): void // this is NOT part of TestCase, should NOT be fixed
+            {
+                ($this->fn)();
+            }
+        };
+    }
+}',
+        ];
     }
 }
