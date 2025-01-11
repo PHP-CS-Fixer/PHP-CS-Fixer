@@ -66,7 +66,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $counter = 0;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+        $slicesToInsert = [];
+
+        for ($i = $startIndex; $i < $endIndex; ++$i) {
             if (2 === $counter) {
                 break; // we've seen both method we are interested in, so stop analyzing this class
             }
@@ -86,8 +88,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             if (null === $visibility) {
-                $tokens->insertAt($i, [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])]);
+                $slicesToInsert[$i] = [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])];
             }
+        }
+
+        if ([] !== $slicesToInsert) {
+            $tokens->insertSlices($slicesToInsert);
         }
     }
 
