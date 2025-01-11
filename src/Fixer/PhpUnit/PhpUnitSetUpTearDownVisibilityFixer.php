@@ -73,6 +73,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 break; // we've seen both method we are interested in, so stop analyzing this class
             }
 
+            // skip anonymous classes insite TestCase class, which we can observe eg in setUp method
+            if ($tokens[$i]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) {
+                $i = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+
+                continue;
+            }
+
             if (!$this->isSetupOrTearDownMethod($tokens, $i)) {
                 continue;
             }
