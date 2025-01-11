@@ -277,7 +277,7 @@ abstract class ApplicationWebTestCase extends WebTestCase
 {
     protected function setUp(): void // this is part of TestCase, should be fixed
     {
-        $this-> x = new readonly class($fn) implements EventSubscriberInterface {
+        $this-> x = new class($fn) implements EventSubscriberInterface {
             public function setup(): void // this is NOT part of TestCase, should NOT be fixed
             {
                 ($this->fn)();
@@ -290,7 +290,7 @@ abstract class ApplicationWebTestCase extends WebTestCase
 {
     public function setUp(): void // this is part of TestCase, should be fixed
     {
-        $this-> x = new readonly class($fn) implements EventSubscriberInterface {
+        $this-> x = new class($fn) implements EventSubscriberInterface {
             public function setup(): void // this is NOT part of TestCase, should NOT be fixed
             {
                 ($this->fn)();
