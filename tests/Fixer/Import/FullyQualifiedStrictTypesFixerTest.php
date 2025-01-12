@@ -2697,7 +2697,7 @@ function foo($a) {}',
                 <?php
                 namespace Foo;
                 use Lib\Package\Bar;
-                $function = fn (): \Lib\Package\Bar => new Bar();
+                $function = fn (): Bar => new Bar();
                 PHP,
             <<<'PHP'
                 <?php
