@@ -83,7 +83,7 @@ final class CiConfigurationTest extends TestCase
     public function testDockerCIBuildsComposeServices(): void
     {
         $ci = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
-        $compose = self::parseYamlFromFile(__DIR__.'/../../compose.yml');
+        $compose = self::parseYamlFromFile(__DIR__.'/../../compose.yaml');
 
         $composeServices = array_keys($compose['services']);
         sort($composeServices);
