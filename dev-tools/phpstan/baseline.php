@@ -2360,12 +2360,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$input of static method Symfony\\\\Component\\\\Yaml\\\\Yaml\\:\\:parse\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 5,
-	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 3,
