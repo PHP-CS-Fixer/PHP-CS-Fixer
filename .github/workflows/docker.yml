@@ -16,20 +16,20 @@ on:
 
 jobs:
   docker-compose-build:
-    name: Compose build PHP ${{ matrix.php-version }}
+    name: Compose build ${{ matrix.docker-service }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - php-version: '7.4'
-          - php-version: '8.0'
-          - php-version: '8.1'
-          - php-version: '8.2'
-          - php-version: '8.3'
+          - docker-service: 'php-7.4'
+          - docker-service: 'php-8.0'
+          - docker-service: 'php-8.1'
+          - docker-service: 'php-8.2'
+          - docker-service: 'php-8.3'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Docker Compose build
-        run: docker compose build --no-cache --pull php-${{ matrix.php-version }}
+        run: docker compose build --no-cache --pull ${{ matrix.docker-service }}

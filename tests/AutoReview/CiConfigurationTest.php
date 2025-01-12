@@ -80,6 +80,23 @@ final class CiConfigurationTest extends TestCase
         );
     }
 
+    public function testDockerCIBuildsComposeServices(): void
+    {
+        $ci = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/docker.yml'));
+        $compose = Yaml::parse(file_get_contents(__DIR__.'/../../compose.yaml'));
+
+        $composeServices = array_keys($compose['services']);
+        sort($composeServices);
+
+        $ciServices = array_map(
+            static fn ($item) => $item['docker-service'],
+            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include']
+        );
+        sort($ciServices);
+
+        self::assertSame($composeServices, $ciServices);
+    }
+
     /**
      * @return list<numeric-string>
      */
