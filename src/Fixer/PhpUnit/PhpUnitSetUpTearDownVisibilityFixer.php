@@ -66,43 +66,46 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $counter = 0;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+        $slicesToInsert = [];
+
+        for ($index = $startIndex + 1; $index < $endIndex; ++$index) {
             if (2 === $counter) {
-                break; // we've seen both method we are interested in, so stop analyzing this class
+                break; // we've seen both methods we are interested in, so stop analyzing this class
             }
 
-            if (!$this->isSetupOrTearDownMethod($tokens, $i)) {
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
+            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $functionNameIndex = $tokens->getNextMeaningfulToken($index);
+            $functionName = strtolower($tokens[$functionNameIndex]->getContent());
+
+            if ('setup' !== $functionName && 'teardown' !== $functionName) {
                 continue;
             }
 
             ++$counter;
-            $visibility = $tokensAnalyzer->getMethodAttributes($i)['visibility'];
+
+            $visibility = $tokensAnalyzer->getMethodAttributes($index)['visibility'];
 
             if (T_PUBLIC === $visibility) {
-                $index = $tokens->getPrevTokenOfKind($i, [[T_PUBLIC]]);
-                $tokens[$index] = new Token([T_PROTECTED, 'protected']);
+                $visibilityIndex = $tokens->getPrevTokenOfKind($index, [[T_PUBLIC]]);
+                $tokens[$visibilityIndex] = new Token([T_PROTECTED, 'protected']);
 
                 continue;
             }
 
             if (null === $visibility) {
-                $tokens->insertAt($i, [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])]);
+                $slicesToInsert[$index] = [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])];
             }
         }
-    }
 
-    private function isSetupOrTearDownMethod(Tokens $tokens, int $index): bool
-    {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        $isMethod = $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
-        if (!$isMethod) {
-            return false;
-        }
-
-        $functionNameIndex = $tokens->getNextMeaningfulToken($index);
-        $functionName = strtolower($tokens[$functionNameIndex]->getContent());
-
-        return 'setup' === $functionName || 'teardown' === $functionName;
+        $tokens->insertSlices($slicesToInsert);
     }
 }
