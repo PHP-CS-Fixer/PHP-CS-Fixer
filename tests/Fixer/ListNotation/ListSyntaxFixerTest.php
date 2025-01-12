@@ -209,15 +209,6 @@ $a;#
     }
 
     /**
-     * @dataProvider provideFixToLongSyntaxPhp72Cases
-     */
-    public function testFixToLongSyntaxPhp72(string $expected, string $input): void
-    {
-        $this->fixer->configure(['syntax' => 'long']);
-        $this->doTest($expected, $input);
-    }
-
-    /**
      * @return iterable<array{string, string}>
      */
     public static function provideFixToShortSyntaxPhp72Cases(): iterable
@@ -226,6 +217,15 @@ $a;#
             '<?php [$a, $b,, [$c, $d]] = $a;',
             '<?php list($a, $b,, list($c, $d)) = $a;',
         ];
+    }
+
+    /**
+     * @dataProvider provideFixToLongSyntaxPhp72Cases
+     */
+    public function testFixToLongSyntaxPhp72(string $expected, string $input): void
+    {
+        $this->fixer->configure(['syntax' => 'long']);
+        $this->doTest($expected, $input);
     }
 
     /**
@@ -242,15 +242,6 @@ $a;#
     public function testFixToShortSyntaxPhp73(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'short']);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixToLongSyntaxPhp73Cases
-     */
-    public function testFixToLongSyntaxPhp73(string $expected, string $input): void
-    {
-        $this->fixer->configure(['syntax' => 'long']);
         $this->doTest($expected, $input);
     }
 
@@ -273,6 +264,15 @@ $a;#
             '<?php [&$a, $b,, [&$c, $d]] = $a;',
             '<?php list(&$a, $b,, list(&$c, $d)) = $a;',
         ];
+    }
+
+    /**
+     * @dataProvider provideFixToLongSyntaxPhp73Cases
+     */
+    public function testFixToLongSyntaxPhp73(string $expected, string $input): void
+    {
+        $this->fixer->configure(['syntax' => 'long']);
+        $this->doTest($expected, $input);
     }
 
     /**
