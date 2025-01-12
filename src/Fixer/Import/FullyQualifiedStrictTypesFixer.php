@@ -344,7 +344,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         $this->fixCatch($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
                         $this->fixPrevName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT])) {
+                    } elseif ($tokens[$index]->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT, CT::T_TYPE_COLON])) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_VARIABLE)) {
                         $prevIndex = $tokens->getPrevMeaningfulToken($index);
@@ -364,8 +364,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         }
 
                         $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
-                    } elseif ($tokens[$index]->isGivenKind(CT::T_TYPE_COLON)) {
-                        $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     }
 
                     $indexDiff += \count($tokens) - $origSize;
