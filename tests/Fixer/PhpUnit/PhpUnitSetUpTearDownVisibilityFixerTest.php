@@ -275,7 +275,22 @@ class OtherTest extends \PhpUnit\FrameWork\TestCase
             '<?php
 class FooTest extends \PhpUnit\FrameWork\TestCase
 {
-    protected function testSomething() {
+    protected function setUp(): void {
+        $mock = new class {
+            public function setUp() {}
+        };
+    }
+    protected function testSomethingElse() {
+        $mock = new class implements SetupableInterface {
+            public function setUp() {}
+        };
+    }
+}
+',
+            '<?php
+class FooTest extends \PhpUnit\FrameWork\TestCase
+{
+    public function setUp(): void {
         $mock = new class {
             public function setUp() {}
         };
