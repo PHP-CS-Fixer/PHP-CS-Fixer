@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.67.1
+---------------------
+
+* fix: `FullyQualifiedStrictTypesFixer` - fix return types (#8367)
+* fix: `PhpUnitSetUpTearDownVisibilityFixer` - do not touch anonymous classes (#8366)
+* chore: allow for class-string in doc types of rule options (#8358)
+* chore: CS: Move data provider methods after their test method (#8302)
+* chore: dependabot integration (#8357)
+* chore: `PHPStan` - upgrade to 2.1 (#8355)
+* CI: Introduce PHP compatibility check (#7844)
+* deps: bump docker/build-push-action from 5 to 6 (#8361)
+* docs: update installation instructions (#8356)
+
 Changelog for v3.67.0
 ---------------------
 
