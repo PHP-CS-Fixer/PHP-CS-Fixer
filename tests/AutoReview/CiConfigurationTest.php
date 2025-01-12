@@ -45,23 +45,10 @@ final class CiConfigurationTest extends TestCase
 
     public function testTestJobsRunOnEachPhp(): void
     {
-        $supportedVersions = [];
         $supportedMinPhp = (float) $this->getMinPhpVersionFromEntryFile();
         $supportedMaxPhp = (float) $this->getMaxPhpVersionFromEntryFile();
 
-        if ($supportedMaxPhp >= 8) {
-            $supportedVersions = array_merge(
-                $supportedVersions,
-                self::generateMinorVersionsRange($supportedMinPhp, 7.4)
-            );
-
-            $supportedMinPhp = 8;
-        }
-
-        $supportedVersions = [
-            ...$supportedVersions,
-            ...self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp),
-        ];
+        $supportedVersions = self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp);
 
         self::assertTrue(\count($supportedVersions) > 0);
 
@@ -73,6 +60,7 @@ final class CiConfigurationTest extends TestCase
         self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingOfficialImages());
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingLocalImages());
+        self::assertPhpCompatibilityRangeIsValid($supportedMinPhp, $supportedMaxPhp);
     }
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
@@ -98,9 +86,17 @@ final class CiConfigurationTest extends TestCase
     private static function generateMinorVersionsRange(float $from, float $to): array
     {
         $range = [];
+        $lastMinorVersions = [7.4];
+        $version = $from;
 
-        for ($version = $from; $version <= $to; $version += 0.1) {
+        while ($version <= $to) {
             $range[] = \sprintf('%.1f', $version);
+
+            if (\in_array($version, $lastMinorVersions, true)) {
+                $version = ceil($version);
+            } else {
+                $version += 0.1;
+            }
         }
 
         return $range;
@@ -151,6 +147,23 @@ final class CiConfigurationTest extends TestCase
             new TraversableContainsIdentical($lastSupportedVersion),
             new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion))
         ));
+    }
+
+    private static function assertPhpCompatibilityRangeIsValid(float $supportedMinPhp, float $supportedMaxPhp): void
+    {
+        $matchResult = Preg::match(
+            '/<config name="testVersion" value="(?<min>\d+\.\d+)-(?<max>\d+\.\d+)"\/>/',
+            // @phpstan-ignore argument.type (This is file that is always present in the project, it won't return `false`)
+            file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
+            $capture
+        );
+
+        if (!$matchResult) {
+            throw new \LogicException('Can\'t parse PHP version range for verifying compatibility.');
+        }
+
+        self::assertSame($supportedMinPhp, (float) $capture['min']);
+        self::assertSame($supportedMaxPhp, (float) $capture['max']);
     }
 
     private function getPhpVersionUsedByCiForDeployments(): string
@@ -241,7 +254,7 @@ final class CiConfigurationTest extends TestCase
             $phpVersions[] = $job['php-version'];
         }
 
-        return $phpVersions;
+        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
     /**

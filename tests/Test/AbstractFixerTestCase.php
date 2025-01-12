@@ -131,6 +131,7 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
+        'general_attribute_remove' => true,
         'general_phpdoc_tag_rename' => true,
     ];
 
