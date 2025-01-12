@@ -364,6 +364,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         }
 
                         $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
+                    } elseif ($tokens[$index]->isGivenKind(CT::T_TYPE_COLON)) {
+                        $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     }
 
                     $indexDiff += \count($tokens) - $origSize;
