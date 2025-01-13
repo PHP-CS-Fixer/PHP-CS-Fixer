@@ -26,12 +26,21 @@ use React\Socket\ServerInterface;
  */
 final class ProcessPool
 {
+    /**
+     * @readonly
+     */
     private ServerInterface $server;
 
-    /** @var null|(callable(): void) */
+    /**
+     * @var null|(callable(): void)
+     *
+     * @readonly
+     */
     private $onServerClose;
 
-    /** @var array<string, Process> */
+    /**
+     * @var array<string, Process>
+     */
     private array $processes = [];
 
     /**

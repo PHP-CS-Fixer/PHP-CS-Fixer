@@ -235,7 +235,7 @@ $object->method1()
 
             if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                $isMultilineCall |= $tokens->isPartialCodeMultiline($prevIndex, $index);
+                $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index);
             }
         }
 

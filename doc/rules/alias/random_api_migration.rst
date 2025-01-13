@@ -94,6 +94,10 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
 
 References
 ----------

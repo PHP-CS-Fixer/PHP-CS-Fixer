@@ -21,15 +21,12 @@ use PhpCsFixer\Tokenizer\Transformers;
 
 class TokensWithObservedTransformers extends Tokens
 {
-    /**
-     * @var null|string
-     */
-    public $currentTransformer;
+    public ?string $currentTransformer = null;
 
     /**
      * @var array<string, list<int|string>>
      */
-    public $observedModificationsPerTransformer = [];
+    public array $observedModificationsPerTransformer = [];
 
     public function offsetSet($index, $newval): void
     {

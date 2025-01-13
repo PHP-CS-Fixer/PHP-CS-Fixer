@@ -29,7 +29,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.',
+            'Use `null` coalescing operator `??` where possible.',
             [
                 new CodeSample(
                     "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n"

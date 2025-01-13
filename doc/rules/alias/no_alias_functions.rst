@@ -121,6 +121,10 @@ The rule is part of the following rule sets:
 
   ``['sets' => ['@all']]``
 
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
   ``['sets' => ['@all']]``

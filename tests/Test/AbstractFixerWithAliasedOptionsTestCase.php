@@ -32,7 +32,7 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
     /**
      * @var null|TFixer
      */
-    private $fixerWithAliasedConfig;
+    private ?AbstractFixer $fixerWithAliasedConfig = null;
 
     protected function tearDown(): void
     {
@@ -46,10 +46,6 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
         parent::doTest($expected, $input, $file);
 
         if (null !== $this->fixerWithAliasedConfig) {
-            if (!$this->fixerWithAliasedConfig instanceof AbstractFixer) {
-                throw new \LogicException();
-            }
-
             $fixer = $this->fixer;
             $fixerWithAliasedConfig = $this->fixerWithAliasedConfig;
 

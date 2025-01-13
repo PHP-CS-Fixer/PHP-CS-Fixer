@@ -16,7 +16,7 @@ namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\FileReader;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -89,10 +89,7 @@ final class FileFilterIterator extends \FilterIterator
             // file that does not need fixing due to cache
             || !$this->cacheManager->needFixing($file->getPathname(), $content)
         ) {
-            $this->dispatchEvent(
-                FixerFileProcessedEvent::NAME,
-                new FixerFileProcessedEvent(FixerFileProcessedEvent::STATUS_SKIPPED)
-            );
+            $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_SKIPPED));
 
             return false;
         }

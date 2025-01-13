@@ -16,7 +16,7 @@ namespace PhpCsFixer\Tests\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\PercentageBarOutput;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 final class PercentageBarOutputTest extends TestCase
 {
     /**
-     * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
+     * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
      *
      * @dataProvider providePercentageBarProgressOutputCases
      */
@@ -44,20 +44,20 @@ final class PercentageBarOutputTest extends TestCase
         $processOutput = new PercentageBarOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
-            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
+            $processOutput->onFixerFileProcessed(new FileProcessed($status));
         });
 
         self::assertSame($expectedOutput, rtrim($output->fetch()));
     }
 
     /**
-     * @return iterable<int|string, array{0: list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}>, 1: string, 2: int}>
+     * @return iterable<int|string, array{0: list<array{0: FileProcessed::STATUS_*, 1?: int}>, 1: string, 2: int}>
      */
     public static function providePercentageBarProgressOutputCases(): iterable
     {
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 100],
+                [FileProcessed::STATUS_NO_CHANGES, 100],
             ],
             '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.PHP_EOL.
             ' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
@@ -66,8 +66,8 @@ final class PercentageBarOutputTest extends TestCase
     }
 
     /**
-     * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
-     * @param \Closure(FixerFileProcessedEvent::STATUS_*): void          $action
+     * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
+     * @param \Closure(FileProcessed::STATUS_*): void          $action
      */
     private function foreachStatus(array $statuses, \Closure $action): void
     {

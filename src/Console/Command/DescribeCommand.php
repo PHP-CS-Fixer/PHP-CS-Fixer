@@ -56,20 +56,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'describe')]
 final class DescribeCommand extends Command
 {
-    /** @var string */
     protected static $defaultName = 'describe';
 
     /**
      * @var ?list<string>
      */
-    private $setNames;
+    private ?array $setNames = null;
 
     private FixerFactory $fixerFactory;
 
     /**
-     * @var array<string, FixerInterface>
+     * @var null|array<string, FixerInterface>
      */
-    private $fixers;
+    private ?array $fixers = null;
 
     public function __construct(?FixerFactory $fixerFactory = null)
     {
