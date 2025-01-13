@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Alias\ModernizeStrposFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -36,12 +37,9 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['modernize_stripos' => true]);
 
-        $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
-        $reflectionProperty->setAccessible(true);
-
         self::assertSame(
             ['modernize_stripos' => true],
-            $reflectionProperty->getValue($this->fixer)
+            \Closure::bind(static fn (ModernizeStrposFixer $fixer): array => $fixer->configuration, null, ModernizeStrposFixer::class)($this->fixer)
         );
     }
 
