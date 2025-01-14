@@ -1,0 +1,21 @@
+--TEST--
+Ignore strict_comparison,single_quote.
+--RULESET--
+{"strict_comparison": true, "single_quote": true}
+--EXPECT--
+<?php
+
+// phpcsfixer-ignore strict_comparison,single_quote
+$a = "test" == 'test';
+// phpcsfixer-end-ignore
+
+$b = 'test' === 'test';
+
+--INPUT--
+<?php
+
+// phpcsfixer-ignore strict_comparison,single_quote
+$a = "test" == 'test';
+// phpcsfixer-end-ignore
+
+$b = "test" == 'test';

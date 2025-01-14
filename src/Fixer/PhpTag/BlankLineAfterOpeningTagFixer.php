@@ -57,6 +57,9 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
         $newlineFound = false;
         foreach ($tokens as $token) {
+            if ($token->isIgnoredFor($this)) {
+                continue;
+            }
             if (($token->isWhitespace() || $token->isGivenKind(T_OPEN_TAG)) && str_contains($token->getContent(), "\n")) {
                 $newlineFound = true;
 

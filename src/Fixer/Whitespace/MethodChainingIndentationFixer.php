@@ -56,6 +56,9 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
+            if ($tokens[$index]->isIgnoredFor($this)) {
+                continue;
+            }
             if (!$tokens[$index]->isObjectOperator()) {
                 continue;
             }
