@@ -181,6 +181,9 @@ class Foo {
         }
 
         foreach ($tokens as $index => $token) {
+            if ($token->isIgnoredFor($this)) {
+                continue;
+            }
             if ($index === $currentSymbolEndIndex) {
                 $currentSymbol = null;
                 $currentSymbolEndIndex = null;

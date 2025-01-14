@@ -215,6 +215,9 @@ if ($foo) {
         $caseBlockStarts = [];
 
         foreach ($tokens as $index => $token) {
+            if ($token->isIgnoredFor($this)) {
+                continue;
+            }
             $currentScope = \count($scopes) - 1;
 
             if (isset($noBracesBlockStarts[$index])) {

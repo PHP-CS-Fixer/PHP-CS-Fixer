@@ -70,6 +70,10 @@ final class StrictComparisonFixer extends AbstractFixer
         ];
 
         foreach ($tokens as $index => $token) {
+            if ($token->isIgnoredFor($this)) {
+                continue;
+            }
+
             $tokenId = $token->getId();
 
             if (isset($map[$tokenId])) {

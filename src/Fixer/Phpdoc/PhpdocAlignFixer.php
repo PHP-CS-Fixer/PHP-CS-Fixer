@@ -213,6 +213,9 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
+            if ($token->isIgnoredFor($this)) {
+                continue;
+            }
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }

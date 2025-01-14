@@ -1,0 +1,39 @@
+--TEST--
+Test
+--RULESET--
+{"strict_comparison": true, "single_quote": true, "ordered_imports": true}
+--EXPECT--
+<?php
+
+// phpcsfixer-ignore strict_comparison,single_quote
+$a = "test" == 'test';
+// phpcsfixer-end-ignore
+
+$b = 'test' === 'test';
+
+use A;
+use D;
+// phpcsfixer-ignore
+use C;
+use B;
+// phpcsfixer-end-ignore
+use E;
+use F;
+
+--INPUT--
+<?php
+
+// phpcsfixer-ignore strict_comparison,single_quote
+$a = "test" == 'test';
+// phpcsfixer-end-ignore
+
+$b = "test" == 'test';
+
+use E;
+use D;
+// phpcsfixer-ignore
+use C;
+use B;
+// phpcsfixer-end-ignore
+use F;
+use A;

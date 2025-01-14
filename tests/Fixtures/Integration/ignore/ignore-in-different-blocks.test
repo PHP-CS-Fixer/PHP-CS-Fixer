@@ -1,0 +1,25 @@
+--TEST--
+Ignore statement_indentation in different blocks.
+--RULESET--
+{"statement_indentation": true}
+--EXPECT--
+<?php
+$goodIntentation = 7;
+// phpcsfixer-ignore
+        $toMuchIndentation = foo(
+                     $x,
+                     $y,
+                     $z,
+                     // phpcsfixer-end-ignore
+);
+
+--INPUT--
+<?php
+$goodIntentation = 7;
+// phpcsfixer-ignore
+        $toMuchIndentation = foo(
+                     $x,
+                     $y,
+                     $z,
+                     // phpcsfixer-end-ignore
+        );
