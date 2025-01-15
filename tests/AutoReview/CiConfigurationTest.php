@@ -80,6 +80,22 @@ final class CiConfigurationTest extends TestCase
         );
     }
 
+    public function testDockerCIBuildsComposeServices(): void
+    {
+        $compose = self::parseYamlFromFile(__DIR__.'/../../compose.yaml');
+        $composeServices = array_keys($compose['services']);
+        sort($composeServices);
+
+        $ci = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
+        $ciServices = array_map(
+            static fn ($item) => $item['docker-service'],
+            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include']
+        );
+        sort($ciServices);
+
+        self::assertSame($composeServices, $ciServices);
+    }
+
     /**
      * @return list<numeric-string>
      */
@@ -278,8 +294,14 @@ final class CiConfigurationTest extends TestCase
         $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
 
         return array_map(
-            static fn ($item) => $item['php-version'],
-            $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+            static fn ($item) => substr($item, 4),
+            array_filter(
+                array_map(
+                    static fn ($item) => $item['docker-service'],
+                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+                ),
+                static fn ($item) => str_starts_with($item, 'php-')
+            )
         );
     }
 
