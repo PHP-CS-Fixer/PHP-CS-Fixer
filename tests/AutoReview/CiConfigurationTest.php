@@ -80,6 +80,22 @@ final class CiConfigurationTest extends TestCase
         );
     }
 
+    public function testDockerCIBuildsComposeServices(): void
+    {
+        $compose = self::parseYamlFromFile(__DIR__.'/../../compose.yaml');
+        $composeServices = array_keys($compose['services']);
+        sort($composeServices);
+
+        $ci = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
+        $ciServices = array_map(
+            static fn ($item) => $item['docker-service'],
+            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include']
+        );
+        sort($ciServices);
+
+        self::assertSame($composeServices, $ciServices);
+    }
+
     /**
      * @return list<numeric-string>
      */
@@ -168,7 +184,7 @@ final class CiConfigurationTest extends TestCase
 
     private function getPhpVersionUsedByCiForDeployments(): string
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         $version = $yaml['jobs']['deployment']['env']['php-version'];
 
@@ -236,7 +252,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getGitHubCiEnvs(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         return $yaml['env'];
     }
@@ -246,7 +262,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedByGitHub(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
 
@@ -262,7 +278,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedForBuildingOfficialImages(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/release.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/release.yml');
 
         return array_map(
             static fn ($item) => $item['php-version'],
@@ -275,11 +291,31 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedForBuildingLocalImages(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/docker.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
 
         return array_map(
-            static fn ($item) => $item['php-version'],
-            $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+            static fn ($item) => substr($item, 4),
+            array_filter(
+                array_map(
+                    static fn ($item) => $item['docker-service'],
+                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+                ),
+                static fn ($item) => str_starts_with($item, 'php-')
+            )
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    private function parseYamlFromFile(string $file)
+    {
+        $yamlRaw = file_get_contents($file);
+
+        if (false === $yamlRaw) {
+            throw new \RuntimeException('Fail to read/parse file.');
+        }
+
+        return Yaml::parse($yamlRaw);
     }
 }
