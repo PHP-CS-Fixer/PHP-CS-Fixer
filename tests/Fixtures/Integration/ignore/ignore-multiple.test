@@ -1,9 +1,18 @@
 --TEST--
-Test
+Multiple rules and ignores
 --RULESET--
-{"strict_comparison": true, "single_quote": true, "ordered_imports": true}
+{"strict_comparison": true, "single_quote": true, "ordered_imports": true, "method_chaining_indentation": true}
 --EXPECT--
 <?php
+
+use A;
+use D;
+// phpcsfixer-ignore
+use C;
+use B;
+// phpcsfixer-end-ignore
+use E;
+use F;
 
 // phpcsfixer-ignore strict_comparison,single_quote
 $a = "test" == 'test';
@@ -11,17 +20,44 @@ $a = "test" == 'test';
 
 $b = 'test' === 'test';
 
-use A;
+function configure(\DefinitionConfigurator $definition): void
+{
+        $definition
+            ->rootNode()
+            ->canBeDisabled()
+            ->children()
+            // phpcsfixer-ignore method_chaining_indentation
+            ->arrayNode('default')
+                ->children()
+                    ->arrayNode('transport')
+                        ->children()
+                            ->booleanNode('commit_async')->end()
+                            ->integerNode('shutdown_timeout')->end()
+                            ->arrayNode('global')->setPathSeparator('_')
+                                ->children()
+                                    ->scalarNode('metadata.broker.list')->setPathSeparator('_')->end()
+                                    ->scalarNode('socket.timeout.ms')->setPathSeparator('_')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+            ->end();
+            // phpcsfixer-end-ignore
+}
+
+--INPUT--
+<?php
+
+use E;
 use D;
 // phpcsfixer-ignore
 use C;
 use B;
 // phpcsfixer-end-ignore
-use E;
 use F;
-
---INPUT--
-<?php
+use A;
 
 // phpcsfixer-ignore strict_comparison,single_quote
 $a = "test" == 'test';
@@ -29,11 +65,29 @@ $a = "test" == 'test';
 
 $b = "test" == 'test';
 
-use E;
-use D;
-// phpcsfixer-ignore
-use C;
-use B;
-// phpcsfixer-end-ignore
-use F;
-use A;
+function configure(\DefinitionConfigurator $definition): void
+{
+        $definition
+            ->rootNode()
+                    ->canBeDisabled()
+                ->children()
+            // phpcsfixer-ignore method_chaining_indentation
+            ->arrayNode('default')
+                ->children()
+                    ->arrayNode('transport')
+                        ->children()
+                            ->booleanNode('commit_async')->end()
+                            ->integerNode('shutdown_timeout')->end()
+                            ->arrayNode('global')->setPathSeparator('_')
+                                ->children()
+                                    ->scalarNode('metadata.broker.list')->setPathSeparator('_')->end()
+                                    ->scalarNode('socket.timeout.ms')->setPathSeparator('_')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+            ->end();
+            // phpcsfixer-end-ignore
+}
