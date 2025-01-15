@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.68.0
+---------------------
+
+* feat: `ModernizeStrposFixer` - support `stripos` (#8019)
+* chore: `FullyQualifiedStrictTypesFixer` - reduce conditions count (#8368)
+* test: `PhpUnitSetUpTearDownVisibilityFixer` - extend test for anonymous classes (#8369)
+
 Changelog for v3.67.1
 ---------------------
 
