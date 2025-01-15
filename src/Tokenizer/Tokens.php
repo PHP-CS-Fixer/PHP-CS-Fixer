@@ -1501,16 +1501,15 @@ class Tokens extends \SplFixedArray
         }
     }
 
-    // phpcsfixer-ignore
-    private function processIgnoreNewToken(int $index, Token $token): void
+    private function processIgnoreNewToken(int $index, Token $newToken): void
     {
-        $currentItem = $this[$index] ?? null;
-        $prevItem = $this[$index - 1] ?? null;
+        $currentToken = $this[$index] ?? null;
+        $prevToken = $this[$index - 1] ?? null;
 
-        if ($currentItem instanceof Token && $currentItem->getIgnoredRules() !== null) {
-            $token->ignoreRules($currentItem->getIgnoredRules());
-        } else if ($prevItem instanceof Token && $prevItem->getIgnoredRules() !== null) {
-            $token->ignoreRules($prevItem->getIgnoredRules());
+        if ($currentToken instanceof Token && null !== $currentToken->getIgnoredRules()) {
+            $newToken->ignoreRules($currentToken->getIgnoredRules());
+        } elseif ($prevToken instanceof Token && null !== $prevToken->getIgnoredRules()) {
+            $newToken->ignoreRules($prevToken->getIgnoredRules());
         }
     }
 
