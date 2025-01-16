@@ -71,7 +71,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         $classOpenIndex = $tokens->getNextTokenOfKind($index, ['{']);
 
         // figure out where the classy ends
-        $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpenIndex);
+        $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpenIndex);
 
         // is classy extending or implementing some interface
         $extendingOrImplementing = $this->isExtendingOrImplementing($tokens, $index, $classOpenIndex);
