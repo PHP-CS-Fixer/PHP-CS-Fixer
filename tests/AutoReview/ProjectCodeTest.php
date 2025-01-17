@@ -86,6 +86,24 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @return iterable<array{string}>
+     */
+    public static function provideThatSrcClassHaveTestClassCases(): iterable
+    {
+        return array_map(
+            static fn (string $item): array => [$item],
+            array_filter(
+                self::getSrcClasses(),
+                static function (string $className): bool {
+                    $rc = new \ReflectionClass($className);
+
+                    return !$rc->isTrait() && !$rc->isAbstract() && !$rc->isInterface() && \count($rc->getMethods(\ReflectionMethod::IS_PUBLIC)) > 0;
+                }
+            )
+        );
+    }
+
+    /**
      * This test requires 8.2+, so it can properly detect readonly parent class.
      *
      * @dataProvider provideSrcClassCases
@@ -215,6 +233,53 @@ final class ProjectCodeTest extends TestCase
                 $className,
                 implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraMethods))
             )
+        );
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
+    {
+        return array_map(
+            static fn (string $item): array => [$item],
+            array_filter(self::getSrcClasses(), static function (string $className): bool {
+                $rc = new \ReflectionClass($className);
+
+                $doc = false !== $rc->getDocComment()
+                    ? new DocBlock($rc->getDocComment())
+                    : null;
+
+                if (
+                    $rc->isInterface()
+                    || (null !== $doc && \count($doc->getAnnotationsOfType('internal')) > 0)
+                    || \in_array($className, [
+                        \PhpCsFixer\Finder::class,
+                        AbstractFixerTestCase::class,
+                        AbstractIntegrationTestCase::class,
+                        Tokens::class,
+                    ], true)
+                ) {
+                    return false;
+                }
+
+                $interfaces = $rc->getInterfaces();
+                $interfacesCount = \count($interfaces);
+
+                if (0 === $interfacesCount) {
+                    return false;
+                }
+
+                if (1 === $interfacesCount) {
+                    $interface = reset($interfaces);
+
+                    if (\Stringable::class === $interface->getName()) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
         );
     }
 
@@ -471,6 +536,20 @@ final class ProjectCodeTest extends TestCase
         self::assertNotContains('preg_replace', $calledFunctions, $message);
         self::assertNotContains('preg_replace_callback', $calledFunctions, $message);
         self::assertNotContains('preg_split', $calledFunctions, $message);
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
+    {
+        return array_map(
+            static fn (string $item): array => [$item],
+            array_filter(
+                self::getSrcClasses(),
+                static fn (string $className): bool => Preg::class !== $className,
+            ),
+        );
     }
 
     /**
@@ -758,88 +837,6 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    /**
-     * @return iterable<string, array{class-string}>
-     */
-    public static function provideSrcClassCases(): iterable
-    {
-        if (null === self::$srcClassCases) {
-            $cases = self::getSrcClasses();
-
-            self::$srcClassCases = array_combine(
-                $cases,
-                array_map(static fn (string $case): array => [$case], $cases),
-            );
-        }
-
-        yield from self::$srcClassCases;
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
-    {
-        return array_map(
-            static fn (string $item): array => [$item],
-            array_filter(self::getSrcClasses(), static function (string $className): bool {
-                $rc = new \ReflectionClass($className);
-
-                $doc = false !== $rc->getDocComment()
-                    ? new DocBlock($rc->getDocComment())
-                    : null;
-
-                if (
-                    $rc->isInterface()
-                    || (null !== $doc && \count($doc->getAnnotationsOfType('internal')) > 0)
-                    || \in_array($className, [
-                        \PhpCsFixer\Finder::class,
-                        AbstractFixerTestCase::class,
-                        AbstractIntegrationTestCase::class,
-                        Tokens::class,
-                    ], true)
-                ) {
-                    return false;
-                }
-
-                $interfaces = $rc->getInterfaces();
-                $interfacesCount = \count($interfaces);
-
-                if (0 === $interfacesCount) {
-                    return false;
-                }
-
-                if (1 === $interfacesCount) {
-                    $interface = reset($interfaces);
-
-                    if (\Stringable::class === $interface->getName()) {
-                        return false;
-                    }
-                }
-
-                return true;
-            })
-        );
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideThatSrcClassHaveTestClassCases(): iterable
-    {
-        return array_map(
-            static fn (string $item): array => [$item],
-            array_filter(
-                self::getSrcClasses(),
-                static function (string $className): bool {
-                    $rc = new \ReflectionClass($className);
-
-                    return !$rc->isTrait() && !$rc->isAbstract() && !$rc->isInterface() && \count($rc->getMethods(\ReflectionMethod::IS_PUBLIC)) > 0;
-                }
-            )
-        );
-    }
-
     public function testAllTestsForShortOpenTagAreHandled(): void
     {
         $testClassesWithShortOpenTag = array_filter(
@@ -963,37 +960,6 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{class-string<TestCase>}>
-     */
-    public static function provideTestClassCases(): iterable
-    {
-        if (null === self::$testClassCases) {
-            $cases = self::getTestClasses();
-
-            self::$testClassCases = array_combine(
-                $cases,
-                array_map(static fn (string $case): array => [$case], $cases),
-            );
-        }
-
-        yield from self::$testClassCases;
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
-    {
-        return array_map(
-            static fn (string $item): array => [$item],
-            array_filter(
-                self::getSrcClasses(),
-                static fn (string $className): bool => Preg::class !== $className,
-            ),
-        );
-    }
-
-    /**
      * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
      *
      * @param class-string $className
@@ -1053,6 +1019,40 @@ final class ProjectCodeTest extends TestCase
             $constantName = $constant->getName();
             self::assertSame(strtoupper($constantName), $constantName, $className);
         }
+    }
+
+    /**
+     * @return iterable<string, array{class-string}>
+     */
+    public static function provideSrcClassCases(): iterable
+    {
+        if (null === self::$srcClassCases) {
+            $cases = self::getSrcClasses();
+
+            self::$srcClassCases = array_combine(
+                $cases,
+                array_map(static fn (string $case): array => [$case], $cases),
+            );
+        }
+
+        yield from self::$srcClassCases;
+    }
+
+    /**
+     * @return iterable<string, array{class-string<TestCase>}>
+     */
+    public static function provideTestClassCases(): iterable
+    {
+        if (null === self::$testClassCases) {
+            $cases = self::getTestClasses();
+
+            self::$testClassCases = array_combine(
+                $cases,
+                array_map(static fn (string $case): array => [$case], $cases),
+            );
+        }
+
+        yield from self::$testClassCases;
     }
 
     /**

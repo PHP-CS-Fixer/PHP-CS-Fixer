@@ -45,23 +45,10 @@ final class CiConfigurationTest extends TestCase
 
     public function testTestJobsRunOnEachPhp(): void
     {
-        $supportedVersions = [];
         $supportedMinPhp = (float) $this->getMinPhpVersionFromEntryFile();
         $supportedMaxPhp = (float) $this->getMaxPhpVersionFromEntryFile();
 
-        if ($supportedMaxPhp >= 8) {
-            $supportedVersions = array_merge(
-                $supportedVersions,
-                self::generateMinorVersionsRange($supportedMinPhp, 7.4)
-            );
-
-            $supportedMinPhp = 8;
-        }
-
-        $supportedVersions = [
-            ...$supportedVersions,
-            ...self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp),
-        ];
+        $supportedVersions = self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp);
 
         self::assertTrue(\count($supportedVersions) > 0);
 
@@ -73,6 +60,7 @@ final class CiConfigurationTest extends TestCase
         self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingOfficialImages());
         self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $this->getPhpVersionsUsedForBuildingLocalImages());
+        self::assertPhpCompatibilityRangeIsValid($supportedMinPhp, $supportedMaxPhp);
     }
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
@@ -92,15 +80,39 @@ final class CiConfigurationTest extends TestCase
         );
     }
 
+    public function testDockerCIBuildsComposeServices(): void
+    {
+        $compose = self::parseYamlFromFile(__DIR__.'/../../compose.yaml');
+        $composeServices = array_keys($compose['services']);
+        sort($composeServices);
+
+        $ci = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
+        $ciServices = array_map(
+            static fn ($item) => $item['docker-service'],
+            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include']
+        );
+        sort($ciServices);
+
+        self::assertSame($composeServices, $ciServices);
+    }
+
     /**
      * @return list<numeric-string>
      */
     private static function generateMinorVersionsRange(float $from, float $to): array
     {
         $range = [];
+        $lastMinorVersions = [7.4];
+        $version = $from;
 
-        for ($version = $from; $version <= $to; $version += 0.1) {
+        while ($version <= $to) {
             $range[] = \sprintf('%.1f', $version);
+
+            if (\in_array($version, $lastMinorVersions, true)) {
+                $version = ceil($version);
+            } else {
+                $version += 0.1;
+            }
         }
 
         return $range;
@@ -153,9 +165,26 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
+    private static function assertPhpCompatibilityRangeIsValid(float $supportedMinPhp, float $supportedMaxPhp): void
+    {
+        $matchResult = Preg::match(
+            '/<config name="testVersion" value="(?<min>\d+\.\d+)-(?<max>\d+\.\d+)"\/>/',
+            // @phpstan-ignore argument.type (This is file that is always present in the project, it won't return `false`)
+            file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
+            $capture
+        );
+
+        if (!$matchResult) {
+            throw new \LogicException('Can\'t parse PHP version range for verifying compatibility.');
+        }
+
+        self::assertSame($supportedMinPhp, (float) $capture['min']);
+        self::assertSame($supportedMaxPhp, (float) $capture['max']);
+    }
+
     private function getPhpVersionUsedByCiForDeployments(): string
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         $version = $yaml['jobs']['deployment']['env']['php-version'];
 
@@ -223,7 +252,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getGitHubCiEnvs(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         return $yaml['env'];
     }
@@ -233,7 +262,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedByGitHub(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
 
@@ -241,7 +270,7 @@ final class CiConfigurationTest extends TestCase
             $phpVersions[] = $job['php-version'];
         }
 
-        return $phpVersions;
+        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
     /**
@@ -249,7 +278,7 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedForBuildingOfficialImages(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/release.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/release.yml');
 
         return array_map(
             static fn ($item) => $item['php-version'],
@@ -262,11 +291,31 @@ final class CiConfigurationTest extends TestCase
      */
     private function getPhpVersionsUsedForBuildingLocalImages(): array
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/docker.yml'));
+        $yaml = self::parseYamlFromFile(__DIR__.'/../../.github/workflows/docker.yml');
 
         return array_map(
-            static fn ($item) => $item['php-version'],
-            $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+            static fn ($item) => substr($item, 4),
+            array_filter(
+                array_map(
+                    static fn ($item) => $item['docker-service'],
+                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+                ),
+                static fn ($item) => str_starts_with($item, 'php-')
+            )
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    private function parseYamlFromFile(string $file)
+    {
+        $yamlRaw = file_get_contents($file);
+
+        if (false === $yamlRaw) {
+            throw new \RuntimeException('Fail to read/parse file.');
+        }
+
+        return Yaml::parse($yamlRaw);
     }
 }

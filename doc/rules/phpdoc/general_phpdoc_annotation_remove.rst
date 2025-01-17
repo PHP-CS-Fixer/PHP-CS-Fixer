@@ -2,7 +2,7 @@
 Rule ``general_phpdoc_annotation_remove``
 =========================================
 
-Configured annotations should be omitted from PHPDoc.
+Removes configured annotations from PHPDoc.
 
 Configuration
 -------------
