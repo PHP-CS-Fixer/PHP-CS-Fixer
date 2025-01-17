@@ -1,34 +1,34 @@
 ARG PHP_VERSION=8.3
 ARG ALPINE_VERSION=3.21
 
-FROM alpine:3.21.2 as sphinx-lint
+FROM alpine:3.21.2 AS sphinx-lint
 
 RUN apk add python3 py3-pip git \
     && pip install --break-system-packages sphinx-lint
 
-# This must be the same as in CI's job, but `--null` must be changed to `-0` (Alpine)
+# This must be the same AS in CI's job, but `--null` must be changed to `-0` (Alpine)
 CMD git ls-files --cached -z -- '*.rst' \
     | xargs -0 -- python3 -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000
 
-FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} as base
+FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} AS base
 
 RUN curl --location --output /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
     && chmod +x /usr/local/bin/install-php-extensions \
     && install-php-extensions pcntl
 
-FROM base as base-dev
+FROM base AS base-dev
 
 # https://blog.codito.dev/2022/11/composer-binary-only-docker-images/
 # https://github.com/composer/docker/pull/250
 COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 
-FROM base-dev as vendor
+FROM base-dev AS vendor
 COPY composer.json /fixer/composer.json
 WORKDIR /fixer
 RUN composer remove --dev infection/infection --no-update \
     && composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
 
-FROM base as dist
+FROM base AS dist
 
 RUN mkdir /code
 WORKDIR /code
@@ -39,7 +39,7 @@ COPY --from=vendor /fixer/vendor /fixer/vendor
 RUN ln -s /fixer/php-cs-fixer /usr/local/bin/php-cs-fixer
 ENTRYPOINT ["/usr/local/bin/php-cs-fixer"]
 
-FROM base-dev as dev
+FROM base-dev AS dev
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
 ARG PHP_XDEBUG_VERSION
