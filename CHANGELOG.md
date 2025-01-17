@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.68.1
+---------------------
+
+* chore: `AutoReview/CiConfigurationTest` - handle failure of reading files (#8375)
+* CI: `Docker` - check all `compose` services (#8370)
+* deps: bump alpine from 3.18 to 3.21 (#8377)
+* deps: bump alpine from 3.18.4 to 3.21.2 (#8362)
+* refactor: Tokens::clearEmptyTokens - optimize cache handling (#8335)
+
 Changelog for v3.68.0
 ---------------------
 
