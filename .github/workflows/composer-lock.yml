@@ -1,4 +1,4 @@
-name: Self Approval
+name: Lock cleanup
 
 on:
   push:
