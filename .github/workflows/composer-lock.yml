@@ -3,10 +3,9 @@ name: Lock cleanup
 on:
   push:
     branches:
-      - "master"
-  pull_request:
+      - "dependabot/**"
     paths:
-      - "./dev-tools/composer.lock"
+      - "dev-tools/composer.lock"
 
 permissions:
   pull-requests: write
