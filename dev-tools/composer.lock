@@ -857,16 +857,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-passwordcompat",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityPasswordCompat.git",
-                "reference": "b55723509ca46e53e840b02034f3e09d95a40a9a"
+                "reference": "68610ffc60484b422bc4d124a0f50f1ea41c8cff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/b55723509ca46e53e840b02034f3e09d95a40a9a",
-                "reference": "b55723509ca46e53e840b02034f3e09d95a40a9a"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/68610ffc60484b422bc4d124a0f50f1ea41c8cff",
+                "reference": "68610ffc60484b422bc4d124a0f50f1ea41c8cff"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^9.0"
@@ -879,16 +879,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-symfony",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilitySymfony.git",
-                "reference": "eb694b1f35555d4133b5cd39748f5213564bc386"
+                "reference": "fd7aa90db93663a6eeab5f32c23ab85f58c16a08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/eb694b1f35555d4133b5cd39748f5213564bc386",
-                "reference": "eb694b1f35555d4133b5cd39748f5213564bc386"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/fd7aa90db93663a6eeab5f32c23ab85f58c16a08",
+                "reference": "fd7aa90db93663a6eeab5f32c23ab85f58c16a08"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^9.0",
