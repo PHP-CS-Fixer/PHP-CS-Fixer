@@ -381,6 +381,11 @@ use Bar;
 
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
+                if ($token->isIgnoredFor($this)) {
+                    ++$index;
+
+                    continue;
+                }
 
                 if ($index === $endIndex || (!$group && $token->equals(','))) {
                     if ($group && self::SORT_NONE !== $this->configuration['sort_algorithm']) {
