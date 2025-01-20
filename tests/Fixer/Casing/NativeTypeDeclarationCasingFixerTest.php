@@ -328,6 +328,27 @@ function Foo(INTEGER $a) {}
                     private NULL|INT|BOOL $a4 = false;
                 };',
         ];
+
+        yield 'promoted properties' => [
+            <<<'PHP'
+                <?php class Foo extends Bar {
+                    public function __construct(
+                        public int $i,
+                        protected PARENT $p, // "PARENT" should be fixed to lowercase
+                        private string $s
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo extends Bar {
+                    public function __construct(
+                        public INT $i,
+                        protected PARENT $p, // "PARENT" should be fixed to lowercase
+                        private STRING $s
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -567,14 +588,14 @@ function Foo(INTEGER $a) {}
         ];
 
         yield 'enum, int' => [
-            '<?php enum E: string {
+            '<?php enum E: STRING { // "STRING" should be fixed to lowercase
                 case Hearts = "H";
 
                 const int TEST = 789;
                 const self A = self::Hearts;
                 const static B = self::Hearts;
             }',
-            '<?php enum E: string {
+            '<?php enum E: STRING { // "STRING" should be fixed to lowercase
                 case Hearts = "H";
 
                 const INT TEST = 789;
@@ -589,6 +610,11 @@ function Foo(INTEGER $a) {}
             }
 
             CONST A = 1;',
+        ];
+
+        yield 'fix "false" in type' => [ // "FALSE" should be fixed to lowercase
+            '<?php class Foo { private FALSE|int $bar; private FALSE $baz; }',
+            '<?php class Foo { private FALSE|INT $bar; private FALSE $baz; }',
         ];
     }
 }
