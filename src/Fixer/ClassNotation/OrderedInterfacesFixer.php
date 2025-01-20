@@ -138,7 +138,8 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_IMPLEMENTS)
-            || $tokens->isAllTokenKindsFound([T_INTERFACE, T_EXTENDS]);
+            || $tokens->isAllTokenKindsFound([T_INTERFACE, T_EXTENDS])
+        ;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -197,7 +198,8 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                         true === $this->configuration['case_sensitive']
                         ? $first['normalized'] <=> $second['normalized']
                         : strcasecmp($first['normalized'], $second['normalized'])
-                    );
+                    )
+                ;
 
                 if (self::DIRECTION_DESCEND === $this->configuration[self::OPTION_DIRECTION]) {
                     $score *= -1;

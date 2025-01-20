@@ -670,7 +670,8 @@ final class TokensTest extends TestCase
 
                 echo $a(1);
                 // test
-                return 123;';
+                return 123;'
+        ;
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -1168,7 +1169,8 @@ echo $a;',
                     {
                         $this->name = $name;
                     }
-            }';
+            }'
+        ;
 
         $tokens = Tokens::fromCode(\sprintf($template, ''));
         $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);

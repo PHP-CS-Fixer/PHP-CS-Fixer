@@ -455,7 +455,8 @@ Fixing examples:
    ".'
    ----------- end diff -----------
 
-';
+'
+        ;
         self::assertSame($expected, $commandTester->getDisplay(true));
         self::assertSame(0, $commandTester->getStatusCode());
     }
