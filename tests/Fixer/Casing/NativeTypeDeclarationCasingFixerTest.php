@@ -334,7 +334,7 @@ function Foo(INTEGER $a) {}
                 <?php class Foo extends Bar {
                     public function __construct(
                         public int $i,
-                        protected PARENT $p, // "PARENT" should be fixed to lowercase
+                        protected parent $p,
                         private string $s
                     ) {}
                 }
@@ -343,7 +343,7 @@ function Foo(INTEGER $a) {}
                 <?php class Foo extends Bar {
                     public function __construct(
                         public INT $i,
-                        protected PARENT $p, // "PARENT" should be fixed to lowercase
+                        protected PARENT $p,
                         private STRING $s
                     ) {}
                 }
@@ -588,14 +588,14 @@ function Foo(INTEGER $a) {}
         ];
 
         yield 'enum, int' => [
-            '<?php enum E: STRING { // "STRING" should be fixed to lowercase
+            '<?php enum E: string {
                 case Hearts = "H";
 
                 const int TEST = 789;
                 const self A = self::Hearts;
                 const static B = self::Hearts;
             }',
-            '<?php enum E: STRING { // "STRING" should be fixed to lowercase
+            '<?php enum E: STRING {
                 case Hearts = "H";
 
                 const INT TEST = 789;
@@ -612,8 +612,8 @@ function Foo(INTEGER $a) {}
             CONST A = 1;',
         ];
 
-        yield 'fix "false" in type' => [ // "FALSE" should be fixed to lowercase
-            '<?php class Foo { private FALSE|int $bar; private FALSE $baz; }',
+        yield 'fix "false" in type' => [
+            '<?php class Foo { private false|int $bar; private false $baz; }',
             '<?php class Foo { private FALSE|INT $bar; private FALSE $baz; }',
         ];
     }
