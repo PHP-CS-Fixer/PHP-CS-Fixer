@@ -62,7 +62,6 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             'float' => true,
             'int' => true,
             'iterable' => true,
-            'mixed' => true,
             'object' => true,
             'parent' => true,
             'self' => true,
@@ -73,6 +72,7 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 
         if (\PHP_VERSION_ID >= 8_00_00) {
             $this->types['false'] = true;
+            $this->types['mixed'] = true;
             $this->types['null'] = true;
         }
 
