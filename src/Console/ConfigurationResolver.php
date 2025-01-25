@@ -893,10 +893,6 @@ final class ConfigurationResolver
     {
         $value = $this->options[$optionName];
 
-        if (!\is_string($value)) {
-            throw new InvalidConfigurationException(\sprintf('Expected boolean or string value for option "%s".', $optionName));
-        }
-
         if ('yes' === $value) {
             return true;
         }
