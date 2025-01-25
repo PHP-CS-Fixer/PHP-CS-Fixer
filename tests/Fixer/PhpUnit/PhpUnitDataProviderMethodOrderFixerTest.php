@@ -82,6 +82,13 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
             ['placement' => 'before'],
         ];
 
+        yield 'empty test class' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {}
+                PHP,
+        ];
+
         yield 'data provider named with different casing' => [
             <<<'PHP'
                 <?php
