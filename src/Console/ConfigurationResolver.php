@@ -88,7 +88,22 @@ final class ConfigurationResolver
     private ToolInfoInterface $toolInfo;
 
     /**
-     * @var array<string, mixed>
+     * @var array{
+     *     allow-risky: null|string,
+     *     cache-file: null|string,
+     *     config: null|string,
+     *     diff: null|string,
+     *     dry-run: null|bool,
+     *     format: null|string,
+     *     path: list<string>,
+     *     path-mode: string,
+     *     rules: null|string,
+     *     sequential: null|string,
+     *     show-progress: null|string,
+     *     stop-on-violation: null|bool,
+     *     using-cache: null|string,
+     *     verbosity: null|string,
+     * }
      */
     private array $options = [
         'allow-risky' => null,
@@ -889,6 +904,9 @@ final class ConfigurationResolver
         $this->options[$name] = $value;
     }
 
+    /**
+     * @param 'allow-risky'|'using-cache' $optionName
+     */
     private function resolveOptionBooleanValue(string $optionName): bool
     {
         $value = $this->options[$optionName];

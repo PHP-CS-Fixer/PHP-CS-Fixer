@@ -18,7 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -669,7 +668,7 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @return \ReflectionClass<FixerInterface>
+     * @return \ReflectionClass<AbstractFixer>
      */
     private function getFixerReflection(): \ReflectionClass
     {
