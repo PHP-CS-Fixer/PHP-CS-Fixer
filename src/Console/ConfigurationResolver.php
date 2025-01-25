@@ -56,6 +56,23 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @phpstan-type _Options array{
+ *      allow-risky: null|string,
+ *      cache-file: null|string,
+ *      config: null|string,
+ *      diff: null|string,
+ *      dry-run: null|bool,
+ *      format: null|string,
+ *      path: list<string>,
+ *      path-mode: self::PATH_MODE_*,
+ *      rules: null|string,
+ *      sequential: null|string,
+ *      show-progress: null|string,
+ *      stop-on-violation: null|bool,
+ *      using-cache: null|string,
+ *      verbosity: null|string,
+ *  }
  */
 final class ConfigurationResolver
 {
@@ -88,22 +105,7 @@ final class ConfigurationResolver
     private ToolInfoInterface $toolInfo;
 
     /**
-     * @var array{
-     *     allow-risky: null|string,
-     *     cache-file: null|string,
-     *     config: null|string,
-     *     diff: null|string,
-     *     dry-run: null|bool,
-     *     format: null|string,
-     *     path: list<string>,
-     *     path-mode: string,
-     *     rules: null|string,
-     *     sequential: null|string,
-     *     show-progress: null|string,
-     *     stop-on-violation: null|bool,
-     *     using-cache: null|string,
-     *     verbosity: null|string,
-     * }
+     * @var _Options
      */
     private array $options = [
         'allow-risky' => null,
@@ -905,7 +907,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * @param 'allow-risky'|'using-cache' $optionName
+     * @param key-of<_Options> $optionName
      */
     private function resolveOptionBooleanValue(string $optionName): bool
     {
