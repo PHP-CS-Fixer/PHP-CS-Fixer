@@ -276,6 +276,78 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
             null,
             ['placement' => 'before'],
         ];
+
+        yield 'with other methods - placement after' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    public function testA(): void {}
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                    public function testB(): void {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    public function testA(): void {}
+                    public function provideFooCases(): iterable {}
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function testB(): void {}
+                }
+                PHP,
+        ];
+
+        yield 'with other methods - placement before' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    public function testA(): void {}
+                    public function provideFooCases(): iterable {}
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function testB(): void {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    public function testA(): void {}
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                    public function testB(): void {}
+                }
+                PHP,
+            ['placement' => 'before'],
+        ];
+
+        yield 'with other methods II' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    public function testA(): void {}
+                    public function testB(): void {}
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                    public function testC(): void {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    public function testA(): void {}
+                    public function provideFooCases(): iterable {}
+                    public function testB(): void {}
+                    /** @dataProvider provideFooCases */
+                    public function testFoo(): void {}
+                    public function testC(): void {}
+                }
+                PHP,
+        ];
     }
 
     /**
