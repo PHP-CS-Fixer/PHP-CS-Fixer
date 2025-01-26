@@ -110,47 +110,46 @@ class FooTest extends TestCase {
         $endIndex = $elements[\count($elements) - 1]['end'];
 
         $dataProvidersWithUsagePairs = $this->getDataProvidersWithUsagePairs($tokens, $startIndex, $endIndex);
-        $origMethodsOrderPairs = $this->getOrigMethodsOrderPairs($dataProvidersWithUsagePairs);
         $origUsageDataProviderOrderPairs = $this->getOrigUsageDataProviderOrderPairs($dataProvidersWithUsagePairs);
 
-        $newMethodsOrder = [];
+        $sorted = $elements;
+        $providersPlaced = [];
         if ('before' === $this->configuration['placement']) {
             foreach ($origUsageDataProviderOrderPairs as [$usageName, $providerName]) {
-                if (!isset($newMethodsOrder[$providerName])) {
-                    $newMethodsOrder[$providerName] = true;
-                }
+                if (!isset($providersPlaced[$providerName])) {
+                    $providersPlaced[$providerName] = true;
 
-                if (!isset($newMethodsOrder[$usageName])) {
-                    $newMethodsOrder[$usageName] = true;
+                    $sorted = $this->moveMethodElement($sorted, $usageName, $providerName, false);
                 }
             }
         } else {
-            $providerNamesAlreadyAfter = [];
+            $sameUsageName = false;
+            $sameProviderName = false;
             foreach ($origUsageDataProviderOrderPairs as [$usageName, $providerName]) {
-                if (!isset($newMethodsOrder[$usageName])) {
-                    $newMethodsOrder[$usageName] = true;
-                }
+                if (!isset($providersPlaced[$providerName])) {
+                    $providersPlaced[$providerName] = true;
 
-                \assert(isset($origMethodsOrderPairs[$usageName], $origMethodsOrderPairs[$providerName]));
-                $isProviderAlreadyAfter = $origMethodsOrderPairs[$usageName][0] < $origMethodsOrderPairs[$providerName][0];
+                    $sortedBefore = $sorted;
+                    $sorted = $this->moveMethodElement(
+                        $sorted,
+                        $usageName === $sameUsageName // @phpstan-ignore argument.type (https://github.com/phpstan/phpstan/issues/12482)
+                            ? $sameProviderName
+                            : $usageName,
+                        $providerName,
+                        true
+                    );
 
-                if (isset($newMethodsOrder[$providerName])) {
-                    if (!($providerNamesAlreadyAfter[$providerName] ?? false) || $isProviderAlreadyAfter) {
-                        unset($newMethodsOrder[$providerName]);
+                    // honor multiple providers order for one test
+                    $sameUsageName = $usageName;
+                    $sameProviderName = $providerName;
+
+                    // keep placement after the first test
+                    if ($sortedBefore !== $sorted) {
+                        unset($providersPlaced[$providerName]);
                     }
-                } else {
-                    $providerNamesAlreadyAfter[$providerName] = $isProviderAlreadyAfter;
                 }
-                $newMethodsOrder[$providerName] = true;
             }
         }
-        $newMethodsOrder = array_keys($newMethodsOrder);
-
-        if ($newMethodsOrder === array_keys($origMethodsOrderPairs)) {
-            return;
-        }
-
-        $sorted = $this->sortElements($elements, $newMethodsOrder);
 
         if ($sorted !== $elements) {
             $this->sortTokens($tokens, $startIndex, $endIndex, $sorted);
@@ -169,26 +168,54 @@ class FooTest extends TestCase {
 
     /**
      * @param list<_ClassElement> $elements
-     * @param list<string>        $newMethodsOrder
-     *
-     * @return list<_ClassElement>
-     */
-    private function sortElements(array $elements, array $newMethodsOrder): array
-    {
-        $methodOrderFixer = new OrderedClassElementsFixer();
-        $methodOrderFixer->configure(['order' => array_map(static fn (string $method): string => 'method:'.$method, $newMethodsOrder)]);
-
-        return \Closure::bind(static fn () => $methodOrderFixer->sortElements($elements), null, OrderedClassElementsFixer::class)();
-    }
-
-    /**
-     * @param list<_ClassElement> $elements
      */
     private function sortTokens(Tokens $tokens, int $startIndex, int $endIndex, array $elements): void
     {
         $methodOrderFixer = new OrderedClassElementsFixer();
 
         \Closure::bind(static fn () => $methodOrderFixer->sortTokens($tokens, $startIndex, $endIndex, $elements), null, OrderedClassElementsFixer::class)();
+    }
+
+    /**
+     * @param list<_ClassElement> $elements
+     *
+     * @return list<_ClassElement>
+     */
+    private function moveMethodElement(array $elements, string $nameKeep, string $nameToMove, bool $after): array
+    {
+        $i = 0;
+        $iKeep = false;
+        $iToMove = false;
+        foreach ($elements as $element) {
+            if ('method' === $element['type']) {
+                if ($element['name'] === $nameKeep) {
+                    $iKeep = $i;
+                } elseif ($element['name'] === $nameToMove) {
+                    $iToMove = $i;
+                }
+            }
+
+            ++$i;
+        }
+        \assert(false !== $iKeep);
+        \assert(false !== $iToMove);
+
+        if ($iToMove === $iKeep + ($after ? 1 : -1)) {
+            return $elements;
+        }
+
+        $elementToMove = $elements[$iToMove]; // @phpstan-ignore offsetAccess.notFound
+        unset($elements[$iToMove]);
+
+        $c = $iKeep
+            + ($after ? 1 : 0)
+            + ($iToMove < $iKeep ? -1 : 0);
+
+        return [
+            ...\array_slice($elements, 0, $c),
+            $elementToMove,
+            ...\array_slice($elements, $c),
+        ];
     }
 
     /**
@@ -225,28 +252,6 @@ class FooTest extends TestCase {
         }
 
         return $dataProvidersWithUsagePairs;
-    }
-
-    /**
-     * @param list<array{
-     *   array{int, string},
-     *   non-empty-list<array{int, string, int}>
-     * }> $dataProvidersWithUsagePairs
-     *
-     * @return array<string, array{int, string}>
-     */
-    private function getOrigMethodsOrderPairs(array $dataProvidersWithUsagePairs): array
-    {
-        $origMethodsOrderPairs = [];
-        foreach ($dataProvidersWithUsagePairs as [$dataProviderPair, $usagePairs]) {
-            $origMethodsOrderPairs[$dataProviderPair[1]] = $dataProviderPair;
-            foreach ($usagePairs as $usagePair) {
-                $origMethodsOrderPairs[$usagePair[1]] = $usagePair;
-            }
-        }
-        uasort($origMethodsOrderPairs, static fn (array $a, array $b): int => $a[0] <=> $b[0]);
-
-        return $origMethodsOrderPairs;
     }
 
     /**
