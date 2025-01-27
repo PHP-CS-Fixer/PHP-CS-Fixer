@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.68.2
+---------------------
+
+* fix: `NativeTypeDeclarationCasingFixer` - fix for promoted properties, enums, `false` and `mixed` (#8386)
+* chore: ensure that `dev-tools` dependencies are bumped (#8389)
+* chore: experiment to see if we can auto-shrink the lock after dependabot (#8383)
+* chore: experiment to see if we can auto-shrink the lock after dependabot /part (#8384)
+* chore: Get rid of Docker warnings during build (#8379)
+* chore: remove redundant check (#8391)
+* chore: update types (#8390)
+* CI: stale - update close msg to emphasize contribution over demand (#8385)
+* deps: bump phpcompatibility/phpcompatibility-symfony from 1.2.1 to 1.2.2 in /dev-tools (#8378)
+* deps: bump the phpstan group in /dev-tools with 4 updates (#8387)
+* refactor: Use native `Yaml::parseFile()` instead of custom method (#8380)
+
 Changelog for v3.68.1
 ---------------------
 
