@@ -86,6 +86,7 @@ jobs:
       - name: Check - composer normalize
         run: |
           composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+          composer bump --dry-run --working-dir=./dev-tools
           composer normalize --dry-run --working-dir=./dev-tools composer.json
 
       - name: Check - shell scripts
