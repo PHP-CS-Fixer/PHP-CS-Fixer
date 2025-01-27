@@ -44,7 +44,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Cache/Signature.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Config\\:\\:getFinder\\(\\) should return PhpCsFixer\\\\Finder but returns iterable\\<SplFileInfo\\>\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Config\\:\\:getFinder\\(\\) should return PhpCsFixer\\\\Finder but returns array\\<mixed, mixed\\>\\|iterable\\<SplFileInfo\\>\\|Traversable\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Config.php',
@@ -2016,24 +2016,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Linter/CachingLinter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$filename of function file_put_contents expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$path of method PhpCsFixer\\\\Linter\\\\ProcessLinter\\:\\:createProcessForFile\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$path of class Symfony\\\\Component\\\\Filesystem\\\\Exception\\\\IOException constructor expects string\\|null, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Linter/ProcessLinter.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) should return string but returns list\\<string\\>\\|string\\.$#',
