@@ -128,7 +128,7 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->equals('=') || $tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->equals('=') || $tokens[$prevIndex]->isGivenKind([T_CASE, T_DOUBLE_COLON, T_NS_SEPARATOR])) {
                 continue;
             }
 

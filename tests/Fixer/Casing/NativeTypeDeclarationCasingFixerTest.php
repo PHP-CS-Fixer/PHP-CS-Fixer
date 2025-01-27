@@ -627,6 +627,20 @@ function Foo(INTEGER $a) {}
             }',
         ];
 
+        yield 'enum with "Mixed" case' => [
+            <<<'PHP'
+                <?php
+                enum Foo
+                {
+                    case Mixed;
+                    public function bar()
+                    {
+                        self::Mixed;
+                    }
+                }
+                PHP,
+        ];
+
         yield 'do not fix' => [
             '<?php class Foo {
                 PUBLIC CONST FOO&STRINGABLE G = A::B;
