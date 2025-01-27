@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.68.3
+---------------------
+
+* fix: `NativeTypeDeclarationCasingFixer` - fix for enum with "Mixed" case (#8395)
+
 Changelog for v3.68.2
 ---------------------
 
