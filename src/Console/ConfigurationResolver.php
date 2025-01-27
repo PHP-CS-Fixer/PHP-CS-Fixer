@@ -921,7 +921,7 @@ final class ConfigurationResolver
             return false;
         }
 
-        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, \is_object($value) ? \get_class($value) : \gettype($value)));
+        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, \is_object($value) ? \get_class($value) : $value));
     }
 
     private static function separatedContextLessInclude(string $path): ConfigInterface
