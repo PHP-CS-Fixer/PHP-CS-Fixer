@@ -224,84 +224,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/WorkerCommand.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'allow\\-risky\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'cache\\-file\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'config\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'diff\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'dry\\-run\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'path\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 6,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'path\\-mode\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'rules\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'sequential\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'show\\-progress\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'stop\\-on\\-violation\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'using\\-cache\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$filename of function is_file expects string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -310,12 +232,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$names of static method PhpCsFixer\\\\Utils\\:\\:naturalLanguageJoin\\(\\) expects list\\<string\\>, non\\-empty\\-array\\<int\\<0, max\\>, string\\> given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property PhpCsFixer\\\\Console\\\\ConfigurationResolver\\:\\:\\$path \\(list\\<string\\>\\|null\\) does not accept array\\<non\\-empty\\-string\\>\\.$#',
-	'identifier' => 'assign.propertyType',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/ConfigurationResolver.php',
 ];
