@@ -60,7 +60,7 @@ jobs:
         run: vendor/bin/phpunit --version
 
       - name: Run AutoReview
-        run: vendor/bin/paraunit run --testsuite auto-review
+        run: vendor/bin/phpunit --testsuite auto-review
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh
