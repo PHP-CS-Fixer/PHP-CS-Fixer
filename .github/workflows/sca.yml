@@ -17,7 +17,7 @@ jobs:
 
     runs-on: 'ubuntu-24.04'
     env:
-      php-version: '8.3'
+      php-version: '8.4'
 
     steps:
       - name: Checkout code
@@ -60,7 +60,7 @@ jobs:
         run: vendor/bin/phpunit --version
 
       - name: Run AutoReview
-        run: vendor/bin/paraunit run --testsuite auto-review
+        run: vendor/bin/phpunit --testsuite auto-review
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh
@@ -115,7 +115,7 @@ jobs:
         run: |
           echo "Array types must explicitly declare key-type, i.e. as \`array<type-of-key, type-of-value>\`, \`list<type-of-value>\` or \`array{...}\` - instead of \`array<type-of-value>\` or \`type-of-value[]\`."
           echo "Hint: don't apply those rules blindly, provide array key type explicitly\!"
-          ./php-cs-fixer check --config=dev-tools/.php-cs-fixer.well-defined-arrays.php --path-mode=intersection $CHANGED_PHP_FILES
+          PHP_CS_FIXER_IGNORE_ENV=1 ./php-cs-fixer check --config=dev-tools/.php-cs-fixer.well-defined-arrays.php --path-mode=intersection $CHANGED_PHP_FILES
 
       - name: Check - Mess Detector (phpmd)
         if: ${{ env.CHANGED_PHP_FILES }}
