@@ -263,6 +263,14 @@ function Foo(INTEGER $a) {}
             '<?php class Foo { static $bar; }',
             '<?php class Foo { STATIC $bar; }',
         ];
+
+        yield 'dynamic property' => [
+            '<?php class Foo {
+                public function doFoo() {
+                    $this->Object->doBar();
+                }
+            }',
+        ];
     }
 
     /**
