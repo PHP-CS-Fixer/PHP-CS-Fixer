@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: array_syntax,no_whitespace_in_empty_array.
+--RULESET--
+{"array_syntax": true, "no_whitespace_in_empty_array": true}
+--EXPECT--
+<?php
+
+$foo = [];
+
+--INPUT--
+<?php
+
+$foo = array(
+
+        );
