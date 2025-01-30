@@ -320,6 +320,32 @@ $bar;',
         yield ['<?php /* Before anonymous function */ fn($x) => $x + 1;'];
 
         yield ['<?php /* @var int $x */ [$x] = [2];'];
+
+        yield ['<?php /* @var string $x */ $x ??= $y;'];
+
+        yield ['<?php /* @var string $x */ $x .= $y;'];
+
+        yield ['<?php /* @var int $x */ $x &= 1;'];
+
+        yield ['<?php /* @var int $x */ $x |= 1;'];
+
+        yield ['<?php /* @var int $x */ $x ^= 1;'];
+
+        yield ['<?php /* @var int $x */ $x >>= 1;'];
+
+        yield ['<?php /* @var int $x */ $x <<= 1;'];
+
+        yield ['<?php /* @var float $x */ $x += 10;'];
+
+        yield ['<?php /* @var float $x */ $x -= 10;'];
+
+        yield ['<?php /* @var float $x */ $x *= 10;'];
+
+        yield ['<?php /* @var float $x */ $x /= 10;'];
+
+        yield ['<?php /* @var float $x */ $x %= 10;'];
+
+        yield ['<?php /* @var float $x */ $x **= 10;'];
     }
 
     /**
