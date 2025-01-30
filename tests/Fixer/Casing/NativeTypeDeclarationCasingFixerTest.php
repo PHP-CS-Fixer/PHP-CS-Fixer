@@ -271,6 +271,16 @@ function Foo(INTEGER $a) {}
                 }
             }',
         ];
+
+        yield 'constants' => [
+            <<<'PHP'
+                <?php
+                function f() {}
+                if (True === $x) {
+                } elseif (True == $y) {
+                } elseif ($z === False) {}
+                PHP,
+        ];
     }
 
     /**
