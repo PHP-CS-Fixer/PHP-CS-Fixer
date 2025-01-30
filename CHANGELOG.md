@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.68.5
+---------------------
+
+* fix: `NativeTypeDeclarationCasingFixer` - do not touch constants named as native types (#8404)
+
 Changelog for v3.68.4
 ---------------------
 
