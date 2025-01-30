@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -134,6 +135,13 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             if ($tokens[$nextIndex]->equals('=') || $tokens[$nextIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                continue;
+            }
+
+            if (
+                !$tokens[$prevIndex]->isGivenKind([T_CONST, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON])
+                && !$tokens[$nextIndex]->isGivenKind([T_VARIABLE, CT::T_TYPE_ALTERNATION])
+            ) {
                 continue;
             }
 
