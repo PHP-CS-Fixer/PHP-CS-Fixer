@@ -370,7 +370,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset \'array_shape_inners\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
@@ -381,6 +381,30 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset \'array_shape_start\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'array_shape_unsealed_type_a\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'array_shape_unsealed_type_comma\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'array_shape_unsealed_type_start\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'array_shape_unsealed_variadic\' might not exist on non\\-empty\\-array\\<array\\{string, int\\<\\-1, max\\>\\}\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/DocBlock/TypeExpression.php',
