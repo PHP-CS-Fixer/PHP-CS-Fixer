@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.68.4
+---------------------
+
+* chore: run SCA on PHP 8.4 (#8396)
+* fix: NativeTypeDeclarationCasingFixer should not touch property names (#8400)
+
 Changelog for v3.68.3
 ---------------------
 
