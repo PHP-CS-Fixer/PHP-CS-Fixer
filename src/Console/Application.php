@@ -44,7 +44,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.68.4';
+    public const VERSION = '3.68.5-DEV';
     public const VERSION_CODENAME = 'Persian Successor';
 
     /**
