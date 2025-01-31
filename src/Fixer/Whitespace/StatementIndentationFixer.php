@@ -408,7 +408,8 @@ if ($foo) {
             ) {
                 $previousOpenTagContent = $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)
                     ? Preg::replace('/\S/', '', $tokens[$index - 1]->getContent())
-                    : '';
+                    : ''
+                ;
 
                 $content = $previousOpenTagContent.($token->isWhitespace() ? $token->getContent() : '');
 

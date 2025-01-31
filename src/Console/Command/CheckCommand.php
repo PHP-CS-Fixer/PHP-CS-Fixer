@@ -41,7 +41,8 @@ final class CheckCommand extends FixCommand
         $help = explode('<comment>--dry-run</comment>', parent::getHelp());
 
         return substr($help[0], 0, strrpos($help[0], "\n") - 1)
-            .substr($help[1], strpos($help[1], "\n"));
+            .substr($help[1], strpos($help[1], "\n"))
+        ;
     }
 
     protected function configure(): void

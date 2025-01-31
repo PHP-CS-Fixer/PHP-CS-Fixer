@@ -263,6 +263,7 @@ class Foo
     {
         return self::LINE_NEXT === $option
             ? BracesPositionFixer::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END
-            : BracesPositionFixer::SAME_LINE;
+            : BracesPositionFixer::SAME_LINE
+        ;
     }
 }
