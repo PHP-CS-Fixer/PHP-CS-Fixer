@@ -1658,9 +1658,9 @@ class A
                 <?php
                 class Foo
                 {
-                    public const bool C = true;
                     public const int A = 42;
                     public const string B = 'bravo';
+                    public const bool C = true;
                 }
                 PHP,
             <<<'PHP'

@@ -410,7 +410,10 @@ Custom values:
 
                 if ('property' === $element['type']) {
                     $element['name'] = $tokens[$i]->getContent();
-                } elseif (\in_array($element['type'], ['use_trait', 'case', 'constant', 'method', 'magic', 'construct', 'destruct'], true)) {
+                } elseif ('constant' === $element['type']) {
+                    $equalsSignIndex = $tokens->getNextTokenOfKind($i, ['=']);
+                    $element['name'] = $tokens[$tokens->getPrevMeaningfulToken($equalsSignIndex)]->getContent();
+                } elseif (\in_array($element['type'], ['use_trait', 'case', 'method', 'magic', 'construct', 'destruct'], true)) {
                     $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
