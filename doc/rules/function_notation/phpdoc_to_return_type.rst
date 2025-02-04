@@ -27,15 +27,6 @@ Manual actions are required if inherited signatures are not properly documented.
 Configuration
 -------------
 
-``map_types``
-~~~~~~~~~~~~~
-
-Map of custom types, eg template types from PHPStan.
-
-Allowed types: ``array<string, string>``
-
-Default value: ``[]``
-
 ``scalar_types``
 ~~~~~~~~~~~~~~~~
 
@@ -45,6 +36,15 @@ coercion system.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+``types_map``
+~~~~~~~~~~~~~
+
+Map of custom types, e.g. template types from PHPStan.
+
+Allowed types: ``array<string, string>``
+
+Default value: ``[]``
 
 ``union_types``
 ~~~~~~~~~~~~~~~

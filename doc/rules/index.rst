@@ -19,7 +19,7 @@ Alias
   Replace non multibyte-safe functions with corresponding mb function.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky)*
 
-  Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
+  Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
 - `no_alias_functions <./alias/no_alias_functions.rst>`_ *(risky)*
 
   Master functions shall be used instead of aliases.
@@ -76,6 +76,9 @@ Attribute Notation
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
+- `general_attribute_remove <./attribute_notation/general_attribute_remove.rst>`_
+
+  Removes configured attributes by their respective FQN.
 - `ordered_attributes <./attribute_notation/ordered_attributes.rst>`_
 
   Sorts attributes using the configured sort algorithm.
@@ -427,7 +430,7 @@ Function Notation
   Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
-  Anonymous functions with one-liner return statement must use arrow functions.
+  Anonymous functions with return as the only statement must use arrow functions.
 - `void_return <./function_notation/void_return.rst>`_ *(risky)*
 
   Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
@@ -715,7 +718,7 @@ PHPDoc
   Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
 - `general_phpdoc_annotation_remove <./phpdoc/general_phpdoc_annotation_remove.rst>`_
 
-  Configured annotations should be omitted from PHPDoc.
+  Removes configured annotations from PHPDoc.
 - `general_phpdoc_tag_rename <./phpdoc/general_phpdoc_tag_rename.rst>`_
 
   Renames PHPDoc tags.
@@ -754,16 +757,16 @@ PHPDoc
   PHPDoc ``list`` type must be used instead of ``array`` without a key.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
 
-  ``@access`` annotations should be omitted from PHPDoc.
+  ``@access`` annotations must be removed from PHPDoc.
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_
 
   No alias PHPDoc tags should be used.
 - `phpdoc_no_empty_return <./phpdoc/phpdoc_no_empty_return.rst>`_
 
-  ``@return void`` and ``@return null`` annotations should be omitted from PHPDoc.
+  ``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
 - `phpdoc_no_package <./phpdoc/phpdoc_no_package.rst>`_
 
-  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
+  ``@package`` and ``@subpackage`` annotations must be removed from PHPDoc.
 - `phpdoc_no_useless_inheritdoc <./phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
 
   Classy that does not inherit must not have ``@inheritdoc`` tags.

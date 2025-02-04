@@ -2,7 +2,7 @@
 Rule ``use_arrow_functions``
 ============================
 
-Anonymous functions with one-liner return statement must use arrow functions.
+Anonymous functions with return as the only statement must use arrow functions.
 
 Warning
 -------

@@ -60,10 +60,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private ParallelConfig $parallelConfig;
 
-    /**
-     * @var null|string
-     */
-    private $phpExecutable;
+    private ?string $phpExecutable = null;
 
     /**
      * @TODO: 4.0 - update to @PER

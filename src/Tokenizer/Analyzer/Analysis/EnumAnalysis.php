@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class EnumAnalysis extends AbstractControlCaseStructuresAnalysis

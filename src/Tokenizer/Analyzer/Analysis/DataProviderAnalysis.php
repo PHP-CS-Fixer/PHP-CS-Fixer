@@ -17,6 +17,11 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Utils;
 
+/**
+ * @internal
+ *
+ * @readonly
+ */
 final class DataProviderAnalysis
 {
     private string $name;

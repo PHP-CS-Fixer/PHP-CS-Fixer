@@ -26,20 +26,11 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class LambdaNotUsedImportFixer extends AbstractFixer
 {
-    /**
-     * @var ArgumentsAnalyzer
-     */
-    private $argumentsAnalyzer;
+    private ArgumentsAnalyzer $argumentsAnalyzer;
 
-    /**
-     * @var FunctionsAnalyzer
-     */
-    private $functionAnalyzer;
+    private FunctionsAnalyzer $functionAnalyzer;
 
-    /**
-     * @var TokensAnalyzer
-     */
-    private $tokensAnalyzer;
+    private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
     {

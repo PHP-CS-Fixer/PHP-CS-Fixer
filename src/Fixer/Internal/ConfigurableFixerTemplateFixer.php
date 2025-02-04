@@ -311,12 +311,10 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             if ('array' === $allowed) {
                 $default = $option->getDefault();
-                $getTypes = static function ($values): array {
-                    return array_unique(array_map(
-                        static fn ($val) => \gettype($val),
-                        $values
-                    ));
-                };
+                $getTypes = static fn ($values): array => array_unique(array_map(
+                    static fn ($val) => \gettype($val),
+                    $values
+                ));
                 $defaultKeyTypes = $getTypes(array_keys($default));
                 $defaultValueTypes = $getTypes(array_values($default));
                 $allowed = \sprintf(

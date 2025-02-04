@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: phpdoc_to_property_type,fully_qualified_strict_types.
 --RULESET--
-{"phpdoc_to_property_type":{"map_types":{"TFixer":"\\PhpCsFixer\\AbstractFixer"}},"fully_qualified_strict_types":{"import_symbols":true}}
+{"phpdoc_to_property_type":{"types_map":{"TFixer":"\\PhpCsFixer\\AbstractFixer"}},"fully_qualified_strict_types":{"import_symbols":true}}
 --EXPECT--
 <?php
 

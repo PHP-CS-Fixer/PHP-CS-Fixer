@@ -469,7 +469,7 @@ Fixing examples:
             /**
              * @var list<CodeSampleInterface>
              */
-            private $samples;
+            private array $samples;
 
             /**
              * @param list<CodeSampleInterface> $samples
