@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "297427baff627eab39b26f3490ae03c2",
+    "content-hash": "719fbe41ee0d8733c0b7e445c7195474",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -536,16 +536,16 @@
         },
         {
             "name": "kubawerlos/composer-smaller-lock",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kubawerlos/composer-smaller-lock.git",
-                "reference": "3b0a8695de0595d471d3383118972f10e31ab41e"
+                "reference": "a985cb7b56d7473a44e4ec37c07d4deb39871ac2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kubawerlos/composer-smaller-lock/zipball/3b0a8695de0595d471d3383118972f10e31ab41e",
-                "reference": "3b0a8695de0595d471d3383118972f10e31ab41e"
+                "url": "https://api.github.com/repos/kubawerlos/composer-smaller-lock/zipball/a985cb7b56d7473a44e4ec37c07d4deb39871ac2",
+                "reference": "a985cb7b56d7473a44e4ec37c07d4deb39871ac2"
             },
             "require": {
                 "composer-plugin-api": "^2.0.12",
@@ -2057,7 +2057,7 @@
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.4"
     },
