@@ -33,7 +33,7 @@
         "react/promise": "^2.0 || ^3.0",
         "react/socket": "^1.0",
         "react/stream": "^1.0",
-        "sebastian/diff": "^4.0 || ^5.1 || ^6.0",
+        "sebastian/diff": "^4.0 || ^5.1 || ^6.0 || ^7.0",
         "symfony/console": "^5.4 || ^6.4 || ^7.0",
         "symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0",
         "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
