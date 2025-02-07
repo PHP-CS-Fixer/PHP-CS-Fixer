@@ -222,6 +222,12 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             $modifierKinds[] = T_READONLY;
         }
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            $modifierKinds[] = T_PRIVATE_SET;
+            $modifierKinds[] = T_PROTECTED_SET;
+            $modifierKinds[] = T_PUBLIC_SET;
+        }
+
         while ($tokens[$index]->isGivenKind($modifierKinds)) {
             $index = $tokens->getNextMeaningfulToken($index);
         }
