@@ -545,18 +545,12 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/kubawerlos/composer-smaller-lock/zipball/a985cb7b56d7473a44e4ec37c07d4deb39871ac2",
-                "reference": "a985cb7b56d7473a44e4ec37c07d4deb39871ac2",
-                "shasum": ""
+                "reference": "a985cb7b56d7473a44e4ec37c07d4deb39871ac2"
             },
             "require": {
                 "composer-plugin-api": "^2.0.12",
                 "ext-json": "*",
                 "php": "^7.4 || ^8.0"
-            },
-            "require-dev": {
-                "composer/composer": "^2.0.12",
-                "mikey179/vfsstream": "^1.6.8",
-                "phpunit/phpunit": "^9.5.4"
             },
             "type": "composer-plugin",
             "extra": {
@@ -567,16 +561,10 @@
                     "ComposerSmallerLock\\": "./src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Plugin to keep composer.lock smaller and readable",
-            "support": {
-                "issues": "https://github.com/kubawerlos/composer-smaller-lock/issues",
-                "source": "https://github.com/kubawerlos/composer-smaller-lock/tree/1.1.0"
-            },
-            "time": "2025-02-02T09:27:16+00:00"
+            "description": "Plugin to keep composer.lock smaller and readable"
         },
         {
             "name": "localheinz/diff",
@@ -2069,9 +2057,9 @@
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
