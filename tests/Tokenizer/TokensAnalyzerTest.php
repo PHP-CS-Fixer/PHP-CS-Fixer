@@ -2411,8 +2411,8 @@ class TestClass {
 
     public function testIsWhilePartOfDoWhile(): void
     {
-        $source =
-<<<'SRC'
+        $source
+= <<<'SRC'
     <?php
     // `not do`
     while(false) {

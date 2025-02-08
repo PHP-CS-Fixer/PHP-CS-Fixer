@@ -148,8 +148,8 @@ if ($baz == true) {
             $tokens->ensureWhitespaceAtIndex(
                 $index - 1,
                 1,
-                self::NEXT_LINE === $this->configuration['position'] ?
-                    $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $index)
+                self::NEXT_LINE === $this->configuration['position']
+                    ? $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $index)
                     : ' '
             );
         }
