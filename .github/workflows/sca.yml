@@ -83,10 +83,13 @@ jobs:
       - name: Check - composer-require-checker
         run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
 
+      - name: Check - composer bump
+        if: ${{ github.event_name == 'pull_request' }}
+        run: composer bump --dry-run --working-dir=./dev-tools
+
       - name: Check - composer normalize
         run: |
           composer normalize --dry-run --working-dir=./dev-tools ../composer.json
-          composer bump --dry-run --working-dir=./dev-tools
           composer normalize --dry-run --working-dir=./dev-tools composer.json
 
       - name: Check - shell scripts
