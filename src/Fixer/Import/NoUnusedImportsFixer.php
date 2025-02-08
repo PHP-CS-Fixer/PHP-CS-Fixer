@@ -193,7 +193,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
     ): void {
         [$start, $end] = ($useDeclaration->isInMulti() && !$forceCompleteRemoval)
             ? [$useDeclaration->getChunkStartIndex(), $useDeclaration->getChunkEndIndex()]
-            : [$useDeclaration->getStartIndex(), $useDeclaration->getEndIndex()];
+            : [$useDeclaration->getStartIndex(), $useDeclaration->getEndIndex()]
+        ;
         $loopStartIndex = $useDeclaration->isInMulti() || $forceCompleteRemoval ? $end : $end - 1;
 
         for ($index = $loopStartIndex; $index >= $start; --$index) {

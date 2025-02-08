@@ -166,7 +166,8 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
 
         return
             $this->isPHPDoc($tokens, $docBlockIndex) // If the function doesn't have test in its name, and no doc block, it's not a test
-            && str_contains($tokens[$docBlockIndex]->getContent(), '@test');
+            && str_contains($tokens[$docBlockIndex]->getContent(), '@test')
+        ;
     }
 
     private function isMethod(Tokens $tokens, int $index): bool

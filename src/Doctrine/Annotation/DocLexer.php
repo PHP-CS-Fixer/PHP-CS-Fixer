@@ -142,7 +142,8 @@ final class DocLexer
 
         if (is_numeric($value)) {
             return str_contains($value, '.') || false !== stripos($value, 'e')
-                ? self::T_FLOAT : self::T_INTEGER;
+                ? self::T_FLOAT : self::T_INTEGER
+            ;
         }
 
         return $type;

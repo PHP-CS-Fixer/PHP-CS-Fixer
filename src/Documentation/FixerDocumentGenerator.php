@@ -242,7 +242,8 @@ final class FixerDocumentGenerator
 
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
-                    : '';
+                    : ''
+                ;
 
                 $doc .= <<<RST
                     - `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
@@ -347,7 +348,8 @@ final class FixerDocumentGenerator
 
             $attributes = 0 === \count($attributes)
                 ? ''
-                : ' *('.implode(', ', $attributes).')*';
+                : ' *('.implode(', ', $attributes).')*'
+            ;
 
             $summary = str_replace('`', '``', $fixer->getDefinition()->getSummary());
 
@@ -390,7 +392,8 @@ final class FixerDocumentGenerator
         $tokens = Tokens::fromCode($old);
         $file = $sample instanceof FileSpecificCodeSampleInterface
             ? $sample->getSplFileInfo()
-            : new StdinFileInfo();
+            : new StdinFileInfo()
+        ;
 
         if ($fixer instanceof ConfigurableFixerInterface) {
             $fixer->configure($sample->getConfiguration() ?? []);

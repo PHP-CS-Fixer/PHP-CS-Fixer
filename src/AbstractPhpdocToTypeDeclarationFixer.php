@@ -51,7 +51,8 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     use ConfigurableFixerTrait;
 
     private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
-        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
+        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)'
+    ;
 
     /**
      * @var array<string, int>

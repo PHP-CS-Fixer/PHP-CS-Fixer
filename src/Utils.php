@@ -210,7 +210,8 @@ final class Utils
     {
         return \is_array($value)
             ? self::arrayToString($value)
-            : self::scalarToString($value);
+            : self::scalarToString($value)
+        ;
     }
 
     /**
@@ -242,7 +243,8 @@ final class Utils
 
             $str .= \is_array($v)
                 ? self::arrayToString($v).', '
-                : self::scalarToString($v).', ';
+                : self::scalarToString($v).', '
+            ;
         }
 
         return substr($str, 0, -2).']';

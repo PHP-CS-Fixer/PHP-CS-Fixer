@@ -219,11 +219,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
             return
                 $tokens[$thirdMeaningful]->equals('(')
-                && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $thirdMeaningful) > $end;
+                && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $thirdMeaningful) > $end
+            ;
         }
 
         return
             !$tokens[$end]->equals(')')
-            || $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end) >= $start;
+            || $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end) >= $start
+        ;
     }
 }
