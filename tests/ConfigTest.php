@@ -219,6 +219,18 @@ final class ConfigTest extends TestCase
         self::assertSame($expected, $config->getCustomFixers());
     }
 
+    public static function provideRegisterCustomFixersCases(): iterable
+    {
+        $fixers = [
+            new NoWhitespaceBeforeCommaInArrayFixer(),
+            new IncludeFixer(),
+        ];
+
+        yield [$fixers, $fixers];
+
+        yield [$fixers, new \ArrayIterator($fixers)];
+    }
+
     public function testConfigDefault(): void
     {
         $config = new Config();
@@ -259,18 +271,6 @@ final class ConfigTest extends TestCase
 
         $config->setUsingCache(false);
         self::assertFalse($config->getUsingCache());
-    }
-
-    public static function provideRegisterCustomFixersCases(): iterable
-    {
-        $fixers = [
-            new NoWhitespaceBeforeCommaInArrayFixer(),
-            new IncludeFixer(),
-        ];
-
-        yield [$fixers, $fixers];
-
-        yield [$fixers, new \ArrayIterator($fixers)];
     }
 
     public function testConfigConstructorWithName(): void

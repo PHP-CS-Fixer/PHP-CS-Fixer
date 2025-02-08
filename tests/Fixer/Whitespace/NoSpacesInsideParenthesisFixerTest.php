@@ -35,29 +35,6 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function testLeaveNewLinesAlone(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            class Foo
-            {
-                private function bar()
-                {
-                    if (foo(
-                        'foo' ,
-                        'bar'    ,
-                        [1, 2, 3],
-                        'baz' // a comment just to mix things up
-                    )) {
-                        return 1;
-                    };
-                }
-            }
-            EOF;
-        $this->doTest($expected);
-    }
-
     /**
      * @return iterable<array{0: string, 1?: string}>
      */
@@ -138,6 +115,29 @@ $a = $b->test(  // do not remove space
                 // and this comment
 );',
         ];
+    }
+
+    public function testLeaveNewLinesAlone(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            class Foo
+            {
+                private function bar()
+                {
+                    if (foo(
+                        'foo' ,
+                        'bar'    ,
+                        [1, 2, 3],
+                        'baz' // a comment just to mix things up
+                    )) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
+        $this->doTest($expected);
     }
 
     /**
