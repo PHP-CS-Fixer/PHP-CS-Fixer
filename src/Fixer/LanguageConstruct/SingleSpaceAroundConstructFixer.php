@@ -237,7 +237,7 @@ yield  from  baz();
             ...array_values($this->fixTokenMapFollowedByASingleSpace),
         ];
 
-        return $tokens->isAnyTokenKindsFound($tokenKinds) && !$tokens->hasAlternativeSyntax();
+        return $tokens->isAnyTokenKindsFound($tokenKinds);
     }
 
     protected function configurePostNormalisation(): void
@@ -333,7 +333,7 @@ yield  from  baz();
 
             $whitespaceTokenIndex = $index + 1;
 
-            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE], [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]])) {
+            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ':', ';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE], [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]])) {
                 continue;
             }
 
