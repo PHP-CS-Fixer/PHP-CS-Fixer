@@ -337,8 +337,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                         $extraIndent += 7; // \strlen('static ');
                     }
 
-                    $line
-                        = $item['indent']
+                    $line = $item['indent']
                         .' * '
                         .('' !== $itemOpeningLine['hint'] ? ' ' : '')
                         .$this->getIndent(
@@ -358,33 +357,29 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
                 $itemOpeningLine = $item;
 
-                $line
-                    = $item['indent']
+                $line = $item['indent']
                     .' * @'
                     .$item['tag'];
 
                 if ($hasStatic) {
-                    $line
-                        .= $this->getIndent(
-                            $tagMax - \strlen($item['tag']) + $spacingForTag,
-                            '' !== $item['static'] ? $spacingForTag : 0
-                        )
+                    $line .= $this->getIndent(
+                        $tagMax - \strlen($item['tag']) + $spacingForTag,
+                        '' !== $item['static'] ? $spacingForTag : 0
+                    )
                         .('' !== $item['static'] ? $item['static'] : $this->getIndent(6 /* \strlen('static') */, 0));
                     $hintVerticalAlignIndent = $spacingForTag;
                 } else {
                     $hintVerticalAlignIndent = $tagMax - \strlen($item['tag']) + $spacingForTag;
                 }
 
-                $line
-                    .= $this->getIndent(
-                        $hintVerticalAlignIndent,
-                        '' !== $item['hint'] ? $spacingForTag : 0
-                    )
+                $line .= $this->getIndent(
+                    $hintVerticalAlignIndent,
+                    '' !== $item['hint'] ? $spacingForTag : 0
+                )
                     .$item['hint'];
 
                 if ('' !== $item['var']) {
-                    $line
-                        .= $this->getIndent((0 !== $hintMax ? $hintMax : -1) - \strlen($item['hint']) + $spacingForTag, $spacingForTag)
+                    $line .= $this->getIndent((0 !== $hintMax ? $hintMax : -1) - \strlen($item['hint']) + $spacingForTag, $spacingForTag)
                         .$item['var']
                         .(
                             '' !== $item['desc']
