@@ -2390,12 +2390,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/FixerFactoryTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to method ReflectionClass\\<object\\>\\:\\:isSubclassOf\\(\\) with \'PhpCsFixer\\\\\\\\Fixer\\\\\\\\AbstractPhpUnitFixer\' will always evaluate to false\\.$#',
-	'identifier' => 'method.impossibleType',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access property \\$file on SimpleXMLElement\\|false\\.$#',
 	'identifier' => 'property.nonObject',
 	'count' => 1,
