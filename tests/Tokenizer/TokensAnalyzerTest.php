@@ -2411,46 +2411,45 @@ class TestClass {
 
     public function testIsWhilePartOfDoWhile(): void
     {
-        $source =
-<<<'SRC'
-    <?php
-    // `not do`
-    while(false) {
-    }
-    while (false);
-    while (false)?>
-    <?php
+        $source = <<<'SRC'
+            <?php
+            // `not do`
+            while(false) {
+            }
+            while (false);
+            while (false)?>
+            <?php
 
-    if(false){
-    }while(false);
+            if(false){
+            }while(false);
 
-    if(false){
-    }while(false)?><?php
-    while(false){}while(false){}
+            if(false){
+            }while(false)?><?php
+            while(false){}while(false){}
 
-    while ($i <= 10):
-        echo $i;
-        $i++;
-    endwhile;
+            while ($i <= 10):
+                echo $i;
+                $i++;
+            endwhile;
 
-    ?>
-    <?php while(false): ?>
+            ?>
+            <?php while(false): ?>
 
-    <?php endwhile ?>
+            <?php endwhile ?>
 
-    <?php
-    // `do`
-    do{
-    } while(false);
+            <?php
+            // `do`
+            do{
+            } while(false);
 
-    do{
-    } while(false)?>
-    <?php
-    if (false){}do{}while(false);
+            do{
+            } while(false)?>
+            <?php
+            if (false){}do{}while(false);
 
-    // `not do`, `do`
-    if(false){}while(false){}do{}while(false);
-    SRC;
+            // `not do`, `do`
+            if(false){}while(false){}do{}while(false);
+            SRC;
 
         $expected = [
             3 => false,
