@@ -224,6 +224,9 @@ Class Notation
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.
+- `readonly_class <./class_notation/readonly_class.rst>`_ *(risky)*
+
+  Removes redundant ``readonly`` from properties where possible and adds ``readonly`` modifier  if the class is final.
 - `self_accessor <./class_notation/self_accessor.rst>`_ *(risky)*
 
   Inside class or interface element ``self`` should be preferred to the class name itself.
