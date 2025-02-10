@@ -33,7 +33,7 @@
         "react/promise": "^2.0 || ^3.0",
         "react/socket": "^1.0",
         "react/stream": "^1.0",
-        "sebastian/diff": "^4.0 || ^5.1 || ^6.0",
+        "sebastian/diff": "^4.0 || ^5.1 || ^6.0 || ^7.0",
         "symfony/console": "^5.4 || ^6.4 || ^7.0",
         "symfony/event-dispatcher": "^5.4 || ^6.4 || ^7.0",
         "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
@@ -55,7 +55,7 @@
         "php-cs-fixer/accessible-object": "^1.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.6",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.6",
-        "phpunit/phpunit": "^9.6.22 || ^10.5.45 || ^11.5.7",
+        "phpunit/phpunit": "^9.6.22 || ^10.5.45 || ^11.5.7 || ^12.0.2",
         "symfony/var-dumper": "^5.4.48 || ^6.4.18 || ^7.2.0",
         "symfony/yaml": "^5.4.45 || ^6.4.18 || ^7.2.0"
     },
