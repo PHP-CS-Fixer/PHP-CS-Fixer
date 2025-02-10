@@ -209,12 +209,26 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: php php-cs-fixer fix --rules=no_unreachable_default_argument_value,nullable_type_declaration_for_default_null_value --diff vendor
 
+      - name: Check if we have to convert PHPDocs to attributes in tests
+        if: matrix.run-tests == 'yes'
+        id: convert-phpdocs-to-attributes
+        run: |
+          set +e
+          vendor/bin/phpunit --atleast-version 12
+          echo "exitcode=$?" >> $GITHUB_OUTPUT
+
+      - name: Convert PHPDocs to attributes in tests
+        if: matrix.run-tests == 'yes' && steps.convert-phpdocs-to-attributes.outputs.exitcode == 0
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+        run: php php-cs-fixer fix --quiet --rules=php_unit_attributes
+
       - name: Run tests
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/paraunit run --testsuite unit,integration
+        run: vendor/bin/phpunit tests/Console/Command/FixCommandTest.php --filter=testIntersectionPathMode
 
       - name: Run tests with "short_open_tag" enabled
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'

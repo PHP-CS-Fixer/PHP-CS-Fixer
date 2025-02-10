@@ -37,6 +37,10 @@ final class FixCommandTest extends TestCase
             '--show-progress' => 'none',
         ]);
 
+        if (Command::SUCCESS !== $cmdTester->getStatusCode()) {
+            dump($cmdTester->getDisplay());
+        }
+
         self::assertSame(
             Command::SUCCESS,
             $cmdTester->getStatusCode()
