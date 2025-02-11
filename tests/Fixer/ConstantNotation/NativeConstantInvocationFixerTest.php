@@ -555,7 +555,7 @@ echo M_PI;
     /**
      * @dataProvider provideFixPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testFixPhp80(string $expected): void
     {
@@ -583,7 +583,7 @@ echo M_PI;
     /**
      * @dataProvider provideFixPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testFixPhp81(string $expected): void
     {
@@ -607,7 +607,7 @@ echo M_PI;
     /**
      * @dataProvider provideFixPhp82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testFixPhp82(string $expected): void
     {
@@ -628,7 +628,7 @@ echo M_PI;
     /**
      * @dataProvider provideFixPhp83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testFixPhp83(string $expected, string $input): void
     {

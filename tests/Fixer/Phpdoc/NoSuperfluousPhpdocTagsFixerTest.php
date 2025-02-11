@@ -2659,7 +2659,7 @@ static fn ($foo): int => 1;',
      *
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
@@ -3004,7 +3004,7 @@ class Foo {
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
@@ -3164,7 +3164,7 @@ enum Foo {
      *
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testFix82(string $expected, ?string $input = null, array $config = []): void
     {

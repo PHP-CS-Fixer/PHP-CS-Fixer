@@ -83,7 +83,7 @@ final class ParallelConfigFactoryTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testDetectConfigurationWithNamedArgs(): void
     {

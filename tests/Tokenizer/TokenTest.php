@@ -131,7 +131,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testEnumIsClassy(): void
     {

@@ -108,7 +108,7 @@ Bar3:
      *
      * @dataProvider provideGotoLabel80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testGotoLabel80(string $source, array $expectedTrue): void
     {

@@ -116,7 +116,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testProcess81(string $source, array $expectedTokens = []): void
     {

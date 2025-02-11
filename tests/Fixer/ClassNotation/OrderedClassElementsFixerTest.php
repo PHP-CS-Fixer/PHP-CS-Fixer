@@ -1465,7 +1465,7 @@ class TestClass
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testFix80(string $expected, string $input): void
     {
@@ -1541,7 +1541,7 @@ trait TestTrait
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -1617,7 +1617,7 @@ class A
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testFix82(string $expected, ?string $input = null): void
     {
@@ -1640,7 +1640,7 @@ class A
      *
      * @dataProvider provideFix83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testFix83(string $expected, ?string $input = null, array $configuration = []): void
     {

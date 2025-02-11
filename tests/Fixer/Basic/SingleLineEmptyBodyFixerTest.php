@@ -265,7 +265,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -318,7 +318,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

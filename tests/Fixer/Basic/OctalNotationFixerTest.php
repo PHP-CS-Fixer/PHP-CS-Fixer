@@ -23,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *
- * @requires PHP 8.1
+ * @requires PHP ^8.1
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  */

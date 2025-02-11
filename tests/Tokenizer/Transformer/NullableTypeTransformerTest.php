@@ -128,7 +128,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcess80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testProcess80(array $expectedTokens, string $source): void
     {
@@ -177,7 +177,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testProcess81(array $expectedTokens, string $source): void
     {
@@ -217,7 +217,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testProcess83(array $expectedTokens, string $source): void
     {
