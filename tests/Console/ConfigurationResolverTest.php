@@ -430,12 +430,12 @@ final class ConfigurationResolverTest extends TestCase
     {
         $config = new Config();
         $config->getFinder()
-            ->in(__DIR__)
-            ->notPath(basename(__FILE__))
+            ->in(__DIR__.'/../Fixtures')
+            ->notPath('dummy-file.php')
         ;
 
         $resolver = $this->createConfigurationResolver(
-            ['path' => [__FILE__]],
+            ['path' => [__DIR__.'/../Fixtures/dummy-file.php']],
             $config
         );
 
@@ -446,12 +446,12 @@ final class ConfigurationResolverTest extends TestCase
     {
         $config = new Config();
         $config->getFinder()
-            ->in(__DIR__)
-            ->notPath(basename(__FILE__))
+            ->in(__DIR__.'/../Fixtures')
+            ->notPath('dummy-file.php')
         ;
 
         $resolver = $this->createConfigurationResolver([
-            'path' => [__FILE__],
+            'path' => [__DIR__.'/../Fixtures/dummy-file.php'],
             'path-mode' => 'intersection',
         ], $config);
 
@@ -460,15 +460,15 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode(): void
     {
-        $dir = \dirname(__DIR__);
+        $dir = __DIR__.'/..';
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__))
+            ->exclude('Fixtures')
         ;
 
         $resolver = $this->createConfigurationResolver(
-            ['path' => [__FILE__]],
+            ['path' => [__DIR__.'/../Fixtures/dummy-file.php']],
             $config
         );
 
@@ -477,16 +477,16 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode(): void
     {
-        $dir = \dirname(__DIR__);
+        $dir = __DIR__.'/..';
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__))
+            ->exclude('Fixtures')
         ;
 
         $resolver = $this->createConfigurationResolver([
             'path-mode' => 'intersection',
-            'path' => [__FILE__],
+            'path' => [__DIR__.'/../Fixtures/dummy-file.php'],
         ], $config);
 
         self::assertCount(0, $resolver->getFinder());
@@ -498,11 +498,11 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->notPath('foo-'.basename(__FILE__))
+            ->notPath('foo-dummy-file.php')
         ;
 
         $resolver = $this->createConfigurationResolver(
-            ['path' => [__FILE__]],
+            ['path' => [__DIR__.'/../Fixtures/dummy-file.php']],
             $config
         );
 
