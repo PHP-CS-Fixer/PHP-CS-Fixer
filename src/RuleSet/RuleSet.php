@@ -135,7 +135,8 @@ final class RuleSet implements RuleSetInterface
         if ($ruleSet instanceof DeprecatedRuleSetDescriptionInterface) {
             $messageEnd = [] === $ruleSet->getSuccessorsNames()
                 ? 'No replacement available'
-                : \sprintf('Use %s instead', Utils::naturalLanguageJoin($ruleSet->getSuccessorsNames()));
+                : \sprintf('Use %s instead', Utils::naturalLanguageJoin($ruleSet->getSuccessorsNames()))
+            ;
 
             Utils::triggerDeprecation(new \RuntimeException("Rule set \"{$setName}\" is deprecated. {$messageEnd}."));
         }

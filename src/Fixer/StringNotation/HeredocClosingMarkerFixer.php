@@ -192,7 +192,8 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
         $markerQuote = $isNowdoc
             ? '\''
-            : (true === $this->configuration['explicit_heredoc_style'] ? '"' : '');
+            : (true === $this->configuration['explicit_heredoc_style'] ? '"' : '')
+        ;
 
         return [new Token([
             $startToken->getId(),

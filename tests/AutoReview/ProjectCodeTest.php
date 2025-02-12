@@ -248,7 +248,8 @@ final class ProjectCodeTest extends TestCase
 
                 $doc = false !== $rc->getDocComment()
                     ? new DocBlock($rc->getDocComment())
-                    : null;
+                    : null
+                ;
 
                 if (
                     $rc->isInterface()

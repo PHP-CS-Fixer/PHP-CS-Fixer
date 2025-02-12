@@ -107,7 +107,8 @@ function foo ($bar) {}
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()
                     ? \sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
-                    : '';
+                    : ''
+                ;
                 $content = Preg::replaceCallback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
                     static fn (array $matches): string => $matches[1].mb_strtolower($matches[2]).$matches[3],

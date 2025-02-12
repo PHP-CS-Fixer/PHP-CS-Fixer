@@ -264,7 +264,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                                 $allowed[0]->getAllowedValues()
                             )
                         )
-                        .'}';
+                        .'}'
+                    ;
                 } elseif ($fixer instanceof HeaderCommentFixer && 'header' === $optionName) {
                     // nothing to do
                 } elseif ($fixer instanceof BlankLinesBeforeNamespaceFixer && \in_array($optionName, ['min_line_breaks', 'max_line_breaks'], true)) {
@@ -474,7 +475,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 self::getShortClassName(AbstractFunctionReferenceFixerTest::class),
                 self::getShortClassName(AbstractFixerTest::class),
                 self::getShortClassName(AbstractProxyFixerTest::class),
-            ], true);
+            ], true)
+        ;
     }
 
     private function getFixerForSrcFile(\SplFileInfo $file): ?FixerInterface

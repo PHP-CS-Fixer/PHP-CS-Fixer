@@ -324,7 +324,8 @@ final class TypeExpression
 
         $type = $value === $this->value
             ? $this
-            : $this->inner($value);
+            : $this->inner($value)
+        ;
 
         return $callback($type);
     }

@@ -320,7 +320,8 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
         if ($useDeclaration->isFunction() || $useDeclaration->isConstant()) {
             $importStatementParams = $useDeclaration->isFunction()
                 ? [CT::T_FUNCTION_IMPORT, 'function']
-                : [CT::T_CONST_IMPORT, 'const'];
+                : [CT::T_CONST_IMPORT, 'const']
+            ;
 
             $newTokens[] = new Token($importStatementParams);
             $newTokens[] = new Token([T_WHITESPACE, ' ']);

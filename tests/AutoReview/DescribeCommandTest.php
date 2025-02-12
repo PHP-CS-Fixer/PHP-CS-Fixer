@@ -45,7 +45,8 @@ final class DescribeCommandTest extends TestCase
             $message = "Rule \"{$fixerName}\" is deprecated. "
                 .([] === $successorsNames
                     ? 'It will be removed in version 4.0.'
-                    : \sprintf('Use %s instead.', Utils::naturalLanguageJoin($successorsNames)));
+                    : \sprintf('Use %s instead.', Utils::naturalLanguageJoin($successorsNames)))
+            ;
             $this->expectDeprecation($message);
         }
 
