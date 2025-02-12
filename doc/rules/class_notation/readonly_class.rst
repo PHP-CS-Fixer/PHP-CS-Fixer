@@ -3,7 +3,7 @@ Rule ``readonly_class``
 =======================
 
 Removes redundant ``readonly`` from properties where possible and adds
-``readonly`` modifier  if the class is final.
+``readonly`` modifier if the class is final.
 
 Warning
 -------
@@ -24,19 +24,19 @@ Example #1
    --- Original
    +++ New
     <?php
-                readonly class MyService
-                {
-   -                private readonly Foo $foo;
-   +                private Foo $foo;
+                    readonly class MyService
+                    {
+   -                    private readonly Foo $foo;
+   +                    private Foo $foo;
 
-                    public function __construct(
-                        FooFactory $fooFactory,
-   -                    private readonly Bar $bar,
-   +                    private Bar $bar,
-                    ) {
-                        $this->foo = $fooFactory->create();
+                        public function __construct(
+                            FooFactory $fooFactory,
+   -                        private readonly Bar $bar,
+   +                        private Bar $bar,
+                        ) {
+                            $this->foo = $fooFactory->create();
+                        }
                     }
-                }
 
 Example #2
 ~~~~~~~~~~
@@ -46,16 +46,16 @@ Example #2
    --- Original
    +++ New
     <?php
-   -            final class TestClass
-   +            final readonly class TestClass
-                {
-                    public function __construct(
-   -                     public readonly string $foo,
-   -                     public readonly int $bar,
-   +                     public string $foo,
-   +                     public int $bar,
-                    ) {}
-                }
+   -                final class TestClass
+   +                final readonly class TestClass
+                    {
+                        public function __construct(
+   -                         public readonly string $foo,
+   -                         public readonly int $bar,
+   +                         public string $foo,
+   +                         public int $bar,
+                        ) {}
+                    }
 References
 ----------
 

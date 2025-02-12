@@ -15,11 +15,13 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Oleksandr Bredikhin <olbresoft@gmail.com>
@@ -38,7 +40,7 @@ final class ReadonlyClassFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 67;
+        return 30;
     }
 
     public function isCandidate(Tokens $tokens): bool
@@ -49,31 +51,33 @@ final class ReadonlyClassFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Removes redundant `readonly` from properties where possible and adds `readonly` modifier  if the class is final.',
+            'Removes redundant `readonly` from properties where possible and adds `readonly` modifier if the class is final.',
             [
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     "<?php
-            readonly class MyService
-            {
-                private readonly Foo \$foo;
+                readonly class MyService
+                {
+                    private readonly Foo \$foo;
 
-                public function __construct(
-                    FooFactory \$fooFactory,
-                    private readonly Bar \$bar,
-                ) {
-                    \$this->foo = \$fooFactory->create();
-                }
-            }\n"
+                    public function __construct(
+                        FooFactory \$fooFactory,
+                        private readonly Bar \$bar,
+                    ) {
+                        \$this->foo = \$fooFactory->create();
+                    }
+                }\n",
+                    new VersionSpecification(8_02_00)
                 ),
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     "<?php
-            final class TestClass
-            {
-                public function __construct(
-                     public readonly string \$foo,
-                     public readonly int \$bar,
-                ) {}
-            }\n"
+                final class TestClass
+                {
+                    public function __construct(
+                         public readonly string \$foo,
+                         public readonly int \$bar,
+                    ) {}
+                }\n",
+                    new VersionSpecification(8_02_00)
                 ),
             ],
             null,
@@ -83,41 +87,35 @@ final class ReadonlyClassFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
         $classIndex = null;
         $isClassReadonly = false;
         $isClassFinal = false;
         $canMarkClassReadonly = true;
+        $readonlyTokenIndexes = [];
+
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_READONLY)) {
-                $nextToken = $tokens->getNextNonWhitespace($index) ?? null;
-
-                if ($nextToken && $tokens[$nextToken]->isGivenKind(T_CLASS)) {
-                    $isClassReadonly = true;
-                    $classIndex = $nextToken;
-
-                    continue;
-                }
-            }
-
             if ($token->isGivenKind(T_CLASS)) {
                 $classIndex = $index;
-                $finalIndex = $tokens->getPrevTokenOfKind($classIndex, [[T_FINAL]]);
-
-                if ($finalIndex && $tokens[$finalIndex]->isGivenKind(T_FINAL)) {
-                    $isClassFinal = true;
-
-                    continue;
-                }
+                $modifiers = $tokensAnalyzer->getClassyModifiers($index);
+                $isClassFinal = null !== $modifiers['final'];
+                $isClassReadonly = null !== $modifiers['readonly'];
             }
 
-            if ($token->isGivenKind(T_VARIABLE) && null !== $classIndex) {
+            if ($token->isGivenKind(T_VARIABLE)) {
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-                $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+                $readonlyIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
 
-                if ($prevPrevTokenIndex && !$tokens[$prevPrevTokenIndex]->isGivenKind(T_READONLY)) {
+                if (!$tokens[$readonlyIndex]->isGivenKind(T_READONLY)) {
                     $canMarkClassReadonly = false;
+                }
 
-                    break;
+                if ($tokens[$readonlyIndex]->isGivenKind(T_READONLY)) {
+                    if (!$isClassReadonly && $isClassFinal) {
+                        $readonlyIndex += 2;
+                    }
+
+                    $readonlyTokenIndexes[] = $readonlyIndex;
                 }
             }
         }
@@ -127,7 +125,7 @@ final class ReadonlyClassFixer extends AbstractFixer
                 new Token([T_READONLY, 'readonly']),
                 new Token([T_WHITESPACE, ' ']),
             ]);
-            $classIndex += 2;
+
             $isClassReadonly = true;
         }
 
@@ -135,18 +133,12 @@ final class ReadonlyClassFixer extends AbstractFixer
             return;
         }
 
-        $countTokens = $tokens->count();
-        for ($index = $classIndex; $index < $countTokens; ++$index) {
-            $token = $tokens[$index];
+        foreach ($readonlyTokenIndexes as $index) {
+            $tokens->clearAt($index);
 
-            if ($token->isGivenKind(
-                [T_READONLY]
-            )) {
-                $tokens->clearAt($index);
-                ++$index;
-                if ($tokens[$index]->isGivenKind(T_WHITESPACE)) {
-                    $tokens->clearAt($index);
-                }
+            $whiteSpaceIndex = $index + 1;
+            if ($tokens[$whiteSpaceIndex]->isGivenKind(T_WHITESPACE)) {
+                $tokens->clearAt($whiteSpaceIndex);
             }
         }
     }
