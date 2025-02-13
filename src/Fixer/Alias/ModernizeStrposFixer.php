@@ -162,7 +162,7 @@ if (stripos($haystack, $needle) === false) {}
 
             // assert called with 2 arguments
             $openIndex = $tokens->getNextMeaningfulToken($index);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
             if (2 !== \count($arguments)) {
