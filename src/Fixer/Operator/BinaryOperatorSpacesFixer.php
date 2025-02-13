@@ -208,7 +208,7 @@ $b=2;
 $c = $d    xor    $e;
 $f    -=  1;
 ',
-                    ['operators' => ['=' => 'align', 'xor' => null]]
+                    ['operators' => ['=' => self::ALIGN, 'xor' => null]]
                 ),
                 new CodeSample(
                     '<?php
@@ -218,7 +218,7 @@ $d = $ee+=$f;
 $g = $b     +=$c;
 $h = $ee+=$f;
 ',
-                    ['operators' => ['+=' => 'align_single_space']]
+                    ['operators' => ['+=' => self::ALIGN_SINGLE_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -226,13 +226,13 @@ $a = $b===$c;
 $d = $f   ===  $g;
 $h = $i===  $j;
 ',
-                    ['operators' => ['===' => 'align_single_space_minimal']]
+                    ['operators' => ['===' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
                 ),
                 new CodeSample(
                     '<?php
 $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 ',
-                    ['operators' => ['|' => 'no_space']]
+                    ['operators' => ['|' => self::NO_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -241,7 +241,7 @@ $array = [
     "baaaaaaaaaaar"  =>  11,
 ];
 ',
-                    ['operators' => ['=>' => 'single_space']]
+                    ['operators' => ['=>' => self::SINGLE_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -252,7 +252,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align']]
+                    ['operators' => ['=>' => self::ALIGN]]
                 ),
                 new CodeSample(
                     '<?php
@@ -263,7 +263,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_by_scope']]
+                    ['operators' => ['=>' => self::ALIGN_BY_SCOPE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -274,7 +274,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -285,7 +285,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space_by_scope']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_BY_SCOPE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -296,7 +296,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space_minimal']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
                 ),
                 new CodeSample(
                     '<?php
@@ -307,7 +307,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space_minimal_by_scope']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]]
                 ),
             ]
         );
