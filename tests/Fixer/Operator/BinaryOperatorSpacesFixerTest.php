@@ -3313,7 +3313,7 @@ function test()
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testUnionTypesAreNotChanged(): void
     {
@@ -3338,7 +3338,7 @@ function test()
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testIntersectionTypesAreNotChanged(): void
     {

@@ -263,7 +263,7 @@ class Foo {
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

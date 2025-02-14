@@ -649,7 +649,7 @@ else?><?php echo 5;',
     /**
      * @dataProvider provideNegativePhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testNegativePhp80(string $expected): void
     {
@@ -799,7 +799,7 @@ else?><?php echo 5;',
     /**
      * @dataProvider provideConditionsWithoutBraces80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testConditionsWithoutBraces80(string $expected): void
     {

@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  *
- * @requires PHP 8.2
+ * @requires PHP ^8.2
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {
@@ -332,7 +332,7 @@ return new static();
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testProcess83(string $source, array $expectedTokens): void
     {

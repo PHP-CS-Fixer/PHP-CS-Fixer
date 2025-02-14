@@ -389,7 +389,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
     {
@@ -440,7 +440,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
     {

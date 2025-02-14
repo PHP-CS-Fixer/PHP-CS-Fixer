@@ -766,7 +766,7 @@ namespace {
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -792,7 +792,7 @@ namespace {
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
@@ -823,7 +823,7 @@ namespace {
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testFix82(string $expected, string $input): void
     {
@@ -860,7 +860,7 @@ namespace {
     /**
      * @dataProvider provideFix83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testFix83(string $expected, ?string $input = null): void
     {

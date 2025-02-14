@@ -28,7 +28,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      *
      * @dataProvider provideFixCases
      *

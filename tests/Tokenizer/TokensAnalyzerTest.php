@@ -486,7 +486,7 @@ final class TokensAnalyzerTest extends TestCase
      *
      * @dataProvider provideGetClassyElements81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testGetClassyElements81(array $expected, string $source): void
     {
@@ -672,7 +672,7 @@ enum Foo: string
      *
      * @dataProvider provideGetClassyElements82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testGetClassyElements82(array $expected, string $source): void
     {
@@ -770,7 +770,7 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testIsAnonymousClass80(array $expected, string $source): void
     {
@@ -798,7 +798,7 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testIsAnonymousClass81(array $expected, string $source): void
     {
@@ -821,7 +821,7 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testIsAnonymousClass83(array $expected, string $source): void
     {
@@ -974,7 +974,7 @@ preg_replace_callback(
      *
      * @dataProvider provideIsLambda80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testIsLambda80(array $expected, string $source): void
     {
@@ -1304,7 +1304,7 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testIsConstantInvocationPhp80(array $expected, string $source): void
     {
@@ -1414,7 +1414,7 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
      *
      * @dataProvider provideIsConstantInvocationPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testIsConstantInvocationPhp81(array $expected, string $source): void
     {
@@ -1467,7 +1467,7 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testIsConstantInvocationPhp82(array $expected, string $source): void
     {
@@ -1503,7 +1503,7 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP ^8.3
      */
     public function testIsConstantInvocationPhp83(array $expected, string $source): void
     {
@@ -1576,7 +1576,7 @@ abstract class Baz
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testIsConstantInvocationForNullSafeObjectOperator(): void
     {
@@ -2128,7 +2128,7 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP ^8.0
      */
     public function testIsBinaryOperator80(array $expected, string $source): void
     {
@@ -2168,7 +2168,7 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testIsBinaryOperator81(array $expected, string $source): void
     {
@@ -2188,7 +2188,7 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      */
     public function testIsBinaryOperator82(array $expected, string $source): void
     {
@@ -2492,7 +2492,7 @@ class TestClass {
      *
      * @param array<int, bool> $expected
      *
-     * @requires PHP 8.1
+     * @requires PHP ^8.1
      */
     public function testIsEnumCase(string $source, array $expected): void
     {
@@ -2905,7 +2905,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP ^8.2
      *
      * @dataProvider provideGetClassyModifiersOnPhp82Cases
      *

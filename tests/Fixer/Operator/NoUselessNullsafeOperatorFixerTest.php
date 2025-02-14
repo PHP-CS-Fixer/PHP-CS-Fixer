@@ -19,7 +19,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @requires PHP 8.0
+ * @requires PHP ^8.0
  *
  * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
  *

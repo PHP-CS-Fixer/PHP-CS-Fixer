@@ -23,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\AttributeNotation\GeneralAttributeRemoveFixer
  *
- * @requires PHP 8.0
+ * @requires PHP ^8.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\GeneralAttributeRemoveFixer>
  *
