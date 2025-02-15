@@ -292,6 +292,9 @@ switch($a) {
         $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
 
         for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
+            if ($tokens[$index]->isIgnoredFor($this)) {
+                continue;
+            }
             $this->fixByToken($tokens[$index], $index);
         }
     }
