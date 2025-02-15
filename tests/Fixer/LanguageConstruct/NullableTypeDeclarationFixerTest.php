@@ -32,7 +32,7 @@ final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testFix(string $expected, ?string $input = null): void
     {
@@ -107,7 +107,7 @@ class Dto
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -239,7 +239,7 @@ class Foo
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
@@ -290,7 +290,7 @@ class Qux
      *
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2
      */
     public function testFix82(string $expected, ?string $input = null, array $config = []): void
     {

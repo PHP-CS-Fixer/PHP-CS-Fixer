@@ -26,7 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      *
      * @dataProvider provideFixCases
      */

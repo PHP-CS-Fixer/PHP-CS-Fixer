@@ -78,7 +78,7 @@ final class RangeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testFixPrePHP80(): void
     {

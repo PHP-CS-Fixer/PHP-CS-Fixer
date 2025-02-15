@@ -604,7 +604,7 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testCodeWithCommentsAndMultiLine(): void
     {

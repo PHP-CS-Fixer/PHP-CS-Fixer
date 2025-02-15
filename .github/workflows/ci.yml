@@ -225,6 +225,13 @@ jobs:
           composer require --dev --with-all-dependencies phpunit/phpunit:^12.0.2
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
+      - name: Show number of tests
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: vendor/bin/phpunit --list-tests | wc -l
+
       - name: Run tests
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:

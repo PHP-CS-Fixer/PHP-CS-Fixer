@@ -517,7 +517,7 @@ foo#
      *
      * @dataProvider provideFixPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testFixPhp80(string $expected, ?string $input = null, array $configuration = []): void
     {

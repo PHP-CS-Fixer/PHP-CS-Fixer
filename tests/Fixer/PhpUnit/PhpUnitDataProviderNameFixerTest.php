@@ -403,7 +403,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP ^8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideFix80Cases
      */

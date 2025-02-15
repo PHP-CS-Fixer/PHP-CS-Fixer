@@ -343,7 +343,7 @@ use Space\Models\ {
     /**
      * @dataProvider provideFixPrePHP80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testFixPrePHP80(string $expected, string $input): void
     {

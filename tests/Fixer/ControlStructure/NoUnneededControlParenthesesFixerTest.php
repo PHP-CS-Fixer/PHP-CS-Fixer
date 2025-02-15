@@ -1625,7 +1625,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider providePrePhp8Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testPrePhp8(string $expected, string $input): void
     {
@@ -1673,7 +1673,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testFixPhp80(string $expected, ?string $input = null): void
     {
@@ -1739,7 +1739,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testFixPhp81(string $expected, ?string $input = null): void
     {
@@ -1826,7 +1826,7 @@ enum Suit
      *
      * @dataProvider provideFixPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4
      */
     public function testFixPre84(string $expected, ?string $input = null, array $configuration = []): void
     {

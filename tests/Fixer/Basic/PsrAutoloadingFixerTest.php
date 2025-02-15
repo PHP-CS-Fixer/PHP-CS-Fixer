@@ -423,7 +423,7 @@ class ClassTwo {};
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -448,7 +448,7 @@ class extends stdClass {};
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideFix81Cases
      */

@@ -1462,7 +1462,7 @@ Bar3:
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testFixPre80(): void
     {
@@ -1495,7 +1495,7 @@ use /**/A\B/**/;
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -1570,7 +1570,7 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideFix81Cases
      */

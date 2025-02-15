@@ -90,7 +90,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideArguments80Cases
      */
@@ -115,7 +115,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideArguments81Cases
      */
@@ -274,7 +274,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideArgumentInfo80Cases
      */
@@ -324,7 +324,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideArgumentInfo81Cases
      */

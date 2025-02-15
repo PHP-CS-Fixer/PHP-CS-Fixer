@@ -39,7 +39,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires     PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideIsAttributeCases
      */
@@ -133,7 +133,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideGetAttributeDeclarationsCases
      *
@@ -342,7 +342,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideGetAttributeDeclarations81Cases
      *

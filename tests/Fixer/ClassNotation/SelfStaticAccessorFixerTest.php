@@ -380,7 +380,7 @@ $b = function() { return static::class; };
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testFix81(string $expected, string $input): void
     {
@@ -488,7 +488,7 @@ enum Foo
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2
      */
     public function testFix82(string $expected, string $input): void
     {
