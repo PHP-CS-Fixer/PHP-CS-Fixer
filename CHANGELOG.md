@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.69.0
+---------------------
+
+* feat: Add unsealed array shape phpdoc support (#8299)
+* fix: `OrderedClassElementsFixer` - sort correctly typed constants (#8408)
+* chore: do not use test class as test data (#8430)
+* chore: update `checkbashisms` to 2.25.2 (#8427)
+* chore: use constants instead of literal strings (#8422)
+* CI: no need to unlock deps on master (#8426)
+* CI: run tests using PHPUnit 12 (#8431)
+* deps: bump kubawerlos/composer-smaller-lock from 1.0.1 to 1.1.0 in /dev-tools (#8414)
+* deps: bump maglnet/composer-require-checker from 4.14.0 to 4.15.0 in /dev-tools (#8406)
+* deps: bump phpstan/phpstan from 2.1.3 to 2.1.5 in /dev-tools in the phpstan group (#8437)
+* deps: bump the phpstan (#8423)
+* deps: upgrade dev requirements (#8424)
+
 Changelog for v3.68.5
 ---------------------
 
