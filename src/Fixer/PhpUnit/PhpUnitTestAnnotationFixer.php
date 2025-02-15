@@ -72,8 +72,8 @@ class Test extends \PhpUnit\FrameWork\TestCase
 public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEnding(), ['style' => 'annotation']),
             ],
             null,
-            'This fixer may change the name of your tests, and could cause incompatibility with'.
-            ' abstract classes or interfaces.'
+            'This fixer may change the name of your tests, and could cause incompatibility with'
+            .' abstract classes or interfaces.'
         );
     }
 

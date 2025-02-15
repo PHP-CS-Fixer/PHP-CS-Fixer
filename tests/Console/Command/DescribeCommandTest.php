@@ -438,8 +438,7 @@ $/s',
             '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
         ]);
 
-        $expected =
-"Description of the `Vendor/describe_fixture` rule.
+        $expected = "Description of the `Vendor/describe_fixture` rule.
 
 Fixture for describe command.
 
