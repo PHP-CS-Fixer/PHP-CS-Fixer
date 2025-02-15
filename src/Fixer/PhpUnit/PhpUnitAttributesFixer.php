@@ -472,7 +472,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
     private static function fixVersionConstraint(string $version): string
     {
-        if (Preg::match('/^[\d\.]+$/', $version)) {
+        if (Preg::match('/^[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?$/', $version)) {
             $version = '>= '.$version;
         }
 

@@ -521,6 +521,12 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@requires PHP 6|8',
         );
 
+        yield 'handle RequiresPhp with alpha versions' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhp('>= 5.4.0-alpha1')]",
+            '@requires PHP 5.4.0-alpha1',
+        );
+
         yield 'handle RequiresPhpExtension' => self::createCase(
             ['class', 'method'],
             "#[RequiresPhpExtension('mysqli', '>= 8.3.0')]",
