@@ -31,7 +31,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testProcess(string $source, array $expectedTokens = []): void
     {
@@ -406,7 +406,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
      *
      * @dataProvider provideProcess82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2
      */
     public function testProcess82(string $source, array $expectedTokens): void
     {
@@ -517,7 +517,7 @@ class Dnf
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3
      */
     public function testProcess83(string $source, array $expectedTokens): void
     {

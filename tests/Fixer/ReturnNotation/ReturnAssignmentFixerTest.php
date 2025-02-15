@@ -1265,7 +1265,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
     /**
      * @dataProvider provideDoNotFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testDoNotFix80(string $expected): void
     {
@@ -1352,7 +1352,7 @@ function foo(&$c) {
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -1405,7 +1405,7 @@ function foo(&$c) {
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3
      *
      * @dataProvider provideFixPhp83Cases
      */

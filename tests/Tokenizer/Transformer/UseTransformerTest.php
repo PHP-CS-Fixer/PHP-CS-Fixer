@@ -154,7 +154,7 @@ use C\{D,E,};
     /**
      * @param _TransformerTestExpectedTokens $expectedTokens
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideProcessPhp81Cases
      */

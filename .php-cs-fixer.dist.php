@@ -15,6 +15,7 @@ declare(strict_types=1);
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
+use PhpCsFixer\Fixer\Internal\PhpUnitRequiresFixer;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 return (new Config())
@@ -22,6 +23,7 @@ return (new Config())
     ->setRiskyAllowed(true)
     ->registerCustomFixers([
         new ConfigurableFixerTemplateFixer(),
+        new PhpUnitRequiresFixer(),
     ])
     ->setRules([
         '@PHP74Migration' => true,
@@ -30,6 +32,7 @@ return (new Config())
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
+        'PhpCsFixerInternal/php_unit_requires' => true, // internal rules, shall not be used outside of main repo
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => ['header' => <<<'EOF'
             This file is part of PHP CS Fixer.

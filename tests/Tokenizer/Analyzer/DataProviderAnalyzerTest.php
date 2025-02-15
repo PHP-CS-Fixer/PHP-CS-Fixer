@@ -187,7 +187,7 @@ final class DataProviderAnalyzerTest extends TestCase
     /**
      * @param list<DataProviderAnalysis> $expected
      *
-     * @requires PHP ^8.0
+     * @requires PHP >= 8.0
      *
      * @dataProvider provideGettingDataProviders80Cases
      */

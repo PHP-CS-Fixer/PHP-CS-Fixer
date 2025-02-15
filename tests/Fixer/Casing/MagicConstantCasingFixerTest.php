@@ -97,7 +97,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      *
      * @dataProvider provideFixPre80Cases
      */
