@@ -2726,6 +2726,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/PhpTag/NoClosingTagFixerTest.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset int\\<0, max\\> might not exist on non\\-empty\\-list\\<array\\{start\\: int, visibility\\: string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\: string, name\\: string, end\\: int\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderMethodOrderFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Generator expects value type array\\{0\\: string, 1\\?\\: string\\}, list\\<string\\> given\\.$#',
 	'identifier' => 'generator.valueType',
 	'count' => 5,
