@@ -16,7 +16,7 @@ fixed.
 
 Allowed values: a subset of ``['constant', 'function', 'property']``
 
-Default value: ``['function', 'property', 'constant']``
+Default value: ``['function', 'property']``
 
 Examples
 --------

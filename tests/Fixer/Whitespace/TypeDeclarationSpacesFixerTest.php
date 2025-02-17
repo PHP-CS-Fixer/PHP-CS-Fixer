@@ -464,6 +464,7 @@ class Foo
      */
     public function testFix83(string $expected, ?string $input = null): void
     {
+        $this->fixer->configure(['elements' => ['property', 'constant', 'function']]);
         $this->doTest($expected, $input);
     }
 
