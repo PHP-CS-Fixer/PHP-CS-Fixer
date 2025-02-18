@@ -458,16 +458,25 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         } elseif ('RequiresPhp' === $attributeName && isset($matches[3])) {
             $attributeTokens = [self::createEscapedStringToken($matches[2].' '.$matches[3])];
         } else {
-            $attributeTokens = [self::createEscapedStringToken($matches[2])];
+            $attributeTokens = [self::createEscapedStringToken(self::fixVersionConstraint($matches[2]))];
         }
 
         if (isset($matches[3]) && 'RequiresPhp' !== $attributeName) {
             $attributeTokens[] = new Token(',');
             $attributeTokens[] = new Token([T_WHITESPACE, ' ']);
-            $attributeTokens[] = self::createEscapedStringToken($matches[3]);
+            $attributeTokens[] = self::createEscapedStringToken(self::fixVersionConstraint($matches[3]));
         }
 
         return self::createAttributeTokens($tokens, $index, $attributeName, ...$attributeTokens);
+    }
+
+    private static function fixVersionConstraint(string $version): string
+    {
+        if (Preg::match('/^[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?$/', $version)) {
+            $version = '>= '.$version;
+        }
+
+        return $version;
     }
 
     /**

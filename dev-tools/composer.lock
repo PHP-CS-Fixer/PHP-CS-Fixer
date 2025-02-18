@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87fb8855431f5bc7770276c77d611ec4",
+    "content-hash": "8994b8ea4ce6278fb210e6ae3891656d",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -1032,16 +1032,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.3",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "64ae44e48214f3deebdaeebf2694297a10a2bea9"
+                "reference": "451b17f9665481ee502adc39be987cb71067ece2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/64ae44e48214f3deebdaeebf2694297a10a2bea9",
-                "reference": "64ae44e48214f3deebdaeebf2694297a10a2bea9"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/451b17f9665481ee502adc39be987cb71067ece2",
+                "reference": "451b17f9665481ee502adc39be987cb71067ece2"
             },
             "require": {
                 "php": "^7.4|^8.0"
