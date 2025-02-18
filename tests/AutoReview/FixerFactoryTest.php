@@ -734,6 +734,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_attributes' => [
                 'fully_qualified_strict_types',
+                'no_empty_phpdoc',
                 'phpdoc_separation',
                 'phpdoc_trim',
                 'phpdoc_trim_consecutive_blank_line_separation',
