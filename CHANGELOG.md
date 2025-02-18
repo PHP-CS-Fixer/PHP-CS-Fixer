@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.69.1
+---------------------
+
+* fix: `PhpUnitAttributesFixer` - convert correctly version constraint (#8439)
+* test: `PhpUnitAttributesFixer` must run before `NoEmptyPhpdocFixer` (#8443)
+
 Changelog for v3.69.0
 ---------------------
 
