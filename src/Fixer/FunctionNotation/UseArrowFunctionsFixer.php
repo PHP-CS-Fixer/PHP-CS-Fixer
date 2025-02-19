@@ -86,7 +86,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 $parametersStart = $tokens->getNextMeaningfulToken($parametersStart);
             }
 
-            $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $parametersStart);
+            $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $parametersStart);
 
             // Find `use ()` start and end
             // Abort if it contains reference variables
