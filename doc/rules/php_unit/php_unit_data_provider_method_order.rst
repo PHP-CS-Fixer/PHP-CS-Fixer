@@ -2,7 +2,7 @@
 Rule ``php_unit_data_provider_method_order``
 ============================================
 
-Data provider method must be placed after/before the first test where used.
+Data provider method must be placed after/before the last/first test where used.
 
 Configuration
 -------------
@@ -10,7 +10,7 @@ Configuration
 ``placement``
 ~~~~~~~~~~~~~
 
-Prefix that replaces "test".
+Where to place the data provider relative to the test where used.
 
 Allowed values: ``'after'`` and ``'before'``
 

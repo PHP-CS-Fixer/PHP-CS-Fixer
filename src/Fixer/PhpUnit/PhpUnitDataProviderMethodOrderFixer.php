@@ -47,7 +47,7 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Data provider method must be placed after/before the first test where used.',
+            'Data provider method must be placed after/before the last/first test where used.',
             [
                 new CodeSample(
                     '<?php
@@ -92,7 +92,7 @@ class FooTest extends TestCase {
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('placement', 'Prefix that replaces "test".'))
+            (new FixerOptionBuilder('placement', 'Where to place the data provider relative to the test where used.'))
                 ->setAllowedValues(['after', 'before'])
                 ->setDefault('after')
                 ->getOption(),
