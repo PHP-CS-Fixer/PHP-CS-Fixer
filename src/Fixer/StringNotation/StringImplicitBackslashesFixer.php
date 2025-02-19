@@ -137,7 +137,8 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
             $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
             $isDoubleQuotedString =
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
-                || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
+                || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
+            ;
 
             if ($isSingleQuotedString
                 ? 'ignore' === $this->configuration['single_quoted']
@@ -152,13 +153,15 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
                 ? 'escape' === $this->configuration['single_quoted']
                 : ($isDoubleQuotedString
                     ? 'escape' === $this->configuration['double_quoted']
-                    : 'escape' === $this->configuration['heredoc']);
+                    : 'escape' === $this->configuration['heredoc'])
+            ;
 
             $reservedRegex = $isSingleQuotedString
                 ? $singleQuotedReservedRegex
                 : ($isDoubleQuotedString
                     ? $doubleQuotedReservedRegex
-                    : $heredocSyntaxReservedRegex);
+                    : $heredocSyntaxReservedRegex)
+            ;
 
             if ($escapeBackslashes) {
                 $regex = '/(?<!\\\)\\\((?:\\\\\\\)*)(?!'.$reservedRegex.')/';

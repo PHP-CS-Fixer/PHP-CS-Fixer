@@ -111,7 +111,8 @@ enum Foo
 
         return $tokens->isTokenKindFound(T_STATIC)
             && $tokens->isAnyTokenKindsFound($classyTypes)
-            && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
+            && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF])
+        ;
     }
 
     /**

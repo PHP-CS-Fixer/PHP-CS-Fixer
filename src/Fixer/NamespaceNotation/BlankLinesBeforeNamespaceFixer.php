@@ -203,7 +203,8 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
         // - use configured min line breaks if currently there is less preceding line breaks
         $newlinesForWhitespaceToken = $precedingNewlines >= $expectedMax
             ? $expectedMax
-            : max($precedingNewlines, $expectedMin);
+            : max($precedingNewlines, $expectedMin)
+        ;
 
         if (null !== $openingToken) {
             // Use the configured line ending for the PHP opening tag

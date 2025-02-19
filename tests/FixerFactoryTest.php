@@ -106,7 +106,8 @@ final class FixerFactoryTest extends TestCase
                     && !$class->isAnonymous()
                     && $class->implementsInterface(FixerInterface::class)
                     && !$class->implementsInterface(InternalFixerInterface::class)
-                    && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
+                    && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\')
+                ;
             }
         );
 

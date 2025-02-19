@@ -68,7 +68,8 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     use ConfigurableFixerTrait;
 
     private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
-        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
+        .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)'
+    ;
 
     /**
      * @var array{
@@ -689,7 +690,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             return $currentTypeValue === $newTypeValue
                 ? $type
-                : new TypeExpression($newTypeValue, null, []);
+                : new TypeExpression($newTypeValue, null, [])
+            ;
         });
 
         return $typeExpression->toString();

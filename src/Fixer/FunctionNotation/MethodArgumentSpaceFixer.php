@@ -337,7 +337,8 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             $lastLineIndex = strrpos($existingIndentation, "\n");
             $existingIndentation = false === $lastLineIndex
                 ? $existingIndentation
-                : substr($existingIndentation, $lastLineIndex + 1);
+                : substr($existingIndentation, $lastLineIndex + 1)
+            ;
         }
 
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
