@@ -107,7 +107,7 @@ class FooTest extends TestCase {
             return;
         }
 
-        $endIndex = $elements[\count($elements) - 1]['end'];
+        $endIndex = $elements[array_key_last($elements)]['end'];
 
         $dataProvidersWithUsagePairs = $this->getDataProvidersWithUsagePairs($tokens, $startIndex, $endIndex);
         $origUsageDataProviderOrderPairs = $this->getOrigUsageDataProviderOrderPairs($dataProvidersWithUsagePairs);

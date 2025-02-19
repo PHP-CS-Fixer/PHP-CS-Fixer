@@ -284,7 +284,7 @@ Custom values:
                 continue;
             }
 
-            $endIndex = $elements[\count($elements) - 1]['end'];
+            $endIndex = $elements[array_key_last($elements)]['end'];
 
             $sorted = $this->sortElements($elements);
 
