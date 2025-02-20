@@ -173,7 +173,7 @@ final class FixCommandTest extends TestCase
     private function getDefaultArguments(): array
     {
         return [
-            'path' => [__FILE__],
+            'path' => [__DIR__.'/../../Fixtures/dummy-file.php'],
             '--path-mode' => 'override',
             '--allow-risky' => 'yes',
             '--dry-run' => true,
