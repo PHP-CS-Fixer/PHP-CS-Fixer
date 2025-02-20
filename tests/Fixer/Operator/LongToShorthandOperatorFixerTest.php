@@ -137,9 +137,7 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         // test simple with all operators
-
-        $reflection = new \ReflectionClass(LongToShorthandOperatorFixer::class);
-        $operators = $reflection->getStaticProperties()['operators'];
+        $operators = \Closure::bind(static fn (): array => LongToShorthandOperatorFixer::OPERATORS, null, LongToShorthandOperatorFixer::class)();
 
         foreach ($operators as $operator => $info) {
             $shortHand = $info[1];

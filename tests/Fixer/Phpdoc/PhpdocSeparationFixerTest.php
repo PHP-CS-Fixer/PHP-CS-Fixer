@@ -662,8 +662,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(
-            'The option "groups" value is invalid. '.
-            'The "param" tag belongs to more than one group.'
+            'The option "groups" value is invalid. '
+            .'The "param" tag belongs to more than one group.'
         );
 
         $this->fixer->configure(['groups' => [['param', 'return'], ['param', 'throws']]]);
@@ -673,8 +673,8 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(
-            'The option "groups" value is invalid. '.
-            'The "param" tag is specified more than once.'
+            'The option "groups" value is invalid. '
+            .'The "param" tag is specified more than once.'
         );
 
         $this->fixer->configure(['groups' => [['param', 'return', 'param', 'throws']]]);

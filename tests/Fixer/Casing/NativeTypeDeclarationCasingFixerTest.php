@@ -26,6 +26,18 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(): void
+    {
+        $this->doTest('<?php
+                class D {
+                    private MIXED $m;
+                };
+            ');
+    }
+
+    /**
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
@@ -208,12 +220,11 @@ function Foo(INTEGER $a) {}
                     private float $cx = 3.14;
                     private int $dx = 667;
                     private iterable $ex = [];
-                    private mixed $f;
-                    private object $g;
-                    private parent $h;
-                    private self $i;
-                    private static $j;
-                    private ?string $k;
+                    private object $f;
+                    private parent $g;
+                    private self $h;
+                    private static $i;
+                    private ?string $j;
 
                     private $INT = 1;
                     private FOO $bar;
@@ -229,12 +240,11 @@ function Foo(INTEGER $a) {}
                     private FLOAT $cx = 3.14;
                     private INT $dx = 667;
                     private ITERABLE $ex = [];
-                    private MIXED $f;
-                    private OBJECT $g;
-                    private PARENT $h;
-                    private Self $i;
-                    private STatic $j;
-                    private ?STRIng $k;
+                    private OBJECT $f;
+                    private PARENT $g;
+                    private Self $h;
+                    private STatic $i;
+                    private ?STRIng $j;
 
                     private $INT = 1;
                     private FOO $bar;
@@ -253,6 +263,24 @@ function Foo(INTEGER $a) {}
             '<?php class Foo { static $bar; }',
             '<?php class Foo { STATIC $bar; }',
         ];
+
+        yield 'dynamic property' => [
+            '<?php class Foo {
+                public function doFoo() {
+                    $this->Object->doBar();
+                }
+            }',
+        ];
+
+        yield 'constants' => [
+            <<<'PHP'
+                <?php
+                function f() {}
+                if (True === $x) {
+                } elseif (True == $y) {
+                } elseif ($z === False) {}
+                PHP,
+        ];
     }
 
     /**
@@ -270,6 +298,19 @@ function Foo(INTEGER $a) {}
      */
     public static function provideFix80Cases(): iterable
     {
+        yield 'class properties single type' => [
+            '<?php
+                class D {
+                    private mixed $m;
+                };
+            ',
+            '<?php
+                class D {
+                    private MIXED $m;
+                };
+            ',
+        ];
+
         yield [
             '<?php class T { public function Foo(object $A): static {}}',
             '<?php class T { public function Foo(object $A): StatiC {}}',
@@ -327,6 +368,27 @@ function Foo(INTEGER $a) {}
             '<?php $a = new class {
                     private NULL|INT|BOOL $a4 = false;
                 };',
+        ];
+
+        yield 'promoted properties' => [
+            <<<'PHP'
+                <?php class Foo extends Bar {
+                    public function __construct(
+                        public int $i,
+                        protected parent $p,
+                        private string $s
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo extends Bar {
+                    public function __construct(
+                        public INT $i,
+                        protected PARENT $p,
+                        private STRING $s
+                    ) {}
+                }
+                PHP,
         ];
     }
 
@@ -574,7 +636,7 @@ function Foo(INTEGER $a) {}
                 const self A = self::Hearts;
                 const static B = self::Hearts;
             }',
-            '<?php enum E: string {
+            '<?php enum E: STRING {
                 case Hearts = "H";
 
                 const INT TEST = 789;
@@ -583,12 +645,31 @@ function Foo(INTEGER $a) {}
             }',
         ];
 
+        yield 'enum with "Mixed" case' => [
+            <<<'PHP'
+                <?php
+                enum Foo
+                {
+                    case Mixed;
+                    public function bar()
+                    {
+                        self::Mixed;
+                    }
+                }
+                PHP,
+        ];
+
         yield 'do not fix' => [
             '<?php class Foo {
                 PUBLIC CONST FOO&STRINGABLE G = A::B;
             }
 
             CONST A = 1;',
+        ];
+
+        yield 'fix "false" in type' => [
+            '<?php class Foo { private false|int $bar; private false $baz; }',
+            '<?php class Foo { private FALSE|INT $bar; private FALSE $baz; }',
         ];
     }
 }

@@ -33,10 +33,10 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
             'Properties should be set to `null` instead of using `unset`.',
             [new CodeSample("<?php\nunset(\$this->a);\n")],
             null,
-            'Risky when relying on attributes to be removed using `unset` rather than be set to `null`.'.
-            ' Changing variables to `null` instead of unsetting means these still show up when looping over class variables'.
-            ' and reference properties remain unbroken.'.
-            ' With PHP 7.4, this rule might introduce `null` assignments to properties whose type declaration does not allow it.'
+            'Risky when relying on attributes to be removed using `unset` rather than be set to `null`.'
+            .' Changing variables to `null` instead of unsetting means these still show up when looping over class variables'
+            .' and reference properties remain unbroken.'
+            .' With PHP 7.4, this rule might introduce `null` assignments to properties whose type declaration does not allow it.'
         );
     }
 

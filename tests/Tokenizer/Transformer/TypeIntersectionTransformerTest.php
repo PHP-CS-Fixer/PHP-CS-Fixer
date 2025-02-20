@@ -21,11 +21,13 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -400,7 +402,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
@@ -511,7 +513,7 @@ class Dnf
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *

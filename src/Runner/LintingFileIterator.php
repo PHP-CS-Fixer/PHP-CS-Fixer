@@ -26,10 +26,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
  */
 final class LintingFileIterator extends \IteratorIterator implements LintingResultAwareFileIteratorInterface
 {
-    /**
-     * @var null|LintingResultInterface
-     */
-    private $currentResult;
+    private ?LintingResultInterface $currentResult = null;
 
     private LinterInterface $linter;
 

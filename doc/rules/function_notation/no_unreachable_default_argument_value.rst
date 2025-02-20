@@ -38,6 +38,7 @@ The rule is part of the following rule sets:
 - `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_
 - `@PER:risky <./../../ruleSets/PERRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_

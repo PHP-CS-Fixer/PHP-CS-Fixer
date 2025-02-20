@@ -71,15 +71,9 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
      */
     public const LINE_SAME = 'same';
 
-    /**
-     * @var null|BracesPositionFixer
-     */
-    private $bracesPositionFixer;
+    private ?BracesPositionFixer $bracesPositionFixer = null;
 
-    /**
-     * @var null|ControlStructureContinuationPositionFixer
-     */
-    private $controlStructureContinuationPositionFixer;
+    private ?ControlStructureContinuationPositionFixer $controlStructureContinuationPositionFixer = null;
 
     public function getDefinition(): FixerDefinitionInterface
     {

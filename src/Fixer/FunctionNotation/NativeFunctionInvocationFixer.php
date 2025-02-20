@@ -150,21 +150,21 @@ count();
 myGlobalFunction();
 count();
 ',
-                    ['include' => ['@all']]
+                    ['include' => [self::SET_ALL]]
                 ),
                 new CodeSample(
                     '<?php
 myGlobalFunction();
 count();
 ',
-                    ['include' => ['@internal']]
+                    ['include' => [self::SET_INTERNAL]]
                 ),
                 new CodeSample(
                     '<?php
 $a .= str_repeat($a, 4);
 $c = get_class($d);
 ',
-                    ['include' => ['@compiler_optimized']]
+                    ['include' => [self::SET_COMPILER_OPTIMIZED]]
                 ),
             ],
             null,

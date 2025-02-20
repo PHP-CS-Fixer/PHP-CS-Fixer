@@ -28,10 +28,8 @@ final class DocBlockTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
-     *
-     * @var string
      */
-    private static $sample = '/**
+    private static string $sample = '/**
      * Test docblock.
      *
      * @param string $hello

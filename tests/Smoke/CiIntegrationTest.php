@@ -34,10 +34,7 @@ use PhpCsFixer\Console\Application;
  */
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {
-    /**
-     * @var string
-     */
-    public static $fixtureDir;
+    public static string $fixtureDir;
 
     public static function setUpBeforeClass(): void
     {

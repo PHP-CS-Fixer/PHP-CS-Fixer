@@ -30,7 +30,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter. Requires PHP >= 7.0.',
+            'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter.',
             [
                 new CodeSample(
                     "<?php\ndirname(dirname(dirname(\$path)));\n"

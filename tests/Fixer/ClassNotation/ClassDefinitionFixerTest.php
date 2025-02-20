@@ -518,10 +518,7 @@ $a = new class implements
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $method = new \ReflectionMethod($this->fixer, 'getClassyDefinitionInfo');
-        $method->setAccessible(true);
-
-        $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
+        $result = \Closure::bind(static fn (ClassDefinitionFixer $fixer): array => $fixer->getClassyDefinitionInfo($tokens, $expected['classy']), null, ClassDefinitionFixer::class)($this->fixer);
 
         ksort($expected);
         ksort($result);
@@ -904,10 +901,8 @@ namespace {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
         self::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), \sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
-        $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
-        $method->setAccessible(true);
 
-        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
+        $result = \Closure::bind(static fn (ClassDefinitionFixer $fixer): array => $fixer->getClassyInheritanceInfo($tokens, $expected['start'], $label), null, ClassDefinitionFixer::class)($this->fixer);
 
         self::assertSame($expected, $result);
     }
@@ -917,10 +912,10 @@ namespace {
      */
     private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
     {
-        $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
-        $reflectionProperty->setAccessible(true);
-
-        self::assertSame($expected, $reflectionProperty->getValue($fixer));
+        self::assertSame(
+            $expected,
+            \Closure::bind(static fn (ClassDefinitionFixer $fixer): array => $fixer->configuration, null, ClassDefinitionFixer::class)($fixer),
+        );
     }
 
     /**

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -61,14 +62,11 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);
 
-        $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
-        $reflectionProperty->setAccessible(true);
-
         self::assertSame(
             ['replacements' => [
                 'rand' => 'random_int',
             ]],
-            $reflectionProperty->getValue($this->fixer)
+            \Closure::bind(static fn (RandomApiMigrationFixer $fixer): array => $fixer->configuration, null, RandomApiMigrationFixer::class)($this->fixer),
         );
     }
 

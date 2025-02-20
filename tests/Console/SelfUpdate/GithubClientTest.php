@@ -26,11 +26,7 @@ final class GithubClientTest extends TestCase
 {
     public function testGettingTags(): void
     {
-        $githubClient = new GithubClient();
-
-        \Closure::bind(static function (GithubClient $githubClient): void {
-            $githubClient->url = __DIR__.'/../../Fixtures/api_github_com_tags.json';
-        }, null, $githubClient)($githubClient);
+        $githubClient = new GithubClient(__DIR__.'/../../Fixtures/api_github_com_tags.json');
 
         self::assertSame(
             [

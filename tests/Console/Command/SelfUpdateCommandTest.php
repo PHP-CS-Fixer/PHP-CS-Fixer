@@ -36,10 +36,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class SelfUpdateCommandTest extends TestCase
 {
-    /**
-     * @var null|vfsStreamDirectory
-     */
-    private $root;
+    private ?vfsStreamDirectory $root = null;
 
     protected function setUp(): void
     {

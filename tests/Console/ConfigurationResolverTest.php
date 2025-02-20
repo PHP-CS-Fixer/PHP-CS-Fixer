@@ -430,12 +430,12 @@ final class ConfigurationResolverTest extends TestCase
     {
         $config = new Config();
         $config->getFinder()
-            ->in(__DIR__)
-            ->notPath(basename(__FILE__))
+            ->in(__DIR__.'/../Fixtures')
+            ->notPath('dummy-file.php')
         ;
 
         $resolver = $this->createConfigurationResolver(
-            ['path' => [__FILE__]],
+            ['path' => [__DIR__.'/../Fixtures/dummy-file.php']],
             $config
         );
 
@@ -446,12 +446,12 @@ final class ConfigurationResolverTest extends TestCase
     {
         $config = new Config();
         $config->getFinder()
-            ->in(__DIR__)
-            ->notPath(basename(__FILE__))
+            ->in(__DIR__.'/../Fixtures')
+            ->notPath('dummy-file.php')
         ;
 
         $resolver = $this->createConfigurationResolver([
-            'path' => [__FILE__],
+            'path' => [__DIR__.'/../Fixtures/dummy-file.php'],
             'path-mode' => 'intersection',
         ], $config);
 
@@ -460,15 +460,15 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode(): void
     {
-        $dir = \dirname(__DIR__);
+        $dir = __DIR__.'/..';
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__))
+            ->exclude('Fixtures')
         ;
 
         $resolver = $this->createConfigurationResolver(
-            ['path' => [__FILE__]],
+            ['path' => [__DIR__.'/../Fixtures/dummy-file.php']],
             $config
         );
 
@@ -477,16 +477,16 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode(): void
     {
-        $dir = \dirname(__DIR__);
+        $dir = __DIR__.'/..';
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__))
+            ->exclude('Fixtures')
         ;
 
         $resolver = $this->createConfigurationResolver([
             'path-mode' => 'intersection',
-            'path' => [__FILE__],
+            'path' => [__DIR__.'/../Fixtures/dummy-file.php'],
         ], $config);
 
         self::assertCount(0, $resolver->getFinder());
@@ -498,11 +498,11 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->notPath('foo-'.basename(__FILE__))
+            ->notPath('foo-dummy-file.php')
         ;
 
         $resolver = $this->createConfigurationResolver(
-            ['path' => [__FILE__]],
+            ['path' => [__DIR__.'/../Fixtures/dummy-file.php']],
             $config
         );
 
@@ -822,6 +822,24 @@ final class ConfigurationResolverTest extends TestCase
         );
 
         self::assertSame($expected, $resolver->getUsingCache());
+    }
+
+    /**
+     * @return iterable<array{bool, bool, null|string}>
+     */
+    public static function provideResolveBooleanOptionCases(): iterable
+    {
+        yield [true, true, 'yes'];
+
+        yield [true, false, 'yes'];
+
+        yield [false, true, 'no'];
+
+        yield [false, false, 'no'];
+
+        yield [true, true, null];
+
+        yield [false, false, null];
     }
 
     public function testResolveUsingCacheWithPositiveConfigAndNoOption(): void
@@ -1266,24 +1284,6 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getRiskyAllowed();
     }
 
-    /**
-     * @return iterable<array{bool, bool, null|string}>
-     */
-    public static function provideResolveBooleanOptionCases(): iterable
-    {
-        yield [true, true, 'yes'];
-
-        yield [true, false, 'yes'];
-
-        yield [false, true, 'no'];
-
-        yield [false, false, 'no'];
-
-        yield [true, true, null];
-
-        yield [false, false, null];
-    }
-
     public function testWithEmptyRules(): void
     {
         $resolver = $this->createConfigurationResolver(['rules' => '']);
@@ -1358,20 +1358,6 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{null|string, string, string}>
-     */
-    public static function provideGetDirectoryCases(): iterable
-    {
-        yield [null, '/my/path/my/file', 'my/file'];
-
-        yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
-
-        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
-
-        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
-    }
-
-    /**
      * @dataProvider provideGetDirectoryCases
      *
      * @param ?non-empty-string $cacheFile
@@ -1399,6 +1385,20 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $directory = $resolver->getDirectory();
 
         self::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
+    }
+
+    /**
+     * @return iterable<array{null|string, string, string}>
+     */
+    public static function provideGetDirectoryCases(): iterable
+    {
+        yield [null, '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
+
+        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
+
+        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
     }
 
     /**

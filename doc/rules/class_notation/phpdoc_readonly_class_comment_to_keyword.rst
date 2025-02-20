@@ -29,6 +29,14 @@ Example #1
    +    
    +    readonly class C {
         }
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
+
 References
 ----------
 

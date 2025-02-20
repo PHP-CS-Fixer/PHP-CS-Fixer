@@ -48,7 +48,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
      *
      * @var array<string, string>
      */
-    private static array $replacements = [
+    private const REPLACEMENTS = [
         'O' => '0',
         '０' => '0',
         'I' => '1',
@@ -220,7 +220,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
                 continue;
             }
 
-            $replaced = Preg::replaceCallback('/[^[:ascii:]]/u', static fn (array $matches): string => self::$replacements[$matches[0]] ?? $matches[0], $token->getContent(), -1, $count);
+            $replaced = Preg::replaceCallback('/[^[:ascii:]]/u', static fn (array $matches): string => self::REPLACEMENTS[$matches[0]] ?? $matches[0], $token->getContent(), -1, $count);
 
             if ($count > 0) {
                 $tokens->offsetSet($index, new Token([$token->getId(), $replaced]));

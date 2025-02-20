@@ -87,4 +87,28 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
             '<?php switch ($foo): case true: foo(); endswitch;',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield "don't touch property hooks" => [
+            '<?php interface I {
+    public string $readable { get; }
+    public string $writeable { set; }
+    public string $both { get; set; }
+}',
+        ];
+    }
 }

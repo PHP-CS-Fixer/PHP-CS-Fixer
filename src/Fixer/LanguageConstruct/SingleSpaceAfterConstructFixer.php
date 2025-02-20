@@ -49,7 +49,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
     /**
      * @var array<string, null|int>
      */
-    private static array $tokenMap = [
+    private const TOKEN_MAP = [
         'abstract' => T_ABSTRACT,
         'as' => T_AS,
         'attribute' => CT::T_ATTRIBUTE_CLOSE,
@@ -193,7 +193,7 @@ yield  from  baz();
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $defaults = self::$tokenMap;
+        $defaults = self::TOKEN_MAP;
         $tokens = array_keys($defaults);
 
         unset($defaults['type_colon']);

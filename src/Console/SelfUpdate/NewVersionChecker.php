@@ -30,7 +30,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     /**
      * @var null|list<string>
      */
-    private $availableVersions;
+    private ?array $availableVersions = null;
 
     public function __construct(GithubClientInterface $githubClient)
     {

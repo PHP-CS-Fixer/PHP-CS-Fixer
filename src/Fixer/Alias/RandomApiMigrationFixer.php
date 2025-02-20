@@ -48,7 +48,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     /**
      * @var array<string, array<int, int>>
      */
-    private static array $argumentCounts = [
+    private const ARGUMENT_COUNTS = [
         'getrandmax' => [0],
         'mt_rand' => [1, 2],
         'rand' => [0, 2],
@@ -99,7 +99,9 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 [$functionName, $openParenthesis, $closeParenthesis] = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
 
-                if (!\in_array($count, self::$argumentCounts[$functionIdentity], true)) {
+                \assert(isset(self::ARGUMENT_COUNTS[$functionIdentity])); // for PHPStan
+
+                if (!\in_array($count, self::ARGUMENT_COUNTS[$functionIdentity], true)) {
                     continue 2;
                 }
 
@@ -130,7 +132,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 ->setAllowedTypes(['array<string, string>'])
                 ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $functionName => $replacement) {
-                        if (!\array_key_exists($functionName, self::$argumentCounts)) {
+                        if (!\array_key_exists($functionName, self::ARGUMENT_COUNTS)) {
                             throw new InvalidOptionsException(\sprintf(
                                 'Function "%s" is not handled by the fixer.',
                                 $functionName

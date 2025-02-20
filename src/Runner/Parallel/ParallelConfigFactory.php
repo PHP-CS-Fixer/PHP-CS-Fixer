@@ -35,10 +35,12 @@ final class ParallelConfigFactory
     /**
      * @param null|positive-int $filesPerProcess
      * @param null|positive-int $processTimeout
+     * @param null|positive-int $maxProcesses
      */
     public static function detect(
         ?int $filesPerProcess = null,
-        ?int $processTimeout = null
+        ?int $processTimeout = null,
+        ?int $maxProcesses = null
     ): ParallelConfig {
         if (null === self::$cpuDetector) {
             self::$cpuDetector = new CpuCoreCounter([
@@ -47,8 +49,11 @@ final class ParallelConfigFactory
             ]);
         }
 
+        // Reserve 1 core for the main orchestrating process
+        $available = self::$cpuDetector->getAvailableForParallelisation(1, $maxProcesses);
+
         return new ParallelConfig(
-            self::$cpuDetector->getCount(),
+            $available->availableCpus,
             $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
             $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
         );

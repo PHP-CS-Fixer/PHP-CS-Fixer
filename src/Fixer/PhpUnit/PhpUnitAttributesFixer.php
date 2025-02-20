@@ -17,7 +17,6 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -97,7 +96,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     /**
      * {@inheritdoc}
      *
-     * Must run before FullyQualifiedStrictTypesFixer, PhpdocSeparationFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer.
+     * Must run before FullyQualifiedStrictTypesFixer, NoEmptyPhpdocFixer, PhpdocSeparationFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer.
      * Must run after PhpUnitDataProviderNameFixer, PhpUnitDataProviderReturnTypeFixer, PhpUnitDataProviderStaticFixer.
      */
     public function getPriority(): int
@@ -254,24 +253,9 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
             $insertedClassName .= $token->getContent();
         }
 
-        // @TODO: refactor OrderedAttributesFixer::determineAttributeFullyQualifiedName to shared analyzer
-        static $determineAttributeFullyQualifiedName = null;
-        static $orderedAttributesFixer = null;
-        if (null === $determineAttributeFullyQualifiedName) {
-            $orderedAttributesFixer = new OrderedAttributesFixer();
-            $reflection = new \ReflectionObject($orderedAttributesFixer);
-            $determineAttributeFullyQualifiedName = $reflection->getMethod('determineAttributeFullyQualifiedName');
-            $determineAttributeFullyQualifiedName->setAccessible(true);
-        }
-
         foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                $className = ltrim($determineAttributeFullyQualifiedName->invokeArgs(
-                    $orderedAttributesFixer,
-                    [$tokens,
-                        $attribute['name'],
-                        $attribute['start']],
-                ), '\\');
+                $className = ltrim(AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $attribute['name'], $attribute['start']), '\\');
 
                 if ($insertedClassName === $className) {
                     return true;
@@ -474,16 +458,25 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         } elseif ('RequiresPhp' === $attributeName && isset($matches[3])) {
             $attributeTokens = [self::createEscapedStringToken($matches[2].' '.$matches[3])];
         } else {
-            $attributeTokens = [self::createEscapedStringToken($matches[2])];
+            $attributeTokens = [self::createEscapedStringToken(self::fixVersionConstraint($matches[2]))];
         }
 
         if (isset($matches[3]) && 'RequiresPhp' !== $attributeName) {
             $attributeTokens[] = new Token(',');
             $attributeTokens[] = new Token([T_WHITESPACE, ' ']);
-            $attributeTokens[] = self::createEscapedStringToken($matches[3]);
+            $attributeTokens[] = self::createEscapedStringToken(self::fixVersionConstraint($matches[3]));
         }
 
         return self::createAttributeTokens($tokens, $index, $attributeName, ...$attributeTokens);
+    }
+
+    private static function fixVersionConstraint(string $version): string
+    {
+        if (Preg::match('/^[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?$/', $version)) {
+            $version = '>= '.$version;
+        }
+
+        return $version;
     }
 
     /**

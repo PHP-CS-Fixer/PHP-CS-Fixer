@@ -43,7 +43,7 @@ Example #1
    -     * @requires PHP 8.0
          */
    +    #[\PHPUnit\Framework\Attributes\DataProvider('giveMeSomeData')]
-   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('8.0')]
+   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 8.0')]
         public function testSomething($expected, $actual) {}
     }
 
@@ -70,7 +70,7 @@ With configuration: ``['keep_annotations' => true]``.
          * @requires PHP 8.0
          */
    +    #[\PHPUnit\Framework\Attributes\DataProvider('giveMeSomeData')]
-   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('8.0')]
+   +    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 8.0')]
         public function testSomething($expected, $actual) {}
     }
 References

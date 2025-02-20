@@ -31,7 +31,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Anonymous functions with one-liner return statement must use arrow functions.',
+            'Anonymous functions with return as the only statement must use arrow functions.',
             [
                 new CodeSample(
                     <<<'SAMPLE'
@@ -78,8 +78,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            // Find parameters end
-            // Abort if they are multilined
+            // Find parameters
 
             $parametersStart = $tokens->getNextMeaningfulToken($index);
 
@@ -88,10 +87,6 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             }
 
             $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $parametersStart);
-
-            if ($this->isMultilined($tokens, $parametersStart, $parametersEnd)) {
-                continue;
-            }
 
             // Find `use ()` start and end
             // Abort if it contains reference variables
@@ -158,27 +153,10 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            // Abort if the `return` statement is multilined
-
-            if ($this->isMultilined($tokens, $return, $semicolon)) {
-                continue;
-            }
-
             // Transform the function to an arrow function
 
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
-    }
-
-    private function isMultilined(Tokens $tokens, int $start, int $end): bool
-    {
-        for ($i = $start; $i < $end; ++$i) {
-            if (str_contains($tokens[$i]->getContent(), "\n")) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void

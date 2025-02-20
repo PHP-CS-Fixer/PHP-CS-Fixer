@@ -192,6 +192,16 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             '<?php class Foo { /** @var null|array */ private $foo; }',
         ];
 
+        yield 'nullable type with short notation' => [
+            '<?php class Foo { /** @var ?array */ private ?array $foo; }',
+            '<?php class Foo { /** @var ?array */ private $foo; }',
+        ];
+
+        yield 'nullable type with existing default value' => [
+            '<?php class Foo { /** @var ?array */ private ?array $foo = []; }',
+            '<?php class Foo { /** @var ?array */ private $foo = []; }',
+        ];
+
         yield 'generics' => [
             '<?php class Foo { /** @var array<int, bool> */ private array $foo; }',
             '<?php class Foo { /** @var array<int, bool> */ private $foo; }',

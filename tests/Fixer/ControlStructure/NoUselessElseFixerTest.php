@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
+use PhpCsFixer\AbstractNoUselessElseFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -148,8 +149,7 @@ else?><?php echo 5;',
      */
     public static function provideFixIfElseIfElseCases(): iterable
     {
-        $expected =
-            '<?php
+        $expected = '<?php
                 while(true) {
                     while(true) {
                         if ($provideFixIfElseIfElseCases) {
@@ -166,8 +166,7 @@ else?><?php echo 5;',
                 }
             ';
 
-        $input =
-            '<?php
+        $input = '<?php
                 while(true) {
                     while(true) {
                         if ($provideFixIfElseIfElseCases) {
@@ -186,8 +185,7 @@ else?><?php echo 5;',
 
         yield from self::generateCases($expected, $input);
 
-        $expected =
-            '<?php
+        $expected = '<?php
                 while(true) {
                     while(true) {
                         if($a) {
@@ -203,8 +201,7 @@ else?><?php echo 5;',
 
         yield from self::generateCases($expected);
 
-        $expected =
-            '<?php
+        $expected = '<?php
                 while(true) {
                     while(true) {
                         if ($a) {
@@ -696,10 +693,7 @@ else?><?php echo 5;',
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
-        $method = new \ReflectionMethod(get_parent_class($this->fixer), 'getPreviousBlock');
-        $method->setAccessible(true);
-
-        $result = $method->invoke($this->fixer, $tokens, $index);
+        $result = \Closure::bind(static fn (AbstractNoUselessElseFixer $fixer): array => $fixer->getPreviousBlock($tokens, $index), null, AbstractNoUselessElseFixer::class)($this->fixer);
 
         self::assertSame($expected, $result);
     }
@@ -823,15 +817,12 @@ else?><?php echo 5;',
      */
     public function testIsInConditionWithoutBraces(array $indexes, string $input): void
     {
-        $reflection = new \ReflectionObject($this->fixer);
-        $method = $reflection->getMethod('isInConditionWithoutBraces');
-        $method->setAccessible(true);
         $tokens = Tokens::fromCode($input);
 
         foreach ($indexes as $index => $expected) {
             self::assertSame(
                 $expected,
-                $method->invoke($this->fixer, $tokens, $index, 0),
+                \Closure::bind(static fn (AbstractNoUselessElseFixer $fixer): bool => $fixer->isInConditionWithoutBraces($tokens, $index, 0), null, AbstractNoUselessElseFixer::class)($this->fixer),
                 \sprintf('Failed in condition without braces check for index %d', $index)
             );
         }

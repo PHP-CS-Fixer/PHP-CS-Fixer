@@ -2,7 +2,7 @@
 Rule ``ternary_to_null_coalescing``
 ===================================
 
-Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
+Use ``null`` coalescing operator ``??`` where possible.
 
 Examples
 --------

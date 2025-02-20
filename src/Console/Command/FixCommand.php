@@ -25,7 +25,7 @@ use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -52,10 +52,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
 {
-    /** @var string */
     protected static $defaultName = 'fix';
 
-    /** @var string */
     protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
@@ -333,11 +331,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $resolver->getConfigFile()
         );
 
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
+        $this->eventDispatcher->addListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
+        $this->eventDispatcher->removeListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
         $progressOutput->printLegend();
 

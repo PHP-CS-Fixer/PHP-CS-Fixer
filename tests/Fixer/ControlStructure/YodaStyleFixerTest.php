@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -957,11 +956,6 @@ switch ($a) {
         yield [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'];
 
         yield [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist\. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater"\.'];
-    }
-
-    public function testDefinition(): void
-    {
-        self::assertInstanceOf(FixerDefinitionInterface::class, $this->fixer->getDefinition());
     }
 
     /**

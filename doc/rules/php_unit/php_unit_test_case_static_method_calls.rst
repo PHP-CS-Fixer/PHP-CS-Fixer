@@ -32,7 +32,7 @@ Default value: ``'static'``
 Dictionary of ``method`` => ``call_type`` values that differ from the default
 strategy.
 
-Allowed types: ``list<string>``
+Allowed types: ``array<string, string>``
 
 Default value: ``[]``
 
@@ -58,6 +58,7 @@ Example #1
    +        static::assertSame(1, 2);
    +        static::assertSame(1, 2);
             static::assertSame(1, 2);
+            static::assertTrue(false);
         }
     }
 
@@ -78,8 +79,34 @@ With configuration: ``['call_type' => 'this']``.
             $this->assertSame(1, 2);
    -        self::assertSame(1, 2);
    -        static::assertSame(1, 2);
+   -        static::assertTrue(false);
    +        $this->assertSame(1, 2);
    +        $this->assertSame(1, 2);
+   +        $this->assertTrue(false);
+        }
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['methods' => ['assertTrue' => 'this']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testMe()
+        {
+   -        $this->assertSame(1, 2);
+   -        self::assertSame(1, 2);
+            static::assertSame(1, 2);
+   -        static::assertTrue(false);
+   +        static::assertSame(1, 2);
+   +        static::assertSame(1, 2);
+   +        $this->assertTrue(false);
         }
     }
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -272,10 +273,7 @@ echo 1;
         $tokens = Tokens::fromCode($source);
         self::assertTrue($tokens[$startIndex]->isComment(), \sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
-        $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
-        $method->setAccessible(true);
-
-        $foundInfo = $method->invoke($this->fixer, $tokens, $startIndex);
+        $foundInfo = \Closure::bind(static fn (NoEmptyCommentFixer $fixer): array => $fixer->getCommentBlock($tokens, $startIndex), null, NoEmptyCommentFixer::class)($this->fixer);
 
         self::assertSame($startIndex, $foundInfo['blockStart'], 'Find start index of block failed.');
         self::assertSame($endIndex, $foundInfo['blockEnd'], 'Find end index of block failed.');

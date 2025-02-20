@@ -56,60 +56,56 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @phpstan-type _Options array{
+ *      allow-risky: null|string,
+ *      cache-file: null|string,
+ *      config: null|string,
+ *      diff: null|string,
+ *      dry-run: null|bool,
+ *      format: null|string,
+ *      path: list<string>,
+ *      path-mode: self::PATH_MODE_*,
+ *      rules: null|string,
+ *      sequential: null|string,
+ *      show-progress: null|string,
+ *      stop-on-violation: null|bool,
+ *      using-cache: null|string,
+ *      verbosity: null|string,
+ *  }
  */
 final class ConfigurationResolver
 {
     public const PATH_MODE_OVERRIDE = 'override';
     public const PATH_MODE_INTERSECTION = 'intersection';
 
-    /**
-     * @var null|bool
-     */
-    private $allowRisky;
+    private ?bool $allowRisky = null;
 
-    /**
-     * @var null|ConfigInterface
-     */
-    private $config;
+    private ?ConfigInterface $config = null;
 
-    /**
-     * @var null|string
-     */
-    private $configFile;
+    private ?string $configFile = null;
 
     private string $cwd;
 
     private ConfigInterface $defaultConfig;
 
-    /**
-     * @var null|ReporterInterface
-     */
-    private $reporter;
+    private ?ReporterInterface $reporter = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isStdIn;
+    private ?bool $isStdIn = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isDryRun;
+    private ?bool $isDryRun = null;
 
     /**
      * @var null|list<FixerInterface>
      */
-    private $fixers;
+    private ?array $fixers = null;
 
-    /**
-     * @var null|bool
-     */
-    private $configFinderIsOverridden;
+    private ?bool $configFinderIsOverridden = null;
 
     private ToolInfoInterface $toolInfo;
 
     /**
-     * @var array<string, mixed>
+     * @var _Options
      */
     private array $options = [
         'allow-risky' => null,
@@ -128,25 +124,13 @@ final class ConfigurationResolver
         'verbosity' => null,
     ];
 
-    /**
-     * @var null|string
-     */
-    private $cacheFile;
+    private ?string $cacheFile = null;
 
-    /**
-     * @var null|CacheManagerInterface
-     */
-    private $cacheManager;
+    private ?CacheManagerInterface $cacheManager = null;
 
-    /**
-     * @var null|DifferInterface
-     */
-    private $differ;
+    private ?DifferInterface $differ = null;
 
-    /**
-     * @var null|Directory
-     */
-    private $directory;
+    private ?Directory $directory = null;
 
     /**
      * @var null|iterable<\SplFileInfo>
@@ -155,10 +139,7 @@ final class ConfigurationResolver
 
     private ?string $format = null;
 
-    /**
-     * @var null|Linter
-     */
-    private $linter;
+    private ?Linter $linter = null;
 
     /**
      * @var null|list<string>
@@ -166,24 +147,15 @@ final class ConfigurationResolver
     private ?array $path = null;
 
     /**
-     * @var null|string
+     * @var null|ProgressOutputType::*
      */
     private $progress;
 
-    /**
-     * @var null|RuleSet
-     */
-    private $ruleSet;
+    private ?RuleSet $ruleSet = null;
 
-    /**
-     * @var null|bool
-     */
-    private $usingCache;
+    private ?bool $usingCache = null;
 
-    /**
-     * @var FixerFactory
-     */
-    private $fixerFactory;
+    private ?FixerFactory $fixerFactory = null;
 
     /**
      * @param array<string, mixed> $options
@@ -409,6 +381,8 @@ final class ConfigurationResolver
     }
 
     /**
+     * @return ProgressOutputType::*
+     *
      * @throws InvalidConfigurationException
      */
     public function getProgressType(): string
@@ -932,13 +906,12 @@ final class ConfigurationResolver
         $this->options[$name] = $value;
     }
 
+    /**
+     * @param key-of<_Options> $optionName
+     */
     private function resolveOptionBooleanValue(string $optionName): bool
     {
         $value = $this->options[$optionName];
-
-        if (!\is_string($value)) {
-            throw new InvalidConfigurationException(\sprintf('Expected boolean or string value for option "%s".', $optionName));
-        }
 
         if ('yes' === $value) {
             return true;
@@ -948,7 +921,7 @@ final class ConfigurationResolver
             return false;
         }
 
-        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, $value));
+        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, \is_object($value) ? \get_class($value) : (\is_scalar($value) ? $value : \gettype($value))));
     }
 
     private static function separatedContextLessInclude(string $path): ConfigInterface

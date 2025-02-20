@@ -22,16 +22,15 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @readonly
+ *
  * @internal
  */
 final class ErrorOutput
 {
     private OutputInterface $output;
 
-    /**
-     * @var bool
-     */
-    private $isDecorated;
+    private bool $isDecorated;
 
     public function __construct(OutputInterface $output)
     {

@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
@@ -36,9 +38,6 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     public function testIsShortArray(string $source, array $inspectIndexes, bool $expected): void
     {
         $transformer = new SquareBraceTransformer();
-        $reflection = new \ReflectionObject($transformer);
-        $method = $reflection->getMethod('isShortArray');
-        $method->setAccessible(true);
 
         $tokens = Tokens::fromCode($source);
         foreach ($inspectIndexes as $index) {
@@ -57,7 +56,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
             self::assertSame(
                 $expected,
-                $method->invoke($transformer, $tokens, $index),
+                \Closure::bind(static fn (SquareBraceTransformer $transformer): bool => $transformer->isShortArray($tokens, $index), null, SquareBraceTransformer::class)($transformer),
                 \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $tokens[$index]->toJson(), $index, $exp ? '' : 'not ')
             );
         }
@@ -85,7 +84,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -405,7 +404,7 @@ class Test
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess72Cases
      */

@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: phpdoc_to_property_type,fully_qualified_strict_types.
+--RULESET--
+{"phpdoc_to_property_type":{"types_map":{"TFixer":"\\PhpCsFixer\\AbstractFixer"}},"fully_qualified_strict_types":{"import_symbols":true}}
+--EXPECT--
+<?php
+
+use PhpCsFixer\AbstractFixer;
+class Foo {
+     /**
+      * @var null|TFixer
+      */
+    public ?AbstractFixer $fixerWithAliasedConfig = null;
+}
+
+--INPUT--
+<?php
+
+class Foo {
+     /**
+      * @var null|TFixer
+      */
+    public $fixerWithAliasedConfig = null;
+}

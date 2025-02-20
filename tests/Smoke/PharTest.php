@@ -34,15 +34,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class PharTest extends AbstractSmokeTestCase
 {
-    /**
-     * @var string
-     */
-    private static $pharCwd;
+    private static string $pharCwd;
 
-    /**
-     * @var string
-     */
-    private static $pharName;
+    private static string $pharName;
 
     public static function setUpBeforeClass(): void
     {
@@ -121,16 +115,6 @@ final class PharTest extends AbstractSmokeTestCase
     }
 
     /**
-     * @return iterable<array{string}>
-     */
-    public static function provideReportCases(): iterable
-    {
-        yield ['no'];
-
-        yield ['yes'];
-    }
-
-    /**
      * @dataProvider provideReportCases
      */
     public function testReport(string $usingCache): void
@@ -163,6 +147,16 @@ final class PharTest extends AbstractSmokeTestCase
                 unlink($cacheFile);
             }
         }
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideReportCases(): iterable
+    {
+        yield ['no'];
+
+        yield ['yes'];
     }
 
     private static function executePharCommand(string $params): CliResult

@@ -200,16 +200,14 @@ final class OrderedImportsFixerTest extends AbstractFixerTestCase
 
         yield [$expected, $input];
 
-        $expected =
-            '<?php
+        $expected = '<?php
                 use B;
                 use C;
                 $foo = new C();
                 use A;
             ';
 
-        $input =
-            '<?php
+        $input = '<?php
                 use C;
                 use B;
                 $foo = new C();
@@ -1078,8 +1076,7 @@ use Foo\{
 };',
         ];
 
-        $input =
-            '<?php use A\{B,};
+        $input = '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\Z\{ConstAA,ConstBB,ConstCC,};

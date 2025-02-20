@@ -150,17 +150,8 @@ class Bar
 
         $enums = [];
         $classesAreFinal = [];
-        $elements = $tokensAnalyzer->getClassyElements();
 
-        for (end($elements);; prev($elements)) {
-            $index = key($elements);
-
-            if (null === $index) {
-                break;
-            }
-
-            $element = current($elements);
-
+        foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
             if ('method' !== $element['type']) {
                 continue; // not a method
             }

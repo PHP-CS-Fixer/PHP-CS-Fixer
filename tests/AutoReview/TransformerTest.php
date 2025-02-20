@@ -43,34 +43,6 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTransformerPriorityIsListedCases
-     */
-    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
-    {
-        $priority = $transformer->getPriority();
-
-        if (0 === $priority) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
-        $name = $transformer->getName();
-
-        foreach (self::provideTransformerPriorityCases() as $pair) {
-            [$first, $second] = $pair;
-
-            if ($name === $first->getName() || $name === $second->getName()) {
-                $this->addToAssertionCount(1);
-
-                return;
-            }
-        }
-
-        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
-    }
-
-    /**
      * @return iterable<array{TransformerInterface, TransformerInterface}>
      */
     public static function provideTransformerPriorityCases(): iterable
@@ -117,6 +89,34 @@ final class TransformerTest extends TestCase
     }
 
     /**
+     * @dataProvider provideTransformerPriorityIsListedCases
+     */
+    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
+    {
+        $priority = $transformer->getPriority();
+
+        if (0 === $priority) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        $name = $transformer->getName();
+
+        foreach (self::provideTransformerPriorityCases() as $pair) {
+            [$first, $second] = $pair;
+
+            if ($name === $first->getName() || $name === $second->getName()) {
+                $this->addToAssertionCount(1);
+
+                return;
+            }
+        }
+
+        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
+    }
+
+    /**
      * @return iterable<array{TransformerInterface}>
      */
     public static function provideTransformerPriorityIsListedCases(): iterable
@@ -124,12 +124,8 @@ final class TransformerTest extends TestCase
         static $transformersArray = null;
 
         if (null === $transformersArray) {
-            $transformers = Transformers::createSingleton();
-            $reflection = new \ReflectionObject($transformers);
-            $builtInTransformers = $reflection->getMethod('findBuiltInTransformers');
-            $builtInTransformers->setAccessible(true);
             $transformersArray = [];
-            foreach ($builtInTransformers->invoke($transformers) as $transformer) {
+            foreach (\Closure::bind(static fn (Transformers $transformers): iterable => $transformers->findBuiltInTransformers(), null, Transformers::class)(Transformers::createSingleton()) as $transformer) {
                 $transformersArray[] = [$transformer];
             }
         }

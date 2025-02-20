@@ -2,7 +2,7 @@
 Rule ``phpdoc_no_access``
 =========================
 
-``@access`` annotations should be omitted from PHPDoc.
+``@access`` annotations must be removed from PHPDoc.
 
 Examples
 --------

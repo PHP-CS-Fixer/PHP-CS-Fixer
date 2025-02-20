@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -28,15 +28,15 @@ final class DotsOutput implements ProgressOutputInterface
     /**
      * File statuses map.
      *
-     * @var array<FixerFileProcessedEvent::STATUS_*, array{symbol: string, format: string, description: string}>
+     * @var array<FileProcessed::STATUS_*, array{symbol: string, format: string, description: string}>
      */
-    private static array $eventStatusMap = [
-        FixerFileProcessedEvent::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],
-        FixerFileProcessedEvent::STATUS_FIXED => ['symbol' => 'F', 'format' => '<fg=green>%s</fg=green>', 'description' => 'fixed'],
-        FixerFileProcessedEvent::STATUS_SKIPPED => ['symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'skipped (cached or empty file)'],
-        FixerFileProcessedEvent::STATUS_INVALID => ['symbol' => 'I', 'format' => '<bg=red>%s</bg=red>', 'description' => 'invalid file syntax (file ignored)'],
-        FixerFileProcessedEvent::STATUS_EXCEPTION => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
-        FixerFileProcessedEvent::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
+    private const EVENT_STATUS_MAP = [
+        FileProcessed::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],
+        FileProcessed::STATUS_FIXED => ['symbol' => 'F', 'format' => '<fg=green>%s</fg=green>', 'description' => 'fixed'],
+        FileProcessed::STATUS_SKIPPED => ['symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'skipped (cached or empty file)'],
+        FileProcessed::STATUS_INVALID => ['symbol' => 'I', 'format' => '<bg=red>%s</bg=red>', 'description' => 'invalid file syntax (file ignored)'],
+        FileProcessed::STATUS_EXCEPTION => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
+        FileProcessed::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
     ];
 
     /** @readonly */
@@ -44,10 +44,7 @@ final class DotsOutput implements ProgressOutputInterface
 
     private int $processedFiles = 0;
 
-    /**
-     * @var int
-     */
-    private $symbolsPerLine;
+    private int $symbolsPerLine;
 
     public function __construct(OutputContext $context)
     {
@@ -79,9 +76,9 @@ final class DotsOutput implements ProgressOutputInterface
         throw new \BadMethodCallException('Cannot unserialize '.self::class);
     }
 
-    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
+    public function onFixerFileProcessed(FileProcessed $event): void
     {
-        $status = self::$eventStatusMap[$event->getStatus()];
+        $status = self::EVENT_STATUS_MAP[$event->getStatus()];
         $this->getOutput()->write($this->getOutput()->isDecorated() ? \sprintf($status['format'], $status['symbol']) : $status['symbol']);
 
         ++$this->processedFiles;
@@ -108,9 +105,9 @@ final class DotsOutput implements ProgressOutputInterface
     {
         $symbols = [];
 
-        foreach (self::$eventStatusMap as $status) {
+        foreach (self::EVENT_STATUS_MAP as $status) {
             $symbol = $status['symbol'];
-            if ('' === $symbol || isset($symbols[$symbol])) {
+            if (isset($symbols[$symbol])) {
                 continue;
             }
 

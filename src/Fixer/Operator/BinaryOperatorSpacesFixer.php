@@ -151,6 +151,22 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     ];
 
     /**
+     * @var list<null|string>
+     */
+    private const ALLOWED_VALUES = [
+        self::ALIGN,
+        self::ALIGN_BY_SCOPE,
+        self::ALIGN_SINGLE_SPACE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL,
+        self::ALIGN_SINGLE_SPACE_BY_SCOPE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE,
+        self::SINGLE_SPACE,
+        self::NO_SPACE,
+        self::AT_LEAST_SINGLE_SPACE,
+        null,
+    ];
+
+    /**
      * Keep track of the deepest level ever achieved while
      * parsing the code. Used later to replace alignment
      * placeholders with spaces.
@@ -163,22 +179,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      * other level ones.
      */
     private int $currentLevel;
-
-    /**
-     * @var list<null|string>
-     */
-    private static array $allowedValues = [
-        self::ALIGN,
-        self::ALIGN_BY_SCOPE,
-        self::ALIGN_SINGLE_SPACE,
-        self::ALIGN_SINGLE_SPACE_MINIMAL,
-        self::ALIGN_SINGLE_SPACE_BY_SCOPE,
-        self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE,
-        self::SINGLE_SPACE,
-        self::NO_SPACE,
-        self::AT_LEAST_SINGLE_SPACE,
-        null,
-    ];
 
     private TokensAnalyzer $tokensAnalyzer;
 
@@ -208,7 +208,7 @@ $b=2;
 $c = $d    xor    $e;
 $f    -=  1;
 ',
-                    ['operators' => ['=' => 'align', 'xor' => null]]
+                    ['operators' => ['=' => self::ALIGN, 'xor' => null]]
                 ),
                 new CodeSample(
                     '<?php
@@ -218,7 +218,7 @@ $d = $ee+=$f;
 $g = $b     +=$c;
 $h = $ee+=$f;
 ',
-                    ['operators' => ['+=' => 'align_single_space']]
+                    ['operators' => ['+=' => self::ALIGN_SINGLE_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -226,13 +226,13 @@ $a = $b===$c;
 $d = $f   ===  $g;
 $h = $i===  $j;
 ',
-                    ['operators' => ['===' => 'align_single_space_minimal']]
+                    ['operators' => ['===' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
                 ),
                 new CodeSample(
                     '<?php
 $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 ',
-                    ['operators' => ['|' => 'no_space']]
+                    ['operators' => ['|' => self::NO_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -241,7 +241,7 @@ $array = [
     "baaaaaaaaaaar"  =>  11,
 ];
 ',
-                    ['operators' => ['=>' => 'single_space']]
+                    ['operators' => ['=>' => self::SINGLE_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -252,7 +252,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align']]
+                    ['operators' => ['=>' => self::ALIGN]]
                 ),
                 new CodeSample(
                     '<?php
@@ -263,7 +263,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_by_scope']]
+                    ['operators' => ['=>' => self::ALIGN_BY_SCOPE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -274,7 +274,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -285,7 +285,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space_by_scope']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_BY_SCOPE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -296,7 +296,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space_minimal']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
                 ),
                 new CodeSample(
                     '<?php
@@ -307,7 +307,7 @@ $array = [
     "baz" => 1,
 ];
 ',
-                    ['operators' => ['=>' => 'align_single_space_minimal_by_scope']]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]]
                 ),
             ]
         );
@@ -368,7 +368,7 @@ $array = [
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('default', 'Default fix strategy.'))
                 ->setDefault(self::SINGLE_SPACE)
-                ->setAllowedValues(self::$allowedValues)
+                ->setAllowedValues(self::ALLOWED_VALUES)
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: '.Utils::naturalLanguageJoinWithBackticks(self::SUPPORTED_OPERATORS).'.'))
                 ->setAllowedTypes(['array<string, ?string>'])
@@ -384,14 +384,14 @@ $array = [
                             );
                         }
 
-                        if (!\in_array($value, self::$allowedValues, true)) {
+                        if (!\in_array($value, self::ALLOWED_VALUES, true)) {
                             throw new InvalidOptionsException(
                                 \sprintf(
                                     'Unexpected value for operator "%s", expected any of %s, got "%s".',
                                     $operator,
                                     Utils::naturalLanguageJoin(array_map(
                                         static fn ($value): string => Utils::toString($value),
-                                        self::$allowedValues
+                                        self::ALLOWED_VALUES
                                     )),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )

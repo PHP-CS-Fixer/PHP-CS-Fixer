@@ -11,7 +11,7 @@ on:
 env:
   CLOSE_MESSAGE: >-
     The fact this was automatically closed doesn't mean that the idea got rejected - it simply didn't get any priority for way too long to keep it open.
-    If you're still interested in this, please let as know, we can consider re-opening it.
+    If you are interested in implementing this yourself, please share the implementation draft to align on the approach, before you prepare the full implementation.
   DAYS_BEFORE_ISSUE_CLOSE: 30
   DAYS_BEFORE_ISSUE_STALE: 90
   DAYS_BEFORE_PR_CLOSE: 14

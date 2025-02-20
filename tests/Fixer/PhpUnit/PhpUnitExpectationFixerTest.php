@@ -430,8 +430,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
-        $expectedTemplate =
-'
+        $expectedTemplate = '
         function testFnc%d()
         {
             aaa();
@@ -441,8 +440,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             zzz();
         }
 ';
-        $inputTemplate =
-'
+        $inputTemplate = '
         function testFnc%d()
         {
             aaa();

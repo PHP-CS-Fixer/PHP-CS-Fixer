@@ -49,7 +49,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     /**
      * @var null|list<int>
      */
-    private $tokenKinds;
+    private ?array $tokenKinds = null;
 
     public function getDefinition(): FixerDefinitionInterface
     {

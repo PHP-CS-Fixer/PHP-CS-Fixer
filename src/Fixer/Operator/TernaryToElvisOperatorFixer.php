@@ -140,16 +140,17 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
                 return null;
             }
 
-            $blockType = Tokens::detectBlockType($tokens[$index]);
+            $detectedBlockType = Tokens::detectBlockType($tokens[$index]);
 
-            if (null === $blockType || $blockType['isStart']) {
+            if (null === $detectedBlockType || $detectedBlockType['isStart']) {
                 $before['start'] = $index;
                 $index = $tokens->getPrevMeaningfulToken($index);
 
                 continue;
             }
 
-            $blockType = $blockEdgeDefinitions[$blockType['type']];
+            /** @phpstan-ignore-next-line offsetAccess.notFound (we just detected block type, we know it's definition exists under given PHP runtime) */
+            $blockType = $blockEdgeDefinitions[$detectedBlockType['type']];
             $openCount = 1;
 
             do {
@@ -189,7 +190,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         $index = $tokens->getNextMeaningfulToken($index);
         $after = ['start' => $index];
 
-        while (!$tokens[$index]->equals(':')) {
+        do {
             $blockType = Tokens::detectBlockType($tokens[$index]);
 
             if (null !== $blockType) {
@@ -198,7 +199,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
 
             $after['end'] = $index;
             $index = $tokens->getNextMeaningfulToken($index);
-        }
+        } while (!$tokens[$index]->equals(':'));
 
         return $after;
     }

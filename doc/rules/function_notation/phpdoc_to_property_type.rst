@@ -3,7 +3,7 @@ Rule ``phpdoc_to_property_type``
 ================================
 
 Takes ``@var`` annotation of non-mixed types and adjusts accordingly the
-property signature. Requires PHP >= 7.4.
+property signature..
 
 Warning
 -------
@@ -36,6 +36,15 @@ coercion system.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+``types_map``
+~~~~~~~~~~~~~
+
+Map of custom types, e.g. template types from PHPStan.
+
+Allowed types: ``array<string, string>``
+
+Default value: ``[]``
 
 ``union_types``
 ~~~~~~~~~~~~~~~

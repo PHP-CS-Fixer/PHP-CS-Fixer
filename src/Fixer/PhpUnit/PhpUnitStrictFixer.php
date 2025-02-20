@@ -49,7 +49,7 @@ final class PhpUnitStrictFixer extends AbstractPhpUnitFixer implements Configura
     /**
      * @var array<string, string>
      */
-    private static array $assertionMap = [
+    private const ASSERTION_MAP = [
         'assertAttributeEquals' => 'assertAttributeSame',
         'assertAttributeNotEquals' => 'assertAttributeNotSame',
         'assertEquals' => 'assertSame',
@@ -107,7 +107,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         foreach ($this->configuration['assertions'] as $methodBefore) {
-            $methodAfter = self::$assertionMap[$methodBefore];
+            $methodAfter = self::ASSERTION_MAP[$methodBefore];
 
             for ($index = $startIndex; $index < $endIndex; ++$index) {
                 $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
@@ -141,7 +141,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionMap))])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::ASSERTION_MAP))])
                 ->setDefault([
                     'assertAttributeEquals',
                     'assertAttributeNotEquals',

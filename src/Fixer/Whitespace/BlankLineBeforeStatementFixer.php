@@ -50,7 +50,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     /**
      * @var array<string, int>
      */
-    private static array $tokenMap = [
+    private const TOKEN_MAP = [
         'break' => T_BREAK,
         'case' => T_CASE,
         'continue' => T_CONTINUE,
@@ -256,7 +256,7 @@ function getValues() {
         $fixTokenMap = [];
 
         foreach ($this->configuration['statements'] as $key) {
-            $fixTokenMap[$key] = self::$tokenMap[$key];
+            $fixTokenMap[$key] = self::TOKEN_MAP[$key];
         }
 
         $this->fixTokenMap = array_values($fixTokenMap);
@@ -297,7 +297,7 @@ function getValues() {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::TOKEN_MAP))])
                 ->setDefault([
                     'break',
                     'continue',

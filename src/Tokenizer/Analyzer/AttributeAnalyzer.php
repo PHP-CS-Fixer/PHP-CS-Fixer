@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -127,6 +128,34 @@ final class AttributeAnalyzer
             $closingIndex,
             self::collectAttributes($tokens, $index, $closingIndex),
         );
+    }
+
+    public static function determineAttributeFullyQualifiedName(Tokens $tokens, string $name, int $index): string
+    {
+        if ('\\' === $name[0]) {
+            return $name;
+        }
+
+        if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+            $index = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
+        }
+
+        [$namespaceAnalysis, $namespaceUseAnalyses] = NamespacesAnalyzer::collectNamespaceAnalysis($tokens, $index);
+        $namespace = $namespaceAnalysis->getFullName();
+        $firstTokenOfName = $tokens[$index]->getContent();
+        $namespaceUseAnalysis = $namespaceUseAnalyses[$firstTokenOfName] ?? false;
+
+        if ($namespaceUseAnalysis instanceof NamespaceUseAnalysis) {
+            $namespace = $namespaceUseAnalysis->getFullName();
+
+            if ($name === $firstTokenOfName) {
+                return $namespace;
+            }
+
+            $name = substr((string) strstr($name, '\\'), 1);
+        }
+
+        return $namespace.'\\'.$name;
     }
 
     /**

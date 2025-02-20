@@ -78,15 +78,9 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
-    /**
-     * @var null|LinterInterface
-     */
-    protected $linter;
+    protected ?LinterInterface $linter = null;
 
-    /**
-     * @var null|FileRemoval
-     */
-    private static $fileRemoval;
+    private static ?FileRemoval $fileRemoval = null;
 
     public static function setUpBeforeClass(): void
     {

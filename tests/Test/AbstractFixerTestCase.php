@@ -100,7 +100,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @template TFixer of AbstractFixer
+ * @template TFixer of FixerInterface
  *
  * @internal
  */
@@ -108,15 +108,12 @@ abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
 
-    /**
-     * @var null|LinterInterface
-     */
-    protected $linter;
+    protected ?LinterInterface $linter = null;
 
     /**
      * @var null|TFixer
      */
-    protected $fixer;
+    protected ?FixerInterface $fixer = null;
 
     /**
      * do not modify this structure without prior discussion.
@@ -134,6 +131,7 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
+        'general_attribute_remove' => true,
         'general_phpdoc_tag_rename' => true,
     ];
 
@@ -571,7 +569,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @return TFixer
      */
-    protected function createFixer(): AbstractFixer
+    protected function createFixer(): FixerInterface
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 

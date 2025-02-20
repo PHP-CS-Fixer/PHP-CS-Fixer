@@ -456,4 +456,136 @@ class Foo
             '<?php class Foo { public (A&B)|C    $bar; }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['elements' => ['property', 'constant', 'function']]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, 1?: ?string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield [
+            '<?php class Foo {const   BAR = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const    BAR = 123; }',
+        ];
+
+        yield [
+            '<?php class Foo {const BAR = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const string BAR = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const stringBAR = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const BAR = 123; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const array BAR = []; }',
+            '<?php class Foo {public const array               BAR = []; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const bool BAR = true; }',
+            '<?php class Foo {public const bool               BAR = true; }',
+        ];
+
+        yield [
+            '<?php class Foo {public int $bar; public const string BAZ = ""; }',
+            '<?php class Foo {public int   $bar; public const string               BAZ = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const string BAR = ""; }',
+            '<?php class Foo {public const string	BAR = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const string BAR = ""; }',
+            '<?php class Foo {public const string	 	  BAR = ""; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const int BAR = 0; }',
+            '<?php class Foo {public const int    BAR = 0; }',
+        ];
+
+        yield [
+            '<?php class Bar {public const bool BAR = true; }',
+            '<?php class Bar {public const bool    BAR = true; }',
+        ];
+
+        yield [
+            '<?php interface Bar {public const string BAR = "value"; }',
+            '<?php interface Bar {public const string    BAR = "value"; }',
+        ];
+
+        yield [
+            '<?php trait Bar {public const string FOO = ""; }',
+            '<?php trait Bar {public const string    FOO = ""; }',
+        ];
+
+        yield [
+            '<?php class Baz {
+                public const string FIRST = "1";
+                protected const int SECOND = 2;
+                private const array THIRD = [];
+            }',
+            '<?php class Baz {
+                public const string  FIRST = "1";
+                protected const int   SECOND = 2;
+                private const array    THIRD = [];
+            }',
+        ];
+
+        yield [
+            '<?php class Test {
+                public function foo(): void {}
+                public const string BAR = "bar";
+                private $baz = 1;
+            }',
+            '<?php class Test {
+                public function foo(): void {}
+                public const string   BAR = "bar";
+                private $baz = 1;
+            }',
+        ];
+
+        yield [
+            '<?php class Foo {public const ?string BAR = null; }',
+            '<?php class Foo {public const ?string   BAR = null; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const int|string BAR = 0; }',
+            '<?php class Foo {public const int|string    BAR = 0; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const int /**bla bla*/VALUE = 0; }',
+            '<?php class Foo {public const int/**bla bla*/VALUE = 0; }',
+        ];
+
+        yield [
+            '<?php class Foo {public const int /**bla bla*/ VALUE = 0; }',
+            '<?php class Foo {public const int  /**bla bla*/ VALUE = 0; }',
+        ];
+    }
 }

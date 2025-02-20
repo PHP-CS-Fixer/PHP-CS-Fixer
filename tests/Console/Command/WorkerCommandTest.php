@@ -19,7 +19,7 @@ use Clue\React\NDJson\Encoder;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
@@ -154,7 +154,7 @@ final class WorkerCommandTest extends TestCase
         self::assertCount(3, $workerScope['messages']);
         self::assertSame(ParallelAction::WORKER_HELLO, $workerScope['messages'][0]['action']);
         self::assertSame(ParallelAction::WORKER_RESULT, $workerScope['messages'][1]['action']);
-        self::assertSame(FixerFileProcessedEvent::STATUS_FIXED, $workerScope['messages'][1]['status']);
+        self::assertSame(FileProcessed::STATUS_FIXED, $workerScope['messages'][1]['status']);
         self::assertSame(ParallelAction::WORKER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
 
         $server->close();
