@@ -312,7 +312,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testFixPrePHP80(): void
     {
@@ -329,7 +329,7 @@ DateTime:: # a
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testNotFixPHP8(): void
     {

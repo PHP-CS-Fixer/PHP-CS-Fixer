@@ -235,7 +235,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {

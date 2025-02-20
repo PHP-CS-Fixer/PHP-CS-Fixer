@@ -323,7 +323,7 @@ endswitch ?>',
      * @param array<int, AbstractControlCaseStructuresAnalysis> $expectedAnalyses
      * @param list<int>                                         $types
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      *
      * @dataProvider provideFindControlStructuresPhp81Cases
      */

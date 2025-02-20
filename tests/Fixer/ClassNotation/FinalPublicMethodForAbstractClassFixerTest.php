@@ -132,7 +132,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2
      */
     public function testFix82(string $expected, ?string $input = null): void
     {

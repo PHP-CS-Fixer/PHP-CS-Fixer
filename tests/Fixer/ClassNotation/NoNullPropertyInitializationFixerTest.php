@@ -356,7 +356,7 @@ null;#13
     /**
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      */
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -390,7 +390,7 @@ null;#13
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testFix80(): void
     {
@@ -408,7 +408,7 @@ class Point {
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

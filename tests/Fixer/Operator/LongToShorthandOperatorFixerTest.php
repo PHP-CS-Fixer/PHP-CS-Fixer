@@ -453,7 +453,7 @@ class Foo
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0
      *
      * @dataProvider provideFixPre80Cases
      */
