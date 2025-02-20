@@ -170,6 +170,7 @@ jobs:
             job-description: 'code coverage'
             run-tests: 'yes'
             collect-code-coverage: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
