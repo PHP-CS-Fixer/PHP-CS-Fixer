@@ -724,6 +724,7 @@ final class FixerFactoryTest extends TestCase
             'ordered_class_elements' => [
                 'class_attributes_separation',
                 'no_blank_lines_after_class_opening',
+                'php_unit_data_provider_method_order',
                 'space_after_semicolon',
             ],
             'ordered_imports' => [
@@ -734,12 +735,17 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_attributes' => [
                 'fully_qualified_strict_types',
+                'no_empty_phpdoc',
                 'phpdoc_separation',
                 'phpdoc_trim',
                 'phpdoc_trim_consecutive_blank_line_separation',
             ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
+            ],
+            'php_unit_data_provider_method_order' => [
+                'class_attributes_separation',
+                'no_blank_lines_after_class_opening',
             ],
             'php_unit_data_provider_name' => [
                 'php_unit_attributes',
