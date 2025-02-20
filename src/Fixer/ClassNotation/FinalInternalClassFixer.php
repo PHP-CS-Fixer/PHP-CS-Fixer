@@ -136,6 +136,10 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 continue;
             }
 
+            if ($this->isParentClass($tokens, $index)) {
+                continue;
+            }
+
             // make class 'final'
             $tokens->insertSlices([
                 $index => [
@@ -370,5 +374,40 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         if (\count($intersect) > 0) {
             throw new InvalidFixerConfigurationException($this->getName(), \sprintf('Annotation cannot be used in both "include" and "exclude" list, got duplicates: %s.', Utils::naturalLanguageJoin(array_keys($intersect))));
         }
+    }
+
+    private function isParentClass(Tokens $tokens, int $classIndex): bool
+    {
+        $className = $this->getClassName($tokens, $classIndex);
+        if (null === $className) {
+            return false;
+        }
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_EXTENDS)) {
+                continue;
+            }
+
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind(T_STRING)) {
+                continue;
+            }
+
+            if ($tokens[$nextIndex]->getContent() === $className) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getClassName(Tokens $tokens, int $classIndex): ?string
+    {
+        $nextIndex = $tokens->getNextMeaningfulToken($classIndex);
+        if (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_STRING)) {
+            return $tokens[$nextIndex]->getContent();
+        }
+
+        return null;
     }
 }
