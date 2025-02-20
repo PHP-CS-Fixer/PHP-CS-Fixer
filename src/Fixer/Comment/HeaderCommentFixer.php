@@ -150,6 +150,7 @@ echo 1;
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $headerAsComment = $this->getHeaderAsComment();
         $location = $this->configuration['location'];
         $locationIndices = [];
 
@@ -166,19 +167,19 @@ echo 1;
             $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
 
             // check if there is already a comment
-            $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerNewIndex - 1);
+            $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerAsComment, $headerNewIndex - 1);
 
             if (null === $headerCurrentIndex) {
                 if ('' === $this->configuration['header'] || $possibleLocation !== $location) {
                     continue;
                 }
 
-                $this->insertHeader($tokens, $headerNewIndex);
+                $this->insertHeader($tokens, $headerAsComment, $headerNewIndex);
 
                 continue;
             }
 
-            $sameComment = $this->getHeaderAsComment() === $tokens[$headerCurrentIndex]->getContent();
+            $sameComment = $headerAsComment === $tokens[$headerCurrentIndex]->getContent();
             $expectedLocation = $possibleLocation === $location;
 
             if (!$sameComment || !$expectedLocation) {
@@ -191,7 +192,7 @@ echo 1;
                 }
 
                 if ($possibleLocation === $location) {
-                    $this->insertHeader($tokens, $headerNewIndex);
+                    $this->insertHeader($tokens, $headerAsComment, $headerNewIndex);
                 }
 
                 continue;
@@ -251,7 +252,7 @@ echo 1;
         return $comment.' */';
     }
 
-    private function findHeaderCommentCurrentIndex(Tokens $tokens, int $headerNewIndex): ?int
+    private function findHeaderCommentCurrentIndex(Tokens $tokens, string $headerAsComment, int $headerNewIndex): ?int
     {
         $index = $tokens->getNextNonWhitespace($headerNewIndex);
 
@@ -277,7 +278,7 @@ echo 1;
             return $index;
         }
 
-        return $this->getHeaderAsComment() === $tokens[$index]->getContent() ? $index : null;
+        return $headerAsComment === $tokens[$index]->getContent() ? $index : null;
     }
 
     /**
@@ -449,9 +450,9 @@ echo 1;
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }
 
-    private function insertHeader(Tokens $tokens, int $index): void
+    private function insertHeader(Tokens $tokens, string $headerAsComment, int $index): void
     {
-        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? T_COMMENT : T_DOC_COMMENT, $this->getHeaderAsComment()]));
+        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? T_COMMENT : T_DOC_COMMENT, $headerAsComment]));
         $this->fixWhiteSpaceAroundHeader($tokens, $index);
     }
 }
