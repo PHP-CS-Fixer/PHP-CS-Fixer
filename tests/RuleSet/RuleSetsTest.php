@@ -134,15 +134,6 @@ Integration of %s.
         ));
     }
 
-    public function testSetDefinitionsItselfIsSorted(): void
-    {
-        $setDefinition = array_keys(RuleSets::getSetDefinitions());
-        $sortedSetDefinition = $setDefinition;
-        natsort($sortedSetDefinition);
-
-        self::assertSame($sortedSetDefinition, $setDefinition);
-    }
-
     /**
      * @return iterable<array{string}>
      */
@@ -151,6 +142,15 @@ Integration of %s.
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
+    }
+
+    public function testSetDefinitionsItselfIsSorted(): void
+    {
+        $setDefinition = array_keys(RuleSets::getSetDefinitions());
+        $sortedSetDefinition = $setDefinition;
+        natsort($sortedSetDefinition);
+
+        self::assertSame($sortedSetDefinition, $setDefinition);
     }
 
     /**
