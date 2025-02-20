@@ -119,12 +119,6 @@ jobs:
 
           - operating-system: 'ubuntu-24.04'
             php-version: '8.3'
-            job-description: 'code coverage'
-            run-tests: 'yes'
-            collect-code-coverage: 'yes'
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
             job-description: 'mutation tests'
             run-mutation-tests: 'yes'
 
@@ -170,6 +164,12 @@ jobs:
             install-phpunit-12: 'yes'
             run-tests: 'yes'
             PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'code coverage'
+            run-tests: 'yes'
+            collect-code-coverage: 'yes'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
