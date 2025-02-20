@@ -52,6 +52,7 @@ Rules
 
   ``['after_heredoc' => true]``
 
+- `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
 - `ordered_types <./../rules/class_notation/ordered_types.rst>`_
 - `php_unit_data_provider_method_order <./../rules/php_unit/php_unit_data_provider_method_order.rst>`_

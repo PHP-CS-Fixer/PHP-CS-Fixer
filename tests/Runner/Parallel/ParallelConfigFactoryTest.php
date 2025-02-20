@@ -126,8 +126,8 @@ final class ParallelConfigFactoryTest extends TestCase
     private function mockCpuCount(?int $count): void
     {
         \Closure::bind(static function () use ($count): void {
-            ParallelConfigFactory::$cpuDetector = null !== $count ?
-                new CpuCoreCounter([
+            ParallelConfigFactory::$cpuDetector = null !== $count
+                ? new CpuCoreCounter([
                     new DummyCpuCoreFinder($count),
                 ]) : null;
         }, null, ParallelConfigFactory::class)();
