@@ -220,7 +220,7 @@ Custom values:
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassAttributesSeparationFixer, NoBlankLinesAfterClassOpeningFixer, SpaceAfterSemicolonFixer.
+     * Must run before ClassAttributesSeparationFixer, NoBlankLinesAfterClassOpeningFixer, PhpUnitDataProviderMethodOrderFixer, SpaceAfterSemicolonFixer.
      * Must run after NoPhp4ConstructorFixer, ProtectedToPrivateFixer.
      */
     public function getPriority(): int
@@ -284,8 +284,9 @@ Custom values:
                 continue;
             }
 
+            $endIndex = $elements[array_key_last($elements)]['end'];
+
             $sorted = $this->sortElements($elements);
-            $endIndex = $elements[\count($elements) - 1]['end'];
 
             if ($sorted !== $elements) {
                 $this->sortTokens($tokens, $i, $endIndex, $sorted);
