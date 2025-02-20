@@ -100,7 +100,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @template TFixer of AbstractFixer
+ * @template TFixer of FixerInterface
  *
  * @internal
  */
@@ -113,7 +113,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @var null|TFixer
      */
-    protected ?AbstractFixer $fixer = null;
+    protected ?FixerInterface $fixer = null;
 
     /**
      * do not modify this structure without prior discussion.
@@ -569,7 +569,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @return TFixer
      */
-    protected function createFixer(): AbstractFixer
+    protected function createFixer(): FixerInterface
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 

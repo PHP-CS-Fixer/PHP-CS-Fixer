@@ -53,14 +53,14 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php echo "Hello World !";',
-            '<?php echo "'.
-                pack('H*', 'e2808b').
-                pack('H*', 'e2808b').
-                pack('H*', 'e2808b').
-                pack('H*', 'e2808b').
-                pack('H*', 'e2808b').
-                pack('H*', 'e2808b').
-            'Hello World !";',
+            '<?php echo "'
+                .pack('H*', 'e2808b')
+                .pack('H*', 'e2808b')
+                .pack('H*', 'e2808b')
+                .pack('H*', 'e2808b')
+                .pack('H*', 'e2808b')
+                .pack('H*', 'e2808b')
+            .'Hello World !";',
             ['use_escape_sequences_in_strings' => false],
         ];
 

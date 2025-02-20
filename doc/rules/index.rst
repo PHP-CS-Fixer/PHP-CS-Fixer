@@ -19,7 +19,7 @@ Alias
   Replace non multibyte-safe functions with corresponding mb function.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky)*
 
-  Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
+  Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
 - `no_alias_functions <./alias/no_alias_functions.rst>`_ *(risky)*
 
   Master functions shall be used instead of aliases.
@@ -652,6 +652,9 @@ PHPUnit
 - `php_unit_construct <./php_unit/php_unit_construct.rst>`_ *(risky)*
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be written with dedicated method like ``->assertTrue($foo)``.
+- `php_unit_data_provider_method_order <./php_unit/php_unit_data_provider_method_order.rst>`_
+
+  Data provider method must be placed after/before the last/first test where used.
 - `php_unit_data_provider_name <./php_unit/php_unit_data_provider_name.rst>`_ *(risky)*
 
   Data provider names must match the name of the test.

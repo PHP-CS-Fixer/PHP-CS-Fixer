@@ -221,6 +221,22 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{a: int, b: int, with-dash: int}'];
 
+        yield ['array{...}'];
+
+        yield ['array{...<string>}'];
+
+        yield ['array{bool, ...<int, string>}'];
+
+        yield ['array{bool, ...}'];
+
+        yield ['array{bool, ...<string>}'];
+
+        yield ['array{a: bool,... }'];
+
+        yield ['array{a: bool,...<string> }'];
+
+        yield ['list{int, ...<string>}'];
+
         yield ['callable'];
 
         yield ['callable(string)'];
@@ -269,6 +285,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty}'];
 
+        yield ['Closure<Tx, Ty>(): array{x: Tx, y: Ty, ...<Closure(): void>}'];
+
         yield ['array  <  int   , callable  (  string  )  :   bool  >'];
 
         yield ['Closure<T of Foo>(T): T'];
@@ -305,7 +323,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 120).'string'.str_repeat('>', 120)];
+        yield [str_repeat('array<', 116).'string'.str_repeat('>', 116)];
 
         yield [self::makeLongArrayShapeType()];
     }
@@ -395,6 +413,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['class~~double_tilde'];
 
+        yield ['array<>'];
+
         yield ['array<'];
 
         yield ['array<<'];
@@ -408,6 +428,22 @@ final class TypeExpressionTest extends TestCase
         yield ['array{'];
 
         yield ['array{ $this: 5 }'];
+
+        yield ['array{...<>}'];
+
+        yield ['array{bool, ...<>}'];
+
+        yield ['array{bool, ...<int,>}'];
+
+        yield ['array{bool, ...<,int>}'];
+
+        yield ['array{bool, ...<int, int, int>}'];
+
+        yield ['array{bool...<int>}'];
+
+        yield ['array{,...<int>}'];
+
+        yield ['array{...<int>,}'];
 
         yield ['g<,>'];
 
@@ -931,6 +967,16 @@ final class TypeExpressionTest extends TestCase
         yield 'array shape with multiple colons - callable' => [
             'array{array{x:int|bool}, int|bool, callable(): void}',
             'array{array{x:bool|int}, bool|int, callable(): void}',
+        ];
+
+        yield 'unsealed array shape' => [
+            'array{bool, ...<B|A>}',
+            'array{bool, ...<A|B>}',
+        ];
+
+        yield 'unsealed array shape with key and value type' => [
+            'array{bool, ...<B|A, D&C>}',
+            'array{bool, ...<A|B, C&D>}',
         ];
 
         yield 'simple in callable argument' => [

@@ -410,14 +410,30 @@ class Tokens extends \SplFixedArray
         for ($count = $index; $index < $limit; ++$index) {
             if (!$this->isEmptyAt($index)) {
                 // use directly for speed, skip the register of token kinds found etc.
-                parent::offsetSet($count++, $this[$index]);
+                $buffer = $this[$count];
+                parent::offsetSet($count, $this[$index]);
+                parent::offsetSet($index, $buffer);
+
+                if (isset($this->blockStartCache[$index])) {
+                    $otherEndIndex = $this->blockStartCache[$index];
+                    unset($this->blockStartCache[$index]);
+                    $this->blockStartCache[$count] = $otherEndIndex;
+                    $this->blockEndCache[$otherEndIndex] = $count;
+                }
+
+                if (isset($this->blockEndCache[$index])) {
+                    $otherEndIndex = $this->blockEndCache[$index];
+                    unset($this->blockEndCache[$index]);
+                    $this->blockStartCache[$otherEndIndex] = $count;
+                    $this->blockEndCache[$count] = $otherEndIndex;
+                }
+
+                ++$count;
             }
         }
 
         // we are moving the tokens, we need to clear the index-based Cache
         $this->namespaceDeclarations = null;
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
         $this->foundTokenKinds[''] = 0;
 
         $this->updateSize($count);

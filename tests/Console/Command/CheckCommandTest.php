@@ -45,7 +45,7 @@ final class CheckCommandTest extends TestCase
             [
                 'command' => $command->getName(),
                 '--help' => true,
-                'path' => [__FILE__], // just to get rid of Finder error
+                'path' => [__DIR__.'/../../Fixtures/dummy-file.php'], // just to get rid of Finder error
             ],
             [
                 'interactive' => false,

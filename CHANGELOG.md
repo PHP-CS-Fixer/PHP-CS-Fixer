@@ -3,6 +3,75 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.69.1
+---------------------
+
+* fix: `PhpUnitAttributesFixer` - convert correctly version constraint (#8439)
+* test: `PhpUnitAttributesFixer` must run before `NoEmptyPhpdocFixer` (#8443)
+
+Changelog for v3.69.0
+---------------------
+
+* feat: Add unsealed array shape phpdoc support (#8299)
+* fix: `OrderedClassElementsFixer` - sort correctly typed constants (#8408)
+* chore: do not use test class as test data (#8430)
+* chore: update `checkbashisms` to 2.25.2 (#8427)
+* chore: use constants instead of literal strings (#8422)
+* CI: no need to unlock deps on master (#8426)
+* CI: run tests using PHPUnit 12 (#8431)
+* deps: bump kubawerlos/composer-smaller-lock from 1.0.1 to 1.1.0 in /dev-tools (#8414)
+* deps: bump maglnet/composer-require-checker from 4.14.0 to 4.15.0 in /dev-tools (#8406)
+* deps: bump phpstan/phpstan from 2.1.3 to 2.1.5 in /dev-tools in the phpstan group (#8437)
+* deps: bump the phpstan (#8423)
+* deps: upgrade dev requirements (#8424)
+
+Changelog for v3.68.5
+---------------------
+
+* fix: `NativeTypeDeclarationCasingFixer` - do not touch constants named as native types (#8404)
+
+Changelog for v3.68.4
+---------------------
+
+* chore: run SCA on PHP 8.4 (#8396)
+* fix: NativeTypeDeclarationCasingFixer should not touch property names (#8400)
+
+Changelog for v3.68.3
+---------------------
+
+* fix: `NativeTypeDeclarationCasingFixer` - fix for enum with "Mixed" case (#8395)
+
+Changelog for v3.68.2
+---------------------
+
+* fix: `NativeTypeDeclarationCasingFixer` - fix for promoted properties, enums, `false` and `mixed` (#8386)
+* chore: ensure that `dev-tools` dependencies are bumped (#8389)
+* chore: experiment to see if we can auto-shrink the lock after dependabot (#8383)
+* chore: experiment to see if we can auto-shrink the lock after dependabot /part (#8384)
+* chore: Get rid of Docker warnings during build (#8379)
+* chore: remove redundant check (#8391)
+* chore: update types (#8390)
+* CI: stale - update close msg to emphasize contribution over demand (#8385)
+* deps: bump phpcompatibility/phpcompatibility-symfony from 1.2.1 to 1.2.2 in /dev-tools (#8378)
+* deps: bump the phpstan group in /dev-tools with 4 updates (#8387)
+* refactor: Use native `Yaml::parseFile()` instead of custom method (#8380)
+
+Changelog for v3.68.1
+---------------------
+
+* chore: `AutoReview/CiConfigurationTest` - handle failure of reading files (#8375)
+* CI: `Docker` - check all `compose` services (#8370)
+* deps: bump alpine from 3.18 to 3.21 (#8377)
+* deps: bump alpine from 3.18.4 to 3.21.2 (#8362)
+* refactor: Tokens::clearEmptyTokens - optimize cache handling (#8335)
+
+Changelog for v3.68.0
+---------------------
+
+* feat: `ModernizeStrposFixer` - support `stripos` (#8019)
+* chore: `FullyQualifiedStrictTypesFixer` - reduce conditions count (#8368)
+* test: `PhpUnitSetUpTearDownVisibilityFixer` - extend test for anonymous classes (#8369)
+
 Changelog for v3.67.1
 ---------------------
 

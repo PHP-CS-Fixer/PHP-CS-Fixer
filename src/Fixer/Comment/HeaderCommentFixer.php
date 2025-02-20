@@ -90,7 +90,7 @@ echo 1;
 ',
                     [
                         'header' => 'Made with love.',
-                        'comment_type' => 'PHPDoc',
+                        'comment_type' => self::HEADER_PHPDOC,
                         'location' => 'after_open',
                         'separate' => 'bottom',
                     ]
@@ -105,7 +105,7 @@ echo 1;
 ',
                     [
                         'header' => 'Made with love.',
-                        'comment_type' => 'comment',
+                        'comment_type' => self::HEADER_COMMENT,
                         'location' => 'after_declare_strict',
                     ]
                 ),

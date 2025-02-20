@@ -135,8 +135,7 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
 
             $firstTwoCharacters = strtolower(substr($content, 0, 2));
             $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
-            $isDoubleQuotedString =
-                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
+            $isDoubleQuotedString = ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
 
             if ($isSingleQuotedString
