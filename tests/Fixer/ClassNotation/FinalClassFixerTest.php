@@ -72,6 +72,11 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php class MyClass {} final class MyChildClass extends MyClass {}',
+            '<?php class MyClass {} class MyChildClass extends MyClass {}',
+        ];
+
+        yield [
             '<?php final class MyClass extends MyAbstract {}',
             '<?php class MyClass extends MyAbstract {}',
         ];

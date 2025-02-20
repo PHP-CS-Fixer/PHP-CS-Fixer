@@ -191,6 +191,25 @@ class Bar {}
 ',
         ];
 
+        yield 'multiple classes, both with annotations, with one extending another class' => [
+            '<?php
+
+/** @internal */
+class Foo {}
+
+/** @internal */
+final class Bar extends Foo {}
+',
+            '<?php
+
+/** @internal */
+class Foo {}
+
+/** @internal */
+class Bar extends Foo {}
+',
+        ];
+
         yield [
             "<?php\n/** @CUSTOM */final class A{}",
             "<?php\n/** @CUSTOM */class A{}",
