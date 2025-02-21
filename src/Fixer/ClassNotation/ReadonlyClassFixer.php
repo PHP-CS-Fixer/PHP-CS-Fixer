@@ -40,7 +40,7 @@ final class ReadonlyClassFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 30;
+        return 0;
     }
 
     public function isCandidate(Tokens $tokens): bool
