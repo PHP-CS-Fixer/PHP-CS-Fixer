@@ -46,7 +46,7 @@ Default value: ``'both'``
 ``validator``
 ~~~~~~~~~~~~~
 
-Validator for header content.
+RegEx validator for header content.
 
 Allowed types: ``string`` and ``null``
 

@@ -268,7 +268,7 @@ echo 1;
                     return $value;
                 })
                 ->getOption(),
-            (new FixerOptionBuilder('validator', 'Validator for header content.'))
+            (new FixerOptionBuilder('validator', 'RegEx validator for header content.'))
                 ->setAllowedTypes(['string', 'null'])
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
                     if (null !== $value && !str_starts_with($value, '/')) {
