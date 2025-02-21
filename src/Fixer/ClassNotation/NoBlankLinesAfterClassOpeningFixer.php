@@ -55,7 +55,7 @@ final class Sample
     /**
      * {@inheritdoc}
      *
-     * Must run after OrderedClassElementsFixer.
+     * Must run after OrderedClassElementsFixer, PhpUnitDataProviderMethodOrderFixer.
      */
     public function getPriority(): int
     {
