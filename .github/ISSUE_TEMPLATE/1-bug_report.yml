@@ -62,7 +62,8 @@ body:
       options:
         - Composer package
         - Composer Shim package (binary only)
-        - PHAR
+        - PHAR (manually downloaded, e.g. from release page)
+        - PHIVE (phar.io)
         - Docker
     validations:
       required: true
