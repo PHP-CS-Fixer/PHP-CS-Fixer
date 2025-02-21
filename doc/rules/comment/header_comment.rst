@@ -43,6 +43,15 @@ Allowed values: ``'both'``, ``'bottom'``, ``'none'`` and ``'top'``
 
 Default value: ``'both'``
 
+``validator``
+~~~~~~~~~~~~~
+
+Validator for header content.
+
+Allowed types: ``string`` and ``null``
+
+Default value: ``null``
+
 Examples
 --------
 
