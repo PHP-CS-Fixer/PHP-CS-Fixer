@@ -57,6 +57,8 @@ parameters:
             path: tests
             count: 265
     tipsOfTheDay: false
+    symfony:
+        consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
 
 services:
