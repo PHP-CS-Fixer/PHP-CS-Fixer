@@ -442,7 +442,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             (new FixerOptionBuilder('call_type', 'The call type to use for referring to PHPUnit methods.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues(array_keys(self::ALLOWED_VALUES))
-                ->setDefault('static')
+                ->setDefault(self::CALL_TYPE_STATIC)
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array<string, string>'])
@@ -500,7 +500,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 // do not change `self` to `this` in static methods
-                if ('this' === $callType) {
+                if (self::CALL_TYPE_THIS === $callType) {
                     $attributes = $analyzer->getMethodAttributes($index);
 
                     if (false !== $attributes['static']) {

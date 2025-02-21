@@ -51,8 +51,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ),
             ],
             null,
-            'This fixer may change functions named `setUp()` or `tearDown()` outside of PHPUnit tests, '.
-            'when a class is wrongly seen as a PHPUnit test.'
+            'This fixer may change functions named `setUp()` or `tearDown()` outside of PHPUnit tests, '
+            .'when a class is wrongly seen as a PHPUnit test.'
         );
     }
 
