@@ -148,8 +148,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
     {
         $prevMethodEndIndex = $tokens->getPrevTokenOfKind($index, ['}']);
-        $currentMethodStartIndex = $index;
-        $currentIndex = $currentMethodStartIndex - 1;
+        $currentIndex = $index - 1;
 
         while (true) {
             $attributeIndex = $tokens->getPrevTokenOfKind($currentIndex, [[T_ATTRIBUTE]]);
