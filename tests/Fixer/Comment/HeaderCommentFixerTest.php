@@ -841,6 +841,14 @@ echo 1;'
             ],
             'Invalid configuration: The option "separate" with value stdClass is invalid\. Accepted values are: "both", "top", "bottom", "none"\.',
         ];
+
+        yield [
+            [
+                'header' => 'Foo',
+                'validator' => '/\w+++/',
+            ],
+            'Provided RegEx is not valid.',
+        ];
     }
 
     /**

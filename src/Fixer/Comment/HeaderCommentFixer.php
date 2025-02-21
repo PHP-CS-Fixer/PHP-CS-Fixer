@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\PregException;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -271,8 +272,12 @@ echo 1;
             (new FixerOptionBuilder('validator', 'RegEx validator for header content.'))
                 ->setAllowedTypes(['string', 'null'])
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
-                    if (null !== $value && !str_starts_with($value, '/')) {
-                        throw new InvalidFixerConfigurationException($fixerName, 'Ensure to use valid regex.'); // @TODO naive check, replace with outcome of https://github.com/php/php-src/issues/9289
+                    if (null !== $value) {
+                        try {
+                            Preg::match($value, '');
+                        } catch (PregException $exception) {
+                            throw new InvalidFixerConfigurationException($fixerName, 'Provided RegEx is not valid.');
+                        }
                     }
 
                     return $value;
