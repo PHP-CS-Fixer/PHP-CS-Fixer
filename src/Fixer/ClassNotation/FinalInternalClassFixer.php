@@ -379,7 +379,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     private function isParentClass(Tokens $tokens, int $classIndex): bool
     {
         $className = $this->getClassName($tokens, $classIndex);
-        if (null === $className) {
+        if ($tokens->countTokenKind(T_CLASS) === 1) {
             return false;
         }
 
@@ -404,7 +404,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     private function getClassName(Tokens $tokens, int $classIndex): ?string
     {
         $nextIndex = $tokens->getNextMeaningfulToken($classIndex);
-        if (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_STRING)) {
+        if ($tokens[$nextIndex]->isGivenKind(T_STRING)) {
             return $tokens[$nextIndex]->getContent();
         }
 
