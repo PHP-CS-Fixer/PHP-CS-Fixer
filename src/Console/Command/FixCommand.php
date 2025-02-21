@@ -388,6 +388,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
     protected function isDryRun(InputInterface $input): bool
     {
-        return $input->getOption('dry-run'); // @phpstan-ignore symfonyConsole.optionNotFound (Because PHPStan doesn't recognise the method is overwritten in child class and this parameter is _not_ in use in child class.)
+        return $input->getOption('dry-run'); // @phpstan-ignore symfonyConsole.optionNotFound (Because PHPStan doesn't recognise the method is overridden in the child class and this parameter is _not_ used in the child class.)
     }
 }
