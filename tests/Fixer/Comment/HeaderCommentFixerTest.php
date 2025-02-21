@@ -450,13 +450,13 @@ class Foo {}',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp1',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
             '<?php
 
 /**
- * tmp
+ * tmp1
  */
 
 /**
@@ -473,33 +473,33 @@ class Foo {}',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp2',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
             '<?php
 
 /**
- * tmp
+ * tmp2
  */
 
 class Foo {}',
             '<?php
 
 /**
- * tmp
+ * tmp2
  */
 class Foo {}',
         ];
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp3',
                 'separate' => 'top',
             ],
             '<?php
 
 /*
- * tmp
+ * tmp3
  */
 class Foo {}',
             '<?php
@@ -565,13 +565,13 @@ foo();',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp4',
                 'location' => 'after_declare_strict',
             ],
             '<?php
 
 /*
- * tmp
+ * tmp4
  */
 
 declare(strict_types=1) ?>',
@@ -581,7 +581,7 @@ declare(strict_types=1) ?>',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp5',
                 'location' => 'after_declare_strict',
             ],
             '#!/usr/bin/env php
@@ -589,7 +589,7 @@ declare(strict_types=1) ?>',
 declare(strict_types=1);
 
 /*
- * tmp
+ * tmp5
  */
 
 namespace A\B;
