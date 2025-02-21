@@ -51,6 +51,42 @@ With configuration: ``['case' => 'snake_case']``.
    +    public function test_my_code() {}
     }
 
+Example #3
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use \PHPUnit\Framework\Attributes\Test;
+    class MyTest extends \PhpUnit\FrameWork\TestCase
+    {
+        #[PHPUnit\Framework\Attributes\Test]
+   -    public function test_my_code() {}
+   +    public function testMyCode() {}
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['case' => 'snake_case']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use \PHPUnit\Framework\Attributes\Test;
+    class MyTest extends \PhpUnit\FrameWork\TestCase
+    {
+        #[PHPUnit\Framework\Attributes\Test]
+   -    public function testMyCode() {}
+   +    public function test_my_code() {}
+    }
+
 Rule sets
 ---------
 
