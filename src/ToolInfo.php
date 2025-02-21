@@ -32,12 +32,9 @@ final class ToolInfo implements ToolInfoInterface
     /**
      * @var null|array{name: string, version: string, dist: array{reference?: string}}
      */
-    private $composerInstallationDetails;
+    private ?array $composerInstallationDetails = null;
 
-    /**
-     * @var null|bool
-     */
-    private $isInstalledByComposer;
+    private ?bool $isInstalledByComposer = null;
 
     public function getComposerInstallationDetails(): array
     {
@@ -48,6 +45,7 @@ final class ToolInfo implements ToolInfoInterface
         if (null === $this->composerInstallationDetails) {
             $composerInstalled = json_decode(file_get_contents($this->getComposerInstalledFile()), true, 512, JSON_THROW_ON_ERROR);
 
+            /** @var list<array{name: string, version: string, dist: array{reference?: string}}> $packages */
             $packages = $composerInstalled['packages'] ?? $composerInstalled;
 
             foreach ($packages as $package) {

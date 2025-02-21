@@ -139,6 +139,16 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<array{array<string, mixed>}>
+     */
+    public static function provideDifferentOrderCases(): iterable
+    {
+        yield [['order' => ['param', 'throw', 'return']]];
+
+        yield [['order' => ['param', 'return', 'throw']]];
+    }
+
     public function testFixBasicCase(): void
     {
         $expected = <<<'EOF'
@@ -386,16 +396,6 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
             EOF;
 
         $this->doTest($input);
-    }
-
-    /**
-     * @return iterable<array{array<string, mixed>}>
-     */
-    public static function provideDifferentOrderCases(): iterable
-    {
-        yield [['order' => ['param', 'throw', 'return']]];
-
-        yield [['order' => ['param', 'return', 'throw']]];
     }
 
     /**
