@@ -113,6 +113,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                     ]
                 ),
                 new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample([\n    'foo' => true\n]);\nsample(function () {\n    return 10;\n});\nsample(1, [\n    'foo' => true\n]);\nsample(1, function () {\n    return 10;\n});\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'on_nested_multiline' => 'always',
+                    ]
+                ),
+                new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample([\n    'foo' => true\n]);\nsample(function () {\n    return 10;\n});\nsample(1, [\n    'foo' => true\n]);\nsample(1, function () {\n    return 10;\n});\n",
+                    [
+                        'on_multiline' => 'ensure_fully_multiline',
+                        'on_nested_multiline' => 'ignore_single',
+                    ]
+                ),
+                new CodeSample(
                     <<<'SAMPLE'
                         <?php
                         sample(
@@ -194,6 +208,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->setAllowedValues(['ignore', 'ensure_single_line', 'ensure_fully_multiline'])
                 ->setDefault('ensure_fully_multiline')
                 ->getOption(),
+            (new FixerOptionBuilder(
+                'on_nested_multiline',
+                'When using ensure_fully_multiline, defines how to handle nested function arguments that contain newlines such as anonymous functions and arrays.'
+            ))
+                ->setAllowedValues(['ignore', 'ignore_single', 'always'])
+                ->setDefault('ignore')
+                ->getOption(),
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -242,11 +263,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             }
         }
 
+        $argumentCount = 1;
+        $nestedMultiline = false;
+
         for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
             $token = $tokens[$index];
+            $oldIndex = $index;
 
             if ($token->equals(')')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+                if ('ignore' !== $this->configuration['on_nested_multiline'] && $this->doesBlockContainNewLine($tokens, $oldIndex, $index)) {
+                    $nestedMultiline = true;
+                }
 
                 continue;
             }
@@ -254,16 +283,25 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
+                if ('ignore' !== $this->configuration['on_nested_multiline'] && $this->doesBlockContainNewLine($tokens, $oldIndex, $index)) {
+                    $nestedMultiline = true;
+                }
+
                 continue;
             }
 
             if ($token->equals('}')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
+                if ('ignore' !== $this->configuration['on_nested_multiline'] && $this->doesBlockContainNewLine($tokens, $oldIndex, $index)) {
+                    $nestedMultiline = true;
+                }
+
                 continue;
             }
 
             if ($token->equals(',')) {
+                ++$argumentCount;
                 $this->fixSpace($tokens, $index);
                 if (!$isMultiline && $this->isNewline($tokens[$index + 1])) {
                     $isMultiline = true;
@@ -271,7 +309,36 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             }
         }
 
-        return $isMultiline;
+        if ($isMultiline) {
+            return true;
+        }
+
+        if (
+            'always' === $this->configuration['on_nested_multiline']
+            || (
+                'ignore_single' === $this->configuration['on_nested_multiline']
+                && $argumentCount > 1
+            )
+        ) {
+            return $nestedMultiline;
+        }
+
+        return false;
+    }
+
+    private function doesBlockContainNewLine(Tokens $tokens, int $startIndex, int $endIndex): bool
+    {
+        $direction = $endIndex > $startIndex ? 1 : -1;
+
+        for ($index = $startIndex; $index !== $endIndex; $index += $direction) {
+            $token = $tokens[$index];
+
+            if ($this->isNewline($token)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function findWhitespaceIndexAfterParenthesis(Tokens $tokens, int $startParenthesisIndex, int $endParenthesisIndex): ?int
@@ -355,10 +422,15 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
         for ($index = $endFunctionIndex - 1; $index > $startFunctionIndex; --$index) {
             $token = $tokens[$index];
+            $oldIndex = $index;
 
             // skip nested method calls and arrays
             if ($token->equals(')')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+                if ('ignore' !== $this->configuration['on_nested_multiline']) {
+                    $this->fixIndentation($tokens, $index, $oldIndex, $indentation);
+                }
 
                 continue;
             }
@@ -367,11 +439,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
+                if ('ignore' !== $this->configuration['on_nested_multiline']) {
+                    $this->fixIndentation($tokens, $index, $oldIndex, $indentation);
+                }
+
                 continue;
             }
 
             if ($token->equals('}')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                if ('ignore' !== $this->configuration['on_nested_multiline']) {
+                    $this->fixIndentation($tokens, $index, $oldIndex, $indentation);
+                }
 
                 continue;
             }
@@ -433,6 +513,53 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         }
 
         $tokens->ensureWhitespaceAtIndex($index + 1, 0, $this->whitespacesConfig->getLineEnding().$indentation);
+    }
+
+    private function fixIndentation(Tokens $tokens, int $startIndex, int $endIndex, string $indentation): void
+    {
+        // find out what the indentation is
+        $searchIndex = $startIndex;
+        do {
+            $prevWhitespaceTokenIndex = $tokens->getPrevTokenOfKind(
+                $searchIndex,
+                [[T_WHITESPACE]]
+            );
+
+            $searchIndex = $prevWhitespaceTokenIndex;
+        } while (null !== $prevWhitespaceTokenIndex
+            && !str_contains($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
+        );
+
+        if (null === $prevWhitespaceTokenIndex) {
+            $baseIndentation = 0;
+        } else {
+            $baseIndentation = \strlen($this->extractIndent($tokens[$prevWhitespaceTokenIndex]->getContent()));
+        }
+
+        for ($index = $startIndex; $index < $endIndex; ++$index) {
+            $token = $tokens[$index];
+            if ($this->isNewline($token)) {
+                $whitespace = $this->whitespacesConfig->getLineEnding().$indentation;
+
+                $indentationDifference = \strlen($this->extractIndent($token->getContent())) - $baseIndentation;
+
+                while ($indentationDifference > 0) {
+                    $whitespace .= $this->whitespacesConfig->getIndent();
+                    $indentationDifference -= \strlen($this->whitespacesConfig->getIndent());
+                }
+
+                $tokens->ensureWhitespaceAtIndex($index, 0, $whitespace);
+            }
+        }
+    }
+
+    private function extractIndent(string $content): string
+    {
+        if (Preg::match('/\R(\h*)[^\r\n]*$/D', $content, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
     }
 
     /**
