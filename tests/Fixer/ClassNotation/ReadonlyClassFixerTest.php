@@ -25,6 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ReadonlyClassFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @dataProvider provideFixCases
+     *
+     * @requires PHP 8.2
+     */
+    public function testFix(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
     public static function provideFixCases(): iterable
     {
         yield [
@@ -339,15 +349,5 @@ final class ReadonlyClassFixerTest extends AbstractFixerTestCase
                 public function __construct(public readonly string $foo){}
             }',
         ];
-    }
-
-    /**
-     * @dataProvider provideFixCases
-     *
-     * @requires PHP 8.2
-     */
-    public function testFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
     }
 }
