@@ -164,6 +164,31 @@ echo 1;
             }
         }
 
+        // pre-run to find existing comment, if dynamic content is allowed
+        if (null !== $this->configuration['validator']) {
+            foreach ($locationIndices as $possibleLocation) {
+                // figure out where the comment should be placed
+                $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
+
+                // check if there is already a comment
+                $headerCurrentIndex = $this->findHeaderCommentCurrentIndex($tokens, $headerAsComment, $headerNewIndex - 1);
+
+                if (null === $headerCurrentIndex) {
+                    continue;
+                }
+                $currentHeaderComment = $tokens[$headerCurrentIndex]->getContent();
+
+                $lines = implode("\n", array_map(
+                    static fn (string $line): string => ' *' === $line ? '' : (str_starts_with($line, ' * ') ? substr($line, 3) : $line),
+                    \array_slice(explode("\n", $currentHeaderComment), 1, -1),
+                ));
+
+                if ($this->doesTokenFulfillValidator($tokens[$headerCurrentIndex])) {
+                    $headerAsComment = $currentHeaderComment;
+                }
+            }
+        }
+
         foreach ($locationIndices as $possibleLocation) {
             // figure out where the comment should be placed
             $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
@@ -181,7 +206,8 @@ echo 1;
                 continue;
             }
 
-            $sameComment = $headerAsComment === $tokens[$headerCurrentIndex]->getContent();
+            $currentHeaderComment = $tokens[$headerCurrentIndex]->getContent();
+            $sameComment = $headerAsComment === $currentHeaderComment;
             $expectedLocation = $possibleLocation === $location;
 
             if (!$sameComment || !$expectedLocation) {
@@ -249,6 +275,21 @@ echo 1;
         ]);
     }
 
+    private function doesTokenFulfillValidator(Token $token): bool
+    {
+        if (null === $this->configuration['validator']) {
+            throw new \LogicException(\sprintf("Cannot call '%s' method while missing config:validator.", __METHOD__));
+        }
+        $currentHeaderComment = $token->getContent();
+
+        $lines = implode("\n", array_map(
+            static fn (string $line): string => ' *' === $line ? '' : (str_starts_with($line, ' * ') ? substr($line, 3) : $line),
+            \array_slice(explode("\n", $currentHeaderComment), 1, -1),
+        ));
+
+        return Preg::match($this->configuration['validator'], $lines);
+    }
+
     /**
      * Enclose the given text in a comment block.
      */
@@ -291,7 +332,14 @@ echo 1;
             return $index;
         }
 
-        return $headerAsComment === $tokens[$index]->getContent() ? $index : null;
+        if (
+            $headerAsComment === $tokens[$index]->getContent()
+            || (null !== $this->configuration['validator'] && $this->doesTokenFulfillValidator($tokens[$index]))
+        ) {
+            return $index;
+        }
+
+        return null;
     }
 
     /**

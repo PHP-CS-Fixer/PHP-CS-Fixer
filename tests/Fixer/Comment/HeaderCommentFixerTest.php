@@ -631,6 +631,145 @@ echo 1;
 ?>Hello World!<?php
 script_continues_here();',
         ];
+
+        $fileHeaderParts = [
+            <<<'EOF'
+                This file is part of the xxx.
+
+                (c) Foo Bar <foo@bar.com>
+                EOF,
+            <<<'EOF'
+                For the full copyright and license information, please view the LICENSE
+                file that was distributed with this source code.
+                EOF,
+        ];
+        $fileHeaderComment = implode('', $fileHeaderParts);
+        $fileHeaderCommentValidator = implode('', [
+            '/',
+            preg_quote($fileHeaderParts[0], '/'),
+            '(?P<EXTRA>.*)??',
+            preg_quote($fileHeaderParts[1], '/'),
+            '/s',
+        ]);
+
+        yield 'using validator, but existing comment in wrong place - adding new one' => [
+            [
+                'header' => $fileHeaderComment,
+                'validator' => $fileHeaderCommentValidator,
+                'location' => 'after_open',
+            ],
+            '<?php
+
+/*
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+            '<?php
+
+declare(strict_types=1);
+/*
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace A;
+
+echo 1;',
+        ];
+
+        yield 'using validator, existing comment matches' => [
+            [
+                'header' => $fileHeaderComment,
+                'validator' => $fileHeaderCommentValidator,
+                'location' => 'after_open',
+            ],
+            '<?php
+
+/*
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+        ];
+
+        yield 'using validator, existing comment matches but misplaced' => [
+            [
+                'header' => $fileHeaderComment,
+                'validator' => $fileHeaderCommentValidator,
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
+
+/**
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+class Foo {}',
+            '<?php
+
+/**
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+class Foo {}',
+        ];
     }
 
     public function testDefaultConfiguration(): void
