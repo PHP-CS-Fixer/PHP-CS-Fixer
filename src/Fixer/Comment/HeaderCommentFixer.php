@@ -114,6 +114,25 @@ echo 1;
                 new CodeSample(
                     '<?php
 declare(strict_types=1);
+/*
+ * Made with love.
+ *
+ * Extra content.
+ */
+namespace A\B;
+
+echo 1;
+',
+                    [
+                        'header' => 'Made with love.',
+                        'validator' => '/Made with love(?P<EXTRA>.*)??/s',
+                        'comment_type' => self::HEADER_COMMENT,
+                        'location' => 'after_declare_strict',
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+declare(strict_types=1);
 
 /*
  * Comment is not wanted here.
