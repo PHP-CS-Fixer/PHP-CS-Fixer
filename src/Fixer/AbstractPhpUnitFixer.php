@@ -145,6 +145,32 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         }
     }
 
+    final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
+    {
+        $prevMethodEndIndex = $tokens->getPrevTokenOfKind($index, ['}']);
+        $currentIndex = $index - 1;
+
+        while (true) {
+            $attributeIndex = $tokens->getPrevTokenOfKind($currentIndex, [[T_ATTRIBUTE]]);
+            if (null === $attributeIndex || $attributeIndex <= $prevMethodEndIndex) {
+                break;
+            }
+
+            foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+                foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                    $attributeName = ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\');
+                    if ('phpunit\framework\attributes\test' === $attributeName) {
+                        return true;
+                    }
+                }
+            }
+
+            $currentIndex = $attributeIndex - 1;
+        }
+
+        return false;
+    }
+
     private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
