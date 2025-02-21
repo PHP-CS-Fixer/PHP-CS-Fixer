@@ -389,7 +389,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind(T_STRING)) {
+            if (!$tokens[$nextIndex]->isGivenKind(T_STRING)) {
                 continue;
             }
 
