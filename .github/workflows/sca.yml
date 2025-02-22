@@ -36,12 +36,6 @@ jobs:
           os: ${{ runner.os }}
           php: ${{ env.php-version }}
 
-      ## We want to have a lock-file used on PR level, so contributors are not bothered by SCA complains unrelated to their changes,
-      ## and same time we want to be aware that we are complying with bleeding edge of SCA tools as maintainers observing the push hook.
-      - name: Unlock dev-tools
-        if: ${{ github.event_name != 'pull_request' }}
-        run: rm ./dev-tools/composer.lock
-
       - name: Cache dev-tools
         uses: actions/cache@v4
         with:

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "297427baff627eab39b26f3490ae03c2",
+    "content-hash": "390ff59be01d81d5450a3918ba92168c",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -536,16 +536,16 @@
         },
         {
             "name": "kubawerlos/composer-smaller-lock",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kubawerlos/composer-smaller-lock.git",
-                "reference": "3b0a8695de0595d471d3383118972f10e31ab41e"
+                "reference": "a985cb7b56d7473a44e4ec37c07d4deb39871ac2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kubawerlos/composer-smaller-lock/zipball/3b0a8695de0595d471d3383118972f10e31ab41e",
-                "reference": "3b0a8695de0595d471d3383118972f10e31ab41e"
+                "url": "https://api.github.com/repos/kubawerlos/composer-smaller-lock/zipball/a985cb7b56d7473a44e4ec37c07d4deb39871ac2",
+                "reference": "a985cb7b56d7473a44e4ec37c07d4deb39871ac2"
             },
             "require": {
                 "composer-plugin-api": "^2.0.12",
@@ -1032,16 +1032,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.2",
+            "version": "2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a"
+                "reference": "6eaec7c6c9e90dcfe46ad1e1ffa5171e2dab641c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7d08f569e582ade182a375c366cbd896eccadd3a",
-                "reference": "7d08f569e582ade182a375c366cbd896eccadd3a"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6eaec7c6c9e90dcfe46ad1e1ffa5171e2dab641c",
+                "reference": "6eaec7c6c9e90dcfe46ad1e1ffa5171e2dab641c"
             },
             "require": {
                 "php": "^7.4|^8.0"
@@ -2057,7 +2057,7 @@
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.4"
     },

@@ -43,6 +43,15 @@ Allowed values: ``'both'``, ``'bottom'``, ``'none'`` and ``'top'``
 
 Default value: ``'both'``
 
+``validator``
+~~~~~~~~~~~~~
+
+RegEx validator for header content.
+
+Allowed types: ``string`` and ``null``
+
+Default value: ``null``
+
 Examples
 --------
 
@@ -107,6 +116,28 @@ With configuration: ``['header' => 'Made with love.', 'comment_type' => 'comment
     echo 1;
 
 Example #4
+~~~~~~~~~~
+
+With configuration: ``['header' => 'Made with love.', 'validator' => '/Made with love(?P<EXTRA>.*)??/s', 'comment_type' => 'comment', 'location' => 'after_declare_strict']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    declare(strict_types=1);
+   +
+    /*
+     * Made with love.
+     *
+     * Extra content.
+     */
+   +
+    namespace A\B;
+
+    echo 1;
+
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['header' => '']``.

@@ -450,13 +450,13 @@ class Foo {}',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp1',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
             '<?php
 
 /**
- * tmp
+ * tmp1
  */
 
 /**
@@ -473,33 +473,33 @@ class Foo {}',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp2',
                 'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
             ],
             '<?php
 
 /**
- * tmp
+ * tmp2
  */
 
 class Foo {}',
             '<?php
 
 /**
- * tmp
+ * tmp2
  */
 class Foo {}',
         ];
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp3',
                 'separate' => 'top',
             ],
             '<?php
 
 /*
- * tmp
+ * tmp3
  */
 class Foo {}',
             '<?php
@@ -565,13 +565,13 @@ foo();',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp4',
                 'location' => 'after_declare_strict',
             ],
             '<?php
 
 /*
- * tmp
+ * tmp4
  */
 
 declare(strict_types=1) ?>',
@@ -581,7 +581,7 @@ declare(strict_types=1) ?>',
 
         yield [
             [
-                'header' => 'tmp',
+                'header' => 'tmp5',
                 'location' => 'after_declare_strict',
             ],
             '#!/usr/bin/env php
@@ -589,7 +589,7 @@ declare(strict_types=1) ?>',
 declare(strict_types=1);
 
 /*
- * tmp
+ * tmp5
  */
 
 namespace A\B;
@@ -630,6 +630,145 @@ Hello<?php echo "World!"; ?>',
 echo 1;
 ?>Hello World!<?php
 script_continues_here();',
+        ];
+
+        $fileHeaderParts = [
+            <<<'EOF'
+                This file is part of the xxx.
+
+                (c) Foo Bar <foo@bar.com>
+                EOF,
+            <<<'EOF'
+                For the full copyright and license information, please view the LICENSE
+                file that was distributed with this source code.
+                EOF,
+        ];
+        $fileHeaderComment = implode('', $fileHeaderParts);
+        $fileHeaderCommentValidator = implode('', [
+            '/',
+            preg_quote($fileHeaderParts[0], '/'),
+            '(?P<EXTRA>.*)??',
+            preg_quote($fileHeaderParts[1], '/'),
+            '/s',
+        ]);
+
+        yield 'using validator, but existing comment in wrong place - adding new one' => [
+            [
+                'header' => $fileHeaderComment,
+                'validator' => $fileHeaderCommentValidator,
+                'location' => 'after_open',
+            ],
+            '<?php
+
+/*
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+            '<?php
+
+declare(strict_types=1);
+/*
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace A;
+
+echo 1;',
+        ];
+
+        yield 'using validator, existing comment matches' => [
+            [
+                'header' => $fileHeaderComment,
+                'validator' => $fileHeaderCommentValidator,
+                'location' => 'after_open',
+            ],
+            '<?php
+
+/*
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+        ];
+
+        yield 'using validator, existing comment matches but misplaced' => [
+            [
+                'header' => $fileHeaderComment,
+                'validator' => $fileHeaderCommentValidator,
+                'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
+            ],
+            '<?php
+
+/**
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+class Foo {}',
+            '<?php
+
+/**
+ * This file is part of the xxx.
+ *
+ * (c) Foo Bar <foo@bar.com>
+ *
+ * This
+ * is
+ * sub
+ * note.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+class Foo {}',
         ];
     }
 
@@ -701,6 +840,14 @@ echo 1;'
                 'separate' => new \stdClass(),
             ],
             'Invalid configuration: The option "separate" with value stdClass is invalid\. Accepted values are: "both", "top", "bottom", "none"\.',
+        ];
+
+        yield [
+            [
+                'header' => 'Foo',
+                'validator' => '/\w+++/',
+            ],
+            'Provided RegEx is not valid.',
         ];
     }
 

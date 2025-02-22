@@ -149,8 +149,7 @@ else?><?php echo 5;',
      */
     public static function provideFixIfElseIfElseCases(): iterable
     {
-        $expected =
-            '<?php
+        $expected = '<?php
                 while(true) {
                     while(true) {
                         if ($provideFixIfElseIfElseCases) {
@@ -167,8 +166,7 @@ else?><?php echo 5;',
                 }
             ';
 
-        $input =
-            '<?php
+        $input = '<?php
                 while(true) {
                     while(true) {
                         if ($provideFixIfElseIfElseCases) {
@@ -187,8 +185,7 @@ else?><?php echo 5;',
 
         yield from self::generateCases($expected, $input);
 
-        $expected =
-            '<?php
+        $expected = '<?php
                 while(true) {
                     while(true) {
                         if($a) {
@@ -204,8 +201,7 @@ else?><?php echo 5;',
 
         yield from self::generateCases($expected);
 
-        $expected =
-            '<?php
+        $expected = '<?php
                 while(true) {
                     while(true) {
                         if ($a) {

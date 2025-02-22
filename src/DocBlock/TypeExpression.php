@@ -66,7 +66,19 @@ final class TypeExpression
                             \h*,\h*
                             (?&array_shape_inner)
                         )*+
-                        (?:\h*,\h*)?
+                        (?:\h*,|(?!(?&array_shape_unsealed_variadic)))
+                    |)
+                    (?<array_shape_unsealed> # unsealed array shape, e.g. `...`. `...<string>`
+                        (?<array_shape_unsealed_variadic>\h*\.\.\.)
+                        (?<array_shape_unsealed_type>
+                            (?<array_shape_unsealed_type_start>\h*<\h*)
+                            (?<array_shape_unsealed_type_a>(?&types_inner))
+                            (?:
+                                (?<array_shape_unsealed_type_comma>\h*,\h*)
+                                (?<array_shape_unsealed_type_b>(?&array_shape_unsealed_type_a))
+                            |)
+                            \h*>
+                        |)
                     |)
                     \h*\}
                 )
@@ -110,7 +122,7 @@ final class TypeExpression
                             \h*,\h*
                             (?&callable_argument)
                         )*+
-                        (?:\h*,\h*)?
+                        (?:\h*,)?
                     |)
                     \h*\)
                     (?:
@@ -128,7 +140,7 @@ final class TypeExpression
                             \h*,\h*
                             (?&types_inner)
                         )*+
-                        (?:\h*,\h*)?
+                        (?:\h*,)?
                     )
                     \h*>
                 )
@@ -548,10 +560,33 @@ final class TypeExpression
                 'expression' => $this->inner($matches['array_shape_name'][0]),
             ];
 
+            $nextIndex = \strlen($matches['array_shape_name'][0]) + \strlen($matches['array_shape_start'][0]);
+
             $this->parseArrayShapeInnerTypes(
-                \strlen($matches['array_shape_name'][0]) + \strlen($matches['array_shape_start'][0]),
+                $nextIndex,
                 $matches['array_shape_inners'][0]
             );
+
+            if ('' !== ($matches['array_shape_unsealed_type'][0] ?? '')) {
+                $nextIndex += \strlen($matches['array_shape_inners'][0])
+                    + \strlen($matches['array_shape_unsealed_variadic'][0])
+                    + \strlen($matches['array_shape_unsealed_type_start'][0]);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $nextIndex,
+                    'expression' => $this->inner($matches['array_shape_unsealed_type_a'][0]),
+                ];
+
+                if ('' !== ($matches['array_shape_unsealed_type_b'][0] ?? '')) {
+                    $nextIndex += \strlen($matches['array_shape_unsealed_type_a'][0])
+                        + \strlen($matches['array_shape_unsealed_type_comma'][0]);
+
+                    $this->innerTypeExpressions[] = [
+                        'start_index' => $nextIndex,
+                        'expression' => $this->inner($matches['array_shape_unsealed_type_b'][0]),
+                    ];
+                }
+            }
         } elseif ('' !== ($matches['parenthesized'][0] ?? '') && 0 === $matches['parenthesized'][1]) {
             $index = \strlen($matches['parenthesized_start'][0]);
 

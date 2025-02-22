@@ -265,7 +265,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                             )
                         )
                         .'}';
-                } elseif ($fixer instanceof HeaderCommentFixer && 'header' === $optionName) {
+                } elseif ($fixer instanceof HeaderCommentFixer && \in_array($optionName, ['header', 'validator'], true)) {
                     // nothing to do
                 } elseif ($fixer instanceof BlankLinesBeforeNamespaceFixer && \in_array($optionName, ['min_line_breaks', 'max_line_breaks'], true)) {
                     // nothing to do

@@ -57,7 +57,7 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
                 new CodeSample(
                     "<?php while(foo());\n",
                     [
-                        'style' => 'braces',
+                        'style' => self::STYLE_BRACES,
                     ]
                 ),
             ]

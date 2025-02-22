@@ -1,7 +1,7 @@
 ARG PHP_VERSION=8.3
 ARG ALPINE_VERSION=3.21
 
-FROM alpine:3.21.2 AS sphinx-lint
+FROM alpine:3.21.3 AS sphinx-lint
 
 RUN apk add python3 py3-pip git \
     && pip install --break-system-packages sphinx-lint
