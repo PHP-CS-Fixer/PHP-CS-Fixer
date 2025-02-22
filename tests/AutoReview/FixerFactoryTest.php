@@ -787,6 +787,7 @@ final class FixerFactoryTest extends TestCase
                 'self_static_accessor',
             ],
             'php_unit_test_class_requires_covers' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'phpdoc_add_missing_param_annotation' => [
