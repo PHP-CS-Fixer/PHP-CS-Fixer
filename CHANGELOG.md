@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.70.0
+---------------------
+
+* feat: Add `PhpUnitDataProviderMethodOrderFixer` fixer (#8225)
+* feat: `HeaderCommentFixer` - allow validators (#8452)
+* feat: `PhpCsFixer` ruleset: use `operator_linebreak` rule for all operators (#8417)
+* feat: `PhpUnitMethodCasingFixer` to support PHPUnit's `Test` attribute (#8451)
+* feat: `TypeDeclarationSpacesFixer` - Fix whitespace between const type and const name (#8442)
+* chore: extend bug report template (#8447)
+* chore: extend bug report template - more installation options (#8450)
+* CI: phpstan-symfony - add entry point for console (#8292)
+* deps: bump alpine from 3.21.2 to 3.21.3 (#8454)
+* deps: bump phpstan/phpstan from 2.1.5 to 2.1.6 in /dev-tools in the phpstan group (#8453)
+* fix: `CommentsAnalyzer` - allow other forms of assignment as valid structural elements for PHPDocs (#8371)
+* fix: `PhpUnitTestClassRequiresCoversFixer` must run before `PhpUnitAttributesFixer` (#8444)
+* test: fix `CheckCommandTest::testDryRunModeIsUnavailable` to correctly check that option `--dry-run` is unavailable (#8438)
+
 Changelog for v3.69.1
 ---------------------
 
