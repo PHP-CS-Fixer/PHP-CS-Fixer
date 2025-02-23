@@ -1980,6 +1980,14 @@ use function some\a\{fn_a, fn_b};
                 'case_sensitive' => true,
             ],
         ];
+
+        yield 'do not take the braces part in grouped imports into account' => [
+            <<<'PHP'
+                <?php
+                use Foo\{Bar, Baz};
+                use Foo\NotBarNorBar\DeeperClass;
+                PHP,
+        ];
     }
 
     /**
