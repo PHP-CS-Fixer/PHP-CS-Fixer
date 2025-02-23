@@ -1,0 +1,315 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Fixer\ArrayNotation;
+
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Tokens;
+
+/**
+ * @author Abdurrahman Uymaz <abdurrahman.uymaz@mobian.global>
+ * @author Lars Grevelink <lars.grevelink@mobian.global>
+ * @author Leander Philippo <leander.philippo@mobian.global>
+ */
+final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements ConfigurableFixerInterface
+{
+    public function getDefinition(): FixerDefinitionInterface
+    {
+        return new FixerDefinition(
+            'Sorts keyed arrays alphabetically.',
+            [
+                new CodeSample(
+                    "<?php\n\$sample = array('b' => '2', 'a' => '1', 'd' => '5');\n"
+                ),
+                new CodeSample(
+                    "<?php\n\$sample = ['b' => '2', 'a' => '1', 'd' => '5'];\n",
+                    []
+                ),
+                new CodeSample(
+                    "<?php\n\$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];\n",
+                    ['special_keys_placement' => 'bottom']
+                ),
+                new CodeSample(
+                    "<?php\n\$sample = ['b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5'];\n",
+                    ['special_keys_placement' => 'top']
+                ),
+            ],
+            'Use this fixer when you want a standardised representation of your keyed arrays; it will sort the numeric and string keys of your arrays alphabetically. Special keys, like concatenated ones, are kept in the same order but are either moved to the top or bottom (default) according to the configuration option.',
+            'Risky when the order of the array has an impact on the code execution.'
+        );
+    }
+
+    public function isRisky(): bool
+    {
+        return true;
+    }
+
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+    }
+
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    {
+        $this->sortTokens($tokens);
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('special_keys_placement', 'Whether to sort the specials keys on the bottom `bottom` or top `top`.'))
+                ->setAllowedValues(['bottom', 'top'])
+                ->setDefault('bottom')
+                ->getOption(),
+        ]);
+    }
+
+    protected function sortTokens(Tokens $tokens): void
+    {
+        $lastProcessedIndex = null;
+        foreach ($tokens as $index => $token) {
+            if (null !== $lastProcessedIndex && $index < $lastProcessedIndex) {
+                continue;
+            }
+
+            if ($token->isGivenKind(T_ARRAY) || $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                $clonedTokens = clone $tokens;
+
+                [$startIndex, $endIndex] = $this->getArrayIndexes($tokens, $index);
+
+                $content = [];
+                while (null !== $startIndex && $startIndex < $endIndex) {
+                    $startIndex = $tokens->getNextMeaningfulToken($startIndex);
+                    if ($tokens[$startIndex]->isGivenKind(T_ARRAY) || $tokens[$startIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                        $lastProcessedIndex = $startIndex = $this->sortNestedTokens($clonedTokens, $startIndex);
+                    }
+
+                    if ($tokens[$startIndex]->isGivenKind(T_DOUBLE_ARROW)) {
+                        [$key, $keyTokenIndex] = $this->getKeyAndEndPosition($clonedTokens, $startIndex);
+
+                        $valueTokenIndex = $tokens->getNextMeaningfulToken($startIndex);
+
+                        if ($tokens[$valueTokenIndex]->isGivenKind(T_ARRAY) || $tokens[$valueTokenIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                            $startIndex = $this->sortNestedTokens($clonedTokens, $valueTokenIndex);
+                        }
+
+                        $valueRange = $startIndex;
+                        while ($valueRange = $tokens->getNextTokenOfKind($valueRange, [',', '('])) {
+                            if (!$tokens[$valueRange]->equals('(')) {
+                                break;
+                            }
+
+                            $valueRange = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $valueRange);
+                        }
+
+                        if (null === $valueRange || 0 === $valueRange || $valueRange > $endIndex) {
+                            $valueRange = $endIndex;
+                        }
+
+                        $valueEndIndex = $tokens->getPrevMeaningfulToken($valueRange);
+
+                        $content[$key] = [$keyTokenIndex, $valueEndIndex];
+
+                        $lastProcessedIndex = $startIndex = $valueEndIndex;
+                    }
+                }
+
+                $contentKeys = array_keys($content);
+                $sortedContentKeys = $this->sortContentKeys($contentKeys);
+
+                $sorting = array_combine($contentKeys, $sortedContentKeys);
+
+                if (0 === \count($content)) {
+                    $tokens->overrideRange(0, $tokens->count() - 1, $clonedTokens);
+                } else {
+                    foreach (array_reverse($sorting, true) as $original => $replacement) {
+                        [$startOriginalIndex, $endOriginalIndex] = $content[$original];
+                        [$startReplacementIndex, $endReplacementIndex] = $content[$replacement];
+
+                        $newTokens = \array_slice($clonedTokens->toArray(), $startReplacementIndex, $endReplacementIndex - $startReplacementIndex + 1);
+
+                        $tokens->overrideRange($startOriginalIndex, $endOriginalIndex, $newTokens);
+                    }
+                }
+
+                $tokens->clearEmptyTokens();
+            }
+        }
+    }
+
+    /**
+     * Calculation sorting score base on configuration.
+     *
+     * @param string[] $contentKeys
+     *
+     * @return string[]
+     */
+    private function sortContentKeys(array $contentKeys): array
+    {
+        $specialKeysPlacement = $this->configuration['special_keys_placement'];
+        $specialSortDirection = ('top' === $specialKeysPlacement) ? -1 : 1;
+
+        usort($contentKeys, function ($a, $b) use ($contentKeys, $specialSortDirection) {
+            $aIsSpecial = $this->isSpecialKey($a);
+            $bIsSpecial = $this->isSpecialKey($b);
+
+            if ($aIsSpecial && $bIsSpecial) {
+                // We want to ensure that "special keys" keep their previous order among eachother
+                return array_search($a, $contentKeys, true) - array_search($b, $contentKeys, true);
+            }
+
+            if ($aIsSpecial) {
+                return $specialSortDirection;
+            }
+
+            if ($bIsSpecial) {
+                return -$specialSortDirection;
+            }
+
+            /*
+             * PHPstan is lying to us by telling us both $a and $b should always be strings which is just not the case.
+             *
+             * @phpstan-ignore-next-line
+             */
+            return strcmp((string) $a, (string) $b);
+        });
+
+        return $contentKeys;
+    }
+
+    /**
+     * Retrieves the key and the end position index.
+     *
+     * @return mixed[]
+     */
+    private function getKeyAndEndPosition(Tokens $clonedTokens, int $startIndex): array
+    {
+        $prevItemEndIndex = $clonedTokens->getPrevMeaningfulToken($clonedTokens->getPrevMeaningfulToken($startIndex));
+        $prevItemEndToken = $clonedTokens[$prevItemEndIndex];
+
+        if ($prevItemEndToken->equals('(')) {
+            $hasSpecialKeys = !$clonedTokens[$clonedTokens->getPrevMeaningfulToken($prevItemEndIndex)]->isGivenKind(T_ARRAY);
+        } else {
+            $hasSpecialKeys = !($prevItemEndToken->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, T_ARRAY]) || $prevItemEndToken->equals(','));
+        }
+
+        if ($hasSpecialKeys) {
+            $keyTokenIndex = $startIndex;
+
+            for ($i = $startIndex; $i >= 0; --$i) {
+                if ($clonedTokens[$i]->equals(')')) {
+                    $i = $clonedTokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+
+                    continue;
+                }
+
+                if ($clonedTokens[$i]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+                    $i = $clonedTokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i);
+
+                    continue;
+                }
+
+                if ($clonedTokens[$i]->isGivenKind(T_ARRAY)) {
+                    $keyTokenIndex = $clonedTokens->getNextMeaningfulToken($clonedTokens->getNextMeaningfulToken($i));
+
+                    break;
+                }
+
+                if ($clonedTokens[$i]->equals(',') || $clonedTokens[$i]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                    $keyTokenIndex = $clonedTokens->getNextMeaningfulToken($i);
+
+                    break;
+                }
+            }
+
+            $keyTokens = Tokens::fromArray(\array_slice($clonedTokens->toArray(), $keyTokenIndex, $startIndex - $keyTokenIndex - 1));
+
+            $key = implode('', array_map(static fn ($item) => $item->getContent(), $keyTokens->toArray()));
+        } else {
+            $keyTokenIndex = $clonedTokens->getPrevMeaningfulToken($startIndex);
+            $key = $clonedTokens[$keyTokenIndex]->getContent();
+        }
+
+        return [$key, $keyTokenIndex];
+    }
+
+    /**
+     * Sort nested array tokens and return the end index.
+     */
+    private function sortNestedTokens(Tokens $clonedTokens, int $index): int
+    {
+        [$nestedTokenStartIndex, $nestedTokenEndIndex] = $this->getArrayIndexes($clonedTokens, $index);
+
+        $nestedArrayTokens = Tokens::fromArray(\array_slice($clonedTokens->toArray(), $nestedTokenStartIndex, $nestedTokenEndIndex - $nestedTokenStartIndex + 1));
+
+        $this->sortTokens($nestedArrayTokens);
+
+        $clonedTokens->overrideRange($nestedTokenStartIndex, $nestedTokenEndIndex, $nestedArrayTokens);
+
+        if ($nestedArrayTokens->count() !== $clonedTokens->count()) {
+            $clonedTokens->clearEmptyTokens();
+        }
+
+        return $nestedTokenEndIndex;
+    }
+
+    /**
+     * Get start and end index of an array.
+     *
+     * @return int[]
+     */
+    private function getArrayIndexes(Tokens $tokens, int $startIndex): array
+    {
+        if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
+            $startParentheses = $tokens->getNextTokenOfKind($startIndex, ['(']);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParentheses);
+        } else {
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+        }
+
+        return [
+            $startIndex,
+            $endIndex,
+        ];
+    }
+
+    /**
+     * Checks if the token represents a special key.
+     *
+     * @param int|string $value
+     */
+    private function isSpecialKey($value): bool
+    {
+        if (\is_int($value)) {
+            return false;
+        }
+
+        $tokens = Tokens::fromCode((string) $value);
+
+        if ($tokens->count() > 1) {
+            return true;
+        }
+
+        return !Preg::match('/^(\'|").+(\'|")$/i', $value);
+    }
+}
