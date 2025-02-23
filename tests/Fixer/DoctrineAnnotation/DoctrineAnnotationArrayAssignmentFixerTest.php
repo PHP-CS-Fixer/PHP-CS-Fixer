@@ -232,4 +232,55 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
 }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Entity {
+                    /**
+                     * @Foo({foo = "foo"})
+                     */
+                    public public(set) Foo $foo;
+                    /**
+                     * @Bar({bar = "bar"})
+                     */
+                    public protected(set) Bar $bar;
+                    /**
+                     * @Baz({baz = "baz"})
+                     */
+                    protected private(set) Baz $baz;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Entity {
+                    /**
+                     * @Foo({foo : "foo"})
+                     */
+                    public public(set) Foo $foo;
+                    /**
+                     * @Bar({bar : "bar"})
+                     */
+                    public protected(set) Bar $bar;
+                    /**
+                     * @Baz({baz : "baz"})
+                     */
+                    protected private(set) Baz $baz;
+                }
+                PHP,
+        ];
+    }
 }
