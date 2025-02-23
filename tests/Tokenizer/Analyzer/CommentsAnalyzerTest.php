@@ -385,7 +385,7 @@ $bar;',
     /**
      * @dataProvider providePhpdocCandidatePhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0
      */
     public function testPhpdocCandidatePhp80(string $code): void
     {
@@ -410,7 +410,7 @@ Class MyAnnotation3 {}',
     /**
      * @dataProvider providePhpdocCandidatePhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testPhpdocCandidatePhp81(string $code): void
     {
@@ -468,7 +468,7 @@ enum Foo: int {
     /**
      * @dataProvider provideNotPhpdocCandidatePhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1
      */
     public function testNotPhpdocCandidatePhp81(string $code): void
     {
