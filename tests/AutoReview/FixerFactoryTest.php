@@ -776,6 +776,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_expectation',
             ],
             'php_unit_size_class' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'php_unit_test_annotation' => [
