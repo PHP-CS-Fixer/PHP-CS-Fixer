@@ -81,14 +81,14 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input, array $configuration = []): void
+    public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -443,6 +443,21 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                 #[TEST]
                 public function my_app_too() {}
             }',
+        ];
+
+        yield 'do not touch anonymous class' => [
+            <<<'PHP'
+                <?php
+                class MyTest extends \PHPUnit\Framework\TestCase {
+                    #[PHPUnit\Framework\Attributes\Test]
+                    public function methodFoo(): void
+                    {
+                        $class = new class () {
+                            final public function method_bar(): void {}
+                        };
+                    }
+                }
+                PHP,
         ];
     }
 
