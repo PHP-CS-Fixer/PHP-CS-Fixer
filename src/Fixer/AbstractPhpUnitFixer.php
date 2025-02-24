@@ -147,25 +147,18 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
     {
-        $prevMethodEndIndex = $tokens->getPrevTokenOfKind($index, ['}']);
-        $currentIndex = $index - 1;
+        $attributeIndex = $tokens->getPrevTokenOfKind($index, ['{', [T_ATTRIBUTE]]);
+        if (!$tokens[$attributeIndex]->isGivenKind(T_ATTRIBUTE)) {
+            return false;
+        }
 
-        while (true) {
-            $attributeIndex = $tokens->getPrevTokenOfKind($currentIndex, [[T_ATTRIBUTE]]);
-            if (null === $attributeIndex || $attributeIndex <= $prevMethodEndIndex) {
-                break;
-            }
-
-            foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
-                foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                    $attributeName = ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\');
-                    if ('phpunit\framework\attributes\test' === $attributeName) {
-                        return true;
-                    }
+        foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+            foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                $attributeName = ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\');
+                if ('phpunit\framework\attributes\test' === $attributeName) {
+                    return true;
                 }
             }
-
-            $currentIndex = $attributeIndex - 1;
         }
 
         return false;

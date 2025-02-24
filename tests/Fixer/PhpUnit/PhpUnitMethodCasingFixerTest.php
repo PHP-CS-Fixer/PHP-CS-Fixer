@@ -285,13 +285,13 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
             '<?php
             use PHPUnit\Framework\Attributes\Test;
             class MyTest extends \PHPUnit\Framework\TestCase {
-                #[Test, Author("John"), Deprecated]
+                #[Author("John"), Test, Deprecated]
                 public function myAppToo() {}
             }',
             '<?php
             use PHPUnit\Framework\Attributes\Test;
             class MyTest extends \PHPUnit\Framework\TestCase {
-                #[Test, Author("John"), Deprecated]
+                #[Author("John"), Test, Deprecated]
                 public function my_app_too() {}
             }',
         ];
@@ -396,6 +396,27 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                     DataProvider("testData"),
                     Group("testData")
                 ]
+                public function my_app_too() {}
+            }',
+        ];
+
+        yield 'multiple attributes in separate attribute blocks with comments' => [
+            '<?php
+            class MyTest extends \PHPUnit\Framework\TestCase {
+                #[FirstAttribute]
+                /* a comment */
+                #[PHPUnit\Framework\Attributes\Test]
+                // another comment
+                #[LastAttribute]
+                public function myAppToo() {}
+            }',
+            '<?php
+            class MyTest extends \PHPUnit\Framework\TestCase {
+                #[FirstAttribute]
+                /* a comment */
+                #[PHPUnit\Framework\Attributes\Test]
+                // another comment
+                #[LastAttribute]
                 public function my_app_too() {}
             }',
         ];
