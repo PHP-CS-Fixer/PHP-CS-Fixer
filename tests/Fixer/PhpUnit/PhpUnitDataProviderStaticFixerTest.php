@@ -236,5 +236,59 @@ class FooTest extends TestCase {
                 }
                 PHP,
         ];
+
+        yield 'with data provider as an attribute' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('addStaticToMe')]
+                    public function testFoo(): void {}
+                    public static function addStaticToMe() {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('addStaticToMe')]
+                    public function testFoo(): void {}
+                    public function addStaticToMe() {}
+                }
+                PHP,
+        ];
+
+        $withAttributesTemplate = <<<'PHP'
+            <?php
+            namespace N;
+            use PHPUnit\Framework as PphUnitAlias;
+            use PHPUnit\Framework\Attributes;
+            class FooTest extends TestCase {
+                #[\PHPUnit\Framework\Attributes\DataProvider('provider1')]
+                #[\PHPUnit\Framework\Attributes\DataProvider('doNotGetFooledByConcatenation' . 'notProvider1')]
+                #[PHPUnit\Framework\Attributes\DataProvider('notProvider2')]
+                #[
+                    \PHPUnit\Framework\Attributes\BackupGlobals(true),
+                    \PHPUnit\Framework\Attributes\DataProvider('provider2'),
+                    \PHPUnit\Framework\Attributes\Group('foo'),
+                ]
+                #[Attributes\DataProvider('provider3')]
+                #[PphUnitAlias\Attributes\DataProvider('provider4')]
+                #[\PHPUnit\Framework\Attributes\DataProvider]
+                #[\PHPUnit\Framework\Attributes\DataProvider('provider5')]
+                #[\PHPUnit\Framework\Attributes\DataProvider(123)]
+                public function testSomething(int $x): void {}
+                public%1$s function provider1() {}
+                public%1$s function provider2() {}
+                public%1$s function provider3() {}
+                public%1$s function provider4() {}
+                public%1$s function provider5() {}
+                public function notProvider1() {}
+                public function notProvider2() {}
+            }
+            PHP;
+
+        yield 'with multiple data providers as an attributes' => [
+            \sprintf($withAttributesTemplate, ' static'),
+            \sprintf($withAttributesTemplate, ''),
+        ];
     }
 }
