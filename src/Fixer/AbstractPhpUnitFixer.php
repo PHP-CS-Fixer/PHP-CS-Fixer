@@ -151,8 +151,8 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         $currentIndex = $index - 1;
 
         while (true) {
-            $attributeIndex = $tokens->getPrevTokenOfKind($currentIndex, [[T_ATTRIBUTE]]);
-            if (null === $attributeIndex || $attributeIndex <= $prevMethodEndIndex) {
+            $attributeIndex = $tokens->getPrevTokenOfKind($currentIndex, ['{', [T_ATTRIBUTE]]);
+            if (null === $attributeIndex || !$tokens[$attributeIndex]->isGivenKind(T_ATTRIBUTE) || $attributeIndex <= $prevMethodEndIndex) {
                 break;
             }
 
