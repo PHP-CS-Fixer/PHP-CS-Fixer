@@ -275,7 +275,7 @@ final class ConfigurationResolver
                 $this->differ = new UnifiedDiffer([
                     'contextLines' => 0,
                 ]);
-            } else if (true === $this->options['diff']) {
+            } elseif (true === $this->options['diff']) {
                 $this->differ = new UnifiedDiffer();
             } else {
                 $this->differ = new NullDiffer();
