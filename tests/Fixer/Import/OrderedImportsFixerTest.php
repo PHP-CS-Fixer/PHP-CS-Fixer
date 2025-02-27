@@ -1044,6 +1044,21 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'with trailing comma in multi-line grouped import - sorting by length desc' => [
+            '<?php use some\y\{ClassA, ClassB, ClassC as C,};
+use C\{D,E,};
+use A\{B,};
+use const some\X\{ConstA,ConstB,ConstC,ConstF};
+use const some\Z\{ConstAA,ConstBB,ConstCC,};
+use function some\a\{fn_a, fn_b, fn_c,};
+',
+            $input,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ],
+        ];
+
         yield 'with trailing comma in multi-line grouped import - no sorting' => [
             '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};
@@ -1273,6 +1288,129 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc with multiple namespace' => [
+            <<<'EOF'
+                <?php
+
+                namespace FooRoo {
+
+                    use Symfony\Annotation\Template;
+                    use Foo\Bar\FooBar as FooBaz, Foo\Bar\Foo as Fooo;
+                    use Zoo\Bar as ZooBar;
+                    use Foo\Bir as FBB;
+                    use Foo\Zar\Baz;
+                    use SomeClass, Zoo\Tar1;
+                    use Zoo\Tar2;
+
+                    use Foo\Bar;
+
+                    $a = new Bar();
+                    $a = new FooBaz();
+                    $a = new someclass();
+
+                    class AnnotatedClass
+                    {
+                        /**
+                         * @Template(foobar=21)
+                         * @param Entity $foo
+                         */
+                        public function doSomething($foo)
+                        {
+                            $bar = $foo->toArray();
+                            /** @var ArrayInterface $bar */
+
+                            return function () use ($bar, $foo) {};
+                        }
+                    }
+                }
+
+                namespace BlaRoo {
+
+                    use Symfony\Doctrine\Entities\Entity;
+                    use Symfony\Annotation\Template;
+                    use Foo\Zar\Baz;
+                    use SomeClass, Zoo\Bar;
+
+                    class AnnotatedClass
+                    {
+                        /**
+                         * @Template(foobar=21)
+                         * @param Entity $foo
+                         */
+                        public function doSomething($foo)
+                        {
+                            $bar = $foo->toArray();
+                            /** @var ArrayInterface $bar */
+
+                            return function () use ($bar, $foo) {};
+                        }
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+
+                namespace FooRoo {
+
+                    use Foo\Bar\FooBar as FooBaz;
+                    use Zoo\Bar as ZooBar, Zoo\Tar1;
+                    use Foo\Bar;
+                    use Foo\Zar\Baz;
+                    use Symfony\Annotation\Template;
+                    use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                    use SomeClass;
+
+                    use Zoo\Tar2;
+
+                    $a = new Bar();
+                    $a = new FooBaz();
+                    $a = new someclass();
+
+                    class AnnotatedClass
+                    {
+                        /**
+                         * @Template(foobar=21)
+                         * @param Entity $foo
+                         */
+                        public function doSomething($foo)
+                        {
+                            $bar = $foo->toArray();
+                            /** @var ArrayInterface $bar */
+
+                            return function () use ($bar, $foo) {};
+                        }
+                    }
+                }
+
+                namespace BlaRoo {
+
+                    use Foo\Zar\Baz;
+                    use Zoo\Bar;
+                    use SomeClass;
+                    use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+
+                    class AnnotatedClass
+                    {
+                        /**
+                         * @Template(foobar=21)
+                         * @param Entity $foo
+                         */
+                        public function doSomething($foo)
+                        {
+                            $bar = $foo->toArray();
+                            /** @var ArrayInterface $bar */
+
+                            return function () use ($bar, $foo) {};
+                        }
+                    }
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length with comment' => [
             <<<'EOF'
                 The normal
@@ -1358,6 +1496,91 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc with comment' => [
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use /* FIXME */Symfony\Annotation\Template;
+                use Foo\Bar\FooBar /* He there */ as FooBaz, Foo\Bar\Foo as Fooo;
+                use Zoo\Bar as ZooBar;
+                use Foo\Bir as FBB;
+                use Foo\Zar\Baz;
+                use SomeClass, Foo\Bar;
+                use Zoo\Tar;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar\FooBar /* He there */ as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+                use /* FIXME */Symfony\Annotation\Template;
+                use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length' => [
             <<<'EOF'
                 <?php
@@ -1429,6 +1652,81 @@ use function some\a\{fn_a, fn_b, fn_c,};
                 EOF,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+                'imports_order' => null,
+            ],
+        ];
+
+        yield 'by length desc' => [
+            <<<'EOF'
+                <?php
+
+                use Symfony\Doctrine\Entities\Entity;
+                use Symfony\Annotation\Template, Foo\Bar\FooBar as FooBaz;
+                use Foo\Bar\Foo as Fooo;
+                use Zoo\Bar as ZooBar;
+                use Foo\Bir as FBB;
+                use Foo\Zar\Baz, SomeClass;
+                use Foo\Bar;
+
+                use Zoo\Tar;
+
+                trait Foo {}
+
+                trait Zoo {}
+
+                class AnnotatedClass
+                {
+                    use Foo, Bar;
+
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template;
+                use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                trait Foo {}
+
+                trait Zoo {}
+
+                class AnnotatedClass
+                {
+                    use Foo, Bar;
+
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
                 'imports_order' => null,
             ],
         ];
@@ -1524,6 +1822,97 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc with trait imports' => [
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Symfony\Annotation\Template;
+                use Foo\Bar\FooBar as FooBaz, Acme\MyReusableTrait;
+                use Foo\Bar\Foo as Fooo;
+                use Zoo\Bar as ZooBar;
+                use Foo\Bir as FBB;
+                use Foo\Zar\Baz;
+                use SomeClass, Foo\Bar;
+                use Zoo\Tar;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    use MyReusableTrait;
+
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $baz) {};
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Acme\MyReusableTrait;
+                use Symfony\Annotation\Template;
+                use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    use MyReusableTrait;
+
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $baz) {};
+                    }
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length with different cases' => [
             <<<'EOF'
                 The normal
@@ -1563,6 +1952,45 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc with different cases' => [
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Baz;
+                use abc\Bar;
+
+                <?php
+
+                use abc\Bar;
+                use Zoo\Baz;
+
+                class Test
+                {
+                }
+                EOF,
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Baz;
+                use abc\Bar;
+
+                <?php
+
+                use Zoo\Baz;
+                use abc\Bar;
+
+                class Test
+                {
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length order with trailing digit' => [
             <<<'EOF'
                 <?php
@@ -1598,6 +2026,41 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc order with trailing digit' => [
+            <<<'EOF'
+                <?php
+
+                use xyz\abc2\Bar7;
+                use xyz\abc\Bar6;
+                use xyz\xyz\Bar4;
+                use xyz\xyz\Bar5;
+                use abc2\Bar2;
+                use abc\Bar;
+
+                class Test
+                {
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+
+                use abc2\Bar2;
+                use abc\Bar;
+                use xyz\abc2\Bar7;
+                use xyz\abc\Bar6;
+                use xyz\xyz\Bar4;
+                use xyz\xyz\Bar5;
+
+                class Test
+                {
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length code with imports only' => [
             <<<'EOF'
                 <?php
@@ -1617,6 +2080,25 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc code with imports only' => [
+            <<<'EOF'
+                <?php
+
+                use Aaa;
+                use Bbb;
+                EOF,
+            <<<'EOF'
+                <?php
+
+                use Bbb;
+                use Aaa;
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length without uses' => [
             <<<'EOF'
                 <?php
@@ -1626,6 +2108,19 @@ use function some\a\{fn_a, fn_b, fn_c,};
             null,
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+                'imports_order' => null,
+            ],
+        ];
+
+        yield 'by length desc without uses' => [
+            <<<'EOF'
+                <?php
+
+                $c = 1;
+                EOF,
+            null,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
                 'imports_order' => null,
             ],
         ];
@@ -1715,6 +2210,91 @@ use function some\a\{fn_a, fn_b, fn_c,};
             ],
         ];
 
+        yield 'by length desc 2' => [
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Symfony\Annotation\Template;
+                use Foo\Bar\FooBar as FooBaz, Foo\Bar\Foo as Fooo;
+                 use Zoo\Bar as ZooBar;
+                use Foo\Bir as FBB;
+                use Foo\Zar\Baz;
+                   use SomeClass, Foo\Bar;
+                use Zoo\Tar;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                The normal
+                use of this fixer
+                should not change this sentence nor those statements below
+                use Zoo\Bar as ZooBar;
+                use Foo\Bar;
+                use Foo\Zar\Baz;
+
+                <?php
+
+                use Foo\Bar\FooBar as FooBaz;
+                use Zoo\Bar as ZooBar, Zoo\Tar;
+                 use Foo\Bar;
+                use Foo\Zar\Baz;
+                use Symfony\Annotation\Template;
+                   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+                use SomeClass;
+
+                $a = new Bar();
+                $a = new FooBaz();
+                $a = new someclass();
+
+                use Symfony\Doctrine\Entities\Entity;
+
+                class AnnotatedClass
+                {
+                    /**
+                     * @Template(foobar=21)
+                     * @param Entity $foo
+                     */
+                    public function doSomething($foo)
+                    {
+                        $bar = $foo->toArray();
+                        /** @var ArrayInterface $bar */
+
+                        return function () use ($bar, $foo) {};
+                    }
+                }
+                EOF,
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'by length 3' => [
             '<?php
 use A\B;
@@ -1752,6 +2332,43 @@ use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
             ],
         ];
 
+        yield 'by length desc 3' => [
+            '<?php
+use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
+use const some\b\{ConstG, ConstX, ConstY, ConstZ};
+use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
+use const some\a\{ConstA, ConstB, ConstC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
+use some\b\{ClassA, ClassB, ClassC as C};
+use function some\a\{fn_a, fn_b, fn_c};
+use some\b\{
+    ClassF,
+    ClassG
+};
+use Foo\Bar\Biz;
+use A\B;
+',
+            '<?php
+use function some\a\{fn_a, fn_b, fn_c};
+use Foo\Bar\Biz;
+use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
+use A\B;
+use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
+use some\b\{
+    ClassF,
+    ClassG
+};
+use const some\a\{ConstB, ConstA, ConstC};
+use const some\b\{ConstX, ConstY, ConstZ, ConstG};
+use some\b\{ClassA, ClassB, ClassC as C};
+use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
+',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
+                'imports_order' => null,
+            ],
+        ];
+
         yield 'without types order' => [
             '<?php
 use const ZZZ;
@@ -1765,6 +2382,23 @@ use const ZZZ;
 ',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+                'imports_order' => null,
+            ],
+        ];
+
+        yield 'without types order length desc' => [
+            '<?php
+use function A123;
+use function B;
+use const ZZZ;
+',
+            '<?php
+use function B;
+use function A123;
+use const ZZZ;
+',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
                 'imports_order' => null,
             ],
         ];
@@ -1806,6 +2440,47 @@ use function some\f\{fn_c, fn_d, fn_e};
 ',
             [
                 'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+                'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            ],
+        ];
+
+        yield 'types order and length desc' => [
+            '<?php
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
+use some\a\{ClassA, ClassB, ClassC as C};
+use some\b\{ClassK, ClassL, ClassM as M};
+use some\b\{
+    ClassF,
+    ClassG
+};
+use Foo\Zar\Baz;
+use Some\Bar;
+use A\B;
+use const some\a\{ConstA, ConstB, ConstC};
+use const some\b\{ConstD, ConstE, ConstF};
+use function some\b\{fn_k, fn_l, func_m};
+use function some\f\{fn_c, fn_d, fn_e};
+use function some\a\{fn_a, fn_b};
+',
+            '<?php
+use const some\a\{ConstA, ConstB, ConstC};
+use some\a\{ClassA, ClassB, ClassC as C};
+use Foo\Zar\Baz;
+use some\b\{ClassK, ClassL, ClassM as M};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
+use A\B;
+use some\b\{
+    ClassF,
+    ClassG
+};
+use function some\b\{fn_k, fn_l, func_m};
+use Some\Bar;
+use function some\a\{fn_a, fn_b};
+use const some\b\{ConstD, ConstE, ConstF};
+use function some\f\{fn_c, fn_d, fn_e};
+',
+            [
+                'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH_DESC,
                 'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
             ],
         ];
@@ -2048,7 +2723,7 @@ B#
         ];
 
         yield 'invalid sort algorithm' => [
-            '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value "dope" is invalid. Accepted values are: "alpha", "length", "none".',
+            '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value "dope" is invalid. Accepted values are: "alpha", "length", "length_desc", "none".',
             [
                 'sort_algorithm' => 'dope',
                 'imports_order' => null,
@@ -2056,7 +2731,7 @@ B#
         ];
 
         yield 'invalid sort algorithm 2' => [
-            '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value array is invalid. Accepted values are: "alpha", "length", "none".',
+            '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value array is invalid. Accepted values are: "alpha", "length", "length_desc", "none".',
             [
                 'sort_algorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
                 'imports_order' => null,
@@ -2064,7 +2739,7 @@ B#
         ];
 
         yield 'invalid sort algorithm 3' => [
-            '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value stdClass is invalid. Accepted values are: "alpha", "length", "none".',
+            '[ordered_imports] Invalid configuration: The option "sort_algorithm" with value stdClass is invalid. Accepted values are: "alpha", "length", "length_desc", "none".',
             [
                 'sort_algorithm' => new \stdClass(),
                 'imports_order' => null,

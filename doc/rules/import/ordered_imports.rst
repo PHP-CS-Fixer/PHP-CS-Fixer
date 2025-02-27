@@ -31,7 +31,7 @@ Default value: ``null``
 Whether the statements should be sorted alphabetically or by length, or not
 sorted.
 
-Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
+Allowed values: ``'alpha'``, ``'length'``, ``'length_desc'`` and ``'none'``
 
 Default value: ``'alpha'``
 
@@ -89,6 +89,22 @@ With configuration: ``['sort_algorithm' => 'length']``.
 Example #4
 ~~~~~~~~~~
 
+With configuration: ``['sort_algorithm' => 'length_desc']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use Acme\Bar;
+   +use Acme;
+    use Bar1;
+   -use Acme;
+    use Bar;
+
+Example #5
+~~~~~~~~~~
+
 With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const', 'class', 'function']]``.
 
 .. code-block:: diff
@@ -109,7 +125,28 @@ With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const'
     use function CCC\AA;
    -use function DDD;
 
-Example #5
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['sort_algorithm' => 'length_desc', 'imports_order' => ['const', 'class', 'function']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use const AAAA;
+    use const BBB;
+
+    use Acme;
+   +use AAC;
+    use Bar;
+   -use AAC;
+
+    use function CCC\AA;
+    use function DDD;
+
+Example #7
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']]``.
@@ -132,7 +169,7 @@ With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const',
     use function DDD;
    -use function CCC\AA;
 
-Example #6
+Example #8
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'imports_order' => ['const', 'class', 'function']]``.
