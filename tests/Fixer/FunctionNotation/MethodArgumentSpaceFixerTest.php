@@ -1273,17 +1273,18 @@ function foo(
             '<?php
 function foo($foo,  $bar) {}',
             [
-                'multiline_after' => 2
-            ]
+                'multiline_after' => 2,
+            ],
         ];
+
         yield 'multiline after fitting value' => [
             '<?php
 function foo($foo, $bar) {}',
             '<?php
 function foo($foo,  $bar) {}',
             [
-                'multiline_after' => 200
-            ]
+                'multiline_after' => 200,
+            ],
         ];
     }
 
