@@ -1286,6 +1286,19 @@ function foo($foo,  $bar) {}',
                 'multiline_after' => 200,
             ],
         ];
+
+        yield 'multiline after with stupid-long unbreakable words' => [
+            '<?php
+function f(
+    GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $x,
+    GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $y
+) {}',
+            '<?php
+function f(GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $x, GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $y) {}',
+            [
+                'multiline_after' => 200,
+            ],
+        ];
     }
 
     /**
