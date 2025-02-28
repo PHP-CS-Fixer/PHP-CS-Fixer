@@ -127,6 +127,12 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                     ,
                     ['after_heredoc' => true]
                 ),
+                new CodeSample(
+                    "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\n",
+                    [
+                        'multiline_after' => 20,
+                    ]
+                ),
             ],
             'This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.'
         );
