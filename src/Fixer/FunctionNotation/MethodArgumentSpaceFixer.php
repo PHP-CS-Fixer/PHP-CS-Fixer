@@ -171,9 +171,11 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             $isMultiline = $this->fixFunction($tokens, $index);
 
             if (
-                $isMultiline
+                (
+                    $isMultiline
                 && 'ensure_fully_multiline' === $this->configuration['on_multiline']
                 && !$meaningfulTokenBeforeParenthesis->isGivenKind(T_LIST)
+                ) || $this->exceedsLength($tokens, $index)
             ) {
                 $this->ensureFunctionFullyMultiline($tokens, $index);
             }
@@ -193,6 +195,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             ))
                 ->setAllowedValues(['ignore', 'ensure_single_line', 'ensure_fully_multiline'])
                 ->setDefault('ensure_fully_multiline')
+                ->getOption(),
+            (new FixerOptionBuilder(
+                'multiline_after',
+                'Force multiline if the line exceeds the given number of characters.'
+            ))
+                ->setAllowedTypes(['int'])
+                ->setDefault(0)
                 ->getOption(),
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
@@ -505,5 +514,37 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     private function isNewline(Token $token): bool
     {
         return $token->isWhitespace() && str_contains($token->getContent(), "\n");
+    }
+
+    private function exceedsLength(Tokens $tokens, int $index): bool
+    {
+        if ($this->configuration['multiline_after'] <= 0) {
+            return false;
+        }
+
+        $previousIdx = $index - 1;
+        while ($previousIdx > 0) {
+            if ($this->isNewline($tokens[$previousIdx])) {
+                break;
+            }
+
+            --$previousIdx;
+        }
+
+        $nextIdx = $index + 1;
+        while ($nextIdx < $tokens->count()) {
+            if ($this->isNewline($tokens[$nextIdx])) {
+                break;
+            }
+
+            ++$nextIdx;
+        }
+
+        $lineLength = 0;
+        for ($i = $previousIdx + 1; $i < $nextIdx; ++$i) {
+            $lineLength += strlen($tokens[$i]->getContent());
+        }
+
+        return $lineLength > $this->configuration['multiline_after'];
     }
 }

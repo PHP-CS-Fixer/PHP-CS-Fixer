@@ -1263,6 +1263,28 @@ function foo($foo, #[
     Foo\Buzz(a: \'astral\', b: 1234),
 ] $bar) {}',
         ];
+
+        yield 'multiline after unfitting value' => [
+            '<?php
+function foo(
+    $foo,
+    $bar
+) {}',
+            '<?php
+function foo($foo,  $bar) {}',
+            [
+                'multiline_after' => 2
+            ]
+        ];
+        yield 'multiline after fitting value' => [
+            '<?php
+function foo($foo, $bar) {}',
+            '<?php
+function foo($foo,  $bar) {}',
+            [
+                'multiline_after' => 200
+            ]
+        ];
     }
 
     /**
