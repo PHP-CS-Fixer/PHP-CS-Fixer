@@ -125,15 +125,14 @@ foo(
     $x,
     bar(
         $foo,
-        $bar,
-        $baz
+        $bar
     )
 );
 ',
             '<?php
 foo($x,
 bar($foo,
-$bar, $baz));
+$bar));
 ',
             [
                 'on_multiline' => 'ensure_fully_multiline',
