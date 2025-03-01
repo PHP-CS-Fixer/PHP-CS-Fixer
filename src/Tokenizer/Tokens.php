@@ -1083,8 +1083,9 @@ class Tokens extends \SplFixedArray
             $this->rewind();
         }
 
-        $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
+        $this->codeHash = null;
+        self::clearCache($this->codeHash);
         $this->namespaceDeclarations = null;
     }
 
