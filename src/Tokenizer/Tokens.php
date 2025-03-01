@@ -587,6 +587,10 @@ class Tokens extends \SplFixedArray
      */
     public function getCodeHash(): string
     {
+        if (null === $this->codeHash) {
+            $this->generateCode(); // regenerate hash
+        }
+
         return $this->codeHash;
     }
 
