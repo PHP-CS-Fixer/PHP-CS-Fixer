@@ -163,7 +163,10 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      */
     public function testPriority(array $expected, string $source): void
     {
-        self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
+        // Parse `$source` before tokenizing `$expected`, so source has priority to generate collection
+        // over blindly re-taking cached collection created on top of `$expected`.
+        $tokens = Tokens::fromCode($source);
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
     public static function providePriorityCases(): iterable
