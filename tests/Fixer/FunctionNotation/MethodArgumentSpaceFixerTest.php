@@ -1305,7 +1305,22 @@ foo(
     $bar
 );',
             '<?php
-foo($foo,  $bar);',
+foo($foo, $bar);',
+            [
+                'multiline_after' => 11,
+            ],
+        ];
+
+        yield 'multiline after unfitting nested call with no indentation' => [
+            '<?php
+foo(
+    bar(
+        $foo,
+        $bar
+    )
+);',
+            '<?php
+foo(bar($foo, $bar));',
             [
                 'multiline_after' => 2,
             ],
@@ -1357,6 +1372,37 @@ class A {
 }',
             [
                 'multiline_after' => 30,
+            ],
+        ];
+
+        yield 'multiline after unfitting nested call with indentation' => [
+            '<?php
+class A {
+    public function foo($a, $b) {
+        if ($a) {
+            if ($b) {
+                $this->bar(
+                    $this->foo(
+                        $a,
+                        $b
+                    )
+                );
+            }
+        }
+    }
+}',
+            '<?php
+class A {
+    public function foo($a, $b) {
+        if ($a) {
+            if ($b) {
+                $this->bar($this->foo($a, $b));
+            }
+        }
+    }
+}',
+            [
+                'multiline_after' => 36,
             ],
         ];
 
