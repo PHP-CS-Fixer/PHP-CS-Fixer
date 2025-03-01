@@ -437,7 +437,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
 
-        $this->updateSize($count);
+        $this->updateSizeByTrimmingTrailingEmptyTokens($count);
     }
 
     /**
@@ -941,7 +941,7 @@ class Tokens extends \SplFixedArray
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
-        $this->updateSize($oldSize + $itemsCount);
+        $this->updateSizeByIncreasingToNewSize($oldSize + $itemsCount);
 
         krsort($slices);
         $farthestSliceIndex = array_key_first($slices);
@@ -1068,14 +1068,9 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        // clear memory
-        $this->updateSize(0);
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
-
+        $this->updateSizeToZero(); // clear memory
         $tokens = token_get_all($code, TOKEN_PARSE);
-
-        $this->updateSize(\count($tokens));
+        $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
@@ -1262,14 +1257,47 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
     }
 
-    private function updateSize(int $size): void
+    private function updateSizeByIncreasingToNewSize(int $size): void
     {
-        if (\count($this) !== $size) {
-            $this->changed = true;
-            $this->namespaceDeclarations = null;
-
-            parent::setSize($size);
+        $currentSize = \count($this);
+        if ($currentSize >= $size) {
+            throw new \LogicException(\sprintf('Cannot use called method to decrease collection size (%d -> %d).', $currentSize, $size));
         }
+        parent::setSize($size);
+    }
+
+    private function updateSizeToZero(): void
+    {
+        $currentSize = \count($this);
+        if (0 === $currentSize) {
+            return;
+        }
+
+        $this->changed = true;
+        $this->codeHash = null;
+        self::clearCache($this->codeHash);
+        $this->namespaceDeclarations = null;
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
+
+        parent::setSize(0);
+    }
+
+    private function updateSizeByTrimmingTrailingEmptyTokens(): void
+    {
+        $currentSize = \count($this);
+
+        if (0 === $currentSize) {
+            return;
+        }
+
+        $lastIndex = $currentSize - 1;
+
+        while ($lastIndex >= 0 && $this->isEmptyAt($lastIndex)) {
+            --$lastIndex;
+        }
+
+        parent::setSize($lastIndex + 1);
     }
 
     /**
