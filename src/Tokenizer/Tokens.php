@@ -333,6 +333,8 @@ class Tokens extends \SplFixedArray
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
+            $this->codeHash = null;
+            self::clearCache($this->codeHash);
             $this->namespaceDeclarations = null;
         }
 
@@ -371,6 +373,8 @@ class Tokens extends \SplFixedArray
             }
 
             $this->changed = true;
+            $this->codeHash = null;
+            self::clearCache($this->codeHash);
             $this->namespaceDeclarations = null;
 
             $this->registerFoundToken($newval);
@@ -934,9 +938,12 @@ class Tokens extends \SplFixedArray
 
         $oldSize = \count($this);
         $this->changed = true;
+        $this->codeHash = null;
+        self::clearCache($this->codeHash);
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+
         $this->updateSize($oldSize + $itemsCount);
 
         krsort($slices);
@@ -1087,6 +1094,8 @@ class Tokens extends \SplFixedArray
         $this->codeHash = null;
         self::clearCache($this->codeHash);
         $this->namespaceDeclarations = null;
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
     }
 
     public function toJson(): string
