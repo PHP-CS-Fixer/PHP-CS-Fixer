@@ -530,9 +530,13 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             return false;
         }
 
+        $indentation = 0;
         $previousIdx = $index - 1;
         while ($previousIdx > 0) {
-            if ($this->isNewline($tokens[$previousIdx])) {
+            $token = $tokens[$previousIdx];
+            if ($this->isNewline($token)) {
+                $indentation = \strlen(substr($token->getContent(), strpos($token->getContent(), "\n")));
+
                 break;
             }
 
@@ -548,7 +552,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             ++$nextIdx;
         }
 
-        $lineLength = 0;
+        $lineLength = $indentation;
         for ($i = $previousIdx + 1; $i < $nextIdx; ++$i) {
             $lineLength += \strlen($tokens[$i]->getContent());
         }

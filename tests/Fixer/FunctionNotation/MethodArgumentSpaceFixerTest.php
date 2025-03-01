@@ -1277,6 +1277,19 @@ function foo($foo,  $bar) {}',
             ],
         ];
 
+        yield 'multiline after unfitting call with no indentation' => [
+            '<?php
+foo(
+    $foo,
+    $bar
+);',
+            '<?php
+foo($foo,  $bar);',
+            [
+                'multiline_after' => 2,
+            ],
+        ];
+
         yield 'multiline after unfitting declaration with indentation' => [
             '<?php
 class A {
