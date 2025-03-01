@@ -1264,7 +1264,7 @@ function foo($foo, #[
 ] $bar) {}',
         ];
 
-        yield 'multiline after unfitting value' => [
+        yield 'multiline after unfitting declaration with no indentation' => [
             '<?php
 function foo(
     $foo,
@@ -1277,7 +1277,56 @@ function foo($foo,  $bar) {}',
             ],
         ];
 
-        yield 'multiline after fitting value' => [
+        yield 'multiline after unfitting declaration with indentation' => [
+            '<?php
+class A {
+    public function foo(
+        $foo,
+        $bar
+    ) {}
+}',
+            '<?php
+class A {
+    public function foo($foo, $bar) {}
+}',
+            [
+                'multiline_after' => 33,
+            ],
+        ];
+
+        yield 'multiline after unfitting call with indentation' => [
+            '<?php
+class A {
+    public function foo(
+        $foo,
+        $bar
+    ) {
+        if ($foo) {
+            if ($bar) {
+                $this->foo(
+                    $foo,
+                    $bar
+                );
+            }
+        }
+    }
+}',
+            '<?php
+class A {
+    public function foo($foo, $bar) {
+        if ($foo) {
+            if ($bar) {
+                $this->foo($foo, $bar);
+            }
+        }
+    }
+}',
+            [
+                'multiline_after' => 30,
+            ],
+        ];
+
+        yield 'multiline after fitting declaration' => [
             '<?php
 function foo($foo, $bar) {}',
             '<?php
