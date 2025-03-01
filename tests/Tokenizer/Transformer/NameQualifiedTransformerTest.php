@@ -257,11 +257,11 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         yield [
             [
                 new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_NAMESPACE, 'namespace']),
+                new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
                 new Token([T_NS_SEPARATOR, '\\']),
                 new Token([T_STRING, 'Foo']),
                 new Token(';'),
-                new Token([T_NAMESPACE, 'namespace']),
+                new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
                 new Token([T_NS_SEPARATOR, '\\']),
                 new Token([T_STRING, 'Bar']),
                 new Token(';'),
