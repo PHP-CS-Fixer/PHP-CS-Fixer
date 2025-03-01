@@ -183,8 +183,8 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        $tokens->generateCode(); // regenerate code to calculate code hash
         $tokens->clearChanged();
+        $tokens->generateCode(); // ensure code hash is calculated, so it's registered in cache
 
         return $tokens;
     }
@@ -561,7 +561,9 @@ class Tokens extends \SplFixedArray
     public function generateCode(): string
     {
         $code = $this->generatePartialCode(0, \count($this) - 1);
-        $this->changeCodeHash(self::calculateCodeHash($code));
+        if (null === $this->codeHash) {
+            $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
+        }
 
         return $code;
     }
@@ -589,7 +591,8 @@ class Tokens extends \SplFixedArray
     public function getCodeHash(): string
     {
         if (null === $this->codeHash) {
-            $this->generateCode(); // regenerate hash
+            $code = $this->generatePartialCode(0, \count($this) - 1);
+            $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
         }
 
         return $this->codeHash;
@@ -1088,6 +1091,8 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
+
+        $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
     }
 
     public function toJson(): string
