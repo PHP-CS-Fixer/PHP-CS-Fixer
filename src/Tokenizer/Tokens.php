@@ -201,9 +201,6 @@ class Tokens extends \SplFixedArray
         if (self::hasCache($codeHash)) {
             $tokens = self::getCache($codeHash);
 
-            // generate the code to recalculate the hash
-            $tokens->generateCode();
-
             if ($codeHash === $tokens->codeHash) {
                 $tokens->clearEmptyTokens();
                 $tokens->clearChanged();
