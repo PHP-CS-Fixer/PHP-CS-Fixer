@@ -125,6 +125,26 @@ foo(
     $x,
     bar(
         $foo,
+        $bar
+    )
+);
+',
+            '<?php
+foo($x,
+bar($foo,
+$bar));
+',
+            [
+                'on_multiline' => 'ensure_fully_multiline',
+            ],
+        ];
+
+        yield 'ensure_fully_multiline for two-level nested calls' => [
+            '<?php
+foo(
+    $x,
+    bar(
+        $foo,
         $bar,
         $baz
     )
