@@ -119,6 +119,27 @@ $var2 = some_function(
             ],
         ];
 
+        yield 'ensure_fully_multiline for nested calls' => [
+            '<?php
+foo(
+    $x,
+    bar(
+        $foo,
+        $bar,
+        $baz
+    )
+);
+',
+            '<?php
+foo($x,
+bar($foo,
+$bar, $baz));
+',
+            [
+                'on_multiline' => 'ensure_fully_multiline',
+            ],
+        ];
+
         yield 'default' => [
             '<?php xyz("", "", "", "");',
             '<?php xyz("","","","");',
