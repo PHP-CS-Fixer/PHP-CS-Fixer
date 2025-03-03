@@ -176,7 +176,7 @@ $c = get_class($d);
      * {@inheritdoc}
      *
      * Must run before GlobalNamespaceImportFixer.
-     * Must run after BacktickToShellExecFixer, RegularCallableCallFixer, StrictParamFixer.
+     * Must run after BacktickToShellExecFixer, MbStrFunctionsFixer, RegularCallableCallFixer, StrictParamFixer.
      */
     public function getPriority(): int
     {
