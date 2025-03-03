@@ -55,7 +55,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     /**
      * @var array<Token>
      */
-    private $multilinedTokens = [];
+    private array $multilinedTokens = [];
 
     public function getDefinition(): FixerDefinitionInterface
     {
