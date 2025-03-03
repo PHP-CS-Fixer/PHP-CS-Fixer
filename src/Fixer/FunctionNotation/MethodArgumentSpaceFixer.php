@@ -409,7 +409,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
         foreach ($this->multilinedTokens as $multilinedToken) {
             $idx = array_search($multilinedToken, $tokens->toArray(), true);
-            if ($idx === false) {
+            if (false === $idx) {
                 continue;
             }
 
