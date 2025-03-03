@@ -267,7 +267,7 @@ use Bar;
         $fixerName = $this->getName();
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length (*deprecated*), or not sorted.'))
+            (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length (*deprecated*), or not sorted.')) // @TODO 4.0 drop 'length'
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
