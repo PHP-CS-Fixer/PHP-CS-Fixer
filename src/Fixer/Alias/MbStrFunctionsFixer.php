@@ -85,6 +85,16 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before NativeFunctionInvocationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 2;
+    }
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
