@@ -610,6 +610,8 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * @return non-empty-string
+     *
      * @internal
      */
     public function getCollectionHash(): string
@@ -622,7 +624,7 @@ class Tokens extends \SplFixedArray
                 .'#'
                 .implode(
                     '',
-                    array_map(static fn (Token $token): ?int => $token->getId(), $this->toArray())
+                    array_map(static fn (?Token $token): ?int => $token?->getId(), $this->toArray())
                 )
             );
         }
