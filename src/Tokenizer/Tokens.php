@@ -330,8 +330,8 @@ class Tokens extends \SplFixedArray
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
-            $this->codeHash = null;
             self::clearCache($this->codeHash);
+            $this->codeHash = null;
             $this->namespaceDeclarations = null;
         }
 
@@ -370,8 +370,8 @@ class Tokens extends \SplFixedArray
             }
 
             $this->changed = true;
-            $this->codeHash = null;
             self::clearCache($this->codeHash);
+            $this->codeHash = null;
             $this->namespaceDeclarations = null;
 
             $this->registerFoundToken($newval);
@@ -938,8 +938,8 @@ class Tokens extends \SplFixedArray
 
         $oldSize = \count($this);
         $this->changed = true;
-        $this->codeHash = null;
         self::clearCache($this->codeHash);
+        $this->codeHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
@@ -1086,8 +1086,8 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->codeHash = null;
         self::clearCache($this->codeHash);
+        $this->codeHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
@@ -1279,8 +1279,8 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
-        $this->codeHash = null;
         self::clearCache($this->codeHash);
+        $this->codeHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
