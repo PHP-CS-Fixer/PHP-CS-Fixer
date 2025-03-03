@@ -1310,6 +1310,19 @@ foo($foo, $bar);',
             ],
         ];
 
+        yield 'multiline after keeps variables on the same line as their types' => [
+            '<?php
+function foo(
+    AFooIsAFoo $foo,
+    ABarIsABar $bar
+){}',
+            '<?php
+function foo(AFooIsAFoo $foo, ABarIsABar $bar){}',
+            [
+                'multiline_after' => 18,
+            ],
+        ];
+
         yield 'multiline after unfitting nested call with no indentation' => [
             '<?php
 foo(
