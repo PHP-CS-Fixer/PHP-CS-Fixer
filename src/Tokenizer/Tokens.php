@@ -437,7 +437,7 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
 
-        $this->updateSizeByTrimmingTrailingEmptyTokens($count);
+        $this->updateSizeByTrimmingTrailingEmptyTokens();
     }
 
     /**
