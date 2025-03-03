@@ -28,6 +28,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
@@ -284,6 +285,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 } elseif ($fixer instanceof FinalInternalClassFixer && \in_array($optionName, ['annotation_include', 'annotation_exclude', 'include', 'exclude'], true)) {
                     $allowedAfterNormalization = 'array<string, string>';
                 } elseif ($fixer instanceof PhpdocTagTypeFixer && 'tags' === $optionName) {
+                    // nothing to do
+                } elseif ($fixer instanceof OrderedImportsFixer && 'sort_algorithm' === $optionName) {
                     // nothing to do
                 } else {
                     throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s"? Explicit instructions needed!', $fixer->getName(), $optionName));
