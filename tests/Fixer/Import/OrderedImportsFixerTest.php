@@ -1981,11 +1981,28 @@ use function some\a\{fn_a, fn_b};
             ],
         ];
 
-        yield 'do not take the braces part in grouped imports into account' => [
+        yield 'do not take the braces in grouped imports into account' => [
             <<<'PHP'
                 <?php
-                use Foo\{Bar, Baz};
-                use Foo\NotBarNorBar\DeeperClass;
+                use Foo\{Alfa, Alfa2};
+                use Foo\Bravo;
+                use Foo\{Delta, Delta2};
+                use Foo\Foxtrot\Uniform\Charlie\Kilo;
+                use Foo\November\{Rain, Sunhine};
+                use Foo\November\Sunhine;
+                use Foo\{Yankee007, Yankee42, Yankee99};
+                use Foo\{Zulu, Zulu2};
+                PHP,
+            <<<'PHP'
+                <?php
+                use Foo\{Zulu, Zulu2};
+                use Foo\{Delta2, Delta};
+                use Foo\{Alfa, Alfa2};
+                use Foo\{Yankee99, Yankee42, Yankee007};
+                use Foo\Bravo;
+                use Foo\Foxtrot\Uniform\Charlie\Kilo;
+                use Foo\November\Sunhine;
+                use Foo\November\{Rain, Sunhine};
                 PHP,
         ];
     }
