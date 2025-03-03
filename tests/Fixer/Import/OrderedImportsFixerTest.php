@@ -1988,8 +1988,8 @@ use function some\a\{fn_a, fn_b};
                 use Foo\Bravo;
                 use Foo\{Delta, Delta2};
                 use Foo\Foxtrot\Uniform\Charlie\Kilo;
-                use Foo\November\{Rain, Sunhine};
-                use Foo\November\Sunhine;
+                use Foo\November\{Golf, Juliett};
+                use Foo\November\Hotel;
                 use Foo\{Yankee007, Yankee42, Yankee99};
                 use Foo\{Zulu, Zulu2};
                 PHP,
@@ -2001,8 +2001,8 @@ use function some\a\{fn_a, fn_b};
                 use Foo\{Yankee99, Yankee42, Yankee007};
                 use Foo\Bravo;
                 use Foo\Foxtrot\Uniform\Charlie\Kilo;
-                use Foo\November\Sunhine;
-                use Foo\November\{Rain, Sunhine};
+                use Foo\November\Hotel;
+                use Foo\November\{Juliett, Golf};
                 PHP,
         ];
     }
