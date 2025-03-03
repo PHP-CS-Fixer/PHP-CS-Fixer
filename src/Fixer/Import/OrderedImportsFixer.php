@@ -88,6 +88,8 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     public const SORT_ALPHA = 'alpha';
 
     /**
+     * @TODO 4.0 remove the possibility to sort by length
+     *
      * @internal
      */
     public const SORT_LENGTH = 'length';
@@ -265,7 +267,7 @@ use Bar;
         $fixerName = $this->getName();
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length, or not sorted.'))
+            (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length (*deprecated*), or not sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
@@ -305,7 +307,7 @@ use Bar;
 
                     return true;
                 }])
-                ->setDefault(null) // @TODO set to ['class', 'function', 'const'] on 4.0
+                ->setDefault(null) // @TODO 4.0 set to ['class', 'function', 'const']
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
