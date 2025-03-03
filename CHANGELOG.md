@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.70.1
+---------------------
+
+* fix: `PhpUnitSizeClassFixer` must run before `PhpUnitAttributesFixer` (#8457)
+* DX: cleanup `OrderedImportsFixerTest` (#8458)
+
 Changelog for v3.70.0
 ---------------------
 
