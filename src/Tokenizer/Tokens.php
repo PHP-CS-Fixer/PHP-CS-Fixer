@@ -936,7 +936,6 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        $oldSize = \count($this);
         $this->changed = true;
         self::clearCache($this->codeHash);
         $this->codeHash = null;
@@ -944,6 +943,7 @@ class Tokens extends \SplFixedArray
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
+        $oldSize = \count($this);
         $this->updateSizeByIncreasingToNewSize($oldSize + $itemsCount);
 
         krsort($slices);
