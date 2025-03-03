@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Import;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
@@ -31,6 +33,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
@@ -259,11 +262,23 @@ use Bar;
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $supportedSortTypes = self::SUPPORTED_SORT_TYPES;
+        $fixerName = $this->getName();
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sort_algorithm', 'Whether the statements should be sorted alphabetically or by length, or not sorted.'))
                 ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
+                ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
+                    if (self::SORT_LENGTH === $value) {
+                        Utils::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
+                            'Option "sort_algorithm:%s" is deprecated and will be removed in version %d.0.',
+                            self::SORT_LENGTH,
+                            Application::getMajorVersion() + 1,
+                        )));
+                    }
+
+                    return $value;
+                })
                 ->getOption(),
             (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
                 ->setAllowedTypes(['string[]', 'null'])
