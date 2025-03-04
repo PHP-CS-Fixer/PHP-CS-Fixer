@@ -624,7 +624,7 @@ class Tokens extends \SplFixedArray
                 .'#'
                 .implode(
                     '',
-                    array_map(static fn (?Token $token): ?int => $token?->getId(), $this->toArray())
+                    array_map(static fn (?Token $token): ?int => null !== $token ? $token->getId() : null, $this->toArray())
                 )
             );
         }
