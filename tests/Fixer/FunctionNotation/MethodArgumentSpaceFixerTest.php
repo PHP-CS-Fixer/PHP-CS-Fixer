@@ -119,7 +119,7 @@ $var2 = some_function(
             ],
         ];
 
-        yield 'ensure_fully_multiline for nested calls' => [
+        yield 'ensure_fully_multiline for nested calls - one level' => [
             '<?php
 foo(
     $x,
@@ -133,6 +133,30 @@ foo(
 foo($x,
 bar($foo,
 $bar));
+',
+            [
+                'on_multiline' => 'ensure_fully_multiline',
+            ],
+        ];
+
+        yield 'ensure_fully_multiline for nested calls - two levels' => [
+            '<?php
+foo(
+    $x,
+    bar(
+        $foo,
+        baz(
+            $bar,
+            $baz
+        )
+    )
+);
+',
+            '<?php
+foo($x,
+bar($foo,
+baz($bar,
+$baz)));
 ',
             [
                 'on_multiline' => 'ensure_fully_multiline',
