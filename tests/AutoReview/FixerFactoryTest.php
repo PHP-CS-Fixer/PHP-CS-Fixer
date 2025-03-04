@@ -523,6 +523,9 @@ final class FixerFactoryTest extends TestCase
                 'no_singleline_whitespace_before_semicolons',
                 'standardize_increment',
             ],
+            'mb_str_functions' => [
+                'native_function_invocation',
+            ],
             'method_argument_space' => [
                 'array_indentation',
                 'statement_indentation',
