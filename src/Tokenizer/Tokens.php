@@ -75,11 +75,18 @@ class Tokens extends \SplFixedArray
     private array $blockEndCache = [];
 
     /**
-     * A MD5 hash of the code string.
+     * An MD5 hash of the code string.
      *
      * @var ?non-empty-string
      */
     private ?string $codeHash = null;
+
+    /**
+     * An hash of the collection items.
+     *
+     * @var ?non-empty-string
+     */
+    private ?string $collectionHash = null;
 
     /**
      * Flag is collection was changed.
@@ -330,6 +337,7 @@ class Tokens extends \SplFixedArray
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
+            $this->collectionHash = null;
             self::clearCache($this->codeHash);
             $this->codeHash = null;
             $this->namespaceDeclarations = null;
@@ -370,6 +378,7 @@ class Tokens extends \SplFixedArray
             }
 
             $this->changed = true;
+            $this->collectionHash = null;
             self::clearCache($this->codeHash);
             $this->codeHash = null;
             $this->namespaceDeclarations = null;
@@ -436,6 +445,8 @@ class Tokens extends \SplFixedArray
         // we are moving the tokens, we need to clear the index-based Cache
         $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
+
+        $this->collectionHash = null;
 
         $this->updateSizeByTrimmingTrailingEmptyTokens();
     }
@@ -596,6 +607,29 @@ class Tokens extends \SplFixedArray
         }
 
         return $this->codeHash;
+    }
+
+    /**
+     * @return non-empty-string
+     *
+     * @internal
+     */
+    public function getCollectionHash(): string
+    {
+        if (null === $this->collectionHash) {
+            $this->collectionHash = md5(
+                $this->getCodeHash()
+                .'#'
+                .\count($this)
+                .'#'
+                .implode(
+                    '',
+                    array_map(static fn (?Token $token): ?int => null !== $token ? $token->getId() : null, $this->toArray())
+                )
+            );
+        }
+
+        return $this->collectionHash;
     }
 
     /**
@@ -937,6 +971,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
+        $this->collectionHash = null;
         self::clearCache($this->codeHash);
         $this->codeHash = null;
         $this->namespaceDeclarations = null;
@@ -1086,6 +1121,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
+        $this->collectionHash = null;
         self::clearCache($this->codeHash);
         $this->codeHash = null;
         $this->namespaceDeclarations = null;
@@ -1279,6 +1315,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->changed = true;
+        $this->collectionHash = null;
         self::clearCache($this->codeHash);
         $this->codeHash = null;
         $this->namespaceDeclarations = null;

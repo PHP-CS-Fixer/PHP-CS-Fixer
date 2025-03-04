@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SwitchAnalyzer
 {
-    /** @var array<string, list<int>> */
+    /** @var array<non-empty-string, list<int>> */
     private static array $cache = [];
 
     public static function belongsToSwitch(Tokens $tokens, int $index): bool
@@ -31,13 +31,15 @@ final class SwitchAnalyzer
             return false;
         }
 
-        $tokensHash = md5(serialize($tokens->toArray()));
+        $collectionHash = $tokens->getCollectionHash();
 
-        if (!\array_key_exists($tokensHash, self::$cache)) {
-            self::$cache[$tokensHash] = self::getColonIndicesForSwitch(clone $tokens);
+        if (!\array_key_exists($collectionHash, self::$cache)) {
+            self::$cache[$collectionHash] = self::getColonIndicesForSwitch(clone $tokens);
         }
 
-        return \in_array($index, self::$cache[$tokensHash], true);
+        $arr = self::$cache[$collectionHash];
+
+        return \in_array($index, $arr, true);
     }
 
     /**

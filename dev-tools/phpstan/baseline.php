@@ -1508,6 +1508,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset int\\<0, max\\> might not exist on non\\-empty\\-list\\<array\\{start\\: int, visibility\\: string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\: string, name\\: string, end\\: int\\}\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderMethodOrderFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|false\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -2168,7 +2174,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset non\\-falsy\\-string might not exist on array\\<string, list\\<int\\>\\>\\.$#',
+	'message' => '#^Offset non\\-empty\\-string might not exist on array\\<non\\-empty\\-string, list\\<int\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/SwitchAnalyzer.php',
@@ -2724,12 +2730,6 @@ $ignoreErrors[] = [
 	'identifier' => 'booleanNot.exprNotBoolean',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/PhpTag/NoClosingTagFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset int\\<0, max\\> might not exist on non\\-empty\\-list\\<array\\{start\\: int, visibility\\: string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\: string, name\\: string, end\\: int\\}\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitDataProviderMethodOrderFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Generator expects value type array\\{0\\: string, 1\\?\\: string\\}, list\\<string\\> given\\.$#',
