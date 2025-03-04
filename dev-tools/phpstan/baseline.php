@@ -2168,7 +2168,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset non\\-falsy\\-string might not exist on array\\<string, list\\<int\\>\\>\\.$#',
+	'message' => '#^Offset non\\-empty\\-string might not exist on array\\<non\\-empty\\-string, list\\<int\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/SwitchAnalyzer.php',
