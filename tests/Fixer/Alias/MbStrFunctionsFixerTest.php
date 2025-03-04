@@ -83,6 +83,25 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
             '<?php $a = mb_str_split($a);',
             '<?php $a = str_split($a);',
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function Bar\strlen;
+                use function strtolower;
+                use function strtoupper;
+                return strlen($x) > 10 ? mb_strtolower($x) : mb_strtoupper($x);
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function Bar\strlen;
+                use function strtolower;
+                use function strtoupper;
+                return strlen($x) > 10 ? strtolower($x) : strtoupper($x);
+                PHP,
+        ];
     }
 
     /**
