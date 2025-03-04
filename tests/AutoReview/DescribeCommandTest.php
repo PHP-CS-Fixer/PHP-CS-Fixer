@@ -52,6 +52,9 @@ final class DescribeCommandTest extends TestCase
         // @TODO 4.0 Remove this expectations
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        if ('ordered_imports' === $fixerName) {
+            $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
+        }
         if ('nullable_type_declaration_for_default_null_value' === $fixerName) {
             $this->expectDeprecation('Option "use_nullable_type_declaration" for rule "nullable_type_declaration_for_default_null_value" is deprecated and will be removed in version 4.0. Behaviour will follow default one.');
         }

@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.70.2
+---------------------
+
+* deps: upgrade deep dev-tools deps (#8472)
+* fix: `MbStrFunctionsFixer` must run before `NativeFunctionInvocationFixer` (#8466)
+* fix: `MethodArgumentSpaceFixer` - fix nested calls for `ensure_fully_multiline` option (#8469)
+
 Changelog for v3.70.1
 ---------------------
 

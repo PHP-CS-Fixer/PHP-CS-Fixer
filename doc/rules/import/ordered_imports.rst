@@ -28,8 +28,8 @@ Default value: ``null``
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
-Whether the statements should be sorted alphabetically or by length, or not
-sorted.
+Whether the statements should be sorted alphabetically or by length
+(*deprecated*), or not sorted.
 
 Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
 
