@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -160,6 +161,17 @@ $a = substr_count($a, $b);
 
                 continue;
             }
+
+            // is it a global function import?
+            $functionIndex = $tokens->getPrevMeaningfulToken($index);
+            if (!$tokens[$functionIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+                continue;
+            }
+            $useIndex = $tokens->getPrevMeaningfulToken($functionIndex);
+            if (!$tokens[$useIndex]->isGivenKind(T_USE)) {
+                continue;
+            }
+            $tokens[$index] = new Token([T_STRING, $this->functions[$lowercasedContent]['alternativeName']]);
         }
     }
 }
