@@ -19,9 +19,9 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use PhpCsFixer\FileRemoval;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @author ntzm
  *
  * @covers \PhpCsFixer\FileRemoval
  */

@@ -18,9 +18,9 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\TokenizerLinter;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult

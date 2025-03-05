@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 abstract class AbstractControlCaseStructuresAnalysis
 {

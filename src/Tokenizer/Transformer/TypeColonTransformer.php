@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `:` operator into CT::T_TYPE_COLON in `function foo() : int {}`.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TypeColonTransformer extends AbstractTransformer
 {

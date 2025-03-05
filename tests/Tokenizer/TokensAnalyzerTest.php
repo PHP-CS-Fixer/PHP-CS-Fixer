@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @internal
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
- *
- * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
  */
