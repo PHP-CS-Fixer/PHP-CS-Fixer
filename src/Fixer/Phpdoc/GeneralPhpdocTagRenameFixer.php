@@ -177,8 +177,8 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
 
         if (true === $this->configuration['fix_annotation']) {
             $regex = true === $this->configuration['fix_inline']
-                ? '/"[^"]*"(*SKIP)(*FAIL)|\b(?<=@)(?P<tag>%s)\b/'
-                : '/"[^"]*"(*SKIP)(*FAIL)|(?<!\{@)(?<=@)(?P<tag>%s)(?!\})/';
+                ? '/(["\'])[^\1]*\1(*SKIP)(*FAIL)|\b(?<=@)(?P<tag>%s)\b/'
+                : '/(["\'])[^\1]*\1(*SKIP)(*FAIL)|(?<!\{@)(?<=@)(?P<tag>%s)(?!\})/';
         } else {
             $regex = '/(?<={@)(?P<tag>%s)(?=[ \t}])/';
         }
