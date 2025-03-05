@@ -289,5 +289,34 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
                 'link' => 'see',
             ]],
         ];
+
+        yield [ // WRONG: '@link' in array shape should not be renamed to '@see'
+            <<<'PHP'
+                <?php
+                /**
+                 * @see example.com
+                 * @var foo
+                 *
+                 * @phpstan-type MyArray array{
+                 *  '@see': ?string,
+                 *  "@type": string,
+                 * }
+                 */
+                class Foo {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @link example.com
+                 * @type foo
+                 *
+                 * @phpstan-type MyArray array{
+                 *  '@link': ?string,
+                 *  "@type": string,
+                 * }
+                 */
+                class Foo {}
+                PHP,
+        ];
     }
 }

@@ -227,15 +227,17 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        yield [
+        yield [ // WRONG: '@type' should not be renamed to '@var'
             '<?php
     /**
      * @var int $foo
+     * @Annotation(\'@var\')
      * @Annotation("@type")
      */',
             '<?php
     /**
      * @type int $foo
+     * @Annotation(\'@type\')
      * @Annotation("@type")
      */',
             [
