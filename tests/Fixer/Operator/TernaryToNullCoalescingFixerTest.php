@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 {

@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ImportTransformer
  *

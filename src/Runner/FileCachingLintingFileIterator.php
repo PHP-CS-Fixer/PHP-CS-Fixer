@@ -18,11 +18,11 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @extends \CachingIterator<mixed, \SplFileInfo, \Iterator<mixed, \SplFileInfo>>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FileCachingLintingFileIterator extends \CachingIterator implements LintingResultAwareFileIteratorInterface
 {

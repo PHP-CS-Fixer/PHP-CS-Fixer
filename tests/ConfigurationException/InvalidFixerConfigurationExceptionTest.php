@@ -19,9 +19,9 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @author Andreas Möller <am@localheinz.com>
  *
  * @covers \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException
  */

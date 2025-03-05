@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Strict;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\StrictComparisonFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\StrictComparisonFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class StrictComparisonFixerTest extends AbstractFixerTestCase
 {

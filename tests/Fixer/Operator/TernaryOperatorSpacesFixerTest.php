@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {

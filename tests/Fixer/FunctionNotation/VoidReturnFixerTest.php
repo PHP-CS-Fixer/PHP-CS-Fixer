@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Mark Nielsen
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer>
+ *
+ * @author Mark Nielsen
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase
 {

@@ -22,12 +22,12 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * Its role is to provide the ability to analyze collection.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @phpstan-type _ClassyElementType 'case'|'const'|'method'|'property'|'trait_import'
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class TokensAnalyzer
 {

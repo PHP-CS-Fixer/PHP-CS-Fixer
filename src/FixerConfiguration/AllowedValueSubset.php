@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerConfiguration;
 
 /**
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class AllowedValueSubset
 {

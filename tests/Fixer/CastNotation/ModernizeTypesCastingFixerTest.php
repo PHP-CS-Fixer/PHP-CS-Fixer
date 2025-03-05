@@ -17,14 +17,14 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 {

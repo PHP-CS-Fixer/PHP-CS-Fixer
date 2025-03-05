@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
- *
  * @internal
+ *
+ * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
  *

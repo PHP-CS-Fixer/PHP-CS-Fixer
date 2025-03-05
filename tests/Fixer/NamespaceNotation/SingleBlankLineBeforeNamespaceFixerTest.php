@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {

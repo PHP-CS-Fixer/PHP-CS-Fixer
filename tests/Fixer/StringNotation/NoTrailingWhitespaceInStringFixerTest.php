@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\StringNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gregor Harlan
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer>
+ *
+ * @author Gregor Harlan
  */
 final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
 {
