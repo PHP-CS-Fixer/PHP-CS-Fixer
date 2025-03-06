@@ -1218,7 +1218,7 @@ $foo;',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixWithElseIfCases(): iterable
     {
