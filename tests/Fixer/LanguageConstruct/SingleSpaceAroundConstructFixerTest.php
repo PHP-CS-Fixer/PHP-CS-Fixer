@@ -1954,6 +1954,10 @@ foo; foo: echo "Bar";',
             '<?php if /* foo */($foo === $bar): endif;',
             '<?php if/* foo */($foo === $bar): endif;',
         ];
+
+    yield [
+            '<?php if (true): else: endif;',
+        ];
     }
 
     /**
