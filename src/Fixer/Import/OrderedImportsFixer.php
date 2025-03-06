@@ -602,16 +602,22 @@ use Bar;
 
             if ($use['group']) {
                 // a group import must start with `use` and cannot be part of comma separated import list
-                $prev = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$prev]->equals(',')) {
-                    $tokens[$prev] = new Token(';');
-                    $tokens->insertAt($prev + 1, new Token([T_USE, 'use']));
-
-                    if (!$tokens[$prev + 2]->isWhitespace()) {
-                        $tokens->insertAt($prev + 2, new Token([T_WHITESPACE, ' ']));
-                    }
-                }
+                self::fixCommaToUse($tokens, $tokens->getPrevMeaningfulToken($index));
             }
+        }
+    }
+
+    private static function fixCommaToUse(Tokens $tokens, int $index): void
+    {
+        if (!$tokens[$index]->equals(',')) {
+            return;
+        }
+
+        $tokens[$index] = new Token(';');
+        $tokens->insertAt($index + 1, new Token([T_USE, 'use']));
+
+        if (!$tokens[$index + 2]->isWhitespace()) {
+            $tokens->insertAt($index + 2, new Token([T_WHITESPACE, ' ']));
         }
     }
 }
