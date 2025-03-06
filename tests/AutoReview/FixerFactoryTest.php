@@ -523,6 +523,9 @@ final class FixerFactoryTest extends TestCase
                 'no_singleline_whitespace_before_semicolons',
                 'standardize_increment',
             ],
+            'mb_str_functions' => [
+                'native_function_invocation',
+            ],
             'method_argument_space' => [
                 'array_indentation',
                 'statement_indentation',
@@ -776,6 +779,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_expectation',
             ],
             'php_unit_size_class' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'php_unit_test_annotation' => [
@@ -787,6 +791,7 @@ final class FixerFactoryTest extends TestCase
                 'self_static_accessor',
             ],
             'php_unit_test_class_requires_covers' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'phpdoc_add_missing_param_annotation' => [

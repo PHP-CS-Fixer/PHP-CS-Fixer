@@ -18,7 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\CheckCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -41,22 +41,14 @@ final class CheckCommandTest extends TestCase
         $command = $application->find('check');
         $commandTester = new CommandTester($command);
 
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessageMatches('/--dry-run/');
+
         $commandTester->execute(
             [
                 'command' => $command->getName(),
-                '--help' => true,
-                'path' => [__DIR__.'/../../Fixtures/dummy-file.php'], // just to get rid of Finder error
-            ],
-            [
-                'interactive' => false,
-                'decorated' => false,
-                'verbosity' => OutputInterface::VERBOSITY_DEBUG,
+                '--dry-run' => true,
             ]
-        );
-
-        self::assertStringNotContainsString(
-            '--dry-run',
-            $commandTester->getDisplay()
         );
     }
 }
