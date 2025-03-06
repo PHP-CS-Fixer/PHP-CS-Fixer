@@ -821,6 +821,19 @@ use A\A,G\G;use Foo3\Bar\{ClassA};use H\H,J\J;use Ioo2\Bar\{ClassB};use K\K,M\M;
 ',
         ];
 
+        yield 'grouped import changing location to comma separated imports' => [
+            <<<'PHP'
+                <?php
+                use A;
+                use B;use C\{C1, C2, C3};use D;
+                PHP,
+            <<<'PHP'
+                <?php
+                use C\{C1, C2, C3};
+                use D, A, B;
+                PHP,
+        ];
+
         yield 'many grouped imports' => [
             '<?php
 use Foo\Bar\{ClassA, ClassB, ClassC};
