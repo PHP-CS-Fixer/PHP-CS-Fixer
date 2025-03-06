@@ -1478,6 +1478,17 @@ $foo = [
                 }
                 PHP,
         ];
+
+        yield 'braceless if with return' => [
+            <<<'PHP'
+                <?php
+                if (1 == 2)
+                    return;
+
+                if (1 == 2)
+                    return false;
+                PHP,
+        ];
     }
 
     /**
