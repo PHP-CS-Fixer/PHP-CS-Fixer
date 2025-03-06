@@ -787,7 +787,7 @@ $x = match ($a) { 1 => 0,
             <<<'PHP'
                 <?php
                 $a = match($x) {
-                    default => 1,
+                    default => function () {},
                 };
                 $b = match($y) {
                     // Hello!
@@ -798,7 +798,7 @@ $x = match ($a) { 1 => 0,
             <<<'PHP'
                 <?php
                 $a = match($x) {
-                    default => 1
+                    default => function () {}
                 };
                 $b = match($y) {
                     // Hello!
