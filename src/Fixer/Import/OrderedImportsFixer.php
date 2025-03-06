@@ -603,6 +603,9 @@ use Bar;
             if ($use['group']) {
                 // a group import must start with `use` and cannot be part of comma separated import list
                 self::fixCommaToUse($tokens, $tokens->getPrevMeaningfulToken($index));
+
+                $closeGroupIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
+                self::fixCommaToUse($tokens, $tokens->getNextMeaningfulToken($closeGroupIndex));
             }
         }
     }
