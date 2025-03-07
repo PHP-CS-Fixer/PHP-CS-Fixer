@@ -928,12 +928,12 @@ $array = [
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, mb_strpos($lines[$index], $placeholder));
+                    $rightmostSymbol = max($rightmostSymbol, $this->getSubstringWidth($lines[$index], $placeholder));
                 }
 
                 foreach ($group as $index) {
                     $line = $lines[$index];
-                    $currentSymbol = mb_strpos($line, $placeholder);
+                    $currentSymbol = $this->getSubstringWidth($line, $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
@@ -947,5 +947,15 @@ $array = [
         }
 
         return $tmpCode;
+    }
+
+    private function getSubstringWidth(string $haystack, string $needle): int
+    {
+        $position = strpos($haystack, $needle);
+        \assert(\is_int($position));
+
+        $substring = substr($haystack, 0, $position);
+
+        return mb_strwidth($substring);
     }
 }

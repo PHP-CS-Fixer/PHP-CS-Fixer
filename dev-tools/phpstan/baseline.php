@@ -1454,12 +1454,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only numeric types are allowed in \\-, int\\<0, max\\>\\|false given on the right side\\.$#',
-	'identifier' => 'minus.rightNonNumeric',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\<0, max\\>\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
