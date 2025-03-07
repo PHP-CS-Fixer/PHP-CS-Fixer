@@ -1527,7 +1527,7 @@ function foo($typeless): void {}',
                 <?php
                 /**
                  * @param Foooooooooooooooo $x
-                 * @param Bar‹Baz›      $y
+                 * @param Bar‹Baz›          $y
                  */
                 PHP,
             <<<'PHP'
