@@ -170,7 +170,7 @@ if ($foo) {
             $blockSignatureFirstTokens[] = T_MATCH;
         }
 
-        $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN]];
+        $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN], [CT::T_PROPERTY_HOOK_BRACE_OPEN]];
         if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
             $blockFirstTokens[] = [T_ATTRIBUTE];
         }
@@ -255,6 +255,8 @@ if ($foo) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
                 } elseif ($token->equals('(')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                    $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 }
