@@ -212,7 +212,7 @@ final class Runner
                     break;
                 }
 
-                $files[] = $current->getRealPath();
+                $files[] = $current->getPathName();
 
                 $fileIterator->next();
             }
@@ -289,7 +289,7 @@ final class Runner
                         $this->dispatchEvent(FileProcessed::NAME, new FileProcessed($workerResponse['status']));
 
                         if (isset($workerResponse['fileHash'])) {
-                            $this->cacheManager->setFileHash($fileRelativePath, $workerResponse['fileHash']);
+                            $this->cacheManager->setFileHash($workerResponse['file'], $workerResponse['fileHash']);
                         }
 
                         foreach ($workerResponse['errors'] ?? [] as $error) {
@@ -306,7 +306,7 @@ final class Runner
 
                         // Pass-back information about applied changes (only if there are any)
                         if (isset($workerResponse['fixInfo'])) {
-                            $changed[$fileRelativePath] = $workerResponse['fixInfo'];
+                            $changed[$workerResponse['file']] = $workerResponse['fixInfo'];
 
                             if ($this->stopOnViolation) {
                                 $processPool->endAll();
