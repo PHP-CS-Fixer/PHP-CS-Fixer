@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
+use PhpCsFixer\PregException;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Utils;
@@ -385,6 +386,8 @@ class Tokens extends \SplFixedArray
 
             $this->registerFoundToken($newval);
         }
+
+        $this->processIgnoreNewToken($index, $newval);
 
         parent::offsetSet($index, $newval);
     }
@@ -1015,6 +1018,8 @@ class Tokens extends \SplFixedArray
 
                 $this->registerFoundToken($item);
 
+                $this->processIgnoreNewToken($index + $itemsCount + $indexItem, $item);
+
                 parent::offsetSet($index + $itemsCount + $indexItem, $item);
             }
         }
@@ -1115,6 +1120,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->applyTransformers();
+        $this->processIgnoreTokens();
 
         if (\PHP_VERSION_ID < 8_00_00) {
             $this->rewind();
@@ -1563,6 +1569,44 @@ class Tokens extends \SplFixedArray
             }
 
             return $index;
+        }
+    }
+
+    private function processIgnoreTokens(): void
+    {
+        $ignoreRules = null;
+        foreach ($this as $token) {
+            if ($token->isGivenKind(T_COMMENT)) {
+                if (str_contains($token->getContent(), 'phpcsfixer-ignore')) {
+                    $ignoreRules = '';
+
+                    try {
+                        Preg::match('/phpcsfixer-ignore\s(.*)/', $token->getContent(), $matches);
+                        $ignoreRules = $matches[1] ?? '';
+                    } catch (PregException $e) {
+                    }
+                }
+
+                if (str_contains($token->getContent(), 'phpcsfixer-end-ignore')) {
+                    $ignoreRules = null;
+                }
+            }
+
+            if (null !== $ignoreRules) {
+                $token->ignoreRules($ignoreRules);
+            }
+        }
+    }
+
+    private function processIgnoreNewToken(int $index, Token $newToken): void
+    {
+        $currentToken = $this[$index] ?? null;
+        $prevToken = $this[$index - 1] ?? null;
+
+        if ($currentToken instanceof Token && null !== $currentToken->getIgnoredRules()) {
+            $newToken->ignoreRules($currentToken->getIgnoredRules());
+        } elseif ($prevToken instanceof Token && null !== $prevToken->getIgnoredRules()) {
+            $newToken->ignoreRules($prevToken->getIgnoredRules());
         }
     }
 
