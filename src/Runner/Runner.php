@@ -306,7 +306,8 @@ final class Runner
 
                         // Pass-back information about applied changes (only if there are any)
                         if (isset($workerResponse['fixInfo'])) {
-                            $changed[$workerResponse['file']] = $workerResponse['fixInfo'];
+                            $relativePath = $this->directory->getRelativePathTo($workerResponse['file']);
+                            $changed[$relativePath] = $workerResponse['fixInfo'];
 
                             if ($this->stopOnViolation) {
                                 $processPool->endAll();
