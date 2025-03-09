@@ -212,7 +212,7 @@ final class Runner
                     break;
                 }
 
-                $files[] = $current->getPathName();
+                $files[] = $current->getPathname();
 
                 $fileIterator->next();
             }
