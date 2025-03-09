@@ -492,9 +492,9 @@ final class Runner
             }
 
             if (!$this->isDryRun) {
-                $fileName = $file->getRealPath();
+                $fileRealPath = $file->getRealPath();
 
-                if (!file_exists($fileName)) {
+                if (!file_exists($fileRealPath)) {
                     throw new IOException(
                         \sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
                         0,
@@ -503,32 +503,32 @@ final class Runner
                     );
                 }
 
-                if (is_dir($fileName)) {
+                if (is_dir($fileRealPath)) {
                     throw new IOException(
-                        \sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
+                        \sprintf('Cannot write file "%s" as the location exists as directory.', $fileRealPath),
                         0,
                         null,
-                        $fileName
+                        $fileRealPath
                     );
                 }
 
-                if (!is_writable($fileName)) {
+                if (!is_writable($fileRealPath)) {
                     throw new IOException(
-                        \sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
+                        \sprintf('Cannot write to file "%s" as it is not writable.', $fileRealPath),
                         0,
                         null,
-                        $fileName
+                        $fileRealPath
                     );
                 }
 
-                if (false === @file_put_contents($fileName, $new)) {
+                if (false === @file_put_contents($fileRealPath, $new)) {
                     $error = error_get_last();
 
                     throw new IOException(
-                        \sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
+                        \sprintf('Failed to write file "%s", "%s".', $fileRealPath, null !== $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
-                        $fileName
+                        $fileRealPath
                     );
                 }
             }
