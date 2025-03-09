@@ -231,11 +231,13 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
             '<?php
     /**
      * @var int $foo
+     * @Annotation(\'@type\')
      * @Annotation("@type")
      */',
             '<?php
     /**
      * @type int $foo
+     * @Annotation(\'@type\')
      * @Annotation("@type")
      */',
             [

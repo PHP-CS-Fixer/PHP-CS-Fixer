@@ -1658,12 +1658,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 1 might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset mixed might not exist on non\\-empty\\-array\\<string, string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
