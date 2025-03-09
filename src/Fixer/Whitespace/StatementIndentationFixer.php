@@ -221,7 +221,7 @@ if ($foo) {
                 $scopes[] = [
                     'type' => 'block',
                     'skip' => false,
-                    'end_index' => $this->findStatementEndIndex($tokens, $index, \count($tokens) - 1),
+                    'end_index' => $this->findStatementEndIndex($tokens, $index, \count($tokens) - 1) + 1,
                     'end_index_inclusive' => true,
                     'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
                     'is_indented_block' => true,
