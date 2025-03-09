@@ -391,8 +391,8 @@ final class Runner
             Tokens::clearCache();
 
             if (null !== $fixInfo) {
-                $name = $this->directory->getRelativePathTo($file->__toString());
-                $changed[$name] = $fixInfo;
+                $relativePath = $this->directory->getRelativePathTo($file->__toString());
+                $changed[$relativePath] = $fixInfo;
 
                 if ($this->stopOnViolation) {
                     break;
