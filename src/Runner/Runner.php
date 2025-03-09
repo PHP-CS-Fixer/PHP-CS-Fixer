@@ -406,7 +406,7 @@ final class Runner
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
-        $name = $file->getPathname();
+        $filePathname = $file->getPathname();
 
         try {
             $lintingResult->check();
@@ -416,7 +416,7 @@ final class Runner
                 new FileProcessed(FileProcessed::STATUS_INVALID)
             );
 
-            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
+            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $filePathname, $e));
 
             return null;
         }
@@ -453,11 +453,11 @@ final class Runner
         } catch (\ParseError $e) {
             $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
-            $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
+            $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e));
 
             return null;
         } catch (\Throwable $e) {
-            $this->processException($name, $e);
+            $this->processException($filePathname, $e);
 
             return null;
         }
@@ -484,7 +484,7 @@ final class Runner
             } catch (LintingException $e) {
                 $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
-                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
+                $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
 
                 return null;
             }
@@ -532,11 +532,11 @@ final class Runner
             }
         }
 
-        $this->cacheManager->setFileHash($name, $newHash);
+        $this->cacheManager->setFileHash($filePathname, $newHash);
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $name, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $filePathname, $newHash)
         );
 
         return $fixInfo;
