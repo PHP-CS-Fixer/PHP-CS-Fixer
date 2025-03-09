@@ -115,7 +115,7 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['order' => ['param', 'return', 'throws']]``
+  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'author', 'see']]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 

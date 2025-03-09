@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Runner\Parallel;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @readonly
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ParallelConfig
 {

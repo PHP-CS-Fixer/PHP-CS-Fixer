@@ -17,9 +17,9 @@ namespace PhpCsFixer\Console\Report\FixReport;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class ReporterFactory
 {

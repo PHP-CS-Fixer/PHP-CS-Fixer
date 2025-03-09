@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\FixReport;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  *
  * @readonly
  *
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ReportSummary
 {
