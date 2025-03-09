@@ -212,7 +212,7 @@ final class Runner
                     break;
                 }
 
-                $files[] = $current->getRealPath();
+                $files[] = $current->getPathname();
 
                 $fileIterator->next();
             }
@@ -282,14 +282,11 @@ final class Runner
                 function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
                     if (ParallelAction::WORKER_RESULT === $workerResponse['action']) {
-                        $fileAbsolutePath = $workerResponse['file'];
-                        $fileRelativePath = $this->directory->getRelativePathTo($fileAbsolutePath);
-
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(FileProcessed::NAME, new FileProcessed($workerResponse['status']));
 
                         if (isset($workerResponse['fileHash'])) {
-                            $this->cacheManager->setFileHash($fileRelativePath, $workerResponse['fileHash']);
+                            $this->cacheManager->setFileHash($workerResponse['file'], $workerResponse['fileHash']);
                         }
 
                         foreach ($workerResponse['errors'] ?? [] as $error) {
@@ -306,7 +303,8 @@ final class Runner
 
                         // Pass-back information about applied changes (only if there are any)
                         if (isset($workerResponse['fixInfo'])) {
-                            $changed[$fileRelativePath] = $workerResponse['fixInfo'];
+                            $relativePath = $this->directory->getRelativePathTo($workerResponse['file']);
+                            $changed[$relativePath] = $workerResponse['fixInfo'];
 
                             if ($this->stopOnViolation) {
                                 $processPool->endAll();
@@ -391,8 +389,8 @@ final class Runner
             Tokens::clearCache();
 
             if (null !== $fixInfo) {
-                $name = $this->directory->getRelativePathTo($file->__toString());
-                $changed[$name] = $fixInfo;
+                $relativePath = $this->directory->getRelativePathTo($file->__toString());
+                $changed[$relativePath] = $fixInfo;
 
                 if ($this->stopOnViolation) {
                     break;
@@ -408,7 +406,7 @@ final class Runner
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
-        $name = $file->getPathname();
+        $filePathname = $file->getPathname();
 
         try {
             $lintingResult->check();
@@ -418,7 +416,7 @@ final class Runner
                 new FileProcessed(FileProcessed::STATUS_INVALID)
             );
 
-            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
+            $this->errorsManager->report(new Error(Error::TYPE_INVALID, $filePathname, $e));
 
             return null;
         }
@@ -455,11 +453,11 @@ final class Runner
         } catch (\ParseError $e) {
             $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
-            $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
+            $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e));
 
             return null;
         } catch (\Throwable $e) {
-            $this->processException($name, $e);
+            $this->processException($filePathname, $e);
 
             return null;
         }
@@ -486,15 +484,15 @@ final class Runner
             } catch (LintingException $e) {
                 $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
-                $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
+                $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
 
                 return null;
             }
 
             if (!$this->isDryRun) {
-                $fileName = $file->getRealPath();
+                $fileRealPath = $file->getRealPath();
 
-                if (!file_exists($fileName)) {
+                if (!file_exists($fileRealPath)) {
                     throw new IOException(
                         \sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
                         0,
@@ -503,42 +501,42 @@ final class Runner
                     );
                 }
 
-                if (is_dir($fileName)) {
+                if (is_dir($fileRealPath)) {
                     throw new IOException(
-                        \sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
+                        \sprintf('Cannot write file "%s" as the location exists as directory.', $fileRealPath),
                         0,
                         null,
-                        $fileName
+                        $fileRealPath
                     );
                 }
 
-                if (!is_writable($fileName)) {
+                if (!is_writable($fileRealPath)) {
                     throw new IOException(
-                        \sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
+                        \sprintf('Cannot write to file "%s" as it is not writable.', $fileRealPath),
                         0,
                         null,
-                        $fileName
+                        $fileRealPath
                     );
                 }
 
-                if (false === @file_put_contents($fileName, $new)) {
+                if (false === @file_put_contents($fileRealPath, $new)) {
                     $error = error_get_last();
 
                     throw new IOException(
-                        \sprintf('Failed to write file "%s", "%s".', $fileName, null !== $error ? $error['message'] : 'no reason available'),
+                        \sprintf('Failed to write file "%s", "%s".', $fileRealPath, null !== $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
-                        $fileName
+                        $fileRealPath
                     );
                 }
             }
         }
 
-        $this->cacheManager->setFileHash($name, $newHash);
+        $this->cacheManager->setFileHash($filePathname, $newHash);
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $name, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $filePathname, $newHash)
         );
 
         return $fixInfo;
