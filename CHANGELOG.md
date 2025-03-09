@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.71.0
+---------------------
+
+* feat: OrderedImportsFixer - deprecate length sorting algorithm (#8473)
+* fix: `BinaryOperatorSpacesFixer` - do not break alignment of UTF-8 array keys (#8484)
+* fix: `PhpdocAlignFixer` - align correctly type with UTF8 characters (#8486)
+* fix: `SingleSpaceAroundConstructFixer` - handle alternative syntax (#8317)
+* fix: `StatementIndentationFixer` - return in braceless if (#8479)
+* chore: update type in `SingleSpaceAroundConstructFixerTest::provideFixWithElseIfCases` (#8481)
+* chore: update type in `SingleSpaceAroundConstructFixerTest::provideFixWithIfCases` (#8482)
+* deps: bump phpstan/phpstan from 2.1.6 to 2.1.7 in /dev-tools in the phpstan group (#8485)
+* DX: cleanup `PhpdocNoAliasTagFixerTest` (#8476)
+* refactor: add `FullyQualifiedNameAnalyzer` (#8048)
+* refactor: codeHash - update when it's (re-)generated (#8470)
+* refactor: `SwitchAnalyzer` - improve performance (#8407)
+* test: NameQualifiedTransformerTest - correct test case (#8471)
+
 Changelog for v3.70.2
 ---------------------
 
