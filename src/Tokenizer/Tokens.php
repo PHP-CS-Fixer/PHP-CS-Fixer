@@ -619,7 +619,8 @@ class Tokens extends \SplFixedArray
         if (null === $this->collectionHash) {
             $countThis = \count($this);
 
-            $this->collectionHash = \hash('xxh128',
+            $this->collectionHash = hash(
+                'xxh128',
                 $this->getCodeHash($countThis)
                 .'#'
                 .$countThis
