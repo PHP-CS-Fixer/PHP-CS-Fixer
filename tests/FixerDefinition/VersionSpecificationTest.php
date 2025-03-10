@@ -53,11 +53,11 @@ final class VersionSpecificationTest extends TestCase
     {
         yield 'minimum is negative' => [-1, null];
 
-        yield 'minimum is zero ' => [0, null];
+        yield 'minimum is zero' => [0, null];
 
         yield 'maximum is negative' => [null, -1];
 
-        yield 'maximum is zero ' => [null, 0];
+        yield 'maximum is zero' => [null, 0];
 
         yield 'maximum less than minimum' => [32, 31];
     }
