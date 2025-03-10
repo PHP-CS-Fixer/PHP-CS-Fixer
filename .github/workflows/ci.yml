@@ -122,6 +122,7 @@ jobs:
             job-description: 'code coverage'
             run-tests: 'yes'
             collect-code-coverage: 'yes'
+            FAST_LINT_TEST_CASES: 1
 
           - operating-system: 'ubuntu-24.04'
             php-version: '8.3'
