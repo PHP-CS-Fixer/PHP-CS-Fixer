@@ -18,11 +18,11 @@ use PhpCsFixer\Preg;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  *
  * @readonly
  *
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class DiffConsoleFormatter
 {

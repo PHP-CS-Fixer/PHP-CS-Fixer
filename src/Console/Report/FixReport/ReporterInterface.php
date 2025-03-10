@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\FixReport;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 interface ReporterInterface
 {

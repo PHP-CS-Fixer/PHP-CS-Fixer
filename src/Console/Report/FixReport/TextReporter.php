@@ -17,11 +17,11 @@ namespace PhpCsFixer\Console\Report\FixReport;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
+ * @internal
  *
  * @readonly
  *
- * @internal
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class TextReporter implements ReporterInterface
 {

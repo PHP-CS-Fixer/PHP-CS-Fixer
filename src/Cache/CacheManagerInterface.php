@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Cache;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface CacheManagerInterface
 {

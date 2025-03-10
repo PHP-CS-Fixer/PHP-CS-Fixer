@@ -19,13 +19,13 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @template TFixer of AbstractFixer
  *
  * @extends AbstractFixerTestCase<TFixer>
+ *
+ * @author ntzm
  */
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {

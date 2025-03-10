@@ -51,10 +51,6 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 /**
  * The resolver that resolves configuration to use by command line options and config.
  *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @phpstan-type _Options array{
@@ -73,6 +69,10 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      using-cache: null|string,
  *      verbosity: null|string,
  *  }
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ConfigurationResolver
 {

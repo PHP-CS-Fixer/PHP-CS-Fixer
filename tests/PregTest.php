@@ -18,11 +18,11 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @covers \PhpCsFixer\Preg
  *
  * @internal
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregTest extends TestCase
 {
