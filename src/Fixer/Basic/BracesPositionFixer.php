@@ -346,7 +346,6 @@ $bar = function () { $result = true;
             if (null !== $moveBraceToIndex) {
                 /** @var Token $movedToken */
                 $movedToken = clone $tokens[$openBraceIndex];
-                $tokens->clearAt($openBraceIndex);
 
                 $delta = $openBraceIndex < $moveBraceToIndex ? 1 : -1;
 
