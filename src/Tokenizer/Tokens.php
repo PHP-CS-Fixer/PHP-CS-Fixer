@@ -599,10 +599,10 @@ class Tokens extends \SplFixedArray
     /**
      * Get hash of code.
      */
-    public function getCodeHash(): string
+    public function getCodeHash(int $countThis = 0): string
     {
         if (null === $this->codeHash) {
-            $code = $this->generatePartialCode(0, \count($this) - 1);
+            $code = $this->generatePartialCode(0, $countThis - 1);
             $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
         }
 
@@ -617,10 +617,12 @@ class Tokens extends \SplFixedArray
     public function getCollectionHash(): string
     {
         if (null === $this->collectionHash) {
-            $this->collectionHash = md5(
-                $this->getCodeHash()
+            $countThis = \count($this);
+
+            $this->collectionHash = \hash('xxh128',
+                $this->getCodeHash($countThis)
                 .'#'
-                .\count($this)
+                .$countThis
                 .'#'
                 .implode(
                     '',
