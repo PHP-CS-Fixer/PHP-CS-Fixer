@@ -189,7 +189,7 @@ class Foo
                 if (
                     !$tokens[$operatorIndex]->isGivenKind(T_OBJECT_OPERATOR)
                     || $methodName !== $tokens[$methodNameIndex]->getContent()
-                    || $tokens[$argumentsBraceIndex]->equals('(')
+                    || !$tokens[$argumentsBraceIndex]->equals('(')
                 ) {
                     return true;
                 }
