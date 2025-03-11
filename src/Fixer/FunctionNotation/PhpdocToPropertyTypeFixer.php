@@ -187,27 +187,10 @@ class Foo {
                 [new Token([T_WHITESPACE, ' '])]
             );
 
-            $firstPropertyIndex = current($propertyIndices);
-            $slices = [$firstPropertyIndex => $newTokens];
+            $tokens->insertAt(current($propertyIndices), $newTokens);
 
-            // handling of adding `= null` currently supports only _single_ declaration
-            if ($isNullable && 1 === \count($propertyIndices)) {
-                $nextTokenIndex = $tokens->getNextTokenOfKind($firstPropertyIndex, ['=', ';']);
-                if (null !== $nextTokenIndex && $tokens[$nextTokenIndex]->equals(';')) {
-                    $slices[$nextTokenIndex] = [
-                        new Token([T_WHITESPACE, ' ']),
-                        new Token('='),
-                        new Token([T_WHITESPACE, ' ']),
-                        new Token([T_STRING, 'null']),
-                    ];
-                }
-            }
-
-            $tokens->insertSlices($slices);
-            $tokensInSlicesCount = \count($slices, COUNT_RECURSIVE) - \count($slices);
-
-            $index = max($propertyIndices) + $tokensInSlicesCount + 1;
-            $classEndIndex += $tokensInSlicesCount;
+            $index = max($propertyIndices) + \count($newTokens) + 1;
+            $classEndIndex += \count($newTokens);
         }
     }
 

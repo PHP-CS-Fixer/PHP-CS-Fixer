@@ -152,7 +152,8 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     {
         $expectedTokens = [T_LIST, T_FUNCTION, CT::T_USE_LAMBDA, T_FN, T_CLASS];
 
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+        $tokenCount = $tokens->count();
+        for ($index = 1; $index < $tokenCount; ++$index) {
             $token = $tokens[$index];
 
             if (!$token->equals('(')) {

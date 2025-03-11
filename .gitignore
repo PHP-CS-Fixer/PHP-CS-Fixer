@@ -6,6 +6,7 @@
 /composer.lock
 /dev-tools/bin/
 /dev-tools/infection/
+/dev-tools/php-compatibility/cache.json
 /dev-tools/phpstan/cache/
 /dev-tools/vendor/
 /infection.json5

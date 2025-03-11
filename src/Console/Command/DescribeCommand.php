@@ -61,14 +61,14 @@ final class DescribeCommand extends Command
     /**
      * @var ?list<string>
      */
-    private $setNames;
+    private ?array $setNames = null;
 
     private FixerFactory $fixerFactory;
 
     /**
      * @var null|array<string, FixerInterface>
      */
-    private $fixers;
+    private ?array $fixers = null;
 
     public function __construct(?FixerFactory $fixerFactory = null)
     {

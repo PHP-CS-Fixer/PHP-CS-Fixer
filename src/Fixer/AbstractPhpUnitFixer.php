@@ -18,9 +18,10 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -145,6 +146,34 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         }
     }
 
+    final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
+    {
+        $prevMethodEndIndex = $tokens->getPrevTokenOfKind($index, ['}']);
+        $currentIndex = $index - 1;
+
+        while (true) {
+            $attributeIndex = $tokens->getPrevTokenOfKind($currentIndex, [[T_ATTRIBUTE]]);
+            if (null === $attributeIndex || $attributeIndex <= $prevMethodEndIndex) {
+                break;
+            }
+
+            $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
+            foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+                foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                    $attributeName = strtolower($fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS));
+                    if ('phpunit\framework\attributes\test' === $attributeName) {
+                        return true;
+                    }
+                }
+            }
+
+            $currentIndex = $attributeIndex - 1;
+        }
+
+        return false;
+    }
+
     private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
@@ -189,6 +218,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
+        $tokens->getNamespaceDeclarations();
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
     }
 
@@ -214,39 +244,17 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         }
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         foreach (AttributeAnalyzer::collect($tokens, $index) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                if (\in_array(ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\'), $preventingAttributes, true)) {
+                if (\in_array(strtolower($fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS)), $preventingAttributes, true)) {
                     return true;
                 }
             }
         }
 
         return false;
-    }
-
-    private static function getFullyQualifiedName(Tokens $tokens, string $name): string
-    {
-        $name = strtolower($name);
-
-        $names = [];
-        foreach ((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {
-            $names[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
-        }
-
-        foreach ($names as $shortName => $fullName) {
-            if ($name === $shortName) {
-                return $fullName;
-            }
-
-            if (!str_starts_with($name, $shortName.'\\')) {
-                continue;
-            }
-
-            return $fullName.substr($name, \strlen($shortName));
-        }
-
-        return $name;
     }
 
     /**

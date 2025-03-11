@@ -21,7 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer>
@@ -83,6 +82,25 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $a = mb_str_split($a);',
             '<?php $a = str_split($a);',
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function Bar\strlen;
+                use function mb_strtolower;
+                use function mb_strtoupper;
+                return strlen($x) > 10 ? mb_strtolower($x) : mb_strtoupper($x);
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function Bar\strlen;
+                use function strtolower;
+                use function strtoupper;
+                return strlen($x) > 10 ? strtolower($x) : strtoupper($x);
+                PHP,
         ];
     }
 

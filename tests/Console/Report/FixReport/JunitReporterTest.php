@@ -33,11 +33,9 @@ final class JunitReporterTest extends AbstractReporterTestCase
     /**
      * JUnit XML schema from Jenkins.
      *
-     * @var null|string
-     *
      * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
      */
-    private static $xsd;
+    private static ?string $xsd = null;
 
     public static function setUpBeforeClass(): void
     {

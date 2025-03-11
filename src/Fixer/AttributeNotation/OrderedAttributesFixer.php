@@ -26,11 +26,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -164,12 +162,14 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
             /** @var _AttributeItems $elements */
             $elements = array_map(fn (AttributeAnalysis $attributeAnalysis): array => [
-                'name' => $this->sortAttributes($tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
+                'name' => $this->sortAttributes($fullyQualifiedNameAnalyzer, $tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
                 'start' => $attributeAnalysis->getStartIndex(),
                 'end' => $attributeAnalysis->getEndIndex(),
             ], AttributeAnalyzer::collect($tokens, $index));
@@ -197,14 +197,14 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
     /**
      * @param _AttributeItems $attributes
      */
-    private function sortAttributes(Tokens $tokens, int $index, array $attributes): string
+    private function sortAttributes(FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer, Tokens $tokens, int $index, array $attributes): string
     {
         if (1 === \count($attributes)) {
-            return $this->getAttributeName($tokens, $attributes[0]['name'], $attributes[0]['start']);
+            return $this->getAttributeName($fullyQualifiedNameAnalyzer, $attributes[0]['name'], $attributes[0]['start']);
         }
 
         foreach ($attributes as &$attribute) {
-            $attribute['name'] = $this->getAttributeName($tokens, $attribute['name'], $attribute['start']);
+            $attribute['name'] = $this->getAttributeName($fullyQualifiedNameAnalyzer, $attribute['name'], $attribute['start']);
         }
 
         $sortedElements = $this->sortElements($attributes);
@@ -218,41 +218,13 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
         return $sortedElements[0]['name'];
     }
 
-    private function getAttributeName(Tokens $tokens, string $name, int $index): string
+    private function getAttributeName(FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer, string $name, int $index): string
     {
         if (self::ORDER_CUSTOM === $this->configuration['sort_algorithm']) {
-            $name = $this->determineAttributeFullyQualifiedName($tokens, $name, $index);
+            return $fullyQualifiedNameAnalyzer->getFullyQualifiedName($name, $index, NamespaceUseAnalysis::TYPE_CLASS);
         }
 
         return ltrim($name, '\\');
-    }
-
-    private function determineAttributeFullyQualifiedName(Tokens $tokens, string $name, int $index): string
-    {
-        if ('\\' === $name[0]) {
-            return $name;
-        }
-
-        if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-            $index = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
-        }
-
-        [$namespaceAnalysis, $namespaceUseAnalyses] = $this->collectNamespaceAnalysis($tokens, $index);
-        $namespace = $namespaceAnalysis->getFullName();
-        $firstTokenOfName = $tokens[$index]->getContent();
-        $namespaceUseAnalysis = $namespaceUseAnalyses[$firstTokenOfName] ?? false;
-
-        if ($namespaceUseAnalysis instanceof NamespaceUseAnalysis) {
-            $namespace = $namespaceUseAnalysis->getFullName();
-
-            if ($name === $firstTokenOfName) {
-                return $namespace;
-            }
-
-            $name = substr(strstr($name, '\\'), 1);
-        }
-
-        return $namespace.'\\'.$name;
     }
 
     /**
@@ -272,8 +244,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
             if (self::ORDER_CUSTOM === $sortAlgorithm) {
                 return
                     ($this->configuration['order'][$a['name']] ?? PHP_INT_MAX)
-                    <=>
-                    ($this->configuration['order'][$b['name']] ?? PHP_INT_MAX);
+                    <=> ($this->configuration['order'][$b['name']] ?? PHP_INT_MAX);
             }
 
             throw new \InvalidArgumentException(\sprintf('Invalid sort algorithm "%s" provided.', $sortAlgorithm));
@@ -299,25 +270,5 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
         }
 
         $tokens->overrideRange($startIndex, $endIndex, $replaceTokens);
-    }
-
-    /**
-     * @return array{NamespaceAnalysis, array<string, NamespaceUseAnalysis>}
-     */
-    private function collectNamespaceAnalysis(Tokens $tokens, int $startIndex): array
-    {
-        $namespaceAnalysis = (new NamespacesAnalyzer())->getNamespaceAt($tokens, $startIndex);
-        $namespaceUseAnalyses = (new NamespaceUsesAnalyzer())->getDeclarationsInNamespace($tokens, $namespaceAnalysis);
-
-        $uses = [];
-        foreach ($namespaceUseAnalyses as $use) {
-            if (!$use->isClass()) {
-                continue;
-            }
-
-            $uses[$use->getShortName()] = $use;
-        }
-
-        return [$namespaceAnalysis, $uses];
     }
 }

@@ -523,6 +523,9 @@ final class FixerFactoryTest extends TestCase
                 'no_singleline_whitespace_before_semicolons',
                 'standardize_increment',
             ],
+            'mb_str_functions' => [
+                'native_function_invocation',
+            ],
             'method_argument_space' => [
                 'array_indentation',
                 'statement_indentation',
@@ -724,6 +727,7 @@ final class FixerFactoryTest extends TestCase
             'ordered_class_elements' => [
                 'class_attributes_separation',
                 'no_blank_lines_after_class_opening',
+                'php_unit_data_provider_method_order',
                 'space_after_semicolon',
             ],
             'ordered_imports' => [
@@ -734,12 +738,17 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_attributes' => [
                 'fully_qualified_strict_types',
+                'no_empty_phpdoc',
                 'phpdoc_separation',
                 'phpdoc_trim',
                 'phpdoc_trim_consecutive_blank_line_separation',
             ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
+            ],
+            'php_unit_data_provider_method_order' => [
+                'class_attributes_separation',
+                'no_blank_lines_after_class_opening',
             ],
             'php_unit_data_provider_name' => [
                 'php_unit_attributes',
@@ -770,6 +779,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_expectation',
             ],
             'php_unit_size_class' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'php_unit_test_annotation' => [
@@ -781,6 +791,7 @@ final class FixerFactoryTest extends TestCase
                 'self_static_accessor',
             ],
             'php_unit_test_class_requires_covers' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'phpdoc_add_missing_param_annotation' => [

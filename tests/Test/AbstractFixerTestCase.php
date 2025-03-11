@@ -49,7 +49,6 @@ use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
-use PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
@@ -64,7 +63,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
@@ -100,7 +98,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @template TFixer of AbstractFixer
+ * @template TFixer of FixerInterface
  *
  * @internal
  */
@@ -108,15 +106,12 @@ abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
 
-    /**
-     * @var null|LinterInterface
-     */
-    protected $linter;
+    protected ?LinterInterface $linter = null;
 
     /**
      * @var null|TFixer
      */
-    protected $fixer;
+    protected ?FixerInterface $fixer = null;
 
     /**
      * do not modify this structure without prior discussion.
@@ -134,6 +129,7 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
+        'general_attribute_remove' => true,
         'general_phpdoc_tag_rename' => true,
     ];
 
@@ -503,9 +499,7 @@ abstract class AbstractFixerTestCase extends TestCase
             NoUnneededControlParenthesesFixerTest::class,
             NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
-            OrderedImportsFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
@@ -571,7 +565,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @return TFixer
      */
-    protected function createFixer(): AbstractFixer
+    protected function createFixer(): FixerInterface
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 

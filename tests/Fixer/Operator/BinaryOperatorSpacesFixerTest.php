@@ -578,6 +578,36 @@ $a = $ae?? $b;
             '<?php $a??=1;',
             ['operators' => ['??=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                $array1 = [
+                    '0ｶｷ'   => 1,
+                    '123ｶｷ' => 2,
+                    'ｶｷ'    => 3,
+                    '鍵'    => 4,
+                ];
+                $array2 = [
+                    'あいうえお' => 1,
+                    '10かきくけ' => 2,
+                ];
+                PHP,
+            <<<'PHP'
+                <?php
+                $array1 = [
+                    '0ｶｷ' => 1,
+                    '123ｶｷ' => 2,
+                    'ｶｷ' => 3,
+                    '鍵' => 4,
+                ];
+                $array2 = [
+                    'あいうえお' => 1,
+                    '10かきくけ' => 2,
+                ];
+                PHP,
+            ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE],
+        ];
     }
 
     /**

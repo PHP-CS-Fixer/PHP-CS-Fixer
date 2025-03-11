@@ -55,17 +55,17 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
     /**
      * @var array<int|string, Token>
      */
-    private $candidatesMap;
+    private array $candidatesMap;
 
     /**
      * @var array<int|string, null|bool>
      */
-    private $candidateTypesConfiguration;
+    private array $candidateTypesConfiguration;
 
     /**
      * @var list<int|string>
      */
-    private $candidateTypes;
+    private array $candidateTypes;
 
     public function getDefinition(): FixerDefinitionInterface
     {
