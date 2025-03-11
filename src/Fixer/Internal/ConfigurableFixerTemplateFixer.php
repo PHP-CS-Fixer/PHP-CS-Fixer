@@ -19,6 +19,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
 use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\Casing\ConstantCaseFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalInternalClassFixer;
@@ -27,6 +28,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
@@ -36,6 +38,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -263,7 +266,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                             )
                         )
                         .'}';
-                } elseif ($fixer instanceof HeaderCommentFixer && 'header' === $optionName) {
+                } elseif ($fixer instanceof HeaderCommentFixer && \in_array($optionName, ['header', 'validator'], true)) {
                     // nothing to do
                 } elseif ($fixer instanceof BlankLinesBeforeNamespaceFixer && \in_array($optionName, ['min_line_breaks', 'max_line_breaks'], true)) {
                     // nothing to do
@@ -282,6 +285,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 } elseif ($fixer instanceof FinalInternalClassFixer && \in_array($optionName, ['annotation_include', 'annotation_exclude', 'include', 'exclude'], true)) {
                     $allowedAfterNormalization = 'array<string, string>';
                 } elseif ($fixer instanceof PhpdocTagTypeFixer && 'tags' === $optionName) {
+                    // nothing to do
+                } elseif ($fixer instanceof OrderedImportsFixer && 'sort_algorithm' === $optionName) {
                     // nothing to do
                 } else {
                     throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s"? Explicit instructions needed!', $fixer->getName(), $optionName));
@@ -309,12 +314,10 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             if ('array' === $allowed) {
                 $default = $option->getDefault();
-                $getTypes = static function ($values): array {
-                    return array_unique(array_map(
-                        static fn ($val) => \gettype($val),
-                        $values
-                    ));
-                };
+                $getTypes = static fn ($values): array => array_unique(array_map(
+                    static fn ($val) => \gettype($val),
+                    $values
+                ));
                 $defaultKeyTypes = $getTypes(array_keys($default));
                 $defaultValueTypes = $getTypes(array_values($default));
                 $allowed = \sprintf(
@@ -525,7 +528,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 }
             };
         } elseif (AbstractDoctrineAnnotationFixer::class === $className) {
-            return new class extends AbstractPhpdocToTypeDeclarationFixer {
+            return new class extends AbstractDoctrineAnnotationFixer {
                 protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');
@@ -549,6 +552,21 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 public function isCandidate(Tokens $tokens): bool
                 {
                     throw new \LogicException('Not implemented.');
+                }
+
+                public function configure(array $configuration): void
+                {
+                    // void
+                }
+
+                protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens): void
+                {
+                    throw new \LogicException('Not implemented.');
+                }
+
+                public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+                {
+                    return $this->createConfigurationDefinition();
                 }
             };
         }

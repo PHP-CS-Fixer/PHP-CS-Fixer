@@ -53,7 +53,7 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
             'Empty loop-condition must be in configured style.',
             [
                 new CodeSample("<?php\nfor(;;) {\n    foo();\n}\n\ndo {\n    foo();\n} while(true); // do while\n"),
-                new CodeSample("<?php\nwhile(true) {\n    foo();\n}\n", ['style' => 'for']),
+                new CodeSample("<?php\nwhile(true) {\n    foo();\n}\n", ['style' => self::STYLE_FOR]),
             ]
         );
     }

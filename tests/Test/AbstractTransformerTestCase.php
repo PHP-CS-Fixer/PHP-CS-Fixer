@@ -30,10 +30,7 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    /**
-     * @var null|TransformerInterface
-     */
-    protected $transformer;
+    protected ?TransformerInterface $transformer = null;
 
     protected function setUp(): void
     {

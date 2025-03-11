@@ -152,17 +152,29 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'PHP'
+                <?php
+                    foo(fn () =>
+                            1);
+                PHP,
+            <<<'PHP'
                 <?php
                     foo(function () {
                         return
                             1;
                     });
-                EXPECTED,
+                PHP,
         ];
 
         yield [
-            <<<'EXPECTED'
+            <<<'PHP'
+                <?php
+                    $func = fn (
+                        $a,
+                        $b
+                    ) => 1;
+                PHP,
+            <<<'PHP'
                 <?php
                     $func = function (
                         $a,
@@ -170,7 +182,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     ) {
                         return 1;
                     };
-                EXPECTED,
+                PHP,
         ];
 
         yield [
@@ -197,6 +209,23 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $testDummy = fn () => null/* foo */;',
             '<?php $testDummy = function () { return/* foo */; };',
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php return fn () => [
+                        CONST_A,
+                        CONST_B,
+                    ];
+                PHP,
+            <<<'PHP'
+                <?php return function () {
+                    return [
+                        CONST_A,
+                        CONST_B,
+                    ];
+                };
+                PHP,
         ];
     }
 }
