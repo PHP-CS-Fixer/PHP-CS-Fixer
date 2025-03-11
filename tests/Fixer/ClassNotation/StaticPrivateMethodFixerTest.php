@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\StaticPrivateMethodFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\StaticPrivateMethodFixer>
  */
 final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
 {
@@ -313,27 +315,8 @@ class Foo
 }
 ',
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     *
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<string, array{0: string, 1?: null|string}>
-     */
-    public static function provideFix70Cases(): iterable
-    {
-        yield 'main-use-case' => [
+        yield 'main-use-case-with-anonymous-class' => [
             '<?php
 class Foo
 {
@@ -390,7 +373,7 @@ class Foo
 ',
         ];
 
-        yield 'handle-multiple-classes' => [
+        yield 'handle-multiple-classes-with-anonymous-class' => [
             '<?php
 abstract class Foo
 {
@@ -441,7 +424,7 @@ abstract class Bar
 ',
         ];
 
-        yield 'fix-references-inside-non-static-closures' => [
+        yield 'fix-references-inside-non-static-closures-with-anonymous-class' => [
             '<?php
 class Foo
 {
@@ -523,10 +506,10 @@ class Foo
         $usage = '';
         $signature = '';
         for ($inc = 0; $inc < 50; ++$inc) {
-            $usage .= sprintf('$var = %sbar%02s();%s', $fixed ? 'self::' : '$this->', $inc, PHP_EOL);
-            $signature .= sprintf('private %sfunction bar%02s() {}%s', $fixed ? 'static ' : '', $inc, PHP_EOL);
+            $usage .= \sprintf('$var = %sbar%02s();%s', $fixed ? 'self::' : '$this->', $inc, PHP_EOL);
+            $signature .= \sprintf('private %sfunction bar%02s() {}%s', $fixed ? 'static ' : '', $inc, PHP_EOL);
         }
 
-        return sprintf($template, $usage, $signature);
+        return \sprintf($template, $usage, $signature);
     }
 }
