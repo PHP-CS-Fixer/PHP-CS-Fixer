@@ -18,9 +18,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class BlocksAnalyzer
 {

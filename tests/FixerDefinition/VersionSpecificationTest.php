@@ -18,9 +18,9 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @author Andreas Möller <am@localheinz.com>
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
  */

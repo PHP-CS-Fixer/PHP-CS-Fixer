@@ -17,9 +17,9 @@ namespace PhpCsFixer\Linter;
 /**
  * Exception that is thrown when the chosen linter is not available on the environment.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @final
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @TODO 4.0 make class "final"
  */

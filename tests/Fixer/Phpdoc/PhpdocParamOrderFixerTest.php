@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Jonathan Gruber <gruberjonathan@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer>
+ *
+ * @author Jonathan Gruber <gruberjonathan@gmail.com>
  */
 final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
 {

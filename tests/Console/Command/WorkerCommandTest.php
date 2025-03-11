@@ -38,9 +38,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
+ *
+ * @author Greg Korba <greg@codito.dev>
  *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
  */

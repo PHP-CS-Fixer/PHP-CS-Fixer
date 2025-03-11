@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class TypeAnalysis implements StartEndTokenAwareAnalysis
 {
@@ -26,10 +26,10 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      *
      * More info:
      *
+     * @var list<string>
+     *
      * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
      * @see https://php.net/manual/en/reserved.other-reserved-words.php
-     *
-     * @var list<string>
      */
     private const RESERVED_TYPES = [
         'array',

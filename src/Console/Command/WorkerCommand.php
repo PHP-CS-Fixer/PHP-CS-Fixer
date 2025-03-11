@@ -39,9 +39,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 #[AsCommand(name: 'worker', description: 'Internal command for running fixers in parallel', hidden: true)]
 final class WorkerCommand extends Command

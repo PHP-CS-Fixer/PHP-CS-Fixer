@@ -18,9 +18,9 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @covers \PhpCsFixer\DocBlock\DocBlock
  */

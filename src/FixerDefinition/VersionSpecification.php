@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerDefinition;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @readonly
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class VersionSpecification implements VersionSpecificationInterface
 {

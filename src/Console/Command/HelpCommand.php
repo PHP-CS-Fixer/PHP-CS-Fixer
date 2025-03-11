@@ -24,10 +24,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @internal
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
  */
 #[AsCommand(name: 'help')]
 final class HelpCommand extends BaseHelpCommand
