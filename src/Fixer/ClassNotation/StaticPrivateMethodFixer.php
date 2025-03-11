@@ -244,7 +244,7 @@ class Foo
     }
 
     /**
-     * @return array<array{int, int, int}>
+     * @return list<array{int, int, int}>
      */
     private function getClassMethods(Tokens $tokens, int $classOpen, int $classClose): array
     {
