@@ -30,14 +30,10 @@ final class StaticPrivateMethodFixer extends AbstractFixer
     /**
      * @var array<string, true>
      */
-    private array $magicNames = [
+    private const MAGIC_METHODS = [
         '__clone' => true,
         '__construct' => true,
         '__destruct' => true,
-        '__serialize' => true,
-        '__set_state' => true,
-        '__sleep' => true,
-        '__unserialize' => true,
         '__wakeup' => true,
     ];
 
@@ -141,7 +137,7 @@ class Foo
     {
         $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
         $methodName = strtolower($tokens[$methodNameIndex]->getContent());
-        if (isset($this->magicNames[$methodName])) {
+        if (isset(self::MAGIC_METHODS[$methodName])) {
             return true;
         }
 

@@ -248,10 +248,6 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                     private function __clone() {}
                     private function __construct() {}
                     private function __destruct() {}
-                    private function __serialize() {}
-                    private function __set_state() {}
-                    private function __sleep() {}
-                    private function __unserialize() {}
                     private function __wakeup() {}
                 }
                 PHP,
