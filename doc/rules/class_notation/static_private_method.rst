@@ -38,7 +38,10 @@ Example #1
             return 1;
         }
     }
-Source class
-------------
+References
+----------
 
-`PhpCsFixer\\Fixer\\ClassNotation\\StaticPrivateMethodFixer <./../../../src/Fixer/ClassNotation/StaticPrivateMethodFixer.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\StaticPrivateMethodFixer <./../../../src/Fixer/ClassNotation/StaticPrivateMethodFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\StaticPrivateMethodFixerTest <./../../../tests/Fixer/ClassNotation/StaticPrivateMethodFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
