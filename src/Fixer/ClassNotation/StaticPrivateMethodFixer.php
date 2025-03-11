@@ -260,7 +260,7 @@ class Foo
      * @param int $classOpen
      * @param int $classClose
      *
-     * @return array<array<int>>
+     * @return array<array{int, int, int}>
      */
     private function getClassMethods(Tokens $tokens, $classOpen, $classClose)
     {
