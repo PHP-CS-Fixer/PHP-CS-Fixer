@@ -28,12 +28,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -486,12 +483,7 @@ class Foo
         ];
     }
 
-    /**
-     * @param bool $fixed
-     *
-     * @return string
-     */
-    private static function generate50Samples($fixed)
+    private static function generate50Samples(bool $fixed): string
     {
         $template = '<?php
 class Foo

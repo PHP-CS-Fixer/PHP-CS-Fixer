@@ -30,7 +30,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
     /**
      * @var array<string, true>
      */
-    private $magicNames = [
+    private array $magicNames = [
         '__clone' => true,
         '__construct' => true,
         '__destruct' => true,
@@ -108,11 +108,7 @@ class Foo
         }
     }
 
-    /**
-     * @param int $classOpen
-     * @param int $classClose
-     */
-    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $classOpen, $classClose): void
+    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $classOpen, int $classClose): void
     {
         $fixedMethods = [];
         foreach ($this->getClassMethods($tokens, $classOpen, $classClose) as $methodData) {
@@ -141,14 +137,7 @@ class Foo
         }
     }
 
-    /**
-     * @param int $functionKeywordIndex
-     * @param int $methodOpen
-     * @param int $methodClose
-     *
-     * @return bool
-     */
-    private function skipMethod(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $functionKeywordIndex, $methodOpen, $methodClose)
+    private function skipMethod(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $functionKeywordIndex, int $methodOpen, int $methodClose): bool
     {
         $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
         $methodName = strtolower($tokens[$methodNameIndex]->getContent());
@@ -204,11 +193,9 @@ class Foo
     }
 
     /**
-     * @param int                 $methodOpen
-     * @param int                 $methodClose
      * @param array<string, bool> $fixedMethods
      */
-    private function fixReferencesInFunction(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $methodOpen, $methodClose, array $fixedMethods): void
+    private function fixReferencesInFunction(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $methodOpen, int $methodClose, array $fixedMethods): void
     {
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
             if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
@@ -257,12 +244,9 @@ class Foo
     }
 
     /**
-     * @param int $classOpen
-     * @param int $classClose
-     *
      * @return array<array{int, int, int}>
      */
-    private function getClassMethods(Tokens $tokens, $classOpen, $classClose)
+    private function getClassMethods(Tokens $tokens, int $classOpen, int $classClose): array
     {
         $methods = [];
         for ($index = $classClose - 1; $index > $classOpen + 1; --$index) {
