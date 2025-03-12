@@ -33,6 +33,6 @@ final class CodeHasher
      */
     public static function calculateCodeHash(string $code): string
     {
-        return md5($code);
+        return hash('xxh128', $code);
     }
 }
