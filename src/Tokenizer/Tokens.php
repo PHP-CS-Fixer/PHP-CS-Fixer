@@ -1451,8 +1451,6 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Calculate hash for code.
-     *
      * @return non-empty-string
      */
     private static function calculateHash(string $code): string
