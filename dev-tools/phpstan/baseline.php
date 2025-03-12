@@ -2092,7 +2092,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset \'file\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
