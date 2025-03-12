@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Hasher;
 
 /**
