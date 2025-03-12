@@ -19,7 +19,7 @@ namespace PhpCsFixer\Tokenizer;
  *
  * @internal
  */
-final class CodeHasher
+final class Hasher
 {
     private function __construct()
     {
@@ -27,11 +27,9 @@ final class CodeHasher
     }
 
     /**
-     * Calculate hash for code.
-     *
      * @return non-empty-string
      */
-    public static function calculateCodeHash(string $code): string
+    public static function calculate(string $code): string
     {
         return md5($code);
     }
