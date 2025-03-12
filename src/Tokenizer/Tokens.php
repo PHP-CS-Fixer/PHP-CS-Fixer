@@ -618,7 +618,7 @@ class Tokens extends \SplFixedArray
     public function getCollectionHash(): string
     {
         if (null === $this->collectionHash) {
-            $this->collectionHash = md5(
+            $this->collectionHash = self::calculateHash(
                 $this->getCodeHash()
                 .'#'
                 .\count($this)
