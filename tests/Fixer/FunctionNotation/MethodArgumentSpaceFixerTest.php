@@ -1307,6 +1307,163 @@ function foo($foo, #[
     Foo\Buzz(a: \'astral\', b: 1234),
 ] $bar) {}',
         ];
+
+        yield 'multiline after unfitting declaration with no indentation' => [
+            '<?php
+function foo(
+    $foo,
+    $bar
+) {}',
+            '<?php
+function foo($foo,  $bar) {}',
+            [
+                'multiline_after' => 2,
+            ],
+        ];
+
+        yield 'multiline after unfitting call with no indentation' => [
+            '<?php
+foo(
+    $foo,
+    $bar
+);',
+            '<?php
+foo($foo, $bar);',
+            [
+                'multiline_after' => 11,
+            ],
+        ];
+
+        yield 'multiline after keeps variables on the same line as their types' => [
+            '<?php
+function foo(
+    AFooIsAFoo $foo,
+    ABarIsABar $bar
+){}',
+            '<?php
+function foo(AFooIsAFoo $foo, ABarIsABar $bar){}',
+            [
+                'multiline_after' => 18,
+            ],
+        ];
+
+        yield 'multiline after unfitting nested call with no indentation' => [
+            '<?php
+foo(
+    bar(
+        $foo,
+        $bar
+    )
+);',
+            '<?php
+foo(bar($foo, $bar));',
+            [
+                'multiline_after' => 2,
+            ],
+        ];
+
+        yield 'multiline after unfitting declaration with indentation' => [
+            '<?php
+class A {
+    public function foo(
+        $foo,
+        $bar
+    ) {}
+}',
+            '<?php
+class A {
+    public function foo($foo, $bar) {}
+}',
+            [
+                'multiline_after' => 33,
+            ],
+        ];
+
+        yield 'multiline after unfitting call with indentation' => [
+            '<?php
+class A {
+    public function foo(
+        $foo,
+        $bar
+    ) {
+        if ($foo) {
+            if ($bar) {
+                $this->foo(
+                    $foo,
+                    $bar
+                );
+            }
+        }
+    }
+}',
+            '<?php
+class A {
+    public function foo($foo, $bar) {
+        if ($foo) {
+            if ($bar) {
+                $this->foo($foo, $bar);
+            }
+        }
+    }
+}',
+            [
+                'multiline_after' => 30,
+            ],
+        ];
+
+        yield 'multiline after unfitting nested call with indentation' => [
+            '<?php
+class A {
+    public function foo($a, $b) {
+        if ($a) {
+            if ($b) {
+                $this->bar(
+                    $this->foo(
+                        $a,
+                        $b
+                    )
+                );
+            }
+        }
+    }
+}',
+            '<?php
+class A {
+    public function foo($a, $b) {
+        if ($a) {
+            if ($b) {
+                $this->bar($this->foo($a, $b));
+            }
+        }
+    }
+}',
+            [
+                'multiline_after' => 36,
+            ],
+        ];
+
+        yield 'multiline after fitting declaration' => [
+            '<?php
+function foo($foo, $bar) {}',
+            '<?php
+function foo($foo,  $bar) {}',
+            [
+                'multiline_after' => 200,
+            ],
+        ];
+
+        yield 'multiline after with stupid-long unbreakable words' => [
+            '<?php
+function f(
+    GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $x,
+    GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $y
+) {}',
+            '<?php
+function f(GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $x, GoogleCloudDiscoveryengineV1betaAnswerQueryRequestSearchSpecSearchResultListSearchResultUnstructuredDocumentInfoExtractiveSegment $y) {}',
+            [
+                'multiline_after' => 200,
+            ],
+        ];
     }
 
     /**

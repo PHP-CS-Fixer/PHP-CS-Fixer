@@ -43,6 +43,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``multiline_after``
+~~~~~~~~~~~~~~~~~~~
+
+Force multiline if the line exceeds the given number of characters.
+
+Allowed types: ``int``
+
+Default value: ``0``
+
 ``on_multiline``
 ~~~~~~~~~~~~~~~~
 
@@ -281,6 +290,23 @@ With configuration: ``['after_heredoc' => true]``.
    +        EOD,
         'bar'
     );
+
+Example #12
+~~~~~~~~~~~
+
+With configuration: ``['multiline_after' => 20]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample($a=10,$b=20,$c=30) {}
+   +function sample(
+   +    $a=10,
+   +    $b=20,
+   +    $c=30
+   +) {}
 
 Rule sets
 ---------
