@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.72.0
+---------------------
+
+* feat: `StatementIndentationFixer` - handle property hooks (#8492)
+* fix: `MbStrFunctionsFixer` - fix imports (#8474)
+* fix: `TrailingCommaInMultilineFixer` - handle empty match body (#8480)
+* fix: `VisibilityRequiredFixer` - handle property hooks (#8495)
+* deps: upgrade few dev-deps (#8490)
+* deps: Upgrade PHPStan to 2.1.8 (#8489)
+* DX: add trailing comma to multiline auto-generated types (#8499)
+* refactor: generalize CodeHasher into Hasher (#8500)
+* refactor: Runner - unify paths used when using parallel runner (#8488)
+* refactor: use Hasher instead of md5 directly (#8501)
+
 Changelog for v3.71.0
 ---------------------
 
