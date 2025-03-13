@@ -19,6 +19,7 @@ use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Config;
+use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
@@ -73,7 +74,7 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $file = 'test.php';
-        $hash = md5('hello');
+        $hash = Hasher::calculate('hello');
 
         $cache->set($file, $hash);
 
@@ -88,7 +89,7 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $file = 'test.php';
-        $hash = md5('hello');
+        $hash = Hasher::calculate('hello');
 
         $cache->set($file, $hash);
         $cache->clear($file);
@@ -148,7 +149,7 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $file = 'test.php';
-        $hash = md5('hello');
+        $hash = Hasher::calculate('hello');
 
         $cache->set($file, $hash);
         $cached = Cache::fromJson($cache->toJson());
