@@ -321,7 +321,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         do {
             $prevWhitespaceTokenIndex = $tokens->getPrevTokenOfKind(
                 $searchIndex,
-                [[T_ENCAPSED_AND_WHITESPACE], [T_WHITESPACE]],
+                [[T_ENCAPSED_AND_WHITESPACE], [T_INLINE_HTML], [T_WHITESPACE]],
             );
 
             $searchIndex = $prevWhitespaceTokenIndex;
