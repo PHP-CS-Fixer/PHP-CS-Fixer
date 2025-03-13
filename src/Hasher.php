@@ -31,6 +31,8 @@ final class Hasher
      */
     public static function calculate(string $code): string
     {
-        return md5($code);
+        return \PHP_VERSION_ID >= 8_01_00
+            ? hash('xxh128', $code)
+            : md5($code);
     }
 }
