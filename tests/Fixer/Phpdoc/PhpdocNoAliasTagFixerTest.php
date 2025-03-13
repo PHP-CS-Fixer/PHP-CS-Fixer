@@ -289,5 +289,34 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
                 'link' => 'see',
             ]],
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                /**
+                 * @see example.com
+                 * @var foo
+                 *
+                 * @phpstan-type MyArray array{
+                 *  '@link': ?string,
+                 *  "@type": string,
+                 * }
+                 */
+                class Foo {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @link example.com
+                 * @type foo
+                 *
+                 * @phpstan-type MyArray array{
+                 *  '@link': ?string,
+                 *  "@type": string,
+                 * }
+                 */
+                class Foo {}
+                PHP,
+        ];
     }
 }
