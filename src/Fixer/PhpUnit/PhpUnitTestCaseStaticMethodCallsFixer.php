@@ -484,7 +484,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     PhpUnitTargetVersion::VERSION_11_0,
                     PhpUnitTargetVersion::VERSION_NEWEST,
                 ])
-                ->setDefault(PhpUnitTargetVersion::VERSION_10_0)
+                ->setDefault(PhpUnitTargetVersion::VERSION_10_0) // @TODO change to "VERSION_NEWEST" on next major 4.0
                 ->getOption(),
         ]);
     }
