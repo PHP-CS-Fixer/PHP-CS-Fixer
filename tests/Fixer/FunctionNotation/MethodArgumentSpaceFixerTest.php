@@ -1064,6 +1064,16 @@ foo(
                 TEXT;
             }
             PHP];
+
+        yield 'misc/method_argument_space' => [<<<'PHP'
+            <div>
+                <?php echo in_array(
+                    24,
+                    $elements
+                ) ? 'yes' : 'no';
+                ?>
+            </div>
+            PHP];
     }
 
     /**
