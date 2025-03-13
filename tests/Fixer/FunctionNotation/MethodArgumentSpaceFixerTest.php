@@ -1065,7 +1065,7 @@ foo(
             }
             PHP];
 
-        yield 'misc/method_argument_space' => [<<<'PHP'
+        yield [<<<'PHP'
             <div>
                 <?php echo in_array(
                     24,

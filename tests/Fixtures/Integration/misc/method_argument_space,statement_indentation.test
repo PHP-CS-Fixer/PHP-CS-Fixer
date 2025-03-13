@@ -6,7 +6,7 @@ Integration of fixers: method_argument_space,statement_indentation.
 <div>
     <?php echo in_array(
         (int)
-            $needle,
+        $needle,
         $haystack
     ) ? 'yes' : 'no';
     ?>
