@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @internal
  *
+ * @phpstan-import-type _ClassyElementType from \PhpCsFixer\Tokenizer\TokensAnalyzer
+ *
  * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
  */
 final class TokensAnalyzerTest extends TestCase
@@ -710,6 +712,42 @@ enum Foo: string
                 {
                     const BAR = 0;
                     final const BAZ = 1;
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
+     * @dataProvider provideGetClassyElements84Cases
+     *
+     * @requires PHP >= 8.4
+     */
+    public function testGetClassyElements84(array $expected, string $source): void
+    {
+        $this->testGetClassyElements($expected, $source);
+    }
+
+    /**
+     * @return iterable<array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     */
+    public static function provideGetClassyElements84Cases(): iterable
+    {
+        yield 'property hooks' => [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+            ],
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected int $bar {
+                        set => $this->bar = $value;
+                    }
                 }
                 PHP,
         ];
