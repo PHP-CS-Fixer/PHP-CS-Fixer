@@ -362,13 +362,21 @@ $bar = function () { $result = true;
                     }
                 }
 
-                for (; $openBraceIndex !== $moveBraceToIndex; $openBraceIndex += $delta) {
+                for ($i = $openBraceIndex; $i !== $moveBraceToIndex; $i += $delta) {
                     /** @var Token $siblingToken */
-                    $siblingToken = $tokens[$openBraceIndex + $delta];
-                    $tokens[$openBraceIndex] = $siblingToken;
+                    $siblingToken = $tokens[$i + $delta];
+                    $tokens[$i] = $siblingToken;
                 }
 
-                $tokens[$openBraceIndex] = $movedToken;
+                $tokens[$i] = $movedToken;
+
+                if ($tokens[$openBraceIndex]->isWhitespace() && $tokens[$openBraceIndex + 1]->isWhitespace()) {
+                    $tokens[$openBraceIndex] = new Token([
+                        T_WHITESPACE,
+                        $tokens[$openBraceIndex]->getContent().$tokens[$openBraceIndex + 1]->getContent(),
+                    ]);
+                    $tokens->clearAt($openBraceIndex + 1);
+                }
 
                 $openBraceIndex = $moveBraceToIndex;
             }
