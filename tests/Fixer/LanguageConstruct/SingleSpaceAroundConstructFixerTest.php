@@ -1218,7 +1218,7 @@ $foo;',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixWithElseIfCases(): iterable
     {
@@ -1242,6 +1242,28 @@ $foo;',
         yield [
             '<?php if (true) {} elseif /* foo */(false) {}',
             '<?php if (true) {} elseif/* foo */(false) {}',
+        ];
+
+        yield [
+            '<?php if (true): elseif (false): endif;',
+            '<?php if (true): elseif(false): endif;',
+        ];
+
+        yield [
+            '<?php if (true): elseif (false): endif;',
+            '<?php if (true): elseif  (false): endif;',
+        ];
+
+        yield [
+            '<?php if (true): elseif (false): endif;',
+            '<?php if (true): elseif
+
+(false): endif;',
+        ];
+
+        yield [
+            '<?php if (true): elseif /* foo */(false): endif;',
+            '<?php if (true): elseif/* foo */(false): endif;',
         ];
     }
 
@@ -1885,7 +1907,7 @@ foo; foo: echo "Bar";',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixWithIfCases(): iterable
     {
@@ -1909,6 +1931,32 @@ foo; foo: echo "Bar";',
         yield [
             '<?php if /* foo */($foo === $bar) {}',
             '<?php if/* foo */($foo === $bar) {}',
+        ];
+
+        yield [
+            '<?php if ($foo === $bar): endif;',
+            '<?php if($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if ($foo === $bar): endif;',
+            '<?php if  ($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if ($foo === $bar): endif;',
+            '<?php if
+
+($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if /* foo */($foo === $bar): endif;',
+            '<?php if/* foo */($foo === $bar): endif;',
+        ];
+
+        yield [
+            '<?php if (true): else: endif;',
         ];
     }
 
