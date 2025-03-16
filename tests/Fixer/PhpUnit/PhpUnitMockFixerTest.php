@@ -154,7 +154,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP >= 8.0
+     * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases
      */
