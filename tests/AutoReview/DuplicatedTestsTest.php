@@ -25,7 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  * @group auto-review
  * @group covers-nothing
  */
-final class DuplicatesTestsTest extends TestCase
+final class DuplicatedTestsTest extends TestCase
 {
     /**
      * @dataProvider \PhpCsFixer\Tests\AutoReview\ProjectCodeTest::provideTestClassCases
@@ -134,7 +134,6 @@ final class DuplicatesTestsTest extends TestCase
             $methodsForDuplicateCheck = array_filter(
                 $class->getMethods(\ReflectionMethod::IS_PUBLIC),
                 static fn (\ReflectionMethod $method) => str_starts_with($method->getName(), 'test')
-                && 0 !== $method->getNumberOfParameters()
                 && $method->getDeclaringClass()->getName() === $className
                 /*
                  * Why 4?
