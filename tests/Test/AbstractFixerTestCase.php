@@ -86,7 +86,6 @@ use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest;
@@ -494,7 +493,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoClosingTagFixerTest::class,
             NoEmptyCommentFixerTest::class,
             NoEmptyStatementFixerTest::class,
-            NoExtraBlankLinesFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
             NoUselessConcatOperatorFixerTest::class,
@@ -526,7 +524,7 @@ abstract class AbstractFixerTestCase extends TestCase
             YodaStyleFixerTest::class,
         ];
 
-        $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
+        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
