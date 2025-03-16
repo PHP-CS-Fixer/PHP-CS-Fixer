@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -64,6 +65,47 @@ final class DuplicatesTestsTest extends TestCase
             if (!$foundInDuplicates) {
                 $alreadyFoundMethods[$method->getName()] = $candidateContent;
             }
+        }
+
+        self::assertSame(
+            [],
+            $duplicates,
+            \sprintf(
+                "Duplicated methods found in %s:\n - %s",
+                $className,
+                implode("\n - ", $duplicates)
+            )
+        );
+    }
+
+    /**
+     * @dataProvider \PhpCsFixer\Tests\AutoReview\ProjectCodeTest::provideTestClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThatTestMethodsAreNotDuplicatedBasedOnName(string $className): void
+    {
+        $alreadyFoundMethods = [];
+        $duplicates = [];
+        foreach (self::getMethodsForDuplicateCheck($className) as $method) {
+            foreach ($alreadyFoundMethods as $alreadyFoundMethod) {
+                if (!str_starts_with($method->getName(), $alreadyFoundMethod)) {
+                    continue;
+                }
+
+                $suffix = substr($method->getName(), \strlen($alreadyFoundMethod));
+
+                if (!Preg::match('/^\d{2,}/', $suffix)) {
+                    continue;
+                }
+
+                $duplicates[] = \sprintf(
+                    'Method "%s" must be shorter, call "%s".',
+                    $method->getName(),
+                    $alreadyFoundMethod
+                );
+            }
+            $alreadyFoundMethods[] = $method->getName();
         }
 
         self::assertSame(
