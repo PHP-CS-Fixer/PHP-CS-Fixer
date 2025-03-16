@@ -171,26 +171,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess80(string $source, array $expectedTokens = []): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_CURLY_OPEN,
-                CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
-                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
-                CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-                CT::T_DYNAMIC_VAR_BRACE_OPEN,
-                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                CT::T_GROUP_IMPORT_BRACE_OPEN,
-                CT::T_GROUP_IMPORT_BRACE_CLOSE,
-                CT::T_PROPERTY_HOOK_BRACE_OPEN,
-                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
     public static function provideProcess80Cases(): iterable
