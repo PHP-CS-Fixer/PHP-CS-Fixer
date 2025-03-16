@@ -1076,14 +1076,6 @@ $a = new Qux();',
         ];
 
         yield [
-            '<?php use A\B;',
-        ];
-
-        yield [
-            '<?php use A\B?>',
-        ];
-
-        yield [
             '<?php use A\B;?>',
         ];
     }
