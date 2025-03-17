@@ -577,7 +577,22 @@ final class ConfigurationResolver
     private function resolveFormat(): string
     {
         if (null === $this->format) {
-            $this->format = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $parts = explode(',', $formatCandidate);
+
+            if (\count($parts) > 2) {
+                throw new InvalidConfigurationException(\sprintf('The format "%s" is invalid.', $formatCandidate));
+            }
+
+            $this->format = $parts[0];
+
+            if ('@auto' === $this->format) {
+                $this->format = $parts[1] ?? 'txt';
+
+                if (getenv('GITLAB_CI')) {
+                    $this->format = 'gitlab';
+                }
+            }
         }
 
         return $this->format;
