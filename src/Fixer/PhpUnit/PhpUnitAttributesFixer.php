@@ -366,12 +366,20 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                     ...self::toClassConstant($class),
                     new Token(','),
                     new Token([T_WHITESPACE, ' ']),
-                    self::createEscapedStringToken($method),
+                    self::fixNameAndCreateEscapedStringToken($method),
                 ],
             );
         }
 
-        return self::createAttributeTokens($tokens, $index, 'DataProvider', self::createEscapedStringToken($matches[1]));
+        return self::createAttributeTokens($tokens, $index, 'DataProvider', self::fixNameAndCreateEscapedStringToken($matches[1]));
+    }
+
+    /**
+     * @see https://github.com/sebastianbergmann/phpunit/blob/11.5.12/src/Metadata/Parser/AnnotationParser.php#L266
+     */
+    private static function fixNameAndCreateEscapedStringToken(string $methodName): Token
+    {
+        return self::createEscapedStringToken(rtrim($methodName, " ()\n\r\t\v\x00"));
     }
 
     /**

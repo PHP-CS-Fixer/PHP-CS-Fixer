@@ -706,8 +706,8 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 class TheTest extends \PHPUnit\Framework\TestCase {
                     /**
                      */
-                    #[\PHPUnit\Framework\Attributes\DataProvider('provideFooCases()')]
-                    #[\PHPUnit\Framework\Attributes\DataProviderExternal(AnotherTest::class, 'provideBarCases()')]
+                    #[\PHPUnit\Framework\Attributes\DataProvider('provideFooCases')]
+                    #[\PHPUnit\Framework\Attributes\DataProviderExternal(AnotherTest::class, 'provideBarCases')]
                     public function testFoo($x) { self::assertTrue($x); }
                     public static function provideFooCases() { yield [true]; }
                 }
