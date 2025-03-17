@@ -59,6 +59,17 @@ final class WarningsDetector
         }
     }
 
+    public function detectNonMonolithic(): void
+    {
+        if (filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), FILTER_VALIDATE_BOOL)) {
+            $this->warnings[] = \sprintf(
+                'Touching non-monolithic files because `PHP_CS_FIXER_NON_MONOLITHIC` is set. Execution may be unstable.',
+                ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME,
+                ToolInfo::COMPOSER_PACKAGE_NAME
+            );
+        }
+    }
+
     /**
      * @return list<string>
      */
