@@ -388,7 +388,7 @@ final class ConfigurationResolver
     public function getProgressType(): string
     {
         if (null === $this->progress) {
-            if ('txt' === $this->getFormat()) {
+            if ('txt' === $this->resolveFormat()) {
                 $progressType = $this->options['show-progress'];
 
                 if (null === $progressType) {
@@ -418,7 +418,7 @@ final class ConfigurationResolver
             $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
-            $format = $this->getFormat();
+            $format = $this->resolveFormat();
 
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
@@ -574,7 +574,7 @@ final class ConfigurationResolver
         return $this->fixerFactory;
     }
 
-    private function getFormat(): string
+    private function resolveFormat(): string
     {
         if (null === $this->format) {
             $this->format = $this->options['format'] ?? $this->getConfig()->getFormat();
