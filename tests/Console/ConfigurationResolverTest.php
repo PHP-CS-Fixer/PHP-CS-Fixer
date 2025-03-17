@@ -1406,11 +1406,14 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @dataProvider provideXXXGetReporterCases
+     * @param class-string         $expectedFormat
+     * @param array<string,string> $envs
+     *
+     * @dataProvider provideGetReporterCases
      *
      * @runInSeparateProcess
      */
-    public function testXXXGetReporter(string $expectedFormat, string $formatConfig, array $envs = []): void
+    public function testGetReporter(string $expectedFormat, string $formatConfig, array $envs = []): void
     {
         foreach ($envs as $env => $val) {
             putenv("{$env}={$val}");
@@ -1424,9 +1427,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{class-string, string, array?}>
+     * @return iterable<array{0: class-string, 1: string, 2?: array<string,string>}>
      */
-    public static function provideXXXGetReporterCases(): iterable
+    public static function provideGetReporterCases(): iterable
     {
         yield [
             CheckstyleReporter::class,
