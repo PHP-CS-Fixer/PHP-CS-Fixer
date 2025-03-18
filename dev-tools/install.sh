@@ -19,6 +19,7 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
+# VERSION_CB needs an update
 VERSION_CB="2.25.2"
 VERSION_SC="stable"
 
