@@ -19,8 +19,7 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-# VERSION_CB needs an update
-VERSION_CB="2.25.2"
+VERSION_CB="2.25.5"
 VERSION_SC="stable"
 
 echo λλλ checkbashisms
