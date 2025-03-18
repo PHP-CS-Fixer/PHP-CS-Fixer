@@ -8,6 +8,7 @@
 /dev-tools/infection/
 /dev-tools/php-compatibility/cache.json
 /dev-tools/phpstan/cache/
+/dev-tools/phpunit/cache/
 /dev-tools/vendor/
 /infection.json5
 /php-cs-fixer.phar
