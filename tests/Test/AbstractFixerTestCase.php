@@ -49,7 +49,6 @@ use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
-use PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
@@ -64,7 +63,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
@@ -88,7 +86,6 @@ use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest;
@@ -496,14 +493,11 @@ abstract class AbstractFixerTestCase extends TestCase
             NoClosingTagFixerTest::class,
             NoEmptyCommentFixerTest::class,
             NoEmptyStatementFixerTest::class,
-            NoExtraBlankLinesFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
             NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
-            OrderedImportsFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
@@ -530,7 +524,7 @@ abstract class AbstractFixerTestCase extends TestCase
             YodaStyleFixerTest::class,
         ];
 
-        $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
+        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;

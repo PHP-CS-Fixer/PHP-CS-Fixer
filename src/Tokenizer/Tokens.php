@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Hasher;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
@@ -75,11 +76,18 @@ class Tokens extends \SplFixedArray
     private array $blockEndCache = [];
 
     /**
-     * A MD5 hash of the code string.
+     * An hash of the code string.
      *
      * @var ?non-empty-string
      */
     private ?string $codeHash = null;
+
+    /**
+     * An hash of the collection items.
+     *
+     * @var ?non-empty-string
+     */
+    private ?string $collectionHash = null;
 
     /**
      * Flag is collection was changed.
@@ -183,8 +191,8 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        $tokens->generateCode(); // regenerate code to calculate code hash
         $tokens->clearChanged();
+        $tokens->generateCode(); // ensure code hash is calculated, so it's registered in cache
 
         return $tokens;
     }
@@ -196,13 +204,10 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode(string $code): self
     {
-        $codeHash = self::calculateCodeHash($code);
+        $codeHash = self::calculateHash($code);
 
         if (self::hasCache($codeHash)) {
             $tokens = self::getCache($codeHash);
-
-            // generate the code to recalculate the hash
-            $tokens->generateCode();
 
             if ($codeHash === $tokens->codeHash) {
                 $tokens->clearEmptyTokens();
@@ -333,6 +338,9 @@ class Tokens extends \SplFixedArray
             $this->unregisterFoundToken($this[$index]);
 
             $this->changed = true;
+            $this->collectionHash = null;
+            self::clearCache($this->codeHash);
+            $this->codeHash = null;
             $this->namespaceDeclarations = null;
         }
 
@@ -371,6 +379,9 @@ class Tokens extends \SplFixedArray
             }
 
             $this->changed = true;
+            $this->collectionHash = null;
+            self::clearCache($this->codeHash);
+            $this->codeHash = null;
             $this->namespaceDeclarations = null;
 
             $this->registerFoundToken($newval);
@@ -436,7 +447,9 @@ class Tokens extends \SplFixedArray
         $this->namespaceDeclarations = null;
         $this->foundTokenKinds[''] = 0;
 
-        $this->updateSize($count);
+        $this->collectionHash = null;
+
+        $this->updateSizeByTrimmingTrailingEmptyTokens();
     }
 
     /**
@@ -560,7 +573,9 @@ class Tokens extends \SplFixedArray
     public function generateCode(): string
     {
         $code = $this->generatePartialCode(0, \count($this) - 1);
-        $this->changeCodeHash(self::calculateCodeHash($code));
+        if (null === $this->codeHash) {
+            $this->changeCodeHash(self::calculateHash($code)); // ensure code hash is calculated, so it's registered in cache
+        }
 
         return $code;
     }
@@ -587,7 +602,35 @@ class Tokens extends \SplFixedArray
      */
     public function getCodeHash(): string
     {
+        if (null === $this->codeHash) {
+            $code = $this->generatePartialCode(0, \count($this) - 1);
+            $this->changeCodeHash(self::calculateHash($code)); // ensure code hash is calculated, so it's registered in cache
+        }
+
         return $this->codeHash;
+    }
+
+    /**
+     * @return non-empty-string
+     *
+     * @internal
+     */
+    public function getCollectionHash(): string
+    {
+        if (null === $this->collectionHash) {
+            $this->collectionHash = self::calculateHash(
+                $this->getCodeHash()
+                .'#'
+                .\count($this)
+                .'#'
+                .implode(
+                    '',
+                    array_map(static fn (?Token $token): ?int => null !== $token ? $token->getId() : null, $this->toArray())
+                )
+            );
+        }
+
+        return $this->collectionHash;
     }
 
     /**
@@ -928,12 +971,16 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        $oldSize = \count($this);
         $this->changed = true;
+        $this->collectionHash = null;
+        self::clearCache($this->codeHash);
+        $this->codeHash = null;
         $this->namespaceDeclarations = null;
         $this->blockStartCache = [];
         $this->blockEndCache = [];
-        $this->updateSize($oldSize + $itemsCount);
+
+        $oldSize = \count($this);
+        $this->updateSizeByIncreasingToNewSize($oldSize + $itemsCount);
 
         krsort($slices);
         $farthestSliceIndex = array_key_first($slices);
@@ -1060,14 +1107,9 @@ class Tokens extends \SplFixedArray
             return;
         }
 
-        // clear memory
-        $this->updateSize(0);
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
-
+        $this->updateSizeToZero(); // clear memory
         $tokens = token_get_all($code, TOKEN_PARSE);
-
-        $this->updateSize(\count($tokens));
+        $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
         foreach ($tokens as $index => $token) {
             $this[$index] = new Token($token);
@@ -1079,9 +1121,15 @@ class Tokens extends \SplFixedArray
             $this->rewind();
         }
 
-        $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
+        $this->collectionHash = null;
+        self::clearCache($this->codeHash);
+        $this->codeHash = null;
         $this->namespaceDeclarations = null;
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
+
+        $this->changeCodeHash(self::calculateHash($code)); // ensure code hash is calculated, so it's registered in cache
     }
 
     public function toJson(): string
@@ -1251,14 +1299,48 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
     }
 
-    private function updateSize(int $size): void
+    private function updateSizeByIncreasingToNewSize(int $size): void
     {
-        if (\count($this) !== $size) {
-            $this->changed = true;
-            $this->namespaceDeclarations = null;
-
-            parent::setSize($size);
+        $currentSize = \count($this);
+        if ($currentSize >= $size) {
+            throw new \LogicException(\sprintf('Cannot use called method to decrease collection size (%d -> %d).', $currentSize, $size));
         }
+        parent::setSize($size);
+    }
+
+    private function updateSizeToZero(): void
+    {
+        $currentSize = \count($this);
+        if (0 === $currentSize) {
+            return;
+        }
+
+        $this->changed = true;
+        $this->collectionHash = null;
+        self::clearCache($this->codeHash);
+        $this->codeHash = null;
+        $this->namespaceDeclarations = null;
+        $this->blockStartCache = [];
+        $this->blockEndCache = [];
+
+        parent::setSize(0);
+    }
+
+    private function updateSizeByTrimmingTrailingEmptyTokens(): void
+    {
+        $currentSize = \count($this);
+
+        if (0 === $currentSize) {
+            return;
+        }
+
+        $lastIndex = $currentSize - 1;
+
+        while ($lastIndex >= 0 && $this->isEmptyAt($lastIndex)) {
+            --$lastIndex;
+        }
+
+        parent::setSize($lastIndex + 1);
     }
 
     /**
@@ -1369,13 +1451,11 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Calculate hash for code.
-     *
      * @return non-empty-string
      */
-    private static function calculateCodeHash(string $code): string
+    private static function calculateHash(string $code): string
     {
-        return CodeHasher::calculateCodeHash($code);
+        return Hasher::calculate($code);
     }
 
     /**

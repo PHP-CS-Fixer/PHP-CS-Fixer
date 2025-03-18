@@ -440,31 +440,6 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
-     */
-    public static function provideDataProviderMethodCases(): iterable
-    {
-        if (null === self::$dataProviderMethodCases) {
-            self::$dataProviderMethodCases = [];
-            foreach (self::provideTestClassCases() as $testClassName) {
-                $testClassName = reset($testClassName);
-                $reflectionClass = new \ReflectionClass($testClassName);
-
-                $dataProviderNames = array_filter(
-                    $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
-                );
-
-                foreach ($dataProviderNames as $dataProviderName) {
-                    self::$dataProviderMethodCases[$testClassName.'::'.$dataProviderName->getName()] = [$testClassName, $dataProviderName->getName()];
-                }
-            }
-        }
-
-        yield from self::$dataProviderMethodCases;
-    }
-
-    /**
      * @dataProvider provideTestClassCases
      *
      * @param class-string<TestCase> $testClassName
@@ -857,59 +832,6 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
-     * @param class-string $className
-     */
-    public function testThatTestMethodsAreNotDuplicated(string $className): void
-    {
-        $class = new \ReflectionClass($className);
-
-        $alreadyFoundMethods = [];
-        $duplicates = [];
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if (!str_starts_with($method->getName(), 'test')) {
-                continue;
-            }
-
-            $startLine = (int) $method->getStartLine();
-            $length = (int) $method->getEndLine() - $startLine;
-            if (3 === $length) { // open and closing brace are included - this checks for single line methods
-                continue;
-            }
-
-            /** @var list<string> $source */
-            $source = file((string) $method->getFileName());
-
-            $candidateContent = implode('', \array_slice($source, $startLine, $length));
-            if (str_contains($candidateContent, '$this->doTest(')) {
-                continue;
-            }
-
-            $foundInDuplicates = false;
-            foreach ($alreadyFoundMethods as $methodKey => $methodContent) {
-                if ($candidateContent === $methodContent) {
-                    $duplicates[] = \sprintf('%s is duplicate of %s', $methodKey, $method->getName());
-                    $foundInDuplicates = true;
-                }
-            }
-            if (!$foundInDuplicates) {
-                $alreadyFoundMethods[$method->getName()] = $candidateContent;
-            }
-        }
-
-        self::assertSame(
-            [],
-            $duplicates,
-            \sprintf(
-                "Duplicated methods found in %s:\n - %s",
-                $className,
-                implode("\n - ", $duplicates)
-            )
-        );
-    }
-
-    /**
      * @dataProvider provideDataProviderMethodCases
      *
      * @param class-string<TestCase> $testClassName
@@ -957,6 +879,31 @@ final class ProjectCodeTest extends TestCase
         }
 
         self::assertSame([], $duplicates);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideDataProviderMethodCases(): iterable
+    {
+        if (null === self::$dataProviderMethodCases) {
+            self::$dataProviderMethodCases = [];
+            foreach (self::provideTestClassCases() as $testClassName) {
+                $testClassName = reset($testClassName);
+                $reflectionClass = new \ReflectionClass($testClassName);
+
+                $dataProviderNames = array_filter(
+                    $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
+                );
+
+                foreach ($dataProviderNames as $dataProviderName) {
+                    self::$dataProviderMethodCases[$testClassName.'::'.$dataProviderName->getName()] = [$testClassName, $dataProviderName->getName()];
+                }
+            }
+        }
+
+        yield from self::$dataProviderMethodCases;
     }
 
     /**

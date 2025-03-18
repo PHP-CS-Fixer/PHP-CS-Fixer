@@ -662,8 +662,7 @@ final class TokensTest extends TestCase
         array $findTokens,
         bool $caseSensitive = true
     ): void {
-        $source =
-            '<?php
+        $source = '<?php
                 $a = function ($b) {
                     return $b;
                 };
@@ -1160,8 +1159,7 @@ echo $a;',
 
     public function testAssertTokensAfterChanging(): void
     {
-        $template =
-            '<?php class SomeClass {
+        $template = '<?php class SomeClass {
                     %s//
 
                     public function __construct($name)

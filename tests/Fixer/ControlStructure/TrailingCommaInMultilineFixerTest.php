@@ -782,5 +782,31 @@ $x = match ($a) { 1 => 0,
             }',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARRAYS, TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
         ];
+
+        yield 'empty match' => [
+            <<<'PHP'
+                <?php
+                $a = match($x) {
+                    default => function () {},
+                };
+                $b = match($y) {
+                    // Hello!
+                };
+                $c = match($z) {
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                $a = match($x) {
+                    default => function () {}
+                };
+                $b = match($y) {
+                    // Hello!
+                };
+                $c = match($z) {
+                };
+                PHP,
+            ['elements' => ['match']],
+        ];
     }
 }

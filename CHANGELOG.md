@@ -3,6 +3,89 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.72.0
+---------------------
+
+* feat: `StatementIndentationFixer` - handle property hooks (#8492)
+* fix: `MbStrFunctionsFixer` - fix imports (#8474)
+* fix: `TrailingCommaInMultilineFixer` - handle empty match body (#8480)
+* fix: `VisibilityRequiredFixer` - handle property hooks (#8495)
+* deps: upgrade few dev-deps (#8490)
+* deps: Upgrade PHPStan to 2.1.8 (#8489)
+* DX: add trailing comma to multiline auto-generated types (#8499)
+* refactor: generalize CodeHasher into Hasher (#8500)
+* refactor: Runner - unify paths used when using parallel runner (#8488)
+* refactor: use Hasher instead of md5 directly (#8501)
+
+Changelog for v3.71.0
+---------------------
+
+* feat: OrderedImportsFixer - deprecate length sorting algorithm (#8473)
+* fix: `BinaryOperatorSpacesFixer` - do not break alignment of UTF-8 array keys (#8484)
+* fix: `PhpdocAlignFixer` - align correctly type with UTF8 characters (#8486)
+* fix: `SingleSpaceAroundConstructFixer` - handle alternative syntax (#8317)
+* fix: `StatementIndentationFixer` - return in braceless if (#8479)
+* chore: update type in `SingleSpaceAroundConstructFixerTest::provideFixWithElseIfCases` (#8481)
+* chore: update type in `SingleSpaceAroundConstructFixerTest::provideFixWithIfCases` (#8482)
+* deps: bump phpstan/phpstan from 2.1.6 to 2.1.7 in /dev-tools in the phpstan group (#8485)
+* DX: cleanup `PhpdocNoAliasTagFixerTest` (#8476)
+* refactor: add `FullyQualifiedNameAnalyzer` (#8048)
+* refactor: codeHash - update when it's (re-)generated (#8470)
+* refactor: `SwitchAnalyzer` - improve performance (#8407)
+* test: NameQualifiedTransformerTest - correct test case (#8471)
+
+Changelog for v3.70.2
+---------------------
+
+* deps: upgrade deep dev-tools deps (#8472)
+* fix: `MbStrFunctionsFixer` must run before `NativeFunctionInvocationFixer` (#8466)
+* fix: `MethodArgumentSpaceFixer` - fix nested calls for `ensure_fully_multiline` option (#8469)
+
+Changelog for v3.70.1
+---------------------
+
+* fix: `PhpUnitSizeClassFixer` must run before `PhpUnitAttributesFixer` (#8457)
+* DX: cleanup `OrderedImportsFixerTest` (#8458)
+
+Changelog for v3.70.0
+---------------------
+
+* feat: Add `PhpUnitDataProviderMethodOrderFixer` fixer (#8225)
+* feat: `HeaderCommentFixer` - allow validators (#8452)
+* feat: `PhpCsFixer` ruleset: use `operator_linebreak` rule for all operators (#8417)
+* feat: `PhpUnitMethodCasingFixer` to support PHPUnit's `Test` attribute (#8451)
+* feat: `TypeDeclarationSpacesFixer` - Fix whitespace between const type and const name (#8442)
+* chore: extend bug report template (#8447)
+* chore: extend bug report template - more installation options (#8450)
+* CI: phpstan-symfony - add entry point for console (#8292)
+* deps: bump alpine from 3.21.2 to 3.21.3 (#8454)
+* deps: bump phpstan/phpstan from 2.1.5 to 2.1.6 in /dev-tools in the phpstan group (#8453)
+* fix: `CommentsAnalyzer` - allow other forms of assignment as valid structural elements for PHPDocs (#8371)
+* fix: `PhpUnitTestClassRequiresCoversFixer` must run before `PhpUnitAttributesFixer` (#8444)
+* test: fix `CheckCommandTest::testDryRunModeIsUnavailable` to correctly check that option `--dry-run` is unavailable (#8438)
+
+Changelog for v3.69.1
+---------------------
+
+* fix: `PhpUnitAttributesFixer` - convert correctly version constraint (#8439)
+* test: `PhpUnitAttributesFixer` must run before `NoEmptyPhpdocFixer` (#8443)
+
+Changelog for v3.69.0
+---------------------
+
+* feat: Add unsealed array shape phpdoc support (#8299)
+* fix: `OrderedClassElementsFixer` - sort correctly typed constants (#8408)
+* chore: do not use test class as test data (#8430)
+* chore: update `checkbashisms` to 2.25.2 (#8427)
+* chore: use constants instead of literal strings (#8422)
+* CI: no need to unlock deps on master (#8426)
+* CI: run tests using PHPUnit 12 (#8431)
+* deps: bump kubawerlos/composer-smaller-lock from 1.0.1 to 1.1.0 in /dev-tools (#8414)
+* deps: bump maglnet/composer-require-checker from 4.14.0 to 4.15.0 in /dev-tools (#8406)
+* deps: bump phpstan/phpstan from 2.1.3 to 2.1.5 in /dev-tools in the phpstan group (#8437)
+* deps: bump the phpstan (#8423)
+* deps: upgrade dev requirements (#8424)
+
 Changelog for v3.68.5
 ---------------------
 

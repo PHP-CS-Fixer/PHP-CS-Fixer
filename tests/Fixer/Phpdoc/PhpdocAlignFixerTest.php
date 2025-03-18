@@ -1520,6 +1520,24 @@ function foo($typeless): void {}',
      */
 ',
         ];
+
+        yield 'type with UTF8 characters' => [
+            ['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_VERTICAL],
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Foooooooooooooooo $x
+                 * @param Bar‹Baz›          $y
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Foooooooooooooooo $x
+                 * @param Bar‹Baz› $y
+                 */
+                PHP,
+        ];
     }
 
     /**
