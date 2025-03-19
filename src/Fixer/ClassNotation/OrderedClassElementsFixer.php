@@ -483,7 +483,12 @@ Custom values:
 
     private function findElementEnd(Tokens $tokens, int $index): int
     {
-        $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
+        $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';']);
+
+        if ($tokens[$index]->equals('(')) {
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
+        }
 
         if ($tokens[$index]->equals('{')) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
