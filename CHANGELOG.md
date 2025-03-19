@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.73.1
+---------------------
+
+* fix: `OrderedClassElementsFixer` - do not crash on property hook (#8517)
+
 Changelog for v3.73.0
 ---------------------
 
