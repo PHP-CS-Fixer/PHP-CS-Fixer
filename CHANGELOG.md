@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.73.0
+---------------------
+
+* feat: add support for asymmetric visibility to Doctrine's fixers (#8415)
+* fix: `GeneralPhpdocTagRenameFixer` - do not rename keys in array shape definition (#8477)
+* fix: `MethodArgumentSpaceFixer` - handle when nested in HTML (#8503)
+* chore: update `checkbashisms` to 2.25.5 (#8519)
+* DX: cleanup `NoExtraBlankLinesFixerTest` (#8505)
+* DX: for duplicated test methods check methods without parameters (#8508)
+* DX: remove more duplicated test methods (#8506)
+* refactor: `Tokenizer` hash metode using `xxHash` (#8491)
+* refactor: `TokensAnalyzerTest` - better test `isArray` and `isArrayMultiLine` (#8504)
+* test: run code coverage on PHP 8.4 (#8448)
+
 Changelog for v3.72.0
 ---------------------
 
