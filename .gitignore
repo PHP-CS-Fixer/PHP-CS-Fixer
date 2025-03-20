@@ -1,6 +1,5 @@
 /.env
 /.php-cs-fixer.php
-/.phpunit.result.cache
 /box.json
 /compose.override.yaml
 /composer.lock
