@@ -119,12 +119,6 @@ jobs:
 
           - operating-system: 'ubuntu-24.04'
             php-version: '8.3'
-            job-description: 'code coverage'
-            run-tests: 'yes'
-            collect-code-coverage: 'yes'
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
             job-description: 'mutation tests'
             run-mutation-tests: 'yes'
 
@@ -169,6 +163,13 @@ jobs:
             job-description: 'tests using PHPUnit 12'
             install-phpunit-12: 'yes'
             run-tests: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'code coverage'
+            run-tests: 'yes'
+            collect-code-coverage: 'yes'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
@@ -243,6 +244,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
       - name: Run mutation tests (Infection)

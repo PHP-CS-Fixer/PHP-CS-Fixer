@@ -856,6 +856,12 @@ final class TokensAnalyzer
                 continue;
             }
 
+            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $this->tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
+
+                continue;
+            }
+
             if ($token->isGivenKind(T_FUNCTION)) {
                 $elements[$index] = [
                     'classIndex' => $classIndex,

@@ -40,7 +40,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
      */
     private ?iterable $finder = null;
 
-    private string $format = 'txt';
+    private string $format;
 
     private bool $hideProgress = false;
 
@@ -77,9 +77,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         if (Utils::isFutureModeEnabled()) {
             $this->name = $name.' (future mode)';
             $this->rules = ['@PER-CS' => true];
+            $this->format = '@auto';
         } else {
             $this->name = $name;
             $this->rules = ['@PSR12' => true];
+            $this->format = 'txt';
         }
 
         // @TODO 4.0 cleanup

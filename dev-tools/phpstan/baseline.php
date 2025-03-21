@@ -1658,12 +1658,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 1 might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset mixed might not exist on non\\-empty\\-array\\<string, string\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -2036,7 +2030,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/FixerFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function md5 expects string, string\\|false given\\.$#',
+	'message' => '#^Parameter \\#1 \\$code of static method PhpCsFixer\\\\Hasher\\:\\:calculate\\(\\) expects string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Linter/CachingLinter.php',
@@ -2092,7 +2086,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset \'file\' might not exist on non\\-empty\\-array\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
+	'count' => 2,
 	'path' => __DIR__ . '/../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [

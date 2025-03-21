@@ -209,7 +209,7 @@ final class DocBlock
     {
         $index = $start;
 
-        while ($line = $this->getLine(++$index)) {
+        while (($line = $this->getLine(++$index)) !== null) {
             if ($line->containsATag()) {
                 // we've 100% reached the end of the description if we get here
                 break;
