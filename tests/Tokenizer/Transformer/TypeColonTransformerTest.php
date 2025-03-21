@@ -120,13 +120,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess81(string $source, array $expectedTokens = []): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_TYPE_COLON,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
     public static function provideProcess81Cases(): iterable

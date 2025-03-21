@@ -401,27 +401,7 @@ class Test
                 18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
         ];
-    }
 
-    /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
-     *
-     * @dataProvider provideProcess72Cases
-     */
-    public function testProcess72(string $source, array $expectedTokens): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
-        );
-    }
-
-    public static function provideProcess72Cases(): iterable
-    {
         yield [
             '<?php [&$a, $b] = $a;',
             [

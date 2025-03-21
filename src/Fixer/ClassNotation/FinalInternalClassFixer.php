@@ -244,7 +244,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $acceptTypes[] = T_READONLY;
         }
 
-        while ($currentIndex) {
+        while (null !== $currentIndex) {
             $currentIndex = $tokens->getPrevNonWhitespace($currentIndex);
 
             if (!$tokens[$currentIndex]->isGivenKind($acceptTypes)) {
