@@ -57,7 +57,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     {
         $issetIndices = array_keys($tokens->findGivenKind(T_ISSET));
 
-        while ($issetIndex = array_pop($issetIndices)) {
+        foreach (array_reverse($issetIndices) as $issetIndex) {
             $this->fixIsset($tokens, $issetIndex);
         }
     }

@@ -455,7 +455,8 @@ yield  from  baz();
     {
         $hasMoreThanOneAncestor = false;
 
-        while (++$index) {
+        while (true) {
+            ++$index;
             $token = $tokens[$index];
 
             if ($token->equals(',')) {
@@ -473,7 +474,7 @@ yield  from  baz();
             }
         }
 
-        return false;
+        return LogicException('Not reachable code was reached.'); // @phpstan-ignore deadCode.unreachable
     }
 
     private function isMultilineCommaSeparatedConstant(Tokens $tokens, int $constantIndex): bool
