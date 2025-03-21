@@ -243,7 +243,10 @@ final class ControlCaseStructuresAnalyzer
         if (T_SWITCH === $kind) {
             $ternariesCount = 0;
 
+            --$index;
             while (true) {
+                ++$index;
+
                 if ($tokens[$index]->equalsAny(['(', '{'])) { // skip constructs
                     $type = Tokens::detectBlockType($tokens[$index]);
                     $index = $tokens->findBlockEnd($type['type'], $index);
@@ -264,8 +267,6 @@ final class ControlCaseStructuresAnalyzer
 
                     --$ternariesCount;
                 }
-
-                ++$index;
             }
 
             return $index;
