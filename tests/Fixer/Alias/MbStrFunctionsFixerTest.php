@@ -91,6 +91,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
                 use function Bar\strlen;
                 use function mb_strtolower;
                 use function mb_strtoupper;
+                use function \mb_str_split;
                 return strlen($x) > 10 ? mb_strtolower($x) : mb_strtoupper($x);
                 PHP,
             <<<'PHP'
@@ -99,6 +100,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
                 use function Bar\strlen;
                 use function strtolower;
                 use function strtoupper;
+                use function \str_split;
                 return strlen($x) > 10 ? strtolower($x) : strtoupper($x);
                 PHP,
         ];

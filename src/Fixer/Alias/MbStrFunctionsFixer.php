@@ -164,6 +164,9 @@ $a = substr_count($a, $b);
 
             // is it a global function import?
             $functionIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$functionIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                $functionIndex = $tokens->getPrevMeaningfulToken($functionIndex);
+            }
             if (!$tokens[$functionIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
                 continue;
             }
