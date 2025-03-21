@@ -522,6 +522,12 @@ class Sample
             $modifierTypes[] = T_READONLY;
         }
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            $modifierTypes[] = T_PRIVATE_SET;
+            $modifierTypes[] = T_PROTECTED_SET;
+            $modifierTypes[] = T_PUBLIC_SET;
+        }
+
         $firstElementAttributeIndex = $element['index'];
 
         do {
