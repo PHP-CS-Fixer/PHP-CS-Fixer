@@ -714,7 +714,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $allowedValues = $option->getAllowedValues();
 
-        if (!is_countable($allowedValues) || 1 !== \count($allowedValues)) {
+        if (null !== $allowedValues) {
             return;
         }
 
