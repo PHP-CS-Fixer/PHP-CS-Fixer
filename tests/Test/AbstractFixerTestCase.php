@@ -714,7 +714,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $allowedValues = $option->getAllowedValues();
 
-        if (null !== $allowedValues) {
+        if (null === $allowedValues) {
             return;
         }
 
