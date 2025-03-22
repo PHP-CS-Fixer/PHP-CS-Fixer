@@ -50,17 +50,6 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
      * @var array<string, list<string>>
      */
     private const POSSIBLE_TYPES = [
-        'simple' => [
-            'array',
-            'bool',
-            'callable',
-            'float',
-            'int',
-            'iterable',
-            'null',
-            'object',
-            'string',
-        ],
         'alias' => [
             'boolean',
             'double',
@@ -77,6 +66,17 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
             'static',
             'true',
             'void',
+        ],
+        'simple' => [
+            'array',
+            'bool',
+            'callable',
+            'float',
+            'int',
+            'iterable',
+            'null',
+            'object',
+            'string',
         ],
     ];
 

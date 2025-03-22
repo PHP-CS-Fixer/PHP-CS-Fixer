@@ -14,7 +14,7 @@ Type groups to fix.
 
 Allowed values: a subset of ``['alias', 'meta', 'simple']``
 
-Default value: ``['simple', 'alias', 'meta']``
+Default value: ``['alias', 'meta', 'simple']``
 
 Examples
 --------
