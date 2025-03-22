@@ -196,7 +196,7 @@ Integration of %s.
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                /** @var list<PhpUnitTargetVersion::VERSION_*> */
+                /** @var non-empty-list<PhpUnitTargetVersion::VERSION_*> */
                 $allowedValues = $option->getAllowedValues();
 
                 $allowedVersionsForFixer = array_diff(

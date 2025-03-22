@@ -38,7 +38,7 @@ final class HelpCommandTest extends TestCase
 
     public static function provideGetDisplayableAllowedValuesCases(): iterable
     {
-        yield [null, new FixerOption('foo', 'bar', false, null, ['int'], [])];
+        yield [null, new FixerOption('foo', 'bar', false, null, ['int'])];
 
         yield [['A', 'B', 'x', 'z'], new FixerOption('foo', 'bar', false, null, ['string'], ['z', 'x', 'B', 'A'])];
 
