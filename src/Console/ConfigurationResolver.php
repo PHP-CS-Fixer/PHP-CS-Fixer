@@ -388,7 +388,7 @@ final class ConfigurationResolver
     public function getProgressType(): string
     {
         if (null === $this->progress) {
-            if ('txt' === $this->getFormat()) {
+            if ('txt' === $this->resolveFormat()) {
                 $progressType = $this->options['show-progress'];
 
                 if (null === $progressType) {
@@ -418,7 +418,7 @@ final class ConfigurationResolver
             $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
-            $format = $this->getFormat();
+            $format = $this->resolveFormat();
 
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
@@ -574,10 +574,25 @@ final class ConfigurationResolver
         return $this->fixerFactory;
     }
 
-    private function getFormat(): string
+    private function resolveFormat(): string
     {
         if (null === $this->format) {
-            $this->format = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $parts = explode(',', $formatCandidate);
+
+            if (\count($parts) > 2) {
+                throw new InvalidConfigurationException(\sprintf('The format "%s" is invalid.', $formatCandidate));
+            }
+
+            $this->format = $parts[0];
+
+            if ('@auto' === $this->format) {
+                $this->format = $parts[1] ?? 'txt';
+
+                if (filter_var(getenv('GITLAB_CI'), FILTER_VALIDATE_BOOL)) {
+                    $this->format = 'gitlab';
+                }
+            }
         }
 
         return $this->format;
